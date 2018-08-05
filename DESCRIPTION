@@ -1,0 +1,12 @@
+Package: tsmp
+Type: Package
+Title: Time Series with Matrix Profile (Time Series Matrix Profile)
+Version: 0.1.0
+Author: Francisco Bischoff
+Maintainer: Francisco Bischoff <fbischoff@med.up.pt>
+Description: This package is a toolkit with several functions implementing the Matrix Profile concept that was created
+by several researchers at CS-UCR  (http://www.cs.ucr.edu/~eamonn/MatrixProfile.html).
+    Some code was written by reading the papers, others were author's matlab code ported to R with author's permittion.
+License: MIT License
+Encoding: UTF-8
+LazyData: true
