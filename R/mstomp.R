@@ -5,7 +5,7 @@
 #' No details
 #'
 #' @param data a matrix, where each colums is a time series (dimention). Can accept Lists and data.frames too.
-#' @param query.size size of the sliding window
+#' @param window.size size of the sliding window
 #' @param must.dim which dimentions to forcibly include (default is NULL)
 #' @param exc.dim which dimentions to exclude (default is NULL)
 #'
@@ -14,6 +14,7 @@
 #'
 #' @seealso [stamp()]
 #' @references Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif Discovery.
+#' [https://sites.google.com/view/mstamp/]
 #'
 #' @examples
 #' \dontrun{
@@ -21,20 +22,23 @@
 #' mp <- mstomp(data, 30, must.dim = c(1, 2))
 #' mp <- mstomp(data, 30, exc.dim = c(2,3))
 #' }
-mstomp <- function(data, query.size, must.dim = NULL, exc.dim = NULL) {
+mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion.zone = 1 / 2) {
+
+  eps <- .Machine$double.eps^0.5
+
   ## get various length
-  exc_zone <- round(sub_len / 2)
+  exclusion.zone <- floor(window.size * exclusion.zone)
 
   ## transform data list into matrix
   if (is.list(data)) {
-    data_len <- length(data[[1]])
-    n_dim <- length(data)
+    data.size <- length(data[[1]])
+    n.dim <- length(data)
 
-    for (i in 1:n_dim) {
+    for (i in 1:n.dim) {
       len <- length(data[[i]])
       # Fix TS size with NaN
-      if (len < data_len) {
-        data[[i]] <- c(data[[i]], rep(NA, data_len - len))
+      if (len < data.size) {
+        data[[i]] <- c(data[[i]], rep(NA, data.size - len))
       }
     }
     # transform data into matrix (each column is a TS)
@@ -43,160 +47,168 @@ mstomp <- function(data, query.size, must.dim = NULL, exc.dim = NULL) {
     if (is.data.frame(data)) {
       data <- as.matrix(data)
     } # just to be uniform
-    data_len <- nrow(data)
-    n_dim <- ncol(data)
+    if (ncol(data) > nrow(data)) {
+      data <- t(data)
+    }
+    data.size <- nrow(data)
+    n.dim <- ncol(data)
   } else if (is.vector(data)) {
-    data_len <- length(data)
-    n_dim <- 1
+    data.size <- length(data)
+    n.dim <- 1
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
     stop("Unknown type of data. Must be: matrix, data.frame, vector or list")
   }
 
-  pro_len <- data_len - sub_len + 1
+  matrix.profile.size <- data.size - window.size + 1
 
   ## check input
-  if (sub_len > data_len / 2) {
+  if (window.size > data.size / 2) {
     stop("Error: Time series is too short relative to desired subsequence length")
   }
-  if (sub_len < 4) {
+  if (window.size < 4) {
     stop("Error: Subsequence length must be at least 4")
   }
-  if (any(must_dim > n_dim)) {
+  if (any(must.dim > n.dim)) {
     stop("Error: The must have dimension must be less then the total dimension")
   }
-  if (any(exc_dim > n_dim)) {
+  if (any(exc.dim > n.dim)) {
     stop("Error: The exclusion dimension must be less then the total dimension")
   }
-  if (length(intersect(must_dim, exc_dim)) > 0) {
+  if (length(intersect(must.dim, exc.dim)) > 0) {
     stop("Error: The same dimension is presented in both the exclusion dimension and must have dimension")
   }
 
   ## check skip position
-  n_exc <- length(exc_dim)
-  n_must <- length(must_dim)
-  mask_exc <- rep(FALSE, n_dim)
-  mask_exc[exc_dim] <- TRUE
-  skip_loc <- rep(FALSE, pro_len)
+  n.exc <- length(exc.dim)
+  n.must <- length(must.dim)
+  mask.exc <- rep(FALSE, n.dim)
+  mask.exc[exc.dim] <- TRUE
+  skip.location <- rep(FALSE, matrix.profile.size)
 
-  for (i in 1:pro_len) {
-    if (any(is.na(data[i:(i + sub_len - 1), !mask_exc])) || any(is.infinite(data[i:(i + sub_len - 1), !mask_exc]))) {
-      skip_loc[i] <- TRUE
+  for (i in 1:matrix.profile.size) {
+    if (any(is.na(data[i:(i + window.size - 1), !mask.exc])) || any(is.infinite(data[i:(i + window.size - 1), !mask.exc]))) {
+      skip.location[i] <- TRUE
     }
   }
 
   data[is.na(data)] <- 0
   data[is.infinite(data)] <- 0
 
-  pb <- txtProgressBar(min = 0, max = pro_len, style = 3)
+  pb <- txtProgressBar(min = 0, max = matrix.profile.size, style = 3)
   on.exit(close(pb))
   on.exit(beep(), TRUE)
 
   ## initialization
-  data_freq <- matrix(0, (sub_len + data_len), n_dim)
-  data_mu <- matrix(0, pro_len, n_dim)
-  data_sig <- matrix(0, pro_len, n_dim)
-  first_prod <- matrix(0, pro_len, n_dim)
+  data.fft <- matrix(0, (window.size + data.size), n.dim)
+  data.mean <- matrix(0, matrix.profile.size, n.dim)
+  data.sd <- matrix(0, matrix.profile.size, n.dim)
+  first.profile <- matrix(0, matrix.profile.size, n.dim)
 
-  for (i in 1:n_dim) {
-    nnPre <- mass_pre_mstamp(data[, i], data_len, sub_len)
-    data_freq[, i] <- nnPre$data_freq
-    data_mu[, i] <- nnPre$data_mu
-    data_sig[, i] <- nnPre$data_sig
-
-    mstomp <- mass_mstamp(data_freq[, i], data[1:sub_len, i], data_len, sub_len, data_mu[, i], data_sig[, i], data_mu[1, i], data_sig[1, i])
-    first_prod[, i] <- mstomp$last_prod
+  for (i in 1:n.dim) {
+    nnPre <- mass.pre(data[, i], data.size, window.size = window.size)
+    data.fft[, i] <- nnPre$data.fft
+    data.mean[, i] <- nnPre$data.mean
+    data.sd[, i] <- nnPre$data.sd
+    mstomp <- mass(data.fft[, i], data[1:window.size, i], data.size, window.size, data.mean[, i], data.sd[, i], data.mean[1, i], data.sd[1, i])
+    first.profile[, i] <- mstomp$last.product
   }
 
   ## compute the matrix profile
-  pro_mul <- matrix(0, pro_len, n_dim)
-  pro_idx <- matrix(0, pro_len, n_dim)
-  dist_pro <- matrix(0, pro_len, n_dim)
-  last_prod <- matrix(0, pro_len, n_dim)
-  drop_val <- matrix(0, 1, n_dim)
-  for (i in 1:pro_len) {
+  matrix.profile <- matrix(0, matrix.profile.size, n.dim)
+  profile.index <- matrix(0, matrix.profile.size, n.dim)
+  distance.profile <- matrix(0, matrix.profile.size, n.dim)
+  last.product <- matrix(0, matrix.profile.size, n.dim)
+  drop.value <- matrix(0, 1, n.dim)
+  for (i in 1:matrix.profile.size) {
     # compute the distance profile
     setTxtProgressBar(pb, i)
 
-    query <- as.matrix(data[i:(i + sub_len - 1), ])
+    query <- as.matrix(data[i:(i + window.size - 1), ])
 
     if (i == 1) {
-      for (j in 1:n_dim) {
-        mstomp <- mass_mstamp(data_freq[, j], query[, j], data_len, sub_len, data_mu[, j], data_sig[, j], data_mu[i, j], data_sig[i, j])
-        dist_pro[, j] <- mstomp$dist_pro
-        last_prod[, j] <- mstomp$last_prod
+      for (j in 1:n.dim) {
+        mstomp <- mass(data.fft[, j], query[, j], data.size, window.size, data.mean[, j], data.sd[, j], data.mean[i, j], data.sd[i, j])
+        distance.profile[, j] <- mstomp$distance.profile
+        last.product[, j] <- mstomp$last.product
       }
     } else {
+      rep.drop.val <- kronecker(matrix(1, matrix.profile.size - 1, 1), t(drop.value))
+      rep.query <- kronecker(matrix(1, matrix.profile.size - 1, 1), t(query[window.size, ]))
 
-      rep_drop_val <- kronecker(matrix(1, pro_len - 1, 1), t(drop_val))
-      rep_query <- kronecker(matrix(1, pro_len - 1, 1), t(query[sub_len, ]))
-
-      last_prod[2:(data_len - sub_len + 1), ] <- last_prod[1:(data_len - sub_len), ] -
-        data[1:(data_len - sub_len), ] * rep_drop_val +
-        data[(sub_len + 1):data_len, ] * rep_query
+      last.product[2:(data.size - window.size + 1), ] <- last.product[1:(data.size - window.size), ] -
+        data[1:(data.size - window.size), ] * rep.drop.val +
+        data[(window.size + 1):data.size, ] * rep.query
 
 
-      last_prod[1, ] <- first_prod[i, ]
+      last.product[1, ] <- first.profile[i, ]
 
-      dist_pro <- 2 * (sub_len - (last_prod - sub_len * data_mu * kronecker(matrix(1, pro_len, 1), t(data_mu[i, ]))) /
-                         (data_sig * kronecker(matrix(1, pro_len, 1), t(data_sig[i, ]))))
+      distance.profile <- 2 * (window.size - (last.product - window.size * data.mean * kronecker(matrix(1, matrix.profile.size, 1), t(data.mean[i, ]))) /
+        (data.sd * kronecker(matrix(1, matrix.profile.size, 1), t(data.sd[i, ]))))
     }
 
-    dist_pro <- Re(dist_pro)
-    drop_val <- query[1, ]
+    distance.profile <- Re(distance.profile)
+    drop.value <- query[1, ]
 
     # apply exclusion zone
-    exc_st <- max(1, i - exc_zone)
-    exc_ed <- min(pro_len, i + exc_zone)
-    dist_pro[exc_st:exc_ed, ] <- Inf
-    dist_pro[data_sig < eps] <- Inf
-    if (skip_loc[i] || any(data_sig[i, !mask_exc] < eps)) {
-      dist_pro[] <- Inf
+    exc.st <- max(1, i - exclusion.zone)
+    exc.ed <- min(matrix.profile.size, i + exclusion.zone)
+    distance.profile[exc.st:exc.ed, ] <- Inf
+    distance.profile[data.sd < eps] <- Inf
+    if (skip.location[i] || any(data.sd[i, !mask.exc] < eps)) {
+      distance.profile[] <- Inf
     }
-    dist_pro[skip_loc, ] <- Inf
+    distance.profile[skip.location, ] <- Inf
 
     # apply dimension "must have" and "exclusion"
-    dist_pro[, exc_dim] <- Inf
+    distance.profile[, exc.dim] <- Inf
 
-    if (n_must > 0) {
-      mask_must <- rep(FALSE, n_must)
-      mask_must[must_dim] <- TRUE
-      dist_pro_must <- dist_pro[, mask_must];
-      dist_pro[, mask_must] <- -Inf
+    if (n.must > 0) {
+      mask.must <- rep(FALSE, n.must)
+      mask.must[must.dim] <- TRUE
+      dist.pro.must <- distance.profile[, mask.must]
+      distance.profile[, mask.must] <- -Inf
     }
 
-    if (n_dim > 1)
-      dist_pro_sort <- t(apply(dist_pro, 1, sort)) # sort by row, put all -Inf to the first columns
-    else
-      dist_pro_sort <- dist_pro
+    if (n.dim > 1) {
+      dist.pro.sort <- t(apply(distance.profile, 1, sort))
+    } # sort by row, put all -Inf to the first columns
+    else {
+      dist.pro.sort <- distance.profile
+    }
 
-    if (n_must > 0)
-      dist_pro_sort[, 1:n_must] <- dist_pro_must
+    if (n.must > 0) {
+      dist.pro.sort[, 1:n.must] <- dist.pro.must
+    }
 
     # figure out and store the nearest neighbor
-    dist_pro_cum <- rep(0, pro_len)
-    dist_pro_merg <- rep(0, pro_len)
-    for (j in (max(1, n_must):(n_dim - n_exc))) {
-      dist_pro_cum <- dist_pro_cum + dist_pro_sort[, j]
-      dist_pro_merg[] <- dist_pro_cum / j
-      min_idx <- which.min(dist_pro_merg)
-      min_val <- dist_pro_merg[min_idx]
-      pro_mul[i, j] <- min_val
-      pro_idx[i, j] <- min_idx
+    dist.pro.cum <- rep(0, matrix.profile.size)
+    dist.pro.merg <- rep(0, matrix.profile.size)
+    for (j in (max(1, n.must):(n.dim - n.exc))) {
+      dist.pro.cum <- dist.pro.cum + dist.pro.sort[, j]
+      dist.pro.merg[] <- dist.pro.cum / j
+      min.idx <- which.min(dist.pro.merg)
+      min.val <- dist.pro.merg[min.idx]
+      matrix.profile[i, j] <- min.val
+      profile.index[i, j] <- min.idx
     }
   }
 
   ## remove bad k setting in the returned matrix
-  pro_mul <- sqrt(pro_mul)
-  if (n_must > 0)
-    pro_mul[, 1:(n_must - 1)] <- NA
-  if (n_exc > 0)
-    pro_mul[, (n_dim - n_exc + 1):length(pro_mul)] <- NA
-  if (n_must > 0)
-    pro_idx[, 1:(n_must - 1)] <- NA
-  if (n_exc > 0)
-    pro_idx[, (n_dim - n_exc + 1):length(pro_idx)] <- NA
+  matrix.profile <- sqrt(matrix.profile)
+  if (n.must > 0) {
+    matrix.profile[, 1:(n.must - 1)] <- NA
+  }
+  if (n.exc > 0) {
+    matrix.profile[, (n.dim - n.exc + 1):length(matrix.profile)] <- NA
+  }
+  if (n.must > 0) {
+    profile.index[, 1:(n.must - 1)] <- NA
+  }
+  if (n.exc > 0) {
+    profile.index[, (n.dim - n.exc + 1):length(profile.index)] <- NA
+  }
 
-  return(list(pro_mul = pro_mul, pro_idx = pro_idx))
+  return(list(mp = matrix.profile, pi = profile.index))
 }

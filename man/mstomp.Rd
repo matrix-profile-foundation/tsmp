@@ -4,12 +4,13 @@
 \alias{mstomp}
 \title{Multivariate STOMP algorithm}
 \usage{
-mstomp(data, query.size, must.dim = NULL, exc.dim = NULL)
+mstomp(data, window.size, must.dim = NULL, exc.dim = NULL,
+  exclusion.zone = 1/2)
 }
 \arguments{
 \item{data}{a matrix, where each colums is a time series (dimention). Can accept Lists and data.frames too.}
 
-\item{query.size}{size of the sliding window}
+\item{window.size}{size of the sliding window}
 
 \item{must.dim}{which dimentions to forcibly include (default is NULL)}
 
@@ -19,10 +20,12 @@ mstomp(data, query.size, must.dim = NULL, exc.dim = NULL)
 The matrix profile and profile index
 }
 \description{
-Multivariate STOMP algorithm
+No description
+}
+\details{
+No details
 }
 \examples{
-
 \dontrun{
 mp <- mstomp(data, 30)
 mp <- mstomp(data, 30, must.dim = c(1, 2))
@@ -31,6 +34,7 @@ mp <- mstomp(data, 30, exc.dim = c(2,3))
 }
 \references{
 Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif Discovery.
+\link{https://sites.google.com/view/mstamp/}
 }
 \seealso{
 \code{\link[=stamp]{stamp()}}
