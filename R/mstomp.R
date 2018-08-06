@@ -8,13 +8,15 @@
 #' @param window.size size of the sliding window
 #' @param must.dim which dimentions to forcibly include (default is NULL)
 #' @param exc.dim which dimentions to exclude (default is NULL)
+#' @param exclusion.zone size of the exclusion zone, based on query size (default 1/2)
 #'
 #' @return The matrix profile and profile index
 #' @export
 #'
 #' @seealso [stamp()]
 #' @references Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif Discovery.
-#' [https://sites.google.com/view/mstamp/]
+#' @references <https://sites.google.com/view/mstamp/>
+#' @references <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #'
 #' @examples
 #' \dontrun{

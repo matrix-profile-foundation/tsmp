@@ -15,6 +15,8 @@ mstomp(data, window.size, must.dim = NULL, exc.dim = NULL,
 \item{must.dim}{which dimentions to forcibly include (default is NULL)}
 
 \item{exc.dim}{which dimentions to exclude (default is NULL)}
+
+\item{exclusion.zone}{size of the exclusion zone, based on query size (default 1/2)}
 }
 \value{
 The matrix profile and profile index
@@ -34,7 +36,10 @@ mp <- mstomp(data, 30, exc.dim = c(2,3))
 }
 \references{
 Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif Discovery.
-\link{https://sites.google.com/view/mstamp/}
+
+\url{https://sites.google.com/view/mstamp/}
+
+\url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
 \code{\link[=stamp]{stamp()}}

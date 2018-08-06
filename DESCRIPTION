@@ -5,9 +5,10 @@ Version: 0.1.0
 Authors@R: person("Francisco", "Bischoff", email = "fbischoff@med.up.pt",
                   role = c("aut", "cre"))
 Maintainer: Francisco Bischoff <fbischoff@med.up.pt>
-Description: This package is a toolkit with several functions implementing the Matrix Profile concept that was created by several researchers at CS-UCR [http://www.cs.ucr.edu/~eamonn/MatrixProfile.html].
+Description: This package is a toolkit with several functions implementing the Matrix Profile concept that was created by several researchers at CS-UCR <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>.
     Some code was written by reading the papers, others were author's matlab code ported to R with author's permittion.
 License: MIT + file LICENSE
+References: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 Depends: beepr, parallel, doSNOW
 Encoding: UTF-8
 LazyData: true

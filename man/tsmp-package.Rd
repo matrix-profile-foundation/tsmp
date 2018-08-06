@@ -6,15 +6,14 @@
 \alias{tsmp-package}
 \title{tsmp: Time Series with Matrix Profile}
 \description{
-This package is a toolkit with several functions implementing the Matrix Profile concept that was created by several researchers at CS-UCR [http://www.cs.ucr.edu/~eamonn/MatrixProfile.html].
+This package is a toolkit with several functions implementing the Matrix Profile concept that was created by several researchers at CS-UCR <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>.
     Some code was written by reading the papers, others were author's matlab code ported to R with author's permittion.
 }
 \details{
-The only function you're likely to need from roxygen2 is \code{\link[=roxygenize]{roxygenize()}}.
-Otherwise refer to the vignettes to see how to format the documentation.
+Details in progress
 }
 \references{
-\link{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
+\url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \author{
 \strong{Maintainer}: Francisco Bischoff \email{fbischoff@med.up.pt}

@@ -14,7 +14,7 @@
 #' @return Returns the distance profile for the given query and the last computed product
 #'
 #' @references Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance
-#' @references [https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html]
+#' @references <https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html>
 
 mass <- function(data.fft, query.window, data.size, window.size, data.mean, data.sd, query.mean, query.sd) {
   # pre-process query for fft

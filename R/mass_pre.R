@@ -8,6 +8,9 @@
 #'
 #' @return Returns data.fft, data.mean, data.sd, query.mean and query.sd
 #' @export
+#'
+#' @references Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance
+#' @references <https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html>
 
 mass.pre <- function(data, data.size, query = NULL, query.size = NULL, window.size) {
 

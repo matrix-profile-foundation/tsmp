@@ -33,5 +33,5 @@ Mueen's Algorithm for Similarity Search is The Fastest Similarity Search Algorit
 \references{
 Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance
 
-\link{https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html}
+\url{https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html}
 }
