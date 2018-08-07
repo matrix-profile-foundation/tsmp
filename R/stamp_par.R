@@ -20,7 +20,7 @@
 #' @examples
 #' \dontrun{
 #' mp <- stamp.par(data, window.size = 30)
-#' mp <- stamp.par(ref.data, query.data, window.size = 30, s.size = round(nrows(ref.data) * 0.1)) # 10 percent of data
+#' mp <- stamp.par(ref.data, query.data, window.size = 30, s.size = round(nrows(ref.data) * 0.1))
 #' }
 #'
 #' @import beepr doSNOW foreach parallel

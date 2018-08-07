@@ -6,8 +6,7 @@
 \alias{tsmp-package}
 \title{tsmp: Time Series with Matrix Profile}
 \description{
-This package is a toolkit with several functions implementing the Matrix Profile concept that was created by several researchers at CS-UCR <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>.
-    Some code was written by reading the papers, others were author's matlab code ported to R with author's permittion.
+A toolkit implementing the Matrix Profile concept that was created by CS-UCR <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>.
 }
 \details{
 Details in progress
@@ -17,6 +16,11 @@ Details in progress
 }
 \author{
 \strong{Maintainer}: Francisco Bischoff \email{fbischoff@med.up.pt}
+
+Authors:
+\itemize{
+  \item Michael Yeh \email{myeh003@ucr.edu} [contributor]
+}
 
 }
 \keyword{internal}

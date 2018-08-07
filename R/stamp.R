@@ -20,7 +20,7 @@
 #' @examples
 #' \dontrun{
 #' mp <- stamp(data, window.size = 30)
-#' mp <- stamp(ref.data, query.data, window.size = 30, s.size = round(nrows(ref.data) * 0.1)) # 10 percent of data
+#' mp <- stamp(ref.data, query.data, window.size = 30, s.size = round(nrows(ref.data) * 0.1))
 #' }
 
 stamp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf) {
