@@ -16,27 +16,35 @@ stamp(..., window.size, exclusion.zone = 1/2, s.size = Inf)
 \item{s.size}{for anytime algorithm, represents the size (in observations) the random calculation will occour (default Inf)}
 }
 \value{
-The matrix profile and profile index
+Returns the matrix profile and profile index.
+It also returns the left and right matrix profile and profile index that may be used to detect Time Series Chains (Yan Zhu 2018)
 }
 \description{
-No description
+Computes the best so far Matrix Profile and Profile Index for Univariate Time Series
 }
 \details{
-No details
+The Matrix Profile, has the potential to revolutionize time series data mining because of its generality, versatility, simplicity and scalability. In particular it has implications for time series motif discovery, time series joins, shapelet discovery (classification), density estimation, semantic segmentation, visualization, rule discovery, clustering etc.
+The anytime STAMP computes the Matrix Profile and Profile Index in such manner that it can be stopped before its complete calculation and return the best so far results allowing ultra-fast approximate solutions.
 }
 \examples{
 \dontrun{
 mp <- stamp(data, window.size = 30)
-mp <- stamp(ref.data, query.data, window.size = 30, s.size = round(nrows(ref.data) * 0.1)) # 10 percent of data
+mp <- stamp(ref.data, query.data, window.size = 30, s.size = round(nrows(ref.data) * 0.1))
 }
 }
 \references{
-Yeh CCM, Zhu Y, Ulanova L, Begum N, Ding Y, Dau HA, et al. Matrix profile I: All pairs similarity joins for time series: A unifying view that includes motifs, discords and shapelets. Proc - IEEE Int Conf Data Mining, ICDM. 2017;1317–22.
+\enumerate{
+\item Yeh CCM, Zhu Y, Ulanova L, Begum N, Ding Y, Dau HA, et al. Matrix profile I: All pairs similarity joins for time series: A unifying view that includes motifs, discords and shapelets. Proc - IEEE Int Conf Data Mining, ICDM. 2017;1317–22.
+}
 
-\url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
+\enumerate{
+\item Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
+}
+
+Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-\code{\link[=mstomp]{mstomp()}}
+\code{\link[=mstomp]{mstomp()}}, \code{\link[=mstomp.par]{mstomp.par()}}
 
 Other Stamp: \code{\link{stamp.par}}
 }

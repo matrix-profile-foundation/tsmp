@@ -9,8 +9,24 @@
 #' @return Returns data.fft, data.mean, data.sd, query.mean and query.sd
 #' @export
 #'
+#' @seealso [mass()] for using precomputed values
+#'
 #' @references Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance
 #' @references <https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html>
+#'
+#' @examples
+#' \dontrun{
+#' w <- 30
+#' d.size <- length(ref.data)
+#' q.size <- length(query.data)
+#'
+#' pre <- mass.pre(ref.data, d.size, query.data, q.size, w)
+#'
+#' for(i in 1:(d.size - w + 1)) {
+#'   dp <- mass(pre$data.fft, query.data[i:(i-1+w)], d.size, w, pre$data.mean, pre$data.sd,
+#'           pre$query.mean[i], pre$query.sd[i])
+#' }
+#' }
 
 mass.pre <- function(data, data.size, query = NULL, query.size = NULL, window.size) {
 
@@ -20,7 +36,7 @@ mass.pre <- function(data, data.size, query = NULL, query.size = NULL, window.si
   data.mean <- fast.movavg(data, window.size) # precompute moving average
   data.sd <- fast.movsd(data, window.size) # precompute moving SD
   data[(data.size + 1):(window.size + data.size)] <- 0
-  data.fft <- fft(data) # precompute fft of data
+  data.fft <- stats::fft(data) # precompute fft of data
 
 
   if (!is.null(query)) {

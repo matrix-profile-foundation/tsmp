@@ -1,6 +1,6 @@
 #' Calculates the distance profile using MASS algorithm
 #'
-#' Mueen's Algorithm for Similarity Search is The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance and Correlation Coefficient
+#' Mueen's Algorithm for Similarity Search is The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance and Correlation Coefficient.
 #'
 #' @param data.fft precomputed data product
 #' @param query.window query window vector
@@ -12,17 +12,34 @@
 #' @param query.sd precomputed query standard deviation
 #'
 #' @return Returns the distance profile for the given query and the last computed product
+#' @export
+#'
+#' @seealso [mass.pre()] to precomputation of input values
 #'
 #' @references Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance
 #' @references <https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html>
+#'
+#' @examples
+#' \dontrun{
+#' w <- 30
+#' d.size <- length(ref.data)
+#' q.size <- length(query.data)
+#'
+#' pre <- mass.pre(ref.data, d.size, query.data, q.size, w)
+#'
+#' for(i in 1:(d.size - w + 1)) {
+#'   dp <- mass(pre$data.fft, query.data[i:(i-1+w)], d.size, w, pre$data.mean, pre$data.sd,
+#'           pre$query.mean[i], pre$query.sd[i])
+#' }
+#' }
 
 mass <- function(data.fft, query.window, data.size, window.size, data.mean, data.sd, query.mean, query.sd) {
   # pre-process query for fft
   query.window <- rev(query.window)
   query.window[(window.size + 1):(window.size + data.size)] <- 0
   # compute the product
-  Z <- data.fft * fft(query.window)
-  z <- fft(Z, inverse = TRUE) / length(Z)
+  Z <- data.fft * stats::fft(query.window)
+  z <- stats::fft(Z, inverse = TRUE) / length(Z)
   # compute the distance profile
   distance.profile <- 2 * (window.size - (z[window.size:data.size] - window.size * data.mean * query.mean) / (data.sd * query.sd))
   last.product <- Re(z[window.size:data.size])

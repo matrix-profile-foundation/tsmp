@@ -1,26 +1,29 @@
 #' Anytime univariate STAMP algorithm
 #'
-#' No description
+#' Computes the best so far Matrix Profile and Profile Index for Univariate Time Series
 #'
-#' No details
+#' The Matrix Profile, has the potential to revolutionize time series data mining because of its generality, versatility, simplicity and scalability. In particular it has implications for time series motif discovery, time series joins, shapelet discovery (classification), density estimation, semantic segmentation, visualization, rule discovery, clustering etc.
+#' The anytime STAMP computes the Matrix Profile and Profile Index in such manner that it can be stopped before its complete calculation and return the best so far results allowing ultra-fast approximate solutions.
 #'
 #' @param ... a matrix or a vector, if a second time series is supplied it will be a join matrix profile
 #' @param window.size size of the sliding window
 #' @param exclusion.zone size of the exclusion zone, based on query size (default 1/2)
 #' @param s.size for anytime algorithm, represents the size (in observations) the random calculation will occour (default Inf)
 #'
-#' @return The matrix profile and profile index
+#' @return Returns the matrix profile and profile index.
+#' It also returns the left and right matrix profile and profile index that may be used to detect Time Series Chains (Yan Zhu 2018)
 #' @export
 #'
 #' @family Stamp
-#' @seealso [mstomp()]
-#' @references Yeh CCM, Zhu Y, Ulanova L, Begum N, Ding Y, Dau HA, et al. Matrix profile I: All pairs similarity joins for time series: A unifying view that includes motifs, discords and shapelets. Proc - IEEE Int Conf Data Mining, ICDM. 2017;1317–22.
-#' @references <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
+#' @seealso [mstomp()], [mstomp.par()]
+#' @references 1. Yeh CCM, Zhu Y, Ulanova L, Begum N, Ding Y, Dau HA, et al. Matrix profile I: All pairs similarity joins for time series: A unifying view that includes motifs, discords and shapelets. Proc - IEEE Int Conf Data Mining, ICDM. 2017;1317–22.
+#' @references 2. Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
+#' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #'
 #' @examples
 #' \dontrun{
 #' mp <- stamp(data, window.size = 30)
-#' mp <- stamp(ref.data, query.data, window.size = 30, s.size = round(nrows(ref.data) * 0.1)) # 10 percent of data
+#' mp <- stamp(ref.data, query.data, window.size = 30, s.size = round(nrows(ref.data) * 0.1))
 #' }
 
 stamp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf) {
@@ -67,10 +70,12 @@ stamp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf) {
   ssize <- min(s.size, matrix.profile.size)
   order <- sample(1:matrix.profile.size, size = ssize)
 
-  pb <- txtProgressBar(min = 1, max = ssize, style = 3)
+  tictac <- Sys.time()
+
+  pb <- utils::txtProgressBar(min = 1, max = ssize, style = 3)
 
   on.exit(close(pb))
-  on.exit(beep(), TRUE)
+  on.exit(beepr::beep(), TRUE)
   # anytime must return the result always
   on.exit(return(list(
     rmp = as.matrix(right.matrix.profile), rpi = as.matrix(right.profile.index),
@@ -78,12 +83,12 @@ stamp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf) {
     mp = as.matrix(matrix.profile), pi = as.matrix(profile.index)
   )), TRUE)
 
-  pre <- mass_pre(data, data.size, query, query.size, window.size)
+  pre <- mass.pre(data, data.size, query, query.size, window.size)
 
   for (i in order) {
     j <- j + 1
     distance.profile <- Re(sqrt(mass(pre$data.fft, query[i:(i + window.size - 1), ], data.size, window.size, pre$data.mean, pre$data.sd, pre$query.mean[i], pre$query.sd[i])$distance.profile))
-    distance.profile[max((i - exclusion.zone), 1):min((i + exclusion.zone - 1), matrix.profile.size)] <- Inf
+    distance.profile[max((i - exclusion.zone), 1):min((i + exclusion.zone), matrix.profile.size)] <- Inf
 
     # anytime version
     # left matrix.profile
@@ -103,8 +108,12 @@ stamp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf) {
     matrix.profile[ind] <- distance.profile[ind]
     profile.index[which(ind)] <- i
 
-    setTxtProgressBar(pb, j)
+    utils::setTxtProgressBar(pb, j)
   }
+
+  tictac <- Sys.time() - tictac
+
+  message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
 
   # return() is at on.exit() function
 }

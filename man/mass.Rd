@@ -28,10 +28,27 @@ mass(data.fft, query.window, data.size, window.size, data.mean, data.sd,
 Returns the distance profile for the given query and the last computed product
 }
 \description{
-Mueen's Algorithm for Similarity Search is The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance and Correlation Coefficient
+Mueen's Algorithm for Similarity Search is The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance and Correlation Coefficient.
+}
+\examples{
+\dontrun{
+w <- 30
+d.size <- length(ref.data)
+q.size <- length(query.data)
+
+pre <- mass.pre(ref.data, d.size, query.data, q.size, w)
+
+for(i in 1:(d.size - w + 1)) {
+  dp <- mass(pre$data.fft, query.data[i:(i-1+w)], d.size, w, pre$data.mean, pre$data.sd,
+          pre$query.mean[i], pre$query.sd[i])
+}
+}
 }
 \references{
 Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance
 
 \url{https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html}
+}
+\seealso{
+\code{\link[=mass.pre]{mass.pre()}} to precomputation of input values
 }

@@ -1,28 +1,32 @@
 #' Anytime univariate STAMP algorithm Parallel version
 #'
-#' No description
+#' Computes the best so far Matrix Profile and Profile Index for Univariate Time Series
 #'
-#' No details
+#' The Matrix Profile, has the potential to revolutionize time series data mining because of its generality, versatility, simplicity and scalability. In particular it has implications for time series motif discovery, time series joins, shapelet discovery (classification), density estimation, semantic segmentation, visualization, rule discovery, clustering etc.
+#' The anytime STAMP computes the Matrix Profile and Profile Index in such manner that it can be stopped before its complete calculation and return the best so far results allowing ultra-fast approximate solutions.
 #'
 #' @param ... a matrix or a vector, if a second time series is supplied it will be a join matrix profile
 #' @param window.size size of the sliding window
 #' @param exclusion.zone size of the exclusion zone, based on query size (default 1/2)
 #' @param s.size for anytime algorithm, represents the size (in observations) the random calculation will occour (default Inf)
 #'
-#' @return The matrix profile and profile index
+#' @return Returns the matrix profile and profile index.
+#' It also returns the left and right matrix profile and profile index that may be used to detect Time Series Chains (Yan Zhu 2018)
 #' @export
 #'
 #' @family Stamp
-#' @seealso [mstomp()]
-#' @references Yeh CCM, Zhu Y, Ulanova L, Begum N, Ding Y, Dau HA, et al. Matrix profile I: All pairs similarity joins for time series: A unifying view that includes motifs, discords and shapelets. Proc - IEEE Int Conf Data Mining, ICDM. 2017;1317–22.
-#' @references <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
+#' @seealso [mstomp()], [mstomp.par()]
+#' @references 1. Yeh CCM, Zhu Y, Ulanova L, Begum N, Ding Y, Dau HA, et al. Matrix profile I: All pairs similarity joins for time series: A unifying view that includes motifs, discords and shapelets. Proc - IEEE Int Conf Data Mining, ICDM. 2017;1317–22.
+#' @references 2. Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
+#' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #'
 #' @examples
 #' \dontrun{
 #' mp <- stamp.par(data, window.size = 30)
-#' mp <- stamp.par(ref.data, query.data, window.size = 30, s.size = round(nrows(ref.data) * 0.1)) # 10 percent of data
+#' mp <- stamp.par(ref.data, query.data, window.size = 30, s.size = round(nrows(ref.data) * 0.1))
 #' }
 #'
+#' @import beepr doSNOW foreach parallel
 stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf) {
   args <- list(...)
   data <- args[[1]]
@@ -63,16 +67,16 @@ stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf) {
   ssize <- min(s.size, matrix.profile.size)
   order <- sample(1:matrix.profile.size, size = ssize)
 
-  cores <- detectCores()
+  cores <- parallel::detectCores()
   cols <- min(data.size, 100)
 
   lines <- 0:(ceiling(ssize / cols) - 1)
-  pb <- txtProgressBar(min = 0, max = max(lines), style = 3)
+  pb <- utils::txtProgressBar(min = 0, max = max(lines), style = 3)
   cl <- parallel::makeCluster(cores)
-  registerDoSNOW(cl)
-  on.exit(stopCluster(cl))
-  on.exit(close(pb))
-  on.exit(beep(), TRUE)
+  doSNOW::registerDoSNOW(cl)
+  on.exit(parallel::stopCluster(cl))
+  on.exit(close(pb), TRUE)
+  on.exit(beepr::beep(), TRUE)
   # anytime must return the result always
   on.exit(return(list(
     rmp = right.matrix.profile, rpi = right.profile.index,
@@ -81,6 +85,11 @@ stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf) {
   )), TRUE)
 
   pre <- mass.pre(data, data.size, query, query.size, window.size = window.size)
+
+  tictac <- Sys.time()
+
+  j <- NULL # CRAN NOTE fix
+  `%dopar%` <- foreach::`%dopar%` # CRAN NOTE fix
 
   for (k in lines) {
     batch <- foreach(
@@ -99,7 +108,7 @@ stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf) {
       if (index <= ssize) {
         i <- order[index]
         distance.profile <- Re(sqrt(mass(pre$data.fft, query[i:(i + window.size - 1)], data.size, window.size, pre$data.mean, pre$data.sd, pre$query.mean[i], pre$query.sd[i])$distance.profile))
-        distance.profile[max((i - exclusion.zone), 1):min((i + exclusion.zone - 1), matrix.profile.size)] <- Inf
+        distance.profile[max((i - exclusion.zone), 1):min((i + exclusion.zone), matrix.profile.size)] <- Inf
 
         res <- list(dp = distance.profile, i = i)
       }
@@ -130,8 +139,12 @@ stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf) {
       }
     }
 
-    setTxtProgressBar(pb, k)
+    utils::setTxtProgressBar(pb, k)
   }
+
+  tictac <- Sys.time() - tictac
+
+  message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
 
   # return() is at on.exit() function
 }
