@@ -67,10 +67,10 @@ stamp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf) {
   ssize <- min(s.size, matrix.profile.size)
   order <- sample(1:matrix.profile.size, size = ssize)
 
-  pb <- txtProgressBar(min = 1, max = ssize, style = 3)
+  pb <- utils::txtProgressBar(min = 1, max = ssize, style = 3)
 
   on.exit(close(pb))
-  on.exit(beep(), TRUE)
+  on.exit(beepr::beep(), TRUE)
   # anytime must return the result always
   on.exit(return(list(
     rmp = as.matrix(right.matrix.profile), rpi = as.matrix(right.profile.index),
@@ -78,7 +78,7 @@ stamp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf) {
     mp = as.matrix(matrix.profile), pi = as.matrix(profile.index)
   )), TRUE)
 
-  pre <- mass_pre(data, data.size, query, query.size, window.size)
+  pre <- mass.pre(data, data.size, query, query.size, window.size)
 
   for (i in order) {
     j <- j + 1
@@ -103,7 +103,7 @@ stamp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf) {
     matrix.profile[ind] <- distance.profile[ind]
     profile.index[which(ind)] <- i
 
-    setTxtProgressBar(pb, j)
+    utils::setTxtProgressBar(pb, j)
   }
 
   # return() is at on.exit() function

@@ -64,7 +64,7 @@ fast.movavg <- function(data, n) {
 #' @keywords internal
 #'
 std <- function(x) {
-  sdx <- sd(x)
+  sdx <- stats::sd(x)
 
   if (sdx == 0)
     return(sdx)

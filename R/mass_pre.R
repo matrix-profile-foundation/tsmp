@@ -20,7 +20,7 @@ mass.pre <- function(data, data.size, query = NULL, query.size = NULL, window.si
   data.mean <- fast.movavg(data, window.size) # precompute moving average
   data.sd <- fast.movsd(data, window.size) # precompute moving SD
   data[(data.size + 1):(window.size + data.size)] <- 0
-  data.fft <- fft(data) # precompute fft of data
+  data.fft <- stats::fft(data) # precompute fft of data
 
 
   if (!is.null(query)) {

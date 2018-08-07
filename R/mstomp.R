@@ -98,9 +98,9 @@ mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion
   data[is.na(data)] <- 0
   data[is.infinite(data)] <- 0
 
-  pb <- txtProgressBar(min = 0, max = matrix.profile.size, style = 3)
+  pb <- utils::txtProgressBar(min = 0, max = matrix.profile.size, style = 3)
   on.exit(close(pb))
-  on.exit(beep(), TRUE)
+  on.exit(beepr::beep(), TRUE)
 
   ## initialization
   data.fft <- matrix(0, (window.size + data.size), n.dim)
@@ -125,7 +125,7 @@ mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion
   drop.value <- matrix(0, 1, n.dim)
   for (i in 1:matrix.profile.size) {
     # compute the distance profile
-    setTxtProgressBar(pb, i)
+    utils::setTxtProgressBar(pb, i)
 
     query <- as.matrix(data[i:(i + window.size - 1), ])
 

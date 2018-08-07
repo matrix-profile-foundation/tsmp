@@ -23,6 +23,7 @@
 #' mp <- stamp.par(ref.data, query.data, window.size = 30, s.size = round(nrows(ref.data) * 0.1)) # 10 percent of data
 #' }
 #'
+#' @import beepr doSNOW foreach parallel
 stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf) {
   args <- list(...)
   data <- args[[1]]
@@ -63,16 +64,16 @@ stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf) {
   ssize <- min(s.size, matrix.profile.size)
   order <- sample(1:matrix.profile.size, size = ssize)
 
-  cores <- detectCores()
+  cores <- parallel::detectCores()
   cols <- min(data.size, 100)
 
   lines <- 0:(ceiling(ssize / cols) - 1)
-  pb <- txtProgressBar(min = 0, max = max(lines), style = 3)
+  pb <- utils::txtProgressBar(min = 0, max = max(lines), style = 3)
   cl <- parallel::makeCluster(cores)
-  registerDoSNOW(cl)
-  on.exit(stopCluster(cl))
-  on.exit(close(pb))
-  on.exit(beep(), TRUE)
+  doSNOW::registerDoSNOW(cl)
+  on.exit(parallel::stopCluster(cl))
+  on.exit(close(pb), TRUE)
+  on.exit(beepr::beep(), TRUE)
   # anytime must return the result always
   on.exit(return(list(
     rmp = right.matrix.profile, rpi = right.profile.index,
@@ -82,8 +83,11 @@ stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf) {
 
   pre <- mass.pre(data, data.size, query, query.size, window.size = window.size)
 
+  j <- NULL # CRAN NOTE fix
+  `%dopar%` <- foreach::`%dopar%` # CRAN NOTE fix
+
   for (k in lines) {
-    batch <- foreach(
+    batch <- foreach::foreach(
       j = 1:cols,
       # .verbose = FALSE,
       .inorder = FALSE,
@@ -130,7 +134,7 @@ stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf) {
       }
     }
 
-    setTxtProgressBar(pb, k)
+    utils::setTxtProgressBar(pb, k)
   }
 
   # return() is at on.exit() function
