@@ -1,22 +1,31 @@
-#' Title
+#' Scalable Dictionary learning for Time Series (SDTS) training function.
 #'
-#' @param data  vector of doubles
-#' @param label vector of bool annotation
-#' @param window.size int or a vector of ints with window sizes
-#' @param beta double
-#     beta for F-score
-#     2 => emphasis recall
-#     1 => balanced
-#     0.5 => emphasis precision
-#' @param pat.max int or Inf, max number of shape feature captured
-#' @param parallel use parallel computation inside
+#' Scalable Dictionary learning for Time Series (SDTS) training function.
 #'
-#' @return
+#' `beta` is used to balance F-score towards recall (`>1`) or precision (`<1`).
+#'
+#' @param data a `vector` of `numeric`. Time series.
+#' @param label a `vector` of `logical`. Annotations.
+#' @param window.size an `int` or a `vector` of `int`. Sliding window sizes.
+#' @param beta a `numeric`. See details. (default is `1`).
+#' @param pat.max an `int`. Max number of shape features captured. (default is `Inf``).
+#' @param parallel a `logical`. Use parallel computation inside (default is `TRUE`).
+#'
+#' @return Returns a list with the learned dictionary
+#'    `score` (estimated score), `score.hist` (history of scores),
+#'    `pattern` (shape features), `thold` (threshold values).
+#'
 #' @export
+#' @family SDTS
 #'
 #' @examples
-#'
-sdts.train <- function(data, label, window.size, beta, pat.max, parallel = TRUE) {
+#' \dontrun{
+#' windows <- c(110, 220, 330)
+#' model <- sdts.train(test_data$train$data, test_data$train$label, windows)
+#' predict <- sdts.predict(model, test_data$test$data, round(mean(windows)))
+#' sdts.f.score(test_data$test$label, predict, 1)
+#' }
+sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parallel = TRUE) {
 
   ## transform data list into matrix
   if (is.matrix(data) || is.data.frame(data)) {
@@ -35,12 +44,16 @@ sdts.train <- function(data, label, window.size, beta, pat.max, parallel = TRUE)
     stop("Unknown type of data. Must be: matrix, data.frame, vector or list")
   }
 
+  n.window.size <- length(window.size)
+
   ## check input
-  if (window.size > data.size / 2) {
-    stop("Error: Time series is too short relative to desired subsequence length")
-  }
-  if (window.size < 4) {
-    stop("Error: Subsequence length must be at least 4")
+  for (i in 1:n.window.size) {
+    if (window.size[i] > (data.size / 2)) {
+      stop("Error: Time series is too short relative to desired subsequence length")
+    }
+    if (window.size[i] < 4) {
+      stop("Error: Subsequence length must be at least 4")
+    }
   }
 
   ## extract positive segment
@@ -69,14 +82,14 @@ sdts.train <- function(data, label, window.size, beta, pat.max, parallel = TRUE)
   ## run matrix profile on concatenated positive segment
   message("stage 1 of 3, compute matrix profile ...")
 
-  n.window.size <- length(window.size)
   mat.pro <- list()
 
   for (i in 1:n.window.size) {
-    if (parallel == TRUE)
+    if (parallel == TRUE) {
       mp <- mstomp.par(pos, window.size[i])
-    else
+    } else {
       mp <- mstomp(pos, window.size[i])
+    }
     mat.pro[[i]] <- mp$mp
   }
 
@@ -99,23 +112,26 @@ sdts.train <- function(data, label, window.size, beta, pat.max, parallel = TRUE)
       candi.idx[[i]][j] <- pos.st[j] + rlt.idx - 1
     }
     candi.dist <- sort(candi.dist, index.return = TRUE)
+      # sort(signif(candi.dist, 6), index.return = TRUE)
     candi[[i]] <- candi[[i]][candi.dist$ix]
     candi.idx[[i]] <- candi.idx[[i]][candi.dist$ix]
   }
 
   ## evaluate each candidate
-  candi.scr <- list()
+  candi.score <- list()
   candi.thold <- list()
   candi.pro <- list()
   candi.window.size <- list()
-  ud.time <- -2
-  old.str <- ""
-  timer <- Sys.time()
+  tictac <- Sys.time()
 
   message("stage 2 of 3, evaluate individual candidate ...")
 
+  pb <- utils::txtProgressBar(min = 0, max = n.window.size * n.pos, style = 3)
+  on.exit(close(pb))
+  on.exit(beepr::beep(), TRUE)
+
   for (i in 1:n.window.size) {
-    candi.scr[[i]] <- rep(0, n.pos)
+    candi.score[[i]] <- rep(0, n.pos)
     candi.thold[[i]] <- rep(0, n.pos)
     candi.pro[[i]] <- list()
     candi.window.size[[i]] <- rep(1, n.pos) * window.size[i]
@@ -133,14 +149,14 @@ sdts.train <- function(data, label, window.size, beta, pat.max, parallel = TRUE)
       golden <- golden.section(dist.pro, label, pos.st, pos.ed, beta, window.size[i])
 
       candi.thold[[i]][j] <- golden$thold
-      candi.scr[[i]][j] <- golden$score
+      candi.score[[i]][j] <- golden$score
+
+      utils::setTxtProgressBar(pb, ((i - 1) * n.pos + j))
     }
   }
 
-
-  elap.time <- Sys.time() - timer
-  message(sprintf("done, %0.2f sec", elap.time))
-
+  tictac <- Sys.time() - tictac
+  message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
 
   candi.pro.exp <- list()
   candi.exp <- list()
@@ -152,13 +168,13 @@ sdts.train <- function(data, label, window.size, beta, pat.max, parallel = TRUE)
 
   candi.pro <- candi.pro.exp
   candi <- candi.exp
-  candi.scr <- unlist(candi.scr)
+  candi.score <- unlist(candi.score)
   candi.thold <- unlist(candi.thold)
   candi.idx <- unlist(candi.idx)
   candi.window.size <- unlist(candi.window.size)
-  candi.scr.sorted <- sort(candi.scr, index.return = TRUE)
-  candi.scr <- candi.scr.sorted$x
-  order <- candi.scr.sorted$ix
+  candi.score.sorted <- sort(signif(candi.score, 6), decreasing = TRUE, index.return = TRUE)
+  candi.score <- candi.score.sorted$x
+  order <- candi.score.sorted$ix
 
   candi.thold <- candi.thold[order]
   candi.idx <- candi.idx[order]
@@ -169,30 +185,31 @@ sdts.train <- function(data, label, window.size, beta, pat.max, parallel = TRUE)
   ## check max pattern allowed
   pat.max <- min(pat.max, floor(n.pos * 0.5))
   if (pat.max < 2) {
-    return(list(score = candi.scr[1], scr.hist = candi.scr[1], pattern = candi[[1]], thold = candi.thold[1]))
+    return(list(score = candi.score[1], score.hist = candi.score[1], pattern = candi[[1]], thold = candi.thold[1]))
   }
 
   ## check combined pattern
   max.window.size <- max(window.size)
   max.pro.len <- length(data) - min(window.size) + 1
   best.pat <- rep(FALSE, n.pos * n.window.size)
-  best.scr <- -Inf
+  best.score <- -Inf
   exc.mask <- rep(FALSE, max.pro.len)
-  scr.hist <- rep(Inf, n.pos * n.window.size)
-  ud.time <- -2
-  old.str <- ""
-  timer <- Sys.time()
+  score.hist <- rep(Inf, n.pos * n.window.size)
+  tictac <- Sys.time()
 
-   message("stage 3 of 3, evaluate combination of candidates ...")
+  message("stage 3 of 3, evaluate combination of candidates ...")
+
+  close(pb)
+  pb <- utils::txtProgressBar(min = 0, max = pat.max * n.window.size * n.pos, style = 3)
 
   for (i in 1:pat.max) {
-    pat.src <- rep(-Inf, n.pos * n.window.size)
+    pat.score <- rep(-Inf, n.pos * n.window.size)
     exc.mask.cur <- exc.mask
     exc.st <- rep(0, n.pos * n.window.size)
     exc.ed <- rep(0, n.pos * n.window.size)
     thold.cur <- list()
 
-    for (j in 1:n.pos * n.window.size) {
+    for (j in 1:(n.pos * n.window.size)) {
       if (best.pat[j]) {
         next
       }
@@ -218,7 +235,7 @@ sdts.train <- function(data, label, window.size, beta, pat.max, parallel = TRUE)
       window.size.cur <- candi.window.size[best.pat.cur]
 
       iter <- 0
-      scr <- NULL
+      score <- NULL
       while (TRUE) {
         iter <- iter + 1
         thold.old <- thold.cur[[j]]
@@ -234,7 +251,7 @@ sdts.train <- function(data, label, window.size, beta, pat.max, parallel = TRUE)
             k
           )
           thold.cur[[j]] <- gold$thold
-          scr <- gold$score
+          score <- gold$score
         }
 
         if ((iter > 200) || (mean(thold.cur[[j]] - thold.old) < ((pro.max - pro.min) * 0.001))) {
@@ -242,15 +259,19 @@ sdts.train <- function(data, label, window.size, beta, pat.max, parallel = TRUE)
         }
       }
 
-      pat.src[j] <- scr
+      pat.score[j] <- score
       exc.mask.cur[exc.st[j]:exc.ed[j]] <- FALSE
+
+      utils::setTxtProgressBar(pb, ((i - 1) * (n.pos * n.window.size) + j))
     }
 
-    best.candi.idx <- which.max(pat.src)
+    utils::setTxtProgressBar(pb, ((i - 1) * (n.pos * n.window.size) + (n.pos * n.window.size)))
 
-    if ((pat.src[best.candi.idx] - best.scr) > 0) {
-      scr.hist[i] <- pat.src[best.candi.idx]
-      best.scr <- pat.src[best.candi.idx]
+    best.candi.idx <- which.max(pat.score)
+
+    if ((pat.score[best.candi.idx] - best.score) > 0) {
+      score.hist[i] <- pat.score[best.candi.idx]
+      best.score <- pat.score[best.candi.idx]
       best.pat[best.candi.idx] <- TRUE
       candi.thold[best.pat] <- thold.cur[[best.candi.idx]]
       exc.mask[exc.st[best.candi.idx]:exc.ed[best.candi.idx]] <- TRUE
@@ -259,25 +280,26 @@ sdts.train <- function(data, label, window.size, beta, pat.max, parallel = TRUE)
     }
   }
 
-    elap.time <- Sys.time() - timer
-    message(sprintf("done, %0.2f sec", elap.time))
+  utils::setTxtProgressBar(pb, (pat.max * n.pos * n.window.size))
 
-  scr.hist <- scr.hist[!is.infinite(scr.hist)]
+  tictac <- Sys.time() - tictac
+  message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
 
-  return(list(score = best.scr, scr.hist = scr.hist, pattern = candi[best.pat], thold = candi.thold[best.pat]))
+  score.hist <- score.hist[!is.infinite(score.hist)]
+
+  return(list(score = best.score, score.hist = score.hist, pattern = candi[best.pat], thold = candi.thold[best.pat]))
 }
 
-#' Title
+#' Computes the golden section for individual candidates
 #'
-#' @param dist.pro
-#' @param label
-#' @param pos.st
-#' @param pos.ed
-#' @param beta
-#' @param window.size
+#' @param dist.pro the candidate distance profile
+#' @param label a vector with the data bool annotation
+#' @param pos.st a vector with the starting points of label
+#' @param pos.ed a vector with the ending points of label
+#' @param beta a number that balance the F-Score. Beta > 1 towards recall, < towards precision
+#' @param window.size an integer with the sliding window size
 #'
-#' @return
-#' @export
+#' @return Returns the best threashold and its F-Score
 #'
 #' @keywords internal
 #'
@@ -308,22 +330,21 @@ golden.section <- function(dist.pro, label, pos.st, pos.ed, beta, window.size) {
   return(list(thold = thold, score = score$f.meas))
 }
 
-#' Title
+#' Computes the golden section for combined candidates
+
+#' @param dist.pro the candidate distance profile
+#' @param thold a number with the threshold used to calculate the F-Score
+#' @param label a vector with the data bool annotation
+#' @param pos.st a vector with the starting points of label
+#' @param pos.ed a vector with the ending points of label
+#' @param beta a number that balance the F-Score. Beta > 1 towards recall, < towards precision
+#' @param window.size an integer with the sliding window size
+#' @param fit.idx an integer with the index of the current threshold
 #'
-#' @param dist.pro
-#' @param thold
-#' @param label
-#' @param pos.st
-#' @param pos.ed
-#' @param beta
-#' @param window.size
-#' @param fit.idx
-#'
-#' @return
-#' @export
+#' @return Returns the best threashold and its F-Score
 #'
 #' @keywords internal
-#'
+
 golden.section.2 <- function(dist.pro, thold, label, pos.st, pos.ed, beta, window.size, fit.idx) {
   golden.ratio <- (1 + sqrt(5)) / 2
   a.thold <- min(dist.pro[[fit.idx]], na.rm = TRUE) ## TODO: check why NA in dist.pro
@@ -358,17 +379,17 @@ golden.section.2 <- function(dist.pro, thold, label, pos.st, pos.ed, beta, windo
   return(list(thold = thold, score = score$f.meas))
 }
 
-#' Title
+#' Computes de F-Score
 #'
-#' @param label
-#' @param pos.st
-#' @param pos.ed
-#' @param dist.pro
-#' @param thold
-#' @param window.size
-#' @param beta
+#' @param label a vector with the data bool annotation
+#' @param pos.st a vector with the starting points of label
+#' @param pos.ed a vector with the ending points of label
+#' @param dist.pro the distance profile of the data
+#' @param thold a number with the threshold used to compute the prediction
+#' @param window.size an integer with the sliding window size
+#' @param beta a number that balance the F-Score. Beta > 1 towards recall, < towards precision
 #'
-#' @return
+#' @return Returns the F-Score, precision and recall values
 #'
 #' @keywords internal
 

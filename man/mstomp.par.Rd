@@ -7,22 +7,22 @@
 mstomp.par(data, window.size, exclusion.zone = 1/2)
 }
 \arguments{
-\item{data}{a matrix, where each colums is a time series (dimention). Can accept Lists and data.frames too.}
+\item{data}{a \code{matrix} of \code{numeric}, where each colums is a time series. Accepts \code{vector} (see details), \code{list} and \code{data.frame} too.}
 
-\item{window.size}{size of the sliding window}
+\item{window.size}{an \code{int}. Size of the sliding window.}
 
-\item{exclusion.zone}{size of the exclusion zone, based on query size (default 1/2)}
+\item{exclusion.zone}{an \code{int}. Size of the exclusion zone, based on query size (default is \code{1/2}).}
 }
 \value{
-Returns the matrix profile and profile index.
-It also returns the left and right matrix profile and profile index that may be used to detect Time Series Chains (Yan Zhu 2018)
+Returns the matrix profile \code{mp} and profile index \code{pi}.
+It also returns the left and right matrix profile \code{lmp}, \code{rmp} and profile index \code{lpi}, \code{rpi} that may be used to detect Time Series Chains (Yan Zhu 2018).
 }
 \description{
-Computes the Matrix Profile and Profile Index for Multivariate Time Series
+Computes the Matrix Profile and Profile Index for Multivariate Time Series.
 }
 \details{
 The Matrix Profile, has the potential to revolutionize time series data mining because of its generality, versatility, simplicity and scalability. In particular it has implications for time series motif discovery, time series joins, shapelet discovery (classification), density estimation, semantic segmentation, visualization, rule discovery, clustering etc.
-The MSTOMP computes the Matrix Profile and Profile Index for Multivariate Time Series that is meaningful for multidimentional MOTIF discovery. It uses the STOMP algorithm that is faster than STAMP but lacks its anytime property.
+The MSTOMP computes the Matrix Profile and Profile Index for Multivariate Time Series that is meaningful for multidimensional MOTIF discovery. It uses the STOMP algorithm that is faster than STAMP but lacks its anytime property.
 
 Although this functions handles Multivariate Time Series, it can also be used to handle Univariate Time Series.
 }

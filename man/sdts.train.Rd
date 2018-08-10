@@ -2,26 +2,45 @@
 % Please edit documentation in R/sdts_train.R
 \name{sdts.train}
 \alias{sdts.train}
-\title{Title}
+\title{Scalable Dictionary learning for Time Series (SDTS) training function.}
 \usage{
-sdts.train(data, label, window.size, beta, pat.max, parallel = TRUE)
+sdts.train(data, label, window.size, beta = 1, pat.max = Inf,
+  parallel = TRUE)
 }
 \arguments{
-\item{data}{vector of doubles}
+\item{data}{a \code{vector} of \code{numeric}. Time series.}
 
-\item{label}{vector of bool annotation}
+\item{label}{a \code{vector} of \code{logical}. Annotations.}
 
-\item{window.size}{int or a vector of ints with window sizes}
+\item{window.size}{an \code{int} or a \code{vector} of \code{int}. Sliding window sizes.}
 
-\item{beta}{double}
+\item{beta}{a \code{numeric}. See details. (default is \code{1}).}
 
-\item{pat.max}{int or Inf, max number of shape feature captured}
+\item{pat.max}{an \code{int}. Max number of shape features captured. (default is `Inf``).}
 
-\item{parallel}{use parallel computation inside}
+\item{parallel}{a \code{logical}. Use parallel computation inside (default is \code{TRUE}).}
+}
+\value{
+Returns a list with the learned dictionary
+\code{score} (estimated score), \code{score.hist} (history of scores),
+\code{pattern} (shape features), \code{thold} (threshold values).
 }
 \description{
-Title
+Scalable Dictionary learning for Time Series (SDTS) training function.
+}
+\details{
+\code{beta} is used to balance F-score towards recall (\code{>1}) or precision (\code{<1}).
 }
 \examples{
-
+\dontrun{
+windows <- c(110, 220, 330)
+model <- sdts.train(test_data$train$data, test_data$train$label, windows)
+predict <- sdts.predict(model, test_data$test$data, round(mean(windows)))
+sdts.f.score(test_data$test$label, predict, 1)
 }
+}
+\seealso{
+Other SDTS: \code{\link{sdts.f.score}},
+  \code{\link{sdts.predict}}
+}
+\concept{SDTS}

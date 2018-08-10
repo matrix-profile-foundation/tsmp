@@ -1,17 +1,17 @@
 #' Anytime univariate STAMP algorithm Parallel version
 #'
-#' Computes the best so far Matrix Profile and Profile Index for Univariate Time Series
+#' Computes the best so far Matrix Profile and Profile Index for Univariate Time Series.
 #'
 #' The Matrix Profile, has the potential to revolutionize time series data mining because of its generality, versatility, simplicity and scalability. In particular it has implications for time series motif discovery, time series joins, shapelet discovery (classification), density estimation, semantic segmentation, visualization, rule discovery, clustering etc.
 #' The anytime STAMP computes the Matrix Profile and Profile Index in such manner that it can be stopped before its complete calculation and return the best so far results allowing ultra-fast approximate solutions.
 #'
-#' @param ... a matrix or a vector, if a second time series is supplied it will be a join matrix profile
-#' @param window.size size of the sliding window
-#' @param exclusion.zone size of the exclusion zone, based on query size (default 1/2)
-#' @param s.size for anytime algorithm, represents the size (in observations) the random calculation will occour (default Inf)
+#' @param ... a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix profile.
+#' @param window.size an `int`. Size of the sliding window.
+#' @param exclusion.zone an `int`. Size of the exclusion zone, based on query size (default is `1/2`).
+#' @param s.size a `numeric`. for anytime algorithm, represents the size (in observations) the random calculation will occour (default is `Inf`).
 #'
-#' @return Returns the matrix profile and profile index.
-#' It also returns the left and right matrix profile and profile index that may be used to detect Time Series Chains (Yan Zhu 2018)
+#' @return Returns the matrix profile `mp` and profile index `pi`.
+#' It also returns the left and right matrix profile `lmp`, `rmp` and profile index `lpi`, `rpi` that may be used to detect Time Series Chains (Yan Zhu 2018).
 #' @export
 #'
 #' @family Stamp

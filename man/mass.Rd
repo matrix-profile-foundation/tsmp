@@ -8,24 +8,24 @@ mass(data.fft, query.window, data.size, window.size, data.mean, data.sd,
   query.mean, query.sd)
 }
 \arguments{
-\item{data.fft}{precomputed data product}
+\item{data.fft}{precomputed data product.}
 
-\item{query.window}{query window vector}
+\item{query.window}{a \code{vector} of \code{numeric}. Query window.}
 
-\item{data.size}{length of data}
+\item{data.size}{an \code{int}. The length of the reference data.}
 
-\item{window.size}{length of query moving window}
+\item{window.size}{an \code{int}. Sliding window size.}
 
-\item{data.mean}{precomputed data moving average}
+\item{data.mean}{precomputed data moving average.}
 
-\item{data.sd}{precomputed data moving standard deviation}
+\item{data.sd}{precomputed data moving standard deviation.}
 
-\item{query.mean}{precomputed query average}
+\item{query.mean}{precomputed query average.}
 
-\item{query.sd}{precomputed query standard deviation}
+\item{query.sd}{precomputed query standard deviation.}
 }
 \value{
-Returns the distance profile for the given query and the last computed product
+Returns the \code{distance.profile} for the given query and the \code{last.product} for STOMP algorithm.
 }
 \description{
 Mueen's Algorithm for Similarity Search is The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance and Correlation Coefficient.
@@ -50,5 +50,5 @@ Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, C
 \url{https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html}
 }
 \seealso{
-\code{\link[=mass.pre]{mass.pre()}} to precomputation of input values
+\code{\link[=mass.pre]{mass.pre()}} to precomputation of input values.
 }

@@ -2,14 +2,27 @@
 % Please edit documentation in R/sdts_train.R
 \name{golden.section}
 \alias{golden.section}
-\title{Title}
+\title{Computes the golden section for individual candidates}
 \usage{
 golden.section(dist.pro, label, pos.st, pos.ed, beta, window.size)
 }
 \arguments{
-\item{window.size}{}
+\item{dist.pro}{the candidate distance profile}
+
+\item{label}{a vector with the data bool annotation}
+
+\item{pos.st}{a vector with the starting points of label}
+
+\item{pos.ed}{a vector with the ending points of label}
+
+\item{beta}{a number that balance the F-Score. Beta > 1 towards recall, < towards precision}
+
+\item{window.size}{an integer with the sliding window size}
+}
+\value{
+Returns the best threashold and its F-Score
 }
 \description{
-Title
+Computes the golden section for individual candidates
 }
 \keyword{internal}

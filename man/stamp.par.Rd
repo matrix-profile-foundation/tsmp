@@ -7,20 +7,20 @@
 stamp.par(..., window.size, exclusion.zone = 1/2, s.size = Inf)
 }
 \arguments{
-\item{...}{a matrix or a vector, if a second time series is supplied it will be a join matrix profile}
+\item{...}{a \code{matrix} or a \code{vector}. If a second time series is supplied it will be a join matrix profile.}
 
-\item{window.size}{size of the sliding window}
+\item{window.size}{an \code{int}. Size of the sliding window.}
 
-\item{exclusion.zone}{size of the exclusion zone, based on query size (default 1/2)}
+\item{exclusion.zone}{an \code{int}. Size of the exclusion zone, based on query size (default is \code{1/2}).}
 
-\item{s.size}{for anytime algorithm, represents the size (in observations) the random calculation will occour (default Inf)}
+\item{s.size}{a \code{numeric}. for anytime algorithm, represents the size (in observations) the random calculation will occour (default is \code{Inf}).}
 }
 \value{
-Returns the matrix profile and profile index.
-It also returns the left and right matrix profile and profile index that may be used to detect Time Series Chains (Yan Zhu 2018)
+Returns the matrix profile \code{mp} and profile index \code{pi}.
+It also returns the left and right matrix profile \code{lmp}, \code{rmp} and profile index \code{lpi}, \code{rpi} that may be used to detect Time Series Chains (Yan Zhu 2018).
 }
 \description{
-Computes the best so far Matrix Profile and Profile Index for Univariate Time Series
+Computes the best so far Matrix Profile and Profile Index for Univariate Time Series.
 }
 \details{
 The Matrix Profile, has the potential to revolutionize time series data mining because of its generality, versatility, simplicity and scalability. In particular it has implications for time series motif discovery, time series joins, shapelet discovery (classification), density estimation, semantic segmentation, visualization, rule discovery, clustering etc.

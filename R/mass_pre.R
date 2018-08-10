@@ -1,17 +1,17 @@
 #' Precomputes several values used on MASS
 #'
-#' @param data reference Time Series
-#' @param data.size reference Time Series size
-#' @param query query Time Series (default is NULL)
-#' @param query.size query Time Series (default is NULL)
-#' @param window.size sliding window size
+#' @param data a `vector` or a `matrix` of `numeric`. Reference Time Series.
+#' @param data.size an `int`. Reference Time Series size.
+#' @param query a `vector` or a `matrix` of `numeric`. Query Time Series (default is `NULL`).
+#' @param query.size an `int`. Query Time Series size (default is `NULL`).
+#' @param window.size an `int`. Sliding window size.
 #'
-#' @return Returns data.fft, data.mean, data.sd, query.mean and query.sd
+#' @return Returns `data.fft`, `data.mean`, `data.sd`, `query.mean` and `query.sd`.
 #' @export
 #'
-#' @seealso [mass()] for using precomputed values
+#' @seealso [mass()] for using precomputed values.
 #'
-#' @references Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance
+#' @references Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance.
 #' @references <https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html>
 #'
 #' @examples

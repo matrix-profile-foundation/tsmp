@@ -4,7 +4,7 @@
 \name{test_data}
 \alias{test_data}
 \title{Original data used in the STDS demo}
-\format{A list of matrices with 215010 rows and 1 dimention:
+\format{A list of matrices with 215010 rows and 1 dimension:
 \describe{
 \item{train$data}{training data}
 \item{train$label}{label for training data}

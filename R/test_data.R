@@ -5,7 +5,7 @@
 #' and the version distributed here is from (2)
 #'
 #' @docType data
-#' @format A list of matrices with 215010 rows and 1 dimention:
+#' @format A list of matrices with 215010 rows and 1 dimension:
 #' \describe{
 #'   \item{train$data}{training data}
 #'   \item{train$label}{label for training data}
