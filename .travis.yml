@@ -1,3 +1,14 @@
+language: r
+cache:
+cache:
+  directories:
+    - $TRAVIS_BUILD_DIR/packrat/src
+    - $TRAVIS_BUILD_DIR/packrat/lib
+  packages: true
+install:
+  - R -e "0" --args --bootstrap-packrat
+  - R -e "packrat::restore(restart = FALSE)"
+
 r_packages:
   - covr
 
