@@ -47,7 +47,7 @@ updatePackageVersion <- function(packageLocation = ".") {
   return(vFinal)
 }
 
-if (skip_on_cran()) {
+if (skip_on_cran() && !nzchar(Sys.getenv("TRAVIS_R_VERSION"))) {
   curr <- getPackageVersion(Sys.getenv("R_PACKRAT_PROJECT_DIR"))
   new <- updatePackageVersion(Sys.getenv("R_PACKRAT_PROJECT_DIR"))
 
