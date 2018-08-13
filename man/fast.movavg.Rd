@@ -17,3 +17,6 @@ Returns a vector with the moving average
 \description{
 Fast implementation of moving average using filter
 }
+\examples{
+data.avg <- fast.movavg(toy_data$data[,1], 30)
+}

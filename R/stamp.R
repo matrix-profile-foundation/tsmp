@@ -21,8 +21,8 @@
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #'
 #' @examples
+#' mp <- stamp(toy_data$data[1:200,1], window.size = 30)
 #' \dontrun{
-#' mp <- stamp(data, window.size = 30)
 #' mp <- stamp(ref.data, query.data, window.size = 30, s.size = round(nrows(ref.data) * 0.1))
 #' }
 
@@ -72,7 +72,7 @@ stamp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf) {
 
   tictac <- Sys.time()
 
-  pb <- utils::txtProgressBar(min = 1, max = ssize, style = 3)
+  pb <- utils::txtProgressBar(min = 1, max = ssize, style = 3, width = 80)
 
   on.exit(close(pb))
   on.exit(beepr::beep(), TRUE)

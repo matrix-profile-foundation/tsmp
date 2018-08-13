@@ -1,7 +1,7 @@
 Package: tsmp
 Type: Package
 Title: Time Series with Matrix Profile
-Version: 0.2.1.9001
+Version: 0.2.1
 Authors@R: c(
     person("Francisco", "Bischoff", email = "fbischoff@med.up.pt", role = c("aut", "cre")),
     person("Michael", "Yeh", email = "myeh003@ucr.edu", role = c("res", "ccp", "ctb"))
@@ -17,3 +17,4 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.0
 NeedsCompilation: no
+Suggests: testthat

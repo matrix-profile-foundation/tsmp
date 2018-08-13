@@ -21,8 +21,9 @@
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #'
 #' @examples
+#' Sys.sleep(1) # sometimes sleep is needed if you run parallel multiple times in a row
+#' mp <- stamp.par(toy_data$data[1:200,1], window.size = 30)
 #' \dontrun{
-#' mp <- stamp.par(data, window.size = 30)
 #' mp <- stamp.par(ref.data, query.data, window.size = 30, s.size = round(nrows(ref.data) * 0.1))
 #' }
 #'
@@ -67,11 +68,20 @@ stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf) {
   ssize <- min(s.size, matrix.profile.size)
   order <- sample(1:matrix.profile.size, size = ssize)
 
-  cores <- parallel::detectCores()
+  chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
+
+  if (nzchar(chk) && chk == "TRUE") {
+    # use 2 cores in CRAN
+    cores <- 2L
+  } else {
+    # use all cores in devtools::test()
+    cores <- parallel::detectCores()
+  }
+
   cols <- min(data.size, 100)
 
   lines <- 0:(ceiling(ssize / cols) - 1)
-  pb <- utils::txtProgressBar(min = 0, max = max(lines), style = 3)
+  pb <- utils::txtProgressBar(min = 0, max = max(lines), style = 3, width = 80)
   cl <- parallel::makeCluster(cores)
   doSNOW::registerDoSNOW(cl)
   on.exit(parallel::stopCluster(cl))

@@ -15,17 +15,17 @@
 #' It also returns the left and right matrix profile `lmp`, `rmp` and profile index `lpi`, `rpi` that may be used to detect Time Series Chains (Yan Zhu 2018).
 #' @export
 #'
-#' @family Stomp
-#' @seealso [stamp.par()]
+#' @family mstomp
+#' @seealso [stamp()], [stamp.par()], [mstomp()]
 #' @references 1. Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif Discovery.
 #' @references 2. Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
 #' @references Website: <https://sites.google.com/view/mstamp/>
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #'
 #' @examples
-#' \dontrun{
-#' mp <- mstomp.par(data, 30)
-#' }
+#' # using all dimensions
+#' Sys.sleep(1) # sometimes sleep is needed if you run parallel multiple times in a row
+#' mp <- mstomp.par(toy_data$data[1:100,], 30)
 #' @import beepr doSNOW foreach parallel
 
 mstomp.par <- function(data, window.size, exclusion.zone = 1 / 2) {
@@ -105,7 +105,16 @@ mstomp.par <- function(data, window.size, exclusion.zone = 1 / 2) {
     first.product[, i] <- mstomp$last.product
   }
 
-  cores <- detectCores()
+  chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
+
+  if (nzchar(chk) && chk == "TRUE") {
+    # use 2 cores in CRAN
+    cores <- 2L
+  } else {
+    # use all cores in devtools::test()
+    cores <- parallel::detectCores()
+  }
+
   # SNOW package
   progress <- function(n) utils::setTxtProgressBar(pb, n)
   opts <- list(progress = progress)
@@ -117,8 +126,8 @@ mstomp.par <- function(data, window.size, exclusion.zone = 1 / 2) {
   on.exit(beepr::beep(), TRUE)
 
   ## initialize variable
-  n.work <- cores * 300
-  per.work <- ceiling(matrix.profile.size / n.work) - 1
+  per.work <- max(10, ceiling(matrix.profile.size / 100))
+  n.work <- floor(matrix.profile.size / per.work)
   idx.work <- list()
 
   for (i in 1:n.work) {
@@ -133,7 +142,7 @@ mstomp.par <- function(data, window.size, exclusion.zone = 1 / 2) {
 
   tictac <- Sys.time()
 
-  pb <- utils::txtProgressBar(min = 0, max = n.work, style = 3)
+  pb <- utils::txtProgressBar(min = 0, max = n.work, style = 3, width = 80)
 
   i <- NULL # CRAN NOTE fix
   `%dopar%` <- foreach::`%dopar%` # CRAN NOTE fix
@@ -142,8 +151,8 @@ mstomp.par <- function(data, window.size, exclusion.zone = 1 / 2) {
   batch <- foreach(
     i = 1:n.work,
     .verbose = FALSE,
-    .inorder = TRUE,
-    .multicombine = FALSE,
+    .inorder = FALSE,
+    .multicombine = TRUE,
     .options.snow = opts,
     # .combine = combiner,
     # .errorhandling = 'remove',

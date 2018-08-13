@@ -27,8 +27,8 @@ The Matrix Profile, has the potential to revolutionize time series data mining b
 The anytime STAMP computes the Matrix Profile and Profile Index in such manner that it can be stopped before its complete calculation and return the best so far results allowing ultra-fast approximate solutions.
 }
 \examples{
+mp <- stamp(toy_data$data[1:200,1], window.size = 30)
 \dontrun{
-mp <- stamp(data, window.size = 30)
 mp <- stamp(ref.data, query.data, window.size = 30, s.size = round(nrows(ref.data) * 0.1))
 }
 }

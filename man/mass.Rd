@@ -31,17 +31,18 @@ Returns the \code{distance.profile} for the given query and the \code{last.produ
 Mueen's Algorithm for Similarity Search is The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance and Correlation Coefficient.
 }
 \examples{
-\dontrun{
 w <- 30
+ref.data <- toy_data$data[,1]
+query.data <- toy_data$data[,1]
 d.size <- length(ref.data)
 q.size <- length(query.data)
 
 pre <- mass.pre(ref.data, d.size, query.data, q.size, w)
 
+dp <- list()
 for(i in 1:(d.size - w + 1)) {
-  dp <- mass(pre$data.fft, query.data[i:(i-1+w)], d.size, w, pre$data.mean, pre$data.sd,
+  dp[[i]] <- mass(pre$data.fft, query.data[i:(i-1+w)], d.size, w, pre$data.mean, pre$data.sd,
           pre$query.mean[i], pre$query.sd[i])
-}
 }
 }
 \references{

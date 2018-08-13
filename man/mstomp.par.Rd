@@ -27,9 +27,9 @@ The MSTOMP computes the Matrix Profile and Profile Index for Multivariate Time S
 Although this functions handles Multivariate Time Series, it can also be used to handle Univariate Time Series.
 }
 \examples{
-\dontrun{
-mp <- mstomp.par(data, 30)
-}
+# using all dimensions
+Sys.sleep(1) # sometimes sleep is needed if you run parallel multiple times in a row
+mp <- mstomp.par(toy_data$data[1:100,], 30)
 }
 \references{
 \enumerate{
@@ -45,8 +45,9 @@ Website: \url{https://sites.google.com/view/mstamp/}
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-\code{\link[=stamp.par]{stamp.par()}}
+\code{\link[=stamp]{stamp()}}, \code{\link[=stamp.par]{stamp.par()}}, \code{\link[=mstomp]{mstomp()}}
 
-Other Stomp: \code{\link{mstomp}}
+Other mstomp: \code{\link{guide.search}},
+  \code{\link{mstomp}}, \code{\link{unconstrain.search}}
 }
-\concept{Stomp}
+\concept{mstomp}

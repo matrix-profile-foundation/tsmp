@@ -1,4 +1,18 @@
 #' @keywords internal
+context("Increase Package version")
+getPackageVersion <- function(packageLocation = ".") {
+  ## Read DESCRIPTION file
+  desc <- readLines(file.path(packageLocation, "DESCRIPTION"))
+
+  ## Find the line where the version is defined
+  vLine <- grep("^Version\\:", desc)
+
+  ## Extract version number
+  vNumber <- gsub("^Version\\:\\s*", "", desc[vLine])
+
+  ## Return the current number
+  return(vNumber)
+}
 
 updatePackageVersion <- function(packageLocation = ".") {
   ## Read DESCRIPTION file
@@ -33,4 +47,11 @@ updatePackageVersion <- function(packageLocation = ".") {
   return(vFinal)
 }
 
-updatePackageVersion(paste0(getwd(), "/../../tsmp"))
+if (skip_on_cran()) {
+  curr <- getPackageVersion(Sys.getenv("R_PACKRAT_PROJECT_DIR"))
+  new <- updatePackageVersion(Sys.getenv("R_PACKRAT_PROJECT_DIR"))
+
+  test_that("New version is not old version", {
+    expect_false(isTRUE(all.equal(new, curr)))
+  })
+}

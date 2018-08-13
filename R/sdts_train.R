@@ -126,7 +126,7 @@ sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parall
 
   message("stage 2 of 3, evaluate individual candidate ...")
 
-  pb <- utils::txtProgressBar(min = 0, max = n.window.size * n.pos, style = 3)
+  pb <- utils::txtProgressBar(min = 0, max = n.window.size * n.pos, style = 3, width = 80)
   on.exit(close(pb))
   on.exit(beepr::beep(), TRUE)
 
@@ -200,7 +200,7 @@ sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parall
   message("stage 3 of 3, evaluate combination of candidates ...")
 
   close(pb)
-  pb <- utils::txtProgressBar(min = 0, max = pat.max * n.window.size * n.pos, style = 3)
+  pb <- utils::txtProgressBar(min = 0, max = pat.max * n.window.size * n.pos, style = 3, width = 80)
 
   for (i in 1:pat.max) {
     pat.score <- rep(-Inf, n.pos * n.window.size)
