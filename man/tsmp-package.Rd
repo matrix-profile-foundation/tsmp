@@ -6,6 +6,8 @@
 \alias{tsmp-package}
 \title{tsmp: Time Series with Matrix Profile}
 \description{
+\if{html}{\figure{logo.png}{options: align='right'}}
+
 A toolkit implementing the Matrix Profile concept that was created by CS-UCR <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>.
 }
 \details{

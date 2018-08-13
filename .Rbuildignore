@@ -1,5 +1,7 @@
 ^packrat/
 ^\.Rprofile$
+^\.travis.yml$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
+^\README.Rmd$

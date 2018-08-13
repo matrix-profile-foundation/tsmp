@@ -1,0 +1,55 @@
+---
+title: "README"
+author: "Francisco Bischoff"
+date: "`r format(Sys.Date(), '– %d %b %Y')`"
+output: github_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-"
+)
+```
+
+# Time Series Matrix-Profile <img src="man/figures/logo.png" align="right" />
+
+```{r include=FALSE}
+library(git2r)
+current.branch <- repository_head()$name
+```
+
+
+[![Build Status](https://travis-ci.com/franzbischoff/tsmp.svg?branch=`r current.branch`)](https://travis-ci.com/franzbischoff/tsmp)
+[![codecov](https://codecov.io/gh/franzbischoff/tsmp/branch/`r current.branch`/graph/badge.svg)](https://codecov.io/gh/franzbischoff/tsmp)
+```{r echo=FALSE}
+if (current.branch == "master") {
+  knitr::asis_output("[![CRAN
+version](http://www.r-pkg.org/badges/version/tsmp)](https://cran.r-project.org/package=tsmp)")
+}
+```
+
+## Overview
+
+R Functions implementing UCR Matrix Profile Algorithm (http://www.cs.ucr.edu/~eamonn/MatrixProfile.html).
+
+This is under development and is intended to be a MP toolkit
+
+Further files will be provided with actual use cases as 'classification', 'motif extraction', 'MDS visualization', etc.
+
+Please be welcome to suggest improvements.
+
+## Installation
+
+```{r, eval = FALSE}
+# Install the released version from CRAN
+install.packages("tsmp")
+
+# Or the development version from GitHub:
+# install.packages("devtools")
+devtools::install_github("franzbischoff/tsmp")
+```
+
+## Other projects with Matrix-Profile
+https://github.com/ZiyaoWei/pyMatrixProfile
