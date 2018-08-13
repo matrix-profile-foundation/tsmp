@@ -17,3 +17,6 @@ Returns a vector with the moving standard deviation
 \description{
 Fast implementation of moving standard deviation using filter
 }
+\examples{
+data.sd <- fast.movsd(toy_data$data[,1], 30)
+}

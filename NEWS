@@ -1,0 +1,11 @@
+Version 0.2.x
+=============
+* Added Multivariate STOMP parallel version
+* Added SDTS algorithm (Scalable Dictionary learning for Time Series)
+
+Version 0.1.x
+=============
+
+* STAMP and STAMP parallel Algorithm
+* Multivariate STOMP algorithm
+* MASS algorithm

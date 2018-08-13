@@ -7,24 +7,42 @@
 mass.pre(data, data.size, query = NULL, query.size = NULL, window.size)
 }
 \arguments{
-\item{data}{reference Time Series}
+\item{data}{a \code{vector} or a \code{matrix} of \code{numeric}. Reference Time Series.}
 
-\item{data.size}{reference Time Series size}
+\item{data.size}{an \code{int}. Reference Time Series size.}
 
-\item{query}{query Time Series (default is NULL)}
+\item{query}{a \code{vector} or a \code{matrix} of \code{numeric}. Query Time Series (default is \code{NULL}).}
 
-\item{query.size}{query Time Series (default is NULL)}
+\item{query.size}{an \code{int}. Query Time Series size (default is \code{NULL}).}
 
-\item{window.size}{sliding window size}
+\item{window.size}{an \code{int}. Sliding window size.}
 }
 \value{
-Returns data.fft, data.mean, data.sd, query.mean and query.sd
+Returns \code{data.fft}, \code{data.mean}, \code{data.sd}, \code{query.mean} and \code{query.sd}.
 }
 \description{
 Precomputes several values used on MASS
 }
+\examples{
+w <- 30
+ref.data <- toy_data$data[,1]
+query.data <- toy_data$data[,1]
+d.size <- length(ref.data)
+q.size <- length(query.data)
+
+pre <- mass.pre(ref.data, d.size, query.data, q.size, w)
+
+dp <- list()
+for(i in 1:(d.size - w + 1)) {
+  dp[[i]] <- mass(pre$data.fft, query.data[i:(i-1+w)], d.size, w, pre$data.mean, pre$data.sd,
+          pre$query.mean[i], pre$query.sd[i])
+}
+}
 \references{
-Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance
+Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance.
 
 \url{https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html}
+}
+\seealso{
+\code{\link[=mass]{mass()}} for using precomputed values.
 }

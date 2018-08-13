@@ -1,29 +1,39 @@
 #' Multivariate STOMP algorithm
 #'
-#' No description
+#' Computes the Matrix Profile and Profile Index for Multivariate Time Series.
 #'
-#' No details
+#' The Matrix Profile, has the potential to revolutionize time series data mining because of its generality, versatility, simplicity and scalability. In particular it has implications for time series motif discovery, time series joins, shapelet discovery (classification), density estimation, semantic segmentation, visualization, rule discovery, clustering etc.
+#' The MSTOMP computes the Matrix Profile and Profile Index for Multivariate Time Series that is meaningful for multidimensional MOTIF discovery. It uses the STOMP algorithm that is faster than STAMP but lacks its anytime property.
 #'
-#' @param data a matrix, where each colums is a time series (dimention). Can accept Lists and data.frames too.
-#' @param window.size size of the sliding window
-#' @param must.dim which dimentions to forcibly include (default is NULL)
-#' @param exc.dim which dimentions to exclude (default is NULL)
-#' @param exclusion.zone size of the exclusion zone, based on query size (default 1/2)
+#' Although this functions handles Multivariate Time Series, it can also be used to handle Univariate Time Series.
 #'
-#' @return The matrix profile and profile index
+#' @param data a `matrix` of `numeric`, where each colums is a time series. Accepts `vector` (see details), `list` and `data.frame` too.
+#' @param window.size an `int` with the size of the sliding window.
+#' @param must.dim an `int` or `vector` of which dimensions to forcibly include (default is `NULL`).
+#' @param exc.dim an `int` or `vector` of which dimensions to exclude (default is `NULL`).
+#' @param exclusion.zone a `numeric` with size of the exclusion zone, based on query size (default is `1/2`).
+#'
+#' @return Returns the matrix profile `mp` and profile index `pi`.
+#' It also returns the left and right matrix profile `lmp`, `rmp` and profile index `lpi`, `rpi` that may be used to detect Time Series Chains (Yan Zhu 2018).
 #' @export
 #'
-#' @seealso [stamp()]
-#' @references Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif Discovery.
-#' @references <https://sites.google.com/view/mstamp/>
-#' @references <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
+#' @family mstomp
+#' @seealso [stamp()], [stamp.par()], [mstomp.par()]
+#' @references 1. Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif Discovery.
+#' @references 2. Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
+#' @references Website: <https://sites.google.com/view/mstamp/>
+#' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #'
 #' @examples
+#' # using all dimensions
+#' mp <- mstomp(toy_data$data[1:200,], 30)
 #' \dontrun{
-#' mp <- mstomp(data, 30)
-#' mp <- mstomp(data, 30, must.dim = c(1, 2))
-#' mp <- mstomp(data, 30, exc.dim = c(2,3))
+#' # force using dimensions 1 and 2
+#' mp <- mstomp(toy_data$data[1:200,], 30, must.dim = c(1, 2))
+#' # exclude dimensions 2 and 3
+#' mp <- mstomp(toy_data$data[1:200,], 30, exc.dim = c(2, 3))
 #' }
+
 mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion.zone = 1 / 2) {
 
   eps <- .Machine$double.eps^0.5
@@ -98,7 +108,7 @@ mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion
   data[is.na(data)] <- 0
   data[is.infinite(data)] <- 0
 
-  pb <- utils::txtProgressBar(min = 0, max = matrix.profile.size, style = 3)
+  pb <- utils::txtProgressBar(min = 0, max = matrix.profile.size, style = 3, width = 80)
   on.exit(close(pb))
   on.exit(beepr::beep(), TRUE)
 
@@ -106,7 +116,7 @@ mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion
   data.fft <- matrix(0, (window.size + data.size), n.dim)
   data.mean <- matrix(0, matrix.profile.size, n.dim)
   data.sd <- matrix(0, matrix.profile.size, n.dim)
-  first.profile <- matrix(0, matrix.profile.size, n.dim)
+  first.product <- matrix(0, matrix.profile.size, n.dim)
 
   for (i in 1:n.dim) {
     nnPre <- mass.pre(data[, i], data.size, window.size = window.size)
@@ -114,15 +124,21 @@ mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion
     data.mean[, i] <- nnPre$data.mean
     data.sd[, i] <- nnPre$data.sd
     mstomp <- mass(data.fft[, i], data[1:window.size, i], data.size, window.size, data.mean[, i], data.sd[, i], data.mean[1, i], data.sd[1, i])
-    first.profile[, i] <- mstomp$last.product
+    first.product[, i] <- mstomp$last.product
   }
 
+  tictac <- Sys.time()
   ## compute the matrix profile
   matrix.profile <- matrix(0, matrix.profile.size, n.dim)
   profile.index <- matrix(0, matrix.profile.size, n.dim)
+  left.matrix.profile <- matrix(Inf, matrix.profile.size, n.dim)
+  left.profile.index <- matrix(-1, matrix.profile.size, n.dim)
+  right.matrix.profile <- matrix(Inf, matrix.profile.size, n.dim)
+  right.profile.index <- matrix(-1, matrix.profile.size, n.dim)
   distance.profile <- matrix(0, matrix.profile.size, n.dim)
   last.product <- matrix(0, matrix.profile.size, n.dim)
   drop.value <- matrix(0, 1, n.dim)
+
   for (i in 1:matrix.profile.size) {
     # compute the distance profile
     utils::setTxtProgressBar(pb, i)
@@ -136,15 +152,15 @@ mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion
         last.product[, j] <- mstomp$last.product
       }
     } else {
-      rep.drop.val <- kronecker(matrix(1, matrix.profile.size - 1, 1), t(drop.value))
+      rep.drop.value <- kronecker(matrix(1, matrix.profile.size - 1, 1), t(drop.value))
       rep.query <- kronecker(matrix(1, matrix.profile.size - 1, 1), t(query[window.size, ]))
 
       last.product[2:(data.size - window.size + 1), ] <- last.product[1:(data.size - window.size), ] -
-        data[1:(data.size - window.size), ] * rep.drop.val +
+        data[1:(data.size - window.size), ] * rep.drop.value +
         data[(window.size + 1):data.size, ] * rep.query
 
 
-      last.product[1, ] <- first.profile[i, ]
+      last.product[1, ] <- first.product[i, ]
 
       distance.profile <- 2 * (window.size - (last.product - window.size * data.mean * kronecker(matrix(1, matrix.profile.size, 1), t(data.mean[i, ]))) /
         (data.sd * kronecker(matrix(1, matrix.profile.size, 1), t(data.sd[i, ]))))
@@ -187,9 +203,28 @@ mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion
     # figure out and store the nearest neighbor
     dist.pro.cum <- rep(0, matrix.profile.size)
     dist.pro.merg <- rep(0, matrix.profile.size)
+
     for (j in (max(1, n.must):(n.dim - n.exc))) {
       dist.pro.cum <- dist.pro.cum + dist.pro.sort[, j]
       dist.pro.merg[] <- dist.pro.cum / j
+
+      # left matrix.profile
+      if (i > (exclusion.zone + 1)) {
+        min.idx <- which.min(dist.pro.merg[1:(i - exclusion.zone)])
+        min.val <- dist.pro.merg[min.idx]
+        left.matrix.profile[i, j] <- min.val
+        left.profile.index[i, j] <- min.idx
+      }
+
+      # right matrix.profile
+      if (i < (matrix.profile.size - exclusion.zone)) {
+        min.idx <- which.min(dist.pro.merg[(i + exclusion.zone):matrix.profile.size]) + i + exclusion.zone - 1
+        min.val <- dist.pro.merg[min.idx]
+        right.matrix.profile[i, j] <- min.val
+        right.profile.index[i, j] <- min.idx
+      }
+
+      # normal matrix.profile
       min.idx <- which.min(dist.pro.merg)
       min.val <- dist.pro.merg[min.idx]
       matrix.profile[i, j] <- min.val
@@ -199,6 +234,9 @@ mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion
 
   ## remove bad k setting in the returned matrix
   matrix.profile <- sqrt(matrix.profile)
+  right.matrix.profile <- sqrt(right.matrix.profile)
+  left.matrix.profile <- sqrt(left.matrix.profile)
+
   if (n.must > 0) {
     matrix.profile[, 1:(n.must - 1)] <- NA
   }
@@ -212,5 +250,13 @@ mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion
     profile.index[, (n.dim - n.exc + 1):length(profile.index)] <- NA
   }
 
-  return(list(mp = matrix.profile, pi = profile.index))
+  tictac <- Sys.time() - tictac
+
+  message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
+
+  return(list(
+    rmp = right.matrix.profile, rpi = right.profile.index,
+    lmp = left.matrix.profile, lpi = left.profile.index,
+    mp = matrix.profile, pi = profile.index
+  ))
 }

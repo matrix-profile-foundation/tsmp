@@ -14,12 +14,20 @@ Details in progress
 \references{
 \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/franzbischoff/tsmp}
+  \item Report bugs at \url{https://github.com/franzbischoff/tsmp/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Francisco Bischoff \email{fbischoff@med.up.pt}
 
-Authors:
+Other contributors:
 \itemize{
-  \item Michael Yeh \email{myeh003@ucr.edu} [contributor]
+  \item Michael Yeh \email{myeh003@ucr.edu} [researcher, conceptor, contributor]
 }
 
 }
