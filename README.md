@@ -7,14 +7,16 @@ August 13, 2018
 
 # Time Series Matrix-Profile <img src="man/figures/logo.png" align="right" />
 
-[![Travis-CI Build
-Status](https://travis-ci.org/r-lib/tsmp.svg?branch=master)](https://travis-ci.org/r-lib/tsmp)
+Main:
+[![Build Status main](https://travis-ci.com/franzbischoff/tsmp.svg?branch=master)](https://travis-ci.com/franzbischoff/tsmp)
 [![AppVeyor Build
 Status](https://ci.appveyor.com/api/projects/status/github/r-lib/tsmp?branch=master&svg=true)](https://ci.appveyor.com/project/r-lib/tsmp)
-[![Coverage
-status](https://codecov.io/gh/r-lib/tsmp/branch/master/graph/badge.svg)](https://codecov.io/github/r-lib/tsmp?branch=master)
+[![codecov](https://codecov.io/gh/franzbischoff/tsmp/branch/master/graph/badge.svg)](https://codecov.io/gh/franzbischoff/tsmp)
 [![CRAN
 version](http://www.r-pkg.org/badges/version/tsmp)](https://cran.r-project.org/package=tsmp)
+Dev:
+[![Build Status dev](https://travis-ci.com/franzbischoff/tsmp.svg?branch=feature%2Fcode_status)](https://travis-ci.com/franzbischoff/tsmp)
+[![codecov](https://codecov.io/gh/franzbischoff/tsmp/branch/feature/code_status/graph/badge.svg)](https://codecov.io/gh/franzbischoff/tsmp)
 
 R Functions implementing UCR Matrix Profile Algorithm
 (<http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>).
