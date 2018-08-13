@@ -4,7 +4,8 @@
 \alias{stamp.par}
 \title{Anytime univariate STAMP algorithm Parallel version}
 \usage{
-stamp.par(..., window.size, exclusion.zone = 1/2, s.size = Inf)
+stamp.par(..., window.size, exclusion.zone = 1/2, s.size = Inf,
+  n.workers = 2)
 }
 \arguments{
 \item{...}{a \code{matrix} or a \code{vector}. If a second time series is supplied it will be a join matrix profile.}
@@ -14,6 +15,8 @@ stamp.par(..., window.size, exclusion.zone = 1/2, s.size = Inf)
 \item{exclusion.zone}{an \code{int}. Size of the exclusion zone, based on query size (default is \code{1/2}).}
 
 \item{s.size}{a \code{numeric}. for anytime algorithm, represents the size (in observations) the random calculation will occour (default is \code{Inf}).}
+
+\item{n.workers}{an \code{int}. Number of workers for parallel. (Default is \code{2}).}
 }
 \value{
 Returns the matrix profile \code{mp} and profile index \code{pi}.

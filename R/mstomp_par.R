@@ -10,6 +10,7 @@
 #' @param data a `matrix` of `numeric`, where each colums is a time series. Accepts `vector` (see details), `list` and `data.frame` too.
 #' @param window.size an `int`. Size of the sliding window.
 #' @param exclusion.zone an `int`. Size of the exclusion zone, based on query size (default is `1/2`).
+#' @param n.workers an `int`. Number of workers for parallel. (Default is `2`).
 #'
 #' @return Returns the matrix profile `mp` and profile index `pi`.
 #' It also returns the left and right matrix profile `lmp`, `rmp` and profile index `lpi`, `rpi` that may be used to detect Time Series Chains (Yan Zhu 2018).
@@ -28,7 +29,7 @@
 #' mp <- mstomp.par(toy_data$data[1:100,], 30)
 #' @import beepr doSNOW foreach parallel
 
-mstomp.par <- function(data, window.size, exclusion.zone = 1 / 2) {
+mstomp.par <- function(data, window.size, exclusion.zone = 1 / 2, n.workers = 2) {
 
   eps <- .Machine$double.eps^0.5
 
@@ -105,15 +106,7 @@ mstomp.par <- function(data, window.size, exclusion.zone = 1 / 2) {
     first.product[, i] <- mstomp$last.product
   }
 
-  chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
-
-  if (nzchar(chk) && chk == "TRUE") {
-    # use 2 cores in CRAN
-    cores <- 2L
-  } else {
-    # use all cores in devtools::test()
-    cores <- parallel::detectCores()
-  }
+  cores <- min(max(2, n.workers), parallel::detectCores())
 
   # SNOW package
   progress <- function(n) utils::setTxtProgressBar(pb, n)

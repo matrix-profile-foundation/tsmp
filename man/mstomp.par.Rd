@@ -4,7 +4,7 @@
 \alias{mstomp.par}
 \title{Multivariate STOMP algorithm Parallel version}
 \usage{
-mstomp.par(data, window.size, exclusion.zone = 1/2)
+mstomp.par(data, window.size, exclusion.zone = 1/2, n.workers = 2)
 }
 \arguments{
 \item{data}{a \code{matrix} of \code{numeric}, where each colums is a time series. Accepts \code{vector} (see details), \code{list} and \code{data.frame} too.}
@@ -12,6 +12,8 @@ mstomp.par(data, window.size, exclusion.zone = 1/2)
 \item{window.size}{an \code{int}. Size of the sliding window.}
 
 \item{exclusion.zone}{an \code{int}. Size of the exclusion zone, based on query size (default is \code{1/2}).}
+
+\item{n.workers}{an \code{int}. Number of workers for parallel. (Default is \code{2}).}
 }
 \value{
 Returns the matrix profile \code{mp} and profile index \code{pi}.
