@@ -3,3 +3,8 @@ cache: packages
 sudo: false
 r_build_args: --no-multiarch --with-keep.source
 r_check_args: --as-cran
+r_packages:
+  - covr
+
+after_success:
+  - Rscript -e 'library(covr); codecov()'
