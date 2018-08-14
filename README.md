@@ -1,13 +1,15 @@
 README
 ================
 Francisco Bischoff
-– 13 Aug 2018
+– 14 Aug 2018
 
 # Time Series Matrix-Profile <img src="man/figures/logo.png" align="right" />
 
 [![Build
-Status](https://travis-ci.com/franzbischoff/tsmp.svg?branch=feature/code_status)](https://travis-ci.com/franzbischoff/tsmp)
-[![codecov](https://codecov.io/gh/franzbischoff/tsmp/branch/feature/code_status/graph/badge.svg)](https://codecov.io/gh/franzbischoff/tsmp)
+Status](https://travis-ci.com/franzbischoff/tsmp.svg?branch=master)](https://travis-ci.com/franzbischoff/tsmp)
+[![codecov](https://codecov.io/gh/franzbischoff/tsmp/branch/master/graph/badge.svg)](https://codecov.io/gh/franzbischoff/tsmp)
+[![CRAN
+version](http://www.r-pkg.org/badges/version/tsmp)](https://cran.r-project.org/package=tsmp)
 
 ## Overview
 
