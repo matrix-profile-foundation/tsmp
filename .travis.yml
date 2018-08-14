@@ -6,12 +6,12 @@ cache:
   packages: true
 sudo: false
 install:
+  - Rscript -e "if (!require('devtools')) install.packages('devtools')"
+  - Rscript -e "devtools::install_deps(dep = TRUE)"
+  - Rscript -e "devtools::install_github('jimhester/covr')"
   - R -e "0" --args --bootstrap-packrat
   - R -e "packrat::restore(restart = FALSE)"
-r_build_args: --no-multiarch --with-keep.source
 r_check_args: --as-cran
-r_packages:
-  - covr
 
 after_success:
   - Rscript -e 'library(covr); codecov()'
