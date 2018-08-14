@@ -6,11 +6,13 @@
 #' The MSTOMP computes the Matrix Profile and Profile Index for Multivariate Time Series that is meaningful for multidimensional MOTIF discovery. It uses the STOMP algorithm that is faster than STAMP but lacks its anytime property.
 #'
 #' Although this functions handles Multivariate Time Series, it can also be used to handle Univariate Time Series.
+#' `verbose` changes how much information is printed by this function; `0` means nothing, `1` means text, `2` means text and sound.
 #'
 #' @param data a `matrix` of `numeric`, where each colums is a time series. Accepts `vector` (see details), `list` and `data.frame` too.
 #' @param window.size an `int`. Size of the sliding window.
 #' @param exclusion.zone an `int`. Size of the exclusion zone, based on query size (default is `1/2`).
 #' @param n.workers an `int`. Number of workers for parallel. (Default is `2`).
+#' @param verbose an `int`. See details. (Default is `2`).
 #'
 #' @return Returns the matrix profile `mp` and profile index `pi`.
 #' It also returns the left and right matrix profile `lmp`, `rmp` and profile index `lpi`, `rpi` that may be used to detect Time Series Chains (Yan Zhu 2018).
@@ -26,11 +28,10 @@
 #' @examples
 #' # using all dimensions
 #' Sys.sleep(1) # sometimes sleep is needed if you run parallel multiple times in a row
-#' mp <- mstomp.par(toy_data$data[1:100,], 30)
+#' mp <- mstomp.par(toy_data$data[1:100,], 30, verbose = 0)
 #' @import beepr doSNOW foreach parallel
 
-mstomp.par <- function(data, window.size, exclusion.zone = 1 / 2, n.workers = 2) {
-
+mstomp.par <- function(data, window.size, exclusion.zone = 1 / 2, n.workers = 2, verbose = 2) {
   eps <- .Machine$double.eps^0.5
 
   ## get various length
@@ -109,14 +110,23 @@ mstomp.par <- function(data, window.size, exclusion.zone = 1 / 2, n.workers = 2)
   cores <- min(max(2, n.workers), parallel::detectCores())
 
   # SNOW package
-  progress <- function(n) utils::setTxtProgressBar(pb, n)
+  if (verbose > 0) {
+    progress <- function(n) utils::setTxtProgressBar(pb, n)
+  }
+  else {
+    progress <- function(n) return(invisible(TRUE))
+  }
   opts <- list(progress = progress)
 
   cl <- parallel::makeCluster(cores)
   doSNOW::registerDoSNOW(cl)
   on.exit(parallel::stopCluster(cl))
-  on.exit(close(pb), TRUE)
-  on.exit(beepr::beep(), TRUE)
+  if (verbose > 0) {
+    on.exit(close(pb), TRUE)
+  }
+  if (verbose > 1) {
+    on.exit(beepr::beep(), TRUE)
+  }
 
   ## initialize variable
   per.work <- max(10, ceiling(matrix.profile.size / 100))
@@ -135,7 +145,9 @@ mstomp.par <- function(data, window.size, exclusion.zone = 1 / 2, n.workers = 2)
 
   tictac <- Sys.time()
 
-  pb <- utils::txtProgressBar(min = 0, max = n.work, style = 3, width = 80)
+  if (verbose > 0) {
+    pb <- utils::txtProgressBar(min = 0, max = n.work, style = 3, width = 80)
+  }
 
   i <- NULL # CRAN NOTE fix
   `%dopar%` <- foreach::`%dopar%` # CRAN NOTE fix
@@ -184,11 +196,11 @@ mstomp.par <- function(data, window.size, exclusion.zone = 1 / 2, n.workers = 2)
         last.product[1, ] <- first.product[idx, ]
 
         dist.pro <- 2 * (window.size - (last.product - window.size * data.mean * kronecker(matrix(1, matrix.profile.size, 1), t(data.mean[idx, ]))) /
-                           (data.sd * kronecker(matrix(1, matrix.profile.size, 1), t(data.sd[idx, ]))))
+          (data.sd * kronecker(matrix(1, matrix.profile.size, 1), t(data.sd[idx, ]))))
       }
 
       dist.pro <- Re(dist.pro)
-      #dist.pro <- max(dist.pro, 0)
+      # dist.pro <- max(dist.pro, 0)
       drop.value <- query[1, ]
 
       # apply exclusion zone
@@ -202,10 +214,12 @@ mstomp.par <- function(data, window.size, exclusion.zone = 1 / 2, n.workers = 2)
       dist.pro[skip.location, ] <- Inf
 
       # figure out and store the nearest neighbor
-      if (n.dim > 1)
-        dist.pro.sort <- t(apply(dist.pro, 1, sort)) # sort by row, left to right
-      else
+      if (n.dim > 1) {
+        dist.pro.sort <- t(apply(dist.pro, 1, sort))
+      } # sort by row, left to right
+      else {
         dist.pro.sort <- dist.pro
+      }
 
       dist.pro.cum <- rep(0, matrix.profile.size)
       dist.pro.merg <- rep(0, matrix.profile.size)
@@ -264,7 +278,9 @@ mstomp.par <- function(data, window.size, exclusion.zone = 1 / 2, n.workers = 2)
 
   tictac <- Sys.time() - tictac
 
-  message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
+  if (verbose > 0) {
+    message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
+  }
 
   return(list(
     rmp = right.matrix.profile, rpi = right.profile.index,

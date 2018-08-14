@@ -4,12 +4,14 @@
 #'
 #' The Matrix Profile, has the potential to revolutionize time series data mining because of its generality, versatility, simplicity and scalability. In particular it has implications for time series motif discovery, time series joins, shapelet discovery (classification), density estimation, semantic segmentation, visualization, rule discovery, clustering etc.
 #' The anytime STAMP computes the Matrix Profile and Profile Index in such manner that it can be stopped before its complete calculation and return the best so far results allowing ultra-fast approximate solutions.
+#' `verbose` changes how much information is printed by this function; `0` means nothing, `1` means text, `2` means text and sound.
 #'
 #' @param ... a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix profile.
 #' @param window.size an `int`. Size of the sliding window.
 #' @param exclusion.zone an `int`. Size of the exclusion zone, based on query size (default is `1/2`).
 #' @param s.size a `numeric`. for anytime algorithm, represents the size (in observations) the random calculation will occour (default is `Inf`).
 #' @param n.workers an `int`. Number of workers for parallel. (Default is `2`).
+#' @param verbose an `int`. See details. (Default is `2`).
 #'
 #' @return Returns the matrix profile `mp` and profile index `pi`.
 #' It also returns the left and right matrix profile `lmp`, `rmp` and profile index `lpi`, `rpi` that may be used to detect Time Series Chains (Yan Zhu 2018).
@@ -23,19 +25,20 @@
 #'
 #' @examples
 #' Sys.sleep(1) # sometimes sleep is needed if you run parallel multiple times in a row
-#' mp <- stamp.par(toy_data$data[1:200,1], window.size = 30)
+#' mp <- stamp.par(toy_data$data[1:200,1], window.size = 30, verbose = 0)
 #' \dontrun{
 #' mp <- stamp.par(ref.data, query.data, window.size = 30, s.size = round(nrows(ref.data) * 0.1))
 #' }
 #'
 #' @import beepr doSNOW foreach parallel
-stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, n.workers = 2) {
+stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, n.workers = 2, verbose = 2) {
   args <- list(...)
   data <- args[[1]]
-  if (length(args) > 1)
+  if (length(args) > 1) {
     query <- args[[2]]
-  else
+  } else {
     query <- data
+  }
 
   if (is.vector(data)) {
     data <- as.matrix(data)
@@ -74,12 +77,18 @@ stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, n.
   cols <- min(data.size, 100)
 
   lines <- 0:(ceiling(ssize / cols) - 1)
-  pb <- utils::txtProgressBar(min = 0, max = max(lines), style = 3, width = 80)
+  if (verbose > 0) {
+    pb <- utils::txtProgressBar(min = 0, max = max(lines), style = 3, width = 80)
+  }
   cl <- parallel::makeCluster(cores)
   doSNOW::registerDoSNOW(cl)
   on.exit(parallel::stopCluster(cl))
-  on.exit(close(pb), TRUE)
-  on.exit(beepr::beep(), TRUE)
+  if (verbose > 0) {
+    on.exit(close(pb), TRUE)
+  }
+  if (verbose > 1) {
+    on.exit(beepr::beep(), TRUE)
+  }
   # anytime must return the result always
   on.exit(return(list(
     rmp = right.matrix.profile, rpi = right.profile.index,
@@ -142,12 +151,16 @@ stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, n.
       }
     }
 
-    utils::setTxtProgressBar(pb, k)
+    if (verbose > 0) {
+      utils::setTxtProgressBar(pb, k)
+    }
   }
 
   tictac <- Sys.time() - tictac
 
-  message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
+  if (verbose > 0) {
+    message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
+  }
 
   # return() is at on.exit() function
 }

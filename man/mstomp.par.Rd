@@ -4,7 +4,8 @@
 \alias{mstomp.par}
 \title{Multivariate STOMP algorithm Parallel version}
 \usage{
-mstomp.par(data, window.size, exclusion.zone = 1/2, n.workers = 2)
+mstomp.par(data, window.size, exclusion.zone = 1/2, n.workers = 2,
+  verbose = 2)
 }
 \arguments{
 \item{data}{a \code{matrix} of \code{numeric}, where each colums is a time series. Accepts \code{vector} (see details), \code{list} and \code{data.frame} too.}
@@ -14,6 +15,8 @@ mstomp.par(data, window.size, exclusion.zone = 1/2, n.workers = 2)
 \item{exclusion.zone}{an \code{int}. Size of the exclusion zone, based on query size (default is \code{1/2}).}
 
 \item{n.workers}{an \code{int}. Number of workers for parallel. (Default is \code{2}).}
+
+\item{verbose}{an \code{int}. See details. (Default is \code{2}).}
 }
 \value{
 Returns the matrix profile \code{mp} and profile index \code{pi}.
@@ -27,11 +30,12 @@ The Matrix Profile, has the potential to revolutionize time series data mining b
 The MSTOMP computes the Matrix Profile and Profile Index for Multivariate Time Series that is meaningful for multidimensional MOTIF discovery. It uses the STOMP algorithm that is faster than STAMP but lacks its anytime property.
 
 Although this functions handles Multivariate Time Series, it can also be used to handle Univariate Time Series.
+\code{verbose} changes how much information is printed by this function; \code{0} means nothing, \code{1} means text, \code{2} means text and sound.
 }
 \examples{
 # using all dimensions
 Sys.sleep(1) # sometimes sleep is needed if you run parallel multiple times in a row
-mp <- mstomp.par(toy_data$data[1:100,], 30)
+mp <- mstomp.par(toy_data$data[1:100,], 30, verbose = 0)
 }
 \references{
 \enumerate{

@@ -24,7 +24,7 @@ Returns \code{data.fft}, \code{data.mean}, \code{data.sd}, \code{query.mean} and
 Precomputes several values used on MASS
 }
 \examples{
-w <- 30
+w <- toy_data$sub.len
 ref.data <- toy_data$data[,1]
 query.data <- toy_data$data[,1]
 d.size <- length(ref.data)

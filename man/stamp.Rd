@@ -4,7 +4,8 @@
 \alias{stamp}
 \title{Anytime univariate STAMP algorithm}
 \usage{
-stamp(..., window.size, exclusion.zone = 1/2, s.size = Inf)
+stamp(..., window.size, exclusion.zone = 1/2, s.size = Inf,
+  verbose = 2)
 }
 \arguments{
 \item{...}{a \code{matrix} or a \code{vector}. If a second time series is supplied it will be a join matrix profile.}
@@ -14,6 +15,8 @@ stamp(..., window.size, exclusion.zone = 1/2, s.size = Inf)
 \item{exclusion.zone}{an \code{int}. Size of the exclusion zone, based on query size (default is \code{1/2}).}
 
 \item{s.size}{a \code{numeric}. for anytime algorithm, represents the size (in observations) the random calculation will occour (default is \code{Inf}).}
+
+\item{verbose}{an \code{int}. See details. (Default is \code{2}).}
 }
 \value{
 Returns the matrix profile \code{mp} and profile index \code{pi}.
@@ -25,9 +28,10 @@ Computes the best so far Matrix Profile and Profile Index for Univariate Time Se
 \details{
 The Matrix Profile, has the potential to revolutionize time series data mining because of its generality, versatility, simplicity and scalability. In particular it has implications for time series motif discovery, time series joins, shapelet discovery (classification), density estimation, semantic segmentation, visualization, rule discovery, clustering etc.
 The anytime STAMP computes the Matrix Profile and Profile Index in such manner that it can be stopped before its complete calculation and return the best so far results allowing ultra-fast approximate solutions.
+\code{verbose} changes how much information is printed by this function; \code{0} means nothing, \code{1} means text, \code{2} means text and sound.
 }
 \examples{
-mp <- stamp(toy_data$data[1:200,1], window.size = 30)
+mp <- stamp(toy_data$data[1:200,1], window.size = 30, verbose = 0)
 \dontrun{
 mp <- stamp(ref.data, query.data, window.size = 30, s.size = round(nrows(ref.data) * 0.1))
 }

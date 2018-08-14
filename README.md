@@ -1,20 +1,39 @@
-# Time Series Matrix-Profile
+README
+================
+Francisco Bischoff
+– 14 Aug 2018
 
-[![Travis-CI Build Status](https://travis-ci.org/r-lib/tsmp.svg?branch=master)](https://travis-ci.org/r-lib/tsmp)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/r-lib/tsmp?branch=master&svg=true)](https://ci.appveyor.com/project/r-lib/tsmp)
-[![Coverage status](https://codecov.io/gh/r-lib/tsmp/branch/master/graph/badge.svg)](https://codecov.io/github/r-lib/tsmp?branch=master)
-[![CRAN version](http://www.r-pkg.org/badges/version/tsmp)](https://cran.r-project.org/package=tsmp)
+# Time Series Matrix-Profile <img src="man/figures/logo.png" align="right" />
 
-R Functions implementing UCR Matrix Profile Algorithm (http://www.cs.ucr.edu/~eamonn/MatrixProfile.html).
+[![Build
+Status](https://travis-ci.com/franzbischoff/tsmp.svg?branch=master)](https://travis-ci.com/franzbischoff/tsmp)
+[![codecov](https://codecov.io/gh/franzbischoff/tsmp/branch/master/graph/badge.svg)](https://codecov.io/gh/franzbischoff/tsmp)
+[![CRAN
+version](http://www.r-pkg.org/badges/version/tsmp)](https://cran.r-project.org/package=tsmp)
+
+## Overview
+
+R Functions implementing UCR Matrix Profile Algorithm
+(<http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>).
 
 This is under development and is intended to be a MP toolkit
 
-Further files will be provided with actual use cases as 'classification', 'motif extraction', 'MDS visualization', etc.
+Further files will be provided with actual use cases as
+‘classification’, ‘motif extraction’, ‘MDS visualization’, etc.
 
 Please be welcome to suggest improvements.
 
-# License
-This project is licensed under the terms of the MIT license.
+## Installation
 
-# Python implementation
-https://github.com/ZiyaoWei/pyMatrixProfile
+``` r
+# Install the released version from CRAN
+install.packages("tsmp")
+
+# Or the development version from GitHub:
+# install.packages("devtools")
+devtools::install_github("franzbischoff/tsmp")
+```
+
+## Other projects with Matrix-Profile
+
+<https://github.com/ZiyaoWei/pyMatrixProfile>

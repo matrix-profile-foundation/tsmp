@@ -31,7 +31,7 @@ Returns the \code{distance.profile} for the given query and the \code{last.produ
 Mueen's Algorithm for Similarity Search is The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance and Correlation Coefficient.
 }
 \examples{
-w <- 30
+w <- toy_data$sub.len
 ref.data <- toy_data$data[,1]
 query.data <- toy_data$data[,1]
 d.size <- length(ref.data)
