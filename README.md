@@ -19,7 +19,7 @@ R Functions implementing UCR Matrix Profile Algorithm
 This is under development and is intended to be a MP toolkit
 
 Further files will be provided with actual use cases as
-‘classification’, ‘motif extraction’, ‘MDS visualization’, etc.
+‘Classification’, ‘MOTIF extraction’, ‘MDS visualization’, etc.
 
 Please be welcome to suggest improvements.
 
@@ -33,6 +33,33 @@ install.packages("tsmp")
 # install.packages("devtools")
 devtools::install_github("franzbischoff/tsmp")
 ```
+
+## Currently available Features
+
+  - STAMP (single and multithread versions)
+  - STOMP (single and multithread versions)
+  - Multivariate STOMP (mSTOMP)
+  - Multivariate MOTIF Search (from mSTOMP)
+  - Scalable Dictionary learning for Time Series (SDTS) prediction
+  - Misc:
+      - MASS v2.0
+      - Fast moving average
+      - Fast moving SD
+
+## Roadmap
+
+  - Improve Joins outputs
+  - Multidimensional Space
+  - Time Series Chains
+  - Annotation vectors (e.g.: Stop-word MOTIF bias, Actionability bias)
+  - FLOSS (Matrix Profile Segmentation)
+  - SiMPle-Fast (Fast Similarity Matrix-Profile for Music Analysis and
+    Exploration)
+  - MOTIFs under Uniform Scaling
+  - GPU-STOMP
+  - Real-time version of previous algorithms
+  - MASS Extensions (ADP, WQ, QwG)
+  - SCRIMP (waiting for publication)
 
 ## Other projects with Matrix-Profile
 
