@@ -8,7 +8,7 @@
 #' @param window.size an `int` with the size of the sliding window.
 #' @param matrix.profile multidimensional matrix profile (matrix)
 #' @param profile.index multidimensional profile index (from [mstomp()] or [mstomp.par()]).
-#' @param n.dim an `int`. The dimensionality of the MOTIF to find
+#' @param n.dim an `int`. The dimensionality of the MOTIF to find.
 #'
 #' @return Returns the `motif.idx` with the index of MOTIFs founded and `motif.dim`
 #' with the spanned dimensions of respective MOTIF.
@@ -23,9 +23,15 @@
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #'
 #' @examples
+#' # This is a fast toy example and results are useless. For a complete result, run the code inside
+#' #'Not run' section below.
+#' w <- toy_data$sub.len
+#' mp <- mstomp(toy_data$data[1:200,], w, verbose = 0)
+#' motifs <- guide.search(toy_data$data[1:200,], w, mp$mp, mp$pi, 2)
 #' \dontrun{
-#' mp <- mstomp.par(toy_data$data, 30)
-#' motifs <- guide.search(toy_data$data, 30, mp$mp, mp$pi, 2)
+#' w <- toy_data$sub.len
+#' mp <- mstomp.par(toy_data$data, w, verbose = 0)
+#' motifs <- guide.search(toy_data$data, w, mp$mp, mp$pi, 2)
 #' }
 
 guide.search <- function(data, window.size, matrix.profile, profile.index, n.dim) {

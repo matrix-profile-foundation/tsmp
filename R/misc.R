@@ -7,7 +7,7 @@
 #' @export
 #'
 #' @examples
-#' data.sd <- fast.movsd(toy_data$data[,1], 30)
+#' data.sd <- fast.movsd(toy_data$data[,1], toy_data$sub.len)
 
 fast.movsd <- function(data, n) {
 
@@ -53,7 +53,7 @@ fast.movsd <- function(data, n) {
 #' @return Returns a vector with the moving average
 #' @export
 #' @examples
-#' data.avg <- fast.movavg(toy_data$data[,1], 30)
+#' data.avg <- fast.movavg(toy_data$data[,1], toy_data$sub.len)
 
 fast.movavg <- function(data, n) {
   data.mean <- stats::filter(data, rep(1 / n, n), sides = 2)

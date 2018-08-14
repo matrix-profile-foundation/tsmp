@@ -18,5 +18,5 @@ Returns a vector with the moving average
 Fast implementation of moving average using filter
 }
 \examples{
-data.avg <- fast.movavg(toy_data$data[,1], 30)
+data.avg <- fast.movavg(toy_data$data[,1], toy_data$sub.len)
 }

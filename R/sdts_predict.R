@@ -10,9 +10,20 @@
 #' @family SDTS
 #'
 #' @examples
+#' # This is a fast toy example and results are useless. For a complete result, run the code inside
+#' #'Not run' section below.
+#' w <- c(110, 220)
+#' subs <- 11000:20000
+#' tr_data <- test_data$train$data[subs]
+#' tr_label <- test_data$train$label[subs]
+#' te_data <- test_data$test$data[subs]
+#' te_label <- test_data$test$label[subs]
+#' model <- sdts.train(tr_data, tr_label, w, verbose = 0)
+#' predict <- sdts.predict(model, te_data, round(mean(w)))
+#' sdts.f.score(te_label, predict, 1)
 #' \dontrun{
 #' windows <- c(110, 220, 330)
-#' model <- sdts.train(test_data$train$data, test_data$train$label, windows)
+#' model <- sdts.train(test_data$train$data, test_data$train$label, windows, verbose = 0)
 #' predict <- sdts.predict(model, test_data$test$data, round(mean(windows)))
 #' sdts.f.score(test_data$test$label, predict, 1)
 #' }
@@ -86,6 +97,17 @@ sdts.predict <- function(model, data, window.size) {
 #' @family SDTS
 #'
 #' @examples
+#' # This is a fast toy example and results are useless. For a complete result, run the code inside
+#' #'Not run' section below.
+#' w <- c(110, 220)
+#' subs <- 11000:20000
+#' tr_data <- test_data$train$data[subs]
+#' tr_label <- test_data$train$label[subs]
+#' te_data <- test_data$test$data[subs]
+#' te_label <- test_data$test$label[subs]
+#' model <- sdts.train(tr_data, tr_label, w, verbose = 0)
+#' predict <- sdts.predict(model, te_data, round(mean(w)))
+#' sdts.f.score(te_label, predict, 1)
 #' \dontrun{
 #' windows <- c(110, 220, 330)
 #' model <- sdts.train(test_data$train$data, test_data$train$label, windows)

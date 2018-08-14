@@ -5,7 +5,7 @@
 \title{Multivariate STOMP algorithm}
 \usage{
 mstomp(data, window.size, must.dim = NULL, exc.dim = NULL,
-  exclusion.zone = 1/2)
+  exclusion.zone = 1/2, verbose = 2)
 }
 \arguments{
 \item{data}{a \code{matrix} of \code{numeric}, where each colums is a time series. Accepts \code{vector} (see details), \code{list} and \code{data.frame} too.}
@@ -17,6 +17,8 @@ mstomp(data, window.size, must.dim = NULL, exc.dim = NULL,
 \item{exc.dim}{an \code{int} or \code{vector} of which dimensions to exclude (default is \code{NULL}).}
 
 \item{exclusion.zone}{a \code{numeric} with size of the exclusion zone, based on query size (default is \code{1/2}).}
+
+\item{verbose}{an \code{int}. See details. (Default is \code{2}).}
 }
 \value{
 Returns the matrix profile \code{mp} and profile index \code{pi}.
@@ -30,10 +32,11 @@ The Matrix Profile, has the potential to revolutionize time series data mining b
 The MSTOMP computes the Matrix Profile and Profile Index for Multivariate Time Series that is meaningful for multidimensional MOTIF discovery. It uses the STOMP algorithm that is faster than STAMP but lacks its anytime property.
 
 Although this functions handles Multivariate Time Series, it can also be used to handle Univariate Time Series.
+\code{verbose} changes how much information is printed by this function; \code{0} means nothing, \code{1} means text, \code{2} means text and sound.
 }
 \examples{
 # using all dimensions
-mp <- mstomp(toy_data$data[1:200,], 30)
+mp <- mstomp(toy_data$data[1:200,], 30, verbose = 0)
 \dontrun{
 # force using dimensions 1 and 2
 mp <- mstomp(toy_data$data[1:200,], 30, must.dim = c(1, 2))

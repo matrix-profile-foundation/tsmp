@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 ```{r include=FALSE}
 library(git2r)
 current.branch <- repository_head()$name
+#current.branch <- "master"
 ```
 
 

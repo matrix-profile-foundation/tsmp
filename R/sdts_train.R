@@ -3,6 +3,7 @@
 #' Scalable Dictionary learning for Time Series (SDTS) training function.
 #'
 #' `beta` is used to balance F-score towards recall (`>1`) or precision (`<1`).
+#' `verbose` changes how much information is printed by this function; `0` means nothing, `1` means text, `2` means text and sound.
 #'
 #' @param data a `vector` of `numeric`. Time series.
 #' @param label a `vector` of `logical`. Annotations.
@@ -10,6 +11,7 @@
 #' @param beta a `numeric`. See details. (default is `1`).
 #' @param pat.max an `int`. Max number of shape features captured. (default is `Inf``).
 #' @param parallel a `logical`. Use parallel computation inside (default is `TRUE`).
+#' @param verbose an `int`. See details. (Default is `2`).
 #'
 #' @return Returns a list with the learned dictionary
 #'    `score` (estimated score), `score.hist` (history of scores),
@@ -19,13 +21,24 @@
 #' @family SDTS
 #'
 #' @examples
+#' # This is a fast toy example and results are useless. For a complete result, run the code inside
+#' #'Not run' section below.
+#' w <- c(110, 220)
+#' subs <- 11000:20000
+#' tr_data <- test_data$train$data[subs]
+#' tr_label <- test_data$train$label[subs]
+#' te_data <- test_data$test$data[subs]
+#' te_label <- test_data$test$label[subs]
+#' model <- sdts.train(tr_data, tr_label, w, verbose = 0)
+#' predict <- sdts.predict(model, te_data, round(mean(w)))
+#' sdts.f.score(te_label, predict, 1)
 #' \dontrun{
 #' windows <- c(110, 220, 330)
 #' model <- sdts.train(test_data$train$data, test_data$train$label, windows)
 #' predict <- sdts.predict(model, test_data$test$data, round(mean(windows)))
 #' sdts.f.score(test_data$test$label, predict, 1)
 #' }
-sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parallel = TRUE) {
+sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parallel = TRUE, verbose = 2) {
 
   ## transform data list into matrix
   if (is.matrix(data) || is.data.frame(data)) {
@@ -80,15 +93,17 @@ sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parall
   }
 
   ## run matrix profile on concatenated positive segment
-  message("stage 1 of 3, compute matrix profile ...")
+  if (verbose > 0) {
+    message("stage 1 of 3, compute matrix profile ...")
+  }
 
   mat.pro <- list()
 
   for (i in 1:n.window.size) {
     if (parallel == TRUE) {
-      mp <- mstomp.par(pos, window.size[i])
+      mp <- mstomp.par(pos, window.size[i], verbose = verbose)
     } else {
-      mp <- mstomp(pos, window.size[i])
+      mp <- mstomp(pos, window.size[i], verbose = verbose)
     }
     mat.pro[[i]] <- mp$mp
   }
@@ -112,7 +127,7 @@ sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parall
       candi.idx[[i]][j] <- pos.st[j] + rlt.idx - 1
     }
     candi.dist <- sort(candi.dist, index.return = TRUE)
-      # sort(signif(candi.dist, 6), index.return = TRUE)
+    # sort(signif(candi.dist, 6), index.return = TRUE)
     candi[[i]] <- candi[[i]][candi.dist$ix]
     candi.idx[[i]] <- candi.idx[[i]][candi.dist$ix]
   }
@@ -124,11 +139,17 @@ sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parall
   candi.window.size <- list()
   tictac <- Sys.time()
 
-  message("stage 2 of 3, evaluate individual candidate ...")
+  if (verbose > 0) {
+    message("stage 2 of 3, evaluate individual candidate ...")
+  }
 
-  pb <- utils::txtProgressBar(min = 0, max = n.window.size * n.pos, style = 3, width = 80)
-  on.exit(close(pb))
-  on.exit(beepr::beep(), TRUE)
+  if (verbose > 0) {
+    pb <- utils::txtProgressBar(min = 0, max = n.window.size * n.pos, style = 3, width = 80)
+    on.exit(close(pb))
+  }
+  if (verbose > 1) {
+    on.exit(beepr::beep(), TRUE)
+  }
 
   for (i in 1:n.window.size) {
     candi.score[[i]] <- rep(0, n.pos)
@@ -151,12 +172,16 @@ sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parall
       candi.thold[[i]][j] <- golden$thold
       candi.score[[i]][j] <- golden$score
 
-      utils::setTxtProgressBar(pb, ((i - 1) * n.pos + j))
+      if (verbose > 0) {
+        utils::setTxtProgressBar(pb, ((i - 1) * n.pos + j))
+      }
     }
   }
 
   tictac <- Sys.time() - tictac
-  message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
+  if (verbose > 0) {
+    message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
+  }
 
   candi.pro.exp <- list()
   candi.exp <- list()
@@ -185,7 +210,7 @@ sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parall
   ## check max pattern allowed
   pat.max <- min(pat.max, floor(n.pos * 0.5))
   if (pat.max < 2) {
-    return(list(score = candi.score[1], score.hist = candi.score[1], pattern = candi[[1]], thold = candi.thold[1]))
+    return(list(score = candi.score[1], score.hist = candi.score[1], pattern = list(candi[[1]]), thold = candi.thold[1]))
   }
 
   ## check combined pattern
@@ -197,10 +222,14 @@ sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parall
   score.hist <- rep(Inf, n.pos * n.window.size)
   tictac <- Sys.time()
 
-  message("stage 3 of 3, evaluate combination of candidates ...")
+  if (verbose > 0) {
+    message("stage 3 of 3, evaluate combination of candidates ...")
+  }
 
-  close(pb)
-  pb <- utils::txtProgressBar(min = 0, max = pat.max * n.window.size * n.pos, style = 3, width = 80)
+  if (verbose > 0) {
+    close(pb)
+    pb <- utils::txtProgressBar(min = 0, max = pat.max * n.window.size * n.pos, style = 3, width = 80)
+  }
 
   for (i in 1:pat.max) {
     pat.score <- rep(-Inf, n.pos * n.window.size)
@@ -262,10 +291,13 @@ sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parall
       pat.score[j] <- score
       exc.mask.cur[exc.st[j]:exc.ed[j]] <- FALSE
 
-      utils::setTxtProgressBar(pb, ((i - 1) * (n.pos * n.window.size) + j))
+      if (verbose > 0) {
+        utils::setTxtProgressBar(pb, ((i - 1) * (n.pos * n.window.size) + j))
+      }
     }
-
-    utils::setTxtProgressBar(pb, ((i - 1) * (n.pos * n.window.size) + (n.pos * n.window.size)))
+    if (verbose > 0) {
+      utils::setTxtProgressBar(pb, ((i - 1) * (n.pos * n.window.size) + (n.pos * n.window.size)))
+    }
 
     best.candi.idx <- which.max(pat.score)
 
@@ -280,14 +312,25 @@ sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parall
     }
   }
 
-  utils::setTxtProgressBar(pb, (pat.max * n.pos * n.window.size))
+  if (verbose > 0) {
+    utils::setTxtProgressBar(pb, (pat.max * n.pos * n.window.size))
+  }
 
   tictac <- Sys.time() - tictac
-  message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
+  if (verbose > 0) {
+    message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
+  }
 
   score.hist <- score.hist[!is.infinite(score.hist)]
 
-  return(list(score = best.score, score.hist = score.hist, pattern = candi[best.pat], thold = candi.thold[best.pat]))
+  if (length(best.pat) == 1) {
+    pattern <- list(candi[best.pat])
+  } else {
+    pattern <- candi[best.pat]
+  }
+
+
+  return(list(score = best.score, score.hist = score.hist, pattern = pattern, thold = candi.thold[best.pat]))
 }
 
 #' Computes the golden section for individual candidates

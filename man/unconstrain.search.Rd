@@ -31,9 +31,15 @@ MDL Based MOTIF Discovery for Multidimensional Matrix Profile.
 Although this functions handles Multivariate Time Series, it can also be used to handle Univariate Time Series.
 }
 \examples{
+# This is a fast toy example and results are useless. For a complete result, run the code inside
+#'Not run' section below.
+w <- toy_data$sub.len
+mp <- mstomp(toy_data$data[1:200,], w, verbose = 0)
+motifs <- unconstrain.search(toy_data$data[1:200,], w, mp$mp, mp$pi, 2)
 \dontrun{
-mp <- mstomp.par(toy_data$data, 30)
-motifs <- unconstrain.search(toy_data$data, 30, mp$mp, mp$pi, 4, 2)
+w <- toy_data$sub.len
+mp <- mstomp.par(toy_data$data, w)
+motifs <- unconstrain.search(toy_data$data, w, mp$mp, mp$pi, 4, 2)
 }
 
 }

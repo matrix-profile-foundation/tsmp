@@ -2,17 +2,17 @@ context("Testing if Stamps and Stomps algorithms agree")
 library(tsmp)
 
 if (skip_on_cran()) {
-  stamp.test <- stamp(toy_data$data[1:200, 1], window.size = 30)
+  stamp.test <- stamp(toy_data$data[1:200, 1], window.size = 30, verbose = 0)
   Sys.sleep(1)
-  stamp.par.test <- stamp.par(toy_data$data[1:200, 1], window.size = 30)
+  stamp.par.test <- stamp.par(toy_data$data[1:200, 1], window.size = 30, verbose = 0)
   Sys.sleep(1)
-  stomp.test <- mstomp(toy_data$data[1:200, 1], window.size = 30)
+  stomp.test <- mstomp(toy_data$data[1:200, 1], window.size = 30, verbose = 0)
   Sys.sleep(1)
-  stomp.par.test <- mstomp.par(toy_data$data[1:200, 1], window.size = 30)
+  stomp.par.test <- mstomp.par(toy_data$data[1:200, 1], window.size = 30, verbose = 0)
   Sys.sleep(1)
-  mstomp.test <- mstomp(toy_data$data[1:200, ], window.size = 30)
+  mstomp.test <- mstomp(toy_data$data[1:200, ], window.size = 30, verbose = 0)
   Sys.sleep(1)
-  mstomp.par.test <- mstomp.par(toy_data$data[1:200, ], window.size = 30)
+  mstomp.par.test <- mstomp.par(toy_data$data[1:200, ], window.size = 30, verbose = 0)
 
   test_that("Stamp equals to Stamp.par", {
     expect_equal(stamp.test, stamp.par.test)

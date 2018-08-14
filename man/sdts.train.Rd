@@ -5,7 +5,7 @@
 \title{Scalable Dictionary learning for Time Series (SDTS) training function.}
 \usage{
 sdts.train(data, label, window.size, beta = 1, pat.max = Inf,
-  parallel = TRUE)
+  parallel = TRUE, verbose = 2)
 }
 \arguments{
 \item{data}{a \code{vector} of \code{numeric}. Time series.}
@@ -19,6 +19,8 @@ sdts.train(data, label, window.size, beta = 1, pat.max = Inf,
 \item{pat.max}{an \code{int}. Max number of shape features captured. (default is `Inf``).}
 
 \item{parallel}{a \code{logical}. Use parallel computation inside (default is \code{TRUE}).}
+
+\item{verbose}{an \code{int}. See details. (Default is \code{2}).}
 }
 \value{
 Returns a list with the learned dictionary
@@ -30,8 +32,20 @@ Scalable Dictionary learning for Time Series (SDTS) training function.
 }
 \details{
 \code{beta} is used to balance F-score towards recall (\code{>1}) or precision (\code{<1}).
+\code{verbose} changes how much information is printed by this function; \code{0} means nothing, \code{1} means text, \code{2} means text and sound.
 }
 \examples{
+# This is a fast toy example and results are useless. For a complete result, run the code inside
+#'Not run' section below.
+w <- c(110, 220)
+subs <- 11000:20000
+tr_data <- test_data$train$data[subs]
+tr_label <- test_data$train$label[subs]
+te_data <- test_data$test$data[subs]
+te_label <- test_data$test$label[subs]
+model <- sdts.train(tr_data, tr_label, w, verbose = 0)
+predict <- sdts.predict(model, te_data, round(mean(w)))
+sdts.f.score(te_label, predict, 1)
 \dontrun{
 windows <- c(110, 220, 330)
 model <- sdts.train(test_data$train$data, test_data$train$label, windows)

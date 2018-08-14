@@ -15,7 +15,7 @@
 #' @references <https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html>
 #'
 #' @examples
-#' w <- 30
+#' w <- toy_data$sub.len
 #' ref.data <- toy_data$data[,1]
 #' query.data <- toy_data$data[,1]
 #' d.size <- length(ref.data)

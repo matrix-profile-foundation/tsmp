@@ -6,12 +6,14 @@
 #' The MSTOMP computes the Matrix Profile and Profile Index for Multivariate Time Series that is meaningful for multidimensional MOTIF discovery. It uses the STOMP algorithm that is faster than STAMP but lacks its anytime property.
 #'
 #' Although this functions handles Multivariate Time Series, it can also be used to handle Univariate Time Series.
+#' `verbose` changes how much information is printed by this function; `0` means nothing, `1` means text, `2` means text and sound.
 #'
 #' @param data a `matrix` of `numeric`, where each colums is a time series. Accepts `vector` (see details), `list` and `data.frame` too.
 #' @param window.size an `int` with the size of the sliding window.
 #' @param must.dim an `int` or `vector` of which dimensions to forcibly include (default is `NULL`).
 #' @param exc.dim an `int` or `vector` of which dimensions to exclude (default is `NULL`).
 #' @param exclusion.zone a `numeric` with size of the exclusion zone, based on query size (default is `1/2`).
+#' @param verbose an `int`. See details. (Default is `2`).
 #'
 #' @return Returns the matrix profile `mp` and profile index `pi`.
 #' It also returns the left and right matrix profile `lmp`, `rmp` and profile index `lpi`, `rpi` that may be used to detect Time Series Chains (Yan Zhu 2018).
@@ -26,7 +28,7 @@
 #'
 #' @examples
 #' # using all dimensions
-#' mp <- mstomp(toy_data$data[1:200,], 30)
+#' mp <- mstomp(toy_data$data[1:200,], 30, verbose = 0)
 #' \dontrun{
 #' # force using dimensions 1 and 2
 #' mp <- mstomp(toy_data$data[1:200,], 30, must.dim = c(1, 2))
@@ -34,8 +36,7 @@
 #' mp <- mstomp(toy_data$data[1:200,], 30, exc.dim = c(2, 3))
 #' }
 
-mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion.zone = 1 / 2) {
-
+mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion.zone = 1 / 2, verbose = 2) {
   eps <- .Machine$double.eps^0.5
 
   ## get various length
@@ -108,9 +109,13 @@ mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion
   data[is.na(data)] <- 0
   data[is.infinite(data)] <- 0
 
-  pb <- utils::txtProgressBar(min = 0, max = matrix.profile.size, style = 3, width = 80)
-  on.exit(close(pb))
-  on.exit(beepr::beep(), TRUE)
+  if (verbose > 0) {
+    pb <- utils::txtProgressBar(min = 0, max = matrix.profile.size, style = 3, width = 80)
+    on.exit(close(pb))
+  }
+  if (verbose > 1) {
+    on.exit(beepr::beep(), TRUE)
+  }
 
   ## initialization
   data.fft <- matrix(0, (window.size + data.size), n.dim)
@@ -141,7 +146,9 @@ mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion
 
   for (i in 1:matrix.profile.size) {
     # compute the distance profile
-    utils::setTxtProgressBar(pb, i)
+    if (verbose > 0) {
+      utils::setTxtProgressBar(pb, i)
+    }
 
     query <- as.matrix(data[i:(i + window.size - 1), ])
 
@@ -252,7 +259,9 @@ mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion
 
   tictac <- Sys.time() - tictac
 
-  message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
+  if (verbose > 0) {
+    message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
+  }
 
   return(list(
     rmp = right.matrix.profile, rpi = right.profile.index,
