@@ -24,7 +24,8 @@ test_that("MASS Pre is ok", {
 })
 
 test_that("MASS is ok", {
-  expect_known_hash(lapply(res, round, 3), "3c9fe7462a")
+  expect_equal(sum(round(Re(res$distance.profile), 2)), 30737.17)
+  expect_equal(sum(round(Re(res$last.product), 2)), 5965.13)
 })
 
 pred <- rep(c(rep(1, 220), rep(0, 7830)), 27)[1:214791]
