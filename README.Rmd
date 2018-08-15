@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 ```{r include=FALSE}
 library(git2r)
 #current.branch <- repository_head()$name
-current.branch <- "master"
+current.branch <- "develop"
 ```
 
 
@@ -59,6 +59,7 @@ devtools::install_github("franzbischoff/tsmp")
 * Multivariate STOMP (mSTOMP)
 * Multivariate MOTIF Search (from mSTOMP)
 * Scalable Dictionary learning for Time Series (SDTS) prediction
+* FLUSS (Fast Low-cost Unipotent Semantic Segmentation)
 * Misc:
   * MASS v2.0
   * Fast moving average
@@ -70,11 +71,10 @@ devtools::install_github("franzbischoff/tsmp")
 * Multidimensional Space
 * Time Series Chains
 * Annotation vectors (e.g.: Stop-word MOTIF bias, Actionability bias)
-* FLOSS (Matrix Profile Segmentation)
 * SiMPle-Fast (Fast Similarity Matrix-Profile for Music Analysis and Exploration)
 * MOTIFs under Uniform Scaling
 * GPU-STOMP
-* Real-time version of previous algorithms
+* Real-time version of previous algorithms (STAMPI, FLOSS, etc)
 * MASS Extensions (ADP, WQ, QwG)
 * SCRIMP (waiting for publication)
 

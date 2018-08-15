@@ -12,7 +12,7 @@ stamp.par(..., window.size, exclusion.zone = 1/2, s.size = Inf,
 
 \item{window.size}{an \code{int}. Size of the sliding window.}
 
-\item{exclusion.zone}{an \code{int}. Size of the exclusion zone, based on query size (default is \code{1/2}).}
+\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on query size (default is \code{1/2}).}
 
 \item{s.size}{a \code{numeric}. for anytime algorithm, represents the size (in observations) the random calculation will occour (default is \code{Inf}).}
 

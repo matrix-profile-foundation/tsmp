@@ -10,7 +10,7 @@
 #'
 #' @param data a `matrix` of `numeric`, where each colums is a time series. Accepts `vector` (see details), `list` and `data.frame` too.
 #' @param window.size an `int`. Size of the sliding window.
-#' @param exclusion.zone an `int`. Size of the exclusion zone, based on query size (default is `1/2`).
+#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on query size (default is `1/2`).
 #' @param n.workers an `int`. Number of workers for parallel. (Default is `2`).
 #' @param verbose an `int`. See details. (Default is `2`).
 #'

@@ -2,6 +2,10 @@
 
 export(fast.movavg)
 export(fast.movsd)
+export(fluss)
+export(fluss.cac)
+export(fluss.extract)
+export(fluss.score)
 export(guide.search)
 export(mass)
 export(mass.pre)

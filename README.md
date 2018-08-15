@@ -1,15 +1,13 @@
 README
 ================
 Francisco Bischoff
-– 14 Aug 2018
+– 15 Aug 2018
 
 # Time Series Matrix-Profile <img src="man/figures/logo.png" align="right" />
 
 [![Build
-Status](https://travis-ci.com/franzbischoff/tsmp.svg?branch=master)](https://travis-ci.com/franzbischoff/tsmp)
-[![codecov](https://codecov.io/gh/franzbischoff/tsmp/branch/master/graph/badge.svg)](https://codecov.io/gh/franzbischoff/tsmp)
-[![CRAN
-version](http://www.r-pkg.org/badges/version/tsmp)](https://cran.r-project.org/package=tsmp)
+Status](https://travis-ci.com/franzbischoff/tsmp.svg?branch=develop)](https://travis-ci.com/franzbischoff/tsmp)
+[![codecov](https://codecov.io/gh/franzbischoff/tsmp/branch/develop/graph/badge.svg)](https://codecov.io/gh/franzbischoff/tsmp)
 
 ## Overview
 
@@ -41,6 +39,7 @@ devtools::install_github("franzbischoff/tsmp")
   - Multivariate STOMP (mSTOMP)
   - Multivariate MOTIF Search (from mSTOMP)
   - Scalable Dictionary learning for Time Series (SDTS) prediction
+  - FLUSS (Fast Low-cost Unipotent Semantic Segmentation)
   - Misc:
       - MASS v2.0
       - Fast moving average
@@ -52,12 +51,11 @@ devtools::install_github("franzbischoff/tsmp")
   - Multidimensional Space
   - Time Series Chains
   - Annotation vectors (e.g.: Stop-word MOTIF bias, Actionability bias)
-  - FLOSS (Matrix Profile Segmentation)
   - SiMPle-Fast (Fast Similarity Matrix-Profile for Music Analysis and
     Exploration)
   - MOTIFs under Uniform Scaling
   - GPU-STOMP
-  - Real-time version of previous algorithms
+  - Real-time version of previous algorithms (STAMPI, FLOSS, etc)
   - MASS Extensions (ADP, WQ, QwG)
   - SCRIMP (waiting for publication)
 

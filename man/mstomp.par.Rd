@@ -12,7 +12,7 @@ mstomp.par(data, window.size, exclusion.zone = 1/2, n.workers = 2,
 
 \item{window.size}{an \code{int}. Size of the sliding window.}
 
-\item{exclusion.zone}{an \code{int}. Size of the exclusion zone, based on query size (default is \code{1/2}).}
+\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on query size (default is \code{1/2}).}
 
 \item{n.workers}{an \code{int}. Number of workers for parallel. (Default is \code{2}).}
 

@@ -8,7 +8,7 @@
 #'
 #' @param ... a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix profile.
 #' @param window.size an `int`. Size of the sliding window.
-#' @param exclusion.zone an `int`. Size of the exclusion zone, based on query size (default is `1/2`).
+#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on query size (default is `1/2`).
 #' @param s.size a `numeric`. for anytime algorithm, represents the size (in observations) the random calculation will occour (default is `Inf`).
 #' @param verbose an `int`. See details. (Default is `2`).
 #'

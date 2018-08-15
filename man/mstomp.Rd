@@ -16,7 +16,7 @@ mstomp(data, window.size, must.dim = NULL, exc.dim = NULL,
 
 \item{exc.dim}{an \code{int} or \code{vector} of which dimensions to exclude (default is \code{NULL}).}
 
-\item{exclusion.zone}{a \code{numeric} with size of the exclusion zone, based on query size (default is \code{1/2}).}
+\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on query size (default is \code{1/2}).}
 
 \item{verbose}{an \code{int}. See details. (Default is \code{2}).}
 }
