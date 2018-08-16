@@ -70,6 +70,7 @@ devtools::install_github("franzbischoff/tsmp")
 * Improve Joins outputs
 * Multidimensional Space
 * Time Series Chains
+* FLUSS Arc Plot and SiMPle Arc Plot
 * Annotation vectors (e.g.: Stop-word MOTIF bias, Actionability bias)
 * SiMPle-Fast (Fast Similarity Matrix-Profile for Music Analysis and Exploration)
 * MOTIFs under Uniform Scaling
