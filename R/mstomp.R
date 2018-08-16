@@ -239,11 +239,11 @@ mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion
     }
   }
 
-  ## remove bad k setting in the returned matrix
   matrix.profile <- sqrt(matrix.profile)
   right.matrix.profile <- sqrt(right.matrix.profile)
   left.matrix.profile <- sqrt(left.matrix.profile)
 
+  ## remove bad k setting in the returned matrix
   if (n.must > 1) {
     matrix.profile[, 1:(n.must - 1)] <- NA
     right.matrix.profile[, 1:(n.must - 1)] <- NA

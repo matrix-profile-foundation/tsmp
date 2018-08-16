@@ -4,19 +4,23 @@
 \alias{mstomp.par}
 \title{Multivariate STOMP algorithm Parallel version}
 \usage{
-mstomp.par(data, window.size, exclusion.zone = 1/2, n.workers = 2,
-  verbose = 2)
+mstomp.par(data, window.size, must.dim = NULL, exc.dim = NULL,
+  exclusion.zone = 1/2, verbose = 2, n.workers = 2)
 }
 \arguments{
 \item{data}{a \code{matrix} of \code{numeric}, where each colums is a time series. Accepts \code{vector} (see details), \code{list} and \code{data.frame} too.}
 
 \item{window.size}{an \code{int}. Size of the sliding window.}
 
-\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on query size (default is \code{1/2}).}
+\item{must.dim}{an \code{int} or \code{vector} of which dimensions to forcibly include (default is \code{NULL}).}
 
-\item{n.workers}{an \code{int}. Number of workers for parallel. (Default is \code{2}).}
+\item{exc.dim}{an \code{int} or \code{vector} of which dimensions to exclude (default is \code{NULL}).}
+
+\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on query size (default is \code{1/2}). See details.}
 
 \item{verbose}{an \code{int}. See details. (Default is \code{2}).}
+
+\item{n.workers}{an \code{int}. Number of workers for parallel. (Default is \code{2}).}
 }
 \value{
 Returns the matrix profile \code{mp} and profile index \code{pi}.

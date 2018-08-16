@@ -12,7 +12,7 @@ stamp.par(..., window.size, exclusion.zone = 1/2, s.size = Inf,
 
 \item{window.size}{an \code{int}. Size of the sliding window.}
 
-\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on query size (default is \code{1/2}).}
+\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on query size (default is \code{1/2}). See details.}
 
 \item{s.size}{a \code{numeric}. for anytime algorithm, represents the size (in observations) the random calculation will occour (default is \code{Inf}).}
 
@@ -31,12 +31,18 @@ Computes the best so far Matrix Profile and Profile Index for Univariate Time Se
 The Matrix Profile, has the potential to revolutionize time series data mining because of its generality, versatility, simplicity and scalability. In particular it has implications for time series motif discovery, time series joins, shapelet discovery (classification), density estimation, semantic segmentation, visualization, rule discovery, clustering etc.
 The anytime STAMP computes the Matrix Profile and Profile Index in such manner that it can be stopped before its complete calculation and return the best so far results allowing ultra-fast approximate solutions.
 \code{verbose} changes how much information is printed by this function; \code{0} means nothing, \code{1} means text, \code{2} means text and sound.
+\code{exclusion.zone} is used to avoid  trivial matches; if a query data is provided (join similarity), this parameter is ignored.
 }
 \examples{
 Sys.sleep(1) # sometimes sleep is needed if you run parallel multiple times in a row
 mp <- stamp.par(toy_data$data[1:200,1], window.size = 30, verbose = 0)
 \dontrun{
-mp <- stamp.par(ref.data, query.data, window.size = 30, s.size = round(nrows(ref.data) * 0.1))
+ref.data <- toy_data$data[,1]
+query.data <- toy_data$data[,2]
+# self similarity
+mp <- stamp.par(ref.data, window.size = 30, s.size = round(nrows(ref.data) * 0.1))
+# join similarity
+mp <- stamp.par(ref.data, query.data, window.size = 30, s.size = round(nrows(query.data) * 0.1))
 }
 
 }
