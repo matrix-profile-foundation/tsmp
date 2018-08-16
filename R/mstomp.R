@@ -190,7 +190,7 @@ mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion
     distance.profile[, exc.dim] <- Inf
 
     if (n.must > 0) {
-      mask.must <- rep(FALSE, n.must)
+      mask.must <- rep(FALSE, n.dim)
       mask.must[must.dim] <- TRUE
       dist.pro.must <- distance.profile[, mask.must]
       distance.profile[, mask.must] <- -Inf
@@ -244,17 +244,25 @@ mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion
   right.matrix.profile <- sqrt(right.matrix.profile)
   left.matrix.profile <- sqrt(left.matrix.profile)
 
-  if (n.must > 0) {
+  if (n.must > 1) {
     matrix.profile[, 1:(n.must - 1)] <- NA
+    right.matrix.profile[, 1:(n.must - 1)] <- NA
+    left.matrix.profile[, 1:(n.must - 1)] <- NA
   }
   if (n.exc > 0) {
-    matrix.profile[, (n.dim - n.exc + 1):length(matrix.profile)] <- NA
+    matrix.profile[, (n.dim - n.exc + 1):n.dim] <- NA
+    right.matrix.profile[, (n.dim - n.exc + 1):n.dim] <- NA
+    left.matrix.profile[, (n.dim - n.exc + 1):n.dim] <- NA
   }
-  if (n.must > 0) {
+  if (n.must > 1) {
     profile.index[, 1:(n.must - 1)] <- NA
+    right.profile.index[, 1:(n.must - 1)] <- NA
+    left.profile.index[, 1:(n.must - 1)] <- NA
   }
   if (n.exc > 0) {
-    profile.index[, (n.dim - n.exc + 1):length(profile.index)] <- NA
+    profile.index[, (n.dim - n.exc + 1):n.dim] <- NA
+    right.profile.index[, (n.dim - n.exc + 1):n.dim] <- NA
+    left.profile.index[, (n.dim - n.exc + 1):n.dim] <- NA
   }
 
   tictac <- Sys.time() - tictac
