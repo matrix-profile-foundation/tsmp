@@ -1,0 +1,37 @@
+---
+title: "NEWS"
+author: "Francisco Bischoff"
+date: "`r format(Sys.Date(), '- %d %b %Y')`"
+output:
+  github_document:
+    html_preview: false
+  md_document:
+    pandoc_args: [
+      "--output", "NEWS",
+      ]
+---
+
+<!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/NEWS-"
+)
+```
+
+# tsmp 0.2.30
+
+* Added a `NEWS.md` file to track changes to the package.
+
+# tsmp 0.2.x
+
+* Added Multivariate STOMP parallel version
+* Added SDTS algorithm (Scalable Dictionary learning for Time Series)
+
+# tsmp 0.1.x
+
+* STAMP and STAMP parallel Algorithm
+* Multivariate STOMP algorithm
+* MASS algorithm

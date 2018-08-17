@@ -29,4 +29,4 @@ from PAMAP's dataset (3)
 \item Reiss, A. and Stricker, D., 2012. Introducing a new benchmarked dataset for activity monitoring. In 16th International Symposium on Wearable Computers (ISWC), 2012, pages 108– 109. IEEE, 2012.
 }
 }
-\keyword{data}
+\keyword{datasets}

@@ -1,10 +1,14 @@
 README
 ================
 Francisco Bischoff
-– 15 Aug 2018
+\- 18 Aug 2018
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # Time Series Matrix-Profile <img src="man/figures/logo.png" align="right" />
 
+[![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)](https://choosealicense.com/licenses/mit)
+[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![Build
 Status](https://travis-ci.com/franzbischoff/tsmp.svg?branch=develop)](https://travis-ci.com/franzbischoff/tsmp)
 [![codecov](https://codecov.io/gh/franzbischoff/tsmp/branch/develop/graph/badge.svg)](https://codecov.io/gh/franzbischoff/tsmp)
@@ -14,10 +18,12 @@ Status](https://travis-ci.com/franzbischoff/tsmp.svg?branch=develop)](https://tr
 R Functions implementing UCR Matrix Profile Algorithm
 (<http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>).
 
-This is under development and is intended to be a MP toolkit
+This is under development and is intended to be a general purpose MP
+toolkit
 
-Further files will be provided with actual use cases as
-‘Classification’, ‘MOTIF extraction’, ‘MDS visualization’, etc.
+After basic tools are finished and API is mature, further functions for
+‘Classification’, ‘MOTIF extraction’, ‘MDS visualization’ etc. will be
+added.
 
 Please be welcome to suggest improvements.
 
@@ -50,6 +56,7 @@ devtools::install_github("franzbischoff/tsmp")
   - Improve Joins outputs
   - Multidimensional Space
   - Time Series Chains
+  - FLUSS Arc Plot and SiMPle Arc Plot
   - Annotation vectors (e.g.: Stop-word MOTIF bias, Actionability bias)
   - SiMPle-Fast (Fast Similarity Matrix-Profile for Music Analysis and
     Exploration)
@@ -61,4 +68,10 @@ devtools::install_github("franzbischoff/tsmp")
 
 ## Other projects with Matrix-Profile
 
-<https://github.com/ZiyaoWei/pyMatrixProfile>
+  - Python: <https://github.com/ZiyaoWei/pyMatrixProfile>
+
+## Code of Conduct
+
+Please note that this project is released with a [Contributor Code of
+Conduct](CONDUCT.md). By participating in this project you agree to
+abide by its terms.

@@ -25,4 +25,4 @@ A synthetic dataset with embeded MOTIFs for multidimensional discovery
 
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
-\keyword{data}
+\keyword{datasets}

@@ -1,7 +1,16 @@
+^revdep$
+^cran-comments\.md$
 ^packrat/
+^docs/
 ^\.Rprofile$
 ^\.travis\.yml$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
+^NEWS\.Rmd$
+^NEWS-.*\.png$
 ^README\.Rmd$
+^README-.*\.png$
+^\.httr-oauth$
+^make\.R$
+^CONDUCT\.md$

@@ -2,3 +2,5 @@
 .RData
 .Rhistory
 packrat/lib*/
+.httr-oauth
+make.R
