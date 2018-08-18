@@ -1,7 +1,5 @@
-#' @details
-#' Details in progress
-#' @keywords internal
 #'
+#' @docType package
+#' @name tsmp
 #' @references <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 "_PACKAGE"
-#> [1] "_PACKAGE"

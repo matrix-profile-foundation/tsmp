@@ -1,0 +1,4 @@
+checks/
+logs/
+data.sqlite
+email.yml

@@ -10,9 +10,11 @@
 #'
 #' @param data a `matrix` of `numeric`, where each colums is a time series. Accepts `vector` (see details), `list` and `data.frame` too.
 #' @param window.size an `int`. Size of the sliding window.
-#' @param exclusion.zone an `int`. Size of the exclusion zone, based on query size (default is `1/2`).
-#' @param n.workers an `int`. Number of workers for parallel. (Default is `2`).
+#' @param must.dim an `int` or `vector` of which dimensions to forcibly include (default is `NULL`).
+#' @param exc.dim an `int` or `vector` of which dimensions to exclude (default is `NULL`).
+#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on query size (default is `1/2`). See details.
 #' @param verbose an `int`. See details. (Default is `2`).
+#' @param n.workers an `int`. Number of workers for parallel. (Default is `2`).
 #'
 #' @return Returns the matrix profile `mp` and profile index `pi`.
 #' It also returns the left and right matrix profile `lmp`, `rmp` and profile index `lpi`, `rpi` that may be used to detect Time Series Chains (Yan Zhu 2018).
@@ -31,7 +33,7 @@
 #' mp <- mstomp.par(toy_data$data[1:100,], 30, verbose = 0)
 #' @import beepr doSNOW foreach parallel
 
-mstomp.par <- function(data, window.size, exclusion.zone = 1 / 2, n.workers = 2, verbose = 2) {
+mstomp.par <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion.zone = 1 / 2, verbose = 2, n.workers = 2) {
   eps <- .Machine$double.eps^0.5
 
   ## get various length
@@ -78,12 +80,25 @@ mstomp.par <- function(data, window.size, exclusion.zone = 1 / 2, n.workers = 2,
   if (window.size < 4) {
     stop("Error: Subsequence length must be at least 4")
   }
+  if (any(must.dim > n.dim)) {
+    stop("Error: The must have dimension must be less then the total dimension")
+  }
+  if (any(exc.dim > n.dim)) {
+    stop("Error: The exclusion dimension must be less then the total dimension")
+  }
+  if (length(intersect(must.dim, exc.dim)) > 0) {
+    stop("Error: The same dimension is presented in both the exclusion dimension and must have dimension")
+  }
 
   ## check skip position
+  n.exc <- length(exc.dim)
+  n.must <- length(must.dim)
+  mask.exc <- rep(FALSE, n.dim)
+  mask.exc[exc.dim] <- TRUE
   skip.location <- rep(FALSE, matrix.profile.size)
 
   for (i in 1:matrix.profile.size) {
-    if (any(is.na(data[i:(i + window.size - 1), ])) || any(is.infinite(data[i:(i + window.size - 1), ]))) {
+    if (any(is.na(data[i:(i + window.size - 1), !mask.exc])) || any(is.infinite(data[i:(i + window.size - 1), !mask.exc]))) {
       skip.location[i] <- TRUE
     }
   }
@@ -208,10 +223,20 @@ mstomp.par <- function(data, window.size, exclusion.zone = 1 / 2, n.workers = 2,
       exc.zone.ed <- min(matrix.profile.size, idx + exclusion.zone)
       dist.pro[exc.zone.st:exc.zone.ed, ] <- Inf
       dist.pro[data.sd < eps] <- Inf
-      if (skip.location[idx]) {
+      if (skip.location[idx] || any(data.sd[idx, !mask.exc] < eps)) {
         dist.pro[] <- Inf
       }
       dist.pro[skip.location, ] <- Inf
+
+      # apply dimension "must have" and "exclusion"
+      dist.pro[, exc.dim] <- Inf
+
+      if (n.must > 0) {
+        mask.must <- rep(FALSE, n.dim)
+        mask.must[must.dim] <- TRUE
+        dist.pro.must <- dist.pro[, mask.must]
+        dist.pro[, mask.must] <- -Inf
+      }
 
       # figure out and store the nearest neighbor
       if (n.dim > 1) {
@@ -221,10 +246,13 @@ mstomp.par <- function(data, window.size, exclusion.zone = 1 / 2, n.workers = 2,
         dist.pro.sort <- dist.pro
       }
 
+      if (n.must > 0) {
+        dist.pro.sort[, 1:n.must] <- dist.pro.must
+      }
       dist.pro.cum <- rep(0, matrix.profile.size)
       dist.pro.merg <- rep(0, matrix.profile.size)
 
-      for (k in 1:n.dim) {
+      for (k in (max(1, n.must):(n.dim - n.exc))) {
         dist.pro.cum <- dist.pro.cum + dist.pro.sort[, k]
         dist.pro.merg[] <- dist.pro.cum / k
         # left matrix.profile
@@ -274,6 +302,28 @@ mstomp.par <- function(data, window.size, exclusion.zone = 1 / 2, n.workers = 2,
     right.matrix.profile[idx.work[[batch[[i]]$idx]], ] <- batch[[i]]$pro.muls.right
     profile.index[idx.work[[batch[[i]]$idx]], ] <- batch[[i]]$pro.idxs
     matrix.profile[idx.work[[batch[[i]]$idx]], ] <- batch[[i]]$pro.muls
+  }
+
+  ## remove bad k setting in the returned matrix
+  if (n.must > 1) {
+    matrix.profile[, 1:(n.must - 1)] <- NA
+    right.matrix.profile[, 1:(n.must - 1)] <- NA
+    left.matrix.profile[, 1:(n.must - 1)] <- NA
+  }
+  if (n.exc > 0) {
+    matrix.profile[, (n.dim - n.exc + 1):n.dim] <- NA
+    right.matrix.profile[, (n.dim - n.exc + 1):n.dim] <- NA
+    left.matrix.profile[, (n.dim - n.exc + 1):n.dim] <- NA
+  }
+  if (n.must > 1) {
+    profile.index[, 1:(n.must - 1)] <- NA
+    right.profile.index[, 1:(n.must - 1)] <- NA
+    left.profile.index[, 1:(n.must - 1)] <- NA
+  }
+  if (n.exc > 0) {
+    profile.index[, (n.dim - n.exc + 1):n.dim] <- NA
+    right.profile.index[, (n.dim - n.exc + 1):n.dim] <- NA
+    left.profile.index[, (n.dim - n.exc + 1):n.dim] <- NA
   }
 
   tictac <- Sys.time() - tictac

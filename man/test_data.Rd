@@ -30,4 +30,4 @@ and the version distributed here is from (2)
 \item Yeh C-CM, Kavantzas N, Keogh E. Matrix profile IV: Using Weakly Labeled Time Series to Predict Outcomes. Proc VLDB Endow. 2017 Aug 1;10(12):1802–12.
 }
 }
-\keyword{data}
+\keyword{datasets}

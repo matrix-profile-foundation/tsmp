@@ -12,7 +12,7 @@
 #' @param window.size an `int` with the size of the sliding window.
 #' @param must.dim an `int` or `vector` of which dimensions to forcibly include (default is `NULL`).
 #' @param exc.dim an `int` or `vector` of which dimensions to exclude (default is `NULL`).
-#' @param exclusion.zone a `numeric` with size of the exclusion zone, based on query size (default is `1/2`).
+#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on query size (default is `1/2`).
 #' @param verbose an `int`. See details. (Default is `2`).
 #'
 #' @return Returns the matrix profile `mp` and profile index `pi`.
@@ -239,11 +239,11 @@ mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion
     }
   }
 
-  ## remove bad k setting in the returned matrix
   matrix.profile <- sqrt(matrix.profile)
   right.matrix.profile <- sqrt(right.matrix.profile)
   left.matrix.profile <- sqrt(left.matrix.profile)
 
+  ## remove bad k setting in the returned matrix
   if (n.must > 1) {
     matrix.profile[, 1:(n.must - 1)] <- NA
     right.matrix.profile[, 1:(n.must - 1)] <- NA

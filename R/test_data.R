@@ -17,5 +17,5 @@
 #'
 #' @references 1. Roverso, D., Multivariate temporal classification by windowed wavelet decomposition and recurrent neural networks, in 3rd ANS Int’l Topical Meeting on Nuclear Plant Instrumentation, Control and Human-Machine Interface, vol. 20, Washington, DC, USA, 2000.
 #' 2. Yeh C-CM, Kavantzas N, Keogh E. Matrix profile IV: Using Weakly Labeled Time Series to Predict Outcomes. Proc VLDB Endow. 2017 Aug 1;10(12):1802–12.
-#' @keywords data
+#' @keywords datasets
 "test_data"

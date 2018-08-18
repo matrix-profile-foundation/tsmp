@@ -1,13 +1,17 @@
 README
 ================
 Francisco Bischoff
-– 14 Aug 2018
+\- 18 Aug 2018
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # Time Series Matrix-Profile <img src="man/figures/logo.png" align="right" />
 
+[![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)](https://choosealicense.com/licenses/mit)
+[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![Build
-Status](https://travis-ci.com/franzbischoff/tsmp.svg?branch=master)](https://travis-ci.com/franzbischoff/tsmp)
-[![codecov](https://codecov.io/gh/franzbischoff/tsmp/branch/master/graph/badge.svg)](https://codecov.io/gh/franzbischoff/tsmp)
+Status](https://travis-ci.com/franzbischoff/tsmp.svg?branch=develop)](https://travis-ci.com/franzbischoff/tsmp)
+[![codecov](https://codecov.io/gh/franzbischoff/tsmp/branch/develop/graph/badge.svg)](https://codecov.io/gh/franzbischoff/tsmp)
 [![CRAN
 version](http://www.r-pkg.org/badges/version/tsmp)](https://cran.r-project.org/package=tsmp)
 
@@ -16,10 +20,12 @@ version](http://www.r-pkg.org/badges/version/tsmp)](https://cran.r-project.org/p
 R Functions implementing UCR Matrix Profile Algorithm
 (<http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>).
 
-This is under development and is intended to be a MP toolkit
+This is under development and is intended to be a general purpose MP
+toolkit
 
-Further files will be provided with actual use cases as
-‘Classification’, ‘MOTIF extraction’, ‘MDS visualization’, etc.
+After basic tools are finished and API is mature, further functions for
+‘Classification’, ‘MOTIF extraction’, ‘MDS visualization’ etc. will be
+added.
 
 Please be welcome to suggest improvements.
 
@@ -36,31 +42,38 @@ devtools::install_github("franzbischoff/tsmp")
 
 ## Currently available Features
 
-  - STAMP (single and multithread versions)
-  - STOMP (single and multithread versions)
+  - STAMP (single and multi-thread versions)
+  - STOMP (single and multi-thread versions)
   - Multivariate STOMP (mSTOMP)
   - Multivariate MOTIF Search (from mSTOMP)
   - Scalable Dictionary learning for Time Series (SDTS) prediction
+  - FLUSS (Fast Low-cost Unipotent Semantic Segmentation)
   - Misc:
       - MASS v2.0
       - Fast moving average
       - Fast moving SD
 
-## Roadmap
+## Road map
 
   - Improve Joins outputs
   - Multidimensional Space
   - Time Series Chains
+  - FLUSS Arc Plot and SiMPle Arc Plot
   - Annotation vectors (e.g.: Stop-word MOTIF bias, Actionability bias)
-  - FLOSS (Matrix Profile Segmentation)
   - SiMPle-Fast (Fast Similarity Matrix-Profile for Music Analysis and
     Exploration)
   - MOTIFs under Uniform Scaling
   - GPU-STOMP
-  - Real-time version of previous algorithms
+  - Real-time version of previous algorithms (STAMPI, FLOSS, etc)
   - MASS Extensions (ADP, WQ, QwG)
   - SCRIMP (waiting for publication)
 
 ## Other projects with Matrix-Profile
 
-<https://github.com/ZiyaoWei/pyMatrixProfile>
+  - Python: <https://github.com/ZiyaoWei/pyMatrixProfile>
+
+## Code of Conduct
+
+Please note that this project is released with a [Contributor Code of
+Conduct](CONDUCT.md). By participating in this project you agree to
+abide by its terms.

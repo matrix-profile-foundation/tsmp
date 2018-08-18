@@ -5,10 +5,11 @@
 #' The Matrix Profile, has the potential to revolutionize time series data mining because of its generality, versatility, simplicity and scalability. In particular it has implications for time series motif discovery, time series joins, shapelet discovery (classification), density estimation, semantic segmentation, visualization, rule discovery, clustering etc.
 #' The anytime STAMP computes the Matrix Profile and Profile Index in such manner that it can be stopped before its complete calculation and return the best so far results allowing ultra-fast approximate solutions.
 #' `verbose` changes how much information is printed by this function; `0` means nothing, `1` means text, `2` means text and sound.
+#' `exclusion.zone` is used to avoid  trivial matches; if a query data is provided (join similarity), this parameter is ignored.
 #'
 #' @param ... a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix profile.
 #' @param window.size an `int`. Size of the sliding window.
-#' @param exclusion.zone an `int`. Size of the exclusion zone, based on query size (default is `1/2`).
+#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on query size (default is `1/2`). See details.
 #' @param s.size a `numeric`. for anytime algorithm, represents the size (in observations) the random calculation will occour (default is `Inf`).
 #' @param n.workers an `int`. Number of workers for parallel. (Default is `2`).
 #' @param verbose an `int`. See details. (Default is `2`).
@@ -27,7 +28,12 @@
 #' Sys.sleep(1) # sometimes sleep is needed if you run parallel multiple times in a row
 #' mp <- stamp.par(toy_data$data[1:200,1], window.size = 30, verbose = 0)
 #' \dontrun{
-#' mp <- stamp.par(ref.data, query.data, window.size = 30, s.size = round(nrows(ref.data) * 0.1))
+#' ref.data <- toy_data$data[,1]
+#' query.data <- toy_data$data[,2]
+#' # self similarity
+#' mp <- stamp.par(ref.data, window.size = 30, s.size = round(nrows(ref.data) * 0.1))
+#' # join similarity
+#' mp <- stamp.par(ref.data, query.data, window.size = 30, s.size = round(nrows(query.data) * 0.1))
 #' }
 #'
 #' @import beepr doSNOW foreach parallel
@@ -36,45 +42,59 @@ stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, n.
   data <- args[[1]]
   if (length(args) > 1) {
     query <- args[[2]]
+    exclusion.zone <- 0 # don't use exclusion zone for joins
   } else {
     query <- data
   }
 
+  ## transform data into matrix
   if (is.vector(data)) {
     data <- as.matrix(data)
   }
-  if (is.vector(query)) {
-    query <- as.matrix(query)
-  }
-
-  if (is.matrix(data)) {
+  else if (is.matrix(data)) {
     if (ncol(data) > nrow(data)) {
       data <- t(data)
     }
+  } else {
+    stop("Unknown type of data. Must be: a column matrix or a vector")
   }
 
-  if (is.matrix(query)) {
+  if (is.vector(query)) {
+    query <- as.matrix(query)
+  } else if (is.matrix(query)) {
     if (ncol(query) > nrow(query)) {
       query <- t(query)
     }
+  } else {
+    stop("Unknown type of query. Must be: a column matrix or a vector")
   }
 
   exclusion.zone <- floor(window.size * exclusion.zone)
   data.size <- nrow(data)
-  query.size <- nrow(data)
+  query.size <- nrow(query)
   matrix.profile.size <- data.size - window.size + 1
+  num.queries <- query.size - window.size + 1
+
+  if (window.size > data.size / 2) {
+    stop("Error: Time series is too short relative to desired subsequence length")
+  }
+  if (window.size < 4) {
+    stop("Error: Subsequence length must be at least 4")
+  }
 
   matrix.profile <- matrix(Inf, matrix.profile.size, 1)
   left.matrix.profile <- right.matrix.profile <- matrix.profile
   profile.index <- matrix(-1, matrix.profile.size, 1)
   left.profile.index <- right.profile.index <- profile.index
 
-  ssize <- min(s.size, matrix.profile.size)
-  order <- sample(1:matrix.profile.size, size = ssize)
+  ssize <- min(s.size, num.queries)
+  order <- sample(1:num.queries, size = ssize)
+
+  tictac <- Sys.time()
 
   cores <- min(max(2, n.workers), parallel::detectCores())
 
-  cols <- min(data.size, 100)
+  cols <- min(num.queries, 100)
 
   lines <- 0:(ceiling(ssize / cols) - 1)
   if (verbose > 0) {
@@ -97,8 +117,6 @@ stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, n.
   )), TRUE)
 
   pre <- mass.pre(data, data.size, query, query.size, window.size = window.size)
-
-  tictac <- Sys.time()
 
   j <- NULL # CRAN NOTE fix
   `%dopar%` <- foreach::`%dopar%` # CRAN NOTE fix

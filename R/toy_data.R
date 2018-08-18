@@ -12,5 +12,5 @@
 #'
 #' @references 1. Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif Discovery.
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
-#' @keywords data
+#' @keywords datasets
 "toy_data"
