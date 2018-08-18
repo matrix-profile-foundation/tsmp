@@ -4,7 +4,7 @@
 \name{tsmp}
 \alias{tsmp}
 \alias{tsmp-package}
-\title{tsmp: Time Series with Matrix Profile}
+\title{Time Series with Matrix Profile}
 \description{
 \if{html}{\figure{logo.png}{options: align='right'}}
 

@@ -5,7 +5,7 @@ Francisco Bischoff
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Time Series Matrix-Profile <img src="man/figures/logo.png" align="right" />
+# Time Series with Matrix Profile <img src="man/figures/logo.png" align="right" />
 
 [![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)](https://choosealicense.com/licenses/mit)
 [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
@@ -60,7 +60,7 @@ devtools::install_github("franzbischoff/tsmp")
   - Time Series Chains
   - FLUSS Arc Plot and SiMPle Arc Plot
   - Annotation vectors (e.g.: Stop-word MOTIF bias, Actionability bias)
-  - SiMPle-Fast (Fast Similarity Matrix-Profile for Music Analysis and
+  - SiMPle-Fast (Fast Similarity Matrix Profile for Music Analysis and
     Exploration)
   - MOTIFs under Uniform Scaling
   - GPU-STOMP
@@ -68,12 +68,12 @@ devtools::install_github("franzbischoff/tsmp")
   - MASS Extensions (ADP, WQ, QwG)
   - SCRIMP (waiting for publication)
 
-## Other projects with Matrix-Profile
+## Other projects with Matrix Profile
 
   - Python: <https://github.com/ZiyaoWei/pyMatrixProfile>
 
 ## Code of Conduct
 
 Please note that this project is released with a [Contributor Code of
-Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to
-abide by its terms.
+Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree
+to abide by its terms.
