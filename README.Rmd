@@ -30,11 +30,8 @@ lifecycle.color <- "blue"
 [![lifecycle](https://img.shields.io/badge/lifecycle-`r lifecycle`-`r lifecycle.color`.svg)](https://www.tidyverse.org/lifecycle/#`r lifecycle`)
 [![Build Status](https://travis-ci.com/franzbischoff/tsmp.svg?branch=`r current.branch`)](https://travis-ci.com/franzbischoff/tsmp)
 [![codecov](https://codecov.io/gh/franzbischoff/tsmp/branch/`r current.branch`/graph/badge.svg)](https://codecov.io/gh/franzbischoff/tsmp)
+[![CRAN version](http://www.r-pkg.org/badges/version/tsmp)](https://cran.r-project.org/package=tsmp)
 ```{r echo=FALSE}
-if (current.branch == "master") {
-  knitr::asis_output("[![CRAN
-version](http://www.r-pkg.org/badges/version/tsmp)](https://cran.r-project.org/package=tsmp)")
-}
 # [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/tsmp)](https://cran.r-project.org/package=tsmp)
 ```
 
