@@ -147,6 +147,7 @@ fluss.extract <- function(arc.counts, num.segments, window.size, exclusion.zone 
 #' w <- 210
 #' mp <- mstomp(data, w, verbose = 0)
 #' cac <- fluss.cac(mp$pi, w)
+#'
 #' \dontrun{
 #' data <- fluss_data$walkjogrun$data
 #' w <- fluss_data$walkjogrun$window # 80

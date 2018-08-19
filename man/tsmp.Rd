@@ -26,7 +26,8 @@ Useful links:
 
 Other contributors:
 \itemize{
-  \item Michael Yeh \email{myeh003@ucr.edu} [researcher, conceptor, contributor]
+  \item Michael Yeh \email{myeh003@ucr.edu} (https://orcid.org/0000-0002-9807-2963) [researcher, conceptor, contributor]
+  \item Yan Zhu \email{yzhu015@ucr.edu} [researcher, conceptor, contributor]
 }
 
 }
