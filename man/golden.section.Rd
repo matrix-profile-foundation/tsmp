@@ -20,7 +20,7 @@ golden.section(dist.pro, label, pos.st, pos.ed, beta, window.size)
 \item{window.size}{an integer with the sliding window size}
 }
 \value{
-Returns the best threashold and its F-Score
+Returns the best threshold and its F-Score
 }
 \description{
 Computes the golden section for individual candidates

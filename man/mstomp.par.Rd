@@ -8,7 +8,7 @@ mstomp.par(data, window.size, must.dim = NULL, exc.dim = NULL,
   exclusion.zone = 1/2, verbose = 2, n.workers = 2)
 }
 \arguments{
-\item{data}{a \code{matrix} of \code{numeric}, where each colums is a time series. Accepts \code{vector} (see details), \code{list} and \code{data.frame} too.}
+\item{data}{a \code{matrix} of \code{numeric}, where each column is a time series. Accepts \code{vector} (see details), \code{list} and \code{data.frame} too.}
 
 \item{window.size}{an \code{int}. Size of the sliding window.}
 
@@ -38,7 +38,6 @@ Although this functions handles Multivariate Time Series, it can also be used to
 }
 \examples{
 # using all dimensions
-Sys.sleep(1) # sometimes sleep is needed if you run parallel multiple times in a row
 mp <- mstomp.par(toy_data$data[1:100,], 30, verbose = 0)
 }
 \references{

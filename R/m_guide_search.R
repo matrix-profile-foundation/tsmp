@@ -4,7 +4,7 @@
 #'
 #' Although this functions handles Multivariate Time Series, it can also be used to handle Univariate Time Series.
 #'
-#' @param data a `matrix` of `numeric`, where each colums is a time series. Accepts `vector` (see details), `list` and `data.frame` too.
+#' @param data a `matrix` of `numeric`, where each column is a time series. Accepts `vector` (see details), `list` and `data.frame` too.
 #' @param window.size an `int` with the size of the sliding window.
 #' @param matrix.profile multidimensional matrix profile (matrix)
 #' @param profile.index multidimensional profile index (from [mstomp()] or [mstomp.par()]).

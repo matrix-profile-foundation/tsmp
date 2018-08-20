@@ -13,4 +13,5 @@
 ^README-.*\.png$
 ^\.httr-oauth$
 ^make\.R$
-^CONDUCT\.md$
+^CODE_OF_CONDUCT\.md$
+^\.github/

@@ -8,7 +8,7 @@ unconstrain.search(data, window.size, matrix.profile, profile.index,
   n.bit = 4, k = Inf)
 }
 \arguments{
-\item{data}{a \code{matrix} of \code{numeric}, where each colums is a time series. Accepts \code{vector} (see details), \code{list} and \code{data.frame} too.}
+\item{data}{a \code{matrix} of \code{numeric}, where each column is a time series. Accepts \code{vector} (see details), \code{list} and \code{data.frame} too.}
 
 \item{window.size}{an \code{int} with the size of the sliding window.}
 

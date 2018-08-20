@@ -70,9 +70,35 @@ fast.movavg <- function(data, n) {
 std <- function(x) {
   sdx <- stats::sd(x)
 
-  if (sdx == 0)
+  if (sdx == 0) {
     return(sdx)
+  }
 
   return(sqrt((length(x) - 1) / length(x)) * sdx)
 }
 
+#' Play sound with `audio`
+#'
+#' @param data sound data provided by this package
+#'
+#' @keywords internal
+#' @import audio
+beep <- function(data) {
+  if (!(is.null(audio::audio.drivers()) || nrow(audio::audio.drivers()) == 0)) {
+    tryCatch({
+      audio::play(data)
+    },
+    error = function(cond) {
+      message("Failed to play audio alert")
+      message(cond)
+      invisible()
+    },
+    warning = function(cond) {
+      message("Something went wrong playing audio alert")
+      message(cond)
+      invisible()
+    }
+    )
+  }
+  invisible()
+}
