@@ -8,7 +8,7 @@
 #' Although this functions handles Multivariate Time Series, it can also be used to handle Univariate Time Series.
 #' `verbose` changes how much information is printed by this function; `0` means nothing, `1` means text, `2` means text and sound.
 #'
-#' @param data a `matrix` of `numeric`, where each colums is a time series. Accepts `vector` (see details), `list` and `data.frame` too.
+#' @param data a `matrix` of `numeric`, where each column is a time series. Accepts `vector` (see details), `list` and `data.frame` too.
 #' @param window.size an `int`. Size of the sliding window.
 #' @param must.dim an `int` or `vector` of which dimensions to forcibly include (default is `NULL`).
 #' @param exc.dim an `int` or `vector` of which dimensions to exclude (default is `NULL`).
@@ -29,9 +29,8 @@
 #'
 #' @examples
 #' # using all dimensions
-#' Sys.sleep(1) # sometimes sleep is needed if you run parallel multiple times in a row
 #' mp <- mstomp.par(toy_data$data[1:100,], 30, verbose = 0)
-#' @import audio doSNOW foreach parallel
+#' @import doSNOW foreach parallel
 
 mstomp.par <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion.zone = 1 / 2, verbose = 2, n.workers = 2) {
   eps <- .Machine$double.eps^0.5
@@ -140,7 +139,7 @@ mstomp.par <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclu
     on.exit(close(pb), TRUE)
   }
   if (verbose > 1) {
-    on.exit(audio::play(sounds[[1]]), TRUE)
+    on.exit(beep(sounds[[1]]), TRUE)
   }
 
   ## initialize variable

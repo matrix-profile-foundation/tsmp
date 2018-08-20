@@ -1,11 +1,11 @@
 #' Original data used in the mSTAMP demo
 #'
-#' A synthetic dataset with embeded MOTIFs for multidimensional discovery
+#' A synthetic dataset with embedded MOTIFs for multidimensional discovery
 #'
 #' @docType data
 #' @format A `list` with a `matrix` with 550 rows and 3 dimensions and an `int`:
 #' \describe{
-#'   \item{data}{data with embeded MOTIFs}
+#'   \item{data}{data with embedded MOTIFs}
 #'   \item{sub.len}{size of sliding window}
 #' }
 #' @source \url{https://sites.google.com/view/mstamp/}

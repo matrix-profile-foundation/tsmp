@@ -125,7 +125,7 @@ fluss.extract <- function(arc.counts, num.segments, window.size, exclusion.zone 
 #' Computes the arc count with edge correction (CAC).
 #'
 #' Original paper suggest using the classic statistical-process-control heuristic to set a threshold
-#' where a semantic change may occur in CAC. This may be useful in realtime implementation as we don't
+#' where a semantic change may occur in CAC. This may be useful in real-time implementation as we don't
 #' know in advance the number of domain changes to look for. Please check original paper (1).
 #'
 #' @param profile.index the profile index for arc counting.

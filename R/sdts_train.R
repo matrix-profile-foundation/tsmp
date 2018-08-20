@@ -148,7 +148,7 @@ sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parall
     on.exit(close(pb))
   }
   if (verbose > 1) {
-    on.exit(audio::play(sounds[[1]]), TRUE)
+    on.exit(beep(sounds[[1]]), TRUE)
   }
 
   for (i in 1:n.window.size) {
@@ -342,7 +342,7 @@ sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parall
 #' @param beta a number that balance the F-Score. Beta > 1 towards recall, < towards precision
 #' @param window.size an integer with the sliding window size
 #'
-#' @return Returns the best threashold and its F-Score
+#' @return Returns the best threshold and its F-Score
 #'
 #' @keywords internal
 #'
@@ -384,7 +384,7 @@ golden.section <- function(dist.pro, label, pos.st, pos.ed, beta, window.size) {
 #' @param window.size an integer with the sliding window size
 #' @param fit.idx an integer with the index of the current threshold
 #'
-#' @return Returns the best threashold and its F-Score
+#' @return Returns the best threshold and its F-Score
 #'
 #' @keywords internal
 
