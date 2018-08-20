@@ -141,6 +141,9 @@ mstomp.par <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclu
   }
   if (verbose > 1) {
     on.exit(beepr::beep(10), TRUE)
+  # #  sound_path <- system.file("sounds/microwave_ping_mono.wav", package = "beepr")
+  #  # sfx <- audio::load.wave(sound_path)
+  #   on.exit(audio::play(sfx), TRUE)
   }
 
   ## initialize variable

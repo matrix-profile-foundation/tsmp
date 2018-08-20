@@ -421,12 +421,6 @@ Source: CRAN
 Version: 0.2.1
 Hash: 88926ad9c43581fd0822a37c8ed09f05
 
-Package: magick
-Source: CRAN
-Version: 1.9
-Hash: 74dcfef63a0b0aa94fa61d22ca922de1
-Requires: Rcpp, curl, knitr, magrittr
-
 Package: magrittr
 Source: CRAN
 Version: 1.5
