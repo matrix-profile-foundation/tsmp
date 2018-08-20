@@ -1,4 +1,5 @@
-This is a point release fixing failing tests on CRAN.
+* Changed dependency from beepr to audio (actually beepr depends on audio, so less dependencies).
+* Added persons to DESCRIPTION as their code/research was implemented in this package.
 
 ## Test environments
 * local Windows 10 install, R 3.5.1

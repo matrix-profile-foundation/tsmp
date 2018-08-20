@@ -15,12 +15,12 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Time Series Matrix-Profile <img src="man/figures/logo.png" align="right" />
+# Time Series with Matrix Profile <img src="man/figures/logo.png" align="right" />
 
 ```{r include=FALSE}
 library(git2r)
 # current.branch <- repository_head()$name
-current.branch <- "develop"
+current.branch <- "master"
 lifecycle <- "maturing" # maturing-blue # stable-brightgreen
 lifecycle.color <- "blue"
 ```
@@ -76,14 +76,14 @@ devtools::install_github("franzbischoff/tsmp")
 * Time Series Chains
 * FLUSS Arc Plot and SiMPle Arc Plot
 * Annotation vectors (e.g.: Stop-word MOTIF bias, Actionability bias)
-* SiMPle-Fast (Fast Similarity Matrix-Profile for Music Analysis and Exploration)
+* SiMPle-Fast (Fast Similarity Matrix Profile for Music Analysis and Exploration)
 * MOTIFs under Uniform Scaling
 * GPU-STOMP
 * Real-time version of previous algorithms (STAMPI, FLOSS, etc)
 * MASS Extensions (ADP, WQ, QwG)
 * SCRIMP (waiting for publication)
 
-## Other projects with Matrix-Profile
+## Other projects with Matrix Profile
 - Python: https://github.com/ZiyaoWei/pyMatrixProfile
 
 ## Code of Conduct

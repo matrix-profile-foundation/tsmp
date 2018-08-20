@@ -6,7 +6,7 @@
 \title{Original data used in the mSTAMP demo}
 \format{A \code{list} with a \code{matrix} with 550 rows and 3 dimensions and an \code{int}:
 \describe{
-\item{data}{data with embeded MOTIFs}
+\item{data}{data with embedded MOTIFs}
 \item{sub.len}{size of sliding window}
 }}
 \source{
@@ -16,7 +16,7 @@
 toy_data
 }
 \description{
-A synthetic dataset with embeded MOTIFs for multidimensional discovery
+A synthetic dataset with embedded MOTIFs for multidimensional discovery
 }
 \references{
 \enumerate{

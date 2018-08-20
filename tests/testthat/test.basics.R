@@ -1,15 +1,21 @@
 context("Testing if basic functions are ok")
 library(tsmp)
 w <- 30
-ref.data <- toy_data$data[,1]
-query.data <- toy_data$data[,1]
+ref.data <- toy_data$data[, 1]
+query.data <- toy_data$data[, 1]
 d.size <- length(ref.data)
 q.size <- length(query.data)
 
+test_that("Errors", {
+  # big window size
+  expect_error(fast.movsd(toy_data$data[, 1], 1), regexp = "must be at least 2")
+  expect_error(fast.movsd(toy_data$data[1:100, 1], 500), regexp = "is too large")
+})
+
 pre <- mass.pre(ref.data, d.size, query.data, q.size, w)
 res <- mass(pre$data.fft, query.data[1:w], d.size, w, pre$data.mean, pre$data.sd, pre$query.mean[1], pre$query.sd[1])
-movsd <- fast.movsd(toy_data$data[,1], 30)
-movavg <- fast.movavg(toy_data$data[,1], 30)
+movsd <- fast.movsd(toy_data$data[, 1], 30)
+movavg <- fast.movavg(toy_data$data[, 1], 30)
 
 test_that("Fast Moving SD is ok", {
   expect_known_hash(round(movsd, 3), "ffda40fd35")

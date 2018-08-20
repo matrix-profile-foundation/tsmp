@@ -10,7 +10,7 @@
 #' @param ... a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix profile.
 #' @param window.size an `int`. Size of the sliding window.
 #' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on query size (default is `1/2`). See details.
-#' @param s.size a `numeric`. for anytime algorithm, represents the size (in observations) the random calculation will occour (default is `Inf`).
+#' @param s.size a `numeric`. for anytime algorithm, represents the size (in observations) the random calculation will occur (default is `Inf`).
 #' @param verbose an `int`. See details. (Default is `2`).
 #'
 #' @return Returns the matrix profile `mp` and profile index `pi`.
@@ -98,7 +98,7 @@ stamp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, verbos
     on.exit(close(pb))
   }
   if (verbose > 1) {
-    on.exit(beepr::beep(), TRUE)
+    on.exit(beep(sounds[[1]]), TRUE)
   }
   # anytime must return the result always
   on.exit(return(list(

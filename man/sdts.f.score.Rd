@@ -9,7 +9,7 @@ sdts.f.score(gtruth, pred, beta = 1)
 \arguments{
 \item{gtruth}{a \code{vector} of \code{logical}. Ground truth annotation.}
 
-\item{pred}{a \code{vector} of \code{logical}. Predictied annotation from \code{\link[=sdts.predict]{sdts.predict()}}}
+\item{pred}{a \code{vector} of \code{logical}. Predicted annotation from \code{\link[=sdts.predict]{sdts.predict()}}}
 
 \item{beta}{a \code{numeric}. See details. (default is \code{1}).}
 }
