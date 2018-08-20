@@ -3,8 +3,11 @@ library(tsmp)
 
 w <- 30
 data <- toy_data$data # 3 dimensions matrix
-Sys.sleep(1)
-result <- simple.fast(data, w, verbose = 2)
+if (skip_on_cran()) {
+  result <- simple.fast(data, w, verbose = 2)
+} else {
+  result <- simple.fast(data, w, verbose = 0)
+}
 
 test_that("SiMPle Results", {
   expect_equal(round(sum(result$mp), 3), 806.132)

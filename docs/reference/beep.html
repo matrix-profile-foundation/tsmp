@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Original data used in the FLUSS paper — fluss_data • tsmp</title>
+<title>Play sound with <code>audio</code> — beep • tsmp</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,10 +30,9 @@
 
 
 
-<meta property="og:title" content="Original data used in the FLUSS paper — fluss_data" />
+<meta property="og:title" content="Play sound with <code>audio</code> — beep" />
 
-<meta property="og:description" content="Contains two datasets used in FLUSS paper (1), first is TiltABP from (2), and second is WalkJogRun
-from PAMAP's dataset (3)" />
+<meta property="og:description" content="Play sound with audio" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -103,53 +102,35 @@ from PAMAP's dataset (3)" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Original data used in the FLUSS paper</h1>
-    <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/fluss_data.R'><code>R/fluss_data.R</code></a></small>
-    <div class="hidden name"><code>fluss_data.Rd</code></div>
+    <h1>Play sound with <code>audio</code></h1>
+    <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/misc.R'><code>R/misc.R</code></a></small>
+    <div class="hidden name"><code>beep.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Contains two datasets used in FLUSS paper (1), first is TiltABP from (2), and second is WalkJogRun
-from PAMAP's dataset (3)</p>
+    <p>Play sound with <code>audio</code></p>
     
     </div>
 
-    <pre class="usage"><span class='no'>fluss_data</span></pre>
-        
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p>A list containing:</p><dl class='dl-horizontal'>
-<dt>data</dt><dd><p>one column matrix with the dataset's data</p></dd>
-<dt>gtruth</dt><dd><p>a vector with the ground truth of semantic change according to provided dataset</p></dd>
-<dt>window</dt><dd><p>window size used in original paper</p></dd>
-</dl>
+    <pre class="usage"><span class='fu'>beep</span>(<span class='no'>data</span>)</pre>
     
-    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
-
-    <p><a href='https://sites.google.com/site/onlinesemanticsegmentation/'>https://sites.google.com/site/onlinesemanticsegmentation/</a></p>
-<p><a href='http://www.cs.ucr.edu/~eamonn/time_series_data/'>http://www.cs.ucr.edu/~eamonn/time_series_data/</a></p>
-    
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
-    <ol>
-<li><p>Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.</p></li>
-<li><p>Heldt, T., Oefinger, M.B., Hoshiyama, M. and Mark, R.G., 2003, September. Circulatory response to passive and active changes in posture. In IEEE Computers in Cardiology, 2003 (pp. 263-266).</p></li>
-<li><p>Reiss, A. and Stricker, D., 2012. Introducing a new benchmarked dataset for activity monitoring. In 16th International Symposium on Wearable Computers (ISWC), 2012, pages 108– 109. IEEE, 2012.</p></li>
-</ol>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>data</th>
+      <td><p>sound data provided by this package</p></td>
+    </tr>
+    </table>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
-      <li><a href="#format">Format</a></li>
-
-      <li><a href="#source">Source</a></li>
-
-      <li><a href="#references">References</a></li>
-          </ul>
+      <li><a href="#arguments">Arguments</a></li>
+                </ul>
 
   </div>
 </div>

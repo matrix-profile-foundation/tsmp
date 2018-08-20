@@ -4,7 +4,7 @@
 #'
 #' `verbose` changes how much information is printed by this function; `0` means nothing, `1` means text, `2` means text and sound.
 #'
-#' @param data a `matrix` of `numeric`, where each colums is a time series. Accepts `list` and `data.frame` too.
+#' @param data a `matrix` of `numeric`, where each column is a time series. Accepts `list` and `data.frame` too.
 #' @param window.size an `int` with the size of the sliding window.
 #' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on query size (default is `1/2`).
 #' @param verbose an `int`. See details. (Default is `2`).
@@ -76,7 +76,7 @@ simple.fast <- function(data, window.size, exclusion.zone = 1 / 2, verbose = 2) 
     on.exit(close(pb))
   }
   if (verbose > 1) {
-    on.exit(audio::play(sounds[[1]]), TRUE)
+    on.exit(beep(sounds[[1]]), TRUE)
   }
 
   ## compute necessary values
