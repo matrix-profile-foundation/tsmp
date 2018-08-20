@@ -14,7 +14,7 @@ Returns \code{chains}, a \code{list} of chains founded with more than 2 patterns
 with the best one.
 }
 \description{
-Find Time Series Chains
+Time Series Chains is a new primitive for time series data mining.
 }
 \examples{
 w <- 50

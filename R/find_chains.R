@@ -1,5 +1,7 @@
 #' Find Time Series Chains
 #'
+#' Time Series Chains is a new primitive for time series data mining.
+#'
 #' @param matrices a result from STAMP or STOMP algorithms
 #'
 #' @return Returns `chains`, a `list` of chains founded with more than 2 patterns and `best`

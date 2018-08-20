@@ -140,7 +140,7 @@ mstomp.par <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclu
     on.exit(close(pb), TRUE)
   }
   if (verbose > 1) {
-    on.exit(beepr::beep(), TRUE)
+    on.exit(beepr::beep(10), TRUE)
   }
 
   ## initialize variable

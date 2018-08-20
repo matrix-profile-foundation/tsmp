@@ -148,7 +148,7 @@ sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parall
     on.exit(close(pb))
   }
   if (verbose > 1) {
-    on.exit(beepr::beep(), TRUE)
+    on.exit(beepr::beep(10), TRUE)
   }
 
   for (i in 1:n.window.size) {
