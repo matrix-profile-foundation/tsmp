@@ -114,7 +114,7 @@ mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion
     on.exit(close(pb))
   }
   if (verbose > 1) {
-    on.exit(beepr::beep(10), TRUE)
+    on.exit(audio::play(sounds[[1]]), TRUE)
   }
 
   ## initialization

@@ -76,7 +76,7 @@ simple.fast <- function(data, window.size, exclusion.zone = 1 / 2, verbose = 2) 
     on.exit(close(pb))
   }
   if (verbose > 1) {
-    on.exit(beepr::beep(10), TRUE)
+    on.exit(audio::play(sounds[[1]]), TRUE)
   }
 
   ## compute necessary values

@@ -98,7 +98,7 @@ stamp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, verbos
     on.exit(close(pb))
   }
   if (verbose > 1) {
-    on.exit(beepr::beep(10), TRUE)
+    on.exit(audio::play(sounds[[1]]), TRUE)
   }
   # anytime must return the result always
   on.exit(return(list(

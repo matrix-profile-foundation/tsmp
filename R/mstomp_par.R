@@ -31,7 +31,7 @@
 #' # using all dimensions
 #' Sys.sleep(1) # sometimes sleep is needed if you run parallel multiple times in a row
 #' mp <- mstomp.par(toy_data$data[1:100,], 30, verbose = 0)
-#' @import beepr doSNOW foreach parallel
+#' @import audio doSNOW foreach parallel
 
 mstomp.par <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion.zone = 1 / 2, verbose = 2, n.workers = 2) {
   eps <- .Machine$double.eps^0.5
@@ -140,10 +140,7 @@ mstomp.par <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclu
     on.exit(close(pb), TRUE)
   }
   if (verbose > 1) {
-    on.exit(beepr::beep(10), TRUE)
-  # #  sound_path <- system.file("sounds/microwave_ping_mono.wav", package = "beepr")
-  #  # sfx <- audio::load.wave(sound_path)
-  #   on.exit(audio::play(sfx), TRUE)
+    on.exit(audio::play(sounds[[1]]), TRUE)
   }
 
   ## initialize variable
