@@ -87,7 +87,7 @@ sdts.predict <- function(model, data, window.size) {
 #' `beta` is used to balance F-score towards recall (`>1`) or precision (`<1`).
 #'
 #' @param gtruth a `vector` of `logical`. Ground truth annotation.
-#' @param pred a `vector` of `logical`. Predictied annotation from [sdts.predict()]
+#' @param pred a `vector` of `logical`. Predicted annotation from [sdts.predict()]
 #' @param beta a `numeric`. See details. (default is `1`).
 #'
 #' @return Returns a `list` with `f.score`, `precision` and `recall`.

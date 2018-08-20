@@ -8,7 +8,7 @@
 #' Although this functions handles Multivariate Time Series, it can also be used to handle Univariate Time Series.
 #' `verbose` changes how much information is printed by this function; `0` means nothing, `1` means text, `2` means text and sound.
 #'
-#' @param data a `matrix` of `numeric`, where each colums is a time series. Accepts `vector` (see details), `list` and `data.frame` too.
+#' @param data a `matrix` of `numeric`, where each column is a time series. Accepts `vector` (see details), `list` and `data.frame` too.
 #' @param window.size an `int` with the size of the sliding window.
 #' @param must.dim an `int` or `vector` of which dimensions to forcibly include (default is `NULL`).
 #' @param exc.dim an `int` or `vector` of which dimensions to exclude (default is `NULL`).
@@ -114,7 +114,7 @@ mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion
     on.exit(close(pb))
   }
   if (verbose > 1) {
-    on.exit(audio::play(sounds[[1]]), TRUE)
+    on.exit(beep(sounds[[1]]), TRUE)
   }
 
   ## initialization
@@ -198,7 +198,7 @@ mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion
 
     if (n.dim > 1) {
       dist.pro.sort <- t(apply(distance.profile, 1, sort))
-    } # sort by row, put all -Inf to the first columns
+    } # sort by row, put all -Inf to the first column
     else {
       dist.pro.sort <- distance.profile
     }

@@ -25,7 +25,7 @@ golden.section.2(dist.pro, thold, label, pos.st, pos.ed, beta, window.size,
 \item{fit.idx}{an integer with the index of the current threshold}
 }
 \value{
-Returns the best threashold and its F-Score
+Returns the best threshold and its F-Score
 }
 \description{
 Computes the golden section for combined candidates

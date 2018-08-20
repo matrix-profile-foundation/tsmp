@@ -33,13 +33,13 @@ if (skip_on_cran()) {
   })
 
   test_that("Finish", {
-    Sys.sleep(1)
+    Sys.sleep(0.5)
     expect_message(stamp(toy_data$data[1:200, 1], window.size = 30), regex = "Finished")
-    Sys.sleep(1)
+    Sys.sleep(0.5)
     expect_message(stamp.par(toy_data$data[1:200, 1], window.size = 30), regex = "Finished")
-    Sys.sleep(1)
+    Sys.sleep(0.5)
     expect_message(mstomp(toy_data$data[1:200, 1], window.size = 30), regex = "Finished")
-    Sys.sleep(1)
+    Sys.sleep(0.5)
     expect_message(mstomp.par(toy_data$data[1:200, 1], window.size = 30), regex = "Finished")
   })
 

@@ -10,7 +10,7 @@
 #' @param ... a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix profile.
 #' @param window.size an `int`. Size of the sliding window.
 #' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on query size (default is `1/2`). See details.
-#' @param s.size a `numeric`. for anytime algorithm, represents the size (in observations) the random calculation will occour (default is `Inf`).
+#' @param s.size a `numeric`. for anytime algorithm, represents the size (in observations) the random calculation will occur (default is `Inf`).
 #' @param n.workers an `int`. Number of workers for parallel. (Default is `2`).
 #' @param verbose an `int`. See details. (Default is `2`).
 #'
@@ -25,7 +25,6 @@
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #'
 #' @examples
-#' Sys.sleep(1) # sometimes sleep is needed if you run parallel multiple times in a row
 #' mp <- stamp.par(toy_data$data[1:200,1], window.size = 30, verbose = 0)
 #' \dontrun{
 #' ref.data <- toy_data$data[,1]
@@ -36,7 +35,7 @@
 #' mp <- stamp.par(ref.data, query.data, window.size = 30, s.size = round(nrows(query.data) * 0.1))
 #' }
 #'
-#' @import beepr doSNOW foreach parallel
+#' @import doSNOW foreach parallel
 stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, n.workers = 2, verbose = 2) {
   args <- list(...)
   data <- args[[1]]
@@ -107,7 +106,7 @@ stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, n.
     on.exit(close(pb), TRUE)
   }
   if (verbose > 1) {
-    on.exit(audio::play(sounds[[1]]), TRUE)
+    on.exit(beep(sounds[[1]]), TRUE)
   }
   # anytime must return the result always
   on.exit(return(list(

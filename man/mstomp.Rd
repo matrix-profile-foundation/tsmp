@@ -8,7 +8,7 @@ mstomp(data, window.size, must.dim = NULL, exc.dim = NULL,
   exclusion.zone = 1/2, verbose = 2)
 }
 \arguments{
-\item{data}{a \code{matrix} of \code{numeric}, where each colums is a time series. Accepts \code{vector} (see details), \code{list} and \code{data.frame} too.}
+\item{data}{a \code{matrix} of \code{numeric}, where each column is a time series. Accepts \code{vector} (see details), \code{list} and \code{data.frame} too.}
 
 \item{window.size}{an \code{int} with the size of the sliding window.}
 

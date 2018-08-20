@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tsmp</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.13.9053</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.14.9009</span>
       </span>
     </div>
 
@@ -121,7 +121,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>a <code>matrix</code> of <code>numeric</code>, where each colums is a time series. Accepts <code>vector</code> (see details), <code>list</code> and <code>data.frame</code> too.</p></td>
+      <td><p>a <code>matrix</code> of <code>numeric</code>, where each column is a time series. Accepts <code>vector</code> (see details), <code>list</code> and <code>data.frame</code> too.</p></td>
     </tr>
     <tr>
       <th>window.size</th>
@@ -181,7 +181,6 @@ The MSTOMP computes the Matrix Profile and Profile Index for Multivariate Time S
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># using all dimensions</span>
-<span class='fu'>Sys.sleep</span>(<span class='fl'>1</span>) <span class='co'># sometimes sleep is needed if you run parallel multiple times in a row</span>
 <span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>mstomp.par</span>(<span class='no'>toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>100</span>,], <span class='fl'>30</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

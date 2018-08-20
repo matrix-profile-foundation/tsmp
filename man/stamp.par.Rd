@@ -14,7 +14,7 @@ stamp.par(..., window.size, exclusion.zone = 1/2, s.size = Inf,
 
 \item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on query size (default is \code{1/2}). See details.}
 
-\item{s.size}{a \code{numeric}. for anytime algorithm, represents the size (in observations) the random calculation will occour (default is \code{Inf}).}
+\item{s.size}{a \code{numeric}. for anytime algorithm, represents the size (in observations) the random calculation will occur (default is \code{Inf}).}
 
 \item{n.workers}{an \code{int}. Number of workers for parallel. (Default is \code{2}).}
 
@@ -34,7 +34,6 @@ The anytime STAMP computes the Matrix Profile and Profile Index in such manner t
 \code{exclusion.zone} is used to avoid  trivial matches; if a query data is provided (join similarity), this parameter is ignored.
 }
 \examples{
-Sys.sleep(1) # sometimes sleep is needed if you run parallel multiple times in a row
 mp <- stamp.par(toy_data$data[1:200,1], window.size = 30, verbose = 0)
 \dontrun{
 ref.data <- toy_data$data[,1]
