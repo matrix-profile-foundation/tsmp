@@ -11,9 +11,11 @@ Francisco Bischoff
 [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![Build
 Status](https://travis-ci.com/franzbischoff/tsmp.svg?branch=master)](https://travis-ci.com/franzbischoff/tsmp)
-[![codecov](https://codecov.io/gh/franzbischoff/tsmp/branch/master/graph/badge.svg)](https://codecov.io/gh/franzbischoff/tsmp)
+[![codecov](https://codecov.io/gh/franzbischoff/tsmp/graph/badge.svg)](https://codecov.io/gh/franzbischoff/tsmp)
 [![CRAN
 version](http://www.r-pkg.org/badges/version/tsmp)](https://cran.r-project.org/package=tsmp)
+[![CRAN
+Downloads](https://cranlogs.r-pkg.org/badges/tsmp)](https://cran.r-project.org/package=tsmp)
 
 ## Overview
 
@@ -44,10 +46,13 @@ devtools::install_github("franzbischoff/tsmp")
 
   - STAMP (single and multi-thread versions)
   - STOMP (single and multi-thread versions)
+  - Time Series Chains
   - Multivariate STOMP (mSTOMP)
   - Multivariate MOTIF Search (from mSTOMP)
   - Scalable Dictionary learning for Time Series (SDTS) prediction
   - FLUSS (Fast Low-cost Unipotent Semantic Segmentation)
+  - SiMPle-Fast (Fast Similarity Matrix Profile for Music Analysis and
+    Exploration)
   - Misc:
       - MASS v2.0
       - Fast moving average
@@ -57,11 +62,8 @@ devtools::install_github("franzbischoff/tsmp")
 
   - Improve Joins outputs
   - Multidimensional Space
-  - Time Series Chains
   - FLUSS Arc Plot and SiMPle Arc Plot
   - Annotation vectors (e.g.: Stop-word MOTIF bias, Actionability bias)
-  - SiMPle-Fast (Fast Similarity Matrix Profile for Music Analysis and
-    Exploration)
   - MOTIFs under Uniform Scaling
   - GPU-STOMP
   - Real-time version of previous algorithms (STAMPI, FLOSS, etc)
@@ -71,6 +73,8 @@ devtools::install_github("franzbischoff/tsmp")
 ## Other projects with Matrix Profile
 
   - Python: <https://github.com/ZiyaoWei/pyMatrixProfile>
+  - Python: <https://github.com/jbeleno/owlpy>
+  - Python: <https://github.com/javidlakha/matrix-profile>
 
 ## Code of Conduct
 
