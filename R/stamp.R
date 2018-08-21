@@ -112,7 +112,9 @@ stamp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, verbos
   for (i in order) {
     j <- j + 1
     distance.profile <- Re(sqrt(mass(pre$data.fft, query[i:(i + window.size - 1)], data.size, window.size, pre$data.mean, pre$data.sd, pre$query.mean[i], pre$query.sd[i])$distance.profile))
-    distance.profile[max((i - exclusion.zone), 1):min((i + exclusion.zone), matrix.profile.size)] <- Inf
+
+    if(exclusion.zone > 0)
+      distance.profile[max((i - exclusion.zone), 1):min((i + exclusion.zone), matrix.profile.size)] <- Inf
 
     # anytime version
     # left matrix.profile

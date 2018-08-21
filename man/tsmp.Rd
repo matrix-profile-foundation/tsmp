@@ -28,7 +28,7 @@ Other contributors:
 \itemize{
   \item Michael Yeh \email{myeh003@ucr.edu} (https://orcid.org/0000-0002-9807-2963) [researcher, conceptor, contributor]
   \item Diego Silva \email{diegofs@ufscar.br} (https://orcid.org/0000-0002-5184-9413) [researcher, conceptor, contributor]
-  \item Yan Zhu \email{yzhu015@ucr.edu} [researcher, conceptor, contributor]
+  \item Yan Zhu \email{yzhu015@ucr.edu} (https://orcid.org/0000-0002-5952-2108) [researcher, conceptor, contributor]
 }
 
 }

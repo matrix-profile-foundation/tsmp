@@ -4,16 +4,18 @@
 \alias{simple.fast}
 \title{Compute the similarity join for Sound data.}
 \usage{
-simple.fast(data, window.size, exclusion.zone = 1/2, verbose = 2)
+simple.fast(..., window.size, exclusion.zone = 1/2, verbose = 2)
 }
 \arguments{
-\item{data}{a \code{matrix} of \code{numeric}, where each column is a time series. Accepts \code{list} and \code{data.frame} too.}
+\item{...}{a \code{matrix} or a \code{vector}. If a second time series is supplied it will be a join matrix profile.}
 
 \item{window.size}{an \code{int} with the size of the sliding window.}
 
 \item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on query size (default is \code{1/2}).}
 
 \item{verbose}{an \code{int}. See details. (Default is \code{2}).}
+
+\item{data}{a \code{matrix} of \code{numeric}, where each column is a time series. Accepts \code{list} and \code{data.frame} too.}
 }
 \value{
 Returns a list with the Matrix Profile \code{mp} and Profile Index \code{pi}.
