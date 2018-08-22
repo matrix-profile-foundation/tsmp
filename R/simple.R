@@ -1,11 +1,10 @@
-#' Compute the similarity join for Sound data.
+#' Compute the join similarity for Sound data.
 #'
-#' Compute the similarity join for Sound data.
+#' Compute the join similarityfor Sound data.
 #'
 #' `verbose` changes how much information is printed by this function; `0` means nothing, `1` means text, `2` means text and sound.
 #'
-#' @param data a `matrix` of `numeric`, where each column is a time series. Accepts `list` and `data.frame` too.
-#' @param ... a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix profile.
+#' @param ... a `matrix` of `numeric`, where each column is a time series. Accepts `list` and `data.frame` too. If a second time series is supplied it will be a join matrix profile.
 #' @param window.size an `int` with the size of the sliding window.
 #' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on query size (default is `1/2`).
 #' @param verbose an `int`. See details. (Default is `2`).
@@ -21,14 +20,20 @@
 #' @examples
 #' w <- 30
 #' data <- toy_data$data # 3 dimensions matrix
-#' result <- simple.fast(data, w, verbose = 0)
+#' result <- simple.fast(data, window.size = w, verbose = 0)
 #'
 simple.fast <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
+  if (!is.numeric(window.size) || length(window.size) > 1) {
+    stop("Unknown type of window.size. Must be an `int` or `numeric`")
+  }
+
   args <- list(...)
   data <- args[[1]]
   if (length(args) > 1) {
     query <- args[[2]]
-    exclusion.zone <- 0 # don't use exclusion zone for joins
+    if (!isTRUE(all.equal(data, query))) {
+      exclusion.zone <- 0
+    } # don't use exclusion zone for joins
   } else {
     query <- data
   }
@@ -140,8 +145,9 @@ simple.fast <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
   res.query <- mass.simple(query.fft, data.window, query.size, window.size, query.sumx2)
 
   distance.profile <- res.query$distance.profile
-  first.product <- res.data$last.product
   last.product <- res.query$last.product
+  first.product <- res.data$last.product
+  # first.product <- last.product
   query.sumy2 <- res.query$sumy2
   dropval <- data.window[1, ] # dropval is the first element of refdata window
 
@@ -213,7 +219,7 @@ simple.fast <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
 #' @return Returns `data.fft` and `sumx2`.
 #' @keywords internal
 #'
-#' @references Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance.
+#' @references 1. Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance.
 #' @references <https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html>
 
 
@@ -248,7 +254,7 @@ mass.simple.pre <- function(data, data.size, window.size) {
 #' @return Returns the `distance.profile` for the given query and the `last.product` for STOMP algorithm and `sumy2`.
 #' @keywords internal
 #'
-#' @references Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance
+#' @references 1. Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance
 #' @references <https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html>
 #'
 

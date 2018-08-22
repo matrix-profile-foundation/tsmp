@@ -46,7 +46,9 @@ for(i in 1:(d.size - w + 1)) {
 }
 }
 \references{
-Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance
+\enumerate{
+\item Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance
+}
 
 \url{https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html}
 }

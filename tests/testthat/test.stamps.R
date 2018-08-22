@@ -33,13 +33,9 @@ if (skip_on_cran()) {
   })
 
   test_that("Finish", {
-    Sys.sleep(0.5)
     expect_message(stamp(toy_data$data[1:200, 1], window.size = 30), regex = "Finished")
-    Sys.sleep(0.5)
     expect_message(stamp.par(toy_data$data[1:200, 1], window.size = 30), regex = "Finished")
-    Sys.sleep(0.5)
     expect_message(mstomp(toy_data$data[1:200, 1], window.size = 30), regex = "Finished")
-    Sys.sleep(0.5)
     expect_message(mstomp.par(toy_data$data[1:200, 1], window.size = 30), regex = "Finished")
   })
 
@@ -58,7 +54,7 @@ if (skip_on_cran()) {
 
   test_that("Result hashes", {
     expect_known_hash(stamp.test, "1016c61c9f")
-    expect_known_hash(stamp.join.test, "c644733f25")
+    expect_known_hash(stamp.join.test, "585be5fedc")
     expect_known_hash(mstomp.test, "fa0c150b92")
     expect_known_hash(mstomp.test.must, "13cefe2517")
     expect_known_hash(mstomp.test.exc, "b872f44cc5")

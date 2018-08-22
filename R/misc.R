@@ -100,5 +100,6 @@ beep <- function(data) {
     }
     )
   }
+  Sys.sleep(1)
   invisible()
 }

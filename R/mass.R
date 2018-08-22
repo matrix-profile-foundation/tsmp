@@ -16,7 +16,7 @@
 #'
 #' @seealso [mass.pre()] to precomputation of input values.
 #'
-#' @references Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance
+#' @references 1. Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance
 #' @references <https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html>
 #'
 #' @examples
