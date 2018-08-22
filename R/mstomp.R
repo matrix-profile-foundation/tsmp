@@ -43,7 +43,16 @@ mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion
   exclusion.zone <- floor(window.size * exclusion.zone)
 
   ## transform data list into matrix
-  if (is.list(data)) {
+  if (is.matrix(data) || is.data.frame(data)) {
+    if (is.data.frame(data)) {
+      data <- as.matrix(data)
+    } # just to be uniform
+    if (ncol(data) > nrow(data)) {
+      data <- t(data)
+    }
+    data.size <- nrow(data)
+    n.dim <- ncol(data)
+  } else if (is.list(data)) {
     data.size <- length(data[[1]])
     n.dim <- length(data)
 
@@ -56,15 +65,6 @@ mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion
     }
     # transform data into matrix (each column is a TS)
     data <- sapply(data, cbind)
-  } else if (is.matrix(data) || is.data.frame(data)) {
-    if (is.data.frame(data)) {
-      data <- as.matrix(data)
-    } # just to be uniform
-    if (ncol(data) > nrow(data)) {
-      data <- t(data)
-    }
-    data.size <- nrow(data)
-    n.dim <- ncol(data)
   } else if (is.vector(data)) {
     data.size <- length(data)
     n.dim <- 1

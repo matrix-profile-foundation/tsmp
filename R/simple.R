@@ -39,7 +39,16 @@ simple.fast <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
   }
 
   ## transform data list into matrix
-  if (is.list(data)) {
+  if (is.matrix(data) || is.data.frame(data)) {
+    if (is.data.frame(data)) {
+      data <- as.matrix(data)
+    } # just to be uniform
+    if (ncol(data) > nrow(data)) {
+      data <- t(data)
+    }
+    data.size <- nrow(data)
+    n.dim <- ncol(data)
+  } else if (is.list(data)) {
     data.size <- length(data[[1]])
     n.dim <- length(data)
 
@@ -52,15 +61,6 @@ simple.fast <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
     }
     # transform data into matrix (each column is a TS)
     data <- sapply(data, cbind)
-  } else if (is.matrix(data) || is.data.frame(data)) {
-    if (is.data.frame(data)) {
-      data <- as.matrix(data)
-    } # just to be uniform
-    if (ncol(data) > nrow(data)) {
-      data <- t(data)
-    }
-    data.size <- nrow(data)
-    n.dim <- ncol(data)
   } else if (is.vector(data)) {
     data.size <- length(data)
     n.dim <- 1
@@ -71,7 +71,16 @@ simple.fast <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
   }
 
   ## transform query list into matrix
-  if (is.list(query)) {
+  if (is.matrix(query) || is.data.frame(query)) {
+    if (is.data.frame(query)) {
+      query <- as.matrix(query)
+    } # just to be uniform
+    if (ncol(query) > nrow(query)) {
+      query <- t(query)
+    }
+    query.size <- nrow(query)
+    q.dim <- ncol(query)
+  } else if (is.list(query)) {
     query.size <- length(query[[1]])
     q.dim <- length(query)
 
@@ -84,15 +93,6 @@ simple.fast <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
     }
     # transform query into matrix (each column is a TS)
     query <- sapply(query, cbind)
-  } else if (is.matrix(query) || is.data.frame(query)) {
-    if (is.data.frame(query)) {
-      query <- as.matrix(query)
-    } # just to be uniform
-    if (ncol(query) > nrow(query)) {
-      query <- t(query)
-    }
-    query.size <- nrow(query)
-    q.dim <- ncol(query)
   } else if (is.vector(query)) {
     query.size <- length(query)
     q.dim <- 1
@@ -113,7 +113,7 @@ simple.fast <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
     stop("Error: Second Time series is too short relative to desired subsequence length")
   }
   if (window.size < 4) {
-    stop("Error: Subsequence length must be at least 4")
+    stop("Error: Window size must be at least 4")
   }
 
   exclusion.zone <- floor(window.size * exclusion.zone)

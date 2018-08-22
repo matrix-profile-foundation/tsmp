@@ -38,7 +38,16 @@
 unconstrain.search <- function(data, window.size, matrix.profile, profile.index, n.bit = 4, k = Inf) {
 
   ## transform data list into matrix
-  if (is.list(data)) {
+  if (is.matrix(data) || is.data.frame(data)) {
+    if (is.data.frame(data)) {
+      data <- as.matrix(data)
+    } # just to be uniform
+    if (ncol(data) > nrow(data)) {
+      data <- t(data)
+    }
+    data.len <- nrow(data)
+    n.dim <- ncol(data)
+  } else if (is.list(data)) {
     data.len <- length(data[[1]])
     n.dim <- length(data)
 
@@ -51,14 +60,6 @@ unconstrain.search <- function(data, window.size, matrix.profile, profile.index,
     }
     # transform data into matrix (each column is a TS)
     data <- sapply(data, cbind)
-  } else if (is.matrix(data) || is.data.frame(data)) {
-    if (is.data.frame(data)) {
-      data <- as.matrix(data)
-    } # just to be uniform
-    if (ncol(data) > nrow(data))
-      data <- t(data)
-    data.len <- nrow(data)
-    n.dim <- ncol(data)
   } else if (is.vector(data)) {
     data.len <- length(data)
     n.dim <- 1
@@ -112,14 +113,16 @@ unconstrain.search <- function(data, window.size, matrix.profile, profile.index,
     best.bit <- bit.sz[min.idx]
 
     if (best.bit > (base.bit)) {
-      if (i == 1)
+      if (i == 1) {
         message("No motifs found")
+      }
 
       motif.idx <- motif.idx[1:(k - 1)]
       motif.dim <- motif.dim[1:(k - 1)]
       break
-    } else
-      found = found + 1
+    } else {
+      found <- found + 1
+    }
 
     motif.idx[i] <- idx.1[min.idx]
     motif.dim[[i]] <- dim[[min.idx]]
@@ -131,8 +134,9 @@ unconstrain.search <- function(data, window.size, matrix.profile, profile.index,
     matrix.profile[st.idx:ed.idx, ] <- Inf
   }
 
-  if (i != 1)
+  if (i != 1) {
     message(sprintf("Found %d motifs", found))
+  }
 
   motif.dim <- motif.dim[motif.idx != 0]
   motif.idx <- motif.idx[motif.idx != 0]
@@ -141,12 +145,13 @@ unconstrain.search <- function(data, window.size, matrix.profile, profile.index,
 }
 
 get.bit.save <- function(motif.1, motif.2, n.dim, n.bit) {
-
-  if (is.vector(motif.1))
+  if (is.vector(motif.1)) {
     motif.1 <- as.matrix(motif.1)
+  }
 
-  if (is.vector(motif.2))
+  if (is.vector(motif.2)) {
     motif.2 <- as.matrix(motif.2)
+  }
 
   tot.dim <- dim(motif.1)[2]
   window.size <- dim(motif.1)[1]
@@ -166,9 +171,9 @@ get.bit.save <- function(motif.1, motif.2, n.dim, n.bit) {
 }
 
 discretization <- function(motif, split.pt) {
-
-  if (is.vector(motif))
+  if (is.vector(motif)) {
     motif <- as.matrix(motif)
+  }
 
   dimmotif <- dim(motif)
 

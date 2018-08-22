@@ -91,12 +91,10 @@ beep <- function(data) {
     error = function(cond) {
       message("Failed to play audio alert")
       message(cond)
-      invisible()
     },
     warning = function(cond) {
       message("Something went wrong playing audio alert")
       message(cond)
-      invisible()
     }
     )
   }

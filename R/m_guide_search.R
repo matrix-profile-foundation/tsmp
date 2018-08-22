@@ -37,7 +37,14 @@
 guide.search <- function(data, window.size, matrix.profile, profile.index, n.dim) {
 
   ## transform data list into matrix
-  if (is.list(data)) {
+  if (is.matrix(data) || is.data.frame(data)) {
+    if (is.data.frame(data)) {
+      data <- as.matrix(data)
+    } # just to be uniform
+    if (ncol(data) > nrow(data)) {
+      data <- t(data)
+    }
+  } else if (is.list(data)) {
     data.len <- length(data[[1]])
     data.dim <- length(data)
 
@@ -50,12 +57,6 @@ guide.search <- function(data, window.size, matrix.profile, profile.index, n.dim
     }
     # transform data into matrix (each column is a TS)
     data <- sapply(data, cbind)
-  } else if (is.matrix(data) || is.data.frame(data)) {
-    if (is.data.frame(data)) {
-      data <- as.matrix(data)
-    } # just to be uniform
-    if (ncol(data) > nrow(data))
-      data <- t(data)
   } else if (is.vector(data)) {
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
@@ -68,8 +69,8 @@ guide.search <- function(data, window.size, matrix.profile, profile.index, n.dim
   motif.idx <- which.min(matrix.profile)
   motif.idx <- sort(c(motif.idx, profile.index[motif.idx]))
 
-  motif.1 <- data[motif.idx[1]:(motif.idx[1] + window.size - 1), ]
-  motif.2 <- data[motif.idx[2]:(motif.idx[2] + window.size - 1), ]
+  motif.1 <- as.matrix(data[motif.idx[1]:(motif.idx[1] + window.size - 1), ]) # as.matrix(): hack for vectors
+  motif.2 <- as.matrix(data[motif.idx[2]:(motif.idx[2] + window.size - 1), ]) # as.matrix(): hack for vectors
 
   motif.dim <- sort(apply(abs(motif.1 - motif.2), 2, sum), index.return = TRUE)$ix
   motif.dim <- sort(motif.dim[1:n.dim])
