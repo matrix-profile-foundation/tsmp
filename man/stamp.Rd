@@ -8,28 +8,37 @@ stamp(..., window.size, exclusion.zone = 1/2, s.size = Inf,
   verbose = 2)
 }
 \arguments{
-\item{...}{a \code{matrix} or a \code{vector}. If a second time series is supplied it will be a join matrix profile.}
+\item{...}{a \code{matrix} or a \code{vector}. If a second time series is supplied it will be a join matrix
+profile.}
 
 \item{window.size}{an \code{int}. Size of the sliding window.}
 
-\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on query size (default is \code{1/2}). See details.}
+\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on query size (default is
+\code{1/2}). See details.}
 
-\item{s.size}{a \code{numeric}. for anytime algorithm, represents the size (in observations) the random calculation will occur (default is \code{Inf}).}
+\item{s.size}{a \code{numeric}. for anytime algorithm, represents the size (in observations) the
+random calculation will occur (default is \code{Inf}).}
 
 \item{verbose}{an \code{int}. See details. (Default is \code{2}).}
 }
 \value{
-Returns the matrix profile \code{mp} and profile index \code{pi}.
-It also returns the left and right matrix profile \code{lmp}, \code{rmp} and profile index \code{lpi}, \code{rpi} that may be used to detect Time Series Chains (Yan Zhu 2018).
+Returns the matrix profile \code{mp} and profile index \code{pi}. It also returns the left and
+right matrix profile \code{lmp}, \code{rmp} and profile index \code{lpi}, \code{rpi} that may be used to detect
+Time Series Chains (Yan Zhu 2018).
 }
 \description{
 Computes the best so far Matrix Profile and Profile Index for Univariate Time Series.
 }
 \details{
-The Matrix Profile, has the potential to revolutionize time series data mining because of its generality, versatility, simplicity and scalability. In particular it has implications for time series motif discovery, time series joins, shapelet discovery (classification), density estimation, semantic segmentation, visualization, rule discovery, clustering etc.
-The anytime STAMP computes the Matrix Profile and Profile Index in such manner that it can be stopped before its complete calculation and return the best so far results allowing ultra-fast approximate solutions.
-\code{verbose} changes how much information is printed by this function; \code{0} means nothing, \code{1} means text, \code{2} means text and sound.
-\code{exclusion.zone} is used to avoid  trivial matches; if a query data is provided (join similarity), this parameter is ignored.
+The Matrix Profile, has the potential to revolutionize time series data mining because of its
+generality, versatility, simplicity and scalability. In particular it has implications for time
+series motif discovery, time series joins, shapelet discovery (classification), density
+estimation, semantic segmentation, visualization, rule discovery, clustering etc. The anytime
+STAMP computes the Matrix Profile and Profile Index in such manner that it can be stopped before
+its complete calculation and return the best so far results allowing ultra-fast approximate
+solutions. \code{verbose} changes how much information is printed by this function; \code{0} means nothing,
+\code{1} means text, \code{2} means text and sound. \code{exclusion.zone} is used to avoid  trivial matches; if
+a query data is provided (join similarity), this parameter is ignored.
 }
 \examples{
 mp <- stamp(toy_data$data[1:200,1], window.size = 30, verbose = 0)
@@ -43,12 +52,15 @@ mp <- stamp(ref.data, query.data, window.size = 30, s.size = round(nrows(query.d
 }
 }
 \references{
-\enumerate{
-\item Yeh CCM, Zhu Y, Ulanova L, Begum N, Ding Y, Dau HA, et al. Matrix profile I: All pairs similarity joins for time series: A unifying view that includes motifs, discords and shapelets. Proc - IEEE Int Conf Data Mining, ICDM. 2017;1317–22.
+\itemize{
+\item Yeh CCM, Zhu Y, Ulanova L, Begum N, Ding Y, Dau HA, et al. Matrix profile I: All
+pairs similarity joins for time series: A unifying view that includes motifs, discords and
+shapelets. Proc - IEEE Int Conf Data Mining, ICDM. 2017;1317–22.
 }
 
-\enumerate{
-\item Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
+\itemize{
+\item Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A
+New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
 }
 
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}

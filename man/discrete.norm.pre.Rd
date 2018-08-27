@@ -2,13 +2,19 @@
 % Please edit documentation in R/mds.R
 \name{discrete.norm.pre}
 \alias{discrete.norm.pre}
-\title{Title}
+\title{Precompute the max and min value for the discrete normalization}
 \usage{
 discrete.norm.pre(data, window.size = 1)
 }
 \arguments{
-\item{window.size}{}
+\item{data}{input time series}
+
+\item{window.size}{sliding window size}
+}
+\value{
+Returns a list with the max and min value
 }
 \description{
-Title
+Precompute the max and min value for the discrete normalization
 }
+\keyword{internal}

@@ -2,13 +2,19 @@
 % Please edit documentation in R/mds.R
 \name{get.bitsize}
 \alias{get.bitsize}
-\title{Title}
+\title{Reduced description length}
 \usage{
 get.bitsize(x, mismatch.bit)
 }
 \arguments{
-\item{mismatch.bit}{}
+\item{x}{the difference between two time series (reference and candidate for compression)}
+
+\item{mismatch.bit}{sum of n.bits and log2(window.size)}
+}
+\value{
+Returns the bit.size cost of compressing the time series
 }
 \description{
-Title
+Reduced description length
 }
+\keyword{internal}

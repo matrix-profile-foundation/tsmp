@@ -42,6 +42,14 @@ sdts.f.score(test_data$test$label, predict, 1)
 }
 
 }
+\references{
+\itemize{
+\item Yeh C-CM, Kavantzas N, Keogh E. Matrix profile IV: Using Weakly Labeled Time Series
+to Predict Outcomes. Proc VLDB Endow. 2017 Aug 1;10(12):1802–12.
+}
+
+Website: \url{https://sites.google.com/view/weaklylabeled}
+}
 \seealso{
 Other SDTS: \code{\link{sdts.predict}},
   \code{\link{sdts.train}}

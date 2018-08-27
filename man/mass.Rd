@@ -25,10 +25,12 @@ mass(data.fft, query.window, data.size, window.size, data.mean, data.sd,
 \item{query.sd}{precomputed query standard deviation.}
 }
 \value{
-Returns the \code{distance.profile} for the given query and the \code{last.product} for STOMP algorithm.
+Returns the \code{distance.profile} for the given query and the \code{last.product} for STOMP
+algorithm.
 }
 \description{
-Mueen's Algorithm for Similarity Search is The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance and Correlation Coefficient.
+Mueen's Algorithm for Similarity Search is The Fastest Similarity Search Algorithm for Time
+Series Subsequences under Euclidean Distance and Correlation Coefficient.
 }
 \examples{
 w <- toy_data$sub.len
@@ -46,11 +48,13 @@ for(i in 1:(d.size - w + 1)) {
 }
 }
 \references{
-\enumerate{
-\item Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance
+\itemize{
+\item Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan,
+Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time
+Series Subsequences under Euclidean Distance
 }
 
-\url{https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html}
+Website: \url{https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html}
 }
 \seealso{
 \code{\link[=mass.pre]{mass.pre()}} to precomputation of input values.

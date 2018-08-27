@@ -8,7 +8,9 @@
 #'
 #' @export
 #' @family SDTS
-#'
+#' @references * Yeh C-CM, Kavantzas N, Keogh E. Matrix profile IV: Using Weakly Labeled Time Series
+#'   to Predict Outcomes. Proc VLDB Endow. 2017 Aug 1;10(12):1802–12.
+#' @references Website: <https://sites.google.com/view/weaklylabeled>
 #' @examples
 #' # This is a fast toy example and results are useless. For a complete result, run the code inside
 #' #'Not run' section below.
@@ -95,7 +97,9 @@ sdts.predict <- function(model, data, window.size) {
 #' @export
 #'
 #' @family SDTS
-#'
+#' @references * Yeh C-CM, Kavantzas N, Keogh E. Matrix profile IV: Using Weakly Labeled Time Series
+#'   to Predict Outcomes. Proc VLDB Endow. 2017 Aug 1;10(12):1802–12.
+#' @references Website: <https://sites.google.com/view/weaklylabeled>
 #' @examples
 #' # This is a fast toy example and results are useless. For a complete result, run the code inside
 #' #'Not run' section below.

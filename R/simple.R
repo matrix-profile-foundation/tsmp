@@ -2,18 +2,23 @@
 #'
 #' Compute the join similarityfor Sound data.
 #'
-#' `verbose` changes how much information is printed by this function; `0` means nothing, `1` means text, `2` means text and sound.
+#' `verbose` changes how much information is printed by this function; `0` means nothing, `1` means
+#' text, `2` means text and sound.
 #'
-#' @param ... a `matrix` of `numeric`, where each column is a time series. Accepts `list` and `data.frame` too. If a second time series is supplied it will be a join matrix profile.
+#' @param ... a `matrix` of `numeric`, where each column is a time series. Accepts `list` and
+#'   `data.frame` too. If a second time series is supplied it will be a join matrix profile.
 #' @param window.size an `int` with the size of the sliding window.
-#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on query size (default is `1/2`).
+#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on query size (default is
+#'   `1/2`).
 #' @param verbose an `int`. See details. (Default is `2`).
 #'
 #' @return Returns a list with the Matrix Profile `mp` and Profile Index `pi`.
 #'
 #' @export
-#' @references 1. Silva D, Yeh C, Batista G, Keogh E. Simple: Assessing Music Similarity Using Subsequences Joins. Proc 17th ISMIR Conf. 2016;23–30.
-#' @references 2. Silva DF, Yeh C-CM, Zhu Y, Batista G, Keogh E. Fast Similarity Matrix Profile for Music Analysis and Exploration. IEEE Trans Multimed. 2018;14(8):1–1.
+#' @references * Silva D, Yeh C, Batista G, Keogh E. Simple: Assessing Music Similarity Using
+#'   Subsequences Joins. Proc 17th ISMIR Conf. 2016;23–30.
+#' @references * Silva DF, Yeh C-CM, Zhu Y, Batista G, Keogh E. Fast Similarity Matrix Profile for
+#'   Music Analysis and Exploration. IEEE Trans Multimed. 2018;14(8):1–1.
 #' @references Website: <https://sites.google.com/view/simple-fast>
 #' @references Website: <https://sites.google.com/site/ismir2016simple/home>
 #'
@@ -219,8 +224,8 @@ simple.fast <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
 #' @return Returns `data.fft` and `sumx2`.
 #' @keywords internal
 #'
-#' @references 1. Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance.
-#' @references <https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html>
+#' @references * Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance.
+#' @references Website: <https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html>
 
 
 mass.simple.pre <- function(data, data.size, window.size) {
@@ -254,8 +259,8 @@ mass.simple.pre <- function(data, data.size, window.size) {
 #' @return Returns the `distance.profile` for the given query and the `last.product` for STOMP algorithm and `sumy2`.
 #' @keywords internal
 #'
-#' @references 1. Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance
-#' @references <https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html>
+#' @references * Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance
+#' @references Website: <https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html>
 #'
 
 

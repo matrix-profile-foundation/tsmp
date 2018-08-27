@@ -2,8 +2,9 @@
 #'
 #' Scalable Dictionary learning for Time Series (SDTS) training function.
 #'
-#' `beta` is used to balance F-score towards recall (`>1`) or precision (`<1`).
-#' `verbose` changes how much information is printed by this function; `0` means nothing, `1` means text, `2` means text and sound.
+#' `beta` is used to balance F-score towards recall (`>1`) or precision (`<1`). `verbose` changes
+#' how much information is printed by this function; `0` means nothing, `1` means text, `2` means
+#' text and sound.
 #'
 #' @param data a `vector` of `numeric`. Time series.
 #' @param label a `vector` of `logical`. Annotations.
@@ -13,13 +14,14 @@
 #' @param parallel a `logical`. Use parallel computation inside (default is `TRUE`).
 #' @param verbose an `int`. See details. (Default is `2`).
 #'
-#' @return Returns a list with the learned dictionary
-#'    `score` (estimated score), `score.hist` (history of scores),
-#'    `pattern` (shape features), `thold` (threshold values).
+#' @return Returns a list with the learned dictionary `score` (estimated score), `score.hist`
+#'   (history of scores), `pattern` (shape features), `thold` (threshold values).
 #'
 #' @export
 #' @family SDTS
-#'
+#' @references * Yeh C-CM, Kavantzas N, Keogh E. Matrix profile IV: Using Weakly Labeled Time Series
+#'   to Predict Outcomes. Proc VLDB Endow. 2017 Aug 1;10(12):1802–12.
+#' @references Website: <https://sites.google.com/view/weaklylabeled>
 #' @examples
 #' # This is a fast toy example and results are useless. For a complete result, run the code inside
 #' #'Not run' section below.
@@ -101,9 +103,9 @@ sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parall
 
   for (i in 1:n.window.size) {
     if (parallel == TRUE) {
-      mp <- mstomp.par(pos, window.size[i], verbose = verbose)
+      mp <- stomp.par(pos, window.size[i], verbose = verbose)
     } else {
-      mp <- mstomp(pos, window.size[i], verbose = verbose)
+      mp <- stomp(pos, window.size[i], verbose = verbose)
     }
     mat.pro[[i]] <- mp$mp
   }

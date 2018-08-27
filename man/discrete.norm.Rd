@@ -2,13 +2,23 @@
 % Please edit documentation in R/mds.R
 \name{discrete.norm}
 \alias{discrete.norm}
-\title{Title}
+\title{Discrete normalization}
 \usage{
-discrete.norm(data, bits, max, min)
+discrete.norm(data, n.bits, max, min)
 }
 \arguments{
-\item{min}{}
+\item{data}{Input time series.}
+
+\item{n.bits}{Number of bits for MDL discretization.}
+
+\item{max}{Precomputed max from \code{discrete.norm.pre}.}
+
+\item{min}{Precomputed min from \code{discrete.norm.pre}.}
+}
+\value{
+Returns the data after discrete normalization.
 }
 \description{
-Title
+Discrete normalization
 }
+\keyword{internal}

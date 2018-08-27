@@ -8,7 +8,8 @@ mstomp.par(data, window.size, must.dim = NULL, exc.dim = NULL,
   exclusion.zone = 1/2, verbose = 2, n.workers = 2)
 }
 \arguments{
-\item{data}{a \code{matrix} of \code{numeric}, where each column is a time series. Accepts \code{vector} (see details), \code{list} and \code{data.frame} too.}
+\item{data}{a \code{matrix} of \code{numeric}, where each column is a time series. Accepts \code{vector} (see
+details), \code{list} and \code{data.frame} too.}
 
 \item{window.size}{an \code{int}. Size of the sliding window.}
 
@@ -16,37 +17,47 @@ mstomp.par(data, window.size, must.dim = NULL, exc.dim = NULL,
 
 \item{exc.dim}{an \code{int} or \code{vector} of which dimensions to exclude (default is \code{NULL}).}
 
-\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on query size (default is \code{1/2}). See details.}
+\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on query size (default is
+\code{1/2}). See details.}
 
 \item{verbose}{an \code{int}. See details. (Default is \code{2}).}
 
 \item{n.workers}{an \code{int}. Number of workers for parallel. (Default is \code{2}).}
 }
 \value{
-Returns the matrix profile \code{mp} and profile index \code{pi}.
-It also returns the left and right matrix profile \code{lmp}, \code{rmp} and profile index \code{lpi}, \code{rpi} that may be used to detect Time Series Chains (Yan Zhu 2018).
+Returns the matrix profile \code{mp} and profile index \code{pi}. It also returns the left and
+right matrix profile \code{lmp}, \code{rmp} and profile index \code{lpi}, \code{rpi} that may be used to detect
+Time Series Chains (Yan Zhu 2018).
 }
 \description{
 Computes the Matrix Profile and Profile Index for Multivariate Time Series.
 }
 \details{
-The Matrix Profile, has the potential to revolutionize time series data mining because of its generality, versatility, simplicity and scalability. In particular it has implications for time series motif discovery, time series joins, shapelet discovery (classification), density estimation, semantic segmentation, visualization, rule discovery, clustering etc.
-The MSTOMP computes the Matrix Profile and Profile Index for Multivariate Time Series that is meaningful for multidimensional MOTIF discovery. It uses the STOMP algorithm that is faster than STAMP but lacks its anytime property.
+The Matrix Profile, has the potential to revolutionize time series data mining because of its
+generality, versatility, simplicity and scalability. In particular it has implications for time
+series motif discovery, time series joins, shapelet discovery (classification), density
+estimation, semantic segmentation, visualization, rule discovery, clustering etc. The MSTOMP
+computes the Matrix Profile and Profile Index for Multivariate Time Series that is meaningful for
+multidimensional MOTIF discovery. It uses the STOMP algorithm that is faster than STAMP but lacks
+its anytime property.
 
-Although this functions handles Multivariate Time Series, it can also be used to handle Univariate Time Series.
-\code{verbose} changes how much information is printed by this function; \code{0} means nothing, \code{1} means text, \code{2} means text and sound.
+Although this functions handles Multivariate Time Series, it can also be used to handle
+Univariate Time Series. \code{verbose} changes how much information is printed by this function; \code{0}
+means nothing, \code{1} means text, \code{2} means text and sound.
 }
 \examples{
 # using all dimensions
 mp <- mstomp.par(toy_data$data[1:100,], 30, verbose = 0)
 }
 \references{
-\enumerate{
-\item Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif Discovery.
+\itemize{
+\item Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif
+Discovery.
 }
 
-\enumerate{
-\item Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
+\itemize{
+\item Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A
+New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
 }
 
 Website: \url{https://sites.google.com/view/mstamp/}

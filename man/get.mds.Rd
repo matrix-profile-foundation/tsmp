@@ -2,13 +2,20 @@
 % Please edit documentation in R/mds.R
 \name{get.mds}
 \alias{get.mds}
-\title{Title}
+\title{Future function to see MDS}
 \usage{
 get.mds(data, sub.picking, window.size)
 }
 \arguments{
-\item{window.size}{}
+\item{data}{original data}
+
+\item{sub.picking}{picked subsequences}
+
+\item{window.size}{window size}
+}
+\value{
+Returns X,Y values for plotting
 }
 \description{
-Title
+Future function to see MDS
 }

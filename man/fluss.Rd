@@ -14,24 +14,27 @@ fluss(data, window.size, num.segments, exclusion.zone = 5,
 
 \item{num.segments}{an \code{int}. Number of segments to extract. Based on domain knowledge.}
 
-\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is \code{5}).}
+\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is
+\code{5}).}
 
-\item{gtruth}{an \code{int} or \code{vector} of \code{int} with the ground truth index of segments. (Default is \code{NULL}).}
+\item{gtruth}{an \code{int} or \code{vector} of \code{int} with the ground truth index of segments. (Default is
+\code{NULL}).}
 
 \item{profile.index}{a pre-computed profile index. (Default is \code{NULL}).}
 
 \item{verbose}{an \code{int}. See details. (Default is \code{2}).}
 }
 \value{
-Returns a list with \code{segments} (location of semantic changes), \code{mp} (matrix profile if computed),
-\code{pi} (profile index, input of computed), \code{cac} corrected arc count.
+Returns a list with \code{segments} (location of semantic changes), \code{mp} (matrix profile if
+computed), \code{pi} (profile index, input of computed), \code{cac} corrected arc count.
 }
 \description{
-FLUSS is a Domain Agnostic Online Semantic Segmentation that uses the assumption that when few arc
-are crossing a given index point, means that there is a high probability of semantic change.
+FLUSS is a Domain Agnostic Online Semantic Segmentation that uses the assumption that when few
+arc are crossing a given index point, means that there is a high probability of semantic change.
 }
 \details{
-\code{verbose} changes how much information is printed by this function; \code{0} means nothing, \code{1} means text, \code{2} means text and sound.
+\code{verbose} changes how much information is printed by this function; \code{0} means nothing, \code{1} means
+text, \code{2} means text and sound.
 }
 \examples{
 # This is a fast toy example and results are useless. For a complete result, run the code inside
@@ -49,8 +52,10 @@ segments <- fluss(data, w, nseg, gtruth = truth)
 }
 }
 \references{
-\enumerate{
-\item Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
+\itemize{
+\item Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII:
+Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE
+International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
 }
 
 Website: \url{https://sites.google.com/site/onlinesemanticsegmentation/}

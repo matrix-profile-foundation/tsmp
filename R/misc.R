@@ -101,3 +101,13 @@ beep <- function(data) {
   Sys.sleep(1)
   invisible()
 }
+
+#' Global constants
+#'
+#' @return Returns a `list` with the global constants
+#' @keywords internal
+vars <- function() {
+  eps <- .Machine$double.eps^0.5
+
+  return(list(eps = eps))
+}

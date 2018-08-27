@@ -8,27 +8,34 @@ stomp.par(..., window.size, exclusion.zone = 1/2, verbose = 2,
   n.workers = 2)
 }
 \arguments{
-\item{...}{a \code{matrix} or a \code{vector}. If a second time series is supplied it will be a join matrix profile.}
+\item{...}{a \code{matrix} or a \code{vector}. If a second time series is supplied it will be a join matrix
+profile.}
 
 \item{window.size}{an \code{int}. Size of the sliding window.}
 
-\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on query size (default is \code{1/2}). See details.}
+\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on query size (default is
+\code{1/2}). See details.}
 
 \item{verbose}{an \code{int}. See details. (Default is \code{2}).}
 
 \item{n.workers}{an \code{int}. Number of workers for parallel. (Default is \code{2}).}
 }
 \value{
-Returns the matrix profile \code{mp} and profile index \code{pi}.
-It also returns the left and right matrix profile \code{lmp}, \code{rmp} and profile index \code{lpi}, \code{rpi} that may be used to detect Time Series Chains (Yan Zhu 2018).
+Returns the matrix profile \code{mp} and profile index \code{pi}. It also returns the left and
+right matrix profile \code{lmp}, \code{rmp} and profile index \code{lpi}, \code{rpi} that may be used to detect
+Time Series Chains (Yan Zhu 2018).
 }
 \description{
 Computes the Matrix Profile and Profile Index for Univariate Time Series.
 }
 \details{
-The Matrix Profile, has the potential to revolutionize time series data mining because of its generality, versatility, simplicity and scalability. In particular it has implications for time series motif discovery, time series joins, shapelet discovery (classification), density estimation, semantic segmentation, visualization, rule discovery, clustering etc.
-\code{verbose} changes how much information is printed by this function; \code{0} means nothing, \code{1} means text, \code{2} means text and sound.
-\code{exclusion.zone} is used to avoid  trivial matches; if a query data is provided (join similarity), this parameter is ignored.
+The Matrix Profile, has the potential to revolutionize time series data mining because of its
+generality, versatility, simplicity and scalability. In particular it has implications for time
+series motif discovery, time series joins, shapelet discovery (classification), density
+estimation, semantic segmentation, visualization, rule discovery, clustering etc. \code{verbose}
+changes how much information is printed by this function; \code{0} means nothing, \code{1} means text, \code{2}
+means text and sound. \code{exclusion.zone} is used to avoid  trivial matches; if a query data is
+provided (join similarity), this parameter is ignored.
 }
 \examples{
 mp <- stomp.par(toy_data$data[1:200,1], window.size = 30, verbose = 0)
@@ -42,8 +49,10 @@ mp <- stomp.par(ref.data, query.data, window.size = 30)
 }
 }
 \references{
-\enumerate{
-\item Zhu Y, Zimmerman Z, Senobari NS, Yeh CM, Funning G. Matrix Profile II : Exploiting a Novel Algorithm and GPUs to Break the One Hundred Million Barrier for Time Series Motifs and Joins. Icdm. 2016 Jan 22;54(1):739–48.
+\itemize{
+\item Zhu Y, Zimmerman Z, Senobari NS, Yeh CM, Funning G. Matrix Profile II : Exploiting
+a Novel Algorithm and GPUs to Break the One Hundred Million Barrier for Time Series Motifs and
+Joins. Icdm. 2016 Jan 22;54(1):739–48.
 }
 
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}

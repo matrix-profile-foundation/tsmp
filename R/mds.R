@@ -1,30 +1,65 @@
-#' Title
+#' Retrieve salient subsequences from a dataset
 #'
-#' @param data
-#' @param matrix.profile
-#' @param profile.index
-#' @param window.size
-#' @param bits
-#' @param n.cand
-#' @param exclusion.zone
+#' In order to allow a meaningful visualization in Multi-Dimensional Space (MDS), this function
+#' retrieves the most relevant subsequences using Minimal Description Length (MDL) framework.
 #'
-#' @return
-#' @references 1. Yeh CCM, Van Herle H, Keogh E. Matrix profile III: The matrix profile allows visualization of salient subsequences in massive time series. Proc - IEEE Int Conf Data Mining, ICDM. 2017;579–88.
-#' @references 2. Hu B, Rakthanmanon T, Hao Y, Evans S, Lonardi S, Keogh E. Discovering the Intrinsic Cardinality and Dimensionality of Time Series Using MDL. In: 2011 IEEE 11th International Conference on Data Mining. IEEE; 2011. p. 1086–91.
+#' The main purpose of this algorithm is to find subsequences in one time series, but this
+#' implementation also covers the experimental effectiveness evaluation with "whole sequence"
+#' setting. This means you can input a `matrix` where each column is a sequence and this algorithm
+#' will retrieve the most relevant sequences. For this setting, the `exclusion.zone` is ignored, and
+#' you need to pre-compute the ordinary euclidean distance matrix. See examples.
+#'
+#' The `exclusion.zone` is used to avoid trivial matches.
+#'
+#' @param data a `vector`, column `matrix` or `data.frame`. If more than one column is provided, see
+#'   details.
+#' @param matrix.profile a result from STAMP or STOMP algorithms.
+#' @param profile.index a result from STAMP or STOMP algorithms.
+#' @param window.size an `int` with the size of the sliding window.
+#' @param n.bits an `int`. Number of bits for MDL discretization. (Default is `8`).
+#' @param n.cand an `int`. number of candidate when picking the subsequence in each iteration.
+#'   (Default is `10`).
+#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on `window.size`. (Default
+#'   is `1/2`). See details.
+#'
+#' @return Returns a `list` with `indexes`, a `vector` with the starting position of each
+#'   subsequence, `idx.bit.size`, a `vector` with the associated bitsize for each iteration and
+#'   `bits` the value used as input on `n.bits`.
+#' @references * Yeh CCM, Van Herle H, Keogh E. Matrix profile III: The matrix profile allows
+#'   visualization of salient subsequences in massive time series. Proc - IEEE Int Conf Data Mining,
+#'   ICDM. 2017;579–88.
+#' @references * Hu B, Rakthanmanon T, Hao Y, Evans S, Lonardi S, Keogh E. Discovering the Intrinsic
+#'   Cardinality and Dimensionality of Time Series Using MDL. In: 2011 IEEE 11th International
+#'   Conference on Data Mining. IEEE; 2011. p. 1086–91.
 #' @references Website: <https://sites.google.com/site/salientsubs/>
 #' @export
 #'
 #' @examples
-#' distMat <- as.matrix(dist(carfull$data))
-#' matrixProfile <- matrix(0, nrow(carfull$data), 1)
-#' profileIndex <- matrix(0, nrow(carfull$data), 1)
+#' # subsequences setting (main purpose)
+#' salient.subsequences(data, data$mp, data$pi, 30, n.bits = 8, n.cand = 10)
+#'
+#' # sequences setting
+#' dist.matrix <- as.matrix(dist(carfull$data))
+#' mp <- matrix(0, nrow(carfull$data), 1)
+#' pi <- matrix(0, nrow(carfull$data), 1)
 #'
 #' for (i in 1:nrow(carfull$data)) {
-#'   distMat[i, i] <- Inf;
-#'   profileIndex[i] <- which.min(distMat[i,])
-#'   matrixProfile[i] <- distMat[i,profileIndex[i]]
+#'   dist.matrix[i, i] <- Inf;
+#'   pi[i] <- which.min(dist.matrix[i, ])
+#'   mp[i] <- dist.matrix[i, pi[i]]
 #' }
-bitsave.sub.picking <- function(data, matrix.profile, profile.index, window.size, bits, n.cand, exclusion.zone = 1 / 2, verbose = 2) {
+#'
+#' n.bits <- 8
+#'
+#' subs <- salient.subsequences(t(carfull$data), mp, pi, 577, n.bits = n.bits, n.cand = 10)
+#' cutoff <- which(diff(subs$idx.bit.size) > 0)[1] - 1
+#' if(cutoff > 0) {
+#'   carfull$lab[subs$indexes[1:(cutoff - 1)]]
+#' } else {
+#'   message("nothing to do")
+#' }
+#'
+salient.subsequences <- function(data, matrix.profile, profile.index, window.size, n.bits = 8, n.cand = 10, exclusion.zone = 1 / 2, verbose = 2) {
 
   ## transform data list into matrix
   if (is.matrix(data) || is.data.frame(data)) {
@@ -62,18 +97,17 @@ bitsave.sub.picking <- function(data, matrix.profile, profile.index, window.size
     exclusion.zone <- 0
   } else {
     ## set trivial match exclusion zone
-    exclusion.zone <- round(window.size * exclusion.zone)
+    exclusion.zone <- round(window.size * exclusion.zone + vars()$eps)
   }
 
   if (n.dim > 1) {
-    max.index.num <- data.size
+    max.index.num <- n.dim
   }
   else {
     ## get data size
     matrix.profile.size <- nrow(matrix.profile)
-    max.index.num <- ceiling(data.size / window.size) ## or round?
+    max.index.num <- round(data.size / window.size + vars()$eps)
   }
-
 
   ## preprocess for discretization
   if (n.dim > 1) {
@@ -102,13 +136,22 @@ bitsave.sub.picking <- function(data, matrix.profile, profile.index, window.size
 
   ## initialization bit size related variables
   compress.cost <- 0
-  uncompressed.bit <- bits * window.size
-  mismatch.bit <- bits + log2(window.size)
+  uncompressed.bit <- n.bits * window.size
+  mismatch.bit <- n.bits + log2(window.size)
 
   if (n.dim > 1) {
-    idx.bit.size[1] <- uncompressed.bit * data.size
+    idx.bit.size[1] <- uncompressed.bit * n.dim
   } else {
     idx.bit.size[1] <- uncompressed.bit * matrix.profile.size
+  }
+
+  if (verbose > 0) {
+    pb <- utils::txtProgressBar(min = 0, max = max.index.num, style = 3, width = 80)
+    on.exit(close(pb))
+  }
+
+  if (verbose > 1) {
+    on.exit(beep(sounds[[1]]), TRUE)
   }
 
   tictac <- Sys.time()
@@ -118,21 +161,21 @@ bitsave.sub.picking <- function(data, matrix.profile, profile.index, window.size
     # get the newest hypothesis
     if (hypothesis.count.old != hypothesis.count) {
       if (n.dim > 1) {
-        hypothesis[hypothesis.count, ] <- data[hypothesis.idx[hypothesis.count], ]
+        hypothesis[hypothesis.count, ] <- data[, hypothesis.idx[hypothesis.count]]
       } else {
         hypothesis[hypothesis.count, ] <- data[hypothesis.idx[hypothesis.count]:(hypothesis.idx[hypothesis.count] + window.size - 1), ]
       }
-      hypothesis[hypothesis.count, ] <- discrete.norm(hypothesis[hypothesis.count, ], bits, data.max, data.min)
+      hypothesis[hypothesis.count, ] <- discrete.norm(hypothesis[hypothesis.count, ], n.bits, data.max, data.min)
     }
 
     # get the newest compressiable
     if (compressible.count.old != compressible.count) {
       if (n.dim > 1) {
-        compressible[compressible.count, ] <- data[compressible.idx[compressible.count], ]
+        compressible[compressible.count, ] <- data[, compressible.idx[compressible.count]]
       } else {
         compressible[compressible.count, ] <- data[compressible.idx[compressible.count]:(compressible.idx[compressible.count] + window.size - 1), ]
       }
-      compressible[compressible.count, ] <- discrete.norm(compressible[compressible.count, ], bits, data.max, data.min)
+      compressible[compressible.count, ] <- discrete.norm(compressible[compressible.count, ], n.bits, data.max, data.min)
     }
 
     # remove newest hypothesis from the matrix.profile
@@ -160,19 +203,18 @@ bitsave.sub.picking <- function(data, matrix.profile, profile.index, window.size
     # get current bitsave
     if (compressible.count.old != compressible.count) {
       new.descr.length <- Inf
-      for (j in 1:hypothesis.count) {
-        if (j == 0) {
-          break
-        }
-        new.descr.length.temp <- get.bitsize(compressible[compressible.count, ] - hypothesis[j, ], mismatch.bit)
-        if (new.descr.length.temp < new.descr.length) {
-          new.descr.length <- new.descr.length.temp
+      if (hypothesis.count > 0) {
+        for (j in 1:hypothesis.count) {
+          new.descr.length.temp <- get.bitsize(compressible[compressible.count, ] - hypothesis[j, ], mismatch.bit)
+          if (new.descr.length.temp < new.descr.length) {
+            new.descr.length <- new.descr.length.temp
+          }
         }
       }
       compress.cost <- compress.cost + new.descr.length
       hypothesis.cost <- uncompressed.bit * hypothesis.count + compressible.count * log2(hypothesis.count)
       if (n.dim > 1) {
-        other.cost <- uncompressed.bit * (data.size - hypothesis.count - compressible.count)
+        other.cost <- uncompressed.bit * (n.dim - hypothesis.count - compressible.count)
       } else {
         other.cost <- uncompressed.bit * (matrix.profile.size - hypothesis.count - compressible.count)
       }
@@ -181,30 +223,12 @@ bitsave.sub.picking <- function(data, matrix.profile, profile.index, window.size
       idx.bit.size[indexes.count] <- idx.bit.size[indexes.count - 1]
     }
 
-    if (indexes.count > 0) {
-      message(sprintf("%f", round(idx.bit.size[indexes.count])))
-    }
-
     compressible.count.old <- compressible.count
     hypothesis.count.old <- hypothesis.count
 
     # stop criteria
-    if (n.dim > 1) {
-      if (indexes.count >= data.size) {
-        break
-      }
-    }
-    else {
-      if (indexes.count >= (data.size / window.size)) {
-        break
-      }
-
-      if (indexes.count > 1 && !(is.infinite(idx.bit.size[indexes.count]) && is.infinite(idx.bit.size[indexes.count - 1]))) {
-        if ((idx.bit.size[indexes.count] - idx.bit.size[indexes.count - 1]) > 0) {
-          indexes.count <- indexes.count - 1
-          break
-        }
-      }
+    if (indexes.count >= max.index.num) {
+      break
     }
 
     # get candidates
@@ -221,32 +245,31 @@ bitsave.sub.picking <- function(data, matrix.profile, profile.index, window.size
 
     for (i in 1:candidate.n.temp) {
       if (n.dim > 1) {
-        can <- data[candidate.idx[i], ]
+        can <- data[, candidate.idx[i]]
       } else {
         can <- as.matrix(data[candidate.idx[i]:(candidate.idx[i] + window.size - 1), ])
       }
 
-      can <- discrete.norm(can, bits, data.max, data.min)
+      can <- discrete.norm(can, n.bits, data.max, data.min)
 
       # test the candiate as hypothesis
       candidate.motif.idx <- profile.index[candidate.idx[i]]
       if (n.dim > 1) {
-        candidate.motif <- data[candidate.motif.idx, ]
+        candidate.motif <- data[, candidate.motif.idx]
       } else {
         candidate.motif <- as.matrix(data[candidate.motif.idx:(candidate.motif.idx + window.size - 1), ])
       }
-      candidate.motif <- discrete.norm(candidate.motif, bits, data.max, data.min)
+      candidate.motif <- discrete.norm(candidate.motif, n.bits, data.max, data.min)
       bitsave.hypothesis <- uncompressed.bit - get.bitsize(candidate.motif - can, mismatch.bit)
 
       # test the candiate as compressiable
       new.descr.length <- Inf
-      for (j in 1:hypothesis.count) {
-        if (j == 0) {
-          break
-        }
-        new.descr.length.temp <- get.bitsize(can - hypothesis[j, ], mismatch.bit)
-        if (new.descr.length.temp < new.descr.length) {
-          new.descr.length <- new.descr.length.temp
+      if (hypothesis.count > 0) {
+        for (j in 1:hypothesis.count) {
+          new.descr.length.temp <- get.bitsize(can - hypothesis[j, ], mismatch.bit)
+          if (new.descr.length.temp < new.descr.length) {
+            new.descr.length <- new.descr.length.temp
+          }
         }
       }
       bitsave.compressed <- uncompressed.bit - new.descr.length
@@ -269,16 +292,19 @@ bitsave.sub.picking <- function(data, matrix.profile, profile.index, window.size
     }
 
     indexes.count <- indexes.count + 1
+
+    if (verbose > 0) {
+      utils::setTxtProgressBar(pb, indexes.count)
+    }
+
     indexes[indexes.count] <- candidate.idx[best.candidate]
 
     if (candidate.bitsave[best.candidate, 2] == 1) {
       hypothesis.count <- hypothesis.count + 1
       hypothesis.idx[hypothesis.count] <- candidate.idx[best.candidate]
-      message(sprintf("%f Hypo ", indexes.count))
     } else if (candidate.bitsave[best.candidate, 2] == 2) {
       compressible.count <- compressible.count + 1
       compressible.idx[compressible.count] <- candidate.idx[best.candidate]
-      message(sprintf("%f Com ", indexes.count))
     }
   }
   idx.bit.size <- idx.bit.size[1:indexes.count]
@@ -287,28 +313,29 @@ bitsave.sub.picking <- function(data, matrix.profile, profile.index, window.size
   tictac <- Sys.time() - tictac
 
   if (verbose > 0) {
+    utils::setTxtProgressBar(pb, max.index.num)
     message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
   }
 
-  return(list(indexes = indexes, idx.bit.size = idx.bit.size))
+  return(list(indexes = indexes, idx.bit.size = idx.bit.size, bits = n.bits))
 }
 
-#' Title
+#' Retrieve the index of a number of candidates from the lowest points of a MP
 #'
-#' @param score
-#' @param k
-#' @param exclusion.zone
+#' @param matrix.profile the matrix profile
+#' @param n.cand number of candidates to extract
+#' @param exclusion.zone exclusion zone for extracting candidates (in absolute values)
 #'
-#' @return
-#' @export
+#' @return Returns the indexes of candidates
 #'
-#' @examples
-get.sorted.idx <- function(score, k, exclusion.zone = 0) {
-  idx <- sort(score, index.return = TRUE)$ix
+#' @keywords internal
+#'
+get.sorted.idx <- function(matrix.profile, n.cand, exclusion.zone = 0) {
+  idx <- sort(matrix.profile, index.return = TRUE)$ix
 
   if (exclusion.zone > 0) {
     for (i in 1:length(idx)) {
-      if (i > min(k, length(idx))) {
+      if (i > min(n.cand, length(idx))) {
         break
       }
       idx.temp <- idx[(i + 1):length(idx)]
@@ -317,54 +344,58 @@ get.sorted.idx <- function(score, k, exclusion.zone = 0) {
     }
   }
 
-  idx <- idx[!is.infinite(score[idx])]
+  idx <- idx[!is.infinite(matrix.profile[idx])]
 
-  if (k > length(idx)) {
-    k <- length(idx)
+  if (n.cand > length(idx)) {
+    n.cand <- length(idx)
   }
 
-  idx <- idx[1:k]
+  idx <- idx[1:n.cand]
 
   return(idx)
 }
 
-#' Title
+#' Reduced description length
 #'
-#' @param x
-#' @param mismatch.bit
+#' @param x the difference between two time series (reference and candidate for compression)
+#' @param mismatch.bit sum of n.bits and log2(window.size)
 #'
-#' @return
-#' @export
-#'
-#' @examples
+#' @return Returns the bit.size cost of compressing the time series
+#' @keywords internal
+
 get.bitsize <- function(x, mismatch.bit) {
   bit.size <- sum(x != 0) * mismatch.bit
 
   return(bit.size)
 }
 
-#' Title
+#' Precompute the max and min value for the discrete normalization
 #'
-#' @param data
-#' @param window.size
+#' @param data input time series
+#' @param window.size sliding window size
 #'
-#' @return
-#' @export
+#' @return Returns a list with the max and min value
+#' @keywords internal
 #'
-#' @examples
 discrete.norm.pre <- function(data, window.size = 1) {
   if (is.vector(data)) {
     data <- as.matrix(data)
   } else {
     if (ncol(data) > 1) {
-      window.size <- 1
+      len <- ncol(data)
+    } else {
+      len <- nrow(data) - window.size + 1
     }
   }
 
   max <- -Inf
   min <- Inf
-  for (i in 1:(nrow(data) - window.size + 1)) {
-    window <- data[i:(i + window.size - 1), ]
+  for (i in 1:len) {
+    if (ncol(data) > 1) {
+      window <- data[, i]
+    } else {
+      window <- data[i:(i + window.size - 1), ]
+    }
     window.mean <- mean(window)
     window.sd <- std(window)
     if (window.sd == 0) {
@@ -384,19 +415,17 @@ discrete.norm.pre <- function(data, window.size = 1) {
 }
 
 
-### per column?
-#' Title
+#' Discrete normalization
 #'
-#' @param data
-#' @param bits
-#' @param max
-#' @param min
+#' @param data Input time series.
+#' @param n.bits Number of bits for MDL discretization.
+#' @param max Precomputed max from `discrete.norm.pre`.
+#' @param min Precomputed min from `discrete.norm.pre`.
 #'
-#' @return
-#' @export
-#'
-#' @examples
-discrete.norm <- function(data, bits, max, min) {
+#' @return Returns the data after discrete normalization.
+#' @keywords internal
+
+discrete.norm <- function(data, n.bits, max, min) {
   # normalize magnitude
   data.mean <- mean(data)
   data.sd <- std(data)
@@ -410,21 +439,19 @@ discrete.norm <- function(data, bits, max, min) {
   data <- (data - min) / (max - min)
 
   # discretization
-  data <- round(data * (2^bits - 1)) + 1
+  data <- round(data * (2^n.bits - 1) + vars()$eps) + 1
 
   return(data)
 }
 
-#' Title
+#' Future function to see MDS
 #'
-#' @param data
-#' @param sub.picking
-#' @param window.size
+#' @param data original data
+#' @param sub.picking picked subsequences
+#' @param window.size window size
 #'
-#' @return
-#' @export
-#'
-#' @examples
+#' @return Returns X,Y values for plotting
+
 get.mds <- function(data, sub.picking, window.size) {
   subs <- list()
 
@@ -438,3 +465,72 @@ get.mds <- function(data, sub.picking, window.size) {
 
   return(cmd)
 }
+
+#' Future function to check performance
+#'
+#' @param truth
+#' @param subs
+#' @param window
+#'
+#' @return Returns X,Y values for plotting
+#'
+#' @examples
+#' perf(carfull$lab, subs)
+#' perf(carsub$labIdx, subssub, carsub$subLen)
+
+perf <- function(truth, subs, window = 0) {
+
+  window <- as.numeric(window)
+  best.f <- -Inf
+  best.p <- -Inf
+  best.r <- -Inf
+  best.bit <- 0
+  cor.th <- 0.2
+
+  for (i in subs$bits) {
+    message("bits: ", i)
+
+    hit.miss <- rep(FALSE, length(subs$indexes))
+
+    for (k in 1:length(subs$indexes)) {
+      if ((window == 0 && truth[subs$indexes[k]] > 0) ||
+        (min(abs(subs$indexes[k] - truth)) < cor.th * window) # sub
+      ) {
+        hit.miss[k] <- TRUE
+      }
+    }
+
+    cutoff <- which(diff(subs$idx.bit.size) > 0)[1] - 1
+
+    if (!is.na(cutoff) && cutoff > 0) {
+      hit.miss <- hit.miss[1:cutoff]
+
+      precision <- sum(hit.miss) / length(hit.miss)
+      if (window == 0) {
+        recall <- sum(hit.miss) / sum(truth > 0)
+      } else {
+        recall <- sum(hit.miss) / length(truth)
+      }
+
+      Fscore <- 2 * precision * recall / (precision + recall)
+
+      if (Fscore > best.f) {
+        best.p <- precision
+        best.r <- recall
+        best.f <- Fscore
+        best.bit <- i
+      }
+
+      message("Precision: ", round(precision, 4))
+      message("Recall: ", round(recall, 4))
+      message("Fscore: ", round(Fscore, 4))
+    } else {
+      message("nothing to do")
+    }
+  }
+
+  message("Best Score: ", round(best.f, 4), " Bits: ", best.bit)
+
+  return(list(precision = best.p, recall = best.r, best.bit = best.bit))
+}
+

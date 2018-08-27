@@ -2,23 +2,28 @@
 #'
 #' MDL Based MOTIF Discovery for Multidimensional Matrix Profile.
 #'
-#' Although this functions handles Multivariate Time Series, it can also be used to handle Univariate Time Series.
+#' Although this functions handles Multivariate Time Series, it can also be used to handle
+#' Univariate Time Series.
 #'
-#' @param data a `matrix` of `numeric`, where each column is a time series. Accepts `vector` (see details), `list` and `data.frame` too.
+#' @param data a `matrix` of `numeric`, where each column is a time series. Accepts `vector` (see
+#'   details), `list` and `data.frame` too.
 #' @param window.size an `int` with the size of the sliding window.
 #' @param matrix.profile multidimensional matrix profile (from [mstomp()] or [mstomp.par()]).
 #' @param profile.index multidimensional profile index (from [mstomp()] or [mstomp.par()]).
 #' @param n.bit an `int`. Number of bits for MDL discretization. (Default is `4`).
-#' @param k an `int`. The number of MOTIFs to retrieve. `Inf` means all possible MOTIFs. (Default is `Inf`).
+#' @param k an `int`. The number of MOTIFs to retrieve. `Inf` means all possible MOTIFs. (Default is
+#'   `Inf`).
 #'
-#' @return Returns the `motif.idx` with the index of MOTIFs founded and `motif.dim`
-#' with the spanned dimensions of respective MOTIF.
+#' @return Returns the `motif.idx` with the index of MOTIFs founded and `motif.dim` with the spanned
+#'   dimensions of respective MOTIF.
 #' @export
 #'
 #' @family mstomp
 #' @seealso [mstomp()], [mstomp.par()], [guide.search()]
-#' @references 1. Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif Discovery.
-#' @references 2. Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
+#' @references * Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif
+#'   Discovery.
+#' @references * Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A
+#'   New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
 #' @references Website: <https://sites.google.com/view/mstamp/>
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #'
@@ -69,7 +74,7 @@ unconstrain.search <- function(data, window.size, matrix.profile, profile.index,
     stop("Unknown type of data. Must be: matrix, data.frame, vector or list")
   }
 
-  exc.zone <- round(0.5 * window.size)
+  exc.zone <- round(0.5 * window.size + vars()$eps)
   tot.dim <- n.dim
 
   if (is.infinite(k)) {

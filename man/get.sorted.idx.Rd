@@ -2,13 +2,21 @@
 % Please edit documentation in R/mds.R
 \name{get.sorted.idx}
 \alias{get.sorted.idx}
-\title{Title}
+\title{Retrieve the index of a number of candidates from the lowest points of a MP}
 \usage{
-get.sorted.idx(score, k, exclusion.zone = 0)
+get.sorted.idx(matrix.profile, n.cand, exclusion.zone = 0)
 }
 \arguments{
-\item{exclusion.zone}{}
+\item{matrix.profile}{the matrix profile}
+
+\item{n.cand}{number of candidates to extract}
+
+\item{exclusion.zone}{exclusion zone for extracting candidates (in absolute values)}
+}
+\value{
+Returns the indexes of candidates
 }
 \description{
-Title
+Retrieve the index of a number of candidates from the lowest points of a MP
 }
+\keyword{internal}

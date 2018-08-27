@@ -8,7 +8,8 @@ unconstrain.search(data, window.size, matrix.profile, profile.index,
   n.bit = 4, k = Inf)
 }
 \arguments{
-\item{data}{a \code{matrix} of \code{numeric}, where each column is a time series. Accepts \code{vector} (see details), \code{list} and \code{data.frame} too.}
+\item{data}{a \code{matrix} of \code{numeric}, where each column is a time series. Accepts \code{vector} (see
+details), \code{list} and \code{data.frame} too.}
 
 \item{window.size}{an \code{int} with the size of the sliding window.}
 
@@ -18,17 +19,19 @@ unconstrain.search(data, window.size, matrix.profile, profile.index,
 
 \item{n.bit}{an \code{int}. Number of bits for MDL discretization. (Default is \code{4}).}
 
-\item{k}{an \code{int}. The number of MOTIFs to retrieve. \code{Inf} means all possible MOTIFs. (Default is \code{Inf}).}
+\item{k}{an \code{int}. The number of MOTIFs to retrieve. \code{Inf} means all possible MOTIFs. (Default is
+\code{Inf}).}
 }
 \value{
-Returns the \code{motif.idx} with the index of MOTIFs founded and \code{motif.dim}
-with the spanned dimensions of respective MOTIF.
+Returns the \code{motif.idx} with the index of MOTIFs founded and \code{motif.dim} with the spanned
+dimensions of respective MOTIF.
 }
 \description{
 MDL Based MOTIF Discovery for Multidimensional Matrix Profile.
 }
 \details{
-Although this functions handles Multivariate Time Series, it can also be used to handle Univariate Time Series.
+Although this functions handles Multivariate Time Series, it can also be used to handle
+Univariate Time Series.
 }
 \examples{
 # This is a fast toy example and results are useless. For a complete result, run the code inside
@@ -44,12 +47,14 @@ motifs <- unconstrain.search(toy_data$data, w, mp$mp, mp$pi, 4, 2)
 
 }
 \references{
-\enumerate{
-\item Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif Discovery.
+\itemize{
+\item Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif
+Discovery.
 }
 
-\enumerate{
-\item Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
+\itemize{
+\item Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A
+New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
 }
 
 Website: \url{https://sites.google.com/view/mstamp/}

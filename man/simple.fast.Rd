@@ -7,11 +7,13 @@
 simple.fast(..., window.size, exclusion.zone = 1/2, verbose = 2)
 }
 \arguments{
-\item{...}{a \code{matrix} of \code{numeric}, where each column is a time series. Accepts \code{list} and \code{data.frame} too. If a second time series is supplied it will be a join matrix profile.}
+\item{...}{a \code{matrix} of \code{numeric}, where each column is a time series. Accepts \code{list} and
+\code{data.frame} too. If a second time series is supplied it will be a join matrix profile.}
 
 \item{window.size}{an \code{int} with the size of the sliding window.}
 
-\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on query size (default is \code{1/2}).}
+\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on query size (default is
+\code{1/2}).}
 
 \item{verbose}{an \code{int}. See details. (Default is \code{2}).}
 }
@@ -22,7 +24,8 @@ Returns a list with the Matrix Profile \code{mp} and Profile Index \code{pi}.
 Compute the join similarityfor Sound data.
 }
 \details{
-\code{verbose} changes how much information is printed by this function; \code{0} means nothing, \code{1} means text, \code{2} means text and sound.
+\code{verbose} changes how much information is printed by this function; \code{0} means nothing, \code{1} means
+text, \code{2} means text and sound.
 }
 \examples{
 w <- 30
@@ -31,12 +34,14 @@ result <- simple.fast(data, window.size = w, verbose = 0)
 
 }
 \references{
-\enumerate{
-\item Silva D, Yeh C, Batista G, Keogh E. Simple: Assessing Music Similarity Using Subsequences Joins. Proc 17th ISMIR Conf. 2016;23–30.
+\itemize{
+\item Silva D, Yeh C, Batista G, Keogh E. Simple: Assessing Music Similarity Using
+Subsequences Joins. Proc 17th ISMIR Conf. 2016;23–30.
 }
 
-\enumerate{
-\item Silva DF, Yeh C-CM, Zhu Y, Batista G, Keogh E. Fast Similarity Matrix Profile for Music Analysis and Exploration. IEEE Trans Multimed. 2018;14(8):1–1.
+\itemize{
+\item Silva DF, Yeh C-CM, Zhu Y, Batista G, Keogh E. Fast Similarity Matrix Profile for
+Music Analysis and Exploration. IEEE Trans Multimed. 2018;14(8):1–1.
 }
 
 Website: \url{https://sites.google.com/view/simple-fast}

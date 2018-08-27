@@ -25,10 +25,10 @@ Mueen's Algorithm for Similarity Search is The Fastest Similarity Search Algorit
 The difference of this function to \code{\link[=mass]{mass()}} is that this does not normalize data. Specific for this domain.
 }
 \references{
-\enumerate{
+\itemize{
 \item Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance
 }
 
-\url{https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html}
+Website: \url{https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html}
 }
 \keyword{internal}
