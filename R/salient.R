@@ -450,9 +450,11 @@ discrete.norm <- function(data, n.bits, max, min) {
 #' @param sub.picking picked subsequences
 #' @param window.size window size
 #'
+#' @keywords internal
+#'
 #' @return Returns X,Y values for plotting
 
-get.mds <- function(data, sub.picking, window.size) {
+salient.mds <- function(data, sub.picking, window.size) {
   subs <- list()
 
   for (i in 1:length(sub.picking$indexes)) {
@@ -468,22 +470,24 @@ get.mds <- function(data, sub.picking, window.size) {
 
 #' Future function to check performance
 #'
-#' @param truth
-#' @param subs
-#' @param window
+#' @param gtruth Ground truth annotation.
+#' @param subs Output from `salient.results`.
+#' @param window Sliding window size.
 #'
 #' @return Returns X,Y values for plotting
 #'
 #' @examples
-#' perf(carfull$lab, subs)
-#' perf(carsub$labIdx, subssub, carsub$subLen)
+#' salient.score(carfull$lab, subs)
+#' salient.score(carsub$labIdx, subssub, carsub$subLen)
+#'
+#' @keywords internal
 
-perf <- function(truth, subs, window = 0) {
+salient.score <- function(gtruth, subs, window = 0) {
 
   window <- as.numeric(window)
-  best.f <- -Inf
-  best.p <- -Inf
-  best.r <- -Inf
+  best.f <- 0
+  best.p <- 0
+  best.r <- 0
   best.bit <- 0
   cor.th <- 0.2
 
@@ -493,8 +497,8 @@ perf <- function(truth, subs, window = 0) {
     hit.miss <- rep(FALSE, length(subs$indexes))
 
     for (k in 1:length(subs$indexes)) {
-      if ((window == 0 && truth[subs$indexes[k]] > 0) ||
-        (min(abs(subs$indexes[k] - truth)) < cor.th * window) # sub
+      if ((window == 0 && gtruth[subs$indexes[k]] > 0) ||
+        (min(abs(subs$indexes[k] - gtruth)) < cor.th * window) # sub
       ) {
         hit.miss[k] <- TRUE
       }
@@ -507,9 +511,9 @@ perf <- function(truth, subs, window = 0) {
 
       precision <- sum(hit.miss) / length(hit.miss)
       if (window == 0) {
-        recall <- sum(hit.miss) / sum(truth > 0)
+        recall <- sum(hit.miss) / sum(gtruth > 0)
       } else {
-        recall <- sum(hit.miss) / length(truth)
+        recall <- sum(hit.miss) / length(gtruth)
       }
 
       Fscore <- 2 * precision * recall / (precision + recall)
@@ -531,6 +535,6 @@ perf <- function(truth, subs, window = 0) {
 
   message("Best Score: ", round(best.f, 4), " Bits: ", best.bit)
 
-  return(list(precision = best.p, recall = best.r, best.bit = best.bit))
+  return(list(precision = best.p, recall = best.r, fscore = Fscore, best.bit = best.bit))
 }
 
