@@ -4,12 +4,9 @@
 \name{fluss_data}
 \alias{fluss_data}
 \title{Original data used in the FLUSS paper}
-\format{A list containing:
-\describe{
-\item{data}{one column matrix with the dataset's data}
+\format{A list containing: \describe{ \item{data}{one column matrix with the dataset's data}
 \item{gtruth}{a vector with the ground truth of semantic change according to provided dataset}
-\item{window}{window size used in original paper}
-}}
+\item{window}{window size used in original paper} }}
 \source{
 \url{https://sites.google.com/site/onlinesemanticsegmentation/}
 
@@ -19,14 +16,26 @@
 fluss_data
 }
 \description{
-Contains two datasets used in FLUSS paper (1), first is TiltABP from (2), and second is WalkJogRun
-from PAMAP's dataset (3)
+Contains two datasets used in FLUSS paper (1), first is TiltABP from (2), and second is
+WalkJogRun from PAMAP's dataset (3)
 }
 \references{
-\enumerate{
-\item Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
-\item Heldt, T., Oefinger, M.B., Hoshiyama, M. and Mark, R.G., 2003, September. Circulatory response to passive and active changes in posture. In IEEE Computers in Cardiology, 2003 (pp. 263-266).
-\item Reiss, A. and Stricker, D., 2012. Introducing a new benchmarked dataset for activity monitoring. In 16th International Symposium on Wearable Computers (ISWC), 2012, pages 108– 109. IEEE, 2012.
+\itemize{
+\item Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII:
+Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE
+International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
+}
+
+\itemize{
+\item Heldt, T., Oefinger, M.B., Hoshiyama, M. and Mark, R.G., 2003, September.
+Circulatory response to passive and active changes in posture. In IEEE Computers in Cardiology,
+2003 (pp. 263-266).
+}
+
+\itemize{
+\item Reiss, A. and Stricker, D., 2012. Introducing a new benchmarked dataset for
+activity monitoring. In 16th International Symposium on Wearable Computers (ISWC), 2012, pages
+108–109. IEEE, 2012.
 }
 }
 \keyword{datasets}

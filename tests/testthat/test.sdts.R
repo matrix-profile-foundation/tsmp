@@ -14,13 +14,13 @@ test_that("Errors", {
 
 w <- c(110, 220, 330)
 subs <- 20000:60000
-tr_data <- as.data.frame(test_data$train$data[subs])
-tr_label <- test_data$train$label[subs]
-te_data <- test_data$test$data[subs]
-te_label <- test_data$test$label[subs]
-model <- sdts.train(tr_data, tr_label, w, verbose = 0)
-predict <- sdts.predict(model, te_data, round(mean(w)))
-pred.score <- sdts.f.score(te_label, predict, 1)
+tr.data <- as.data.frame(test_data$train$data[subs])
+tr.label <- test_data$train$label[subs]
+te.data <- test_data$test$data[subs]
+te.label <- test_data$test$label[subs]
+model <- sdts.train(tr.data, tr.label, w, verbose = 0)
+predict <- sdts.predict(model, te.data, round(mean(w)))
+pred.score <- sdts.f.score(te.label, predict, 1)
 
 test_that("SDTS Train", {
   expect_equal(round(model$score, 3), 0.889)

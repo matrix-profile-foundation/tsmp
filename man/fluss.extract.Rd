@@ -13,7 +13,8 @@ fluss.extract(arc.counts, num.segments, window.size, exclusion.zone = 5)
 
 \item{window.size}{an \code{int}. Size of the sliding window.}
 
-\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is \code{5}).}
+\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is
+\code{5}).}
 }
 \value{
 Returns an \code{int} or a \code{vector} of \code{int} with the location of predicted semantic changes.
@@ -40,8 +41,10 @@ segments <- fluss.extract(cac, nseg, w)
 }
 }
 \references{
-\enumerate{
-\item Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
+\itemize{
+\item Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII:
+Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE
+International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
 }
 
 Website: \url{https://sites.google.com/site/onlinesemanticsegmentation/}

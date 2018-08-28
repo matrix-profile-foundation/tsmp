@@ -10,6 +10,7 @@ test_that("Errors", {
   # big window size
   expect_error(fast.movsd(toy_data$data[, 1], 1), regexp = "must be at least 2")
   expect_error(fast.movsd(toy_data$data[1:100, 1], 500), regexp = "is too large")
+  expect_error(expect_message(beep(audio::close.audioInstance(99)), "Failed"))
 })
 
 pre <- mass.pre(ref.data, d.size, query.data, q.size, w)

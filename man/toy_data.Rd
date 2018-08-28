@@ -4,11 +4,8 @@
 \name{toy_data}
 \alias{toy_data}
 \title{Original data used in the mSTAMP demo}
-\format{A \code{list} with a \code{matrix} with 550 rows and 3 dimensions and an \code{int}:
-\describe{
-\item{data}{data with embedded MOTIFs}
-\item{sub.len}{size of sliding window}
-}}
+\format{A \code{list} with a \code{matrix} with 550 rows and 3 dimensions and an \code{int}: \describe{
+\item{data}{data with embedded MOTIFs} \item{sub.len}{size of sliding window} }}
 \source{
 \url{https://sites.google.com/view/mstamp/}
 }
@@ -19,8 +16,9 @@ toy_data
 A synthetic dataset with embedded MOTIFs for multidimensional discovery
 }
 \references{
-\enumerate{
-\item Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif Discovery.
+\itemize{
+\item Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif
+Discovery.
 }
 
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}

@@ -1,55 +1,55 @@
-#' @keywords internal
 context("Increase Package version")
-getPackageVersion <- function(packageLocation = ".") {
-  ## Read DESCRIPTION file
-  desc <- readLines(file.path(packageLocation, "DESCRIPTION"))
 
-  ## Find the line where the version is defined
-  vLine <- grep("^Version\\:", desc)
+if (skip_on_cran() && skip_on_travis() && skip_on_appveyor()) {
+  get.package.version <- function(package.location = ".") {
+    ## Read DESCRIPTION file
+    desc <- readLines(file.path(package.location, "DESCRIPTION"))
 
-  ## Extract version number
-  vNumber <- gsub("^Version\\:\\s*", "", desc[vLine])
+    ## Find the line where the version is defined
+    version.line <- grep("^Version\\:", desc)
 
-  ## Return the current number
-  return(vNumber)
-}
+    ## Extract version number
+    current.version <- gsub("^Version\\:\\s*", "", desc[version.line])
 
-updatePackageVersion <- function(packageLocation = ".") {
-  ## Read DESCRIPTION file
-  desc <- readLines(file.path(packageLocation, "DESCRIPTION"))
+    ## Return the current number
+    return(current.version)
+  }
 
-  ## Find the line where the version is defined
-  vLine <- grep("^Version\\:", desc)
+  update.package.version <- function(package.location = ".") {
+    ## Read DESCRIPTION file
+    desc <- readLines(file.path(package.location, "DESCRIPTION"))
 
-  ## Extract version number
-  vNumber <- gsub("^Version\\:\\s*", "", desc[vLine])
-  #|
-  ## Split the version number into two; a piece to keep, a piece to increment
-  versionNumber <- strsplit(vNumber, "\\.")[[1]]
-  versionParts <- length(versionNumber)
-  vNumberKeep <- paste(versionNumber[1:(versionParts - 1)], sep = "", collapse = ".")
-  vNumberUpdate <- versionNumber[versionParts]
+    ## Find the line where the version is defined
+    version.line <- grep("^Version\\:", desc)
 
-  ## Replace old version number with new one (increment by 1)
-  oldVersion <- as.numeric(vNumberUpdate)
-  newVersion <- oldVersion + 1
+    ## Extract version number
+    current.version <- gsub("^Version\\:\\s*", "", desc[version.line])
+    #|
+    ## Split the version number into two; a piece to keep, a piece to increment
+    version.number <- strsplit(current.version, "\\.")[[1]]
+    version.parts <- length(version.number)
+    version.number.keep <- paste(version.number[1:(version.parts - 1)], sep = "", collapse = ".")
+    version.number.update <- version.number[version.parts]
 
-  ## Build final version number
-  vFinal <- paste(vNumberKeep, newVersion, sep = ".")
+    ## Replace old version number with new one (increment by 1)
+    old.version <- as.numeric(version.number.update)
+    new.version <- old.version + 1
 
-  ## Update DESCRIPTION file (in R)
-  desc[vLine] <- paste0("Version: ", vFinal)
+    ## Build final version number
+    version.final <- paste(version.number.keep, new.version, sep = ".")
 
-  ## Update the actual DESCRIPTION file
-  writeLines(desc, file.path(packageLocation, "DESCRIPTION"))
+    ## Update DESCRIPTION file (in R)
+    desc[version.line] <- paste0("Version: ", version.final)
 
-  ## Return the updated version number to screen
-  return(vFinal)
-}
+    ## Update the actual DESCRIPTION file
+    writeLines(desc, file.path(package.location, "DESCRIPTION"))
 
-if (skip_on_cran() && !nzchar(Sys.getenv("TRAVIS_R_VERSION"))) {
-  curr <- getPackageVersion(Sys.getenv("R_PACKRAT_PROJECT_DIR"))
-  new <- updatePackageVersion(Sys.getenv("R_PACKRAT_PROJECT_DIR"))
+    ## Return the updated version number to screen
+    return(version.final)
+  }
+
+  curr <- get.package.version(Sys.getenv("R_PACKRAT_PROJECT_DIR"))
+  new <- update.package.version(Sys.getenv("R_PACKRAT_PROJECT_DIR"))
 
   test_that("New version is not old version", {
     expect_false(isTRUE(all.equal(new, curr)))

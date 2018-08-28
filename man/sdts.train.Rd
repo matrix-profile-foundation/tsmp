@@ -23,16 +23,16 @@ sdts.train(data, label, window.size, beta = 1, pat.max = Inf,
 \item{verbose}{an \code{int}. See details. (Default is \code{2}).}
 }
 \value{
-Returns a list with the learned dictionary
-\code{score} (estimated score), \code{score.hist} (history of scores),
-\code{pattern} (shape features), \code{thold} (threshold values).
+Returns a list with the learned dictionary \code{score} (estimated score), \code{score.hist}
+(history of scores), \code{pattern} (shape features), \code{thold} (threshold values).
 }
 \description{
 Scalable Dictionary learning for Time Series (SDTS) training function.
 }
 \details{
-\code{beta} is used to balance F-score towards recall (\code{>1}) or precision (\code{<1}).
-\code{verbose} changes how much information is printed by this function; \code{0} means nothing, \code{1} means text, \code{2} means text and sound.
+\code{beta} is used to balance F-score towards recall (\code{>1}) or precision (\code{<1}). \code{verbose} changes
+how much information is printed by this function; \code{0} means nothing, \code{1} means text, \code{2} means
+text and sound.
 }
 \examples{
 # This is a fast toy example and results are useless. For a complete result, run the code inside
@@ -52,6 +52,14 @@ model <- sdts.train(test_data$train$data, test_data$train$label, windows)
 predict <- sdts.predict(model, test_data$test$data, round(mean(windows)))
 sdts.f.score(test_data$test$label, predict, 1)
 }
+}
+\references{
+\itemize{
+\item Yeh C-CM, Kavantzas N, Keogh E. Matrix profile IV: Using Weakly Labeled Time Series
+to Predict Outcomes. Proc VLDB Endow. 2017 Aug 1;10(12):1802–12.
+}
+
+Website: \url{https://sites.google.com/view/weaklylabeled}
 }
 \seealso{
 Other SDTS: \code{\link{sdts.f.score}},

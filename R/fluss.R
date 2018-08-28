@@ -1,23 +1,28 @@
 #' Fast Low-cost Unipotent Semantic Segmentation (FLUSS)
 #'
-#' FLUSS is a Domain Agnostic Online Semantic Segmentation that uses the assumption that when few arc
-#' are crossing a given index point, means that there is a high probability of semantic change.
+#' FLUSS is a Domain Agnostic Online Semantic Segmentation that uses the assumption that when few
+#' arc are crossing a given index point, means that there is a high probability of semantic change.
 #'
-#' `verbose` changes how much information is printed by this function; `0` means nothing, `1` means text, `2` means text and sound.
+#' `verbose` changes how much information is printed by this function; `0` means nothing, `1` means
+#' text, `2` means text and sound.
 #'
 #' @param data a `matrix` or a `vector`. Input data.
 #' @param window.size an `int`. Size of the sliding window.
 #' @param num.segments an `int`. Number of segments to extract. Based on domain knowledge.
-#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on window size (default is `5`).
-#' @param gtruth an `int` or `vector` of `int` with the ground truth index of segments. (Default is `NULL`).
+#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on window size (default is
+#'   `5`).
+#' @param gtruth an `int` or `vector` of `int` with the ground truth index of segments. (Default is
+#'   `NULL`).
 #' @param profile.index a pre-computed profile index. (Default is `NULL`).
 #' @param verbose an `int`. See details. (Default is `2`).
 #'
-#' @return Returns a list with `segments` (location of semantic changes), `mp` (matrix profile if computed),
-#' `pi` (profile index, input of computed), `cac` corrected arc count.
+#' @return Returns a list with `segments` (location of semantic changes), `mp` (matrix profile if
+#'   computed), `pi` (profile index, input of computed), `cac` corrected arc count.
 #' @export
 #' @family fluss
-#' @references 1. Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
+#' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII:
+#'   Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE
+#'   International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
 #' @references Website: <https://sites.google.com/site/onlinesemanticsegmentation/>
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #' @examples
@@ -78,13 +83,16 @@ fluss <- function(data, window.size, num.segments, exclusion.zone = 5, gtruth = 
 #' @param arc.counts a `matrix` with the corrected arc counts from [fluss.cac()].
 #' @param num.segments an `int`. Number of segments to extract. Based on domain knowledge.
 #' @param window.size an `int`. Size of the sliding window.
-#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on window size (default is `5`).
+#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on window size (default is
+#'   `5`).
 #'
 #' @return Returns an `int` or a `vector` of `int` with the location of predicted semantic changes.
-#' The number of locations is not greater than `num.segments`.
+#'   The number of locations is not greater than `num.segments`.
 #' @export
 #' @family fluss
-#' @references 1. Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
+#' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII:
+#'   Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE
+#'   International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
 #' @references Website: <https://sites.google.com/site/onlinesemanticsegmentation/>
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #' @examples
@@ -137,7 +145,7 @@ fluss.extract <- function(arc.counts, num.segments, window.size, exclusion.zone 
 #'
 #' @export
 #' @family fluss
-#' @references 1. Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
+#' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
 #' @references Website: <https://sites.google.com/site/onlinesemanticsegmentation/>
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #' @examples
@@ -187,7 +195,7 @@ fluss.cac <- function(profile.index, window.size, exclusion.zone = 5) {
 #' Zero is the best, One is the worst.
 #' @export
 #' @family fluss
-#' @references 1. Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
+#' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
 #' @references Website: <https://sites.google.com/site/onlinesemanticsegmentation/>
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #' @examples

@@ -2,27 +2,38 @@
 #'
 #' Computes the Matrix Profile and Profile Index for Multivariate Time Series.
 #'
-#' The Matrix Profile, has the potential to revolutionize time series data mining because of its generality, versatility, simplicity and scalability. In particular it has implications for time series motif discovery, time series joins, shapelet discovery (classification), density estimation, semantic segmentation, visualization, rule discovery, clustering etc.
-#' The MSTOMP computes the Matrix Profile and Profile Index for Multivariate Time Series that is meaningful for multidimensional MOTIF discovery. It uses the STOMP algorithm that is faster than STAMP but lacks its anytime property.
+#' The Matrix Profile, has the potential to revolutionize time series data mining because of its
+#' generality, versatility, simplicity and scalability. In particular it has implications for time
+#' series motif discovery, time series joins, shapelet discovery (classification), density
+#' estimation, semantic segmentation, visualization, rule discovery, clustering etc. The MSTOMP
+#' computes the Matrix Profile and Profile Index for Multivariate Time Series that is meaningful for
+#' multidimensional MOTIF discovery. It uses the STOMP algorithm that is faster than STAMP but lacks
+#' its anytime property.
 #'
-#' Although this functions handles Multivariate Time Series, it can also be used to handle Univariate Time Series.
-#' `verbose` changes how much information is printed by this function; `0` means nothing, `1` means text, `2` means text and sound.
+#' Although this functions handles Multivariate Time Series, it can also be used to handle
+#' Univariate Time Series. `verbose` changes how much information is printed by this function; `0`
+#' means nothing, `1` means text, `2` means text and sound.
 #'
-#' @param data a `matrix` of `numeric`, where each column is a time series. Accepts `vector` (see details), `list` and `data.frame` too.
+#' @param data a `matrix` of `numeric`, where each column is a time series. Accepts `vector` (see
+#'   details), `list` and `data.frame` too.
 #' @param window.size an `int` with the size of the sliding window.
 #' @param must.dim an `int` or `vector` of which dimensions to forcibly include (default is `NULL`).
 #' @param exc.dim an `int` or `vector` of which dimensions to exclude (default is `NULL`).
-#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on query size (default is `1/2`).
+#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on query size (default is
+#'   `1/2`).
 #' @param verbose an `int`. See details. (Default is `2`).
 #'
-#' @return Returns the matrix profile `mp` and profile index `pi`.
-#' It also returns the left and right matrix profile `lmp`, `rmp` and profile index `lpi`, `rpi` that may be used to detect Time Series Chains (Yan Zhu 2018).
+#' @return Returns the matrix profile `mp` and profile index `pi`. It also returns the left and
+#'   right matrix profile `lmp`, `rmp` and profile index `lpi`, `rpi` that may be used to detect
+#'   Time Series Chains (Yan Zhu 2018).
 #' @export
 #'
 #' @family mstomp
 #' @seealso [stamp()], [stamp.par()], [mstomp.par()]
-#' @references 1. Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif Discovery.
-#' @references 2. Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
+#' @references * Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif
+#'   Discovery.
+#' @references * Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A
+#'   New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
 #' @references Website: <https://sites.google.com/view/mstamp/>
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #'
@@ -37,13 +48,20 @@
 #' }
 
 mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion.zone = 1 / 2, verbose = 2) {
-  eps <- .Machine$double.eps^0.5
-
   ## get various length
   exclusion.zone <- floor(window.size * exclusion.zone)
 
   ## transform data list into matrix
-  if (is.list(data)) {
+  if (is.matrix(data) || is.data.frame(data)) {
+    if (is.data.frame(data)) {
+      data <- as.matrix(data)
+    } # just to be uniform
+    if (ncol(data) > nrow(data)) {
+      data <- t(data)
+    }
+    data.size <- nrow(data)
+    n.dim <- ncol(data)
+  } else if (is.list(data)) {
     data.size <- length(data[[1]])
     n.dim <- length(data)
 
@@ -56,15 +74,6 @@ mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion
     }
     # transform data into matrix (each column is a TS)
     data <- sapply(data, cbind)
-  } else if (is.matrix(data) || is.data.frame(data)) {
-    if (is.data.frame(data)) {
-      data <- as.matrix(data)
-    } # just to be uniform
-    if (ncol(data) > nrow(data)) {
-      data <- t(data)
-    }
-    data.size <- nrow(data)
-    n.dim <- ncol(data)
   } else if (is.vector(data)) {
     data.size <- length(data)
     n.dim <- 1
@@ -124,10 +133,10 @@ mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion
   first.product <- matrix(0, matrix.profile.size, n.dim)
 
   for (i in 1:n.dim) {
-    nnPre <- mass.pre(data[, i], data.size, window.size = window.size)
-    data.fft[, i] <- nnPre$data.fft
-    data.mean[, i] <- nnPre$data.mean
-    data.sd[, i] <- nnPre$data.sd
+    nnpre <- mass.pre(data[, i], data.size, window.size = window.size)
+    data.fft[, i] <- nnpre$data.fft
+    data.mean[, i] <- nnpre$data.mean
+    data.sd[, i] <- nnpre$data.sd
     mstomp <- mass(data.fft[, i], data[1:window.size, i], data.size, window.size, data.mean[, i], data.sd[, i], data.mean[1, i], data.sd[1, i])
     first.product[, i] <- mstomp$last.product
   }
@@ -180,8 +189,8 @@ mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion
     exc.st <- max(1, i - exclusion.zone)
     exc.ed <- min(matrix.profile.size, i + exclusion.zone)
     distance.profile[exc.st:exc.ed, ] <- Inf
-    distance.profile[data.sd < eps] <- Inf
-    if (skip.location[i] || any(data.sd[i, !mask.exc] < eps)) {
+    distance.profile[data.sd < vars()$eps] <- Inf
+    if (skip.location[i] || any(data.sd[i, !mask.exc] < vars()$eps)) {
       distance.profile[] <- Inf
     }
     distance.profile[skip.location, ] <- Inf

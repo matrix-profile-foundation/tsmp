@@ -1,9 +1,14 @@
 NEWS
 ================
 Francisco Bischoff
-\- 20 Aug 2018
+\- 28 Aug 2018
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
+
+# tsmp 0.2.15
+
+  - Code linting
+  - Added Salient Subsequences search
 
 # tsmp 0.2.14
 

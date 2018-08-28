@@ -8,6 +8,11 @@ motifs.t <- guide.search(t(toy_data$data[1:200, ]), w, mp$mp, mp$pi, 2)
 motifs.u <- unconstrain.search(list(toy_data$data[1:200, 1], toy_data$data[1:200, 2], toy_data$data[1:200, 3]), w, mp$mp, mp$pi, 2)
 motifs.ut <- unconstrain.search(t(toy_data$data[1:200, ]), w, mp$mp, mp$pi, 2)
 
+test_that("Vectors", {
+  expect_message(unconstrain.search(toy_data$data[1:200, 1], w, mp$mp, mp$pi, 2), regexp = "Searching")
+  expect_silent(guide.search(toy_data$data[1:200, ], w, mp$mp, mp$pi, 1))
+})
+
 test_that("Errors", {
   # unknown type
   expect_error(unconstrain.search(table(toy_data$data[1:200, ]), w, mp$mp, mp$pi, 2), regexp = "Unknown type of data")

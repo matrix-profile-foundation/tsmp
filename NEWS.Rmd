@@ -21,6 +21,11 @@ knitr::opts_chunk$set(
 )
 ```
 
+# tsmp 0.2.15
+
+* Code linting
+* Added Salient Subsequences search
+
 # tsmp 0.2.14
 
 * Added SiMPle (Fast Similarity Matrix Profile for Music Analysis and Exploration).

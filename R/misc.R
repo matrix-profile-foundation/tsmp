@@ -34,8 +34,8 @@ fast.movsd <- function(data, n) {
   # we will need the squared elements
   data.sqr <- data^2
 
-  B <- matrix(1, 1, n)
-  s <- sqrt((stats::filter(data.sqr, B, sides = 1) - (stats::filter(data, B, sides = 1)^2) * (1 / n)) / (n - 1))
+  b <- matrix(1, 1, n)
+  s <- sqrt((stats::filter(data.sqr, b, sides = 1) - (stats::filter(data, b, sides = 1)^2) * (1 / n)) / (n - 1))
 
   # restore the scale factor that was used before to normalize the data
   s <- s * data.sd
@@ -91,14 +91,23 @@ beep <- function(data) {
     error = function(cond) {
       message("Failed to play audio alert")
       message(cond)
-      invisible()
     },
     warning = function(cond) {
       message("Something went wrong playing audio alert")
       message(cond)
-      invisible()
     }
     )
   }
+  Sys.sleep(1)
   invisible()
+}
+
+#' Global constants
+#'
+#' @return Returns a `list` with the global constants
+#' @keywords internal
+vars <- function() {
+  eps <- .Machine$double.eps^0.5
+
+  return(list(eps = eps))
 }
