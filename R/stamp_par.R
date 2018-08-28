@@ -141,7 +141,7 @@ stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, n.
       # .options.snow = opts,
       # .combine = combiner,
       # .errorhandling = 'remove',
-      .export = c("mass")
+      .export = "mass"
     ) %dopar% {
       res <- NULL
 
@@ -150,8 +150,9 @@ stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, n.
         i <- order[index]
         distance.profile <- Re(sqrt(mass(pre$data.fft, query[i:(i + window.size - 1)], data.size, window.size, pre$data.mean, pre$data.sd, pre$query.mean[i], pre$query.sd[i])$distance.profile))
 
-        if(exclusion.zone > 0)
+        if (exclusion.zone > 0) {
           distance.profile[max((i - exclusion.zone), 1):min((i + exclusion.zone), matrix.profile.size)] <- Inf
+        }
 
         res <- list(dp = distance.profile, i = i)
       }

@@ -96,12 +96,12 @@ stomp <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
   data.sd <- matrix(0, matrix.profile.size, 1)
   first.product <- matrix(0, matrix.profile.size, 1)
 
-  nnPre <- mass.pre(data, data.size, query, query.size, window.size = window.size)
-  data.fft <- nnPre$data.fft
-  data.mean <- nnPre$data.mean
-  data.sd <- nnPre$data.sd
-  query.mean <- nnPre$query.mean
-  query.sd <- nnPre$query.sd
+  nnpre <- mass.pre(data, data.size, query, query.size, window.size = window.size)
+  data.fft <- nnpre$data.fft
+  data.mean <- nnpre$data.mean
+  data.sd <- nnpre$data.sd
+  query.mean <- nnpre$query.mean
+  query.sd <- nnpre$query.sd
   nn <- mass(
     data.fft, data[1:window.size], data.size, window.size, data.mean,
     data.sd, query.mean[1], query.sd[1]

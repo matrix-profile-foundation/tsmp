@@ -34,8 +34,8 @@ fast.movsd <- function(data, n) {
   # we will need the squared elements
   data.sqr <- data^2
 
-  B <- matrix(1, 1, n)
-  s <- sqrt((stats::filter(data.sqr, B, sides = 1) - (stats::filter(data, B, sides = 1)^2) * (1 / n)) / (n - 1))
+  b <- matrix(1, 1, n)
+  s <- sqrt((stats::filter(data.sqr, b, sides = 1) - (stats::filter(data, b, sides = 1)^2) * (1 / n)) / (n - 1))
 
   # restore the scale factor that was used before to normalize the data
   s <- s * data.sd

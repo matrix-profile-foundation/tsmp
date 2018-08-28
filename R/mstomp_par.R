@@ -121,10 +121,10 @@ mstomp.par <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclu
   first.product <- matrix(0, matrix.profile.size, n.dim)
 
   for (i in 1:n.dim) {
-    nnPre <- mass.pre(data[, i], data.size, window.size = window.size)
-    data.fft[, i] <- nnPre$data.fft
-    data.mean[, i] <- nnPre$data.mean
-    data.sd[, i] <- nnPre$data.sd
+    nnpre <- mass.pre(data[, i], data.size, window.size = window.size)
+    data.fft[, i] <- nnpre$data.fft
+    data.mean[, i] <- nnpre$data.mean
+    data.sd[, i] <- nnpre$data.sd
 
     mstomp <- mass(data.fft[, i], data[1:window.size, i], data.size, window.size, data.mean[, i], data.sd[, i], data.mean[1, i], data.sd[1, i])
     first.product[, i] <- mstomp$last.product
@@ -184,7 +184,7 @@ mstomp.par <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclu
     .options.snow = opts,
     # .combine = combiner,
     # .errorhandling = 'remove',
-    .export = c("mass")
+    .export = "mass"
   ) %dopar% {
     pro.muls <- matrix(0, length(idx.work[[i]]), n.dim)
     pro.idxs <- matrix(0, length(idx.work[[i]]), n.dim)
@@ -223,7 +223,6 @@ mstomp.par <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclu
       }
 
       dist.pro <- Re(dist.pro)
-      # dist.pro <- max(dist.pro, 0)
       drop.value <- query[1, ]
 
       # apply exclusion zone

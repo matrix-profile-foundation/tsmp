@@ -133,10 +133,10 @@ mstomp <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclusion
   first.product <- matrix(0, matrix.profile.size, n.dim)
 
   for (i in 1:n.dim) {
-    nnPre <- mass.pre(data[, i], data.size, window.size = window.size)
-    data.fft[, i] <- nnPre$data.fft
-    data.mean[, i] <- nnPre$data.mean
-    data.sd[, i] <- nnPre$data.sd
+    nnpre <- mass.pre(data[, i], data.size, window.size = window.size)
+    data.fft[, i] <- nnpre$data.fft
+    data.mean[, i] <- nnpre$data.mean
+    data.sd[, i] <- nnpre$data.sd
     mstomp <- mass(data.fft[, i], data[1:window.size, i], data.size, window.size, data.mean[, i], data.sd[, i], data.mean[1, i], data.sd[1, i])
     first.product[, i] <- mstomp$last.product
   }

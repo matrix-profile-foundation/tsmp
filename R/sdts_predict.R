@@ -123,9 +123,9 @@ sdts.f.score <- function(gtruth, pred, beta = 1) {
   if (length(pred) > length(gtruth)) {
     pred <- pred[1:length(gtruth)]
   } else if (length(pred) < length(gtruth)) {
-    pred. <- rep(FALSE, length(gtruth))
-    pred.[1:length(pred)] <- pred
-    pred <- pred.
+    pred.tmp <- rep(FALSE, length(gtruth))
+    pred.tmp[1:length(pred)] <- pred
+    pred <- pred.tmp
   }
 
   pred.pad <- c(0, pred, 0)

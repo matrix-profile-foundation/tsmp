@@ -136,7 +136,7 @@ simple.fast <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
     on.exit(beep(sounds[[1]]), TRUE)
   }
 
-  ## for the first dot-product for both data and query
+  # for the first dot-product for both data and query
   pre.data <- mass.simple.pre(data, data.size, window.size = window.size)
   data.fft <- pre.data$data.fft
   data.sumx2 <- pre.data$sumx2
@@ -152,7 +152,6 @@ simple.fast <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
   distance.profile <- res.query$distance.profile
   last.product <- res.query$last.product
   first.product <- res.data$last.product
-  # first.product <- last.product
   query.sumy2 <- res.query$sumy2
   dropval <- data.window[1, ] # dropval is the first element of refdata window
 
@@ -238,9 +237,9 @@ mass.simple.pre <- function(data, data.size, window.size) {
   data <- rbind(data, matrix(0, data.size, n.dim))
 
   data.fft <- apply(data, 2, stats::fft)
-  cum_sumx2 <- apply(data^2, 2, cumsum)
+  cum.sumx2 <- apply(data^2, 2, cumsum)
 
-  sumx2 <- cum_sumx2[window.size:data.size, ] - rbind(rep(0, n.dim), cum_sumx2[1:(data.size - window.size), ])
+  sumx2 <- cum.sumx2[window.size:data.size, ] - rbind(rep(0, n.dim), cum.sumx2[1:(data.size - window.size), ])
 
   return(list(data.fft = data.fft, sumx2 = sumx2))
 }
@@ -281,8 +280,8 @@ mass.simple <- function(data.fft, query.window, data.size, window.size, sumx2) {
 
   query.fft <- apply(query.window, 2, stats::fft)
   # compute the product
-  Z <- data.fft * query.fft
-  z <- apply(Z, 2, function(x) {
+  prod <- data.fft * query.fft
+  z <- apply(prod, 2, function(x) {
     stats::fft(x, inverse = TRUE) / length(x)
   })
 

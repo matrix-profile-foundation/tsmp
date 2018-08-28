@@ -20,8 +20,10 @@ Returns X,Y values for plotting
 Future function to check performance
 }
 \examples{
-salient.score(carfull$lab, subs)
-salient.score(carsub$labIdx, subssub, carsub$subLen)
+\dontrun{
+  salient.score(carfull$lab, subs)
+  salient.score(carsub$labIdx, subssub, carsub$subLen)
+}
 
 }
 \keyword{internal}

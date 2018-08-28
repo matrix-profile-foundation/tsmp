@@ -103,9 +103,9 @@ sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parall
 
   for (i in 1:n.window.size) {
     if (parallel == TRUE) {
-      mp <- stomp.par(pos, window.size[i], verbose = verbose)
+      mp <- mstomp.par(pos, window.size = window.size[i], verbose = verbose)
     } else {
-      mp <- stomp(pos, window.size[i], verbose = verbose)
+      mp <- mstomp(pos, window.size = window.size[i], verbose = verbose)
     }
     mat.pro[[i]] <- mp$mp
   }
@@ -129,7 +129,6 @@ sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parall
       candi.idx[[i]][j] <- pos.st[j] + rlt.idx - 1
     }
     candi.dist <- sort(candi.dist, index.return = TRUE)
-    # sort(signif(candi.dist, 6), index.return = TRUE)
     candi[[i]] <- candi[[i]][candi.dist$ix]
     candi.idx[[i]] <- candi.idx[[i]][candi.dist$ix]
   }

@@ -11,6 +11,9 @@
 #'
 #' The `exclusion.zone` is used to avoid trivial matches.
 #'
+#' `verbose` changes how much information is printed by this function; `0` means nothing,
+#' `1` means text, `2` means text and sound.
+#'
 #' @param data a `vector`, column `matrix` or `data.frame`. If more than one column is provided, see
 #'   details.
 #' @param matrix.profile a result from STAMP or STOMP algorithms.
@@ -21,6 +24,7 @@
 #'   (Default is `10`).
 #' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on `window.size`. (Default
 #'   is `1/2`). See details.
+#' @param verbose an `int`. See details. (Default is `2`).
 #'
 #' @return Returns a `list` with `indexes`, a `vector` with the starting position of each
 #'   subsequence, `idx.bit.size`, a `vector` with the associated bitsize for each iteration and
@@ -35,28 +39,30 @@
 #' @export
 #'
 #' @examples
-#' # subsequences setting (main purpose)
-#' salient.subsequences(data, data$mp, data$pi, 30, n.bits = 8, n.cand = 10)
+#' \dontrun{
+#'   # subsequences setting (main purpose)
+#'   salient.subsequences(data, data$mp, data$pi, 30, n.bits = 8, n.cand = 10)
 #'
-#' # sequences setting
-#' dist.matrix <- as.matrix(dist(carfull$data))
-#' mp <- matrix(0, nrow(carfull$data), 1)
-#' pi <- matrix(0, nrow(carfull$data), 1)
+#'   # sequences setting
+#'   dist.matrix <- as.matrix(stats::dist(carfull$data))
+#'   mp <- matrix(0, nrow(carfull$data), 1)
+#'   pi <- matrix(0, nrow(carfull$data), 1)
 #'
-#' for (i in 1:nrow(carfull$data)) {
-#'   dist.matrix[i, i] <- Inf;
-#'   pi[i] <- which.min(dist.matrix[i, ])
-#'   mp[i] <- dist.matrix[i, pi[i]]
-#' }
+#'   for (i in 1:nrow(carfull$data)) {
+#'     dist.matrix[i, i] <- Inf;
+#'     pi[i] <- which.min(dist.matrix[i, ])
+#'     mp[i] <- dist.matrix[i, pi[i]]
+#'   }
 #'
-#' n.bits <- 8
+#'   n.bits <- 8
 #'
-#' subs <- salient.subsequences(t(carfull$data), mp, pi, 577, n.bits = n.bits, n.cand = 10)
-#' cutoff <- which(diff(subs$idx.bit.size) > 0)[1] - 1
-#' if(cutoff > 0) {
-#'   carfull$lab[subs$indexes[1:(cutoff - 1)]]
-#' } else {
-#'   message("nothing to do")
+#'   subs <- salient.subsequences(t(carfull$data), mp, pi, 577, n.bits = n.bits, n.cand = 10)
+#'   cutoff <- which(diff(subs$idx.bit.size) > 0)[1] - 1
+#'   if(cutoff > 0) {
+#'     carfull$lab[subs$indexes[1:(cutoff - 1)]]
+#'   } else {
+#'     message("nothing to do")
+#'   }
 #' }
 #'
 salient.subsequences <- function(data, matrix.profile, profile.index, window.size, n.bits = 8, n.cand = 10, exclusion.zone = 1 / 2, verbose = 2) {
@@ -380,12 +386,12 @@ get.bitsize <- function(x, mismatch.bit) {
 discrete.norm.pre <- function(data, window.size = 1) {
   if (is.vector(data)) {
     data <- as.matrix(data)
+  }
+
+  if (ncol(data) > 1) {
+    len <- ncol(data)
   } else {
-    if (ncol(data) > 1) {
-      len <- ncol(data)
-    } else {
-      len <- nrow(data) - window.size + 1
-    }
+    len <- nrow(data) - window.size + 1
   }
 
   max <- -Inf
@@ -463,7 +469,7 @@ salient.mds <- function(data, sub.picking, window.size) {
   }
 
   subs <- t(sapply(subs, rbind, simplify = TRUE))
-  cmd <- stats::cmdscale(dist(subs), k = 2)
+  cmd <- stats::cmdscale(stats::dist(subs), k = 2)
 
   return(cmd)
 }
@@ -477,13 +483,14 @@ salient.mds <- function(data, sub.picking, window.size) {
 #' @return Returns X,Y values for plotting
 #'
 #' @examples
-#' salient.score(carfull$lab, subs)
-#' salient.score(carsub$labIdx, subssub, carsub$subLen)
+#' \dontrun{
+#'   salient.score(carfull$lab, subs)
+#'   salient.score(carsub$labIdx, subssub, carsub$subLen)
+#' }
 #'
 #' @keywords internal
 
 salient.score <- function(gtruth, subs, window = 0) {
-
   window <- as.numeric(window)
   best.f <- 0
   best.p <- 0
@@ -516,18 +523,18 @@ salient.score <- function(gtruth, subs, window = 0) {
         recall <- sum(hit.miss) / length(gtruth)
       }
 
-      Fscore <- 2 * precision * recall / (precision + recall)
+      f.score <- 2 * precision * recall / (precision + recall)
 
-      if (Fscore > best.f) {
+      if (f.score > best.f) {
         best.p <- precision
         best.r <- recall
-        best.f <- Fscore
+        best.f <- f.score
         best.bit <- i
       }
 
       message("Precision: ", round(precision, 4))
       message("Recall: ", round(recall, 4))
-      message("Fscore: ", round(Fscore, 4))
+      message("f.score: ", round(f.score, 4))
     } else {
       message("nothing to do")
     }
@@ -535,6 +542,5 @@ salient.score <- function(gtruth, subs, window = 0) {
 
   message("Best Score: ", round(best.f, 4), " Bits: ", best.bit)
 
-  return(list(precision = best.p, recall = best.r, fscore = Fscore, best.bit = best.bit))
+  return(list(precision = best.p, recall = best.r, fscore = f.score, best.bit = best.bit))
 }
-

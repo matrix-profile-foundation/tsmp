@@ -82,7 +82,7 @@ devtools::install_github("franzbischoff/tsmp")
 * Time Series Chains
 * Multivariate STOMP (mSTOMP)
 * Multivariate MOTIF Search (from mSTOMP)
-* Multidimensional Space
+* Salient Subsequences search for Multidimensional Space
 * Scalable Dictionary learning for Time Series (SDTS) prediction
 * FLUSS (Fast Low-cost Unipotent Semantic Segmentation)
 * SiMPle-Fast (Fast Similarity Matrix Profile for Music Analysis and Exploration)

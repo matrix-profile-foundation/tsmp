@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tsmp</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.14.9009</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.15.9000</span>
       </span>
     </div>
 
@@ -121,7 +121,8 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>...</th>
-      <td><p>a <code>matrix</code> or a <code>vector</code>. If a second time series is supplied it will be a join matrix profile.</p></td>
+      <td><p>a <code>matrix</code> or a <code>vector</code>. If a second time series is supplied it will be a join matrix
+profile.</p></td>
     </tr>
     <tr>
       <th>window.size</th>
@@ -129,11 +130,13 @@
     </tr>
     <tr>
       <th>exclusion.zone</th>
-      <td><p>a <code>numeric</code>. Size of the exclusion zone, based on query size (default is <code>1/2</code>). See details.</p></td>
+      <td><p>a <code>numeric</code>. Size of the exclusion zone, based on query size (default is
+<code>1/2</code>). See details.</p></td>
     </tr>
     <tr>
       <th>s.size</th>
-      <td><p>a <code>numeric</code>. for anytime algorithm, represents the size (in observations) the random calculation will occur (default is <code>Inf</code>).</p></td>
+      <td><p>a <code>numeric</code>. for anytime algorithm, represents the size (in observations) the
+random calculation will occur (default is <code>Inf</code>).</p></td>
     </tr>
     <tr>
       <th>n.workers</th>
@@ -147,24 +150,33 @@
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Returns the matrix profile <code>mp</code> and profile index <code>pi</code>.
-It also returns the left and right matrix profile <code>lmp</code>, <code>rmp</code> and profile index <code>lpi</code>, <code>rpi</code> that may be used to detect Time Series Chains (Yan Zhu 2018).</p>
+    <p>Returns the matrix profile <code>mp</code> and profile index <code>pi</code>. It also returns the left and
+right matrix profile <code>lmp</code>, <code>rmp</code> and profile index <code>lpi</code>, <code>rpi</code> that may be used to detect
+Time Series Chains (Yan Zhu 2018).</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The Matrix Profile, has the potential to revolutionize time series data mining because of its generality, versatility, simplicity and scalability. In particular it has implications for time series motif discovery, time series joins, shapelet discovery (classification), density estimation, semantic segmentation, visualization, rule discovery, clustering etc.
-The anytime STAMP computes the Matrix Profile and Profile Index in such manner that it can be stopped before its complete calculation and return the best so far results allowing ultra-fast approximate solutions.
-<code>verbose</code> changes how much information is printed by this function; <code>0</code> means nothing, <code>1</code> means text, <code>2</code> means text and sound.
-<code>exclusion.zone</code> is used to avoid  trivial matches; if a query data is provided (join similarity), this parameter is ignored.</p>
+    <p>The Matrix Profile, has the potential to revolutionize time series data mining because of its
+generality, versatility, simplicity and scalability. In particular it has implications for time
+series motif discovery, time series joins, shapelet discovery (classification), density
+estimation, semantic segmentation, visualization, rule discovery, clustering etc. The anytime
+STAMP computes the Matrix Profile and Profile Index in such manner that it can be stopped before
+its complete calculation and return the best so far results allowing ultra-fast approximate
+solutions. <code>verbose</code> changes how much information is printed by this function; <code>0</code> means nothing,
+<code>1</code> means text, <code>2</code> means text and sound. <code>exclusion.zone</code> is used to avoid  trivial matches; if
+a query data is provided (join similarity), this parameter is ignored.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <ol>
-<li><p>Yeh CCM, Zhu Y, Ulanova L, Begum N, Ding Y, Dau HA, et al. Matrix profile I: All pairs similarity joins for time series: A unifying view that includes motifs, discords and shapelets. Proc - IEEE Int Conf Data Mining, ICDM. 2017;1317–22.</p></li>
-</ol>
-    <ol>
-<li><p>Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.</p></li>
-</ol>
+    <ul>
+<li><p>Yeh CCM, Zhu Y, Ulanova L, Begum N, Ding Y, Dau HA, et al. Matrix profile I: All
+pairs similarity joins for time series: A unifying view that includes motifs, discords and
+shapelets. Proc - IEEE Int Conf Data Mining, ICDM. 2017;1317–22.</p></li>
+</ul>
+    <ul>
+<li><p>Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A
+New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.</p></li>
+</ul>
     <p>Website: <a href='http://www.cs.ucr.edu/~eamonn/MatrixProfile.html'>http://www.cs.ucr.edu/~eamonn/MatrixProfile.html</a></p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>

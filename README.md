@@ -1,7 +1,7 @@
 README
 ================
 Francisco Bischoff
-\- 26 Aug 2018
+\- 28 Aug 2018
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -65,7 +65,7 @@ devtools::install_github("franzbischoff/tsmp")
   - Time Series Chains
   - Multivariate STOMP (mSTOMP)
   - Multivariate MOTIF Search (from mSTOMP)
-  - Multidimensional Space
+  - Salient Subsequences search for Multidimensional Space
   - Scalable Dictionary learning for Time Series (SDTS) prediction
   - FLUSS (Fast Low-cost Unipotent Semantic Segmentation)
   - SiMPle-Fast (Fast Similarity Matrix Profile for Music Analysis and

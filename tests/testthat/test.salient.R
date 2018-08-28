@@ -18,7 +18,14 @@ test_that("Errors", {
 })
 
 test_that("Finish", {
-  expect_message(res <<- salient.subsequences(data, matrix.profile = mp, profile.index = pi, window.size = w, verbose = 2), regex = "Finished")
+  expect_silent(salient.subsequences(as.data.frame(t(data)), matrix.profile = mp, profile.index = pi, window.size = w, verbose = 0))
+  expect_silent(salient.subsequences(as.vector(data), matrix.profile = mp, profile.index = pi, window.size = w, verbose = 0))
+  expect_silent(salient.subsequences(list(as.vector(data)), matrix.profile = mp, profile.index = pi, window.size = w, verbose = 0))
+  if (skip_on_cran()) {
+    expect_message(res <<- salient.subsequences(data, matrix.profile = mp, profile.index = pi, window.size = w, verbose = 2), regex = "Finished")
+  } else {
+    expect_message(res <<- salient.subsequences(data, matrix.profile = mp, profile.index = pi, window.size = w, verbose = 1), regex = "Finished")
+  }
 })
 
 if (!is.null(res)) {
@@ -27,6 +34,9 @@ if (!is.null(res)) {
     expect_equal(round(sum(res$idx.bit.size) / sd(res$idx.bit.size), 2), 24166.32)
     expect_equal(tsmp:::get.bitsize(data > 0, 10), 2270)
     expect_equal(sum(tsmp:::discrete.norm(data, 3, max(data), min(data))), 36632)
+    maxmin <- tsmp:::discrete.norm.pre(as.vector(data), w)
+    expect_equal(round(maxmin$max, 4), 4.1591)
+    expect_equal(round(maxmin$min, 4), -4.6241)
     expect_equal(tsmp:::get.sorted.idx(mp, 10), c(3761, 3995, 3996, 4001, 3997, 3835, 4002, 4007, 3832, 4005))
     expect_equal(round(sd(tsmp:::salient.mds(data, list(indexes = c(1200, 1400, 1600, 1800)), w)), 4), 4.3979)
     res$idx.bit.size <- rev(res$idx.bit.size)

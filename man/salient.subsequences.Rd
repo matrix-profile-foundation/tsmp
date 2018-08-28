@@ -24,6 +24,8 @@ details.}
 
 \item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on \code{window.size}. (Default
 is \code{1/2}). See details.}
+
+\item{verbose}{an \code{int}. See details. (Default is \code{2}).}
 }
 \value{
 Returns a \code{list} with \code{indexes}, a \code{vector} with the starting position of each
@@ -42,30 +44,35 @@ will retrieve the most relevant sequences. For this setting, the \code{exclusion
 you need to pre-compute the ordinary euclidean distance matrix. See examples.
 
 The \code{exclusion.zone} is used to avoid trivial matches.
+
+\code{verbose} changes how much information is printed by this function; \code{0} means nothing,
+\code{1} means text, \code{2} means text and sound.
 }
 \examples{
-# subsequences setting (main purpose)
-salient.subsequences(data, data$mp, data$pi, 30, n.bits = 8, n.cand = 10)
+\dontrun{
+  # subsequences setting (main purpose)
+  salient.subsequences(data, data$mp, data$pi, 30, n.bits = 8, n.cand = 10)
 
-# sequences setting
-dist.matrix <- as.matrix(dist(carfull$data))
-mp <- matrix(0, nrow(carfull$data), 1)
-pi <- matrix(0, nrow(carfull$data), 1)
+  # sequences setting
+  dist.matrix <- as.matrix(stats::dist(carfull$data))
+  mp <- matrix(0, nrow(carfull$data), 1)
+  pi <- matrix(0, nrow(carfull$data), 1)
 
-for (i in 1:nrow(carfull$data)) {
-  dist.matrix[i, i] <- Inf;
-  pi[i] <- which.min(dist.matrix[i, ])
-  mp[i] <- dist.matrix[i, pi[i]]
-}
+  for (i in 1:nrow(carfull$data)) {
+    dist.matrix[i, i] <- Inf;
+    pi[i] <- which.min(dist.matrix[i, ])
+    mp[i] <- dist.matrix[i, pi[i]]
+  }
 
-n.bits <- 8
+  n.bits <- 8
 
-subs <- salient.subsequences(t(carfull$data), mp, pi, 577, n.bits = n.bits, n.cand = 10)
-cutoff <- which(diff(subs$idx.bit.size) > 0)[1] - 1
-if(cutoff > 0) {
-  carfull$lab[subs$indexes[1:(cutoff - 1)]]
-} else {
-  message("nothing to do")
+  subs <- salient.subsequences(t(carfull$data), mp, pi, 577, n.bits = n.bits, n.cand = 10)
+  cutoff <- which(diff(subs$idx.bit.size) > 0)[1] - 1
+  if(cutoff > 0) {
+    carfull$lab[subs$indexes[1:(cutoff - 1)]]
+  } else {
+    message("nothing to do")
+  }
 }
 
 }

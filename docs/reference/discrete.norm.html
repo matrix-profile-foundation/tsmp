@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Title — discrete.norm • tsmp</title>
+<title>Discrete normalization — discrete.norm • tsmp</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Title — discrete.norm" />
+<meta property="og:title" content="Discrete normalization — discrete.norm" />
 
-<meta property="og:description" content="Title" />
+<meta property="og:description" content="Discrete normalization" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tsmp</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.14.9012</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.15.9000</span>
       </span>
     </div>
 
@@ -102,27 +102,43 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Title</h1>
-    <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/mds.R'><code>R/mds.R</code></a></small>
+    <h1>Discrete normalization</h1>
+    <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/salient.R'><code>R/salient.R</code></a></small>
     <div class="hidden name"><code>discrete.norm.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Title</p>
+    <p>Discrete normalization</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>discrete.norm</span>(<span class='no'>data</span>, <span class='no'>bits</span>, <span class='no'>max</span>, <span class='no'>min</span>)</pre>
+    <pre class="usage"><span class='fu'>discrete.norm</span>(<span class='no'>data</span>, <span class='no'>n.bits</span>, <span class='no'>max</span>, <span class='no'>min</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>data</th>
+      <td><p>Input time series.</p></td>
+    </tr>
+    <tr>
+      <th>n.bits</th>
+      <td><p>Number of bits for MDL discretization.</p></td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td><p>Precomputed max from <code>discrete.norm.pre</code>.</p></td>
+    </tr>
+    <tr>
       <th>min</th>
-      <td></td>
+      <td><p>Precomputed min from <code>discrete.norm.pre</code>.</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Returns the data after discrete normalization.</p>
     
 
   </div>
@@ -130,7 +146,9 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
 
   </div>
 </div>

@@ -9,6 +9,9 @@
 ^LICENSE\.md$
 ^NEWS\.Rmd$
 ^NEWS-.*\.png$
+^m106\.rda$
+^carsub\.rda$
+^carfull\.rda$
 ^README\.Rmd$
 ^README-.*\.png$
 ^\.httr-oauth$
