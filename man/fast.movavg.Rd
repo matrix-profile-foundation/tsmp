@@ -4,15 +4,15 @@
 \alias{fast.movavg}
 \title{Fast implementation of moving average using filter}
 \usage{
-fast.movavg(data, n)
+fast.movavg(data, window.size)
 }
 \arguments{
-\item{data}{a vector}
+\item{data}{a \code{vector} or a column \code{matrix} of \code{numeric}.}
 
-\item{n}{moving average window}
+\item{window.size}{moving average window size}
 }
 \value{
-Returns a vector with the moving average
+Returns a \code{vector} with the moving average
 }
 \description{
 Fast implementation of moving average using filter

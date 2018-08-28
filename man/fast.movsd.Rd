@@ -4,15 +4,15 @@
 \alias{fast.movsd}
 \title{Fast implementation of moving standard deviation using filter}
 \usage{
-fast.movsd(data, n)
+fast.movsd(data, window.size)
 }
 \arguments{
-\item{data}{a vector}
+\item{data}{a \code{vector} or a column \code{matrix} of \code{numeric}.}
 
-\item{n}{moving sd window}
+\item{window.size}{moving sd window size}
 }
 \value{
-Returns a vector with the moving standard deviation
+Returns a \code{vector} with the moving standard deviation
 }
 \description{
 Fast implementation of moving standard deviation using filter

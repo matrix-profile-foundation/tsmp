@@ -4,13 +4,13 @@
 \alias{std}
 \title{Population SD, as R always calculate with n-1 (sample), here we fix it}
 \usage{
-std(x)
+std(data)
 }
 \arguments{
-\item{x}{a vector}
+\item{data}{a \code{vector} or a column \code{matrix} of \code{numeric}.}
 }
 \value{
-Returns a corrected standard deviation from sample to population
+Returns the corrected standard deviation from sample to population
 }
 \description{
 Population SD, as R always calculate with n-1 (sample), here we fix it

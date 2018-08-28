@@ -158,7 +158,6 @@ stomp.par <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2, n.w
     # .errorhandling = 'remove',
     .export = "mass"
   ) %dopar% {
-
     pro.muls <- matrix(0, length(idx.work[[i]]), 1)
     pro.idxs <- matrix(0, length(idx.work[[i]]), 1)
     pro.muls.right <- matrix(Inf, length(idx.work[[i]]), 1)

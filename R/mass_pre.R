@@ -32,9 +32,9 @@
 #' }
 
 mass.pre <- function(data, data.size, query = NULL, query.size = NULL, window.size) {
-
-  if (is.matrix(data))
+  if (is.matrix(data)) {
     data <- as.vector(data)
+  }
 
   data.mean <- fast.movavg(data, window.size) # precompute moving average
   data.sd <- fast.movsd(data, window.size) # precompute moving SD
@@ -43,8 +43,9 @@ mass.pre <- function(data, data.size, query = NULL, query.size = NULL, window.si
 
 
   if (!is.null(query)) {
-    if (is.matrix(query))
+    if (is.matrix(query)) {
       query <- as.vector(query)
+    }
 
     query.mean <- fast.movavg(query, window.size) # precompute moving average
     query.sd <- fast.movsd(query, window.size) # precompute moving SD

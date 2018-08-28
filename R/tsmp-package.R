@@ -4,6 +4,10 @@
 #' @references * Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan,
 #'   Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time
 #'   Series Subsequences under Euclidean Distance
+#' @references * Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
+#'   Knowledge into Motif Discovery. In: Proceedings of the 23rd ACM SIGKDD International Conference
+#'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
+#'   125–34.
 #' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII:
 #'   Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE
 #'   International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
@@ -38,9 +42,10 @@
 #' @references Website: <https://sites.google.com/site/onlinesemanticsegmentation/>
 #' @references Website: <https://sites.google.com/site/salientsubs/>
 #' @references Website: <https://sites.google.com/view/mstamp/>
-#' @references Website: <https://sites.google.com/view/simple-fast>
-#' @references Website: <https://sites.google.com/site/ismir2016simple/home>
-#' @references Website: <https://sites.google.com/view/weaklylabeled>
+#' @references Website: <https://sites.google.com/view/simple-fast/>
+#' @references Website: <https://sites.google.com/site/ismir2016simple/home/>
+#' @references Website: <https://sites.google.com/view/weaklylabeled/>
+#' @references Website: <http://www.cs.ucr.edu/~hdau001/guided_motif_search/>
 
 #'
 "_PACKAGE"

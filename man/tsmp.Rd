@@ -18,6 +18,13 @@ Series Subsequences under Euclidean Distance
 }
 
 \itemize{
+\item Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
+Knowledge into Motif Discovery. In: Proceedings of the 23rd ACM SIGKDD International Conference
+on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
+125–34.
+}
+
+\itemize{
 \item Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII:
 Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE
 International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
@@ -90,11 +97,13 @@ Website: \url{https://sites.google.com/site/salientsubs/}
 
 Website: \url{https://sites.google.com/view/mstamp/}
 
-Website: \url{https://sites.google.com/view/simple-fast}
+Website: \url{https://sites.google.com/view/simple-fast/}
 
-Website: \url{https://sites.google.com/site/ismir2016simple/home}
+Website: \url{https://sites.google.com/site/ismir2016simple/home/}
 
-Website: \url{https://sites.google.com/view/weaklylabeled}
+Website: \url{https://sites.google.com/view/weaklylabeled/}
+
+Website: \url{http://www.cs.ucr.edu/~hdau001/guided_motif_search/}
 }
 \seealso{
 Useful links:
@@ -112,6 +121,7 @@ Other contributors:
   \item Michael Yeh \email{myeh003@ucr.edu} (https://orcid.org/0000-0002-9807-2963) [researcher, conceptor, contributor]
   \item Diego Silva \email{diegofs@ufscar.br} (https://orcid.org/0000-0002-5184-9413) [researcher, conceptor, contributor]
   \item Yan Zhu \email{yzhu015@ucr.edu} (https://orcid.org/0000-0002-5952-2108) [researcher, conceptor, contributor]
+  \item Hoang Dau \email{hdau001@ucr.edu} [researcher, conceptor, contributor]
 }
 
 }
