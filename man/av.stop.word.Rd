@@ -2,7 +2,7 @@
 % Please edit documentation in R/annotations.R
 \name{av.stop.word}
 \alias{av.stop.word}
-\title{Computes the annotation vector that supresses stop-word motifs}
+\title{Computes the annotation vector that suppresses stop-word motifs}
 \usage{
 av.stop.word(data, window.size)
 }
@@ -15,7 +15,7 @@ av.stop.word(data, window.size)
 Returns the annotation vector for matrix profile correction.
 }
 \description{
-Computes the annotation vector that supresses stop-word motifs
+Computes the annotation vector that suppresses stop-word motifs
 }
 \examples{
 av <- av.stop.word(data, window)

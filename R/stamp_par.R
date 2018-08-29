@@ -86,7 +86,7 @@ stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, n.
   matrix.profile.size <- data.size - window.size + 1
   num.queries <- query.size - window.size + 1
 
-  if (window.size > data.size / 2) {
+  if (window.size > query.size / 2) {
     stop("Error: Time series is too short relative to desired subsequence length")
   }
   if (window.size < 4) {
@@ -148,7 +148,8 @@ stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, n.
       index <- k * cols + j
       if (index <= ssize) {
         i <- order[index]
-        distance.profile <- Re(sqrt(mass(pre$data.fft, query[i:(i + window.size - 1)], data.size, window.size, pre$data.mean, pre$data.sd, pre$query.mean[i], pre$query.sd[i])$distance.profile))
+        nn <- mass(pre$data.fft, query[i:(i + window.size - 1)], data.size, window.size, pre$data.mean, pre$data.sd, pre$query.mean[i], pre$query.sd[i])
+        distance.profile <- Re(sqrt(nn$distance.profile))
 
         if (exclusion.zone > 0) {
           distance.profile[max((i - exclusion.zone), 1):min((i + exclusion.zone), matrix.profile.size)] <- Inf

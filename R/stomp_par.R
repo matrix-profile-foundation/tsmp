@@ -76,8 +76,9 @@ stomp.par <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2, n.w
   data.size <- nrow(data)
   query.size <- nrow(query)
   matrix.profile.size <- data.size - window.size + 1
+  num.queries <- query.size - window.size + 1
 
-  if (window.size > data.size / 2) {
+  if (window.size > query.size / 2) {
     stop("Error: Time series is too short relative to desired subsequence length")
   }
   if (window.size < 4) {
@@ -87,7 +88,7 @@ stomp.par <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2, n.w
   data.fft <- matrix(0, (window.size + data.size), 1)
   data.mean <- matrix(0, matrix.profile.size, 1)
   data.sd <- matrix(0, matrix.profile.size, 1)
-  first.product <- matrix(0, matrix.profile.size, 1)
+  first.product <- matrix(0, num.queries, 1)
 
   nnpre <- mass.pre(data, data.size, query, query.size, window.size = window.size)
   data.fft <- nnpre$data.fft
@@ -95,11 +96,21 @@ stomp.par <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2, n.w
   data.sd <- nnpre$data.sd
   query.mean <- nnpre$query.mean
   query.sd <- nnpre$query.sd
-  nn <- mass(
-    data.fft, data[1:window.size], data.size, window.size, data.mean,
-    data.sd, query.mean[1], query.sd[1]
+
+  # reverse
+  # This is needed to handle with the join similarity.
+  rnnpre <- mass.pre(query, query.size, data, data.size, window.size = window.size)
+  rdata.fft <- rnnpre$data.fft
+  rdata.mean <- rnnpre$data.mean
+  rdata.sd <- rnnpre$data.sd
+  rquery.mean <- rnnpre$query.mean
+  rquery.sd <- rnnpre$query.sd
+  rnn <- mass(
+    rdata.fft, data[1:window.size], query.size, window.size, rdata.mean,
+    rdata.sd, rquery.mean[1], rquery.sd[1]
   )
-  first.product <- nn$last.product
+
+  first.product[, 1] <- rnn$last.product
 
   cores <- min(max(2, n.workers), parallel::detectCores())
 
@@ -151,19 +162,25 @@ stomp.par <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2, n.w
   batch <- foreach(
     i = 1:n.work,
     .verbose = FALSE,
-    .inorder = FALSE,
-    .multicombine = TRUE,
+    .inorder = TRUE,
+    .multicombine = FALSE,
     .options.snow = opts,
     # .combine = combiner,
     # .errorhandling = 'remove',
     .export = "mass"
-  ) %dopar% {
-    pro.muls <- matrix(0, length(idx.work[[i]]), 1)
-    pro.idxs <- matrix(0, length(idx.work[[i]]), 1)
-    pro.muls.right <- matrix(Inf, length(idx.work[[i]]), 1)
-    pro.idxs.right <- matrix(-1, length(idx.work[[i]]), 1)
-    pro.muls.left <- matrix(Inf, length(idx.work[[i]]), 1)
-    pro.idxs.left <- matrix(-1, length(idx.work[[i]]), 1)
+  ) %do% {
+    # pro.muls <- matrix(Inf, length(idx.work[[i]]), 1)
+    # pro.idxs <- matrix(-1, length(idx.work[[i]]), 1)
+    # pro.muls.right <- matrix(Inf, length(idx.work[[i]]), 1)
+    # pro.idxs.right <- matrix(-1, length(idx.work[[i]]), 1)
+    # pro.muls.left <- matrix(Inf, length(idx.work[[i]]), 1)
+    # pro.idxs.left <- matrix(-1, length(idx.work[[i]]), 1)
+    pro.muls <- matrix(Inf, matrix.profile.size, 1)
+    pro.idxs <- matrix(-1, matrix.profile.size, 1)
+    pro.muls.right <- matrix(Inf, matrix.profile.size, 1)
+    pro.idxs.right <- matrix(-1, matrix.profile.size, 1)
+    pro.muls.left <- matrix(Inf, matrix.profile.size, 1)
+    pro.idxs.left <- matrix(-1, matrix.profile.size, 1)
     dist.pro <- matrix(0, matrix.profile.size, 1)
     last.product <- matrix(0, matrix.profile.size, 1)
     drop.value <- matrix(0, 1, 1)
@@ -172,58 +189,65 @@ stomp.par <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2, n.w
       # compute the distance profile
       idx <- idx.work[[i]][j]
 
-      query <- as.matrix(data[idx:(idx + window.size - 1), 1])
+      query.window <- as.matrix(query[idx:(idx + window.size - 1), 1])
 
       if (j == 1) {
-        nn <- mass(data.fft, query[, 1], data.size, window.size, data.mean, data.sd, query.mean[idx], query.sd[idx])
+        nn <- mass(data.fft, query.window, data.size, window.size, data.mean, data.sd, query.mean[idx], query.sd[idx])
         dist.pro[, 1] <- nn$distance.profile
         last.product[, 1] <- nn$last.product
       } else {
         last.product[2:(data.size - window.size + 1), 1] <- last.product[1:(data.size - window.size), 1] -
           data[1:(data.size - window.size), 1] * drop.value +
-          data[(window.size + 1):data.size, 1] * query[window.size, 1]
+          data[(window.size + 1):data.size, 1] * query.window[window.size, 1]
 
 
-        last.product[1, 1] <- first.product[idx]
+        last.product[1, 1] <- first.product[idx, 1]
         dist.pro <- 2 * (window.size - (last.product - window.size * data.mean * query.mean[idx]) / (data.sd * query.sd[idx]))
       }
 
-      dist.pro <- Re(dist.pro)
-      drop.value <- query[1, 1]
+      dist.pro <- Re(sqrt(dist.pro))
+      drop.value <- query.window[1, 1]
 
       # apply exclusion zone
       if (exclusion.zone > 0) {
         exc.st <- max(1, idx - exclusion.zone)
         exc.ed <- min(matrix.profile.size, idx + exclusion.zone)
         dist.pro[exc.st:exc.ed, 1] <- Inf
+        dist.pro[data.sd < vars()$eps] <- Inf
       }
 
       # left matrix.profile
-      if (idx > (exclusion.zone + 1)) {
-        min.idx <- which.min(dist.pro[1:(idx - exclusion.zone)])
-        min.val <- dist.pro[min.idx]
-        pro.muls.left[j, 1] <- min.val
-        pro.idxs.left[j, 1] <- min.idx
-      }
+      ind <- (dist.pro[i:matrix.profile.size] < pro.muls.left[i:matrix.profile.size])
+      ind <- c(rep(FALSE, (i - 1)), ind) # pad left
+      pro.muls.left[ind] <- dist.pro[ind]
+      pro.idxs.left[which(ind)] <- i
+
+      # min.idx <- which.min(dist.pro[1:(idx - exclusion.zone)])
+      # min.val <- dist.pro[min.idx]
+      # pro.muls.left[j, 1] <- min.val
+      # pro.idxs.left[j, 1] <- min.idx
 
       # right matrix.profile
-      if (idx < (matrix.profile.size - exclusion.zone)) {
-        min.idx <- which.min(dist.pro[(idx + exclusion.zone):matrix.profile.size]) + idx + exclusion.zone - 1
-        min.val <- dist.pro[min.idx]
-        pro.muls.right[j, 1] <- min.val
-        pro.idxs.right[j, 1] <- min.idx
-      }
+      ind <- (dist.pro[1:i] < pro.muls.right[1:i])
+      ind <- c(ind, rep(FALSE, matrix.profile.size - i)) # pad right
+      pro.muls.right[ind] <- dist.pro[ind]
+      pro.idxs.right[which(ind)] <- i
+
+      # min.idx <- which.min(dist.pro[(idx + exclusion.zone):matrix.profile.size]) + idx + exclusion.zone - 1
+      # min.val <- dist.pro[min.idx]
+      # pro.muls.right[j, 1] <- min.val
+      # pro.idxs.right[j, 1] <- min.idx
 
       # normal matrix.profile
-      min.idx <- which.min(dist.pro)
-      min.val <- dist.pro[min.idx]
-      pro.muls[j, 1] <- min.val
-      pro.idxs[j, 1] <- min.idx
-    }
+      ind <- (dist.pro < pro.muls)
+      pro.muls[ind] <- dist.pro[ind]
+      pro.idxs[which(ind)] <- i
 
-    pro.muls <- sqrt(pro.muls)
-    pro.muls.left <- sqrt(pro.muls.left)
-    pro.muls.right <- sqrt(pro.muls.right)
+      # min.idx <- which.min(dist.pro)
+      # min.val <- dist.pro[min.idx]
+      # pro.muls[j, 1] <- min.val
+      # pro.idxs[j, 1] <- min.idx
+    }
 
     res <- list(pro.muls = pro.muls, pro.idxs = pro.idxs, pro.muls.left = pro.muls.left, pro.idxs.left = pro.idxs.left, pro.muls.right = pro.muls.right, pro.idxs.right = pro.idxs.right, idx = i)
 

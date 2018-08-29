@@ -47,7 +47,7 @@ mass <- function(data.fft, query.window, data.size, window.size, data.mean, data
   z <- stats::fft(prod, inverse = TRUE) / length(prod)
   # compute the distance profile
   distance.profile <- 2 * (window.size - (z[window.size:data.size] - window.size * data.mean * query.mean) / (data.sd * query.sd))
-  last.product <- Re(z[window.size:data.size])
+  last.product <- z[window.size:data.size]
 
   return(list(distance.profile = distance.profile, last.product = last.product))
 }

@@ -14,8 +14,19 @@
 #' av <- av.complexity(data, window)
 #'
 av.complexity <- function(data, window.size, dilution.factor = 0) {
-  data <- znorm(data) # data is a row vector
-  profile.size <- length(data) - window.size + 1
+  data <- as.matrix(data)
+  data <- as.matrix(data[, 1])
+  data.size <- nrow(data)
+
+  if (window.size > data.size / 2) {
+    stop("Error: Time series is too short relative to desired subsequence length")
+  }
+  if (window.size < 4) {
+    stop("Error: Subsequence length must be at least 4")
+  }
+
+  data <- znorm(data)
+  profile.size <- data.size - window.size + 1
   av <- matrix(0, profile.size, 1)
 
   for (j in 1:profile.size) {
@@ -47,12 +58,22 @@ av.complexity <- function(data, window.size, dilution.factor = 0) {
 #' av <- av.zerocrossing(data, window)
 #'
 av.zerocrossing <- function(data, window.size) {
-  # data is a row vector
+  data <- as.matrix(data)
+  data <- as.matrix(data[, 1])
+  data.size <- nrow(data)
+
+  if (window.size > data.size / 2) {
+    stop("Error: Time series is too short relative to desired subsequence length")
+  }
+  if (window.size < 4) {
+    stop("Error: Subsequence length must be at least 4")
+  }
+
   data <- znorm(data)
-  profile.size <- length(data) - window.size + 1
+  profile.size <- data.size - window.size + 1
   av <- matrix(0, profile.size, 1)
   for (j in 1:profile.size) {
-    av[j] <- zero.crossings(data[j:(j + window.size - 1)])
+    av[j] <- zero.crossings(data[j:(j + window.size - 1), ])
   }
 
   av <- zero.one.norm(av)
@@ -75,12 +96,23 @@ av.zerocrossing <- function(data, window.size) {
 #' av <- av.motion.artifact(data, window)
 #'
 av.motion.artifact <- function(data, window.size) {
+  data <- as.matrix(data)
+  data <- as.matrix(data[, 1])
+  data.size <- nrow(data)
+
+  if (window.size > data.size / 2) {
+    stop("Error: Time series is too short relative to desired subsequence length")
+  }
+  if (window.size < 4) {
+    stop("Error: Subsequence length must be at least 4")
+  }
+
   data <- znorm(data)
-  profile.size <- length(data) - window.size + 1
+  profile.size <- data.size - window.size + 1
   av <- matrix(0, profile.size, 1)
 
   for (i in 1:profile.size) {
-    s <- data[i:(i + window.size - 1)]
+    s <- data[i:(i + window.size - 1), ]
     av[i] <- sd(s)
   }
 
@@ -99,7 +131,7 @@ av.motion.artifact <- function(data, window.size) {
 # ECG_LTAF-71.mat. Recommened window.size of this dataset is 150.
 #
 ##
-#' Computes the annotation vector that supresses stop-word motifs
+#' Computes the annotation vector that suppresses stop-word motifs
 #'
 #' @param data a `vector` or a column `matrix` of `numeric`.
 #' @param window.size an `int`. Size of the sliding window.
@@ -114,22 +146,31 @@ av.motion.artifact <- function(data, window.size) {
 #' av <- av.stop.word(data, window)
 #'
 av.stop.word <- function(data, window.size) {
-  ## TODO: NOT WORKING
+  data <- as.matrix(data)
+  data <- as.matrix(data[, 1])
+  data.size <- nrow(data)
+
+  if (window.size > data.size / 2) {
+    stop("Error: Time series is too short relative to desired subsequence length")
+  }
+  if (window.size < 4) {
+    stop("Error: Subsequence length must be at least 4")
+  }
   # the following parameters are dataset-dependent
   threshold <- 0.1
   exclusion.zone <- 450
   stop.word.location <- 63
 
   data <- znorm(data)
-  stop.word <- data[stop.word.location:(stop.word.location + window.size - 1)]
+  stop.word <- data[stop.word.location:(stop.word.location + window.size - 1), ]
 
-  profile.size <- length(data) - window.size + 1
+  profile.size <- data.size - window.size + 1
 
   av <- matrix(0, profile.size, 1)
 
   for (i in 1:profile.size) {
-    s <- data[i:(i + window.size - 1)]
-    av[i] <- pdist2(s, stop.word)
+    s <- data[i:(i + window.size - 1), ]
+    av[i, ] <- diff2(s, stop.word)
   }
 
   av <- zero.one.norm(av)
@@ -138,9 +179,9 @@ av.stop.word <- function(data, window.size) {
 
   for (i in 1:length(index)) {
     if (index[i] < exclusion.zone) {
-      av[(index[i] - index[i] + 1):(index[i] + exclusion.zone - 1)] <- 0
+      av[(index[i] - index[i] + 1):min((index[i] + exclusion.zone - 1), profile.size), ] <- 0
     } else {
-      av[(index[i] - exclusion.zone + 1):(index[i] + exclusion.zone - 1)] <- 0
+      av[(index[i] - exclusion.zone + 1):min((index[i] + exclusion.zone - 1), profile.size), ] <- 0
     }
   }
 
@@ -162,16 +203,27 @@ av.stop.word <- function(data, window.size) {
 #' av <- av.hardlimit.artifact(data, window)
 #'
 av.hardlimit.artifact <- function(data, window.size) {
+  data <- as.matrix(data)
+  data <- as.matrix(data[, 1])
+  data.size <- nrow(data)
+
+  if (window.size > data.size / 2) {
+    stop("Error: Time series is too short relative to desired subsequence length")
+  }
+  if (window.size < 4) {
+    stop("Error: Subsequence length must be at least 4")
+  }
+
   data <- znorm(data)
   max <- max(data)
   min <- min(data)
 
-  profile.size <- length(data) - window.size + 1
+  profile.size <- data.size - window.size + 1
   av <- matrix(0, profile.size, 1)
 
   for (i in 1:profile.size) {
-    s <- data[i:(i + window.size - 1)]
-    av[i] <- length(s[s == max | s == min])
+    s <- data[i:(i + window.size - 1), ]
+    av[i, ] <- length(s[s == max | s == min])
   }
 
   av <- zero.one.norm(av) # zero-one normalize the av
