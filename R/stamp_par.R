@@ -15,7 +15,7 @@
 #' @param ... a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix
 #'   profile.
 #' @param window.size an `int`. Size of the sliding window.
-#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on query size (default is
+#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on window size (default is
 #'   `1/2`). See details.
 #' @param s.size a `numeric`. for anytime algorithm, represents the size (in observations) the
 #'   random calculation will occur (default is `Inf`).
@@ -67,7 +67,7 @@ stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, n.
       data <- t(data)
     }
   } else {
-    stop("Unknown type of data. Must be: a column matrix or a vector")
+    stop("Error: Unknown type of data. Must be: a column matrix or a vector")
   }
 
   if (is.vector(query)) {
@@ -77,7 +77,7 @@ stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, n.
       query <- t(query)
     }
   } else {
-    stop("Unknown type of query. Must be: a column matrix or a vector")
+    stop("Error: Unknown type of query. Must be: a column matrix or a vector")
   }
 
   exclusion.zone <- floor(window.size * exclusion.zone)
@@ -87,10 +87,10 @@ stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, n.
   num.queries <- query.size - window.size + 1
 
   if (window.size > query.size / 2) {
-    stop("Error: Time series is too short relative to desired subsequence length")
+    stop("Error: Time series is too short relative to desired window size")
   }
   if (window.size < 4) {
-    stop("Error: Subsequence length must be at least 4")
+    stop("Error: Window size must be at least 4")
   }
 
   matrix.profile <- matrix(Inf, matrix.profile.size, 1)

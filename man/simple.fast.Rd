@@ -12,7 +12,7 @@ simple.fast(..., window.size, exclusion.zone = 1/2, verbose = 2)
 
 \item{window.size}{an \code{int} with the size of the sliding window.}
 
-\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on query size (default is
+\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is
 \code{1/2}).}
 
 \item{verbose}{an \code{int}. See details. (Default is \code{2}).}

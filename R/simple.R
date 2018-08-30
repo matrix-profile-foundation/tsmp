@@ -8,7 +8,7 @@
 #' @param ... a `matrix` of `numeric`, where each column is a time series. Accepts `list` and
 #'   `data.frame` too. If a second time series is supplied it will be a join matrix profile.
 #' @param window.size an `int` with the size of the sliding window.
-#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on query size (default is
+#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on window size (default is
 #'   `1/2`).
 #' @param verbose an `int`. See details. (Default is `2`).
 #'
@@ -29,7 +29,7 @@
 #'
 simple.fast <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
   if (!is.numeric(window.size) || length(window.size) > 1) {
-    stop("Unknown type of window.size. Must be an `int` or `numeric`")
+    stop("Error: Unknown type of window.size. Must be an `int` or `numeric`")
   }
 
   args <- list(...)
@@ -72,7 +72,7 @@ simple.fast <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Unknown type of data. Must be: matrix, data.frame, vector or list")
+    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list")
   }
 
   ## transform query list into matrix
@@ -104,7 +104,7 @@ simple.fast <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
     # transform query into 1-col matrix
     query <- as.matrix(query) # just to be uniform
   } else {
-    stop("Unknown type of query. Must be: matrix, data.frame, vector or list")
+    stop("Error: Unknown type of query. Must be: matrix, data.frame, vector or list")
   }
 
   ## check input
@@ -112,10 +112,10 @@ simple.fast <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
     stop("Error: Data and query dimensions must be the same")
   }
   if (window.size > data.size / 2) {
-    stop("Error: First Time series is too short relative to desired subsequence length")
+    stop("Error: Reference Time series is too short relative to desired window size")
   }
   if (window.size > query.size / 2) {
-    stop("Error: Second Time series is too short relative to desired subsequence length")
+    stop("Error: Query Time series is too short relative to desired window size")
   }
   if (window.size < 4) {
     stop("Error: Window size must be at least 4")

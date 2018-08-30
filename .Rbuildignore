@@ -12,9 +12,13 @@
 ^m106\.rda$
 ^carsub\.rda$
 ^carfull\.rda$
+^finger3500\.rda$
+^tests\.R$
 ^README\.Rmd$
 ^README-.*\.png$
 ^\.httr-oauth$
 ^make\.R$
 ^CODE_OF_CONDUCT\.md$
+^CONTRIBUTING\.md$
+^CONTRIBUTING\.Rmd$
 ^\.github/

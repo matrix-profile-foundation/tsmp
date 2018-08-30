@@ -4,12 +4,12 @@
 \alias{diff2}
 \title{Distance between two matrices}
 \usage{
-diff2(X, Y)
+diff2(x, y)
 }
 \arguments{
-\item{X}{a \code{matrix}.}
+\item{x}{a \code{matrix}.}
 
-\item{Y}{a \code{matrix}.}
+\item{y}{a \code{matrix}.}
 }
 \value{
 Returns a \code{matrix} of size m x n if x is of size m x k and y is of size n x k.

@@ -13,7 +13,7 @@ profile.}
 
 \item{window.size}{an \code{int}. Size of the sliding window.}
 
-\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on query size (default is
+\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is
 \code{1/2}). See details.}
 
 \item{s.size}{a \code{numeric}. for anytime algorithm, represents the size (in observations) the

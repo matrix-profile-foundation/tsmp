@@ -15,7 +15,7 @@
 #' @param ... a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix
 #'   profile.
 #' @param window.size an `int`. Size of the sliding window.
-#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on query size (default is
+#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on window size (default is
 #'   `1/2`). See details.
 #' @param s.size a `numeric`. for anytime algorithm, represents the size (in observations) the
 #'   random calculation will occur (default is `Inf`).
@@ -65,7 +65,7 @@ stamp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, verbos
       data <- t(data)
     }
   } else {
-    stop("Unknown type of data. Must be: a column matrix or a vector")
+    stop("Error: Unknown type of data. Must be: a column matrix or a vector")
   }
 
   if (is.vector(query)) {
@@ -75,7 +75,7 @@ stamp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, verbos
       query <- t(query)
     }
   } else {
-    stop("Unknown type of query. Must be: a column matrix or a vector")
+    stop("Error: Unknown type of query. Must be: a column matrix or a vector")
   }
 
   exclusion.zone <- floor(window.size * exclusion.zone)
@@ -84,11 +84,14 @@ stamp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, verbos
   matrix.profile.size <- data.size - window.size + 1
   num.queries <- query.size - window.size + 1
 
+  if (query.size > data.size) {
+    stop("Error: Query must be smaller or the same size as reference data.")
+  }
   if (window.size > query.size / 2) {
-    stop("Error: Time series is too short relative to desired subsequence length")
+    stop("Error: Time series is too short relative to desired window size")
   }
   if (window.size < 4) {
-    stop("Error: Subsequence length must be at least 4")
+    stop("Error: Window size must be at least 4")
   }
 
   matrix.profile <- matrix(Inf, matrix.profile.size, 1)
@@ -122,10 +125,12 @@ stamp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, verbos
   pre <- mass.pre(data, data.size, query, query.size, window.size = window.size)
 
   for (i in order) {
-
     j <- j + 1
 
-    nn <- mass(pre$data.fft, query[i:(i + window.size - 1)], data.size, window.size, pre$data.mean, pre$data.sd, pre$query.mean[i], pre$query.sd[i])
+    nn <- mass(
+      pre$data.fft, query[i:(i + window.size - 1)], data.size, window.size, pre$data.mean,
+      pre$data.sd, pre$query.mean[i], pre$query.sd[i]
+    )
 
     distance.profile <- Re(sqrt(nn$distance.profile))
 

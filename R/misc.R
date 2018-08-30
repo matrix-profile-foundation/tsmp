@@ -15,11 +15,11 @@ fast.movsd <- function(data, window.size) {
   data.size <- length(data)
 
   if (window.size < 2) {
-    stop("'window.size' must be at least 2.")
+    stop("Error: 'window.size' must be at least 2.")
   }
 
   if (data.size < window.size) {
-    stop("'window.size' is too large for this series.")
+    stop("Error: 'window.size' is too large for this series.")
   }
 
   # Improve the numerical analysis by subtracting off the series mean
@@ -90,8 +90,6 @@ std <- function(data) {
 #' @author sparafucile17 06/27/04
 #' @references <https://www.dsprelated.com/showcode/179.php>
 #' @keywords internal
-#' @examples
-#' count <- zero.crossings(sin(seq(0,10,0.1)))
 #'
 zero.crossings <- function(data) {
   # initial value
@@ -101,11 +99,11 @@ zero.crossings <- function(data) {
 
   # error checks
   if (length(data) == 1) {
-    stop("Input signal must have more than one element")
+    stop("Error: Input signal must have more than one element")
   }
 
   if ((ncol(data) != 1) && (nrow(data) != 1)) {
-    stop("Input must be one-dimensional")
+    stop("Error: Input must be one-dimensional")
   }
 
   # force signal to be a vector oriented in the same direction
@@ -166,8 +164,6 @@ zero.one.norm <- function(data) {
 #'
 #' @return Returns the complexity index of the data provided (normally a subset)
 #' @keywords internal
-#' @examples
-#' compl <- complexity(sin(seq(0,10,0.1)))
 #'
 complexity <- function(data) {
   return(sqrt(sum(diff(data)^2)))
@@ -186,11 +182,11 @@ beep <- function(data) {
       audio::play(data)
     },
     error = function(cond) {
-      message("Failed to play audio alert")
+      message("Warning: Failed to play audio alert")
       message(cond)
     },
     warning = function(cond) {
-      message("Something went wrong playing audio alert")
+      message("Warning: Something went wrong playing audio alert")
       message(cond)
     }
     )
@@ -203,31 +199,31 @@ beep <- function(data) {
 #'
 #' Computes the Euclidean distance between rows of two matrices.
 #'
-#' @param X a `matrix`.
-#' @param Y a `matrix`.
+#' @param x a `matrix`.
+#' @param y a `matrix`.
 #'
 #' @return Returns a `matrix` of size m x n if x is of size m x k and y is of size n x k.
 #' @keywords internal
 
-diff2 <- function(X, Y) {
-  if (!is.numeric(X) || !is.numeric(Y)) {
-    stop("X and Y must be numeric vectors or matrices.")
+diff2 <- function(x, y) {
+  if (!is.numeric(x) || !is.numeric(y)) {
+    stop("Error: X and Y must be numeric vectors or matrices.")
   }
-  if (is.vector(X)) {
-    dim(X) <- c(1, length(X))
+  if (is.vector(x)) {
+    dim(x) <- c(1, length(x))
   }
-  if (is.vector(Y)) {
-    dim(Y) <- c(1, length(Y))
+  if (is.vector(y)) {
+    dim(y) <- c(1, length(y))
   }
-  if (ncol(X) != ncol(Y)) {
-    stop("X and Y must have the same number of columns.")
+  if (ncol(x) != ncol(y)) {
+    stop("Error: X and Y must have the same number of columns.")
   }
-  m <- nrow(X)
-  n <- nrow(Y)
-  XY <- X %*% t(Y)
-  XX <- matrix(rep(apply(X * X, 1, sum), n), m, n, byrow = F)
-  YY <- matrix(rep(apply(Y * Y, 1, sum), m), m, n, byrow = T)
-  sqrt(pmax(XX + YY - 2 * XY, 0))
+  m <- nrow(x)
+  n <- nrow(y)
+  xy <- x %*% t(y)
+  xx <- matrix(rep(apply(x * x, 1, sum), n), m, n, byrow = FALSE)
+  yy <- matrix(rep(apply(y * y, 1, sum), m), m, n, byrow = TRUE)
+  sqrt(pmax(xx + yy - 2 * xy, 0))
 }
 
 #' Global constants

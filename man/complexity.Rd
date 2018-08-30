@@ -15,8 +15,4 @@ Returns the complexity index of the data provided (normally a subset)
 \description{
 Computes the complexity index of the data
 }
-\examples{
-compl <- complexity(sin(seq(0,10,0.1)))
-
-}
 \keyword{internal}

@@ -6,7 +6,7 @@ test_that("Errors", {
   expect_error(sdts.train(test_data$train$data[1:100], test_data$train$label[1:110], window.size = 5000), regexp = "Time series is too short")
 
   # small window size
-  expect_error(sdts.train(test_data$train$data[1:100], test_data$train$label[1:100], window.size = 2), regexp = "Subsequence length must")
+  expect_error(sdts.train(test_data$train$data[1:100], test_data$train$label[1:100], window.size = 2), regexp = "Window size")
 
   # unknown data type
   expect_error(sdts.train(table(test_data$train$data[1:100]), test_data$train$label[1:100], window.size = 110), regexp = "Unknown type")

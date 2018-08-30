@@ -96,7 +96,7 @@ salient.subsequences <- function(data, matrix.profile, profile.index, window.siz
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Unknown type of data. Must be: matrix, data.frame, vector or list")
+    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list")
   }
 
   if (n.dim > 1) {

@@ -1,13 +1,13 @@
 Package: tsmp
 Type: Package
 Title: Time Series with Matrix Profile
-Version: 0.2.15.9000
+Version: 0.2.15.9004
 Authors@R: c(
     person("Francisco", "Bischoff", email = "fbischoff@med.up.pt", role = c("aut", "cre"), comment = c(ORCID = "https://orcid.org/0000-0002-5301-8672")),
     person("Michael", "Yeh", email = "myeh003@ucr.edu", role = c("res", "ccp", "ctb"), comment = c(ORCID = "https://orcid.org/0000-0002-9807-2963")),
     person("Diego", "Silva", email = "diegofs@ufscar.br", role = c("res", "ccp", "ctb"), comment = c(ORCID = "https://orcid.org/0000-0002-5184-9413")),
     person("Yan", "Zhu", email = "yzhu015@ucr.edu", role = c("res", "ccp", "ctb"), comment = c(ORCID = "https://orcid.org/0000-0002-5952-2108")),
-    person("Hoang", "Dau", email = "hdau001@ucr.edu", role = c("res", "ccp", "ctb"), comment = c(ORCID = ""))
+    person("Hoang", "Dau", email = "hdau001@ucr.edu", role = c("res", "ccp", "ctb"), comment = c(ORCID = "https://orcid.org/0000-0003-2439-5185"))
   )
 Maintainer: Francisco Bischoff <fbischoff@med.up.pt>
 Description: A toolkit implementing the Matrix Profile concept that was created by CS-UCR <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>.

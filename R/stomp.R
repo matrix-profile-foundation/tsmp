@@ -13,7 +13,7 @@
 #' @param ... a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix
 #'   profile.
 #' @param window.size an `int`. Size of the sliding window.
-#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on query size (default is
+#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on window size (default is
 #'   `1/2`). See details.
 #' @param verbose an `int`. See details. (Default is `2`).
 #'
@@ -58,7 +58,7 @@ stomp <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
       data <- t(data)
     }
   } else {
-    stop("Unknown type of data. Must be: a column matrix or a vector")
+    stop("Error: Unknown type of data. Must be: a column matrix or a vector")
   }
 
   if (is.vector(query)) {
@@ -68,7 +68,7 @@ stomp <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
       query <- t(query)
     }
   } else {
-    stop("Unknown type of query. Must be: a column matrix or a vector")
+    stop("Error: Unknown type of query. Must be: a column matrix or a vector")
   }
 
   exclusion.zone <- floor(window.size * exclusion.zone)
@@ -78,10 +78,10 @@ stomp <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
   num.queries <- query.size - window.size + 1
 
   if (window.size > query.size / 2) {
-    stop("Error: Time series is too short relative to desired subsequence length")
+    stop("Error: Time series is too short relative to desired window size")
   }
   if (window.size < 4) {
-    stop("Error: Subsequence length must be at least 4")
+    stop("Error: Window size must be at least 4")
   }
 
   if (verbose > 0) {
@@ -130,7 +130,7 @@ stomp <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
   right.matrix.profile <- matrix(Inf, matrix.profile.size, 1)
   right.profile.index <- matrix(-1, matrix.profile.size, 1)
   distance.profile <- matrix(0, matrix.profile.size, 1)
-  last.product <- matrix(0, matrix.profile.size, 1) # TODO: num.queries?
+  last.product <- matrix(0, matrix.profile.size, 1)
   drop.value <- matrix(0, 1, 1)
 
   for (i in 1:num.queries) {
@@ -138,7 +138,10 @@ stomp <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
     query.window <- as.matrix(query[i:(i + window.size - 1), 1])
 
     if (i == 1) {
-      nn <- mass(data.fft, query.window, data.size, window.size, data.mean, data.sd, query.mean[i], query.sd[i])
+      nn <- mass(
+        data.fft, query.window, data.size, window.size, data.mean, data.sd,
+        query.mean[i], query.sd[i]
+      )
       distance.profile[, 1] <- nn$distance.profile
       last.product[, 1] <- nn$last.product
     } else {
@@ -147,7 +150,8 @@ stomp <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
         data[(window.size + 1):data.size, 1] * query.window[window.size, 1]
 
       last.product[1, 1] <- first.product[i, 1]
-      distance.profile <- 2 * (window.size - (last.product - window.size * data.mean * query.mean[i]) / (data.sd * query.sd[i]))
+      distance.profile <- 2 * (window.size - (last.product - window.size * data.mean * query.mean[i]) /
+        (data.sd * query.sd[i]))
     }
 
     distance.profile <- Re(sqrt(distance.profile))

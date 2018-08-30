@@ -1,9 +1,15 @@
 NEWS
 ================
 Francisco Bischoff
-\- 28 Aug 2018
+\- 31 Aug 2018
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
+
+# tsmp 0.3.1
+
+  - Added Annotation Vectors
+  - Fixed STOMP crash with Joins
+  - Added support to query \< data in Joins
 
 # tsmp 0.2.15
 

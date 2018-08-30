@@ -54,7 +54,7 @@ fluss <- function(data, window.size, num.segments, exclusion.zone = 5, gtruth = 
     data.size <- length(data)
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Unknown type of data. Must be: matrix, data.frame or vector")
+    stop("Error: Unknown type of data. Must be: matrix, data.frame or vector")
   }
 
   profile <- NULL

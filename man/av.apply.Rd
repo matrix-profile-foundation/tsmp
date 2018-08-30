@@ -18,9 +18,10 @@ Returns the corrected matrix profile
 Corrects the matrix profile using an annotation vector
 }
 \examples{
-av <- av.complexity(data, window)
-mpc <- av.apply(mp, av)
-
+\dontrun{
+  av <- av.complexity(data, window)
+  mpc <- av.apply(mp, av)
+}
 }
 \references{
 \itemize{

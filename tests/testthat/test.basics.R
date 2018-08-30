@@ -11,6 +11,8 @@ test_that("Errors", {
   expect_error(fast.movsd(toy_data$data[, 1], 1), regexp = "must be at least 2")
   expect_error(fast.movsd(toy_data$data[1:100, 1], 500), regexp = "is too large")
   expect_error(expect_message(beep(audio::close.audioInstance(99)), "Failed"))
+  expect_error(diff2(data.frame(1:10), as.matrix(10:1)), regexp = "matrices")
+  expect_error(diff2(as.matrix(1:10), matrix(10:1, ncol = 2)), regexp = "columns")
 })
 
 pre <- mass.pre(ref.data, d.size, query.data, q.size, w)

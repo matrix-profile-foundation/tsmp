@@ -17,7 +17,7 @@ details), \code{list} and \code{data.frame} too.}
 
 \item{exc.dim}{an \code{int} or \code{vector} of which dimensions to exclude (default is \code{NULL}).}
 
-\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on query size (default is
+\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is
 \code{1/2}). See details.}
 
 \item{verbose}{an \code{int}. See details. (Default is \code{2}).}

@@ -2,23 +2,37 @@
 % Please edit documentation in R/annotations.R
 \name{av.stop.word}
 \alias{av.stop.word}
-\title{Computes the annotation vector that suppresses stop-word motifs}
+\title{Computes the annotation vector that suppresses stop-word motifs.}
 \usage{
-av.stop.word(data, window.size)
+av.stop.word(data, window.size, stop.word.loc, exclusion.zone = 1/2,
+  threshold = 0.1)
 }
 \arguments{
 \item{data}{a \code{vector} or a column \code{matrix} of \code{numeric}.}
 
 \item{window.size}{an \code{int}. Size of the sliding window.}
+
+\item{stop.word.loc}{an \code{int}. The index of stop word location.}
+
+\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on window.size (default is
+\code{1/2}). See details.}
+
+\item{threshold}{}
 }
 \value{
 Returns the annotation vector for matrix profile correction.
 }
 \description{
-Computes the annotation vector that suppresses stop-word motifs
+Computes the annotation vector that suppresses stop-word motifs.
+}
+\details{
+The function is intended to be generic. However, its parameters (\code{stop.word.loc},
+\code{exclusion.zone} and \code{threshold}) are highly dataset dependant.
 }
 \examples{
-av <- av.stop.word(data, window)
+data <- test_data$train$data[1:1000]
+window <- 50
+av <- av.stop.word(data, window, 150)
 
 }
 \references{

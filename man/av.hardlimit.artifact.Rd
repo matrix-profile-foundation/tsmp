@@ -18,6 +18,8 @@ Returns the annotation vector for matrix profile correction.
 Computes the annotation vector that suppresses hard-limited artifacts
 }
 \examples{
+data <- test_data$train$data[1:1000]
+window <- 50
 av <- av.hardlimit.artifact(data, window)
 
 }

@@ -65,7 +65,7 @@ guide.search <- function(data, window.size, matrix.profile, profile.index, n.dim
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Unknown type of data. Must be: matrix, data.frame, vector or list")
+    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list")
   }
 
   matrix.profile <- matrix.profile[, n.dim]

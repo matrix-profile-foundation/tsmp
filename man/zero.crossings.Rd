@@ -17,10 +17,6 @@ Count the number of zero-crossings from the supplied time-domain input vector. A
 applied here that can be easily ported to a real-time system that would minimize the number of
 if-else conditionals.
 }
-\examples{
-count <- zero.crossings(sin(seq(0,10,0.1)))
-
-}
 \references{
 \url{https://www.dsprelated.com/showcode/179.php}
 }

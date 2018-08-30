@@ -11,6 +11,8 @@
 #'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
 #'   125–34.
 #' @examples
+#' data <- test_data$train$data[1:1000]
+#' window <- 50
 #' av <- av.complexity(data, window)
 #'
 av.complexity <- function(data, window.size, dilution.factor = 0) {
@@ -19,10 +21,10 @@ av.complexity <- function(data, window.size, dilution.factor = 0) {
   data.size <- nrow(data)
 
   if (window.size > data.size / 2) {
-    stop("Error: Time series is too short relative to desired subsequence length")
+    stop("Error: Time series is too short relative to desired window size")
   }
   if (window.size < 4) {
-    stop("Error: Subsequence length must be at least 4")
+    stop("Error: Window size must be at least 4")
   }
 
   data <- znorm(data)
@@ -55,6 +57,8 @@ av.complexity <- function(data, window.size, dilution.factor = 0) {
 #'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
 #'   125–34.
 #' @examples
+#' data <- test_data$train$data[1:1000]
+#' window <- 50
 #' av <- av.zerocrossing(data, window)
 #'
 av.zerocrossing <- function(data, window.size) {
@@ -63,10 +67,10 @@ av.zerocrossing <- function(data, window.size) {
   data.size <- nrow(data)
 
   if (window.size > data.size / 2) {
-    stop("Error: Time series is too short relative to desired subsequence length")
+    stop("Error: Time series is too short relative to desired window size")
   }
   if (window.size < 4) {
-    stop("Error: Subsequence length must be at least 4")
+    stop("Error: Window size must be at least 4")
   }
 
   data <- znorm(data)
@@ -93,6 +97,8 @@ av.zerocrossing <- function(data, window.size) {
 #'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
 #'   125–34.
 #' @examples
+#' data <- test_data$train$data[1:1000]
+#' window <- 50
 #' av <- av.motion.artifact(data, window)
 #'
 av.motion.artifact <- function(data, window.size) {
@@ -101,10 +107,10 @@ av.motion.artifact <- function(data, window.size) {
   data.size <- nrow(data)
 
   if (window.size > data.size / 2) {
-    stop("Error: Time series is too short relative to desired subsequence length")
+    stop("Error: Time series is too short relative to desired window size")
   }
   if (window.size < 4) {
-    stop("Error: Subsequence length must be at least 4")
+    stop("Error: Window size must be at least 4")
   }
 
   data <- znorm(data)
@@ -113,7 +119,7 @@ av.motion.artifact <- function(data, window.size) {
 
   for (i in 1:profile.size) {
     s <- data[i:(i + window.size - 1), ]
-    av[i] <- sd(s)
+    av[i] <- stats::sd(s)
   }
 
   cav <- av
@@ -125,16 +131,19 @@ av.motion.artifact <- function(data, window.size) {
   return(cav)
 }
 
-# The function is intended to be generic. However, its parameters
-# (threshold, exclusion.zone and stop.word.location) are dataset-dependent
-# The parameters' default value are for specifically for dataset
-# ECG_LTAF-71.mat. Recommened window.size of this dataset is 150.
-#
-##
-#' Computes the annotation vector that suppresses stop-word motifs
+#' Computes the annotation vector that suppresses stop-word motifs.
+#'
+#' Computes the annotation vector that suppresses stop-word motifs.
+#'
+#' The function is intended to be generic. However, its parameters (`stop.word.loc`,
+#' `exclusion.zone` and `threshold`) are highly dataset dependant.
 #'
 #' @param data a `vector` or a column `matrix` of `numeric`.
 #' @param window.size an `int`. Size of the sliding window.
+#' @param stop.word.loc an `int`. The index of stop word location.
+#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on window.size (default is
+#'   `1/2`). See details.
+#' @param threshold a `numeric`.
 #'
 #' @return Returns the annotation vector for matrix profile correction.
 #' @export
@@ -143,26 +152,23 @@ av.motion.artifact <- function(data, window.size) {
 #'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
 #'   125–34.
 #' @examples
-#' av <- av.stop.word(data, window)
+#' data <- test_data$train$data[1:1000]
+#' window <- 50
+#' av <- av.stop.word(data, window, 150)
 #'
-av.stop.word <- function(data, window.size) {
+av.stop.word <- function(data, window.size, stop.word.loc, exclusion.zone = 1 / 2, threshold = 0.1) {
   data <- as.matrix(data)
   data <- as.matrix(data[, 1])
   data.size <- nrow(data)
 
   if (window.size > data.size / 2) {
-    stop("Error: Time series is too short relative to desired subsequence length")
+    stop("Error: Time series is too short relative to desired window size")
   }
   if (window.size < 4) {
-    stop("Error: Subsequence length must be at least 4")
+    stop("Error: Window size must be at least 4")
   }
-  # the following parameters are dataset-dependent
-  threshold <- 0.1
-  exclusion.zone <- 450
-  stop.word.location <- 63
-
   data <- znorm(data)
-  stop.word <- data[stop.word.location:(stop.word.location + window.size - 1), ]
+  stop.word <- data[stop.word.loc:(stop.word.loc + window.size - 1), ]
 
   profile.size <- data.size - window.size + 1
 
@@ -200,6 +206,8 @@ av.stop.word <- function(data, window.size) {
 #'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
 #'   125–34.
 #' @examples
+#' data <- test_data$train$data[1:1000]
+#' window <- 50
 #' av <- av.hardlimit.artifact(data, window)
 #'
 av.hardlimit.artifact <- function(data, window.size) {
@@ -208,10 +216,10 @@ av.hardlimit.artifact <- function(data, window.size) {
   data.size <- nrow(data)
 
   if (window.size > data.size / 2) {
-    stop("Error: Time series is too short relative to desired subsequence length")
+    stop("Error: Time series is too short relative to desired window size")
   }
   if (window.size < 4) {
-    stop("Error: Subsequence length must be at least 4")
+    stop("Error: Window size must be at least 4")
   }
 
   data <- znorm(data)
@@ -244,9 +252,10 @@ av.hardlimit.artifact <- function(data, window.size) {
 #'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
 #'   125–34.
 #' @examples
-#' av <- av.complexity(data, window)
-#' mpc <- av.apply(mp, av)
-#'
+#' \dontrun{
+#'   av <- av.complexity(data, window)
+#'   mpc <- av.apply(mp, av)
+#' }
 av.apply <- function(matrix.profile, annotation.vector) {
   corrected.mp <- matrix.profile + (1 - annotation.vector) * max(matrix.profile)
 

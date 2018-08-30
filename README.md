@@ -1,7 +1,7 @@
 README
 ================
 Francisco Bischoff
-\- 28 Aug 2018
+\- 31 Aug 2018
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -70,6 +70,7 @@ devtools::install_github("franzbischoff/tsmp")
   - FLUSS (Fast Low-cost Unipotent Semantic Segmentation)
   - SiMPle-Fast (Fast Similarity Matrix Profile for Music Analysis and
     Exploration)
+  - Annotation vectors (e.g.: Stop-word MOTIF bias, Actionability bias)
   - Misc:
       - MASS v2.0
       - Fast moving average
@@ -78,8 +79,9 @@ devtools::install_github("franzbischoff/tsmp")
 ## Road map
 
   - FLUSS Arc Plot and SiMPle Arc Plot
-  - Annotation vectors (e.g.: Stop-word MOTIF bias, Actionability bias)
   - MOTIFs under Uniform Scaling
+  - Exact Detection of Variable Length Motifs
+  - Profile-Based Shapelet Discovery
   - GPU-STOMP
   - Real-time version of previous algorithms (STAMPI, FLOSS, etc)
   - MASS Extensions (ADP, WQ, QwG)

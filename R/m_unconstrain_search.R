@@ -71,7 +71,7 @@ unconstrain.search <- function(data, window.size, matrix.profile, profile.index,
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Unknown type of data. Must be: matrix, data.frame, vector or list")
+    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list")
   }
 
   exc.zone <- round(0.5 * window.size + vars()$eps)

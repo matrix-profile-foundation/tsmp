@@ -19,7 +19,7 @@
 #' @param window.size an `int`. Size of the sliding window.
 #' @param must.dim an `int` or `vector` of which dimensions to forcibly include (default is `NULL`).
 #' @param exc.dim an `int` or `vector` of which dimensions to exclude (default is `NULL`).
-#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on query size (default is
+#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on window size (default is
 #'   `1/2`). See details.
 #' @param verbose an `int`. See details. (Default is `2`).
 #' @param n.workers an `int`. Number of workers for parallel. (Default is `2`).
@@ -76,17 +76,17 @@ mstomp.par <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclu
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Unknown type of data. Must be: matrix, data.frame, vector or list")
+    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list")
   }
 
   matrix.profile.size <- data.size - window.size + 1
 
   ## check input
   if (window.size > data.size / 2) {
-    stop("Error: Time series is too short relative to desired subsequence length")
+    stop("Error: Time series is too short relative to desired window size")
   }
   if (window.size < 4) {
-    stop("Error: Subsequence length must be at least 4")
+    stop("Error: Window size must be at least 4")
   }
   if (any(must.dim > n.dim)) {
     stop("Error: The must have dimension must be less then the total dimension")

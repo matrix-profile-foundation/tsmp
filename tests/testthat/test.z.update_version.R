@@ -1,6 +1,6 @@
 context("Increase Package version")
 
-if (skip_on_cran() && skip_on_travis() && skip_on_appveyor()) {
+if (skip_on_cran() && skip_on_travis()) {
   get.package.version <- function(package.location = ".") {
     ## Read DESCRIPTION file
     desc <- readLines(file.path(package.location, "DESCRIPTION"))
