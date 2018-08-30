@@ -130,7 +130,7 @@ stomp <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
   right.matrix.profile <- matrix(Inf, matrix.profile.size, 1)
   right.profile.index <- matrix(-1, matrix.profile.size, 1)
   distance.profile <- matrix(0, matrix.profile.size, 1)
-  last.product <- matrix(0, matrix.profile.size, 1)
+  last.product <- matrix(0, matrix.profile.size, 1) # TODO: num.queries?
   drop.value <- matrix(0, 1, 1)
 
   for (i in 1:num.queries) {

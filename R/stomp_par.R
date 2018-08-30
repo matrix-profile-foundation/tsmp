@@ -44,7 +44,8 @@ stomp.par <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2, n.w
   args <- list(...)
   data <- args[[1]]
   if (length(args) > 1) {
-    query <- args[[2]]
+    query <- args[[1]] # Why do I need to swap query and data in stomp.par???
+    data <- args[[2]]
     exclusion.zone <- 0 # don't use exclusion zone for joins
   } else {
     query <- data
@@ -123,9 +124,9 @@ stomp.par <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2, n.w
   }
   opts <- list(progress = progress)
 
-  cl <- parallel::makeCluster(cores)
-  doSNOW::registerDoSNOW(cl)
-  on.exit(parallel::stopCluster(cl))
+  # cl <- parallel::makeCluster(cores)
+  # doSNOW::registerDoSNOW(cl)
+  # on.exit(parallel::stopCluster(cl))
   if (verbose > 0) {
     on.exit(close(pb), TRUE)
   }
@@ -134,14 +135,14 @@ stomp.par <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2, n.w
   }
 
   ## initialize variable
-  per.work <- max(10, ceiling(matrix.profile.size / 100))
-  n.work <- floor(matrix.profile.size / per.work)
+  per.work <- max(10, ceiling(num.queries / 100))
+  n.work <- floor(num.queries / per.work)
   idx.work <- list()
 
   for (i in 1:n.work) {
     idx.st <- (i - 1) * per.work + 1
     if (i == n.work) {
-      idx.ed <- matrix.profile.size
+      idx.ed <- num.queries
     } else {
       idx.ed <- i * per.work
     }
@@ -169,24 +170,22 @@ stomp.par <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2, n.w
     # .errorhandling = 'remove',
     .export = "mass"
   ) %do% {
-    # pro.muls <- matrix(Inf, length(idx.work[[i]]), 1)
-    # pro.idxs <- matrix(-1, length(idx.work[[i]]), 1)
-    # pro.muls.right <- matrix(Inf, length(idx.work[[i]]), 1)
-    # pro.idxs.right <- matrix(-1, length(idx.work[[i]]), 1)
-    # pro.muls.left <- matrix(Inf, length(idx.work[[i]]), 1)
-    # pro.idxs.left <- matrix(-1, length(idx.work[[i]]), 1)
-    pro.muls <- matrix(Inf, matrix.profile.size, 1)
-    pro.idxs <- matrix(-1, matrix.profile.size, 1)
-    pro.muls.right <- matrix(Inf, matrix.profile.size, 1)
-    pro.idxs.right <- matrix(-1, matrix.profile.size, 1)
-    pro.muls.left <- matrix(Inf, matrix.profile.size, 1)
-    pro.idxs.left <- matrix(-1, matrix.profile.size, 1)
+    work.len <- length(idx.work[[i]])
+
+    pro.muls <- matrix(Inf, work.len, 1)
+    pro.idxs <- matrix(-1, work.len, 1)
+    pro.muls.right <- matrix(Inf, work.len, 1)
+    pro.idxs.right <- matrix(-1, work.len, 1)
+    pro.muls.left <- matrix(Inf, work.len, 1)
+    pro.idxs.left <- matrix(-1, work.len, 1)
     dist.pro <- matrix(0, matrix.profile.size, 1)
     last.product <- matrix(0, matrix.profile.size, 1)
     drop.value <- matrix(0, 1, 1)
 
-    for (j in 1:length(idx.work[[i]])) {
+    for (j in 1:work.len) {
       # compute the distance profile
+      idx.st <- idx.work[[i]][1]
+      idx.ed <- idx.work[[i]][work.len]
       idx <- idx.work[[i]][j]
 
       query.window <- as.matrix(query[idx:(idx + window.size - 1), 1])
@@ -217,36 +216,61 @@ stomp.par <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2, n.w
       }
 
       # left matrix.profile
-      ind <- (dist.pro[i:matrix.profile.size] < pro.muls.left[i:matrix.profile.size])
-      ind <- c(rep(FALSE, (i - 1)), ind) # pad left
-      pro.muls.left[ind] <- dist.pro[ind]
-      pro.idxs.left[which(ind)] <- i
+      # ind <- (dist.pro[i:matrix.profile.size] < pro.muls.left[i:matrix.profile.size])
+      # ind <- c(rep(FALSE, (i - 1)), ind) # pad left
+      # pro.muls.left[ind] <- dist.pro[ind]
+      # pro.idxs.left[which(ind)] <- i
 
-      # min.idx <- which.min(dist.pro[1:(idx - exclusion.zone)])
-      # min.val <- dist.pro[min.idx]
-      # pro.muls.left[j, 1] <- min.val
-      # pro.idxs.left[j, 1] <- min.idx
+      if (length(args) > 1) { # TODO: hack
+        if (idx > exclusion.zone) {
+          min.idx <- which.min(dist.pro[1:(idx - exclusion.zone)])
+          min.val <- dist.pro[min.idx]
+          pro.muls.left[j, 1] <- min.val
+          pro.idxs.left[j, 1] <- min.idx
+        }
+      } else {
+        if (idx > (exclusion.zone + 1)) {
+          min.idx <- which.min(dist.pro[1:(idx - exclusion.zone)])
+          min.val <- dist.pro[min.idx]
+          pro.muls.left[j, 1] <- min.val
+          pro.idxs.left[j, 1] <- min.idx
+        }
+      }
 
       # right matrix.profile
-      ind <- (dist.pro[1:i] < pro.muls.right[1:i])
-      ind <- c(ind, rep(FALSE, matrix.profile.size - i)) # pad right
-      pro.muls.right[ind] <- dist.pro[ind]
-      pro.idxs.right[which(ind)] <- i
+      # if (idx <= (matrix.profile.size - exclusion.zone)) {
+      # ind <- (dist.pro[idx.st:idx.ed] < pro.muls.right)
+      # ind[j:work.len] <- FALSE
+      # # ind <- c(ind, rep(FALSE, matrix.profile.size - idx)) # pad right
+      # pro.muls.right[ind] <- dist.pro[c(rep(FALSE, idx.st-1), ind)]
+      # pro.idxs.right[which(ind)] <- idx
+      # }
 
-      # min.idx <- which.min(dist.pro[(idx + exclusion.zone):matrix.profile.size]) + idx + exclusion.zone - 1
-      # min.val <- dist.pro[min.idx]
-      # pro.muls.right[j, 1] <- min.val
-      # pro.idxs.right[j, 1] <- min.idx
+      if (length(args) > 1) { # TODO: hack
+        if (idx <= (matrix.profile.size - exclusion.zone)) {
+          min.idx <- which.min(dist.pro[(idx + exclusion.zone):matrix.profile.size]) + idx + exclusion.zone - 1
+          min.val <- dist.pro[min.idx]
+          pro.muls.right[j, 1] <- min.val
+          pro.idxs.right[j, 1] <- min.idx
+        }
+      } else {
+        if (idx < (matrix.profile.size - exclusion.zone)) {
+          min.idx <- which.min(dist.pro[(idx + exclusion.zone):matrix.profile.size]) + idx + exclusion.zone - 1
+          min.val <- dist.pro[min.idx]
+          pro.muls.right[j, 1] <- min.val
+          pro.idxs.right[j, 1] <- min.idx
+        }
+      }
 
       # normal matrix.profile
-      ind <- (dist.pro < pro.muls)
-      pro.muls[ind] <- dist.pro[ind]
-      pro.idxs[which(ind)] <- i
+      # ind <- (dist.pro < pro.muls)
+      # pro.muls[ind] <- dist.pro[ind]
+      # pro.idxs[which(ind)] <- i
 
-      # min.idx <- which.min(dist.pro)
-      # min.val <- dist.pro[min.idx]
-      # pro.muls[j, 1] <- min.val
-      # pro.idxs[j, 1] <- min.idx
+      min.idx <- which.min(dist.pro)
+      min.val <- dist.pro[min.idx]
+      pro.muls[j, 1] <- min.val
+      pro.idxs[j, 1] <- min.idx
     }
 
     res <- list(pro.muls = pro.muls, pro.idxs = pro.idxs, pro.muls.left = pro.muls.left, pro.idxs.left = pro.idxs.left, pro.muls.right = pro.muls.right, pro.idxs.right = pro.idxs.right, idx = i)
