@@ -36,6 +36,7 @@ lifecycle.color <- "blue"
 |--------------|-------|-----|
 | Linux x86_64 | [![Build Status](https://travis-ci.com/franzbischoff/tsmp.svg?branch=master)](https://travis-ci.com/franzbischoff/tsmp) | [![Build Status](https://travis-ci.com/franzbischoff/tsmp.svg?branch=develop)](https://travis-ci.com/franzbischoff/tsmp) |
 | OSX | [![Build Status](https://travis-ci.com/franzbischoff/tsmp.svg?branch=master)](https://travis-ci.com/franzbischoff/tsmp) | [![Build Status](https://travis-ci.com/franzbischoff/tsmp.svg?branch=develop)](https://travis-ci.com/franzbischoff/tsmp) |
+| Windows | [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/franzbischoff/tsmp?branch=master&svg=true)](https://ci.appveyor.com/project/franzbischoff/tsmp) | [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/franzbischoff/tsmp?branch=develop&svg=true)](https://ci.appveyor.com/project/franzbischoff/tsmp) |
 | Coverage | [![codecov](https://codecov.io/gh/franzbischoff/tsmp/branch/master/graph/badge.svg)](https://codecov.io/gh/franzbischoff/tsmp) | [![codecov](https://codecov.io/gh/franzbischoff/tsmp/branch/develop/graph/badge.svg)](https://codecov.io/gh/franzbischoff/tsmp) |
 
 ## Overview
