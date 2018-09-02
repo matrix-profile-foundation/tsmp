@@ -5,6 +5,8 @@ tsmp 0.3.1
 -   Added Annotation Vectors
 -   Fixed STOMP crash with Joins
 -   Added support to query &lt; data in Joins
+-   SCRIMP (experimental)
+-   FLUSS Arc Plot and SiMPle Arc Plot
 
 tsmp 0.2.15
 ===========

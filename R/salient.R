@@ -3,6 +3,7 @@
 #' In order to allow a meaningful visualization in Multi-Dimensional Space (MDS), this function
 #' retrieves the most relevant subsequences using Minimal Description Length (MDL) framework.
 #'
+#' @details
 #' The main purpose of this algorithm is to find subsequences in one time series, but this
 #' implementation also covers the experimental effectiveness evaluation with "whole sequence"
 #' setting. This means you can input a `matrix` where each column is a sequence and this algorithm
@@ -96,7 +97,7 @@ salient.subsequences <- function(data, matrix.profile, profile.index, window.siz
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list")
+    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list.", call. = FALSE)
   }
 
   if (n.dim > 1) {
@@ -335,6 +336,7 @@ salient.subsequences <- function(data, matrix.profile, profile.index, window.siz
 #' @return Returns the indexes of candidates
 #'
 #' @keywords internal
+#' @noRd
 #'
 get.sorted.idx <- function(matrix.profile, n.cand, exclusion.zone = 0) {
   idx <- sort(matrix.profile, index.return = TRUE)$ix
@@ -368,6 +370,7 @@ get.sorted.idx <- function(matrix.profile, n.cand, exclusion.zone = 0) {
 #'
 #' @return Returns the bit.size cost of compressing the time series
 #' @keywords internal
+#' @noRd
 
 get.bitsize <- function(x, mismatch.bit) {
   bit.size <- sum(x != 0) * mismatch.bit
@@ -382,6 +385,7 @@ get.bitsize <- function(x, mismatch.bit) {
 #'
 #' @return Returns a list with the max and min value
 #' @keywords internal
+#' @noRd
 #'
 discrete.norm.pre <- function(data, window.size = 1) {
   if (is.vector(data)) {
@@ -430,6 +434,7 @@ discrete.norm.pre <- function(data, window.size = 1) {
 #'
 #' @return Returns the data after discrete normalization.
 #' @keywords internal
+#' @noRd
 
 discrete.norm <- function(data, n.bits, max, min) {
   # normalize magnitude
@@ -457,6 +462,7 @@ discrete.norm <- function(data, n.bits, max, min) {
 #' @param window.size window size
 #'
 #' @keywords internal
+#' @noRd
 #'
 #' @return Returns X,Y values for plotting
 
@@ -489,6 +495,7 @@ salient.mds <- function(data, sub.picking, window.size) {
 #' }
 #'
 #' @keywords internal
+#' @noRd
 
 salient.score <- function(gtruth, subs, window = 0) {
   window <- as.numeric(window)

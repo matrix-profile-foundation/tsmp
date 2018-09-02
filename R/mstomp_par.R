@@ -2,6 +2,7 @@
 #'
 #' Computes the Matrix Profile and Profile Index for Multivariate Time Series.
 #'
+#' @details
 #' The Matrix Profile, has the potential to revolutionize time series data mining because of its
 #' generality, versatility, simplicity and scalability. In particular it has implications for time
 #' series motif discovery, time series joins, shapelet discovery (classification), density
@@ -29,7 +30,7 @@
 #'   Time Series Chains (Yan Zhu 2018).
 #' @export
 #'
-#' @family mstomp
+#' @family matrix profile computations
 #' @seealso [stamp()], [stamp.par()], [mstomp()]
 #' @references * Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif
 #'   Discovery.
@@ -76,26 +77,26 @@ mstomp.par <- function(data, window.size, must.dim = NULL, exc.dim = NULL, exclu
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list")
+    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list.", call. = FALSE)
   }
 
   matrix.profile.size <- data.size - window.size + 1
 
   ## check input
   if (window.size > data.size / 2) {
-    stop("Error: Time series is too short relative to desired window size")
+    stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
   }
   if (window.size < 4) {
-    stop("Error: Window size must be at least 4")
+    stop("Error: `window.size` must be at least 4.", call. = FALSE)
   }
   if (any(must.dim > n.dim)) {
-    stop("Error: The must have dimension must be less then the total dimension")
+    stop("Error: `must.dim` must be less then the total dimension.", call. = FALSE)
   }
   if (any(exc.dim > n.dim)) {
-    stop("Error: The exclusion dimension must be less then the total dimension")
+    stop("Error: `exc.dim` must be less then the total dimension.", call. = FALSE)
   }
   if (length(intersect(must.dim, exc.dim)) > 0) {
-    stop("Error: The same dimension is presented in both the exclusion dimension and must have dimension")
+    stop("Error: The same dimension is presented in both the exclusion dimension and must have dimension.", call. = FALSE)
   }
 
   ## check skip position

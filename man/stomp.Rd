@@ -57,6 +57,9 @@ Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 \seealso{
 \code{\link[=stamp]{stamp()}}, \code{\link[=stamp.par]{stamp.par()}}; \code{\link[=mstomp]{mstomp()}}, \code{\link[=mstomp.par]{mstomp.par()}} for multivariate analysis.
 
-Other Stomp: \code{\link{stomp.par}}
+Other matrix profile computations: \code{\link{mstomp.par}},
+  \code{\link{mstomp}}, \code{\link{scrimp}},
+  \code{\link{stamp.par}}, \code{\link{stamp}},
+  \code{\link{stomp.par}}
 }
-\concept{Stomp}
+\concept{matrix profile computations}

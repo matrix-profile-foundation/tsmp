@@ -3,6 +3,7 @@
 #' FLUSS is a Domain Agnostic Online Semantic Segmentation that uses the assumption that when few
 #' arc are crossing a given index point, means that there is a high probability of semantic change.
 #'
+#' @details
 #' `verbose` changes how much information is printed by this function; `0` means nothing, `1` means
 #' text, `2` means text and sound.
 #'
@@ -54,12 +55,12 @@ fluss <- function(data, window.size, num.segments, exclusion.zone = 5, gtruth = 
     data.size <- length(data)
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: Unknown type of data. Must be: matrix, data.frame or vector")
+    stop("Error: Unknown type of data. Must be: matrix, data.frame or vector.", call. = FALSE)
   }
 
   profile <- NULL
   if (is.null(profile.index)) {
-    profile <- mstomp.par(data, window.size, verbose = verbose)
+    profile <- stomp.par(data, window.size = window.size, verbose = verbose)
     profile.index <- profile$pi
   }
 
@@ -100,14 +101,14 @@ fluss <- function(data, window.size, num.segments, exclusion.zone = 5, gtruth = 
 #' #'Not run' section below.
 #' data <- fluss_data$tilt.abp$data[1:1000]
 #' w <- 210
-#' mp <- mstomp(data, w, verbose = 0)
+#' mp <- stomp(data, window.size = w, verbose = 0)
 #' cac <- fluss.cac(mp$pi, w)
 #' segments <- fluss.extract(cac, 1, w)
 #' \dontrun{
 #' data <- fluss_data$walkjogrun$data
 #' w <- fluss_data$walkjogrun$window # 80
 #' nseg <- length(fluss_data$walkjogrun$gtruth) # 2
-#' mp <- mstomp(data, w)
+#' mp <- stomp(data, window.size = w)
 #' cac <- fluss.cac(mp$pi, w)
 #' segments <- fluss.extract(cac, nseg, w)
 #' }
@@ -153,19 +154,19 @@ fluss.extract <- function(arc.counts, num.segments, window.size, exclusion.zone 
 #' #'Not run' section below.
 #' data <- fluss_data$tilt.abp$data[1:1000]
 #' w <- 210
-#' mp <- mstomp(data, w, verbose = 0)
+#' mp <- stomp(data, window.size = w, verbose = 0)
 #' cac <- fluss.cac(mp$pi, w)
 #'
 #' \dontrun{
 #' data <- fluss_data$walkjogrun$data
 #' w <- fluss_data$walkjogrun$window # 80
-#' mp <- mstomp(data, w)
+#' mp <- stomp(data, window.size = w)
 #' cac <- fluss.cac(mp$pi, w)
 #' }
 fluss.cac <- function(profile.index, window.size, exclusion.zone = 5) {
+  arc.counts <- vector(mode = "numeric")
   profile.index.size <- length(profile.index)
 
-  arc.counts <- vector(mode = "numeric")
   nnmark <- matrix(0, profile.index.size, 1)
 
   for (i in 1:profile.index.size) {
@@ -204,7 +205,7 @@ fluss.cac <- function(profile.index, window.size, exclusion.zone = 5) {
 #' data <- fluss_data$tilt.abp$data[1:1000]
 #' w <- 10
 #' truth <- 400
-#' mp <- mstomp(data, w, verbose = 0)
+#' mp <- stomp(data, window.size = w, verbose = 0)
 #' cac <- fluss.cac(mp$pi, w)
 #' segments <- fluss.extract(cac, 1, w)
 #' score <- fluss.score(truth, segments, length(data))
@@ -213,7 +214,7 @@ fluss.cac <- function(profile.index, window.size, exclusion.zone = 5) {
 #' w <- fluss_data$walkjogrun$window # 80
 #' truth <- fluss_data$walkjogrun$gtruth # 3800 6800
 #' nseg <- length(fluss_data$walkjogrun$gtruth) # 2
-#' mp <- mstomp(data, w)
+#' mp <- stomp(data, window.size = w)
 #' cac <- fluss.cac(mp$pi, w)
 #' segments <- fluss.extract(cac, nseg, w)
 #' score <- fluss.score(truth, segments, length(data))

@@ -1,4 +1,4 @@
-#' Scalable Dictionary learning for Time Series (SDTS) prediction function.
+#' Scalable Dictionary learning for Time Series (SDTS) prediction function
 #'
 #' @param model a model created by SDTS training function [sdts.train()].
 #' @param data a `vector` of `numeric`. Time series.
@@ -177,6 +177,7 @@ sdts.f.score <- function(gtruth, pred, beta = 1) {
 #'
 #' @return the mode
 #' @keywords internal
+#' @noRd
 
 mode <- function(x) {
   ux <- unique(x)

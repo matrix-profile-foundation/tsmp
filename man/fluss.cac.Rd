@@ -30,13 +30,13 @@ know in advance the number of domain changes to look for. Please check original 
 #'Not run' section below.
 data <- fluss_data$tilt.abp$data[1:1000]
 w <- 210
-mp <- mstomp(data, w, verbose = 0)
+mp <- stomp(data, window.size = w, verbose = 0)
 cac <- fluss.cac(mp$pi, w)
 
 \dontrun{
 data <- fluss_data$walkjogrun$data
 w <- fluss_data$walkjogrun$window # 80
-mp <- mstomp(data, w)
+mp <- stomp(data, window.size = w)
 cac <- fluss.cac(mp$pi, w)
 }
 }

@@ -1,7 +1,7 @@
 CONTRIBUTING
 ================
 Francisco Bischoff
-\- 31 Aug 2018
+\- 02 Sep 2018
 
 <!-- CONTRIBUTING.md is generated from CONTRIBUTING.Rmd Please edit that file -->
 

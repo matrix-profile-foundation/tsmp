@@ -1,7 +1,6 @@
-#' Compute the join similarity for Sound data.
+#' Compute the join similarity for Sound data
 #'
-#' Compute the join similarityfor Sound data.
-#'
+#' @details
 #' `verbose` changes how much information is printed by this function; `0` means nothing, `1` means
 #' text, `2` means text and sound.
 #'
@@ -29,7 +28,7 @@
 #'
 simple.fast <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
   if (!is.numeric(window.size) || length(window.size) > 1) {
-    stop("Error: Unknown type of window.size. Must be an `int` or `numeric`")
+    stop("Error: Unknown type of `window.size`. Must be an `int` or `numeric`", call. = FALSE)
   }
 
   args <- list(...)
@@ -72,7 +71,7 @@ simple.fast <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list")
+    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list.", call. = FALSE)
   }
 
   ## transform query list into matrix
@@ -104,21 +103,21 @@ simple.fast <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
     # transform query into 1-col matrix
     query <- as.matrix(query) # just to be uniform
   } else {
-    stop("Error: Unknown type of query. Must be: matrix, data.frame, vector or list")
+    stop("Error: Unknown type of query. Must be: matrix, data.frame, vector or list.", call. = FALSE)
   }
 
   ## check input
   if (q.dim != n.dim) {
-    stop("Error: Data and query dimensions must be the same")
+    stop("Error: Data and query dimensions must be the same.", call. = FALSE)
   }
   if (window.size > data.size / 2) {
-    stop("Error: Reference Time series is too short relative to desired window size")
+    stop("Error: Reference Time series is too short relative to desired window size.", call. = FALSE)
   }
   if (window.size > query.size / 2) {
-    stop("Error: Query Time series is too short relative to desired window size")
+    stop("Error: Query Time series is too short relative to desired window size.", call. = FALSE)
   }
   if (window.size < 4) {
-    stop("Error: Window size must be at least 4")
+    stop("Error: `window.size` must be at least 4.", call. = FALSE)
   }
 
   exclusion.zone <- floor(window.size * exclusion.zone)
@@ -222,6 +221,7 @@ simple.fast <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
 #'
 #' @return Returns `data.fft` and `sumx2`.
 #' @keywords internal
+#' @noRd
 #'
 #' @references * Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance.
 #' @references Website: <https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html>
@@ -257,6 +257,7 @@ mass.simple.pre <- function(data, data.size, window.size) {
 #'
 #' @return Returns the `distance.profile` for the given query and the `last.product` for STOMP algorithm and `sumy2`.
 #' @keywords internal
+#' @noRd
 #'
 #' @references * Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance
 #' @references Website: <https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html>

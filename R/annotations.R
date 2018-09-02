@@ -21,10 +21,10 @@ av.complexity <- function(data, window.size, dilution.factor = 0) {
   data.size <- nrow(data)
 
   if (window.size > data.size / 2) {
-    stop("Error: Time series is too short relative to desired window size")
+    stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
   }
   if (window.size < 4) {
-    stop("Error: Window size must be at least 4")
+    stop("Error: `window.size` must be at least 4.", call. = FALSE)
   }
 
   data <- znorm(data)
@@ -67,10 +67,10 @@ av.zerocrossing <- function(data, window.size) {
   data.size <- nrow(data)
 
   if (window.size > data.size / 2) {
-    stop("Error: Time series is too short relative to desired window size")
+    stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
   }
   if (window.size < 4) {
-    stop("Error: Window size must be at least 4")
+    stop("Error: `window.size` must be at least 4.", call. = FALSE)
   }
 
   data <- znorm(data)
@@ -107,10 +107,10 @@ av.motion.artifact <- function(data, window.size) {
   data.size <- nrow(data)
 
   if (window.size > data.size / 2) {
-    stop("Error: Time series is too short relative to desired window size")
+    stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
   }
   if (window.size < 4) {
-    stop("Error: Window size must be at least 4")
+    stop("Error: `window.size` must be at least 4.", call. = FALSE)
   }
 
   data <- znorm(data)
@@ -131,12 +131,11 @@ av.motion.artifact <- function(data, window.size) {
   return(cav)
 }
 
-#' Computes the annotation vector that suppresses stop-word motifs.
+#' Computes the annotation vector that suppresses stop-word motifs
 #'
-#' Computes the annotation vector that suppresses stop-word motifs.
-#'
+#' @details
 #' The function is intended to be generic. However, its parameters (`stop.word.loc`,
-#' `exclusion.zone` and `threshold`) are highly dataset dependant.
+#' `exclusion.zone` and `threshold`) are highly dataset dependent.
 #'
 #' @param data a `vector` or a column `matrix` of `numeric`.
 #' @param window.size an `int`. Size of the sliding window.
@@ -162,10 +161,10 @@ av.stop.word <- function(data, window.size, stop.word.loc, exclusion.zone = 1 / 
   data.size <- nrow(data)
 
   if (window.size > data.size / 2) {
-    stop("Error: Time series is too short relative to desired window size")
+    stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
   }
   if (window.size < 4) {
-    stop("Error: Window size must be at least 4")
+    stop("Error: `window.size` must be at least 4.", call. = FALSE)
   }
   data <- znorm(data)
   stop.word <- data[stop.word.loc:(stop.word.loc + window.size - 1), ]
@@ -216,10 +215,10 @@ av.hardlimit.artifact <- function(data, window.size) {
   data.size <- nrow(data)
 
   if (window.size > data.size / 2) {
-    stop("Error: Time series is too short relative to desired window size")
+    stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
   }
   if (window.size < 4) {
-    stop("Error: Window size must be at least 4")
+    stop("Error: `window.size` must be at least 4.", call. = FALSE)
   }
 
   data <- znorm(data)

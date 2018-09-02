@@ -26,7 +26,7 @@ FLUSS - Prediction score calculation
 data <- fluss_data$tilt.abp$data[1:1000]
 w <- 10
 truth <- 400
-mp <- mstomp(data, w, verbose = 0)
+mp <- stomp(data, window.size = w, verbose = 0)
 cac <- fluss.cac(mp$pi, w)
 segments <- fluss.extract(cac, 1, w)
 score <- fluss.score(truth, segments, length(data))
@@ -35,7 +35,7 @@ data <- fluss_data$walkjogrun$data
 w <- fluss_data$walkjogrun$window # 80
 truth <- fluss_data$walkjogrun$gtruth # 3800 6800
 nseg <- length(fluss_data$walkjogrun$gtruth) # 2
-mp <- mstomp(data, w)
+mp <- stomp(data, window.size = w)
 cac <- fluss.cac(mp$pi, w)
 segments <- fluss.extract(cac, nseg, w)
 score <- fluss.score(truth, segments, length(data))

@@ -1,7 +1,6 @@
-#' Scalable Dictionary learning for Time Series (SDTS) training function.
+#' Scalable Dictionary learning for Time Series (SDTS) training function
 #'
-#' Scalable Dictionary learning for Time Series (SDTS) training function.
-#'
+#' @details
 #' `beta` is used to balance F-score towards recall (`>1`) or precision (`<1`). `verbose` changes
 #' how much information is printed by this function; `0` means nothing, `1` means text, `2` means
 #' text and sound.
@@ -56,7 +55,7 @@ sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parall
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list")
+    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list.", call. = FALSE)
   }
 
   n.window.size <- length(window.size)
@@ -64,10 +63,10 @@ sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parall
   ## check input
   for (i in 1:n.window.size) {
     if (window.size[i] > (data.size / 2)) {
-      stop("Error: Time series is too short relative to desired window size")
+      stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
     }
     if (window.size[i] < 4) {
-      stop("Error: Window size must be at least 4")
+      stop("Error: `window.size` must be at least 4.", call. = FALSE)
     }
   }
 
@@ -103,9 +102,9 @@ sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parall
 
   for (i in 1:n.window.size) {
     if (parallel == TRUE) {
-      mp <- mstomp.par(pos, window.size = window.size[i], verbose = verbose)
+      mp <- stomp.par(pos, window.size = window.size[i], verbose = verbose)
     } else {
-      mp <- mstomp(pos, window.size = window.size[i], verbose = verbose)
+      mp <- stomp(pos, window.size = window.size[i], verbose = verbose)
     }
     mat.pro[[i]] <- mp$mp
   }
@@ -346,6 +345,7 @@ sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parall
 #' @return Returns the best threshold and its F-Score
 #'
 #' @keywords internal
+#' @noRd
 #'
 golden.section <- function(dist.pro, label, pos.st, pos.ed, beta, window.size) {
   golden.ratio <- (1 + sqrt(5)) / 2
@@ -388,6 +388,7 @@ golden.section <- function(dist.pro, label, pos.st, pos.ed, beta, window.size) {
 #' @return Returns the best threshold and its F-Score
 #'
 #' @keywords internal
+#' @noRd
 
 golden.section.2 <- function(dist.pro, thold, label, pos.st, pos.ed, beta, window.size, fit.idx) {
   golden.ratio <- (1 + sqrt(5)) / 2
@@ -436,6 +437,7 @@ golden.section.2 <- function(dist.pro, thold, label, pos.st, pos.ed, beta, windo
 #' @return Returns the F-Score, precision and recall values
 #'
 #' @keywords internal
+#' @noRd
 
 compute.f.meas <- function(label, pos.st, pos.ed, dist.pro, thold, window.size, beta) {
   # generate annotation curve for each pattern

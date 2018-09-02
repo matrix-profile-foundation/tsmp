@@ -15,11 +15,11 @@ fast.movsd <- function(data, window.size) {
   data.size <- length(data)
 
   if (window.size < 2) {
-    stop("Error: 'window.size' must be at least 2.")
+    stop("Error: 'window.size' must be at least 2.", call. = FALSE)
   }
 
   if (data.size < window.size) {
-    stop("Error: 'window.size' is too large for this series.")
+    stop("Error: 'window.size' is too large for this series.", call. = FALSE)
   }
 
   # Improve the numerical analysis by subtracting off the series mean
@@ -66,6 +66,7 @@ fast.movavg <- function(data, window.size) {
 #'
 #' @return Returns the corrected standard deviation from sample to population
 #' @keywords internal
+#' @noRd
 #'
 std <- function(data) {
   sdx <- stats::sd(data)
@@ -90,6 +91,7 @@ std <- function(data) {
 #' @author sparafucile17 06/27/04
 #' @references <https://www.dsprelated.com/showcode/179.php>
 #' @keywords internal
+#' @noRd
 #'
 zero.crossings <- function(data) {
   # initial value
@@ -99,11 +101,11 @@ zero.crossings <- function(data) {
 
   # error checks
   if (length(data) == 1) {
-    stop("Error: Input signal must have more than one element")
+    stop("Error: Input signal must have more than one element.", call. = FALSE)
   }
 
   if ((ncol(data) != 1) && (nrow(data) != 1)) {
-    stop("Error: Input must be one-dimensional")
+    stop("Error: Input must be one-dimensional.", call. = FALSE)
   }
 
   # force signal to be a vector oriented in the same direction
@@ -129,6 +131,7 @@ zero.crossings <- function(data) {
 #'
 #' @return Returns the normalized data
 #' @keywords internal
+#' @noRd
 #'
 znorm <- function(data) {
   data.mean <- mean(data)
@@ -148,6 +151,7 @@ znorm <- function(data) {
 #'
 #' @return Returns the normalized data.
 #' @keywords internal
+#' @noRd
 #'
 zero.one.norm <- function(data) {
   data <- round(data, 10)
@@ -164,6 +168,7 @@ zero.one.norm <- function(data) {
 #'
 #' @return Returns the complexity index of the data provided (normally a subset)
 #' @keywords internal
+#' @noRd
 #'
 complexity <- function(data) {
   return(sqrt(sum(diff(data)^2)))
@@ -174,6 +179,7 @@ complexity <- function(data) {
 #' @param data sound data provided by this package
 #'
 #' @keywords internal
+#' @noRd
 #' @import audio
 #'
 beep <- function(data) {
@@ -204,10 +210,11 @@ beep <- function(data) {
 #'
 #' @return Returns a `matrix` of size m x n if x is of size m x k and y is of size n x k.
 #' @keywords internal
+#' @noRd
 
 diff2 <- function(x, y) {
   if (!is.numeric(x) || !is.numeric(y)) {
-    stop("Error: X and Y must be numeric vectors or matrices.")
+    stop("Error: `x` and `y` must be numeric vectors or matrices.", call. = FALSE)
   }
   if (is.vector(x)) {
     dim(x) <- c(1, length(x))
@@ -216,7 +223,7 @@ diff2 <- function(x, y) {
     dim(y) <- c(1, length(y))
   }
   if (ncol(x) != ncol(y)) {
-    stop("Error: X and Y must have the same number of columns.")
+    stop("Error: `x` and `y` must have the same number of columns.", call. = FALSE)
   }
   m <- nrow(x)
   n <- nrow(y)
@@ -230,6 +237,7 @@ diff2 <- function(x, y) {
 #'
 #' @return Returns a `list` with the global constants
 #' @keywords internal
+#' @noRd
 #'
 vars <- function() {
   eps <- .Machine$double.eps^0.5

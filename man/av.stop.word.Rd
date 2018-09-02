@@ -2,7 +2,7 @@
 % Please edit documentation in R/annotations.R
 \name{av.stop.word}
 \alias{av.stop.word}
-\title{Computes the annotation vector that suppresses stop-word motifs.}
+\title{Computes the annotation vector that suppresses stop-word motifs}
 \usage{
 av.stop.word(data, window.size, stop.word.loc, exclusion.zone = 1/2,
   threshold = 0.1)
@@ -17,17 +17,17 @@ av.stop.word(data, window.size, stop.word.loc, exclusion.zone = 1/2,
 \item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on window.size (default is
 \code{1/2}). See details.}
 
-\item{threshold}{}
+\item{threshold}{a \code{numeric}.}
 }
 \value{
 Returns the annotation vector for matrix profile correction.
 }
 \description{
-Computes the annotation vector that suppresses stop-word motifs.
+Computes the annotation vector that suppresses stop-word motifs
 }
 \details{
 The function is intended to be generic. However, its parameters (\code{stop.word.loc},
-\code{exclusion.zone} and \code{threshold}) are highly dataset dependant.
+\code{exclusion.zone} and \code{threshold}) are highly dataset dependent.
 }
 \examples{
 data <- test_data$train$data[1:1000]

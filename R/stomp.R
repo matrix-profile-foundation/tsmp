@@ -2,6 +2,7 @@
 #'
 #' Computes the Matrix Profile and Profile Index for Univariate Time Series.
 #'
+#' @details
 #' The Matrix Profile, has the potential to revolutionize time series data mining because of its
 #' generality, versatility, simplicity and scalability. In particular it has implications for time
 #' series motif discovery, time series joins, shapelet discovery (classification), density
@@ -22,7 +23,7 @@
 #'   Time Series Chains (Yan Zhu 2018).
 #' @export
 #'
-#' @family Stomp
+#' @family matrix profile computations
 #' @seealso [stamp()], [stamp.par()]; [mstomp()], [mstomp.par()] for multivariate analysis.
 #' @references * Zhu Y, Zimmerman Z, Senobari NS, Yeh CM, Funning G. Matrix Profile II : Exploiting
 #'   a Novel Algorithm and GPUs to Break the One Hundred Million Barrier for Time Series Motifs and
@@ -58,7 +59,7 @@ stomp <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
       data <- t(data)
     }
   } else {
-    stop("Error: Unknown type of data. Must be: a column matrix or a vector")
+    stop("Error: Unknown type of data. Must be: a column matrix or a vector.", call. = FALSE)
   }
 
   if (is.vector(query)) {
@@ -68,7 +69,7 @@ stomp <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
       query <- t(query)
     }
   } else {
-    stop("Error: Unknown type of query. Must be: a column matrix or a vector")
+    stop("Error: Unknown type of query. Must be: a column matrix or a vector.", call. = FALSE)
   }
 
   exclusion.zone <- floor(window.size * exclusion.zone)
@@ -78,10 +79,10 @@ stomp <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
   num.queries <- query.size - window.size + 1
 
   if (window.size > query.size / 2) {
-    stop("Error: Time series is too short relative to desired window size")
+    stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
   }
   if (window.size < 4) {
-    stop("Error: Window size must be at least 4")
+    stop("Error: `window.size` must be at least 4.", call. = FALSE)
   }
 
   if (verbose > 0) {

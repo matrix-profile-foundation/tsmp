@@ -1,7 +1,7 @@
 NEWS
 ================
 Francisco Bischoff
-\- 31 Aug 2018
+\- 02 Sep 2018
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
@@ -10,6 +10,8 @@ Francisco Bischoff
   - Added Annotation Vectors
   - Fixed STOMP crash with Joins
   - Added support to query \< data in Joins
+  - SCRIMP (experimental)
+  - FLUSS Arc Plot and SiMPle Arc Plot
 
 # tsmp 0.2.15
 

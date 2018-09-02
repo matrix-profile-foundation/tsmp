@@ -1,7 +1,6 @@
 #' Guided MOTIF Discovery for Multidimensional Matrix Profile
 #'
-#' Guided MOTIF Discovery for Multidimensional Matrix Profile
-#'
+#' @details
 #' Although this functions handles Multivariate Time Series, it can also be used to handle
 #' Univariate Time Series.
 #'
@@ -17,7 +16,6 @@
 #'
 #' @export
 #'
-#' @family mstomp
 #' @seealso [mstomp()], [mstomp.par()], [unconstrain.search()]
 #' @references * Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif
 #'   Discovery.
@@ -65,7 +63,7 @@ guide.search <- function(data, window.size, matrix.profile, profile.index, n.dim
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list")
+    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list.", call. = FALSE)
   }
 
   matrix.profile <- matrix.profile[, n.dim]

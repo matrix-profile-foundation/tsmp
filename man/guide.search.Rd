@@ -58,8 +58,4 @@ Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
 \code{\link[=mstomp]{mstomp()}}, \code{\link[=mstomp.par]{mstomp.par()}}, \code{\link[=unconstrain.search]{unconstrain.search()}}
-
-Other mstomp: \code{\link{mstomp.par}},
-  \code{\link{mstomp}}, \code{\link{unconstrain.search}}
 }
-\concept{mstomp}

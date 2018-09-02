@@ -2,6 +2,7 @@
 #'
 #' Computes the Matrix Profile and Profile Index for Univariate Time Series.
 #'
+#' @details
 #' The Matrix Profile, has the potential to revolutionize time series data mining because of its
 #' generality, versatility, simplicity and scalability. In particular it has implications for time
 #' series motif discovery, time series joins, shapelet discovery (classification), density
@@ -23,7 +24,7 @@
 #'   Time Series Chains (Yan Zhu 2018).
 #' @export
 #'
-#' @family Stomp
+#' @family matrix profile computations
 #' @seealso [stamp()], [stamp.par()]; [mstomp()], [mstomp.par()] for multivariate analysis.
 #' @references * Zhu Y, Zimmerman Z, Senobari NS, Yeh CM, Funning G. Matrix Profile II : Exploiting
 #'   a Novel Algorithm and GPUs to Break the One Hundred Million Barrier for Time Series Motifs and
@@ -59,7 +60,7 @@ stomp.par <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2, n.w
       data <- t(data)
     }
   } else {
-    stop("Error: Unknown type of data. Must be: a column matrix or a vector")
+    stop("Error: Unknown type of data. Must be: a column matrix or a vector.", call. = FALSE)
   }
 
   if (is.vector(query)) {
@@ -69,7 +70,7 @@ stomp.par <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2, n.w
       query <- t(query)
     }
   } else {
-    stop("Error: Unknown type of query. Must be: a column matrix or a vector")
+    stop("Error: Unknown type of query. Must be: a column matrix or a vector.", call. = FALSE)
   }
 
   exclusion.zone <- floor(window.size * exclusion.zone)
@@ -79,13 +80,13 @@ stomp.par <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2, n.w
   num.queries <- query.size - window.size + 1
 
   if (query.size > data.size) {
-    stop("Error: Query must be smaller or the same size as reference data.")
+    stop("Error: Query must be smaller or the same size as reference data.", call. = FALSE)
   }
   if (window.size > query.size / 2) {
-    stop("Error: Time series is too short relative to desired window size")
+    stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
   }
   if (window.size < 4) {
-    stop("Error: Window size must be at least 4")
+    stop("Error: `window.size` must be at least 4.", call. = FALSE)
   }
 
   data.fft <- matrix(0, (window.size + data.size), 1)

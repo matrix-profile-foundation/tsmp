@@ -2,7 +2,7 @@
 % Please edit documentation in R/sdts_train.R
 \name{sdts.train}
 \alias{sdts.train}
-\title{Scalable Dictionary learning for Time Series (SDTS) training function.}
+\title{Scalable Dictionary learning for Time Series (SDTS) training function}
 \usage{
 sdts.train(data, label, window.size, beta = 1, pat.max = Inf,
   parallel = TRUE, verbose = 2)
@@ -27,7 +27,7 @@ Returns a list with the learned dictionary \code{score} (estimated score), \code
 (history of scores), \code{pattern} (shape features), \code{thold} (threshold values).
 }
 \description{
-Scalable Dictionary learning for Time Series (SDTS) training function.
+Scalable Dictionary learning for Time Series (SDTS) training function
 }
 \details{
 \code{beta} is used to balance F-score towards recall (\code{>1}) or precision (\code{<1}). \code{verbose} changes

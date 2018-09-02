@@ -2,6 +2,7 @@
 #'
 #' Computes the best so far Matrix Profile and Profile Index for Univariate Time Series.
 #'
+#' @details
 #' The Matrix Profile, has the potential to revolutionize time series data mining because of its
 #' generality, versatility, simplicity and scalability. In particular it has implications for time
 #' series motif discovery, time series joins, shapelet discovery (classification), density
@@ -27,7 +28,7 @@
 #'   Time Series Chains (Yan Zhu 2018).
 #' @export
 #'
-#' @family Stamp
+#' @family matrix profile computations
 #' @seealso [mstomp()], [mstomp.par()]
 #' @references * Yeh CCM, Zhu Y, Ulanova L, Begum N, Ding Y, Dau HA, et al. Matrix profile I: All
 #'   pairs similarity joins for time series: A unifying view that includes motifs, discords and
@@ -42,9 +43,9 @@
 #' ref.data <- toy_data$data[,1]
 #' query.data <- toy_data$data[,2]
 #' # self similarity
-#' mp <- stamp.par(ref.data, window.size = 30, s.size = round(nrows(ref.data) * 0.1))
+#' mp <- stamp.par(ref.data, window.size = 30, s.size = round(nrow(ref.data) * 0.1))
 #' # join similarity
-#' mp <- stamp.par(ref.data, query.data, window.size = 30, s.size = round(nrows(query.data) * 0.1))
+#' mp <- stamp.par(ref.data, query.data, window.size = 30, s.size = round(nrow(query.data) * 0.1))
 #' }
 #'
 #' @import doSNOW foreach parallel
@@ -67,7 +68,7 @@ stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, n.
       data <- t(data)
     }
   } else {
-    stop("Error: Unknown type of data. Must be: a column matrix or a vector")
+    stop("Error: Unknown type of data. Must be: a column matrix or a vector.", call. = FALSE)
   }
 
   if (is.vector(query)) {
@@ -77,7 +78,7 @@ stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, n.
       query <- t(query)
     }
   } else {
-    stop("Error: Unknown type of query. Must be: a column matrix or a vector")
+    stop("Error: Unknown type of query. Must be: a column matrix or a vector.", call. = FALSE)
   }
 
   exclusion.zone <- floor(window.size * exclusion.zone)
@@ -87,10 +88,10 @@ stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, n.
   num.queries <- query.size - window.size + 1
 
   if (window.size > query.size / 2) {
-    stop("Error: Time series is too short relative to desired window size")
+    stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
   }
   if (window.size < 4) {
-    stop("Error: Window size must be at least 4")
+    stop("Error: `window.size` must be at least 4.", call. = FALSE)
   }
 
   matrix.profile <- matrix(Inf, matrix.profile.size, 1)

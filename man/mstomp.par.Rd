@@ -67,7 +67,9 @@ Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 \seealso{
 \code{\link[=stamp]{stamp()}}, \code{\link[=stamp.par]{stamp.par()}}, \code{\link[=mstomp]{mstomp()}}
 
-Other mstomp: \code{\link{guide.search}},
-  \code{\link{mstomp}}, \code{\link{unconstrain.search}}
+Other matrix profile computations: \code{\link{mstomp}},
+  \code{\link{scrimp}}, \code{\link{stamp.par}},
+  \code{\link{stamp}}, \code{\link{stomp.par}},
+  \code{\link{stomp}}
 }
-\concept{mstomp}
+\concept{matrix profile computations}

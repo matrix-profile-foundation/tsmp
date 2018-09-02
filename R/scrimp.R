@@ -1,20 +1,20 @@
-#' Anytime univariate STAMP algorithm
+#' Anytime univariate SCRIMP algorithm (experimental)
 #'
 #' Computes the best so far Matrix Profile and Profile Index for Univariate Time Series.
+#' DISCLAIMER: This algorithm still in development by its authors.
+#' Join similarity, RMP and LMP not implemented yet.
 #'
 #' @details
 #' The Matrix Profile, has the potential to revolutionize time series data mining because of its
 #' generality, versatility, simplicity and scalability. In particular it has implications for time
 #' series motif discovery, time series joins, shapelet discovery (classification), density
 #' estimation, semantic segmentation, visualization, rule discovery, clustering etc. The anytime
-#' STAMP computes the Matrix Profile and Profile Index in such manner that it can be stopped before
+#' SCRIMP computes the Matrix Profile and Profile Index in such manner that it can be stopped before
 #' its complete calculation and return the best so far results allowing ultra-fast approximate
 #' solutions. `verbose` changes how much information is printed by this function; `0` means nothing,
-#' `1` means text, `2` means text and sound. `exclusion.zone` is used to avoid  trivial matches; if
-#' a query data is provided (join similarity), this parameter is ignored.
+#' `1` means text, `2` means text and sound. `exclusion.zone` is used to avoid  trivial matches.
 #'
-#' @param ... a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix
-#'   profile.
+#' @param ... a `matrix` or a `vector`.
 #' @param window.size an `int`. Size of the sliding window.
 #' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on window size (default is
 #'   `1/2`). See details.
@@ -22,35 +22,31 @@
 #'   random calculation will occur (default is `Inf`).
 #' @param verbose an `int`. See details. (Default is `2`).
 #'
-#' @return Returns the matrix profile `mp` and profile index `pi`. It also returns the left and
-#'   right matrix profile `lmp`, `rmp` and profile index `lpi`, `rpi` that may be used to detect
-#'   Time Series Chains (Yan Zhu 2018).
+#' @return Returns the matrix profile `mp` and profile index `pi`.
 #' @export
 #'
 #' @family matrix profile computations
 #' @seealso [mstomp()], [mstomp.par()]
-#' @references * Yeh CCM, Zhu Y, Ulanova L, Begum N, Ding Y, Dau HA, et al. Matrix profile I: All
-#'   pairs similarity joins for time series: A unifying view that includes motifs, discords and
-#'   shapelets. Proc - IEEE Int Conf Data Mining, ICDM. 2017;1317–22.
-#' @references * Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A
-#'   New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #'
 #' @examples
-#' mp <- stamp(toy_data$data[1:200,1], window.size = 30, verbose = 0)
+#' mp <- scrimp(toy_data$data[1:200,1], window.size = 30, verbose = 0)
 #' \dontrun{
 #' ref.data <- toy_data$data[,1]
 #' query.data <- toy_data$data[,2]
 #' # self similarity
-#' mp <- stamp(ref.data, window.size = 30, s.size = round(nrow(ref.data) * 0.1))
+#' mp <- scrimp(ref.data, window.size = 30, s.size = round(nrow(ref.data) * 0.1))
 #' # join similarity
-#' mp <- stamp(ref.data, query.data, window.size = 30, s.size = round(nrow(query.data) * 0.1))
+#' mp <- scrimp(ref.data, query.data, window.size = 30, s.size = round(nrow(query.data) * 0.1))
 #' }
 
-stamp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, verbose = 2) {
+scrimp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, verbose = 2) {
   args <- list(...)
   data <- args[[1]]
   if (length(args) > 1) {
+    message("DISCLAIMER: This algorithm still in development by its authors.")
+    message("Join similarity not implemented yet.")
+    invisible(return(NULL))
     query <- args[[2]]
     exclusion.zone <- 0 # don't use exclusion zone for joins
   } else {
@@ -95,14 +91,17 @@ stamp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, verbos
     stop("Error: `window.size` must be at least 4.", call. = FALSE)
   }
 
+  message("DISCLAIMER: This algorithm still in development by its authors.")
+
   matrix.profile <- matrix(Inf, matrix.profile.size, 1)
   left.matrix.profile <- right.matrix.profile <- matrix.profile
   profile.index <- matrix(-1, matrix.profile.size, 1)
   left.profile.index <- right.profile.index <- profile.index
 
   j <- 1
-  ssize <- min(s.size, num.queries)
-  order <- sample(1:num.queries, size = ssize)
+  order <- (exclusion.zone + 1):num.queries
+  ssize <- min(s.size, length(order))
+  order <- order[sample(1:length(order), size = ssize)]
 
   tictac <- Sys.time()
 
@@ -120,7 +119,7 @@ stamp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, verbos
   on.exit(return(list(
     rmp = right.matrix.profile, rpi = right.profile.index,
     lmp = left.matrix.profile, lpi = left.profile.index,
-    mp = matrix.profile, pi = profile.index
+    mp = Re(sqrt(as.complex(matrix.profile))), pi = profile.index
   )), TRUE)
 
   pre <- mass.pre(data, data.size, query, query.size, window.size = window.size)
@@ -128,34 +127,39 @@ stamp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, verbos
   for (i in order) {
     j <- j + 1
 
-    nn <- mass(
-      pre$data.fft, query[i:(i + window.size - 1)], data.size, window.size, pre$data.mean,
-      pre$data.sd, pre$query.mean[i], pre$query.sd[i]
+    distance.profile <- diagonal.dist(
+      data, i, data.size, window.size, num.queries, pre$data.mean,
+      pre$data.sd
     )
 
-    distance.profile <- Re(sqrt(nn$distance.profile))
+    # distance.profile <- Re(sqrt(distance.profile))
+    # distance.profile <- sqrt(abs(distance.profile))
 
-    if (exclusion.zone > 0) {
-      distance.profile[max((i - exclusion.zone), 1):min((i + exclusion.zone), matrix.profile.size)] <- Inf
-    }
+    pos1 <- i:matrix.profile.size
+    pos2 <- 1:(matrix.profile.size - i + 1)
 
-    # anytime version
-    # left matrix.profile
-    ind <- (distance.profile[i:matrix.profile.size] < left.matrix.profile[i:matrix.profile.size])
-    ind <- c(rep(FALSE, (i - 1)), ind) # pad left
-    left.matrix.profile[ind] <- distance.profile[ind]
-    left.profile.index[which(ind)] <- i
+    ind <- (matrix.profile[pos1] > distance.profile)
+    profile.index[pos1[ind]] <- pos2[ind]
+    matrix.profile[pos1[ind]] <- distance.profile[ind]
+    ind <- (matrix.profile[pos2] > distance.profile)
+    profile.index[pos2[ind]] <- pos1[ind]
+    matrix.profile[pos2[ind]] <- distance.profile[ind]
 
-    # right matrix.profile
-    ind <- (distance.profile[1:i] < right.matrix.profile[1:i])
-    ind <- c(ind, rep(FALSE, matrix.profile.size - i)) # pad right
-    right.matrix.profile[ind] <- distance.profile[ind]
-    right.profile.index[which(ind)] <- i
+    # matrix.profile[isSkip] <- Inf
+    # profile.index[isSkip] <- 0
 
-    # normal matrix.profile
-    ind <- (distance.profile < matrix.profile)
-    matrix.profile[ind] <- distance.profile[ind]
-    profile.index[which(ind)] <- i
+    # # anytime version
+    # # left matrix.profile
+    # ind <- (distance.profile[i:matrix.profile.size] < left.matrix.profile[i:matrix.profile.size])
+    # ind <- c(rep(FALSE, (i - 1)), ind) # pad left
+    # left.matrix.profile[ind] <- distance.profile[ind]
+    # left.profile.index[which(ind)] <- i
+
+    # # right matrix.profile
+    # ind <- (distance.profile[1:i] < right.matrix.profile[1:i])
+    # ind <- c(ind, rep(FALSE, matrix.profile.size - i)) # pad right
+    # right.matrix.profile[ind] <- distance.profile[ind]
+    # right.profile.index[which(ind)] <- i
 
     if (verbose > 0) {
       utils::setTxtProgressBar(pb, j)
@@ -169,4 +173,37 @@ stamp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, verbos
   }
 
   # return() is at on.exit() function
+}
+
+#' SCRIMP NN algorithm
+#'
+#' @param data a `matrix` or a `vector`.
+#' @param idx an `int`. The index of window to be computed.
+#' @param data.size an `int`.
+#' @param window.size an `int`.
+#' @param mp.size an `int`.
+#' @param data.mean result of `fast.movavg`.
+#' @param data.sd result of `fast.movsd`.
+#'
+#' @return Returns the distance profile
+#' @keywords internal
+#' @noRd
+
+diagonal.dist <- function(data, idx, data.size, window.size, mp.size, data.mean, data.sd) {
+  data <- as.matrix(data)
+  x.term <- matrix(1, mp.size - idx + 1, 1) *
+    (t(data[idx:(idx + window.size - 1), 1, drop = FALSE]) %*% data[1:window.size, 1, drop = FALSE])[1]
+  m.term <- data[idx:(mp.size - 1)] *
+    data[1:(mp.size - idx)]
+  a.term <- data[(idx + window.size):length(data)] *
+    data[(window.size + 1):(data.size - idx + 1)]
+  if (mp.size != idx) {
+    x.term[2:length(x.term)] <- x.term[2:length(x.term)] - cumsum(m.term) + cumsum(a.term)
+  }
+
+  distance.profile <- (x.term - window.size * data.mean[idx:length(data.mean)] * data.mean[1:(mp.size - idx + 1)]) /
+    (window.size * data.sd[idx:length(data.sd)] * data.sd[1:(mp.size - idx + 1)])
+  distance.profile <- 2 * window.size * (1 - distance.profile)
+
+  return(distance.profile)
 }

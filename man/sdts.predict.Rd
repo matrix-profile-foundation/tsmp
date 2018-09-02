@@ -2,7 +2,7 @@
 % Please edit documentation in R/sdts_predict.R
 \name{sdts.predict}
 \alias{sdts.predict}
-\title{Scalable Dictionary learning for Time Series (SDTS) prediction function.}
+\title{Scalable Dictionary learning for Time Series (SDTS) prediction function}
 \usage{
 sdts.predict(model, data, window.size)
 }
@@ -17,7 +17,7 @@ sdts.predict(model, data, window.size)
 Returns a \code{vector} of \code{logical} with predicted annotations.
 }
 \description{
-Scalable Dictionary learning for Time Series (SDTS) prediction function.
+Scalable Dictionary learning for Time Series (SDTS) prediction function
 }
 \examples{
 # This is a fast toy example and results are useless. For a complete result, run the code inside

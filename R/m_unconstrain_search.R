@@ -1,7 +1,6 @@
 #' MDL Based MOTIF Discovery for Multidimensional Matrix Profile
 #'
-#' MDL Based MOTIF Discovery for Multidimensional Matrix Profile.
-#'
+#' @details
 #' Although this functions handles Multivariate Time Series, it can also be used to handle
 #' Univariate Time Series.
 #'
@@ -18,7 +17,6 @@
 #'   dimensions of respective MOTIF.
 #' @export
 #'
-#' @family mstomp
 #' @seealso [mstomp()], [mstomp.par()], [guide.search()]
 #' @references * Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif
 #'   Discovery.
@@ -71,7 +69,7 @@ unconstrain.search <- function(data, window.size, matrix.profile, profile.index,
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list")
+    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list.", call. = FALSE)
   }
 
   exc.zone <- round(0.5 * window.size + vars()$eps)

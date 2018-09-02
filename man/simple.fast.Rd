@@ -2,7 +2,7 @@
 % Please edit documentation in R/simple.R
 \name{simple.fast}
 \alias{simple.fast}
-\title{Compute the join similarity for Sound data.}
+\title{Compute the join similarity for Sound data}
 \usage{
 simple.fast(..., window.size, exclusion.zone = 1/2, verbose = 2)
 }
@@ -21,7 +21,7 @@ simple.fast(..., window.size, exclusion.zone = 1/2, verbose = 2)
 Returns a list with the Matrix Profile \code{mp} and Profile Index \code{pi}.
 }
 \description{
-Compute the join similarityfor Sound data.
+Compute the join similarity for Sound data
 }
 \details{
 \code{verbose} changes how much information is printed by this function; \code{0} means nothing, \code{1} means

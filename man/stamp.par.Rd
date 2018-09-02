@@ -48,9 +48,9 @@ mp <- stamp.par(toy_data$data[1:200,1], window.size = 30, verbose = 0)
 ref.data <- toy_data$data[,1]
 query.data <- toy_data$data[,2]
 # self similarity
-mp <- stamp.par(ref.data, window.size = 30, s.size = round(nrows(ref.data) * 0.1))
+mp <- stamp.par(ref.data, window.size = 30, s.size = round(nrow(ref.data) * 0.1))
 # join similarity
-mp <- stamp.par(ref.data, query.data, window.size = 30, s.size = round(nrows(query.data) * 0.1))
+mp <- stamp.par(ref.data, query.data, window.size = 30, s.size = round(nrow(query.data) * 0.1))
 }
 
 }
@@ -71,6 +71,9 @@ Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 \seealso{
 \code{\link[=mstomp]{mstomp()}}, \code{\link[=mstomp.par]{mstomp.par()}}
 
-Other Stamp: \code{\link{stamp}}
+Other matrix profile computations: \code{\link{mstomp.par}},
+  \code{\link{mstomp}}, \code{\link{scrimp}},
+  \code{\link{stamp}}, \code{\link{stomp.par}},
+  \code{\link{stomp}}
 }
-\concept{Stamp}
+\concept{matrix profile computations}

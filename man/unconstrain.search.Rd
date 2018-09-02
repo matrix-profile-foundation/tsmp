@@ -27,7 +27,7 @@ Returns the \code{motif.idx} with the index of MOTIFs founded and \code{motif.di
 dimensions of respective MOTIF.
 }
 \description{
-MDL Based MOTIF Discovery for Multidimensional Matrix Profile.
+MDL Based MOTIF Discovery for Multidimensional Matrix Profile
 }
 \details{
 Although this functions handles Multivariate Time Series, it can also be used to handle
@@ -63,8 +63,4 @@ Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
 \code{\link[=mstomp]{mstomp()}}, \code{\link[=mstomp.par]{mstomp.par()}}, \code{\link[=guide.search]{guide.search()}}
-
-Other mstomp: \code{\link{guide.search}},
-  \code{\link{mstomp.par}}, \code{\link{mstomp}}
 }
-\concept{mstomp}

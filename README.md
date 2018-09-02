@@ -1,7 +1,7 @@
 README
 ================
 Francisco Bischoff
-\- 31 Aug 2018
+\- 02 Sep 2018
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -63,6 +63,7 @@ devtools::install_github("franzbischoff/tsmp")
 
   - STAMP (single and multi-thread versions)
   - STOMP (single and multi-thread versions)
+  - SCRIMP (single-thread, still experimental)
   - Time Series Chains
   - Multivariate STOMP (mSTOMP)
   - Multivariate MOTIF Search (from mSTOMP)
@@ -72,6 +73,7 @@ devtools::install_github("franzbischoff/tsmp")
   - SiMPle-Fast (Fast Similarity Matrix Profile for Music Analysis and
     Exploration)
   - Annotation vectors (e.g.: Stop-word MOTIF bias, Actionability bias)
+  - FLUSS Arc Plot and SiMPle Arc Plot
   - Misc:
       - MASS v2.0
       - Fast moving average
@@ -79,20 +81,20 @@ devtools::install_github("franzbischoff/tsmp")
 
 ## Road map
 
-  - FLUSS Arc Plot and SiMPle Arc Plot
   - MOTIFs under Uniform Scaling
   - Exact Detection of Variable Length Motifs
   - Profile-Based Shapelet Discovery
   - GPU-STOMP
   - Real-time version of previous algorithms (STAMPI, FLOSS, etc)
   - MASS Extensions (ADP, WQ, QwG)
-  - SCRIMP (waiting for publication)
 
 ## Other projects with Matrix Profile
 
   - Python: <https://github.com/ZiyaoWei/pyMatrixProfile>
   - Python: <https://github.com/jbeleno/owlpy>
   - Python: <https://github.com/javidlakha/matrix-profile>
+  - CUDA: <https://github.com/zpzim/STOMPSelfJoin>
+  - CUDA: <https://github.com/zpzim/SCAMP>
 
 ## Code of Conduct
 
