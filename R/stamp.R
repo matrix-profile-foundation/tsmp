@@ -47,12 +47,12 @@
 #' mp <- stamp(ref.data, query.data, window.size = 30, s.size = round(nrow(query.data) * 0.1))
 #' }
 
-stamp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, verbose = 2) {
+stamp <- function(..., window_size, exclusion_zone = 1 / 2, s_size = Inf, verbose = 2) {
   args <- list(...)
   data <- args[[1]]
   if (length(args) > 1) {
     query <- args[[2]]
-    exclusion.zone <- 0 # don't use exclusion zone for joins
+    exclusion_zone <- 0 # don't use exclusion zone for joins
   } else {
     query <- data
   }
@@ -79,18 +79,18 @@ stamp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, verbos
     stop("Error: Unknown type of query. Must be: a column matrix or a vector.", call. = FALSE)
   }
 
-  exclusion.zone <- floor(window.size * exclusion.zone)
-  data.size <- nrow(data)
-  query.size <- nrow(query)
-  matrix.profile.size <- data.size - window.size + 1
-  num.queries <- query.size - window.size + 1
+  exclusion_zone <- floor(window_size * exclusion_zone)
+  data_size <- nrow(data)
+  query_size <- nrow(query)
+  matrix_profile_size <- data_size - window_size + 1
+  num_queries <- query_size - window_size + 1
 
   ## check skip position
-  skip.location <- rep(FALSE, matrix.profile.size)
+  skip_location <- rep(FALSE, matrix_profile_size)
 
-  for (i in 1:matrix.profile.size) {
-    if (any(is.na(data[i:(i + window.size - 1)])) || any(is.infinite(data[i:(i + window.size - 1)]))) {
-      skip.location[i] <- TRUE
+  for (i in 1:matrix_profile_size) {
+    if (any(is.na(data[i:(i + window_size - 1)])) || any(is.infinite(data[i:(i + window_size - 1)]))) {
+      skip_location[i] <- TRUE
     }
   }
 
@@ -100,24 +100,24 @@ stamp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, verbos
   query[is.na(query)] <- 0
   query[is.infinite(query)] <- 0
 
-  if (query.size > data.size) {
+  if (query_size > data_size) {
     stop("Error: Query must be smaller or the same size as reference data.", call. = FALSE)
   }
-  if (window.size > query.size / 2) {
+  if (window_size > query_size / 2) {
     stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
   }
-  if (window.size < 4) {
-    stop("Error: `window.size` must be at least 4.", call. = FALSE)
+  if (window_size < 4) {
+    stop("Error: `window_size` must be at least 4.", call. = FALSE)
   }
 
-  matrix.profile <- matrix(Inf, matrix.profile.size, 1)
-  left.matrix.profile <- right.matrix.profile <- matrix.profile
-  profile.index <- matrix(-1, matrix.profile.size, 1)
-  left.profile.index <- right.profile.index <- profile.index
+  matrix_profile <- matrix(Inf, matrix_profile_size, 1)
+  left_matrix_profile <- right_matrix_profile <- matrix_profile
+  profile_index <- matrix(-1, matrix_profile_size, 1)
+  left_profile_index <- right_profile_index <- profile_index
 
   j <- 1
-  ssize <- min(s.size, num.queries)
-  order <- sample(1:num.queries, size = ssize)
+  ssize <- min(s_size, num_queries)
+  order <- sample(1:num_queries, size = ssize)
 
   tictac <- Sys.time()
 
@@ -133,51 +133,51 @@ stamp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, verbos
   }
   # anytime must return the result always
   on.exit(return(list(
-    rmp = right.matrix.profile, rpi = right.profile.index,
-    lmp = left.matrix.profile, lpi = left.profile.index,
-    mp = matrix.profile, pi = profile.index
+    rmp = right_matrix_profile, rpi = right_profile_index,
+    lmp = left_matrix_profile, lpi = left_profile_index,
+    mp = matrix_profile, pi = profile_index
   )), TRUE)
 
-  pre <- mass.pre(data, data.size, query, query.size, window.size = window.size)
+  pre <- mass_pre(data, data_size, query, query_size, window_size = window_size)
 
   for (i in order) {
     j <- j + 1
 
     nn <- mass(
-      pre$data.fft, query[i:(i + window.size - 1)], data.size, window.size, pre$data.mean,
-      pre$data.sd, pre$query.mean[i], pre$query.sd[i]
+      pre$data_fft, query[i:(i + window_size - 1)], data_size, window_size, pre$data_mean,
+      pre$data_sd, pre$query_mean[i], pre$query_sd[i]
     )
 
-    distance.profile <- Re(sqrt(nn$distance.profile))
+    distance_profile <- Re(sqrt(nn$distance_profile))
 
     # apply exclusion zone
-    if (exclusion.zone > 0) {
-      exc.st <- max(1, i - exclusion.zone)
-      exc.ed <- min(matrix.profile.size, i + exclusion.zone)
-      distance.profile[exc.st:exc.ed, 1] <- Inf
-      distance.profile[data.sd < vars()$eps] <- Inf
-      if (skip.location[i] || any(query.sd[i] < vars()$eps)) {
-        distance.profile[] <- Inf
+    if (exclusion_zone > 0) {
+      exc_st <- max(1, i - exclusion_zone)
+      exc_ed <- min(matrix_profile_size, i + exclusion_zone)
+      distance_profile[exc_st:exc_ed, 1] <- Inf
+      distance_profile[data_sd < vars()$eps] <- Inf
+      if (skip_location[i] || any(query_sd[i] < vars()$eps)) {
+        distance_profile[] <- Inf
       }
     }
 
     # anytime version
-    # left matrix.profile
-    ind <- (distance.profile[i:matrix.profile.size] < left.matrix.profile[i:matrix.profile.size])
+    # left matrix_profile
+    ind <- (distance_profile[i:matrix_profile_size] < left_matrix_profile[i:matrix_profile_size])
     ind <- c(rep(FALSE, (i - 1)), ind) # pad left
-    left.matrix.profile[ind] <- distance.profile[ind]
-    left.profile.index[which(ind)] <- i
+    left_matrix_profile[ind] <- distance_profile[ind]
+    left_profile_index[which(ind)] <- i
 
-    # right matrix.profile
-    ind <- (distance.profile[1:i] < right.matrix.profile[1:i])
-    ind <- c(ind, rep(FALSE, matrix.profile.size - i)) # pad right
-    right.matrix.profile[ind] <- distance.profile[ind]
-    right.profile.index[which(ind)] <- i
+    # right matrix_profile
+    ind <- (distance_profile[1:i] < right_matrix_profile[1:i])
+    ind <- c(ind, rep(FALSE, matrix_profile_size - i)) # pad right
+    right_matrix_profile[ind] <- distance_profile[ind]
+    right_profile_index[which(ind)] <- i
 
-    # normal matrix.profile
-    ind <- (distance.profile < matrix.profile)
-    matrix.profile[ind] <- distance.profile[ind]
-    profile.index[which(ind)] <- i
+    # normal matrix_profile
+    ind <- (distance_profile < matrix_profile)
+    matrix_profile[ind] <- distance_profile[ind]
+    profile_index[which(ind)] <- i
 
     if (verbose > 0) {
       utils::setTxtProgressBar(pb, j)

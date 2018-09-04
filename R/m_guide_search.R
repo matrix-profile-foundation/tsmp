@@ -36,7 +36,7 @@
 #' motifs <- guide.search(toy_data$data, w, mp$mp, mp$pi, 2)
 #' }
 
-guide.search <- function(data, window.size, matrix.profile, profile.index, n.dim) {
+guide_search <- function(data, window_size, matrix_profile, profile_index, n_dim) {
 
   ## transform data list into matrix
   if (is.matrix(data) || is.data.frame(data)) {
@@ -47,14 +47,14 @@ guide.search <- function(data, window.size, matrix.profile, profile.index, n.dim
       data <- t(data)
     }
   } else if (is.list(data)) {
-    data.len <- length(data[[1]])
-    data.dim <- length(data)
+    data_len <- length(data[[1]])
+    data_dim <- length(data)
 
-    for (i in 1:data.dim) {
+    for (i in 1:data_dim) {
       len <- length(data[[i]])
       # Fix TS size with NaN
-      if (len < data.len) {
-        data[[i]] <- c(data[[i]], rep(NA, data.len - len))
+      if (len < data_len) {
+        data[[i]] <- c(data[[i]], rep(NA, data_len - len))
       }
     }
     # transform data into matrix (each column is a TS)
@@ -63,20 +63,20 @@ guide.search <- function(data, window.size, matrix.profile, profile.index, n.dim
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list.", call. = FALSE)
+    stop("Error: Unknown type of data. Must be: matrix, data_frame, vector or list.", call. = FALSE)
   }
 
-  matrix.profile <- matrix.profile[, n.dim]
-  profile.index <- profile.index[, n.dim]
-  motif.idx <- which.min(matrix.profile)
-  motif.idx <- sort(c(motif.idx, profile.index[motif.idx]))
+  matrix_profile <- matrix_profile[, n_dim]
+  profile_index <- profile_index[, n_dim]
+  motif_idx <- which.min(matrix_profile)
+  motif_idx <- sort(c(motif_idx, profile_index[motif_idx]))
 
-  motif.1 <- as.matrix(data[motif.idx[1]:(motif.idx[1] + window.size - 1), ]) # as.matrix(): hack for vectors
-  motif.2 <- as.matrix(data[motif.idx[2]:(motif.idx[2] + window.size - 1), ]) # as.matrix(): hack for vectors
+  motif_1 <- as.matrix(data[motif_idx[1]:(motif_idx[1] + window_size - 1), ]) # as.matrix(): hack for vectors
+  motif_2 <- as.matrix(data[motif_idx[2]:(motif_idx[2] + window_size - 1), ]) # as.matrix(): hack for vectors
 
-  motif.dim <- sort(apply(abs(motif.1 - motif.2), 2, sum), index.return = TRUE)$ix
-  motif.dim <- sort(motif.dim[1:n.dim])
-  motif.dim <- list(motif.dim, motif.dim)
+  motif_dim <- sort(apply(abs(motif_1 - motif_2), 2, sum), index.return = TRUE)$ix
+  motif_dim <- sort(motif_dim[1:n_dim])
+  motif_dim <- list(motif_dim, motif_dim)
 
-  return(list(motif.idx = motif.idx, motif.dim = motif.dim))
+  return(list(motif_idx = motif_idx, motif_dim = motif_dim))
 }

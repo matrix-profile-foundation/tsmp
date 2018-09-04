@@ -9,17 +9,17 @@
 #' @examples
 #' data.sd <- fast.movsd(toy_data$data[,1], toy_data$sub.len)
 
-fast.movsd <- function(data, window.size) {
+fast_movsd <- function(data, window_size) {
 
   # length of the time series
-  data.size <- length(data)
+  data_size <- length(data)
 
-  if (window.size < 2) {
-    stop("Error: 'window.size' must be at least 2.", call. = FALSE)
+  if (window_size < 2) {
+    stop("Error: 'window_size' must be at least 2.", call. = FALSE)
   }
 
-  if (data.size < window.size) {
-    stop("Error: 'window.size' is too large for this series.", call. = FALSE)
+  if (data_size < window_size) {
+    stop("Error: 'window_size' is too large for this series.", call. = FALSE)
   }
 
   # Improve the numerical analysis by subtracting off the series mean
@@ -28,19 +28,19 @@ fast.movsd <- function(data, window.size) {
 
   # scale the data to have unit variance too. will put that
   # scale factor back into the result at the end
-  data.sd <- std(data)
-  data <- data / data.sd
+  data_sd <- std(data)
+  data <- data / data_sd
 
   # we will need the squared elements
-  data.sqr <- data^2
+  data_sqr <- data^2
 
-  b <- matrix(1, 1, window.size)
-  s <- sqrt((stats::filter(data.sqr, b, sides = 1) - (stats::filter(data, b, sides = 1)^2) * (1 / window.size)) / (window.size - 1))
+  b <- matrix(1, 1, window_size)
+  s <- sqrt((stats::filter(data_sqr, b, sides = 1) - (stats::filter(data, b, sides = 1)^2) * (1 / window_size)) / (window_size - 1))
 
   # restore the scale factor that was used before to normalize the data
-  s <- s * data.sd
+  s <- s * data_sd
   s <- Re(s)
-  s <- s * sqrt((window.size - 1) / window.size)
+  s <- s * sqrt((window_size - 1) / window_size)
 
   return(s[!is.na(s)])
 }
@@ -55,9 +55,9 @@ fast.movsd <- function(data, window.size) {
 #' @examples
 #' data.avg <- fast.movavg(toy_data$data[,1], toy_data$sub.len)
 
-fast.movavg <- function(data, window.size) {
-  data.mean <- stats::filter(data, rep(1 / window.size, window.size), sides = 2)
-  return(data.mean[!is.na(data.mean)])
+fast_movavg <- function(data, window_size) {
+  data_mean <- stats::filter(data, rep(1 / window_size, window_size), sides = 2)
+  return(data_mean[!is.na(data_mean)])
 }
 
 #' Population SD, as R always calculate with n-1 (sample), here we fix it
@@ -93,7 +93,7 @@ std <- function(data) {
 #' @keywords internal
 #' @noRd
 #'
-zero.crossings <- function(data) {
+zero_crossings <- function(data) {
   # initial value
   count <- 0
 
@@ -111,9 +111,9 @@ zero.crossings <- function(data) {
   # force signal to be a vector oriented in the same direction
   data <- as.vector(data)
 
-  num.samples <- length(data)
+  num_samples <- length(data)
 
-  for (i in 2:num.samples) {
+  for (i in 2:num_samples) {
     # Any time you multiply to adjacent values that have a sign difference
     # the result will always be negative.  When the signs are identical,
     # the product will always be positive.
@@ -134,14 +134,14 @@ zero.crossings <- function(data) {
 #' @noRd
 #'
 znorm <- function(data) {
-  data.mean <- mean(data)
-  data.dev <- std(data)
+  data_mean <- mean(data)
+  data_dev <- std(data)
 
-  if (is.nan(data.dev) || data.dev <= 0.01) {
-    return(data - data.mean)
+  if (is.nan(data_dev) || data_dev <= 0.01) {
+    return(data - data_mean)
   }
   else {
-    (data - data.mean) / (data.dev)
+    (data - data_mean) / (data_dev)
   }
 }
 
@@ -153,7 +153,7 @@ znorm <- function(data) {
 #' @keywords internal
 #' @noRd
 #'
-zero.one.norm <- function(data) {
+zero_one_norm <- function(data) {
   data <- round(data, 10)
 
   data <- data - min(data[!is.infinite(data) & !is.na(data)])

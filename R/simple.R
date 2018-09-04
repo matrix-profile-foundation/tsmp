@@ -26,9 +26,9 @@
 #' data <- toy_data$data # 3 dimensions matrix
 #' result <- simple.fast(data, window.size = w, verbose = 0)
 #'
-simple.fast <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
-  if (!is.numeric(window.size) || length(window.size) > 1) {
-    stop("Error: Unknown type of `window.size`. Must be an `int` or `numeric`", call. = FALSE)
+simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
+  if (!is.numeric(window_size) || length(window_size) > 1) {
+    stop("Error: Unknown type of `window_size`. Must be an `int` or `numeric`", call. = FALSE)
   }
 
   args <- list(...)
@@ -36,7 +36,7 @@ simple.fast <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
   if (length(args) > 1) {
     query <- args[[2]]
     if (!isTRUE(all.equal(data, query))) {
-      exclusion.zone <- 0
+      exclusion_zone <- 0
     } # don't use exclusion zone for joins
   } else {
     query <- data
@@ -50,28 +50,28 @@ simple.fast <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
     if (ncol(data) > nrow(data)) {
       data <- t(data)
     }
-    data.size <- nrow(data)
-    n.dim <- ncol(data)
+    data_size <- nrow(data)
+    n_dim <- ncol(data)
   } else if (is.list(data)) {
-    data.size <- length(data[[1]])
-    n.dim <- length(data)
+    data_size <- length(data[[1]])
+    n_dim <- length(data)
 
-    for (i in 1:n.dim) {
+    for (i in 1:n_dim) {
       len <- length(data[[i]])
       # Fix TS size with NaN
-      if (len < data.size) {
-        data[[i]] <- c(data[[i]], rep(NA, data.size - len))
+      if (len < data_size) {
+        data[[i]] <- c(data[[i]], rep(NA, data_size - len))
       }
     }
     # transform data into matrix (each column is a TS)
     data <- sapply(data, cbind)
   } else if (is.vector(data)) {
-    data.size <- length(data)
-    n.dim <- 1
+    data_size <- length(data)
+    n_dim <- 1
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list.", call. = FALSE)
+    stop("Error: Unknown type of data. Must be: matrix, data_frame, vector or list.", call. = FALSE)
   }
 
   ## transform query list into matrix
@@ -82,53 +82,53 @@ simple.fast <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
     if (ncol(query) > nrow(query)) {
       query <- t(query)
     }
-    query.size <- nrow(query)
-    q.dim <- ncol(query)
+    query_size <- nrow(query)
+    q_dim <- ncol(query)
   } else if (is.list(query)) {
-    query.size <- length(query[[1]])
-    q.dim <- length(query)
+    query_size <- length(query[[1]])
+    q_dim <- length(query)
 
-    for (i in 1:q.dim) {
+    for (i in 1:q_dim) {
       len <- length(query[[i]])
       # Fix TS size with NaN
-      if (len < query.size) {
-        query[[i]] <- c(query[[i]], rep(NA, query.size - len))
+      if (len < query_size) {
+        query[[i]] <- c(query[[i]], rep(NA, query_size - len))
       }
     }
     # transform query into matrix (each column is a TS)
     query <- sapply(query, cbind)
   } else if (is.vector(query)) {
-    query.size <- length(query)
-    q.dim <- 1
+    query_size <- length(query)
+    q_dim <- 1
     # transform query into 1-col matrix
     query <- as.matrix(query) # just to be uniform
   } else {
-    stop("Error: Unknown type of query. Must be: matrix, data.frame, vector or list.", call. = FALSE)
+    stop("Error: Unknown type of query. Must be: matrix, data_frame, vector or list.", call. = FALSE)
   }
 
   ## check input
-  if (q.dim != n.dim) {
+  if (q_dim != n_dim) {
     stop("Error: Data and query dimensions must be the same.", call. = FALSE)
   }
-  if (window.size > data.size / 2) {
+  if (window_size > data_size / 2) {
     stop("Error: Reference Time series is too short relative to desired window size.", call. = FALSE)
   }
-  if (window.size > query.size / 2) {
+  if (window_size > query_size / 2) {
     stop("Error: Query Time series is too short relative to desired window size.", call. = FALSE)
   }
-  if (window.size < 4) {
-    stop("Error: `window.size` must be at least 4.", call. = FALSE)
+  if (window_size < 4) {
+    stop("Error: `window_size` must be at least 4.", call. = FALSE)
   }
 
-  exclusion.zone <- floor(window.size * exclusion.zone)
+  exclusion_zone <- floor(window_size * exclusion_zone)
 
   ## initialization
-  matrix.profile.size <- data.size - window.size + 1
-  matrix.profile <- rep(Inf, matrix.profile.size)
-  profile.index <- rep(0, matrix.profile.size)
+  matrix_profile_size <- data_size - window_size + 1
+  matrix_profile <- rep(Inf, matrix_profile_size)
+  profile_index <- rep(0, matrix_profile_size)
 
   if (verbose > 0) {
-    pb <- utils::txtProgressBar(min = 0, max = matrix.profile.size, style = 3, width = 80)
+    pb <- utils::txtProgressBar(min = 0, max = matrix_profile_size, style = 3, width = 80)
     on.exit(close(pb))
   }
   if (verbose > 1) {
@@ -136,70 +136,70 @@ simple.fast <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
   }
 
   # for the first dot-product for both data and query
-  pre.data <- mass.simple.pre(data, data.size, window.size = window.size)
-  data.fft <- pre.data$data.fft
-  data.sumx2 <- pre.data$sumx2
-  query.window <- query[1:window.size, ]
-  res.data <- mass.simple(data.fft, query.window, data.size, window.size, data.sumx2)
+  pre_data <- mass_simple_pre(data, data_size, window_size = window_size)
+  data_fft <- pre_data$data_fft
+  data_sumx2 <- pre_data$sumx2
+  query_window <- query[1:window_size, ]
+  res_data <- mass_simple(data_fft, query_window, data_size, window_size, data_sumx2)
 
-  pre.query <- mass.simple.pre(query, query.size, window.size = window.size)
-  query.fft <- pre.query$data.fft
-  query.sumx2 <- pre.query$sumx2
-  data.window <- data[1:window.size, ]
-  res.query <- mass.simple(query.fft, data.window, query.size, window.size, query.sumx2)
+  pre_query <- mass_simple_pre(query, query_size, window_size = window_size)
+  query_fft <- pre_query$data_fft
+  query_sumx2 <- pre_query$sumx2
+  data_window <- data[1:window_size, ]
+  res_query <- mass_simple(query_fft, data_window, query_size, window_size, query_sumx2)
 
-  distance.profile <- res.query$distance.profile
-  last.product <- res.query$last.product
-  first.product <- res.data$last.product
-  query.sumy2 <- res.query$sumy2
-  dropval <- data.window[1, ] # dropval is the first element of refdata window
+  distance_profile <- res_query$distance_profile
+  last_product <- res_query$last_product
+  first_product <- res_data$last_product
+  query_sumy2 <- res_query$sumy2
+  dropval <- data_window[1, ] # dropval is the first element of refdata window
 
   ## no ez if join
-  distance.profile[1:exclusion.zone] <- Inf
+  distance_profile[1:exclusion_zone] <- Inf
 
 
-  ind <- which.min(distance.profile)
-  profile.index[1] <- ind
-  matrix.profile[1] <- distance.profile[ind]
+  ind <- which.min(distance_profile)
+  profile_index[1] <- ind
+  matrix_profile[1] <- distance_profile[ind]
 
   tictac <- Sys.time()
 
   ## compute the remainder of the matrix profile
-  for (i in 2:matrix.profile.size) {
+  for (i in 2:matrix_profile_size) {
 
     # compute the distance profile
     if (verbose > 0) {
       utils::setTxtProgressBar(pb, i)
     }
 
-    data.window <- data[i:(i + window.size - 1), ]
+    data_window <- data[i:(i + window_size - 1), ]
 
-    query.sumy2 <- query.sumy2 - dropval^2 + data.window[window.size, ]^2
+    query_sumy2 <- query_sumy2 - dropval^2 + data_window[window_size, ]^2
 
-    for (j in 1:n.dim) {
-      last.product[2:(data.size - window.size + 1), j] <- last.product[1:(data.size - window.size), j] -
-        query[1:(data.size - window.size), j] * dropval[j] +
-        query[(window.size + 1):data.size, j] * data.window[window.size, j]
+    for (j in 1:n_dim) {
+      last_product[2:(data_size - window_size + 1), j] <- last_product[1:(data_size - window_size), j] -
+        query[1:(data_size - window_size), j] * dropval[j] +
+        query[(window_size + 1):data_size, j] * data_window[window_size, j]
     }
 
-    last.product[1, ] <- first.product[i, ]
-    dropval <- data.window[1, ]
+    last_product[1, ] <- first_product[i, ]
+    dropval <- data_window[1, ]
 
-    distance.profile <- matrix(0, nrow(query.sumx2), 1)
+    distance_profile <- matrix(0, nrow(query_sumx2), 1)
 
-    for (j in 1:n.dim) {
-      distance.profile <- distance.profile + query.sumx2[, j] - 2 * last.product[, j] + query.sumy2[j]
+    for (j in 1:n_dim) {
+      distance_profile <- distance_profile + query_sumx2[, j] - 2 * last_product[, j] + query_sumy2[j]
     }
 
-    if (exclusion.zone > 0) {
-      exc.st <- max(1, i - exclusion.zone)
-      exc.ed <- min(matrix.profile.size, i + exclusion.zone)
-      distance.profile[exc.st:exc.ed] <- Inf
+    if (exclusion_zone > 0) {
+      exc_st <- max(1, i - exclusion_zone)
+      exc_ed <- min(matrix_profile_size, i + exclusion_zone)
+      distance_profile[exc_st:exc_ed] <- Inf
     }
 
-    ind <- which.min(distance.profile)
-    profile.index[i] <- ind
-    matrix.profile[i] <- distance.profile[ind]
+    ind <- which.min(distance_profile)
+    profile_index[i] <- ind
+    matrix_profile[i] <- distance_profile[ind]
   }
 
   tictac <- Sys.time() - tictac
@@ -208,7 +208,7 @@ simple.fast <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
     message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
   }
 
-  return(list(mp = matrix.profile, pi = profile.index))
+  return(list(mp = matrix_profile, pi = profile_index))
 }
 
 #' Precomputes several values used on MASS
@@ -227,21 +227,21 @@ simple.fast <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
 #' @references Website: <https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html>
 
 
-mass.simple.pre <- function(data, data.size, window.size) {
+mass_simple_pre <- function(data, data_size, window_size) {
   if (nrow(data) < ncol(data)) {
     data <- t(data)
   }
 
-  n.dim <- ncol(data)
+  n_dim <- ncol(data)
 
-  data <- rbind(data, matrix(0, data.size, n.dim))
+  data <- rbind(data, matrix(0, data_size, n_dim))
 
-  data.fft <- apply(data, 2, stats::fft)
-  cum.sumx2 <- apply(data^2, 2, cumsum)
+  data_fft <- apply(data, 2, stats::fft)
+  cum_sumx2 <- apply(data^2, 2, cumsum)
 
-  sumx2 <- cum.sumx2[window.size:data.size, ] - rbind(rep(0, n.dim), cum.sumx2[1:(data.size - window.size), ])
+  sumx2 <- cum_sumx2[window_size:data_size, ] - rbind(rep(0, n_dim), cum_sumx2[1:(data_size - window_size), ])
 
-  return(list(data.fft = data.fft, sumx2 = sumx2))
+  return(list(data_fft = data_fft, sumx2 = sumx2))
 }
 
 #' Calculates the distance profile using MASS algorithm
@@ -264,37 +264,37 @@ mass.simple.pre <- function(data, data.size, window.size) {
 #'
 
 
-mass.simple <- function(data.fft, query.window, data.size, window.size, sumx2) {
-  if (nrow(data.fft) < ncol(data.fft)) {
-    data.fft <- t(data.fft)
+mass_simple <- function(data_fft, query_window, data_size, window_size, sumx2) {
+  if (nrow(data_fft) < ncol(data_fft)) {
+    data_fft <- t(data_fft)
   }
 
-  n.dim <- ncol(data.fft)
+  n_dim <- ncol(data_fft)
 
-  if (ncol(query.window) != n.dim) {
-    query.window <- t(query.window)
+  if (ncol(query_window) != n_dim) {
+    query_window <- t(query_window)
   }
 
   # pre-process query for fft
-  query.window <- apply(query.window, 2, rev)
-  query.window <- rbind(query.window, matrix(0, 2 * data.size - window.size, n.dim))
+  query_window <- apply(query_window, 2, rev)
+  query_window <- rbind(query_window, matrix(0, 2 * data_size - window_size, n_dim))
 
-  query.fft <- apply(query.window, 2, stats::fft)
+  query_fft <- apply(query_window, 2, stats::fft)
   # compute the product
-  prod <- data.fft * query.fft
+  prod <- data_fft * query_fft
   z <- apply(prod, 2, function(x) {
     stats::fft(x, inverse = TRUE) / length(x)
   })
 
-  sumy2 <- apply(query.window^2, 2, sum)
+  sumy2 <- apply(query_window^2, 2, sum)
 
-  last.product <- Re(z[window.size:data.size, ])
+  last_product <- Re(z[window_size:data_size, ])
 
-  distance.profile <- matrix(0, nrow(sumx2), 1)
+  distance_profile <- matrix(0, nrow(sumx2), 1)
 
-  for (i in 1:n.dim) {
-    distance.profile <- distance.profile + sumx2[, i] - 2 * last.product[, i] + sumy2[i]
+  for (i in 1:n_dim) {
+    distance_profile <- distance_profile + sumx2[, i] - 2 * last_product[, i] + sumy2[i]
   }
 
-  return(list(distance.profile = distance.profile, last.product = last.product, sumy2 = sumy2))
+  return(list(distance_profile = distance_profile, last_product = last_product, sumy2 = sumy2))
 }

@@ -30,53 +30,53 @@
 #' sdts.f.score(test_data$test$label, predict, 1)
 #' }
 
-sdts.predict <- function(model, data, window.size) {
-  n.pat <- length(model$thold)
-  anno.st <- list()
-  data.size <- length(data)
+sdts_predict <- function(model, data, window_size) {
+  n_pat <- length(model$thold)
+  anno_st <- list()
+  data_size <- length(data)
 
-  for (i in 1:n.pat) {
-    pat.len <- length(model$pattern[[i]])
-    pre <- mass.pre(data, data.size, window.size = pat.len)
-    dist.pro <- mass(
-      pre$data.fft, model$pattern[[i]], data.size, pat.len, pre$data.mean,
-      pre$data.sd, mean(model$pattern[[i]]), std(model$pattern[[i]])
+  for (i in 1:n_pat) {
+    pat_len <- length(model$pattern[[i]])
+    pre <- mass_pre(data, data_size, window_size = pat_len)
+    dist_pro <- mass(
+      pre$data_fft, model$pattern[[i]], data_size, pat_len, pre$data_mean,
+      pre$data_sd, mean(model$pattern[[i]]), std(model$pattern[[i]])
     )
-    dist.pro <- Re(sqrt(dist.pro$distance.profile))
-    anno <- dist.pro - model$thold[i]
+    dist_pro <- Re(sqrt(dist_pro$distance_profile))
+    anno <- dist_pro - model$thold[i]
     anno[anno >= 0] <- 0
     anno[anno < 0] <- -1
     anno <- -anno
-    anno <- c(anno, rep(window.size, 0))
-    anno.pad <- c(0, anno, 0)
+    anno <- c(anno, rep(window_size, 0))
+    anno_pad <- c(0, anno, 0)
 
-    anno.st[[i]] <- which((anno.pad[1:(length(anno.pad) - 1)] - anno.pad[2:length(anno.pad)]) == -1) + 1
-    anno.st[[i]] <- anno.st[[i]] - 1 ## ???
+    anno_st[[i]] <- which((anno_pad[1:(length(anno_pad) - 1)] - anno_pad[2:length(anno_pad)]) == -1) + 1
+    anno_st[[i]] <- anno_st[[i]] - 1 ## ???
   }
 
-  anno.st <- unlist(anno.st)
-  anno.st <- sort(anno.st)
+  anno_st <- unlist(anno_st)
+  anno_st <- sort(anno_st)
 
   i <- 1
   while (TRUE) {
-    if (i >= length(anno.st)) {
+    if (i >= length(anno_st)) {
       break
     }
 
-    first.part <- anno.st[1:i]
-    second.part <- anno.st[(i + 1):length(anno.st)]
-    bad.st <- abs(second.part - anno.st[i]) < window.size
-    second.part <- second.part[!bad.st]
-    anno.st <- c(first.part, second.part)
+    first_part <- anno_st[1:i]
+    second_part <- anno_st[(i + 1):length(anno_st)]
+    bad_st <- abs(second_part - anno_st[i]) < window_size
+    second_part <- second_part[!bad_st]
+    anno_st <- c(first_part, second_part)
 
     i <- i + 1
   }
 
-  pred <- rep(FALSE, data.size - window.size + 1)
-  anno.ed <- anno.st + window.size - 1
+  pred <- rep(FALSE, data_size - window_size + 1)
+  anno_ed <- anno_st + window_size - 1
 
-  for (i in 1:length(anno.st)) {
-    pred[anno.st[i]:anno.ed[i]] <- TRUE
+  for (i in 1:length(anno_st)) {
+    pred[anno_st[i]:anno_ed[i]] <- TRUE
   }
 
   return(pred)
@@ -119,56 +119,56 @@ sdts.predict <- function(model, data, window.size) {
 #' sdts.f.score(test_data$test$label, predict, 1)
 #' }
 #'
-sdts.f.score <- function(gtruth, pred, beta = 1) {
+sdts_f_score <- function(gtruth, pred, beta = 1) {
   if (length(pred) > length(gtruth)) {
     pred <- pred[1:length(gtruth)]
   } else if (length(pred) < length(gtruth)) {
-    pred.tmp <- rep(FALSE, length(gtruth))
-    pred.tmp[1:length(pred)] <- pred
-    pred <- pred.tmp
+    pred_tmp <- rep(FALSE, length(gtruth))
+    pred_tmp[1:length(pred)] <- pred
+    pred <- pred_tmp
   }
 
-  pred.pad <- c(0, pred, 0)
-  pred.st <- which((pred.pad[1:(length(pred.pad) - 1)] - pred.pad[2:length(pred.pad)]) == -1) + 1
-  pred.ed <- which((pred.pad[1:(length(pred.pad) - 1)] - pred.pad[2:length(pred.pad)]) == 1)
-  pred.st <- pred.st - 1
-  pred.ed <- pred.ed - 1
-  sub.len <- mode(pred.ed - pred.st + 1)
+  pred_pad <- c(0, pred, 0)
+  pred_st <- which((pred_pad[1:(length(pred_pad) - 1)] - pred_pad[2:length(pred_pad)]) == -1) + 1
+  pred_ed <- which((pred_pad[1:(length(pred_pad) - 1)] - pred_pad[2:length(pred_pad)]) == 1)
+  pred_st <- pred_st - 1
+  pred_ed <- pred_ed - 1
+  sub_len <- mode(pred_ed - pred_st + 1)
 
-  is.tp <- rep(FALSE, length(pred.st))
-  for (i in 1:length(pred.st)) {
-    if (pred.ed[i] > length(gtruth)) {
-      pred.ed[i] <- length(gtruth)
+  is.tp <- rep(FALSE, length(pred_st))
+  for (i in 1:length(pred_st)) {
+    if (pred_ed[i] > length(gtruth)) {
+      pred_ed[i] <- length(gtruth)
     }
-    if (sum(gtruth[pred.st[i]:pred.ed[i]]) > 0.8 * sub.len) {
+    if (sum(gtruth[pred_st[i]:pred_ed[i]]) > 0.8 * sub_len) {
       is.tp[i] <- TRUE
     }
   }
-  tp.pre <- sum(is.tp)
+  tp_pre <- sum(is.tp)
 
-  gtruth.pad <- c(0, gtruth, 0)
-  gtruth.st <- which((gtruth.pad[1:(length(gtruth.pad) - 1)] - gtruth.pad[2:length(gtruth.pad)]) == -1) + 1
-  gtruth.ed <- which((gtruth.pad[1:(length(gtruth.pad) - 1)] - gtruth.pad[2:length(gtruth.pad)]) == 1)
-  gtruth.st <- gtruth.st - 1
-  gtruth.ed <- gtruth.ed - 1
+  gtruth_pad <- c(0, gtruth, 0)
+  gtruth_st <- which((gtruth_pad[1:(length(gtruth_pad) - 1)] - gtruth_pad[2:length(gtruth_pad)]) == -1) + 1
+  gtruth_ed <- which((gtruth_pad[1:(length(gtruth_pad) - 1)] - gtruth_pad[2:length(gtruth_pad)]) == 1)
+  gtruth_st <- gtruth_st - 1
+  gtruth_ed <- gtruth_ed - 1
 
-  is.tp <- rep(FALSE, length(gtruth.st))
-  for (i in 1:length(gtruth.st)) {
-    if (gtruth.ed[i] > length(pred)) {
-      gtruth.ed[i] <- length(gtruth)
+  is.tp <- rep(FALSE, length(gtruth_st))
+  for (i in 1:length(gtruth_st)) {
+    if (gtruth_ed[i] > length(pred)) {
+      gtruth_ed[i] <- length(gtruth)
     }
-    if (sum(pred[gtruth.st[i]:gtruth.ed[i]]) > 0.8 * sub.len) {
+    if (sum(pred[gtruth_st[i]:gtruth_ed[i]]) > 0.8 * sub_len) {
       is.tp[i] <- TRUE
     }
   }
-  tp.rec <- sum(is.tp)
+  tp_rec <- sum(is.tp)
 
-  pre <- tp.pre / length(pred.st)
-  rec <- tp.rec / length(gtruth.st)
+  pre <- tp_pre / length(pred_st)
+  rec <- tp_rec / length(gtruth_st)
 
-  f.score <- (1 + beta^2) * (pre * rec) / ((beta^2) * pre + rec)
+  f_score <- (1 + beta^2) * (pre * rec) / ((beta^2) * pre + rec)
 
-  return(list(f.score = f.score, precision = pre, recall = rec))
+  return(list(f_score = f_score, precision = pre, recall = rec))
 }
 
 #' Calculates the mode of a vector

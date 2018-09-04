@@ -4,131 +4,131 @@ library(tsmp)
 if (skip_on_cran()) {
   test_that("Errors", {
     # big window size
-    expect_error(mstomp(toy_data$data[1:200, ], window.size = 500), regexp = "too short relative")
-    expect_error(mstomp.par(toy_data$data[1:200, ], window.size = 500), regexp = "too short relative")
-    expect_error(stomp(toy_data$data[1:200, ], window.size = 500), regexp = "too short relative")
-    expect_error(stomp.par(toy_data$data[1:200, ], window.size = 500), regexp = "too short relative")
-    expect_error(stamp(toy_data$data[1:200, ], window.size = 500), regexp = "too short relative")
-    expect_error(stamp.par(toy_data$data[1:200, ], window.size = 500), regexp = "too short relative")
+    expect_error(mstomp(toy_data$data[1:200, ], window_size = 500), regexp = "too short relative")
+    expect_error(mstomp_par(toy_data$data[1:200, ], window_size = 500), regexp = "too short relative")
+    expect_error(stomp(toy_data$data[1:200, ], window_size = 500), regexp = "too short relative")
+    expect_error(stomp_par(toy_data$data[1:200, ], window_size = 500), regexp = "too short relative")
+    expect_error(stamp(toy_data$data[1:200, ], window_size = 500), regexp = "too short relative")
+    expect_error(stamp_par(toy_data$data[1:200, ], window_size = 500), regexp = "too short relative")
 
     # intersect
-    expect_error(mstomp(toy_data$data[1:200, ], window.size = 30, must.dim = c(1, 2), exc.dim = c(2, 3)), regexp = "presented in both")
-    expect_error(mstomp.par(toy_data$data[1:200, ], window.size = 30, must.dim = c(1, 2), exc.dim = c(2, 3)), regexp = "presented in both")
-    # too many must.dim
-    expect_error(mstomp(toy_data$data[1:200, ], window.size = 30, must.dim = c(1, 2, 3, 4)), regexp = "must have dimension must be less")
-    expect_error(mstomp.par(toy_data$data[1:200, ], window.size = 30, must.dim = c(1, 2, 3, 4)), regexp = "must have dimension must be less")
-    # too many exc.dim
-    expect_error(mstomp(toy_data$data[1:200, ], window.size = 30, exc.dim = c(1, 2, 3, 4)), regexp = "exclusion dimension must be less")
-    expect_error(mstomp.par(toy_data$data[1:200, ], window.size = 30, exc.dim = c(1, 2, 3, 4)), regexp = "exclusion dimension must be less")
+    expect_error(mstomp(toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2), exc_dim = c(2, 3)), regexp = "presented in both")
+    expect_error(mstomp_par(toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2), exc_dim = c(2, 3)), regexp = "presented in both")
+    # too many must_dim
+    expect_error(mstomp(toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2, 3, 4)), regexp = "must have dimension must be less")
+    expect_error(mstomp_par(toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2, 3, 4)), regexp = "must have dimension must be less")
+    # too many exc_dim
+    expect_error(mstomp(toy_data$data[1:200, ], window_size = 30, exc_dim = c(1, 2, 3, 4)), regexp = "exclusion dimension must be less")
+    expect_error(mstomp_par(toy_data$data[1:200, ], window_size = 30, exc_dim = c(1, 2, 3, 4)), regexp = "exclusion dimension must be less")
 
     # small window size
-    expect_error(stamp(toy_data$data[1:200, ], window.size = 2), regexp = "Window size")
-    expect_error(stamp.par(toy_data$data[1:200, ], window.size = 2), regexp = "Window size")
-    expect_error(mstomp(toy_data$data[1:200, ], window.size = 2), regexp = "Window size")
-    expect_error(mstomp.par(toy_data$data[1:200, ], window.size = 2), regexp = "Window size")
-    expect_error(stomp(toy_data$data[1:200, ], window.size = 2), regexp = "Window size")
-    expect_error(stomp.par(toy_data$data[1:200, ], window.size = 2), regexp = "Window size")
+    expect_error(stamp(toy_data$data[1:200, ], window_size = 2), regexp = "Window size")
+    expect_error(stamp_par(toy_data$data[1:200, ], window_size = 2), regexp = "Window size")
+    expect_error(mstomp(toy_data$data[1:200, ], window_size = 2), regexp = "Window size")
+    expect_error(mstomp_par(toy_data$data[1:200, ], window_size = 2), regexp = "Window size")
+    expect_error(stomp(toy_data$data[1:200, ], window_size = 2), regexp = "Window size")
+    expect_error(stomp_par(toy_data$data[1:200, ], window_size = 2), regexp = "Window size")
 
     # unknown data type
-    expect_error(stamp(table(rpois(100, 5)), window.size = 30), regexp = "Unknown type")
-    expect_error(stamp.par(table(rpois(100, 5)), window.size = 30), regexp = "Unknown type")
-    expect_error(mstomp(table(rpois(100, 5)), window.size = 30), regexp = "Unknown type")
-    expect_error(mstomp.par(table(rpois(100, 5)), window.size = 30), regexp = "Unknown type")
-    expect_error(stomp(table(rpois(100, 5)), window.size = 30), regexp = "Unknown type")
-    expect_error(stomp.par(table(rpois(100, 5)), window.size = 30), regexp = "Unknown type")
+    expect_error(stamp(table(rpois(100, 5)), window_size = 30), regexp = "Unknown type")
+    expect_error(stamp_par(table(rpois(100, 5)), window_size = 30), regexp = "Unknown type")
+    expect_error(mstomp(table(rpois(100, 5)), window_size = 30), regexp = "Unknown type")
+    expect_error(mstomp_par(table(rpois(100, 5)), window_size = 30), regexp = "Unknown type")
+    expect_error(stomp(table(rpois(100, 5)), window_size = 30), regexp = "Unknown type")
+    expect_error(stomp_par(table(rpois(100, 5)), window_size = 30), regexp = "Unknown type")
   })
 
   test_that("Finish", {
-    expect_message(stamp(toy_data$data[1:200, 1], window.size = 30), regex = "Finished")
-    expect_message(stamp.par(toy_data$data[1:200, 1], window.size = 30), regex = "Finished")
-    expect_message(mstomp(toy_data$data[1:200, 1], window.size = 30), regex = "Finished")
-    expect_message(mstomp.par(toy_data$data[1:200, 1], window.size = 30), regex = "Finished")
-    expect_message(stomp(toy_data$data[1:200, 1], window.size = 30), regex = "Finished")
-    expect_message(stomp.par(toy_data$data[1:200, 1], window.size = 30), regex = "Finished")
+    expect_message(stamp(toy_data$data[1:200, 1], window_size = 30), regex = "Finished")
+    expect_message(stamp_par(toy_data$data[1:200, 1], window_size = 30), regex = "Finished")
+    expect_message(mstomp(toy_data$data[1:200, 1], window_size = 30), regex = "Finished")
+    expect_message(mstomp_par(toy_data$data[1:200, 1], window_size = 30), regex = "Finished")
+    expect_message(stomp(toy_data$data[1:200, 1], window_size = 30), regex = "Finished")
+    expect_message(stomp_par(toy_data$data[1:200, 1], window_size = 30), regex = "Finished")
   })
 
   # STAMP
-  stamp.test <- stamp(toy_data$data[1:200, 1], window.size = 30, verbose = 0)
-  stamp.join.test <- stamp(toy_data$data[1:200, 1], toy_data$data[1:100, 2], window.size = 30, verbose = 0)
-  stamp.par.test <- stamp.par(toy_data$data[1:200, 1], window.size = 30, verbose = 0)
-  stamp.par.join.test <- stamp.par(toy_data$data[1:200, 1], toy_data$data[1:100, 2], window.size = 30, verbose = 0)
+  stamp_test <- stamp(toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+  stamp_join_test <- stamp(toy_data$data[1:200, 1], toy_data$data[1:100, 2], window_size = 30, verbose = 0)
+  stamp_par_test <- stamp_par(toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+  stamp_par_join_test <- stamp_par(toy_data$data[1:200, 1], toy_data$data[1:100, 2], window_size = 30, verbose = 0)
 
   # STOMP
-  stomp.test <- stomp(toy_data$data[1:200, 1], window.size = 30, verbose = 0)
-  stomp.join.test <- stomp(toy_data$data[1:200, 1], toy_data$data[1:100, 2], window.size = 30, verbose = 0)
-  stomp.par.test <- stomp.par(toy_data$data[1:200, 1], window.size = 30, verbose = 0)
-  stomp.par.join.test <- stomp.par(toy_data$data[1:200, 1], toy_data$data[1:100, 2], window.size = 30, verbose = 0)
+  stomp_test <- stomp(toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+  stomp_join_test <- stomp(toy_data$data[1:200, 1], toy_data$data[1:100, 2], window_size = 30, verbose = 0)
+  stomp_par_test <- stomp_par(toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+  stomp_par_join_test <- stomp_par(toy_data$data[1:200, 1], toy_data$data[1:100, 2], window_size = 30, verbose = 0)
 
   # MSTOMP Uni
-  mstomp.test1 <- mstomp(toy_data$data[1:200, 1], window.size = 30, verbose = 0)
-  mstomp.par.test1 <- mstomp.par(toy_data$data[1:200, 1], window.size = 30, verbose = 0)
+  mstomp_test1 <- mstomp(toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+  mstomp_par_test1 <- mstomp_par(toy_data$data[1:200, 1], window_size = 30, verbose = 0)
   # MSTOMP Multi
-  mstomp.test <- mstomp(toy_data$data[1:200, ], window.size = 30, verbose = 0)
-  mstomp.test.must <- mstomp(toy_data$data[1:200, ], window.size = 30, must.dim = c(1, 2), verbose = 0)
-  mstomp.test.exc <- mstomp(toy_data$data[1:200, ], window.size = 30, exc.dim = c(1, 2), verbose = 0)
-  mstomp.par.test <- mstomp.par(toy_data$data[1:200, ], window.size = 30, verbose = 0)
-  mstomp.par.test.must <- mstomp.par(toy_data$data[1:200, ], window.size = 30, must.dim = c(1, 2), verbose = 0)
-  mstomp.par.test.exc <- mstomp.par(toy_data$data[1:200, ], window.size = 30, exc.dim = c(1, 2), verbose = 0)
+  mstomp_test <- mstomp(toy_data$data[1:200, ], window_size = 30, verbose = 0)
+  mstomp_test_must <- mstomp(toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2), verbose = 0)
+  mstomp_test_exc <- mstomp(toy_data$data[1:200, ], window_size = 30, exc_dim = c(1, 2), verbose = 0)
+  mstomp_par_test <- mstomp_par(toy_data$data[1:200, ], window_size = 30, verbose = 0)
+  mstomp_par_test_must <- mstomp_par(toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2), verbose = 0)
+  mstomp_par_test_exc <- mstomp_par(toy_data$data[1:200, ], window_size = 30, exc_dim = c(1, 2), verbose = 0)
 
   if (skip_on_travis()) {
     test_that("Result hashes", {
-      expect_known_hash(stamp.test, "1016c61c9f")
-      expect_known_hash(stamp.join.test, "585be5fedc")
-      expect_known_hash(stomp.test, "bd71cbd417")
-      expect_known_hash(stomp.join.test, "5521be09db")
-      expect_known_hash(mstomp.test, "fa0c150b92")
-      expect_known_hash(mstomp.test1, "9c2bf3197d")
-      expect_known_hash(mstomp.test.must, "13cefe2517")
-      expect_known_hash(mstomp.test.exc, "b872f44cc5")
+      expect_known_hash(stamp_test, "1016c61c9f")
+      expect_known_hash(stamp_join_test, "585be5fedc")
+      expect_known_hash(stomp_test, "bd71cbd417")
+      expect_known_hash(stomp_join_test, "5521be09db")
+      expect_known_hash(mstomp_test, "fa0c150b92")
+      expect_known_hash(mstomp_test1, "9c2bf3197d")
+      expect_known_hash(mstomp_test_must, "13cefe2517")
+      expect_known_hash(mstomp_test_exc, "b872f44cc5")
     })
   }
 
-  # stamp.test and stamp.par.test
-  test_that("Stamp equals to Stamp.par", {
-    expect_equal(stamp.test, stamp.par.test)
+  # stamp_test and stamp_par_test
+  test_that("Stamp equals to Stamp_par", {
+    expect_equal(stamp_test, stamp_par_test)
   })
 
-  # stamp.join.test and stamp.par.join.test
-  test_that("Stamp Join equals to Stamp.par Join", {
-    expect_equal(stamp.join.test, stamp.par.join.test)
+  # stamp_join_test and stamp_par_join_test
+  test_that("Stamp Join equals to Stamp_par Join", {
+    expect_equal(stamp_join_test, stamp_par_join_test)
   })
 
-  # stamp.test and stomp.test
-  test_that("Stamp equals to Stomp.par", {
-    expect_equal(stamp.test, stomp.test)
+  # stamp_test and stomp_test
+  test_that("Stamp equals to Stomp_par", {
+    expect_equal(stamp_test, stomp_test)
   })
 
-  test_that("Stomp Join equals to Stomp.par Join", {
-    expect_equal(stomp.join.test, stomp.par.join.test)
+  test_that("Stomp Join equals to Stomp_par Join", {
+    expect_equal(stomp_join_test, stomp_par_join_test)
   })
 
-  # stamp.test and stomp.par.test
-  test_that("Stamp equals to Stomp.par", {
-    expect_equal(stamp.test, stomp.par.test)
+  # stamp_test and stomp_par_test
+  test_that("Stamp equals to Stomp_par", {
+    expect_equal(stamp_test, stomp_par_test)
   })
 
-  # stamp.test and mstomp.test1
+  # stamp_test and mstomp_test1
   test_that("Stamp equals to mStomp", {
-    expect_equal(stamp.test, mstomp.test1)
+    expect_equal(stamp_test, mstomp_test1)
   })
 
-  # stamp.test and mstomp.par.test1
+  # stamp_test and mstomp_par_test1
   test_that("Stamp equals to Stomp", {
-    expect_equal(stamp.test, mstomp.par.test1)
+    expect_equal(stamp_test, mstomp_par_test1)
   })
 
-  # mstomp.test and mstomp.par.test
-  test_that("mStomp equals to mStomp.par", {
-    expect_equal(mstomp.test, mstomp.par.test)
+  # mstomp_test and mstomp_par_test
+  test_that("mStomp equals to mStomp_par", {
+    expect_equal(mstomp_test, mstomp_par_test)
   })
 
-  # mstomp.test.must and mstomp.par.test.must
-  test_that("mStomp must equals to mStomp.par must", {
-    expect_equal(mstomp.test.must, mstomp.par.test.must)
+  # mstomp_test_must and mstomp_par_test_must
+  test_that("mStomp must equals to mStomp_par must", {
+    expect_equal(mstomp_test_must, mstomp_par_test_must)
   })
 
-  # mstomp.test.exc and mstomp.par.test.exc
-  test_that("mStomp exc equals to mStomp.par exc", {
-    expect_equal(mstomp.test.exc, mstomp.par.test.exc)
+  # mstomp_test_exc and mstomp_par_test_exc
+  test_that("mStomp exc equals to mStomp_par exc", {
+    expect_equal(mstomp_test_exc, mstomp_par_test_exc)
   })
 }

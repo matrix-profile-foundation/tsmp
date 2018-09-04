@@ -39,7 +39,7 @@
 #' predict <- sdts.predict(model, test_data$test$data, round(mean(windows)))
 #' sdts.f.score(test_data$test$label, predict, 1)
 #' }
-sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parallel = TRUE, verbose = 2) {
+sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parallel = TRUE, verbose = 2) {
 
   ## transform data list into matrix
   if (is.matrix(data) || is.data.frame(data)) {
@@ -49,48 +49,48 @@ sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parall
     if (ncol(data) > nrow(data)) {
       data <- t(data)
     }
-    data.size <- nrow(data)
+    data_size <- nrow(data)
   } else if (is.vector(data)) {
-    data.size <- length(data)
+    data_size <- length(data)
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list.", call. = FALSE)
+    stop("Error: Unknown type of data. Must be: matrix, data_frame, vector or list.", call. = FALSE)
   }
 
-  n.window.size <- length(window.size)
+  n_window_size <- length(window_size)
 
   ## check input
-  for (i in 1:n.window.size) {
-    if (window.size[i] > (data.size / 2)) {
+  for (i in 1:n_window_size) {
+    if (window_size[i] > (data_size / 2)) {
       stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
     }
-    if (window.size[i] < 4) {
-      stop("Error: `window.size` must be at least 4.", call. = FALSE)
+    if (window_size[i] < 4) {
+      stop("Error: `window_size` must be at least 4.", call. = FALSE)
     }
   }
 
   ## extract positive segment
-  label.diff <- diff(c(0, label, 0))
-  pos.st <- which(label.diff == 1) + 1
-  pos.ed <- which(label.diff == -1)
-  n.pos <- length(pos.st)
-  pos.st <- pos.st - 1
-  pos.ed <- pos.ed - 1
+  label_diff <- diff(c(0, label, 0))
+  pos_st <- which(label_diff == 1) + 1
+  pos_ed <- which(label_diff == -1)
+  n_pos <- length(pos_st)
+  pos_st <- pos_st - 1
+  pos_ed <- pos_ed - 1
   pos <- list()
 
-  for (i in 1:n.pos) {
+  for (i in 1:n_pos) {
     pos[[i * 2 - 1]] <- Inf
-    pos[[i * 2]] <- data[pos.st[i]:pos.ed[i]]
+    pos[[i * 2]] <- data[pos_st[i]:pos_ed[i]]
   }
 
   pos <- unlist(pos)
-  pos.alt.st <- which(is.infinite(pos)) + 1
-  pos.alt.ed <- which(is.infinite(pos)) - 1
-  pos.alt.ed <- c(pos.alt.ed[-1], length(pos))
+  pos_alt_st <- which(is.infinite(pos)) + 1
+  pos_alt_ed <- which(is.infinite(pos)) - 1
+  pos_alt_ed <- c(pos_alt_ed[-1], length(pos))
 
-  if (pos.alt.st[length(pos.alt.st)] > (length(pos) - min(window.size) + 1)) {
-    pos.alt.st[length(pos.alt.st)] <- (length(pos) - min(window.size) + 1)
+  if (pos_alt_st[length(pos_alt_st)] > (length(pos) - min(window_size) + 1)) {
+    pos_alt_st[length(pos_alt_st)] <- (length(pos) - min(window_size) + 1)
   }
 
   ## run matrix profile on concatenated positive segment
@@ -98,45 +98,45 @@ sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parall
     message("stage 1 of 3, compute matrix profile ...")
   }
 
-  mat.pro <- list()
+  mat_pro <- list()
 
-  for (i in 1:n.window.size) {
+  for (i in 1:n_window_size) {
     if (parallel == TRUE) {
-      mp <- stomp.par(pos, window.size = window.size[i], verbose = verbose)
+      mp <- stomp_par(pos, window_size = window_size[i], verbose = verbose)
     } else {
-      mp <- stomp(pos, window.size = window.size[i], verbose = verbose)
+      mp <- stomp(pos, window_size = window_size[i], verbose = verbose)
     }
-    mat.pro[[i]] <- mp$mp
+    mat_pro[[i]] <- mp$mp
   }
 
   ## extract candidate
   candi <- list()
-  candi.idx <- list()
+  candi_idx <- list()
 
-  for (i in 1:n.window.size) {
+  for (i in 1:n_window_size) {
     candi[[i]] <- list()
-    candi.idx[[i]] <- rep(0, n.pos)
-    candi.dist <- rep(0, n.pos)
+    candi_idx[[i]] <- rep(0, n_pos)
+    candi_dist <- rep(0, n_pos)
 
-    for (j in 1:n.pos) {
-      temp <- mat.pro[[i]][pos.alt.st[j]:max(pos.alt.st[j], (pos.alt.ed[j] - window.size[i] + 1), na.rm = TRUE)]
-      rlt.idx <- which.min(temp)
-      candi.dist[j] <- temp[rlt.idx]
+    for (j in 1:n_pos) {
+      temp <- mat_pro[[i]][pos_alt_st[j]:max(pos_alt_st[j], (pos_alt_ed[j] - window_size[i] + 1), na.rm = TRUE)]
+      rlt_idx <- which.min(temp)
+      candi_dist[j] <- temp[rlt_idx]
 
-      alt.idx <- pos.alt.st[j] + rlt.idx - 1
-      candi[[i]][[j]] <- pos[alt.idx:(alt.idx + window.size[i] - 1)]
-      candi.idx[[i]][j] <- pos.st[j] + rlt.idx - 1
+      alt_idx <- pos_alt_st[j] + rlt_idx - 1
+      candi[[i]][[j]] <- pos[alt_idx:(alt_idx + window_size[i] - 1)]
+      candi_idx[[i]][j] <- pos_st[j] + rlt_idx - 1
     }
-    candi.dist <- sort(candi.dist, index.return = TRUE)
-    candi[[i]] <- candi[[i]][candi.dist$ix]
-    candi.idx[[i]] <- candi.idx[[i]][candi.dist$ix]
+    candi_dist <- sort(candi_dist, index.return = TRUE)
+    candi[[i]] <- candi[[i]][candi_dist$ix]
+    candi_idx[[i]] <- candi_idx[[i]][candi_dist$ix]
   }
 
   ## evaluate each candidate
-  candi.score <- list()
-  candi.thold <- list()
-  candi.pro <- list()
-  candi.window.size <- list()
+  candi_score <- list()
+  candi_thold <- list()
+  candi_pro <- list()
+  candi_window_size <- list()
   tictac <- Sys.time()
 
   if (verbose > 0) {
@@ -144,36 +144,36 @@ sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parall
   }
 
   if (verbose > 0) {
-    pb <- utils::txtProgressBar(min = 0, max = n.window.size * n.pos, style = 3, width = 80)
+    pb <- utils::txtProgressBar(min = 0, max = n_window_size * n_pos, style = 3, width = 80)
     on.exit(close(pb))
   }
   if (verbose > 1) {
     on.exit(beep(sounds[[1]]), TRUE)
   }
 
-  for (i in 1:n.window.size) {
-    candi.score[[i]] <- rep(0, n.pos)
-    candi.thold[[i]] <- rep(0, n.pos)
-    candi.pro[[i]] <- list()
-    candi.window.size[[i]] <- rep(1, n.pos) * window.size[i]
+  for (i in 1:n_window_size) {
+    candi_score[[i]] <- rep(0, n_pos)
+    candi_thold[[i]] <- rep(0, n_pos)
+    candi_pro[[i]] <- list()
+    candi_window_size[[i]] <- rep(1, n_pos) * window_size[i]
 
-    pre <- mass.pre(data, data.size, window.size = window.size[i])
+    pre <- mass_pre(data, data_size, window_size = window_size[i])
 
-    for (j in 1:n.pos) {
-      dist.pro <- mass(pre$data.fft, candi[[i]][[j]], data.size, window.size[i], pre$data.mean, pre$data.sd, mean(candi[[i]][[j]]), std(candi[[i]][[j]]))
-      dist.pro <- Re(sqrt(dist.pro$distance.profile))
-      candi.pro[[i]][[j]] <- dist.pro
-      exc.st <- max(1, candi.idx[[i]][j] - window.size[i])
-      exc.ed <- min(length(dist.pro), candi.idx[[i]][j] + window.size[i])
-      dist.pro[exc.st:exc.ed] <- Inf
+    for (j in 1:n_pos) {
+      dist_pro <- mass(pre$data_fft, candi[[i]][[j]], data_size, window_size[i], pre$data_mean, pre$data_sd, mean(candi[[i]][[j]]), std(candi[[i]][[j]]))
+      dist_pro <- Re(sqrt(dist_pro$distance_profile))
+      candi_pro[[i]][[j]] <- dist_pro
+      exc_st <- max(1, candi_idx[[i]][j] - window_size[i])
+      exc_ed <- min(length(dist_pro), candi_idx[[i]][j] + window_size[i])
+      dist_pro[exc_st:exc_ed] <- Inf
 
-      golden <- golden.section(dist.pro, label, pos.st, pos.ed, beta, window.size[i])
+      golden <- golden_section(dist_pro, label, pos_st, pos_ed, beta, window_size[i])
 
-      candi.thold[[i]][j] <- golden$thold
-      candi.score[[i]][j] <- golden$score
+      candi_thold[[i]][j] <- golden$thold
+      candi_score[[i]][j] <- golden$score
 
       if (verbose > 0) {
-        utils::setTxtProgressBar(pb, ((i - 1) * n.pos + j))
+        utils::setTxtProgressBar(pb, ((i - 1) * n_pos + j))
       }
     }
   }
@@ -183,43 +183,43 @@ sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parall
     message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
   }
 
-  candi.pro.exp <- list()
-  candi.exp <- list()
+  candi_pro_exp <- list()
+  candi_exp <- list()
 
-  for (i in 1:n.window.size) {
-    candi.pro.exp[((i - 1) * n.pos + 1):(i * n.pos)] <- candi.pro[[i]]
-    candi.exp[((i - 1) * n.pos + 1):(i * n.pos)] <- candi[[i]]
+  for (i in 1:n_window_size) {
+    candi_pro_exp[((i - 1) * n_pos + 1):(i * n_pos)] <- candi_pro[[i]]
+    candi_exp[((i - 1) * n_pos + 1):(i * n_pos)] <- candi[[i]]
   }
 
-  candi.pro <- candi.pro.exp
-  candi <- candi.exp
-  candi.score <- unlist(candi.score)
-  candi.thold <- unlist(candi.thold)
-  candi.idx <- unlist(candi.idx)
-  candi.window.size <- unlist(candi.window.size)
-  candi.score.sorted <- sort(signif(candi.score, 6), decreasing = TRUE, index.return = TRUE)
-  candi.score <- candi.score.sorted$x
-  order <- candi.score.sorted$ix
+  candi_pro <- candi_pro_exp
+  candi <- candi_exp
+  candi_score <- unlist(candi_score)
+  candi_thold <- unlist(candi_thold)
+  candi_idx <- unlist(candi_idx)
+  candi_window_size <- unlist(candi_window_size)
+  candi_score_sorted <- sort(signif(candi_score, 6), decreasing = TRUE, index.return = TRUE)
+  candi_score <- candi_score_sorted$x
+  order <- candi_score_sorted$ix
 
-  candi.thold <- candi.thold[order]
-  candi.idx <- candi.idx[order]
-  candi.window.size <- candi.window.size[order]
-  candi.pro <- candi.pro[order]
+  candi_thold <- candi_thold[order]
+  candi_idx <- candi_idx[order]
+  candi_window_size <- candi_window_size[order]
+  candi_pro <- candi_pro[order]
   candi <- candi[order]
 
   ## check max pattern allowed
-  pat.max <- min(pat.max, floor(n.pos * 0.5))
-  if (pat.max < 2) {
-    return(list(score = candi.score[1], score.hist = candi.score[1], pattern = list(candi[[1]]), thold = candi.thold[1]))
+  pat_max <- min(pat_max, floor(n_pos * 0.5))
+  if (pat_max < 2) {
+    return(list(score = candi_score[1], score_hist = candi_score[1], pattern = list(candi[[1]]), thold = candi_thold[1]))
   }
 
   ## check combined pattern
-  max.window.size <- max(window.size)
-  max.pro.len <- length(data) - min(window.size) + 1
-  best.pat <- rep(FALSE, n.pos * n.window.size)
-  best.score <- -Inf
-  exc.mask <- rep(FALSE, max.pro.len)
-  score.hist <- rep(Inf, n.pos * n.window.size)
+  max_window_size <- max(window_size)
+  max_pro_len <- length(data) - min(window_size) + 1
+  best_pat <- rep(FALSE, n_pos * n_window_size)
+  best_score <- -Inf
+  exc_mask <- rep(FALSE, max_pro_len)
+  score_hist <- rep(Inf, n_pos * n_window_size)
   tictac <- Sys.time()
 
   if (verbose > 0) {
@@ -228,92 +228,92 @@ sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parall
 
   if (verbose > 0) {
     close(pb)
-    pb <- utils::txtProgressBar(min = 0, max = pat.max * n.window.size * n.pos, style = 3, width = 80)
+    pb <- utils::txtProgressBar(min = 0, max = pat_max * n_window_size * n_pos, style = 3, width = 80)
   }
 
-  for (i in 1:pat.max) {
-    pat.score <- rep(-Inf, n.pos * n.window.size)
-    exc.mask.cur <- exc.mask
-    exc.st <- rep(0, n.pos * n.window.size)
-    exc.ed <- rep(0, n.pos * n.window.size)
-    thold.cur <- list()
+  for (i in 1:pat_max) {
+    pat_score <- rep(-Inf, n_pos * n_window_size)
+    exc_mask_cur <- exc_mask
+    exc_st <- rep(0, n_pos * n_window_size)
+    exc_ed <- rep(0, n_pos * n_window_size)
+    thold_cur <- list()
 
-    for (j in 1:(n.pos * n.window.size)) {
-      if (best.pat[j]) {
+    for (j in 1:(n_pos * n_window_size)) {
+      if (best_pat[j]) {
         next
       }
 
-      best.pat.cur <- best.pat
-      best.pat.cur[j] <- TRUE
+      best_pat_cur <- best_pat
+      best_pat_cur[j] <- TRUE
 
-      exc.st[j] <- max(1, candi.idx[j] - max.window.size)
-      exc.ed[j] <- min(max.pro.len, candi.idx[j] + max.window.size)
-      exc.mask.cur[exc.st[j]:exc.ed[j]] <- TRUE
+      exc_st[j] <- max(1, candi_idx[j] - max_window_size)
+      exc_ed[j] <- min(max_pro_len, candi_idx[j] + max_window_size)
+      exc_mask_cur[exc_st[j]:exc_ed[j]] <- TRUE
 
-      pro.cur <- candi.pro[best.pat.cur]
-      pro.max <- -Inf
-      pro.min <- Inf
+      pro_cur <- candi_pro[best_pat_cur]
+      pro_max <- -Inf
+      pro_min <- Inf
 
-      for (k in 1:length(pro.cur)) {
-        pro.max <- max(max(pro.cur[[k]][!is.infinite(pro.cur[[k]])]), pro.max)
-        pro.min <- min(min(pro.cur[[k]]), pro.min)
-        pro.cur[[k]][exc.mask.cur] <- Inf
+      for (k in 1:length(pro_cur)) {
+        pro_max <- max(max(pro_cur[[k]][!is.infinite(pro_cur[[k]])]), pro_max)
+        pro_min <- min(min(pro_cur[[k]]), pro_min)
+        pro_cur[[k]][exc_mask_cur] <- Inf
       }
 
-      thold.cur[[j]] <- candi.thold[best.pat.cur]
-      window.size.cur <- candi.window.size[best.pat.cur]
+      thold_cur[[j]] <- candi_thold[best_pat_cur]
+      window_size_cur <- candi_window_size[best_pat_cur]
 
       iter <- 0
       score <- NULL
       while (TRUE) {
         iter <- iter + 1
-        thold.old <- thold.cur[[j]]
-        for (k in length(thold.cur[[j]]):1) {
-          gold <- golden.section.2(
-            pro.cur,
-            thold.cur[[j]],
+        thold_old <- thold_cur[[j]]
+        for (k in length(thold_cur[[j]]):1) {
+          gold <- golden_section_2(
+            pro_cur,
+            thold_cur[[j]],
             label,
-            pos.st,
-            pos.ed,
+            pos_st,
+            pos_ed,
             beta,
-            window.size.cur[k],
+            window_size_cur[k],
             k
           )
-          thold.cur[[j]] <- gold$thold
+          thold_cur[[j]] <- gold$thold
           score <- gold$score
         }
 
-        if ((iter > 200) || (mean(thold.cur[[j]] - thold.old) < ((pro.max - pro.min) * 0.001))) {
+        if ((iter > 200) || (mean(thold_cur[[j]] - thold_old) < ((pro_max - pro_min) * 0.001))) {
           break
         }
       }
 
-      pat.score[j] <- score
-      exc.mask.cur[exc.st[j]:exc.ed[j]] <- FALSE
+      pat_score[j] <- score
+      exc_mask_cur[exc_st[j]:exc_ed[j]] <- FALSE
 
       if (verbose > 0) {
-        utils::setTxtProgressBar(pb, ((i - 1) * (n.pos * n.window.size) + j))
+        utils::setTxtProgressBar(pb, ((i - 1) * (n_pos * n_window_size) + j))
       }
     }
     if (verbose > 0) {
-      utils::setTxtProgressBar(pb, ((i - 1) * (n.pos * n.window.size) + (n.pos * n.window.size)))
+      utils::setTxtProgressBar(pb, ((i - 1) * (n_pos * n_window_size) + (n_pos * n_window_size)))
     }
 
-    best.candi.idx <- which.max(pat.score)
+    best_candi_idx <- which.max(pat_score)
 
-    if ((pat.score[best.candi.idx] - best.score) > 0) {
-      score.hist[i] <- pat.score[best.candi.idx]
-      best.score <- pat.score[best.candi.idx]
-      best.pat[best.candi.idx] <- TRUE
-      candi.thold[best.pat] <- thold.cur[[best.candi.idx]]
-      exc.mask[exc.st[best.candi.idx]:exc.ed[best.candi.idx]] <- TRUE
+    if ((pat_score[best_candi_idx] - best_score) > 0) {
+      score_hist[i] <- pat_score[best_candi_idx]
+      best_score <- pat_score[best_candi_idx]
+      best_pat[best_candi_idx] <- TRUE
+      candi_thold[best_pat] <- thold_cur[[best_candi_idx]]
+      exc_mask[exc_st[best_candi_idx]:exc_ed[best_candi_idx]] <- TRUE
     } else {
       break
     }
   }
 
   if (verbose > 0) {
-    utils::setTxtProgressBar(pb, (pat.max * n.pos * n.window.size))
+    utils::setTxtProgressBar(pb, (pat_max * n_pos * n_window_size))
   }
 
   tictac <- Sys.time() - tictac
@@ -321,16 +321,16 @@ sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parall
     message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
   }
 
-  score.hist <- score.hist[!is.infinite(score.hist)]
+  score_hist <- score_hist[!is.infinite(score_hist)]
 
-  if (length(best.pat) == 1) {
-    pattern <- list(candi[best.pat])
+  if (length(best_pat) == 1) {
+    pattern <- list(candi[best_pat])
   } else {
-    pattern <- candi[best.pat]
+    pattern <- candi[best_pat]
   }
 
 
-  return(list(score = best.score, score.hist = score.hist, pattern = pattern, thold = candi.thold[best.pat]))
+  return(list(score = best_score, score_hist = score_hist, pattern = pattern, thold = candi_thold[best_pat]))
 }
 
 #' Computes the golden section for individual candidates
@@ -347,31 +347,31 @@ sdts.train <- function(data, label, window.size, beta = 1, pat.max = Inf, parall
 #' @keywords internal
 #' @noRd
 #'
-golden.section <- function(dist.pro, label, pos.st, pos.ed, beta, window.size) {
-  golden.ratio <- (1 + sqrt(5)) / 2
-  a.thold <- min(dist.pro)
-  b.thold <- max(dist.pro[!is.infinite(dist.pro)])
-  c.thold <- b.thold - (b.thold - a.thold) / golden.ratio
-  d.thold <- a.thold + (b.thold - a.thold) / golden.ratio
-  tol <- max((b.thold - a.thold) * 0.001, 0.0001)
+golden_section <- function(dist_pro, label, pos_st, pos_ed, beta, window_size) {
+  golden_ratio <- (1 + sqrt(5)) / 2
+  a_thold <- min(dist_pro)
+  b_thold <- max(dist_pro[!is.infinite(dist_pro)])
+  c_thold <- b_thold - (b_thold - a_thold) / golden_ratio
+  d_thold <- a_thold + (b_thold - a_thold) / golden_ratio
+  tol <- max((b_thold - a_thold) * 0.001, 0.0001)
 
-  while (abs(c.thold - d.thold) > tol) {
-    c.score <- compute.f.meas(label, pos.st, pos.ed, dist.pro, c.thold, window.size, beta)
-    d.score <- compute.f.meas(label, pos.st, pos.ed, dist.pro, d.thold, window.size, beta)
+  while (abs(c_thold - d_thold) > tol) {
+    c_score <- compute_f_meas(label, pos_st, pos_ed, dist_pro, c_thold, window_size, beta)
+    d_score <- compute_f_meas(label, pos_st, pos_ed, dist_pro, d_thold, window_size, beta)
 
-    if (c.score$f.meas > d.score$f.meas) {
-      b.thold <- d.thold
+    if (c_score$f_meas > d_score$f_meas) {
+      b_thold <- d_thold
     } else {
-      a.thold <- c.thold
+      a_thold <- c_thold
     }
 
-    c.thold <- b.thold - (b.thold - a.thold) / golden.ratio
-    d.thold <- a.thold + (b.thold - a.thold) / golden.ratio
+    c_thold <- b_thold - (b_thold - a_thold) / golden_ratio
+    d_thold <- a_thold + (b_thold - a_thold) / golden_ratio
   }
-  thold <- (a.thold + b.thold) * 0.5
-  score <- compute.f.meas(label, pos.st, pos.ed, dist.pro, thold, window.size, beta)
+  thold <- (a_thold + b_thold) * 0.5
+  score <- compute_f_meas(label, pos_st, pos_ed, dist_pro, thold, window_size, beta)
 
-  return(list(thold = thold, score = score$f.meas))
+  return(list(thold = thold, score = score$f_meas))
 }
 
 #' Computes the golden section for combined candidates
@@ -390,38 +390,38 @@ golden.section <- function(dist.pro, label, pos.st, pos.ed, beta, window.size) {
 #' @keywords internal
 #' @noRd
 
-golden.section.2 <- function(dist.pro, thold, label, pos.st, pos.ed, beta, window.size, fit.idx) {
-  golden.ratio <- (1 + sqrt(5)) / 2
-  a.thold <- min(dist.pro[[fit.idx]], na.rm = TRUE) ## TODO: check why NA in dist.pro
-  b.thold <- max(dist.pro[[fit.idx]][!is.infinite(dist.pro[[fit.idx]])], na.rm = TRUE)
-  c.thold <- b.thold - (b.thold - a.thold) / golden.ratio
-  d.thold <- a.thold + (b.thold - a.thold) / golden.ratio
-  tol <- max((b.thold - a.thold) * 0.001, 0.0001)
+golden_section_2 <- function(dist_pro, thold, label, pos_st, pos_ed, beta, window_size, fit_idx) {
+  golden_ratio <- (1 + sqrt(5)) / 2
+  a_thold <- min(dist_pro[[fit_idx]], na.rm = TRUE) ## TODO: check why NA in dist_pro
+  b_thold <- max(dist_pro[[fit_idx]][!is.infinite(dist_pro[[fit_idx]])], na.rm = TRUE)
+  c_thold <- b_thold - (b_thold - a_thold) / golden_ratio
+  d_thold <- a_thold + (b_thold - a_thold) / golden_ratio
+  tol <- max((b_thold - a_thold) * 0.001, 0.0001)
 
-  while (abs(c.thold - d.thold) > tol) {
-    c.thold.combined <- thold
-    d.thold.combined <- thold
-    c.thold.combined[fit.idx] <- c.thold
-    d.thold.combined[fit.idx] <- d.thold
+  while (abs(c_thold - d_thold) > tol) {
+    c_thold_combined <- thold
+    d_thold_combined <- thold
+    c_thold_combined[fit_idx] <- c_thold
+    d_thold_combined[fit_idx] <- d_thold
 
-    c.score <- compute.f.meas(label, pos.st, pos.ed, dist.pro, c.thold.combined, window.size, beta)
-    d.score <- compute.f.meas(label, pos.st, pos.ed, dist.pro, d.thold.combined, window.size, beta)
+    c_score <- compute_f_meas(label, pos_st, pos_ed, dist_pro, c_thold_combined, window_size, beta)
+    d_score <- compute_f_meas(label, pos_st, pos_ed, dist_pro, d_thold_combined, window_size, beta)
 
-    if (c.score$f.meas > d.score$f.meas) {
-      b.thold <- d.thold
+    if (c_score$f_meas > d_score$f_meas) {
+      b_thold <- d_thold
     } else {
-      a.thold <- c.thold
+      a_thold <- c_thold
     }
 
-    c.thold <- b.thold - (b.thold - a.thold) / golden.ratio
-    d.thold <- a.thold + (b.thold - a.thold) / golden.ratio
+    c_thold <- b_thold - (b_thold - a_thold) / golden_ratio
+    d_thold <- a_thold + (b_thold - a_thold) / golden_ratio
   }
-  thold[fit.idx] <- (a.thold + b.thold) * 0.5
-  score <- compute.f.meas(label, pos.st, pos.ed, dist.pro, thold, window.size, beta)
+  thold[fit_idx] <- (a_thold + b_thold) * 0.5
+  score <- compute_f_meas(label, pos_st, pos_ed, dist_pro, thold, window_size, beta)
 
   # beta = 2;   emphacise recall
   # beta = 0.5; emphacise precision
-  return(list(thold = thold, score = score$f.meas))
+  return(list(thold = thold, score = score$f_meas))
 }
 
 #' Computes de F-Score
@@ -439,84 +439,84 @@ golden.section.2 <- function(dist.pro, thold, label, pos.st, pos.ed, beta, windo
 #' @keywords internal
 #' @noRd
 
-compute.f.meas <- function(label, pos.st, pos.ed, dist.pro, thold, window.size, beta) {
+compute_f_meas <- function(label, pos_st, pos_ed, dist_pro, thold, window_size, beta) {
   # generate annotation curve for each pattern
-  if (is.list(dist.pro)) {
-    anno.st <- list()
-    n.pat <- length(dist.pro)
+  if (is.list(dist_pro)) {
+    anno_st <- list()
+    n_pat <- length(dist_pro)
 
-    for (i in 1:n.pat) {
-      annor <- dist.pro[[i]] - thold[i]
+    for (i in 1:n_pat) {
+      annor <- dist_pro[[i]] - thold[i]
       annor[annor > 0] <- 0
       annor[annor < 0] <- -1
       annor <- -annor
-      anno.st[[i]] <- which(diff(c(0, annor, 0)) == 1) + 1
-      anno.st[[i]] <- anno.st[[i]] - 1
+      anno_st[[i]] <- which(diff(c(0, annor, 0)) == 1) + 1
+      anno_st[[i]] <- anno_st[[i]] - 1
     }
 
-    anno.st <- unlist(anno.st)
-    anno.st <- sort(anno.st)
+    anno_st <- unlist(anno_st)
+    anno_st <- sort(anno_st)
 
     i <- 1
     while (TRUE) {
-      if (i >= length(anno.st)) {
+      if (i >= length(anno_st)) {
         break
       }
 
-      first.part <- anno.st[1:i]
-      second.part <- anno.st[(i + 1):length(anno.st)]
-      bad.st <- abs(second.part - anno.st[i]) < window.size
+      first_part <- anno_st[1:i]
+      second_part <- anno_st[(i + 1):length(anno_st)]
+      bad_st <- abs(second_part - anno_st[i]) < window_size
 
-      second.part <- second.part[!bad.st]
-      anno.st <- c(first.part, second.part)
+      second_part <- second_part[!bad_st]
+      anno_st <- c(first_part, second_part)
       i <- i + 1
     }
 
-    anno.ed <- anno.st + window.size - 1
+    anno_ed <- anno_st + window_size - 1
   } else {
-    anno <- dist.pro - thold
+    anno <- dist_pro - thold
     anno[anno > 0] <- 0
     anno[anno < 0] <- -1
     anno <- -anno
 
-    anno.st <- which(diff(c(0, anno, 0)) == 1) + 1
-    anno.ed <- anno.st + window.size - 1
-    anno.st <- anno.st - 1
-    anno.ed <- anno.ed - 1
+    anno_st <- which(diff(c(0, anno, 0)) == 1) + 1
+    anno_ed <- anno_st + window_size - 1
+    anno_st <- anno_st - 1
+    anno_ed <- anno_ed - 1
   }
 
   anno <- rep(FALSE, length(label))
 
-  for (i in 1:length(anno.st)) {
-    anno[anno.st[i]:anno.ed[i]] <- 1
+  for (i in 1:length(anno_st)) {
+    anno[anno_st[i]:anno_ed[i]] <- 1
   }
 
-  is.tp <- rep(FALSE, length(anno.st))
+  is.tp <- rep(FALSE, length(anno_st))
 
-  for (i in 1:length(anno.st)) {
-    if (anno.ed[i] > length(label)) {
-      anno.ed[i] <- length(label)
+  for (i in 1:length(anno_st)) {
+    if (anno_ed[i] > length(label)) {
+      anno_ed[i] <- length(label)
     }
-    if (sum(label[anno.st[i]:anno.ed[i]]) > (0.8 * window.size)) {
+    if (sum(label[anno_st[i]:anno_ed[i]]) > (0.8 * window_size)) {
       is.tp[i] <- TRUE
     }
   }
-  tp.pre <- sum(is.tp)
+  tp_pre <- sum(is.tp)
 
-  is.tp <- rep(FALSE, length(pos.st))
-  for (i in 1:length(pos.st)) {
-    if (sum(anno[pos.st[i]:pos.ed[i]]) > (0.8 * window.size)) {
+  is.tp <- rep(FALSE, length(pos_st))
+  for (i in 1:length(pos_st)) {
+    if (sum(anno[pos_st[i]:pos_ed[i]]) > (0.8 * window_size)) {
       is.tp[i] <- TRUE
     }
   }
-  tp.rec <- sum(is.tp)
+  tp_rec <- sum(is.tp)
 
-  pre <- tp.pre / length(anno.st)
-  rec <- tp.rec / length(pos.st)
+  pre <- tp_pre / length(anno_st)
+  rec <- tp_rec / length(pos_st)
 
-  f.meas <- (1 + beta^2) * (pre * rec) / ((beta^2) * pre + rec)
-  if (is.na(f.meas)) {
-    f.meas <- 0
+  f_meas <- (1 + beta^2) * (pre * rec) / ((beta^2) * pre + rec)
+  if (is.na(f_meas)) {
+    f_meas <- 0
   }
-  return(list(f.meas = f.meas, pre = pre, rec = rec))
+  return(list(f_meas = f_meas, pre = pre, rec = rec))
 }

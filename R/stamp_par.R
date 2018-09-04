@@ -49,12 +49,12 @@
 #' }
 #'
 #' @import doSNOW foreach parallel
-stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, n.workers = 2, verbose = 2) {
+stamp_par <- function(..., window_size, exclusion_zone = 1 / 2, s_size = Inf, n_workers = 2, verbose = 2) {
   args <- list(...)
   data <- args[[1]]
   if (length(args) > 1) {
     query <- args[[2]]
-    exclusion.zone <- 0 # don't use exclusion zone for joins
+    exclusion_zone <- 0 # don't use exclusion zone for joins
   } else {
     query <- data
   }
@@ -81,18 +81,18 @@ stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, n.
     stop("Error: Unknown type of query. Must be: a column matrix or a vector.", call. = FALSE)
   }
 
-  exclusion.zone <- floor(window.size * exclusion.zone)
-  data.size <- nrow(data)
-  query.size <- nrow(query)
-  matrix.profile.size <- data.size - window.size + 1
-  num.queries <- query.size - window.size + 1
+  exclusion_zone <- floor(window_size * exclusion_zone)
+  data_size <- nrow(data)
+  query_size <- nrow(query)
+  matrix_profile_size <- data_size - window_size + 1
+  num_queries <- query_size - window_size + 1
 
   ## check skip position
-  skip.location <- rep(FALSE, matrix.profile.size)
+  skip_location <- rep(FALSE, matrix_profile_size)
 
-  for (i in 1:matrix.profile.size) {
-    if (any(is.na(data[i:(i + window.size - 1)])) || any(is.infinite(data[i:(i + window.size - 1)]))) {
-      skip.location[i] <- TRUE
+  for (i in 1:matrix_profile_size) {
+    if (any(is.na(data[i:(i + window_size - 1)])) || any(is.infinite(data[i:(i + window_size - 1)]))) {
+      skip_location[i] <- TRUE
     }
   }
 
@@ -102,26 +102,26 @@ stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, n.
   query[is.na(query)] <- 0
   query[is.infinite(query)] <- 0
 
-  if (window.size > query.size / 2) {
+  if (window_size > query_size / 2) {
     stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
   }
-  if (window.size < 4) {
-    stop("Error: `window.size` must be at least 4.", call. = FALSE)
+  if (window_size < 4) {
+    stop("Error: `window_size` must be at least 4.", call. = FALSE)
   }
 
-  matrix.profile <- matrix(Inf, matrix.profile.size, 1)
-  left.matrix.profile <- right.matrix.profile <- matrix.profile
-  profile.index <- matrix(-1, matrix.profile.size, 1)
-  left.profile.index <- right.profile.index <- profile.index
+  matrix_profile <- matrix(Inf, matrix_profile_size, 1)
+  left_matrix_profile <- right_matrix_profile <- matrix_profile
+  profile_index <- matrix(-1, matrix_profile_size, 1)
+  left_profile_index <- right_profile_index <- profile_index
 
-  ssize <- min(s.size, num.queries)
-  order <- sample(1:num.queries, size = ssize)
+  ssize <- min(s_size, num_queries)
+  order <- sample(1:num_queries, size = ssize)
 
   tictac <- Sys.time()
 
-  cores <- min(max(2, n.workers), parallel::detectCores())
+  cores <- min(max(2, n_workers), parallel::detectCores())
 
-  cols <- min(num.queries, 100)
+  cols <- min(num_queries, 100)
 
   lines <- 0:(ceiling(ssize / cols) - 1)
   if (verbose > 0) {
@@ -138,12 +138,12 @@ stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, n.
   }
   # anytime must return the result always
   on.exit(return(list(
-    rmp = right.matrix.profile, rpi = right.profile.index,
-    lmp = left.matrix.profile, lpi = left.profile.index,
-    mp = matrix.profile, pi = profile.index
+    rmp = right_matrix_profile, rpi = right_profile_index,
+    lmp = left_matrix_profile, lpi = left_profile_index,
+    mp = matrix_profile, pi = profile_index
   )), TRUE)
 
-  pre <- mass.pre(data, data.size, query, query.size, window.size = window.size)
+  pre <- mass_pre(data, data_size, query, query_size, window_size = window_size)
 
   j <- NULL # CRAN NOTE fix
   `%dopar%` <- foreach::`%dopar%` # CRAN NOTE fix
@@ -164,21 +164,21 @@ stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, n.
       index <- k * cols + j
       if (index <= ssize) {
         i <- order[index]
-        nn <- mass(pre$data.fft, query[i:(i + window.size - 1)], data.size, window.size, pre$data.mean, pre$data.sd, pre$query.mean[i], pre$query.sd[i])
-        distance.profile <- Re(sqrt(nn$distance.profile))
+        nn <- mass(pre$data_fft, query[i:(i + window_size - 1)], data_size, window_size, pre$data_mean, pre$data_sd, pre$query_mean[i], pre$query_sd[i])
+        distance_profile <- Re(sqrt(nn$distance_profile))
 
                 # apply exclusion zone
-        if (exclusion.zone > 0) {
-          exc.st <- max(1, idx - exclusion.zone)
-          exc.ed <- min(matrix.profile.size, idx + exclusion.zone)
-          distance.profile[exc.st:exc.ed, 1] <- Inf
-          distance.profile[data.sd < vars()$eps] <- Inf
-          if (skip.location[idx] || any(query.sd[idx] < vars()$eps)) {
-            distance.profile[] <- Inf
+        if (exclusion_zone > 0) {
+          exc_st <- max(1, idx - exclusion_zone)
+          exc_ed <- min(matrix_profile_size, idx + exclusion_zone)
+          distance_profile[exc_st:exc_ed, 1] <- Inf
+          distance_profile[data_sd < vars()$eps] <- Inf
+          if (skip_location[idx] || any(query_sd[idx] < vars()$eps)) {
+            distance_profile[] <- Inf
           }
         }
 
-        res <- list(dp = distance.profile, i = i)
+        res <- list(dp = distance_profile, i = i)
       }
 
       res
@@ -188,22 +188,22 @@ stamp.par <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, n.
       curr <- batch[[i]]$i
 
       if (!is.null(curr)) {
-        # left matrix.profile
-        ind <- (batch[[i]]$dp[curr:matrix.profile.size] < left.matrix.profile[curr:matrix.profile.size])
+        # left matrix_profile
+        ind <- (batch[[i]]$dp[curr:matrix_profile_size] < left_matrix_profile[curr:matrix_profile_size])
         ind <- c(rep(FALSE, (curr - 1)), ind) # pad left
-        left.matrix.profile[ind] <- batch[[i]]$dp[ind]
-        left.profile.index[which(ind)] <- curr
+        left_matrix_profile[ind] <- batch[[i]]$dp[ind]
+        left_profile_index[which(ind)] <- curr
 
-        # right matrix.profile
-        ind <- (batch[[i]]$dp[1:curr] < right.matrix.profile[1:curr])
-        ind <- c(ind, rep(FALSE, matrix.profile.size - curr)) # pad right
-        right.matrix.profile[ind] <- batch[[i]]$dp[ind]
-        right.profile.index[which(ind)] <- curr
+        # right matrix_profile
+        ind <- (batch[[i]]$dp[1:curr] < right_matrix_profile[1:curr])
+        ind <- c(ind, rep(FALSE, matrix_profile_size - curr)) # pad right
+        right_matrix_profile[ind] <- batch[[i]]$dp[ind]
+        right_profile_index[which(ind)] <- curr
 
-        # normal matrix.profile
-        ind <- (batch[[i]]$dp < matrix.profile)
-        matrix.profile[ind] <- batch[[i]]$dp[ind]
-        profile.index[which(ind)] <- curr
+        # normal matrix_profile
+        ind <- (batch[[i]]$dp < matrix_profile)
+        matrix_profile[ind] <- batch[[i]]$dp[ind]
+        profile_index[which(ind)] <- curr
       }
     }
 

@@ -38,7 +38,7 @@
 #' }
 #'
 
-unconstrain.search <- function(data, window.size, matrix.profile, profile.index, n.bit = 4, k = Inf) {
+unconstrain_search <- function(data, window_size, matrix_profile, profile_index, n_bit = 4, k = Inf) {
 
   ## transform data list into matrix
   if (is.matrix(data) || is.data.frame(data)) {
@@ -48,132 +48,132 @@ unconstrain.search <- function(data, window.size, matrix.profile, profile.index,
     if (ncol(data) > nrow(data)) {
       data <- t(data)
     }
-    data.len <- nrow(data)
-    n.dim <- ncol(data)
+    data_len <- nrow(data)
+    n_dim <- ncol(data)
   } else if (is.list(data)) {
-    data.len <- length(data[[1]])
-    n.dim <- length(data)
+    data_len <- length(data[[1]])
+    n_dim <- length(data)
 
-    for (i in 1:n.dim) {
+    for (i in 1:n_dim) {
       len <- length(data[[i]])
       # Fix TS size with NaN
-      if (len < data.len) {
-        data[[i]] <- c(data[[i]], rep(NA, data.len - len))
+      if (len < data_len) {
+        data[[i]] <- c(data[[i]], rep(NA, data_len - len))
       }
     }
     # transform data into matrix (each column is a TS)
     data <- sapply(data, cbind)
   } else if (is.vector(data)) {
-    data.len <- length(data)
-    n.dim <- 1
+    data_len <- length(data)
+    n_dim <- 1
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list.", call. = FALSE)
+    stop("Error: Unknown type of data. Must be: matrix, data_frame, vector or list.", call. = FALSE)
   }
 
-  exc.zone <- round(0.5 * window.size + vars()$eps)
-  tot.dim <- n.dim
+  exc_zone <- round(0.5 * window_size + vars()$eps)
+  tot_dim <- n_dim
 
   if (is.infinite(k)) {
-    k <- dim(matrix.profile)[1]
+    k <- dim(matrix_profile)[1]
   }
 
-  motif.idx <- rep(0, k)
-  motif.dim <- list()
+  motif_idx <- rep(0, k)
+  motif_dim <- list()
 
-  base.bit <- n.bit * tot.dim * window.size * 2
+  base_bit <- n_bit * tot_dim * window_size * 2
   found <- 0
   for (i in 1:k) {
     message(sprintf("Searching for motif (%d)", i))
 
-    idx.1 <- apply(matrix.profile, 2, which.min) # sort by column
-    val <- matrix.profile[cbind(idx.1, 1:ncol(matrix.profile))]
+    idx_1 <- apply(matrix_profile, 2, which.min) # sort by column
+    val <- matrix_profile[cbind(idx_1, 1:ncol(matrix_profile))]
 
     if (any(is.infinite(val))) {
-      motif.idx <- motif.idx[1:(k - 1)]
-      motif.dim <- motif.dim[1:(k - 1)]
+      motif_idx <- motif_idx[1:(k - 1)]
+      motif_dim <- motif_dim[1:(k - 1)]
       break
     }
 
-    bit.sz <- rep(0, tot.dim)
-    idx.2 <- rep(0, tot.dim)
+    bit_sz <- rep(0, tot_dim)
+    idx_2 <- rep(0, tot_dim)
 
     dim <- list()
 
-    for (j in 1:tot.dim) {
-      idx.2[j] <- profile.index[idx.1[j], j]
-      motif.1 <- data[idx.1[j]:(idx.1[j] + window.size - 1), ]
-      motif.2 <- data[idx.2[j]:(idx.2[j] + window.size - 1), ]
+    for (j in 1:tot_dim) {
+      idx_2[j] <- profile_index[idx_1[j], j]
+      motif_1 <- data[idx_1[j]:(idx_1[j] + window_size - 1), ]
+      motif_2 <- data[idx_2[j]:(idx_2[j] + window_size - 1), ]
 
-      bits <- get.bit.save(motif.1, motif.2, j, n.bit)
+      bits <- get_bit_save(motif_1, motif_2, j, n_bit)
 
-      bit.sz[j] <- bits$bit.sz
-      dim[[j]] <- bits$dim.id
+      bit_sz[j] <- bits$bit_sz
+      dim[[j]] <- bits$dim_id
     }
 
-    min.idx <- which.min(bit.sz)
-    best.bit <- bit.sz[min.idx]
+    min_idx <- which.min(bit_sz)
+    best_bit <- bit_sz[min_idx]
 
-    if (best.bit > (base.bit)) {
+    if (best_bit > (base_bit)) {
       if (i == 1) {
         message("No motifs found")
       }
 
-      motif.idx <- motif.idx[1:(k - 1)]
-      motif.dim <- motif.dim[1:(k - 1)]
+      motif_idx <- motif_idx[1:(k - 1)]
+      motif_dim <- motif_dim[1:(k - 1)]
       break
     } else {
       found <- found + 1
     }
 
-    motif.idx[i] <- idx.1[min.idx]
-    motif.dim[[i]] <- dim[[min.idx]]
+    motif_idx[i] <- idx_1[min_idx]
+    motif_dim[[i]] <- dim[[min_idx]]
 
-    st.idx <- max(1, motif.idx[i] - exc.zone)
+    st_idx <- max(1, motif_idx[i] - exc_zone)
 
-    ed.idx <- min((dim(matrix.profile)[1]), motif.idx[i] + exc.zone)
+    ed_idx <- min((dim(matrix_profile)[1]), motif_idx[i] + exc_zone)
 
-    matrix.profile[st.idx:ed.idx, ] <- Inf
+    matrix_profile[st_idx:ed_idx, ] <- Inf
   }
 
   if (i != 1) {
     message(sprintf("Found %d motifs", found))
   }
 
-  motif.dim <- motif.dim[motif.idx != 0]
-  motif.idx <- motif.idx[motif.idx != 0]
+  motif_dim <- motif_dim[motif_idx != 0]
+  motif_idx <- motif_idx[motif_idx != 0]
 
-  return(list(motif.idx = motif.idx, motif.dim = motif.dim))
+  return(list(motif_idx = motif_idx, motif_dim = motif_dim))
 }
 
-get.bit.save <- function(motif.1, motif.2, n.dim, n.bit) {
-  if (is.vector(motif.1)) {
-    motif.1 <- as.matrix(motif.1)
+get_bit_save <- function(motif_1, motif_2, n_dim, n_bit) {
+  if (is.vector(motif_1)) {
+    motif_1 <- as.matrix(motif_1)
   }
 
-  if (is.vector(motif.2)) {
-    motif.2 <- as.matrix(motif.2)
+  if (is.vector(motif_2)) {
+    motif_2 <- as.matrix(motif_2)
   }
 
-  tot.dim <- dim(motif.1)[2]
-  window.size <- dim(motif.1)[1]
-  split.pt <- get.desc.split.pt(n.bit)
-  disc.1 <- discretization(motif.1, split.pt)
-  disc.2 <- discretization(motif.2, split.pt)
+  tot_dim <- dim(motif_1)[2]
+  window_size <- dim(motif_1)[1]
+  split_pt <- get_desc_split_pt(n_bit)
+  disc_1 <- discretization(motif_1, split_pt)
+  disc_2 <- discretization(motif_2, split_pt)
 
-  dim.id <- sort(apply(abs(disc.1 - disc.2), 2, sum), index.return = TRUE)$ix
-  dim.id <- dim.id[1:n.dim]
-  motif.diff <- disc.1[, dim.id] - disc.2[, dim.id]
-  n.val <- length(unique(as.vector(motif.diff)))
+  dim_id <- sort(apply(abs(disc_1 - disc_2), 2, sum), index.return = TRUE)$ix
+  dim_id <- dim_id[1:n_dim]
+  motif_diff <- disc_1[, dim_id] - disc_2[, dim_id]
+  n_val <- length(unique(as.vector(motif_diff)))
 
-  bit.sz <- n.bit * (tot.dim * window.size * 2 - n.dim * window.size)
-  bit.sz <- bit.sz + n.dim * window.size * log2(n.val) + n.val * n.bit
+  bit_sz <- n_bit * (tot_dim * window_size * 2 - n_dim * window_size)
+  bit_sz <- bit_sz + n_dim * window_size * log2(n_val) + n_val * n_bit
 
-  return(list(bit.sz = bit.sz, dim.id = dim.id))
+  return(list(bit_sz = bit_sz, dim_id = dim_id))
 }
 
-discretization <- function(motif, split.pt) {
+discretization <- function(motif, split_pt) {
   if (is.vector(motif)) {
     motif <- as.matrix(motif)
   }
@@ -186,17 +186,17 @@ discretization <- function(motif, split.pt) {
 
   disc <- matrix(0, dimmotif[1], dimmotif[2])
 
-  for (i in 1:length(split.pt)) {
-    disc[motif < split.pt[i] & disc == 0] <- i
+  for (i in 1:length(split_pt)) {
+    disc[motif < split_pt[i] & disc == 0] <- i
   }
 
-  disc[disc == 0] <- length(split.pt) + 1
+  disc[disc == 0] <- length(split_pt) + 1
 
   return(disc)
 }
 
 
-get.desc.split.pt <- function(n.bit) {
-  split.pt <- stats::qnorm((1:((2^n.bit) - 1)) / (2^n.bit), 0, 1)
-  return(split.pt)
+get_desc_split_pt <- function(n_bit) {
+  split_pt <- stats::qnorm((1:((2^n_bit) - 1)) / (2^n_bit), 0, 1)
+  return(split_pt)
 }

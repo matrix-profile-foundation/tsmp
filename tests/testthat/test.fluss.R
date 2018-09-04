@@ -1,16 +1,16 @@
 context("Testing FLUSS functions")
 library(tsmp)
 
-data <- fluss_data$tilt.abp$data[1:1000]
+data <- fluss_data$tilt_abp$data[1:1000]
 w <- 10
 truth <- 400
 nseg <- 3
 mp <- mstomp(data, w, verbose = 0)
-cac <- fluss.cac(mp$pi, w)
-segments <- fluss.extract(cac, nseg, w)
-score <- fluss.score(truth, segments, length(data))
+cac <- fluss_cac(mp$pi, w)
+segments <- fluss_extract(cac, nseg, w)
+score <- fluss_score(truth, segments, length(data))
 res <- fluss(t(data), w, nseg, gtruth = truth, verbose = 0)
-res.nt <- fluss(data, w, nseg, verbose = 0)
+res_nt <- fluss(data, w, nseg, verbose = 0)
 
 test_that("Errors", {
   # big window size
@@ -35,16 +35,16 @@ test_that("Score", {
 test_that("Full fluss", {
   expect_equal(res$score, score)
   expect_equal(res$segments, segments)
-  expect_equal(res$segments, res.nt$segments)
-  expect_equal(res$mp, res.nt$mp)
-  expect_equal(res$pi, res.nt$pi)
-  expect_equal(res$cac, res.nt$cac)
+  expect_equal(res$segments, res_nt$segments)
+  expect_equal(res$mp, res_nt$mp)
+  expect_equal(res$pi, res_nt$pi)
+  expect_equal(res$cac, res_nt$cac)
   expect_equal(round(mean(res$cac), 4), round(mean(cac), 4))
-  expect_equal(round(mean(res$cac), 4), round(mean(res.nt$cac), 4))
+  expect_equal(round(mean(res$cac), 4), round(mean(res_nt$cac), 4))
   expect_equal(round(sd(res$cac), 4), round(sd(cac), 4))
-  expect_equal(round(sd(res$cac), 4), round(sd(res.nt$cac), 4))
+  expect_equal(round(sd(res$cac), 4), round(sd(res_nt$cac), 4))
   expect_equal(round(min(res$cac), 4), round(min(cac), 4))
-  expect_equal(round(min(res$cac), 4), round(min(res.nt$cac), 4))
+  expect_equal(round(min(res$cac), 4), round(min(res_nt$cac), 4))
   expect_equal(max(res$cac), max(cac))
-  expect_equal(max(res$cac), max(res.nt$cac))
+  expect_equal(max(res$cac), max(res_nt$cac))
 })

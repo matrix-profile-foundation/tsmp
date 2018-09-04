@@ -31,15 +31,15 @@
 #'           pre$query.mean[i], pre$query.sd[i])
 #' }
 
-mass.pre <- function(data, data.size, query = NULL, query.size = NULL, window.size) {
+mass_pre <- function(data, data_size, query = NULL, query_size = NULL, window_size) {
   if (is.matrix(data)) {
     data <- as.vector(data)
   }
 
-  data.mean <- fast.movavg(data, window.size) # precompute moving average
-  data.sd <- fast.movsd(data, window.size) # precompute moving SD
-  data[(data.size + 1):(window.size + data.size)] <- 0
-  data.fft <- stats::fft(data) # precompute fft of data
+  data_mean <- fast_movavg(data, window_size) # precompute moving average
+  data_sd <- fast_movsd(data, window_size) # precompute moving SD
+  data[(data_size + 1):(window_size + data_size)] <- 0
+  data_fft <- stats::fft(data) # precompute fft of data
 
 
   if (!is.null(query)) {
@@ -47,13 +47,13 @@ mass.pre <- function(data, data.size, query = NULL, query.size = NULL, window.si
       query <- as.vector(query)
     }
 
-    query.mean <- fast.movavg(query, window.size) # precompute moving average
-    query.sd <- fast.movsd(query, window.size) # precompute moving SD
+    query_mean <- fast_movavg(query, window_size) # precompute moving average
+    query_sd <- fast_movsd(query, window_size) # precompute moving SD
   } else {
-    query.mean <- data.mean
-    query.sd <- data.sd
+    query_mean <- data_mean
+    query_sd <- data_sd
   }
 
 
-  return(list(data.fft = data.fft, data.mean = data.mean, data.sd = data.sd, query.mean = query.mean, query.sd = query.sd))
+  return(list(data_fft = data_fft, data_mean = data_mean, data_sd = data_sd, query_mean = query_mean, query_sd = query_sd))
 }

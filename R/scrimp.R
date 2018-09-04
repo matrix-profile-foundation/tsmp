@@ -40,7 +40,7 @@
 #' mp <- scrimp(ref.data, query.data, window.size = 30, s.size = round(nrow(query.data) * 0.1))
 #' }
 
-scrimp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, verbose = 2) {
+scrimp <- function(..., window_size, exclusion_zone = 1 / 2, s_size = Inf, verbose = 2) {
   args <- list(...)
   data <- args[[1]]
   if (length(args) > 1) {
@@ -48,7 +48,7 @@ scrimp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, verbo
     message("Join similarity not implemented yet.")
     invisible(return(NULL))
     query <- args[[2]]
-    exclusion.zone <- 0 # don't use exclusion zone for joins
+    exclusion_zone <- 0 # don't use exclusion zone for joins
   } else {
     query <- data
   }
@@ -75,18 +75,18 @@ scrimp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, verbo
     stop("Error: Unknown type of query. Must be: a column matrix or a vector.", call. = FALSE)
   }
 
-  exclusion.zone <- floor(window.size * exclusion.zone)
-  data.size <- nrow(data)
-  query.size <- nrow(query)
-  matrix.profile.size <- data.size - window.size + 1
-  num.queries <- query.size - window.size + 1
+  exclusion_zone <- floor(window_size * exclusion_zone)
+  data_size <- nrow(data)
+  query_size <- nrow(query)
+  matrix_profile_size <- data_size - window_size + 1
+  num_queries <- query_size - window_size + 1
 
   ## check skip position
-  skip.location <- rep(FALSE, matrix.profile.size)
+  skip_location <- rep(FALSE, matrix_profile_size)
 
-  for (i in 1:matrix.profile.size) {
-    if (any(is.na(data[i:(i + window.size - 1)])) || any(is.infinite(data[i:(i + window.size - 1)]))) {
-      skip.location[i] <- TRUE
+  for (i in 1:matrix_profile_size) {
+    if (any(is.na(data[i:(i + window_size - 1)])) || any(is.infinite(data[i:(i + window_size - 1)]))) {
+      skip_location[i] <- TRUE
     }
   }
 
@@ -96,26 +96,26 @@ scrimp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, verbo
   query[is.na(query)] <- 0
   query[is.infinite(query)] <- 0
 
-  if (query.size > data.size) {
+  if (query_size > data_size) {
     stop("Error: Query must be smaller or the same size as reference data.", call. = FALSE)
   }
-  if (window.size > query.size / 2) {
+  if (window_size > query_size / 2) {
     stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
   }
-  if (window.size < 4) {
-    stop("Error: `window.size` must be at least 4.", call. = FALSE)
+  if (window_size < 4) {
+    stop("Error: `window_size` must be at least 4.", call. = FALSE)
   }
 
   message("DISCLAIMER: This algorithm still in development by its authors.")
 
-  matrix.profile <- matrix(Inf, matrix.profile.size, 1)
-  left.matrix.profile <- right.matrix.profile <- matrix.profile
-  profile.index <- matrix(-1, matrix.profile.size, 1)
-  left.profile.index <- right.profile.index <- profile.index
+  matrix_profile <- matrix(Inf, matrix_profile_size, 1)
+  left_matrix_profile <- right_matrix_profile <- matrix_profile
+  profile_index <- matrix(-1, matrix_profile_size, 1)
+  left_profile_index <- right_profile_index <- profile_index
 
   j <- 1
-  order <- (exclusion.zone + 1):num.queries
-  ssize <- min(s.size, length(order))
+  order <- (exclusion_zone + 1):num_queries
+  ssize <- min(s_size, length(order))
   order <- order[sample(1:length(order), size = ssize)]
 
   tictac <- Sys.time()
@@ -132,49 +132,49 @@ scrimp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, verbo
   }
   # anytime must return the result always
   on.exit(return(list(
-    rmp = right.matrix.profile, rpi = right.profile.index,
-    lmp = left.matrix.profile, lpi = left.profile.index,
-    mp = Re(sqrt(as.complex(matrix.profile))), pi = profile.index
+    rmp = right_matrix_profile, rpi = right_profile_index,
+    lmp = left_matrix_profile, lpi = left_profile_index,
+    mp = Re(sqrt(as.complex(matrix_profile))), pi = profile_index
   )), TRUE)
 
-  pre <- mass.pre(data, data.size, query, query.size, window.size = window.size)
+  pre <- mass_pre(data, data_size, query, query_size, window_size = window_size)
 
   for (i in order) {
     j <- j + 1
 
-    distance.profile <- diagonal.dist(
-      data, i, data.size, window.size, num.queries, pre$data.mean,
-      pre$data.sd
+    distance_profile <- diagonal_dist(
+      data, i, data_size, window_size, num_queries, pre$data_mean,
+      pre$data_sd
     )
 
-    # distance.profile <- Re(sqrt(distance.profile))
-    # distance.profile <- sqrt(abs(distance.profile))
+    # distance_profile <- Re(sqrt(distance_profile))
+    # distance_profile <- sqrt(abs(distance_profile))
 
-    pos1 <- i:matrix.profile.size
-    pos2 <- 1:(matrix.profile.size - i + 1)
+    pos1 <- i:matrix_profile_size
+    pos2 <- 1:(matrix_profile_size - i + 1)
 
-    ind <- (matrix.profile[pos1] > distance.profile)
-    profile.index[pos1[ind]] <- pos2[ind]
-    matrix.profile[pos1[ind]] <- distance.profile[ind]
-    ind <- (matrix.profile[pos2] > distance.profile)
-    profile.index[pos2[ind]] <- pos1[ind]
-    matrix.profile[pos2[ind]] <- distance.profile[ind]
+    ind <- (matrix_profile[pos1] > distance_profile)
+    profile_index[pos1[ind]] <- pos2[ind]
+    matrix_profile[pos1[ind]] <- distance_profile[ind]
+    ind <- (matrix_profile[pos2] > distance_profile)
+    profile_index[pos2[ind]] <- pos1[ind]
+    matrix_profile[pos2[ind]] <- distance_profile[ind]
 
-    # matrix.profile[isSkip] <- Inf
-    # profile.index[isSkip] <- 0
+    # matrix_profile[isSkip] <- Inf
+    # profile_index[isSkip] <- 0
 
     # # anytime version
-    # # left matrix.profile
-    # ind <- (distance.profile[i:matrix.profile.size] < left.matrix.profile[i:matrix.profile.size])
+    # # left matrix_profile
+    # ind <- (distance_profile[i:matrix_profile_size] < left_matrix_profile[i:matrix_profile_size])
     # ind <- c(rep(FALSE, (i - 1)), ind) # pad left
-    # left.matrix.profile[ind] <- distance.profile[ind]
-    # left.profile.index[which(ind)] <- i
+    # left_matrix_profile[ind] <- distance_profile[ind]
+    # left_profile_index[which(ind)] <- i
 
-    # # right matrix.profile
-    # ind <- (distance.profile[1:i] < right.matrix.profile[1:i])
-    # ind <- c(ind, rep(FALSE, matrix.profile.size - i)) # pad right
-    # right.matrix.profile[ind] <- distance.profile[ind]
-    # right.profile.index[which(ind)] <- i
+    # # right matrix_profile
+    # ind <- (distance_profile[1:i] < right_matrix_profile[1:i])
+    # ind <- c(ind, rep(FALSE, matrix_profile_size - i)) # pad right
+    # right_matrix_profile[ind] <- distance_profile[ind]
+    # right_profile_index[which(ind)] <- i
 
     if (verbose > 0) {
       utils::setTxtProgressBar(pb, j)
@@ -204,21 +204,21 @@ scrimp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, verbo
 #' @keywords internal
 #' @noRd
 
-diagonal.dist <- function(data, idx, data.size, window.size, mp.size, data.mean, data.sd) {
+diagonal_dist <- function(data, idx, data_size, window_size, mp_size, data_mean, data_sd) {
   data <- as.matrix(data)
-  x.term <- matrix(1, mp.size - idx + 1, 1) *
-    (t(data[idx:(idx + window.size - 1), 1, drop = FALSE]) %*% data[1:window.size, 1, drop = FALSE])[1]
-  m.term <- data[idx:(mp.size - 1)] *
-    data[1:(mp.size - idx)]
-  a.term <- data[(idx + window.size):length(data)] *
-    data[(window.size + 1):(data.size - idx + 1)]
-  if (mp.size != idx) {
-    x.term[2:length(x.term)] <- x.term[2:length(x.term)] - cumsum(m.term) + cumsum(a.term)
+  x_term <- matrix(1, mp_size - idx + 1, 1) *
+    (t(data[idx:(idx + window_size - 1), 1, drop = FALSE]) %*% data[1:window_size, 1, drop = FALSE])[1]
+  m_term <- data[idx:(mp_size - 1)] *
+    data[1:(mp_size - idx)]
+  a_term <- data[(idx + window_size):length(data)] *
+    data[(window_size + 1):(data_size - idx + 1)]
+  if (mp_size != idx) {
+    x_term[2:length(x_term)] <- x_term[2:length(x_term)] - cumsum(m_term) + cumsum(a_term)
   }
 
-  distance.profile <- (x.term - window.size * data.mean[idx:length(data.mean)] * data.mean[1:(mp.size - idx + 1)]) /
-    (window.size * data.sd[idx:length(data.sd)] * data.sd[1:(mp.size - idx + 1)])
-  distance.profile <- 2 * window.size * (1 - distance.profile)
+  distance_profile <- (x_term - window_size * data_mean[idx:length(data_mean)] * data_mean[1:(mp_size - idx + 1)]) /
+    (window_size * data_sd[idx:length(data_sd)] * data_sd[1:(mp_size - idx + 1)])
+  distance_profile <- 2 * window_size * (1 - distance_profile)
 
-  return(distance.profile)
+  return(distance_profile)
 }

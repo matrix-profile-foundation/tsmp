@@ -15,32 +15,32 @@
 #' window <- 50
 #' av <- av.complexity(data, window)
 #'
-av.complexity <- function(data, window.size, dilution.factor = 0) {
+av_complexity <- function(data, window_size, dilution_factor = 0) {
   data <- as.matrix(data)
   data <- as.matrix(data[, 1])
-  data.size <- nrow(data)
+  data_size <- nrow(data)
 
-  if (window.size > data.size / 2) {
+  if (window_size > data_size / 2) {
     stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
   }
-  if (window.size < 4) {
-    stop("Error: `window.size` must be at least 4.", call. = FALSE)
+  if (window_size < 4) {
+    stop("Error: `window_size` must be at least 4.", call. = FALSE)
   }
 
   data <- znorm(data)
-  profile.size <- data.size - window.size + 1
-  av <- matrix(0, profile.size, 1)
+  profile_size <- data_size - window_size + 1
+  av <- matrix(0, profile_size, 1)
 
-  for (j in 1:profile.size) {
-    av[j] <- complexity(data[j:(j + window.size - 1)])
+  for (j in 1:profile_size) {
+    av[j] <- complexity(data[j:(j + window_size - 1)])
   }
 
-  av <- zero.one.norm(av) # zero-one normalize the av
+  av <- zero_one_norm(av) # zero-one normalize the av
 
   # Select dilution factor, 0 is no dilution,
   # larger numbers are more dilution
-  av <- av + dilution.factor
-  av <- av / (dilution.factor + 1)
+  av <- av + dilution_factor
+  av <- av / (dilution_factor + 1)
 
   return(av)
 }
@@ -61,26 +61,26 @@ av.complexity <- function(data, window.size, dilution.factor = 0) {
 #' window <- 50
 #' av <- av.zerocrossing(data, window)
 #'
-av.zerocrossing <- function(data, window.size) {
+av_zerocrossing <- function(data, window_size) {
   data <- as.matrix(data)
   data <- as.matrix(data[, 1])
-  data.size <- nrow(data)
+  data_size <- nrow(data)
 
-  if (window.size > data.size / 2) {
+  if (window_size > data_size / 2) {
     stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
   }
-  if (window.size < 4) {
-    stop("Error: `window.size` must be at least 4.", call. = FALSE)
+  if (window_size < 4) {
+    stop("Error: `window_size` must be at least 4.", call. = FALSE)
   }
 
   data <- znorm(data)
-  profile.size <- data.size - window.size + 1
-  av <- matrix(0, profile.size, 1)
-  for (j in 1:profile.size) {
-    av[j] <- zero.crossings(data[j:(j + window.size - 1), ])
+  profile_size <- data_size - window_size + 1
+  av <- matrix(0, profile_size, 1)
+  for (j in 1:profile_size) {
+    av[j] <- zero_crossings(data[j:(j + window_size - 1), ])
   }
 
-  av <- zero.one.norm(av)
+  av <- zero_one_norm(av)
 
   return(av)
 }
@@ -101,24 +101,24 @@ av.zerocrossing <- function(data, window.size) {
 #' window <- 50
 #' av <- av.motion.artifact(data, window)
 #'
-av.motion.artifact <- function(data, window.size) {
+av_motion_artifact <- function(data, window_size) {
   data <- as.matrix(data)
   data <- as.matrix(data[, 1])
-  data.size <- nrow(data)
+  data_size <- nrow(data)
 
-  if (window.size > data.size / 2) {
+  if (window_size > data_size / 2) {
     stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
   }
-  if (window.size < 4) {
-    stop("Error: `window.size` must be at least 4.", call. = FALSE)
+  if (window_size < 4) {
+    stop("Error: `window_size` must be at least 4.", call. = FALSE)
   }
 
   data <- znorm(data)
-  profile.size <- data.size - window.size + 1
-  av <- matrix(0, profile.size, 1)
+  profile_size <- data_size - window_size + 1
+  av <- matrix(0, profile_size, 1)
 
-  for (i in 1:profile.size) {
-    s <- data[i:(i + window.size - 1), ]
+  for (i in 1:profile_size) {
+    s <- data[i:(i + window_size - 1), ]
     av[i] <- stats::sd(s)
   }
 
@@ -155,38 +155,38 @@ av.motion.artifact <- function(data, window.size) {
 #' window <- 50
 #' av <- av.stop.word(data, window, 150)
 #'
-av.stop.word <- function(data, window.size, stop.word.loc, exclusion.zone = 1 / 2, threshold = 0.1) {
+av_stop_word <- function(data, window_size, stop_word_loc, exclusion_zone = 1 / 2, threshold = 0.1) {
   data <- as.matrix(data)
   data <- as.matrix(data[, 1])
-  data.size <- nrow(data)
+  data_size <- nrow(data)
 
-  if (window.size > data.size / 2) {
+  if (window_size > data_size / 2) {
     stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
   }
-  if (window.size < 4) {
-    stop("Error: `window.size` must be at least 4.", call. = FALSE)
+  if (window_size < 4) {
+    stop("Error: `window_size` must be at least 4.", call. = FALSE)
   }
   data <- znorm(data)
-  stop.word <- data[stop.word.loc:(stop.word.loc + window.size - 1), ]
+  stop_word <- data[stop_word_loc:(stop_word_loc + window_size - 1), ]
 
-  profile.size <- data.size - window.size + 1
+  profile_size <- data_size - window_size + 1
 
-  av <- matrix(0, profile.size, 1)
+  av <- matrix(0, profile_size, 1)
 
-  for (i in 1:profile.size) {
-    s <- data[i:(i + window.size - 1), ]
-    av[i, ] <- diff2(s, stop.word)
+  for (i in 1:profile_size) {
+    s <- data[i:(i + window_size - 1), ]
+    av[i, ] <- diff2(s, stop_word)
   }
 
-  av <- zero.one.norm(av)
+  av <- zero_one_norm(av)
 
   index <- which(av <= threshold)
 
   for (i in 1:length(index)) {
-    if (index[i] < exclusion.zone) {
-      av[(index[i] - index[i] + 1):min((index[i] + exclusion.zone - 1), profile.size), ] <- 0
+    if (index[i] < exclusion_zone) {
+      av[(index[i] - index[i] + 1):min((index[i] + exclusion_zone - 1), profile_size), ] <- 0
     } else {
-      av[(index[i] - exclusion.zone + 1):min((index[i] + exclusion.zone - 1), profile.size), ] <- 0
+      av[(index[i] - exclusion_zone + 1):min((index[i] + exclusion_zone - 1), profile_size), ] <- 0
     }
   }
 
@@ -209,31 +209,31 @@ av.stop.word <- function(data, window.size, stop.word.loc, exclusion.zone = 1 / 
 #' window <- 50
 #' av <- av.hardlimit.artifact(data, window)
 #'
-av.hardlimit.artifact <- function(data, window.size) {
+av_hardlimit_artifact <- function(data, window_size) {
   data <- as.matrix(data)
   data <- as.matrix(data[, 1])
-  data.size <- nrow(data)
+  data_size <- nrow(data)
 
-  if (window.size > data.size / 2) {
+  if (window_size > data_size / 2) {
     stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
   }
-  if (window.size < 4) {
-    stop("Error: `window.size` must be at least 4.", call. = FALSE)
+  if (window_size < 4) {
+    stop("Error: `window_size` must be at least 4.", call. = FALSE)
   }
 
   data <- znorm(data)
   max <- max(data)
   min <- min(data)
 
-  profile.size <- data.size - window.size + 1
-  av <- matrix(0, profile.size, 1)
+  profile_size <- data_size - window_size + 1
+  av <- matrix(0, profile_size, 1)
 
-  for (i in 1:profile.size) {
-    s <- data[i:(i + window.size - 1), ]
+  for (i in 1:profile_size) {
+    s <- data[i:(i + window_size - 1), ]
     av[i, ] <- length(s[s == max | s == min])
   }
 
-  av <- zero.one.norm(av) # zero-one normalize the av
+  av <- zero_one_norm(av) # zero-one normalize the av
   av <- 1 - av
 
   return(av)
@@ -255,10 +255,10 @@ av.hardlimit.artifact <- function(data, window.size) {
 #'   av <- av.complexity(data, window)
 #'   mpc <- av.apply(mp, av)
 #' }
-av.apply <- function(matrix.profile, annotation.vector) {
-  corrected.mp <- matrix.profile + (1 - annotation.vector) * max(matrix.profile)
+av_apply <- function(matrix_profile, annotation_vector) {
+  corrected_mp <- matrix_profile + (1 - annotation_vector) * max(matrix_profile)
 
-  return(corrected.mp)
+  return(corrected_mp)
 }
 
 # Guided motif search

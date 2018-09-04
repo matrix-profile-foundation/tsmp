@@ -16,45 +16,45 @@
 #' mp <- stamp(data, window.size = w, exclusion.zone = 1/4, verbose = 0)
 #' find.chains(mp)
 #'
-find.chains <- function(matrices) {
+find_chains <- function(matrices) {
   size <- length(matrices$rpi)
-  chain.length <- rep(1, size)
-  chain.set <- list()
+  chain_length <- rep(1, size)
+  chain_set <- list()
 
   k <- 1
 
   for (i in 1:size) {
-    if (chain.length[i] == 1) {
+    if (chain_length[i] == 1) {
       j <- i
       chain <- j
 
       while (matrices$rpi[j] > 0 && matrices$lpi[matrices$rpi[j]] == j) {
         j <- matrices$rpi[j]
-        chain.length[j] <- -1
-        chain.length[i] <- chain.length[i] + 1
+        chain_length[j] <- -1
+        chain_length[i] <- chain_length[i] + 1
         chain <- c(chain, j)
       }
 
       if (length(chain) > 2) {
-        chain.set[[k]] <- chain
+        chain_set[[k]] <- chain
         k <- k + 1
       }
     }
   }
 
-  l <- max(chain.length)
+  l <- max(chain_length)
 
-  best.chain <- NULL
+  best_chain <- NULL
   mean <- Inf
-  for (i in 1:length(chain.set)) {
-    if (length(chain.set[[i]]) == l) {
-      n <- mean(matrices$rmp[chain.set[[i]]])
+  for (i in 1:length(chain_set)) {
+    if (length(chain_set[[i]]) == l) {
+      n <- mean(matrices$rmp[chain_set[[i]]])
       if (n < mean) {
         mean <- n
-        best.chain <- chain.set[[i]]
+        best_chain <- chain_set[[i]]
       }
     }
   }
 
-  return(list(chains = chain.set, best = best.chain))
+  return(list(chains = chain_set, best = best_chain))
 }

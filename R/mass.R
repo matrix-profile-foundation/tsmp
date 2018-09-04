@@ -38,16 +38,16 @@
 #'           pre$query.mean[i], pre$query.sd[i])
 #' }
 
-mass <- function(data.fft, query.window, data.size, window.size, data.mean, data.sd, query.mean, query.sd) {
+mass <- function(data_fft, query_window, data_size, window_size, data_mean, data_sd, query_mean, query_sd) {
   # pre-process query for fft
-  query.window <- rev(query.window)
-  query.window[(window.size + 1):(window.size + data.size)] <- 0
+  query_window <- rev(query_window)
+  query_window[(window_size + 1):(window_size + data_size)] <- 0
   # compute the product
-  prod <- data.fft * stats::fft(query.window)
+  prod <- data_fft * stats::fft(query_window)
   z <- stats::fft(prod, inverse = TRUE) / length(prod)
   # compute the distance profile
-  distance.profile <- 2 * (window.size - (z[window.size:data.size] - window.size * data.mean * query.mean) / (data.sd * query.sd))
-  last.product <- z[window.size:data.size]
+  distance_profile <- 2 * (window_size - (z[window_size:data_size] - window_size * data_mean * query_mean) / (data_sd * query_sd))
+  last_product <- z[window_size:data_size]
 
-  return(list(distance.profile = distance.profile, last.product = last.product))
+  return(list(distance_profile = distance_profile, last_product = last_product))
 }

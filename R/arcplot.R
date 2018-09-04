@@ -45,12 +45,12 @@
 #'
 #' @examples
 #' arcplot(pairs = matrix(c(5, 10, 1, 10, 20, 5), ncol = 2, byrow = TRUE))
-arcplot <- function(mp, pi, window.size, exclusion.zone = 5, edge.limit = 5, threshold = quantile(mp, 0.1), pairs = NULL, alpha = NULL, quality = 30,
+arcplot <- function(mp, pi, window_size, exclusion_zone = 5, edge_limit = 5, threshold = quantile(mp, 0.1), pairs = NULL, alpha = NULL, quality = 30,
                     lwd = 15, col = c("blue", "orange"), main = "Arc Plot", ylab = "", xlab = "Profile Index",
                     ...) {
   if (is.null(pairs)) {
     data <- mp
-    data.size <- nrow(data)
+    data_size <- nrow(data)
     pairs <- matrix(0, nrow(mp), 2)
     pairs[, 1] <- 1:nrow(mp)
     pairs[, 2] <- pi
@@ -60,26 +60,26 @@ arcplot <- function(mp, pi, window.size, exclusion.zone = 5, edge.limit = 5, thr
     }
 
     # remove excess of arcs
-    exclusion.zone <- floor(window.size * exclusion.zone)
-    edge.limit <- floor(window.size * edge.limit)
-    data[1:edge.limit, ] <- Inf
-    data[(data.size - edge.limit + 1):data.size, ] <- Inf
+    exclusion_zone <- floor(window_size * exclusion_zone)
+    edge_limit <- floor(window_size * edge_limit)
+    data[1:edge_limit, ] <- Inf
+    data[(data_size - edge_limit + 1):data_size, ] <- Inf
 
     ind <- which(data < threshold)
     pairs <- pairs[ind, ]
 
     pairdiff <- pairs[, 1] - pairs[, 2]
-    ind <- which(abs(pairdiff) > exclusion.zone)
+    ind <- which(abs(pairdiff) > exclusion_zone)
     pairs <- pairs[ind, ]
   } else {
-    data.size <- max(pairs)
+    data_size <- max(pairs)
   }
 
   segments <- quality
 
-  z.seq <- seq(0, base::pi, length.out = segments)
-  xlim <- c(0, data.size + 1)
-  ylim <- c(0, data.size / 2)
+  z_seq <- seq(0, base::pi, length_out = segments)
+  xlim <- c(0, data_size + 1)
+  ylim <- c(0, data_size / 2)
 
   if (is.null(alpha)) {
     alpha <- min(0.5, max(10 / nrow(pairs), 0.03))
@@ -109,14 +109,14 @@ arcplot <- function(mp, pi, window.size, exclusion.zone = 5, edge.limit = 5, thr
     x2 <- max(pairs[i, 1], pairs[i, 2])
     center <- (x1 - x2) / 2 + x2
     radius <- (x2 - x1) / 2
-    x.seq <- center + radius * cos(z.seq)
-    y.seq <- radius * sin(z.seq)
-    lines(x.seq, y.seq,
+    x_seq <- center + radius * cos(z_seq)
+    y_seq <- radius * sin(z_seq)
+    lines(x_seq, y_seq,
       col = arccol, lwd = lwd, lty = 1, lend = 1
     )
   }
 
-  legend(1, data.size / 2,
+  legend(1, data_size / 2,
     legend = c("Right", "Left"),
     col = adjustcolor(col, alpha.f = 0.5), lty = 1, cex = 0.8, lwd = 5
   )

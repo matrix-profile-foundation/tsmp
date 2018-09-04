@@ -40,7 +40,7 @@
 #' nseg <- length(fluss_data$walkjogrun$gtruth) # 2
 #' segments <- fluss(data, w, nseg, gtruth = truth)
 #' }
-fluss <- function(data, window.size, num.segments, exclusion.zone = 5, gtruth = NULL, profile.index = NULL, verbose = 2) {
+fluss <- function(data, window_size, num_segments, exclusion_zone = 5, gtruth = NULL, profile_index = NULL, verbose = 2) {
 
   ## Input validatin
   if (is.matrix(data) || is.data.frame(data)) {
@@ -50,30 +50,30 @@ fluss <- function(data, window.size, num.segments, exclusion.zone = 5, gtruth = 
     if (ncol(data) > nrow(data)) {
       data <- t(data)
     }
-    data.size <- nrow(data)
+    data_size <- nrow(data)
   } else if (is.vector(data)) {
-    data.size <- length(data)
+    data_size <- length(data)
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: Unknown type of data. Must be: matrix, data.frame or vector.", call. = FALSE)
+    stop("Error: Unknown type of data. Must be: matrix, data_frame or vector.", call. = FALSE)
   }
 
   profile <- NULL
-  if (is.null(profile.index)) {
-    profile <- stomp.par(data, window.size = window.size, verbose = verbose)
-    profile.index <- profile$pi
+  if (is.null(profile_index)) {
+    profile <- stomp_par(data, window_size = window_size, verbose = verbose)
+    profile_index <- profile$pi
   }
 
-  cac <- fluss.cac(profile.index, window.size, exclusion.zone)
+  cac <- fluss_cac(profile_index, window_size, exclusion_zone)
 
-  segments <- fluss.extract(cac, num.segments, window.size, exclusion.zone)
+  segments <- fluss_extract(cac, num_segments, window_size, exclusion_zone)
 
   if (!is.null(gtruth)) {
-    score <- fluss.score(gtruth, segments, data.size)
-    return(list(segments = segments, mp = profile$mp, pi = profile.index, cac = cac, score = score))
+    score <- fluss_score(gtruth, segments, data_size)
+    return(list(segments = segments, mp = profile$mp, pi = profile_index, cac = cac, score = score))
   }
   else {
-    return(list(segments = segments, mp = profile$mp, pi = profile.index, cac = cac))
+    return(list(segments = segments, mp = profile$mp, pi = profile_index, cac = cac))
   }
 }
 
@@ -112,21 +112,21 @@ fluss <- function(data, window.size, num.segments, exclusion.zone = 5, gtruth = 
 #' cac <- fluss.cac(mp$pi, w)
 #' segments <- fluss.extract(cac, nseg, w)
 #' }
-fluss.extract <- function(arc.counts, num.segments, window.size, exclusion.zone = 5) {
-  segments.positions <- vector(mode = "numeric")
-  arc.counts.size <- length(arc.counts)
-  exclusion.zone <- floor(window.size * exclusion.zone)
+fluss_extract <- function(arc_counts, num_segments, window_size, exclusion_zone = 5) {
+  segments_positions <- vector(mode = "numeric")
+  arc_counts_size <- length(arc_counts)
+  exclusion_zone <- floor(window_size * exclusion_zone)
 
-  for (i in 1:num.segments) {
-    idx <- which.min(arc.counts)
-    if (arc.counts[idx] >= 1) {
+  for (i in 1:num_segments) {
+    idx <- which.min(arc_counts)
+    if (arc_counts[idx] >= 1) {
       break
     }
-    segments.positions[i] <- idx
-    arc.counts[max(1, (idx - exclusion.zone)):min(arc.counts.size, (idx + exclusion.zone - 1))] <- Inf
+    segments_positions[i] <- idx
+    arc_counts[max(1, (idx - exclusion_zone)):min(arc_counts_size, (idx + exclusion_zone - 1))] <- Inf
   }
 
-  return(segments.positions)
+  return(segments_positions)
 }
 
 #' FLUSS - Corrected Arc Counts
@@ -163,27 +163,27 @@ fluss.extract <- function(arc.counts, num.segments, window.size, exclusion.zone 
 #' mp <- stomp(data, window.size = w)
 #' cac <- fluss.cac(mp$pi, w)
 #' }
-fluss.cac <- function(profile.index, window.size, exclusion.zone = 5) {
-  arc.counts <- vector(mode = "numeric")
-  profile.index.size <- length(profile.index)
+fluss_cac <- function(profile_index, window_size, exclusion_zone = 5) {
+  arc_counts <- vector(mode = "numeric")
+  profile_index_size <- length(profile_index)
 
-  nnmark <- matrix(0, profile.index.size, 1)
+  nnmark <- matrix(0, profile_index_size, 1)
 
-  for (i in 1:profile.index.size) {
-    j <- profile.index[i]
+  for (i in 1:profile_index_size) {
+    j <- profile_index[i]
     nnmark[min(i, j)] <- nnmark[min(i, j)] + 1
     nnmark[max(i, j)] <- nnmark[max(i, j)] - 1
   }
 
-  arc.counts <- cumsum(nnmark)
+  arc_counts <- cumsum(nnmark)
 
-  ideal.arc.counts <- stats::dbeta(seq(0, 1, length.out = profile.index.size), 2, 2) * profile.index.size / 3
-  corrected.arc.counts <- pmin(arc.counts / ideal.arc.counts, 1)
-  exclusion.zone <- floor(window.size * exclusion.zone)
-  corrected.arc.counts[1:min(exclusion.zone, profile.index.size)] <- 1
-  corrected.arc.counts[max((profile.index.size - exclusion.zone + 1), 1):profile.index.size] <- 1
+  ideal_arc_counts <- stats::dbeta(seq(0, 1, length_out = profile_index_size), 2, 2) * profile_index_size / 3
+  corrected_arc_counts <- pmin(arc_counts / ideal_arc_counts, 1)
+  exclusion_zone <- floor(window_size * exclusion_zone)
+  corrected_arc_counts[1:min(exclusion_zone, profile_index_size)] <- 1
+  corrected_arc_counts[max((profile_index_size - exclusion_zone + 1), 1):profile_index_size] <- 1
 
-  return(corrected.arc.counts)
+  return(corrected_arc_counts)
 }
 
 #' FLUSS - Prediction score calculation
@@ -219,7 +219,7 @@ fluss.cac <- function(profile.index, window.size, exclusion.zone = 5) {
 #' segments <- fluss.extract(cac, nseg, w)
 #' score <- fluss.score(truth, segments, length(data))
 #' }
-fluss.score <- function(gtruth, extracted, data.size) {
+fluss_score <- function(gtruth, extracted, data_size) {
   n <- length(gtruth)
   m <- length(extracted)
   minv <- rep(Inf, n)
@@ -232,7 +232,7 @@ fluss.score <- function(gtruth, extracted, data.size) {
     }
   }
 
-  score <- sum(minv) / data.size
+  score <- sum(minv) / data_size
 
   return(score)
 }
