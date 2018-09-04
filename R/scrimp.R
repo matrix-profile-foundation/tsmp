@@ -116,7 +116,7 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, s_size = Inf, verbo
   j <- 1
   order <- (exclusion_zone + 1):num_queries
   ssize <- min(s_size, length(order))
-  order <- order[sample(1:length(order), size = ssize)]
+  order <- order[sample(seq_len(length(order)), size = ssize)]
 
   tictac <- Sys.time()
 

@@ -16,7 +16,7 @@
 #' @examples
 find_motifs <- function(matrix_profile, profile_index,
                         window_size, data,
-                        exclusion_zone = 1/2, radius = 3, n_motifs = 3, plot = TRUE, cols = 3) {
+                        exclusion_zone = 1 / 2, radius = 3, n_motifs = 3, plot = TRUE, cols = 3) {
 
   # transform data into matrix
   if (is.vector(data)) {
@@ -83,7 +83,7 @@ find_motifs <- function(matrix_profile, profile_index,
 
     remove_idx <- c(motif_idxs[[1]][[i]], motif_idxs[[2]][[i]])
 
-    for (j in 1:length(remove_idx)) {
+    for (j in seq_len(length(remove_idx))) {
       remove_zone_start <- max(1, remove_idx[j] - exclusion_zone)
       remove_zone_end <- min(matrix_profile_size, remove_idx[j] + exclusion_zone)
       matrix_profile[remove_zone_start:remove_zone_end] <- Inf

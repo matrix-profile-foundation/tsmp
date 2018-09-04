@@ -182,7 +182,7 @@ av_stop_word <- function(data, window_size, stop_word_loc, exclusion_zone = 1 / 
 
   index <- which(av <= threshold)
 
-  for (i in 1:length(index)) {
+  for (i in seq_len(length(index))) {
     if (index[i] < exclusion_zone) {
       av[(index[i] - index[i] + 1):min((index[i] + exclusion_zone - 1), profile_size), ] <- 0
     } else {

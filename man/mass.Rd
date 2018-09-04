@@ -4,28 +4,28 @@
 \alias{mass}
 \title{Calculates the distance profile using MASS algorithm}
 \usage{
-mass(data.fft, query.window, data.size, window.size, data.mean, data.sd,
-  query.mean, query.sd)
+mass(data_fft, query_window, data_size, window_size, data_mean, data_sd,
+  query_mean, query_sd)
 }
 \arguments{
-\item{data.fft}{precomputed data product.}
+\item{data_fft}{precomputed data product.}
 
-\item{query.window}{a \code{vector} of \code{numeric}. Query window.}
+\item{query_window}{a \code{vector} of \code{numeric}. Query window.}
 
-\item{data.size}{an \code{int}. The length of the reference data.}
+\item{data_size}{an \code{int}. The length of the reference data.}
 
-\item{window.size}{an \code{int}. Sliding window size.}
+\item{window_size}{an \code{int}. Sliding window size.}
 
-\item{data.mean}{precomputed data moving average.}
+\item{data_mean}{precomputed data moving average.}
 
-\item{data.sd}{precomputed data moving standard deviation.}
+\item{data_sd}{precomputed data moving standard deviation.}
 
-\item{query.mean}{precomputed query average.}
+\item{query_mean}{precomputed query average.}
 
-\item{query.sd}{precomputed query standard deviation.}
+\item{query_sd}{precomputed query standard deviation.}
 }
 \value{
-Returns the \code{distance.profile} for the given query and the \code{last.product} for STOMP
+Returns the \code{distance_profile} for the given query and the \code{last_product} for STOMP
 algorithm.
 }
 \description{
@@ -33,18 +33,18 @@ Mueen's Algorithm for Similarity Search is The Fastest Similarity Search Algorit
 Series Subsequences under Euclidean Distance and Correlation Coefficient.
 }
 \examples{
-w <- toy_data$sub.len
-ref.data <- toy_data$data[,1]
-query.data <- toy_data$data[,1]
-d.size <- length(ref.data)
-q.size <- length(query.data)
+w <- mp_toy_data$sub_len
+ref_data <- mp_toy_data$data[,1]
+query_data <- mp_toy_data$data[,1]
+d_size <- length(ref_data)
+q_size <- length(query_data)
 
-pre <- mass.pre(ref.data, d.size, query.data, q.size, w)
+pre <- mass_pre(ref_data, d_size, query_data, q_size, w)
 
 dp <- list()
-for(i in 1:(d.size - w + 1)) {
-  dp[[i]] <- mass(pre$data.fft, query.data[i:(i-1+w)], d.size, w, pre$data.mean, pre$data.sd,
-          pre$query.mean[i], pre$query.sd[i])
+for(i in 1:(d_size - w + 1)) {
+  dp[[i]] <- mass(pre$data_fft, query_data[i:(i-1+w)], d_size, w, pre$data_mean, pre$data_sd,
+          pre$query_mean[i], pre$query_sd[i])
 }
 }
 \references{
@@ -57,5 +57,5 @@ Series Subsequences under Euclidean Distance
 Website: \url{https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html}
 }
 \seealso{
-\code{\link[=mass.pre]{mass.pre()}} to precomputation of input values.
+\code{\link[=mass_pre]{mass_pre()}} to precomputation of input values.
 }

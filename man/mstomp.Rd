@@ -4,20 +4,20 @@
 \alias{mstomp}
 \title{Multivariate STOMP algorithm}
 \usage{
-mstomp(data, window.size, must.dim = NULL, exc.dim = NULL,
-  exclusion.zone = 1/2, verbose = 2)
+mstomp(data, window_size, must_dim = NULL, exc_dim = NULL,
+  exclusion_zone = 1/2, verbose = 2)
 }
 \arguments{
 \item{data}{a \code{matrix} of \code{numeric}, where each column is a time series. Accepts \code{vector} (see
 details), \code{list} and \code{data.frame} too.}
 
-\item{window.size}{an \code{int} with the size of the sliding window.}
+\item{window_size}{an \code{int} with the size of the sliding window.}
 
-\item{must.dim}{an \code{int} or \code{vector} of which dimensions to forcibly include (default is \code{NULL}).}
+\item{must_dim}{an \code{int} or \code{vector} of which dimensions to forcibly include (default is \code{NULL}).}
 
-\item{exc.dim}{an \code{int} or \code{vector} of which dimensions to exclude (default is \code{NULL}).}
+\item{exc_dim}{an \code{int} or \code{vector} of which dimensions to exclude (default is \code{NULL}).}
 
-\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is
+\item{exclusion_zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is
 \code{1/2}).}
 
 \item{verbose}{an \code{int}. See details. (Default is \code{2}).}
@@ -45,12 +45,12 @@ means nothing, \code{1} means text, \code{2} means text and sound.
 }
 \examples{
 # using all dimensions
-mp <- mstomp(toy_data$data[1:200,], 30, verbose = 0)
+mp <- mstomp(mp_toy_data$data[1:200,], 30, verbose = 0)
 \dontrun{
 # force using dimensions 1 and 2
-mp <- mstomp(toy_data$data[1:200,], 30, must.dim = c(1, 2))
+mp <- mstomp(mp_toy_data$data[1:200,], 30, must_dim = c(1, 2))
 # exclude dimensions 2 and 3
-mp <- mstomp(toy_data$data[1:200,], 30, exc.dim = c(2, 3))
+mp <- mstomp(mp_toy_data$data[1:200,], 30, exc_dim = c(2, 3))
 }
 }
 \references{
@@ -69,11 +69,11 @@ Website: \url{https://sites.google.com/view/mstamp/}
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-\code{\link[=stamp]{stamp()}}, \code{\link[=stamp.par]{stamp.par()}}, \code{\link[=mstomp.par]{mstomp.par()}}
+\code{\link[=stamp]{stamp()}}, \code{\link[=stamp_par]{stamp_par()}}, \code{\link[=mstomp_par]{mstomp_par()}}
 
-Other matrix profile computations: \code{\link{mstomp.par}},
-  \code{\link{scrimp}}, \code{\link{stamp.par}},
-  \code{\link{stamp}}, \code{\link{stomp.par}},
+Other matrix profile computations: \code{\link{mstomp_par}},
+  \code{\link{scrimp}}, \code{\link{stamp_par}},
+  \code{\link{stamp}}, \code{\link{stomp_par}},
   \code{\link{stomp}}
 }
 \concept{matrix profile computations}

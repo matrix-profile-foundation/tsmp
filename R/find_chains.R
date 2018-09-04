@@ -46,7 +46,7 @@ find_chains <- function(matrices) {
 
   best_chain <- NULL
   mean <- Inf
-  for (i in 1:length(chain_set)) {
+  for (i in seq_len(length(chain_set))) {
     if (length(chain_set[[i]]) == l) {
       n <- mean(matrices$rmp[chain_set[[i]]])
       if (n < mean) {

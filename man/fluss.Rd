@@ -4,23 +4,23 @@
 \alias{fluss}
 \title{Fast Low-cost Unipotent Semantic Segmentation (FLUSS)}
 \usage{
-fluss(data, window.size, num.segments, exclusion.zone = 5,
-  gtruth = NULL, profile.index = NULL, verbose = 2)
+fluss(data, window_size, num_segments, exclusion_zone = 5,
+  gtruth = NULL, profile_index = NULL, verbose = 2)
 }
 \arguments{
 \item{data}{a \code{matrix} or a \code{vector}. Input data.}
 
-\item{window.size}{an \code{int}. Size of the sliding window.}
+\item{window_size}{an \code{int}. Size of the sliding window.}
 
-\item{num.segments}{an \code{int}. Number of segments to extract. Based on domain knowledge.}
+\item{num_segments}{an \code{int}. Number of segments to extract. Based on domain knowledge.}
 
-\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is
+\item{exclusion_zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is
 \code{5}).}
 
 \item{gtruth}{an \code{int} or \code{vector} of \code{int} with the ground truth index of segments. (Default is
 \code{NULL}).}
 
-\item{profile.index}{a pre-computed profile index. (Default is \code{NULL}).}
+\item{profile_index}{a pre-computed profile index. (Default is \code{NULL}).}
 
 \item{verbose}{an \code{int}. See details. (Default is \code{2}).}
 }
@@ -39,15 +39,15 @@ text, \code{2} means text and sound.
 \examples{
 # This is a fast toy example and results are useless. For a complete result, run the code inside
 #'Not run' section below.
-data <- fluss_data$tilt.abp$data[1:1000]
+data <- mp_fluss_data$tilt_abp$data[1:1000]
 truth <- 400
 w <- 10
 segments <- fluss(data, w, 1, gtruth = truth, verbose = 0)
 \dontrun{
-data <- fluss_data$walkjogrun$data
-w <- fluss_data$walkjogrun$window # 80
-truth <- fluss_data$walkjogrun$gtruth # 3800 6800
-nseg <- length(fluss_data$walkjogrun$gtruth) # 2
+data <- mp_fluss_data$walkjogrun$data
+w <- mp_fluss_data$walkjogrun$window # 80
+truth <- mp_fluss_data$walkjogrun$gtruth # 3800 6800
+nseg <- length(mp_fluss_data$walkjogrun$gtruth) # 2
 segments <- fluss(data, w, nseg, gtruth = truth)
 }
 }
@@ -63,7 +63,7 @@ Website: \url{https://sites.google.com/site/onlinesemanticsegmentation/}
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other fluss: \code{\link{fluss.cac}},
-  \code{\link{fluss.extract}}, \code{\link{fluss.score}}
+Other fluss: \code{\link{fluss_cac}},
+  \code{\link{fluss_extract}}, \code{\link{fluss_score}}
 }
 \concept{fluss}

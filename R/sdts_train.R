@@ -254,7 +254,7 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
       pro_max <- -Inf
       pro_min <- Inf
 
-      for (k in 1:length(pro_cur)) {
+      for (k in seq_len(length(pro_cur))) {
         pro_max <- max(max(pro_cur[[k]][!is.infinite(pro_cur[[k]])]), pro_max)
         pro_min <- min(min(pro_cur[[k]]), pro_min)
         pro_cur[[k]][exc_mask_cur] <- Inf
@@ -268,7 +268,7 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
       while (TRUE) {
         iter <- iter + 1
         thold_old <- thold_cur[[j]]
-        for (k in length(thold_cur[[j]]):1) {
+        for (k in rev(seq_len(length(thold_cur[[j]])))) {
           gold <- golden_section_2(
             pro_cur,
             thold_cur[[j]],
@@ -392,7 +392,7 @@ golden_section <- function(dist_pro, label, pos_st, pos_ed, beta, window_size) {
 
 golden_section_2 <- function(dist_pro, thold, label, pos_st, pos_ed, beta, window_size, fit_idx) {
   golden_ratio <- (1 + sqrt(5)) / 2
-  a_thold <- min(dist_pro[[fit_idx]], na.rm = TRUE) ## TODO: check why NA in dist_pro
+  a_thold <- min(dist_pro[[fit_idx]], na.rm = TRUE)
   b_thold <- max(dist_pro[[fit_idx]][!is.infinite(dist_pro[[fit_idx]])], na.rm = TRUE)
   c_thold <- b_thold - (b_thold - a_thold) / golden_ratio
   d_thold <- a_thold + (b_thold - a_thold) / golden_ratio
@@ -487,13 +487,13 @@ compute_f_meas <- function(label, pos_st, pos_ed, dist_pro, thold, window_size, 
 
   anno <- rep(FALSE, length(label))
 
-  for (i in 1:length(anno_st)) {
+  for (i in seq_len(length(anno_st))) {
     anno[anno_st[i]:anno_ed[i]] <- 1
   }
 
   is.tp <- rep(FALSE, length(anno_st))
 
-  for (i in 1:length(anno_st)) {
+  for (i in seq_len(length(anno_st))) {
     if (anno_ed[i] > length(label)) {
       anno_ed[i] <- length(label)
     }
@@ -504,7 +504,7 @@ compute_f_meas <- function(label, pos_st, pos_ed, dist_pro, thold, window_size, 
   tp_pre <- sum(is.tp)
 
   is.tp <- rep(FALSE, length(pos_st))
-  for (i in 1:length(pos_st)) {
+  for (i in seq_len(length(pos_st))) {
     if (sum(anno[pos_st[i]:pos_ed[i]]) > (0.8 * window_size)) {
       is.tp[i] <- TRUE
     }

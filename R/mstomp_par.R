@@ -197,7 +197,7 @@ mstomp_par <- function(data, window_size, must_dim = NULL, exc_dim = NULL, exclu
     last_product <- matrix(0, matrix_profile_size, n_dim)
     drop_value <- matrix(0, 1, n_dim)
 
-    for (j in 1:length(idx_work[[i]])) {
+    for (j in seq_len(length(idx_work[[i]]))) {
       idx <- idx_work[[i]][j]
 
       query <- as.matrix(data[idx:(idx + window_size - 1), ])
@@ -303,7 +303,7 @@ mstomp_par <- function(data, window_size, must_dim = NULL, exc_dim = NULL, exclu
   right_matrix_profile <- matrix(Inf, matrix_profile_size, n_dim)
   right_profile_index <- matrix(-1, matrix_profile_size, n_dim)
 
-  for (i in 1:length(batch)) {
+  for (i in seq_len(length(batch))) {
     left_profile_index[idx_work[[batch[[i]]$idx]], ] <- batch[[i]]$pro_idxs_left
     left_matrix_profile[idx_work[[batch[[i]]$idx]], ] <- batch[[i]]$pro_muls_left
     right_profile_index[idx_work[[batch[[i]]$idx]], ] <- batch[[i]]$pro_idxs_right

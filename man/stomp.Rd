@@ -4,15 +4,15 @@
 \alias{stomp}
 \title{Univariate STOMP algorithm}
 \usage{
-stomp(..., window.size, exclusion.zone = 1/2, verbose = 2)
+stomp(..., window_size, exclusion_zone = 1/2, verbose = 2)
 }
 \arguments{
 \item{...}{a \code{matrix} or a \code{vector}. If a second time series is supplied it will be a join matrix
 profile.}
 
-\item{window.size}{an \code{int}. Size of the sliding window.}
+\item{window_size}{an \code{int}. Size of the sliding window.}
 
-\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is
+\item{exclusion_zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is
 \code{1/2}). See details.}
 
 \item{verbose}{an \code{int}. See details. (Default is \code{2}).}
@@ -31,18 +31,18 @@ generality, versatility, simplicity and scalability. In particular it has implic
 series motif discovery, time series joins, shapelet discovery (classification), density
 estimation, semantic segmentation, visualization, rule discovery, clustering etc. \code{verbose}
 changes how much information is printed by this function; \code{0} means nothing, \code{1} means text, \code{2}
-means text and sound. \code{exclusion.zone} is used to avoid  trivial matches; if a query data is
+means text and sound. \code{exclusion_zone} is used to avoid  trivial matches; if a query data is
 provided (join similarity), this parameter is ignored.
 }
 \examples{
-mp <- stomp(toy_data$data[1:200,1], window.size = 30, verbose = 0)
+mp <- stomp(mp_toy_data$data[1:200,1], window_size = 30, verbose = 0)
 \dontrun{
-ref.data <- toy_data$data[,1]
-query.data <- toy_data$data[,2]
+ref_data <- mp_toy_data$data[,1]
+query_data <- mp_toy_data$data[,2]
 # self similarity
-mp <- stomp(ref.data, window.size = 30)
+mp <- stomp(ref_data, window_size = 30)
 # join similarity
-mp <- stomp(ref.data, query.data, window.size = 30)
+mp <- stomp(ref_data, query_data, window_size = 30)
 }
 }
 \references{
@@ -55,11 +55,11 @@ Joins. Icdm. 2016 Jan 22;54(1):739–48.
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-\code{\link[=stamp]{stamp()}}, \code{\link[=stamp.par]{stamp.par()}}; \code{\link[=mstomp]{mstomp()}}, \code{\link[=mstomp.par]{mstomp.par()}} for multivariate analysis.
+\code{\link[=stamp]{stamp()}}, \code{\link[=stamp_par]{stamp_par()}}; \code{\link[=mstomp]{mstomp()}}, \code{\link[=mstomp_par]{mstomp_par()}} for multivariate analysis.
 
-Other matrix profile computations: \code{\link{mstomp.par}},
+Other matrix profile computations: \code{\link{mstomp_par}},
   \code{\link{mstomp}}, \code{\link{scrimp}},
-  \code{\link{stamp.par}}, \code{\link{stamp}},
-  \code{\link{stomp.par}}
+  \code{\link{stamp_par}}, \code{\link{stamp}},
+  \code{\link{stomp_par}}
 }
 \concept{matrix profile computations}

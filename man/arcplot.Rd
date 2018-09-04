@@ -4,29 +4,29 @@
 \alias{arcplot}
 \title{Plot arcs between indexes of a Profile Index}
 \usage{
-arcplot(mp, pi, window.size, exclusion.zone = 5, edge.limit = 5,
+arcplot(mp, pi, window_size, exclusion_zone = 5, edge_limit = 5,
   threshold = quantile(mp, 0.1), pairs = NULL, alpha = NULL,
   quality = 30, lwd = 15, col = c("blue", "orange"),
   main = "Arc Plot", ylab = "", xlab = "Profile Index", ...)
 }
 \arguments{
-\item{mp}{a Matrix Profile, or a Corrected Arc Count profile from \code{\link[=fluss.cac]{fluss.cac()}}.}
+\item{mp}{a Matrix Profile, or a Corrected Arc Count profile from \code{\link[=fluss_cac]{fluss_cac()}}.}
 
 \item{pi}{a Profile Index.}
 
-\item{window.size}{an \code{int}. Size of the sliding window.}
+\item{window_size}{an \code{int}. Size of the sliding window.}
 
-\item{exclusion.zone}{an \code{int}. (Default is \code{5}). Exclusion zone for small distances. See
+\item{exclusion_zone}{an \code{int}. (Default is \code{5}). Exclusion zone for small distances. See
 details.}
 
-\item{edge.limit}{an \code{int}. (Default is \code{5}). Exclusion zone for the edges of the profile. See
+\item{edge_limit}{an \code{int}. (Default is \code{5}). Exclusion zone for the edges of the profile. See
 details.}
 
 \item{threshold}{a \code{numeric}. (Default is 10% of the lowest values). Threshold for retrieving
 pairs. See details.}
 
 \item{pairs}{a \code{matrix} with 2 columns. (Default is \code{NULL}). Instead of \code{mp}, \code{pi},
-\code{window.size}, \code{edge.limit}, \code{threshold}, you can give your custom list of pairs.}
+\code{window_size}, \code{edge_limit}, \code{threshold}, you can give your custom list of pairs.}
 
 \item{alpha}{a \code{numeric}. (Default is \code{NULL}, automatic). Alpha value for lines transparency.}
 
@@ -63,8 +63,8 @@ index, the second is the end index. Two colors are used to allow you to identify
 the arc. If you use the \code{rpi} or \code{lpi} as input, you will see that these profile indexes have
 just one direction.
 
-\code{exclusion.zone} is used to filter out small arcs that may be useless (e.g. you may be interested
-in similarities that are far away). \code{edge.limit} is used to filter out spurious arcs that are
+\code{exclusion_zone} is used to filter out small arcs that may be useless (e.g. you may be interested
+in similarities that are far away). \code{edge_limit} is used to filter out spurious arcs that are
 used connect the beginning and the end of the profile (e.g. silent audio). \code{threshold} is used to
 filter indexes that have distant nearest neighbor (e.g. retrieve only the best motifs).
 }

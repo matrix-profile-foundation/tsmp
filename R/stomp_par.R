@@ -272,7 +272,7 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
   right_matrix_profile <- matrix(Inf, matrix_profile_size, 1)
   right_profile_index <- matrix(-1, matrix_profile_size, 1)
 
-  for (i in 1:length(batch)) {
+  for (i in seq_len(length(batch))) {
     ind <- (batch[[i]]$pro_muls < matrix_profile)
     matrix_profile[ind] <- batch[[i]]$pro_muls[ind]
     profile_index[ind] <- batch[[i]]$pro_idxs[ind]

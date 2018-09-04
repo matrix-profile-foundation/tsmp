@@ -88,7 +88,7 @@ unconstrain_search <- function(data, window_size, matrix_profile, profile_index,
     message(sprintf("Searching for motif (%d)", i))
 
     idx_1 <- apply(matrix_profile, 2, which.min) # sort by column
-    val <- matrix_profile[cbind(idx_1, 1:ncol(matrix_profile))]
+    val <- matrix_profile[cbind(idx_1, seq_len(ncol(matrix_profile)))]
 
     if (any(is.infinite(val))) {
       motif_idx <- motif_idx[1:(k - 1)]
@@ -186,7 +186,7 @@ discretization <- function(motif, split_pt) {
 
   disc <- matrix(0, dimmotif[1], dimmotif[2])
 
-  for (i in 1:length(split_pt)) {
+  for (i in seq_len(length(split_pt))) {
     disc[motif < split_pt[i] & disc == 0] <- i
   }
 

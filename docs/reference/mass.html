@@ -64,7 +64,7 @@ Series Subsequences under Euclidean Distance and Correlation Coefficient." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tsmp</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.15.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.15.9004</span>
       </span>
     </div>
 
@@ -115,49 +115,49 @@ Series Subsequences under Euclidean Distance and Correlation Coefficient.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>mass</span>(<span class='no'>data.fft</span>, <span class='no'>query.window</span>, <span class='no'>data.size</span>, <span class='no'>window.size</span>, <span class='no'>data.mean</span>, <span class='no'>data.sd</span>,
-  <span class='no'>query.mean</span>, <span class='no'>query.sd</span>)</pre>
+    <pre class="usage"><span class='fu'>mass</span>(<span class='no'>data_fft</span>, <span class='no'>query_window</span>, <span class='no'>data_size</span>, <span class='no'>window_size</span>, <span class='no'>data_mean</span>, <span class='no'>data_sd</span>,
+  <span class='no'>query_mean</span>, <span class='no'>query_sd</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data.fft</th>
+      <th>data_fft</th>
       <td><p>precomputed data product.</p></td>
     </tr>
     <tr>
-      <th>query.window</th>
+      <th>query_window</th>
       <td><p>a <code>vector</code> of <code>numeric</code>. Query window.</p></td>
     </tr>
     <tr>
-      <th>data.size</th>
+      <th>data_size</th>
       <td><p>an <code>int</code>. The length of the reference data.</p></td>
     </tr>
     <tr>
-      <th>window.size</th>
+      <th>window_size</th>
       <td><p>an <code>int</code>. Sliding window size.</p></td>
     </tr>
     <tr>
-      <th>data.mean</th>
+      <th>data_mean</th>
       <td><p>precomputed data moving average.</p></td>
     </tr>
     <tr>
-      <th>data.sd</th>
+      <th>data_sd</th>
       <td><p>precomputed data moving standard deviation.</p></td>
     </tr>
     <tr>
-      <th>query.mean</th>
+      <th>query_mean</th>
       <td><p>precomputed query average.</p></td>
     </tr>
     <tr>
-      <th>query.sd</th>
+      <th>query_sd</th>
       <td><p>precomputed query standard deviation.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Returns the <code>distance.profile</code> for the given query and the <code>last.product</code> for STOMP
+    <p>Returns the <code>distance_profile</code> for the given query and the <code>last_product</code> for STOMP
 algorithm.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
@@ -171,22 +171,22 @@ Series Subsequences under Euclidean Distance</p></li>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='mass.pre.html'>mass.pre()</a></code> to precomputation of input values.</p></div>
+    <div class='dont-index'><p><code><a href='mass_pre.html'>mass_pre()</a></code> to precomputation of input values.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>w</span> <span class='kw'>&lt;-</span> <span class='no'>toy_data</span>$<span class='no'>sub.len</span>
-<span class='no'>ref.data</span> <span class='kw'>&lt;-</span> <span class='no'>toy_data</span>$<span class='no'>data</span>[,<span class='fl'>1</span>]
-<span class='no'>query.data</span> <span class='kw'>&lt;-</span> <span class='no'>toy_data</span>$<span class='no'>data</span>[,<span class='fl'>1</span>]
-<span class='no'>d.size</span> <span class='kw'>&lt;-</span> <span class='fu'>length</span>(<span class='no'>ref.data</span>)
-<span class='no'>q.size</span> <span class='kw'>&lt;-</span> <span class='fu'>length</span>(<span class='no'>query.data</span>)
+    <pre class="examples"><div class='input'><span class='no'>w</span> <span class='kw'>&lt;-</span> <span class='no'>mp_toy_data</span>$<span class='no'>sub_len</span>
+<span class='no'>ref_data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_toy_data</span>$<span class='no'>data</span>[,<span class='fl'>1</span>]
+<span class='no'>query_data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_toy_data</span>$<span class='no'>data</span>[,<span class='fl'>1</span>]
+<span class='no'>d_size</span> <span class='kw'>&lt;-</span> <span class='fu'>length</span>(<span class='no'>ref_data</span>)
+<span class='no'>q_size</span> <span class='kw'>&lt;-</span> <span class='fu'>length</span>(<span class='no'>query_data</span>)
 
-<span class='no'>pre</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='mass.pre.html'>mass.pre</a></span>(<span class='no'>ref.data</span>, <span class='no'>d.size</span>, <span class='no'>query.data</span>, <span class='no'>q.size</span>, <span class='no'>w</span>)
+<span class='no'>pre</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='mass_pre.html'>mass_pre</a></span>(<span class='no'>ref_data</span>, <span class='no'>d_size</span>, <span class='no'>query_data</span>, <span class='no'>q_size</span>, <span class='no'>w</span>)
 
 <span class='no'>dp</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>()
-<span class='kw'>for</span>(<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:(<span class='no'>d.size</span> - <span class='no'>w</span> + <span class='fl'>1</span>)) {
-  <span class='no'>dp</span><span class='kw'>[[</span><span class='no'>i</span>]] <span class='kw'>&lt;-</span> <span class='fu'>mass</span>(<span class='no'>pre</span>$<span class='no'>data.fft</span>, <span class='no'>query.data</span>[<span class='no'>i</span>:(<span class='no'>i</span>-<span class='fl'>1</span>+<span class='no'>w</span>)], <span class='no'>d.size</span>, <span class='no'>w</span>, <span class='no'>pre</span>$<span class='no'>data.mean</span>, <span class='no'>pre</span>$<span class='no'>data.sd</span>,
-          <span class='no'>pre</span>$<span class='no'>query.mean</span>[<span class='no'>i</span>], <span class='no'>pre</span>$<span class='no'>query.sd</span>[<span class='no'>i</span>])
+<span class='kw'>for</span>(<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:(<span class='no'>d_size</span> - <span class='no'>w</span> + <span class='fl'>1</span>)) {
+  <span class='no'>dp</span><span class='kw'>[[</span><span class='no'>i</span>]] <span class='kw'>&lt;-</span> <span class='fu'>mass</span>(<span class='no'>pre</span>$<span class='no'>data_fft</span>, <span class='no'>query_data</span>[<span class='no'>i</span>:(<span class='no'>i</span>-<span class='fl'>1</span>+<span class='no'>w</span>)], <span class='no'>d_size</span>, <span class='no'>w</span>, <span class='no'>pre</span>$<span class='no'>data_mean</span>, <span class='no'>pre</span>$<span class='no'>data_sd</span>,
+          <span class='no'>pre</span>$<span class='no'>query_mean</span>[<span class='no'>i</span>], <span class='no'>pre</span>$<span class='no'>query_sd</span>[<span class='no'>i</span>])
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

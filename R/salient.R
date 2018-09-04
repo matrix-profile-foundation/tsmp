@@ -342,7 +342,7 @@ get_sorted_idx <- function(matrix_profile, n_cand, exclusion_zone = 0) {
   idx <- sort(matrix_profile, index.return = TRUE)$ix
 
   if (exclusion_zone > 0) {
-    for (i in 1:length(idx)) {
+    for (i in seq_len(length(idx))) {
       if (i > min(n_cand, length(idx))) {
         break
       }
@@ -469,7 +469,7 @@ discrete_norm <- function(data, n_bits, max, min) {
 salient_mds <- function(data, sub_picking, window_size) {
   subs <- list()
 
-  for (i in 1:length(sub_picking$indexes)) {
+  for (i in seq_len(length(sub_picking$indexes))) {
     subs[[i]] <- data[sub_picking$indexes[i]:(sub_picking$indexes[i] + window_size - 1), ]
     subs[[i]] <- (subs[[i]] - mean(subs[[i]])) / std(subs[[i]]) # normalize
   }
@@ -510,7 +510,7 @@ salient_score <- function(gtruth, subs, window = 0) {
 
     hit_miss <- rep(FALSE, length(subs$indexes))
 
-    for (k in 1:length(subs$indexes)) {
+    for (k in seq_len(length(subs$indexes))) {
       if ((window == 0 && gtruth[subs$indexes[k]] > 0) ||
         (min(abs(subs$indexes[k] - gtruth)) < cor_th * window) # sub
       ) {

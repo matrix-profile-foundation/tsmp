@@ -4,19 +4,19 @@
 \alias{stamp}
 \title{Anytime univariate STAMP algorithm}
 \usage{
-stamp(..., window.size, exclusion.zone = 1/2, s.size = Inf,
+stamp(..., window_size, exclusion_zone = 1/2, s_size = Inf,
   verbose = 2)
 }
 \arguments{
 \item{...}{a \code{matrix} or a \code{vector}. If a second time series is supplied it will be a join matrix
 profile.}
 
-\item{window.size}{an \code{int}. Size of the sliding window.}
+\item{window_size}{an \code{int}. Size of the sliding window.}
 
-\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is
+\item{exclusion_zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is
 \code{1/2}). See details.}
 
-\item{s.size}{a \code{numeric}. for anytime algorithm, represents the size (in observations) the
+\item{s_size}{a \code{numeric}. for anytime algorithm, represents the size (in observations) the
 random calculation will occur (default is \code{Inf}).}
 
 \item{verbose}{an \code{int}. See details. (Default is \code{2}).}
@@ -37,18 +37,18 @@ estimation, semantic segmentation, visualization, rule discovery, clustering etc
 STAMP computes the Matrix Profile and Profile Index in such manner that it can be stopped before
 its complete calculation and return the best so far results allowing ultra-fast approximate
 solutions. \code{verbose} changes how much information is printed by this function; \code{0} means nothing,
-\code{1} means text, \code{2} means text and sound. \code{exclusion.zone} is used to avoid  trivial matches; if
+\code{1} means text, \code{2} means text and sound. \code{exclusion_zone} is used to avoid  trivial matches; if
 a query data is provided (join similarity), this parameter is ignored.
 }
 \examples{
-mp <- stamp(toy_data$data[1:200,1], window.size = 30, verbose = 0)
+mp <- stamp(mp_toy_data$data[1:200,1], window_size = 30, verbose = 0)
 \dontrun{
-ref.data <- toy_data$data[,1]
-query.data <- toy_data$data[,2]
+ref_data <- mp_toy_data$data[,1]
+query_data <- mp_toy_data$data[,2]
 # self similarity
-mp <- stamp(ref.data, window.size = 30, s.size = round(nrow(ref.data) * 0.1))
+mp <- stamp(ref_data, window_size = 30, s_size = round(nrow(ref_data) * 0.1))
 # join similarity
-mp <- stamp(ref.data, query.data, window.size = 30, s.size = round(nrow(query.data) * 0.1))
+mp <- stamp(ref_data, query_data, window_size = 30, s_size = round(nrow(query_data) * 0.1))
 }
 }
 \references{
@@ -66,11 +66,11 @@ New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-\code{\link[=mstomp]{mstomp()}}, \code{\link[=mstomp.par]{mstomp.par()}}
+\code{\link[=mstomp]{mstomp()}}, \code{\link[=mstomp_par]{mstomp_par()}}
 
-Other matrix profile computations: \code{\link{mstomp.par}},
+Other matrix profile computations: \code{\link{mstomp_par}},
   \code{\link{mstomp}}, \code{\link{scrimp}},
-  \code{\link{stamp.par}}, \code{\link{stomp.par}},
+  \code{\link{stamp_par}}, \code{\link{stomp_par}},
   \code{\link{stomp}}
 }
 \concept{matrix profile computations}

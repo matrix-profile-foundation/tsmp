@@ -75,7 +75,7 @@ sdts_predict <- function(model, data, window_size) {
   pred <- rep(FALSE, data_size - window_size + 1)
   anno_ed <- anno_st + window_size - 1
 
-  for (i in 1:length(anno_st)) {
+  for (i in seq_len(length(anno_st))) {
     pred[anno_st[i]:anno_ed[i]] <- TRUE
   }
 
@@ -121,10 +121,10 @@ sdts_predict <- function(model, data, window_size) {
 #'
 sdts_f_score <- function(gtruth, pred, beta = 1) {
   if (length(pred) > length(gtruth)) {
-    pred <- pred[1:length(gtruth)]
+    pred <- pred[seq_len(length(gtruth))]
   } else if (length(pred) < length(gtruth)) {
     pred_tmp <- rep(FALSE, length(gtruth))
-    pred_tmp[1:length(pred)] <- pred
+    pred_tmp[seq_len(length(pred))] <- pred
     pred <- pred_tmp
   }
 
@@ -136,7 +136,7 @@ sdts_f_score <- function(gtruth, pred, beta = 1) {
   sub_len <- mode(pred_ed - pred_st + 1)
 
   is_tp <- rep(FALSE, length(pred_st))
-  for (i in 1:length(pred_st)) {
+  for (i in seq_len(length(pred_st))) {
     if (pred_ed[i] > length(gtruth)) {
       pred_ed[i] <- length(gtruth)
     }
@@ -153,7 +153,7 @@ sdts_f_score <- function(gtruth, pred, beta = 1) {
   gtruth_ed <- gtruth_ed - 1
 
   is_tp <- rep(FALSE, length(gtruth_st))
-  for (i in 1:length(gtruth_st)) {
+  for (i in seq_len(length(gtruth_st))) {
     if (gtruth_ed[i] > length(pred)) {
       gtruth_ed[i] <- length(gtruth)
     }

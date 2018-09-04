@@ -52,7 +52,7 @@ arcplot <- function(mp, pi, window_size, exclusion_zone = 5, edge_limit = 5, thr
     data <- mp
     data_size <- nrow(data)
     pairs <- matrix(0, nrow(mp), 2)
-    pairs[, 1] <- 1:nrow(mp)
+    pairs[, 1] <- seq_len(nrow(mp))
     pairs[, 2] <- pi
 
     if (threshold < min(mp)) {
@@ -98,7 +98,7 @@ arcplot <- function(mp, pi, window_size, exclusion_zone = 5, edge_limit = 5, thr
     xlim = xlim, ylim = ylim, yaxt = "n", ...
   )
 
-  for (i in 1:nrow(pairs)) {
+  for (i in seq_len(nrow(pairs))) {
     if (pairs[i, 1] > pairs[i, 2]) {
       arccol <- arccoll
     } else {

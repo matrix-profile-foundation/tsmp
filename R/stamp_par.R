@@ -167,13 +167,13 @@ stamp_par <- function(..., window_size, exclusion_zone = 1 / 2, s_size = Inf, n_
         nn <- mass(pre$data_fft, query[i:(i + window_size - 1)], data_size, window_size, pre$data_mean, pre$data_sd, pre$query_mean[i], pre$query_sd[i])
         distance_profile <- Re(sqrt(nn$distance_profile))
 
-                # apply exclusion zone
+        # apply exclusion zone
         if (exclusion_zone > 0) {
-          exc_st <- max(1, idx - exclusion_zone)
-          exc_ed <- min(matrix_profile_size, idx + exclusion_zone)
+          exc_st <- max(1, i - exclusion_zone)
+          exc_ed <- min(matrix_profile_size, i + exclusion_zone)
           distance_profile[exc_st:exc_ed, 1] <- Inf
-          distance_profile[data_sd < vars()$eps] <- Inf
-          if (skip_location[idx] || any(query_sd[idx] < vars()$eps)) {
+          distance_profile[pre$data_sd < vars()$eps] <- Inf
+          if (skip_location[i] || any(pre$query_sd[i] < vars()$eps)) {
             distance_profile[] <- Inf
           }
         }
@@ -184,7 +184,7 @@ stamp_par <- function(..., window_size, exclusion_zone = 1 / 2, s_size = Inf, n_
       res
     }
 
-    for (i in 1:length(batch)) {
+    for (i in seq_len(length(batch))) {
       curr <- batch[[i]]$i
 
       if (!is.null(curr)) {

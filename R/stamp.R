@@ -155,8 +155,8 @@ stamp <- function(..., window_size, exclusion_zone = 1 / 2, s_size = Inf, verbos
       exc_st <- max(1, i - exclusion_zone)
       exc_ed <- min(matrix_profile_size, i + exclusion_zone)
       distance_profile[exc_st:exc_ed, 1] <- Inf
-      distance_profile[data_sd < vars()$eps] <- Inf
-      if (skip_location[i] || any(query_sd[i] < vars()$eps)) {
+      distance_profile[pre$data_sd < vars()$eps] <- Inf
+      if (skip_location[i] || any(pre$query_sd[i] < vars()$eps)) {
         distance_profile[] <- Inf
       }
     }
