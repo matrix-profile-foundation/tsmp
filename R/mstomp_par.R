@@ -18,11 +18,11 @@
 #' @param data a `matrix` of `numeric`, where each column is a time series. Accepts `vector` (see
 #'   details), `list` and `data.frame` too.
 #' @param window_size an `int`. Size of the sliding window.
-#' @param must_dim an `int` or `vector` of which dimensions to forcibly include (default is `NULL`).
-#' @param exc_dim an `int` or `vector` of which dimensions to exclude (default is `NULL`).
 #' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is
 #'   `1/2`). See details.
 #' @param verbose an `int`. See details. (Default is `2`).
+#' @param must_dim an `int` or `vector` of which dimensions to forcibly include (default is `NULL`).
+#' @param exc_dim an `int` or `vector` of which dimensions to exclude (default is `NULL`).
 #' @param n_workers an `int`. Number of workers for parallel. (Default is `2`).
 #'
 #' @return Returns the matrix profile `mp` and profile index `pi`. It also returns the left and
@@ -44,7 +44,7 @@
 #' mp <- mstomp_par(mp_toy_data$data[1:100,], 30, verbose = 0)
 #' @import doSNOW foreach parallel
 
-mstomp_par <- function(data, window_size, must_dim = NULL, exc_dim = NULL, exclusion_zone = 1 / 2, verbose = 2, n_workers = 2) {
+mstomp_par <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, must_dim = NULL, exc_dim = NULL, n_workers = 2) {
   ## get various length
   exclusion_zone <- floor(window_size * exclusion_zone)
 

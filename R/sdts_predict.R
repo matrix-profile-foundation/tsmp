@@ -22,12 +22,12 @@
 #' te_label <- mp_test_data$test$label[subs]
 #' model <- sdts_train(tr_data, tr_label, w, verbose = 0)
 #' predict <- sdts_predict(model, te_data, round(mean(w)))
-#' sdts_f_score(te_label, predict, 1)
+#' sdts_score(te_label, predict, 1)
 #' \dontrun{
 #' windows <- c(110, 220, 330)
 #' model <- sdts_train(mp_test_data$train$data, mp_test_data$train$label, windows, verbose = 0)
 #' predict <- sdts_predict(model, mp_test_data$test$data, round(mean(windows)))
-#' sdts_f_score(mp_test_data$test$label, predict, 1)
+#' sdts_score(mp_test_data$test$label, predict, 1)
 #' }
 
 sdts_predict <- function(model, data, window_size) {
@@ -111,15 +111,15 @@ sdts_predict <- function(model, data, window_size) {
 #' te_label <- mp_test_data$test$label[subs]
 #' model <- sdts_train(tr_data, tr_label, w, verbose = 0)
 #' predict <- sdts_predict(model, te_data, round(mean(w)))
-#' sdts_f_score(te_label, predict, 1)
+#' sdts_score(te_label, predict, 1)
 #' \dontrun{
 #' windows <- c(110, 220, 330)
 #' model <- sdts_train(mp_test_data$train$data, mp_test_data$train$label, windows)
 #' predict <- sdts_predict(model, mp_test_data$test$data, round(mean(windows)))
-#' sdts_f_score(mp_test_data$test$label, predict, 1)
+#' sdts_score(mp_test_data$test$label, predict, 1)
 #' }
 #'
-sdts_f_score <- function(gtruth, pred, beta = 1) {
+sdts_score <- function(gtruth, pred, beta = 1) {
   if (length(pred) > length(gtruth)) {
     pred <- pred[seq_len(length(gtruth))]
   } else if (length(pred) < length(gtruth)) {
@@ -131,6 +131,11 @@ sdts_f_score <- function(gtruth, pred, beta = 1) {
   pred_pad <- c(0, pred, 0)
   pred_st <- which((pred_pad[1:(length(pred_pad) - 1)] - pred_pad[2:length(pred_pad)]) == -1) + 1
   pred_ed <- which((pred_pad[1:(length(pred_pad) - 1)] - pred_pad[2:length(pred_pad)]) == 1)
+
+  pred_len <- min(length(pred_st), length(pred_ed))
+  pred_st <- pred_st[seq_len(pred_len)]
+  pred_ed <- pred_ed[seq_len(pred_len)]
+
   pred_st <- pred_st - 1
   pred_ed <- pred_ed - 1
   sub_len <- mode(pred_ed - pred_st + 1)

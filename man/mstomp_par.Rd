@@ -4,8 +4,8 @@
 \alias{mstomp_par}
 \title{Multivariate STOMP algorithm Parallel version}
 \usage{
-mstomp_par(data, window_size, must_dim = NULL, exc_dim = NULL,
-  exclusion_zone = 1/2, verbose = 2, n_workers = 2)
+mstomp_par(data, window_size, exclusion_zone = 1/2, verbose = 2,
+  must_dim = NULL, exc_dim = NULL, n_workers = 2)
 }
 \arguments{
 \item{data}{a \code{matrix} of \code{numeric}, where each column is a time series. Accepts \code{vector} (see
@@ -13,14 +13,14 @@ details), \code{list} and \code{data.frame} too.}
 
 \item{window_size}{an \code{int}. Size of the sliding window.}
 
-\item{must_dim}{an \code{int} or \code{vector} of which dimensions to forcibly include (default is \code{NULL}).}
-
-\item{exc_dim}{an \code{int} or \code{vector} of which dimensions to exclude (default is \code{NULL}).}
-
 \item{exclusion_zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is
 \code{1/2}). See details.}
 
 \item{verbose}{an \code{int}. See details. (Default is \code{2}).}
+
+\item{must_dim}{an \code{int} or \code{vector} of which dimensions to forcibly include (default is \code{NULL}).}
+
+\item{exc_dim}{an \code{int} or \code{vector} of which dimensions to exclude (default is \code{NULL}).}
 
 \item{n_workers}{an \code{int}. Number of workers for parallel. (Default is \code{2}).}
 }
@@ -70,6 +70,6 @@ Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 Other matrix profile computations: \code{\link{mstomp}},
   \code{\link{scrimp}}, \code{\link{stamp_par}},
   \code{\link{stamp}}, \code{\link{stomp_par}},
-  \code{\link{stomp}}
+  \code{\link{stomp}}, \code{\link{tsmp}}
 }
 \concept{matrix profile computations}

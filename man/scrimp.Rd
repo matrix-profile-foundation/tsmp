@@ -4,8 +4,8 @@
 \alias{scrimp}
 \title{Anytime univariate SCRIMP algorithm (experimental)}
 \usage{
-scrimp(..., window_size, exclusion_zone = 1/2, s_size = Inf,
-  verbose = 2)
+scrimp(..., window_size, exclusion_zone = 1/2, verbose = 2,
+  s_size = Inf)
 }
 \arguments{
 \item{...}{a \code{matrix} or a \code{vector}.}
@@ -15,10 +15,10 @@ scrimp(..., window_size, exclusion_zone = 1/2, s_size = Inf,
 \item{exclusion_zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is
 \code{1/2}). See details.}
 
+\item{verbose}{an \code{int}. See details. (Default is \code{2}).}
+
 \item{s_size}{a \code{numeric}. for anytime algorithm, represents the size (in observations) the
 random calculation will occur (default is \code{Inf}).}
-
-\item{verbose}{an \code{int}. See details. (Default is \code{2}).}
 }
 \value{
 Returns the matrix profile \code{mp} and profile index \code{pi}.
@@ -58,6 +58,6 @@ Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 Other matrix profile computations: \code{\link{mstomp_par}},
   \code{\link{mstomp}}, \code{\link{stamp_par}},
   \code{\link{stamp}}, \code{\link{stomp_par}},
-  \code{\link{stomp}}
+  \code{\link{stomp}}, \code{\link{tsmp}}
 }
 \concept{matrix profile computations}

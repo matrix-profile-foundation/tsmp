@@ -4,8 +4,8 @@
 \alias{stamp_par}
 \title{Anytime univariate STAMP algorithm Parallel version}
 \usage{
-stamp_par(..., window_size, exclusion_zone = 1/2, s_size = Inf,
-  n_workers = 2, verbose = 2)
+stamp_par(..., window_size, exclusion_zone = 1/2, verbose = 2,
+  s_size = Inf, n_workers = 2)
 }
 \arguments{
 \item{...}{a \code{matrix} or a \code{vector}. If a second time series is supplied it will be a join matrix
@@ -16,12 +16,12 @@ profile.}
 \item{exclusion_zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is
 \code{1/2}). See details.}
 
-\item{n_workers}{an \code{int}. Number of workers for parallel. (Default is \code{2}).}
-
 \item{verbose}{an \code{int}. See details. (Default is \code{2}).}
 
-\item{s.size}{a \code{numeric}. for anytime algorithm, represents the size (in observations) the
+\item{s_size}{a \code{numeric}. for anytime algorithm, represents the size (in observations) the
 random calculation will occur (default is \code{Inf}).}
+
+\item{n_workers}{an \code{int}. Number of workers for parallel. (Default is \code{2}).}
 }
 \value{
 Returns the matrix profile \code{mp} and profile index \code{pi}. It also returns the left and
@@ -74,6 +74,6 @@ Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 Other matrix profile computations: \code{\link{mstomp_par}},
   \code{\link{mstomp}}, \code{\link{scrimp}},
   \code{\link{stamp}}, \code{\link{stomp_par}},
-  \code{\link{stomp}}
+  \code{\link{stomp}}, \code{\link{tsmp}}
 }
 \concept{matrix profile computations}

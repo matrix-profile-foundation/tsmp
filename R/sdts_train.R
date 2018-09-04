@@ -32,12 +32,12 @@
 #' te_label <- mp_test_data$test$label[subs]
 #' model <- sdts_train(tr_data, tr_label, w, verbose = 0)
 #' predict <- sdts_predict(model, te_data, round(mean(w)))
-#' sdts_f_score(te_label, predict, 1)
+#' sdts_score(te_label, predict, 1)
 #' \dontrun{
 #' windows <- c(110, 220, 330)
 #' model <- sdts_train(mp_test_data$train$data, mp_test_data$train$label, windows)
 #' predict <- sdts_predict(model, mp_test_data$test$data, round(mean(windows)))
-#' sdts_f_score(mp_test_data$test$label, predict, 1)
+#' sdts_score(mp_test_data$test$label, predict, 1)
 #' }
 sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parallel = TRUE, verbose = 2) {
 

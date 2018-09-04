@@ -18,10 +18,10 @@
 #' @param window_size an `int`. Size of the sliding window.
 #' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is
 #'   `1/2`). See details.
-#' @param s.size a `numeric`. for anytime algorithm, represents the size (in observations) the
+#' @param verbose an `int`. See details. (Default is `2`).
+#' @param s_size a `numeric`. for anytime algorithm, represents the size (in observations) the
 #'   random calculation will occur (default is `Inf`).
 #' @param n_workers an `int`. Number of workers for parallel. (Default is `2`).
-#' @param verbose an `int`. See details. (Default is `2`).
 #'
 #' @return Returns the matrix profile `mp` and profile index `pi`. It also returns the left and
 #'   right matrix profile `lmp`, `rmp` and profile index `lpi`, `rpi` that may be used to detect
@@ -49,7 +49,7 @@
 #' }
 #'
 #' @import doSNOW foreach parallel
-stamp_par <- function(..., window_size, exclusion_zone = 1 / 2, s_size = Inf, n_workers = 2, verbose = 2) {
+stamp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size = Inf, n_workers = 2) {
   args <- list(...)
   data <- args[[1]]
   if (length(args) > 1) {

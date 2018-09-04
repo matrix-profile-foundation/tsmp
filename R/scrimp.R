@@ -18,9 +18,9 @@
 #' @param window_size an `int`. Size of the sliding window.
 #' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is
 #'   `1/2`). See details.
+#' @param verbose an `int`. See details. (Default is `2`).
 #' @param s_size a `numeric`. for anytime algorithm, represents the size (in observations) the
 #'   random calculation will occur (default is `Inf`).
-#' @param verbose an `int`. See details. (Default is `2`).
 #'
 #' @return Returns the matrix profile `mp` and profile index `pi`.
 #' @export
@@ -40,7 +40,7 @@
 #' mp <- scrimp(ref_data, query_data, window_size = 30, s_size = round(nrow(query_data) * 0.1))
 #' }
 
-scrimp <- function(..., window_size, exclusion_zone = 1 / 2, s_size = Inf, verbose = 2) {
+scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size = Inf) {
   args <- list(...)
   data <- args[[1]]
   if (length(args) > 1) {

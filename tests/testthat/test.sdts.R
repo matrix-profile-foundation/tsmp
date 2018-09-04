@@ -20,7 +20,7 @@ te_data <- mp_test_data$test$data[subs]
 te_label <- mp_test_data$test$label[subs]
 model <- sdts_train(tr_data, tr_label, w, verbose = 0)
 predict <- sdts_predict(model, te_data, round(mean(w)))
-pred_score <- sdts_f_score(te_label, predict, 1)
+pred_score <- sdts_score(te_label, predict, 1)
 
 test_that("SDTS Train", {
   expect_equal(round(model$score, 3), 0.889)

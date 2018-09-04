@@ -4,8 +4,8 @@
 \alias{mstomp}
 \title{Multivariate STOMP algorithm}
 \usage{
-mstomp(data, window_size, must_dim = NULL, exc_dim = NULL,
-  exclusion_zone = 1/2, verbose = 2)
+mstomp(data, window_size, exclusion_zone = 1/2, verbose = 2,
+  must_dim = NULL, exc_dim = NULL)
 }
 \arguments{
 \item{data}{a \code{matrix} of \code{numeric}, where each column is a time series. Accepts \code{vector} (see
@@ -13,14 +13,14 @@ details), \code{list} and \code{data.frame} too.}
 
 \item{window_size}{an \code{int} with the size of the sliding window.}
 
-\item{must_dim}{an \code{int} or \code{vector} of which dimensions to forcibly include (default is \code{NULL}).}
-
-\item{exc_dim}{an \code{int} or \code{vector} of which dimensions to exclude (default is \code{NULL}).}
-
 \item{exclusion_zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is
 \code{1/2}).}
 
 \item{verbose}{an \code{int}. See details. (Default is \code{2}).}
+
+\item{must_dim}{an \code{int} or \code{vector} of which dimensions to forcibly include (default is \code{NULL}).}
+
+\item{exc_dim}{an \code{int} or \code{vector} of which dimensions to exclude (default is \code{NULL}).}
 }
 \value{
 Returns the matrix profile \code{mp} and profile index \code{pi}. It also returns the left and
@@ -74,6 +74,6 @@ Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 Other matrix profile computations: \code{\link{mstomp_par}},
   \code{\link{scrimp}}, \code{\link{stamp_par}},
   \code{\link{stamp}}, \code{\link{stomp_par}},
-  \code{\link{stomp}}
+  \code{\link{stomp}}, \code{\link{tsmp}}
 }
 \concept{matrix profile computations}

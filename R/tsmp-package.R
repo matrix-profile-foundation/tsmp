@@ -1,6 +1,5 @@
 #' @title Time Series with Matrix Profile
 #' @docType package
-#' @name tsmp
 #' @references * Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan,
 #'   Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time
 #'   Series Subsequences under Euclidean Distance
@@ -46,6 +45,6 @@
 #' @references Website: <https://sites.google.com/site/ismir2016simple/home/>
 #' @references Website: <https://sites.google.com/view/weaklylabeled/>
 #' @references Website: <http://www.cs.ucr.edu/~hdau001/guided_motif_search/>
-
+#' @keywords internal
 #'
 "_PACKAGE"
