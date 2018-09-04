@@ -177,7 +177,7 @@ fluss_cac <- function(profile_index, window_size, exclusion_zone = 5) {
 
   arc_counts <- cumsum(nnmark)
 
-  ideal_arc_counts <- stats::dbeta(seq(0, 1, length_out = profile_index_size), 2, 2) * profile_index_size / 3
+  ideal_arc_counts <- stats::dbeta(seq(0, 1, length.out = profile_index_size), 2, 2) * profile_index_size / 3
   corrected_arc_counts <- pmin(arc_counts / ideal_arc_counts, 1)
   exclusion_zone <- floor(window_size * exclusion_zone)
   corrected_arc_counts[1:min(exclusion_zone, profile_index_size)] <- 1

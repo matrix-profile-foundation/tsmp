@@ -29,7 +29,7 @@ test_that("Fast Moving Average is ok", {
 })
 
 test_that("MASS Pre is ok", {
-  expect_known_hash(lapply(pre, round, 3), "247c3e49cd")
+  expect_known_hash(lapply(pre, round, 3), "0a8e28def6")
 })
 
 test_that("MASS is ok", {
@@ -42,6 +42,6 @@ fs1 <- sdts_f_score(mp_test_data$test$label, pred, 1)
 fs2 <- sdts_f_score(mp_test_data$train$label, pred, 1)
 
 test_that("F-Score is ok", {
-  expect_known_hash(lapply(fs1, round, 3), "d016bdcb98")
-  expect_known_hash(lapply(fs2, round, 3), "7b1492f832")
+  expect_known_hash(lapply(fs1, round, 3), "8241d8411e")
+  expect_known_hash(lapply(fs2, round, 3), "ad8b052f2c")
 })

@@ -15,19 +15,19 @@ if (skip_on_cran()) {
     expect_error(mstomp(mp_toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2), exc_dim = c(2, 3)), regexp = "presented in both")
     expect_error(mstomp_par(mp_toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2), exc_dim = c(2, 3)), regexp = "presented in both")
     # too many must_dim
-    expect_error(mstomp(mp_toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2, 3, 4)), regexp = "must have dimension must be less")
-    expect_error(mstomp_par(mp_toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2, 3, 4)), regexp = "must have dimension must be less")
+    expect_error(mstomp(mp_toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2, 3, 4)), regexp = "must_dim")
+    expect_error(mstomp_par(mp_toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2, 3, 4)), regexp = "must_dim")
     # too many exc_dim
-    expect_error(mstomp(mp_toy_data$data[1:200, ], window_size = 30, exc_dim = c(1, 2, 3, 4)), regexp = "exclusion dimension must be less")
-    expect_error(mstomp_par(mp_toy_data$data[1:200, ], window_size = 30, exc_dim = c(1, 2, 3, 4)), regexp = "exclusion dimension must be less")
+    expect_error(mstomp(mp_toy_data$data[1:200, ], window_size = 30, exc_dim = c(1, 2, 3, 4)), regexp = "exc_dim")
+    expect_error(mstomp_par(mp_toy_data$data[1:200, ], window_size = 30, exc_dim = c(1, 2, 3, 4)), regexp = "exc_dim")
 
     # small window size
-    expect_error(stamp(mp_toy_data$data[1:200, ], window_size = 2), regexp = "Window size")
-    expect_error(stamp_par(mp_toy_data$data[1:200, ], window_size = 2), regexp = "Window size")
-    expect_error(mstomp(mp_toy_data$data[1:200, ], window_size = 2), regexp = "Window size")
-    expect_error(mstomp_par(mp_toy_data$data[1:200, ], window_size = 2), regexp = "Window size")
-    expect_error(stomp(mp_toy_data$data[1:200, ], window_size = 2), regexp = "Window size")
-    expect_error(stomp_par(mp_toy_data$data[1:200, ], window_size = 2), regexp = "Window size")
+    expect_error(stamp(mp_toy_data$data[1:200, ], window_size = 2), regexp = "window_size")
+    expect_error(stamp_par(mp_toy_data$data[1:200, ], window_size = 2), regexp = "window_size")
+    expect_error(mstomp(mp_toy_data$data[1:200, ], window_size = 2), regexp = "window_size")
+    expect_error(mstomp_par(mp_toy_data$data[1:200, ], window_size = 2), regexp = "window_size")
+    expect_error(stomp(mp_toy_data$data[1:200, ], window_size = 2), regexp = "window_size")
+    expect_error(stomp_par(mp_toy_data$data[1:200, ], window_size = 2), regexp = "window_size")
 
     # unknown data type
     expect_error(stamp(table(rpois(100, 5)), window_size = 30), regexp = "Unknown type")

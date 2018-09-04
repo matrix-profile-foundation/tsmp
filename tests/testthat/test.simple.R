@@ -13,7 +13,7 @@ test_that("Errors", {
   expect_error(simple_fast(data, window_size = 2), regexp = "must be at least 4")
 
   # invalid window
-  expect_error(simple_fast(data, window_size = data), regexp = "type of window_size")
+  expect_error(simple_fast(data, window_size = data), regexp = "window_size")
 
   # data and query dim must be the same
   expect_error(simple_fast(data, data[, 1], window_size = w), regexp = "Data and query dimensions")

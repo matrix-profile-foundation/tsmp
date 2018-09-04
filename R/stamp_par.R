@@ -87,6 +87,13 @@ stamp_par <- function(..., window_size, exclusion_zone = 1 / 2, s_size = Inf, n_
   matrix_profile_size <- data_size - window_size + 1
   num_queries <- query_size - window_size + 1
 
+  if (window_size > query_size / 2) {
+    stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
+  }
+  if (window_size < 4) {
+    stop("Error: `window_size` must be at least 4.", call. = FALSE)
+  }
+
   ## check skip position
   skip_location <- rep(FALSE, matrix_profile_size)
 
@@ -101,13 +108,6 @@ stamp_par <- function(..., window_size, exclusion_zone = 1 / 2, s_size = Inf, n_
 
   query[is.na(query)] <- 0
   query[is.infinite(query)] <- 0
-
-  if (window_size > query_size / 2) {
-    stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
-  }
-  if (window_size < 4) {
-    stop("Error: `window_size` must be at least 4.", call. = FALSE)
-  }
 
   matrix_profile <- matrix(Inf, matrix_profile_size, 1)
   left_matrix_profile <- right_matrix_profile <- matrix_profile
@@ -171,7 +171,7 @@ stamp_par <- function(..., window_size, exclusion_zone = 1 / 2, s_size = Inf, n_
         if (exclusion_zone > 0) {
           exc_st <- max(1, i - exclusion_zone)
           exc_ed <- min(matrix_profile_size, i + exclusion_zone)
-          distance_profile[exc_st:exc_ed, 1] <- Inf
+          distance_profile[exc_st:exc_ed] <- Inf
           distance_profile[pre$data_sd < vars()$eps] <- Inf
           if (skip_location[i] || any(pre$query_sd[i] < vars()$eps)) {
             distance_profile[] <- Inf

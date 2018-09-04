@@ -78,6 +78,13 @@ stomp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
   matrix_profile_size <- data_size - window_size + 1
   num_queries <- query_size - window_size + 1
 
+  if (window_size > query_size / 2) {
+    stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
+  }
+  if (window_size < 4) {
+    stop("Error: `window_size` must be at least 4.", call. = FALSE)
+  }
+
   ## check skip position
   skip_location <- rep(FALSE, matrix_profile_size)
 
@@ -92,13 +99,6 @@ stomp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
 
   query[is.na(query)] <- 0
   query[is.infinite(query)] <- 0
-
-  if (window_size > query_size / 2) {
-    stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
-  }
-  if (window_size < 4) {
-    stop("Error: `window_size` must be at least 4.", call. = FALSE)
-  }
 
   if (verbose > 0) {
     pb <- utils::txtProgressBar(min = 0, max = num_queries, style = 3, width = 80)

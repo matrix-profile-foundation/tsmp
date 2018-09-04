@@ -77,7 +77,7 @@ arcplot <- function(mp, pi, window_size, exclusion_zone = 5, edge_limit = 5, thr
 
   segments <- quality
 
-  z_seq <- seq(0, base::pi, length_out = segments)
+  z_seq <- seq(0, base::pi, length.out = segments)
   xlim <- c(0, data_size + 1)
   ylim <- c(0, data_size / 2)
 
