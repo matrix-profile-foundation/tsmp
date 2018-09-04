@@ -1,8 +1,8 @@
 #' Computes the annotation vector that favors complexity
 #'
 #' @param data a `vector` or a column `matrix` of `numeric`.
-#' @param window.size an `int`. Size of the sliding window.
-#' @param dilution.factor a `numeric`. (Default is `0`). Larger numbers means more dilution.
+#' @param window_size an `int`. Size of the sliding window.
+#' @param dilution_factor a `numeric`. (Default is `0`). Larger numbers means more dilution.
 #'
 #' @return Returns the annotation vector for matrix profile correction.
 #' @export
@@ -13,7 +13,7 @@
 #' @examples
 #' data <- mp_test_data$train$data[1:1000]
 #' window <- 50
-#' av <- av.complexity(data, window)
+#' av <- av_complexity(data, window)
 #'
 av_complexity <- function(data, window_size, dilution_factor = 0) {
   data <- as.matrix(data)
@@ -48,7 +48,7 @@ av_complexity <- function(data, window_size, dilution_factor = 0) {
 #' Computes the annotation vector that favors number of zero crossing
 #'
 #' @param data a `vector` or a column `matrix` of `numeric`.
-#' @param window.size an `int`. Size of the sliding window.
+#' @param window_size an `int`. Size of the sliding window.
 #'
 #' @return Returns the annotation vector for matrix profile correction.
 #' @export
@@ -59,7 +59,7 @@ av_complexity <- function(data, window_size, dilution_factor = 0) {
 #' @examples
 #' data <- mp_test_data$train$data[1:1000]
 #' window <- 50
-#' av <- av.zerocrossing(data, window)
+#' av <- av_zerocrossing(data, window)
 #'
 av_zerocrossing <- function(data, window_size) {
   data <- as.matrix(data)
@@ -88,7 +88,7 @@ av_zerocrossing <- function(data, window_size) {
 #' Computes the annotation vector that suppresses motion artifacts
 #'
 #' @param data a `vector` or a column `matrix` of `numeric`.
-#' @param window.size an `int`. Size of the sliding window.
+#' @param window_size an `int`. Size of the sliding window.
 #'
 #' @return Returns the annotation vector for matrix profile correction.
 #' @export
@@ -99,7 +99,7 @@ av_zerocrossing <- function(data, window_size) {
 #' @examples
 #' data <- mp_test_data$train$data[1:1000]
 #' window <- 50
-#' av <- av.motion.artifact(data, window)
+#' av <- av_motion_artifact(data, window)
 #'
 av_motion_artifact <- function(data, window_size) {
   data <- as.matrix(data)
@@ -134,13 +134,13 @@ av_motion_artifact <- function(data, window_size) {
 #' Computes the annotation vector that suppresses stop-word motifs
 #'
 #' @details
-#' The function is intended to be generic. However, its parameters (`stop.word.loc`,
-#' `exclusion.zone` and `threshold`) are highly dataset dependent.
+#' The function is intended to be generic. However, its parameters (`stop_word_loc`,
+#' `exclusion_zone` and `threshold`) are highly dataset dependent.
 #'
 #' @param data a `vector` or a column `matrix` of `numeric`.
-#' @param window.size an `int`. Size of the sliding window.
-#' @param stop.word.loc an `int`. The index of stop word location.
-#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on window.size (default is
+#' @param window_size an `int`. Size of the sliding window.
+#' @param stop_word_loc an `int`. The index of stop word location.
+#' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window_size (default is
 #'   `1/2`). See details.
 #' @param threshold a `numeric`.
 #'
@@ -153,7 +153,7 @@ av_motion_artifact <- function(data, window_size) {
 #' @examples
 #' data <- mp_test_data$train$data[1:1000]
 #' window <- 50
-#' av <- av.stop.word(data, window, 150)
+#' av <- av_stop_word(data, window, 150)
 #'
 av_stop_word <- function(data, window_size, stop_word_loc, exclusion_zone = 1 / 2, threshold = 0.1) {
   data <- as.matrix(data)
@@ -196,7 +196,7 @@ av_stop_word <- function(data, window_size, stop_word_loc, exclusion_zone = 1 / 
 #' Computes the annotation vector that suppresses hard-limited artifacts
 #'
 #' @param data a `vector` or a column `matrix` of `numeric`.
-#' @param window.size an `int`. Size of the sliding window.
+#' @param window_size an `int`. Size of the sliding window.
 #'
 #' @return Returns the annotation vector for matrix profile correction.
 #' @export
@@ -207,7 +207,7 @@ av_stop_word <- function(data, window_size, stop_word_loc, exclusion_zone = 1 / 
 #' @examples
 #' data <- mp_test_data$train$data[1:1000]
 #' window <- 50
-#' av <- av.hardlimit.artifact(data, window)
+#' av <- av_hardlimit_artifact(data, window)
 #'
 av_hardlimit_artifact <- function(data, window_size) {
   data <- as.matrix(data)
@@ -241,8 +241,8 @@ av_hardlimit_artifact <- function(data, window_size) {
 
 #' Corrects the matrix profile using an annotation vector
 #'
-#' @param matrix.profile The matrix profile.
-#' @param annotation.vector The annotation vector.
+#' @param matrix_profile The matrix profile.
+#' @param annotation_vector The annotation vector.
 #'
 #' @return Returns the corrected matrix profile
 #' @export
@@ -252,8 +252,8 @@ av_hardlimit_artifact <- function(data, window_size) {
 #'   125–34.
 #' @examples
 #' \dontrun{
-#'   av <- av.complexity(data, window)
-#'   mpc <- av.apply(mp, av)
+#'   av <- av_complexity(data, window)
+#'   mpc <- av_apply(mp, av)
 #' }
 av_apply <- function(matrix_profile, annotation_vector) {
   corrected_mp <- matrix_profile + (1 - annotation_vector) * max(matrix_profile)

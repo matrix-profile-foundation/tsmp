@@ -10,17 +10,17 @@
 #' STAMP computes the Matrix Profile and Profile Index in such manner that it can be stopped before
 #' its complete calculation and return the best so far results allowing ultra-fast approximate
 #' solutions. `verbose` changes how much information is printed by this function; `0` means nothing,
-#' `1` means text, `2` means text and sound. `exclusion.zone` is used to avoid  trivial matches; if
+#' `1` means text, `2` means text and sound. `exclusion_zone` is used to avoid  trivial matches; if
 #' a query data is provided (join similarity), this parameter is ignored.
 #'
 #' @param ... a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix
 #'   profile.
-#' @param window.size an `int`. Size of the sliding window.
-#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on window size (default is
+#' @param window_size an `int`. Size of the sliding window.
+#' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is
 #'   `1/2`). See details.
 #' @param s.size a `numeric`. for anytime algorithm, represents the size (in observations) the
 #'   random calculation will occur (default is `Inf`).
-#' @param n.workers an `int`. Number of workers for parallel. (Default is `2`).
+#' @param n_workers an `int`. Number of workers for parallel. (Default is `2`).
 #' @param verbose an `int`. See details. (Default is `2`).
 #'
 #' @return Returns the matrix profile `mp` and profile index `pi`. It also returns the left and
@@ -29,7 +29,7 @@
 #' @export
 #'
 #' @family matrix profile computations
-#' @seealso [mstomp()], [mstomp.par()]
+#' @seealso [mstomp()], [mstomp_par()]
 #' @references * Yeh CCM, Zhu Y, Ulanova L, Begum N, Ding Y, Dau HA, et al. Matrix profile I: All
 #'   pairs similarity joins for time series: A unifying view that includes motifs, discords and
 #'   shapelets. Proc - IEEE Int Conf Data Mining, ICDM. 2017;1317–22.
@@ -38,14 +38,14 @@
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #'
 #' @examples
-#' mp <- stamp.par(mp_toy_data$data[1:200,1], window.size = 30, verbose = 0)
+#' mp <- stamp_par(mp_toy_data$data[1:200,1], window_size = 30, verbose = 0)
 #' \dontrun{
-#' ref.data <- mp_toy_data$data[,1]
-#' query.data <- mp_toy_data$data[,2]
+#' ref_data <- mp_toy_data$data[,1]
+#' query_data <- mp_toy_data$data[,2]
 #' # self similarity
-#' mp <- stamp.par(ref.data, window.size = 30, s.size = round(nrow(ref.data) * 0.1))
+#' mp <- stamp_par(ref_data, window_size = 30, s_size = round(nrow(ref_data) * 0.1))
 #' # join similarity
-#' mp <- stamp.par(ref.data, query.data, window.size = 30, s.size = round(nrow(query.data) * 0.1))
+#' mp <- stamp_par(ref_data, query_data, window_size = 30, s_size = round(nrow(query_data) * 0.1))
 #' }
 #'
 #' @import doSNOW foreach parallel

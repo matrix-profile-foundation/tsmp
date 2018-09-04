@@ -1,12 +1,12 @@
 #' Precomputes several values used on MASS
 #'
 #' @param data a `vector` or a `matrix` of `numeric`. Reference Time Series.
-#' @param data.size an `int`. Reference Time Series size.
+#' @param data_size an `int`. Reference Time Series size.
 #' @param query a `vector` or a `matrix` of `numeric`. Query Time Series (default is `NULL`).
-#' @param query.size an `int`. Query Time Series size (default is `NULL`).
-#' @param window.size an `int`. Sliding window size.
+#' @param query_size an `int`. Query Time Series size (default is `NULL`).
+#' @param window_size an `int`. Sliding window size.
 #'
-#' @return Returns `data.fft`, `data.mean`, `data.sd`, `query.mean` and `query.sd`.
+#' @return Returns `data_fft`, `data_mean`, `data_sd`, `query_mean` and `query_sd`.
 #' @export
 #'
 #' @seealso [mass()] for using precomputed values.
@@ -17,18 +17,18 @@
 #' @references Website: <https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html>
 #'
 #' @examples
-#' w <- mp_toy_data$sub.len
-#' ref.data <- mp_toy_data$data[,1]
-#' query.data <- mp_toy_data$data[,1]
-#' d.size <- length(ref.data)
-#' q.size <- length(query.data)
+#' w <- mp_toy_data$sub_len
+#' ref_data <- mp_toy_data$data[,1]
+#' query_data <- mp_toy_data$data[,1]
+#' d_size <- length(ref_data)
+#' q_size <- length(query_data)
 #'
-#' pre <- mass.pre(ref.data, d.size, query.data, q.size, w)
+#' pre <- mass_pre(ref_data, d_size, query_data, q_size, w)
 #'
 #' dp <- list()
-#' for(i in 1:(d.size - w + 1)) {
-#'   dp[[i]] <- mass(pre$data.fft, query.data[i:(i-1+w)], d.size, w, pre$data.mean, pre$data.sd,
-#'           pre$query.mean[i], pre$query.sd[i])
+#' for(i in 1:(d_size - w + 1)) {
+#'   dp[[i]] <- mass(pre$data_fft, query_data[i:(i-1+w)], d_size, w, pre$data_mean, pre$data_sd,
+#'           pre$query_mean[i], pre$query_sd[i])
 #' }
 
 mass_pre <- function(data, data_size, query = NULL, query_size = NULL, window_size) {

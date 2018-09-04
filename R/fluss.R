@@ -8,13 +8,13 @@
 #' text, `2` means text and sound.
 #'
 #' @param data a `matrix` or a `vector`. Input data.
-#' @param window.size an `int`. Size of the sliding window.
-#' @param num.segments an `int`. Number of segments to extract. Based on domain knowledge.
-#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on window size (default is
+#' @param window_size an `int`. Size of the sliding window.
+#' @param num_segments an `int`. Number of segments to extract. Based on domain knowledge.
+#' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is
 #'   `5`).
 #' @param gtruth an `int` or `vector` of `int` with the ground truth index of segments. (Default is
 #'   `NULL`).
-#' @param profile.index a pre-computed profile index. (Default is `NULL`).
+#' @param profile_index a pre-computed profile index. (Default is `NULL`).
 #' @param verbose an `int`. See details. (Default is `2`).
 #'
 #' @return Returns a list with `segments` (location of semantic changes), `mp` (matrix profile if
@@ -29,7 +29,7 @@
 #' @examples
 #' # This is a fast toy example and results are useless. For a complete result, run the code inside
 #' #'Not run' section below.
-#' data <- mp_fluss_data$tilt.abp$data[1:1000]
+#' data <- mp_fluss_data$tilt_abp$data[1:1000]
 #' truth <- 400
 #' w <- 10
 #' segments <- fluss(data, w, 1, gtruth = truth, verbose = 0)
@@ -55,7 +55,7 @@ fluss <- function(data, window_size, num_segments, exclusion_zone = 5, gtruth = 
     data_size <- length(data)
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: Unknown type of data. Must be: matrix, data_frame or vector.", call. = FALSE)
+    stop("Error: Unknown type of data. Must be: matrix, data.frame or vector.", call. = FALSE)
   }
 
   profile <- NULL
@@ -81,14 +81,14 @@ fluss <- function(data, window_size, num_segments, exclusion_zone = 5, gtruth = 
 #'
 #' Extract candidate points of semantic changes.
 #'
-#' @param arc.counts a `matrix` with the corrected arc counts from [fluss.cac()].
-#' @param num.segments an `int`. Number of segments to extract. Based on domain knowledge.
-#' @param window.size an `int`. Size of the sliding window.
-#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on window size (default is
+#' @param arc_counts a `matrix` with the corrected arc counts from [fluss_cac()].
+#' @param num_segments an `int`. Number of segments to extract. Based on domain knowledge.
+#' @param window_size an `int`. Size of the sliding window.
+#' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is
 #'   `5`).
 #'
 #' @return Returns an `int` or a `vector` of `int` with the location of predicted semantic changes.
-#'   The number of locations is not greater than `num.segments`.
+#'   The number of locations is not greater than `num_segments`.
 #' @export
 #' @family fluss
 #' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII:
@@ -99,18 +99,18 @@ fluss <- function(data, window_size, num_segments, exclusion_zone = 5, gtruth = 
 #' @examples
 #' # This is a fast toy example and results are useless. For a complete result, run the code inside
 #' #'Not run' section below.
-#' data <- mp_fluss_data$tilt.abp$data[1:1000]
+#' data <- mp_fluss_data$tilt_abp$data[1:1000]
 #' w <- 210
-#' mp <- stomp(data, window.size = w, verbose = 0)
-#' cac <- fluss.cac(mp$pi, w)
-#' segments <- fluss.extract(cac, 1, w)
+#' mp <- stomp(data, window_size = w, verbose = 0)
+#' cac <- fluss_cac(mp$pi, w)
+#' segments <- fluss_extract(cac, 1, w)
 #' \dontrun{
 #' data <- mp_fluss_data$walkjogrun$data
 #' w <- mp_fluss_data$walkjogrun$window # 80
 #' nseg <- length(mp_fluss_data$walkjogrun$gtruth) # 2
-#' mp <- stomp(data, window.size = w)
-#' cac <- fluss.cac(mp$pi, w)
-#' segments <- fluss.extract(cac, nseg, w)
+#' mp <- stomp(data, window_size = w)
+#' cac <- fluss_cac(mp$pi, w)
+#' segments <- fluss_extract(cac, nseg, w)
 #' }
 fluss_extract <- function(arc_counts, num_segments, window_size, exclusion_zone = 5) {
   segments_positions <- vector(mode = "numeric")
@@ -137,9 +137,9 @@ fluss_extract <- function(arc_counts, num_segments, window_size, exclusion_zone 
 #' where a semantic change may occur in CAC. This may be useful in real-time implementation as we don't
 #' know in advance the number of domain changes to look for. Please check original paper (1).
 #'
-#' @param profile.index the profile index for arc counting.
-#' @param window.size an `int`. Size of the sliding window.
-#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on window size (default is `5`).
+#' @param profile_index the profile index for arc counting.
+#' @param window_size an `int`. Size of the sliding window.
+#' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is `5`).
 #'
 #' @return Returns a companion matrix with the same size of profile index. This matrix contains the number of
 #' 'arcs' crossing over each index.
@@ -152,16 +152,16 @@ fluss_extract <- function(arc_counts, num_segments, window_size, exclusion_zone 
 #' @examples
 #' # This is a fast toy example and results are useless. For a complete result, run the code inside
 #' #'Not run' section below.
-#' data <- mp_fluss_data$tilt.abp$data[1:1000]
+#' data <- mp_fluss_data$tilt_abp$data[1:1000]
 #' w <- 210
-#' mp <- stomp(data, window.size = w, verbose = 0)
-#' cac <- fluss.cac(mp$pi, w)
+#' mp <- stomp(data, window_size = w, verbose = 0)
+#' cac <- fluss_cac(mp$pi, w)
 #'
 #' \dontrun{
 #' data <- mp_fluss_data$walkjogrun$data
 #' w <- mp_fluss_data$walkjogrun$window # 80
-#' mp <- stomp(data, window.size = w)
-#' cac <- fluss.cac(mp$pi, w)
+#' mp <- stomp(data, window_size = w)
+#' cac <- fluss_cac(mp$pi, w)
 #' }
 fluss_cac <- function(profile_index, window_size, exclusion_zone = 5) {
   arc_counts <- vector(mode = "numeric")
@@ -189,8 +189,8 @@ fluss_cac <- function(profile_index, window_size, exclusion_zone = 5) {
 #' FLUSS - Prediction score calculation
 #'
 #' @param gtruth an `int` or `vector` of `int` with the ground truth index of segments.
-#' @param extracted an `int` or `vector` of `int` with the extracted indexes from [fluss.extract()].
-#' @param data.size an `int`. Size of original input data.
+#' @param extracted an `int` or `vector` of `int` with the extracted indexes from [fluss_extract()].
+#' @param data_size an `int`. Size of original input data.
 #'
 #' @return Returns the score of predicted semantic transitions compared with the ground truth.
 #' Zero is the best, One is the worst.
@@ -202,22 +202,22 @@ fluss_cac <- function(profile_index, window_size, exclusion_zone = 5) {
 #' @examples
 #' # This is a fast toy example and results are useless. For a complete result, run the code inside
 #' #'Not run' section below.
-#' data <- mp_fluss_data$tilt.abp$data[1:1000]
+#' data <- mp_fluss_data$tilt_abp$data[1:1000]
 #' w <- 10
 #' truth <- 400
-#' mp <- stomp(data, window.size = w, verbose = 0)
-#' cac <- fluss.cac(mp$pi, w)
-#' segments <- fluss.extract(cac, 1, w)
-#' score <- fluss.score(truth, segments, length(data))
+#' mp <- stomp(data, window_size = w, verbose = 0)
+#' cac <- fluss_cac(mp$pi, w)
+#' segments <- fluss_extract(cac, 1, w)
+#' score <- fluss_score(truth, segments, length(data))
 #' \dontrun{
 #' data <- mp_fluss_data$walkjogrun$data
 #' w <- mp_fluss_data$walkjogrun$window # 80
 #' truth <- mp_fluss_data$walkjogrun$gtruth # 3800 6800
 #' nseg <- length(mp_fluss_data$walkjogrun$gtruth) # 2
-#' mp <- stomp(data, window.size = w)
-#' cac <- fluss.cac(mp$pi, w)
-#' segments <- fluss.extract(cac, nseg, w)
-#' score <- fluss.score(truth, segments, length(data))
+#' mp <- stomp(data, window_size = w)
+#' cac <- fluss_cac(mp$pi, w)
+#' segments <- fluss_extract(cac, nseg, w)
+#' score <- fluss_score(truth, segments, length(data))
 #' }
 fluss_score <- function(gtruth, extracted, data_size) {
   n <- length(gtruth)

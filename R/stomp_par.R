@@ -8,16 +8,16 @@
 #' series motif discovery, time series joins, shapelet discovery (classification), density
 #' estimation, semantic segmentation, visualization, rule discovery, clustering etc. `verbose`
 #' changes how much information is printed by this function; `0` means nothing, `1` means text, `2`
-#' means text and sound. `exclusion.zone` is used to avoid trivial matches; if a query data is
+#' means text and sound. `exclusion_zone` is used to avoid trivial matches; if a query data is
 #' provided (join similarity), this parameter is ignored.
 #'
 #' @param ... a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix
 #'   profile.
-#' @param window.size an `int`. Size of the sliding window.
-#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on window size (default is
+#' @param window_size an `int`. Size of the sliding window.
+#' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is
 #'   `1/2`). See details.
 #' @param verbose an `int`. See details. (Default is `2`).
-#' @param n.workers an `int`. Number of workers for parallel. (Default is `2`).
+#' @param n_workers an `int`. Number of workers for parallel. (Default is `2`).
 #'
 #' @return Returns the matrix profile `mp` and profile index `pi`. It also returns the left and
 #'   right matrix profile `lmp`, `rmp` and profile index `lpi`, `rpi` that may be used to detect
@@ -25,21 +25,21 @@
 #' @export
 #'
 #' @family matrix profile computations
-#' @seealso [stamp()], [stamp.par()]; [mstomp()], [mstomp.par()] for multivariate analysis.
+#' @seealso [stamp()], [stamp_par()]; [mstomp()], [mstomp_par()] for multivariate analysis.
 #' @references * Zhu Y, Zimmerman Z, Senobari NS, Yeh CM, Funning G. Matrix Profile II : Exploiting
 #'   a Novel Algorithm and GPUs to Break the One Hundred Million Barrier for Time Series Motifs and
 #'   Joins. Icdm. 2016 Jan 22;54(1):739–48.
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #'
 #' @examples
-#' mp <- stomp.par(mp_toy_data$data[1:200,1], window.size = 30, verbose = 0)
+#' mp <- stomp_par(mp_toy_data$data[1:200,1], window_size = 30, verbose = 0)
 #' \dontrun{
-#' ref.data <- mp_toy_data$data[,1]
-#' query.data <- mp_toy_data$data[,2]
+#' ref_data <- mp_toy_data$data[,1]
+#' query_data <- mp_toy_data$data[,2]
 #' # self similarity
-#' mp <- stomp.par(ref.data, window.size = 30)
+#' mp <- stomp_par(ref_data, window_size = 30)
 #' # join similarity
-#' mp <- stomp.par(ref.data, query.data, window.size = 30)
+#' mp <- stomp_par(ref_data, query_data, window_size = 30)
 #' }
 stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_workers = 2) {
   args <- list(...)

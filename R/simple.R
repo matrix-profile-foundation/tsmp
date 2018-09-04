@@ -6,8 +6,8 @@
 #'
 #' @param ... a `matrix` of `numeric`, where each column is a time series. Accepts `list` and
 #'   `data.frame` too. If a second time series is supplied it will be a join matrix profile.
-#' @param window.size an `int` with the size of the sliding window.
-#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on window size (default is
+#' @param window_size an `int` with the size of the sliding window.
+#' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is
 #'   `1/2`).
 #' @param verbose an `int`. See details. (Default is `2`).
 #'
@@ -24,7 +24,7 @@
 #' @examples
 #' w <- 30
 #' data <- mp_toy_data$data # 3 dimensions matrix
-#' result <- simple.fast(data, window.size = w, verbose = 0)
+#' result <- simple_fast(data, window_size = w, verbose = 0)
 #'
 simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
   if (!is.numeric(window_size) || length(window_size) > 1) {
@@ -71,7 +71,7 @@ simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: Unknown type of data. Must be: matrix, data_frame, vector or list.", call. = FALSE)
+    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list.", call. = FALSE)
   }
 
   ## transform query list into matrix
@@ -103,7 +103,7 @@ simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
     # transform query into 1-col matrix
     query <- as.matrix(query) # just to be uniform
   } else {
-    stop("Error: Unknown type of query. Must be: matrix, data_frame, vector or list.", call. = FALSE)
+    stop("Error: Unknown type of query. Must be: matrix, data.frame, vector or list.", call. = FALSE)
   }
 
   ## check input
@@ -213,13 +213,13 @@ simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
 
 #' Precomputes several values used on MASS
 #'
-#' The difference of this function to [mass.pre()] is that this does not normalize data. Specific for this domain.
+#' The difference of this function to [mass_pre()] is that this does not normalize data. Specific for this domain.
 #'
 #' @param data a `matrix` of `numeric`. Reference Time Series.
-#' @param data.size an `int`. Reference Time Series size.
-#' @param window.size an `int`. Sliding window size.
+#' @param data_size an `int`. Reference Time Series size.
+#' @param window_size an `int`. Sliding window size.
 #'
-#' @return Returns `data.fft` and `sumx2`.
+#' @return Returns `data_fft` and `sumx2`.
 #' @keywords internal
 #' @noRd
 #'
@@ -249,13 +249,13 @@ mass_simple_pre <- function(data, data_size, window_size) {
 #' Mueen's Algorithm for Similarity Search is The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance and Correlation Coefficient.
 #' The difference of this function to [mass()] is that this does not normalize data. Specific for this domain.
 #'
-#' @param data.fft precomputed data product.
-#' @param query.window a `matrix` of `numeric`. Query window.
-#' @param data.size an `int`. The length of the reference data.
-#' @param window.size an `int`. Sliding window size.
+#' @param data_fft precomputed data product.
+#' @param query_window a `matrix` of `numeric`. Query window.
+#' @param data_size an `int`. The length of the reference data.
+#' @param window_size an `int`. Sliding window size.
 #' @param sumx2 precomputed sum of squares
 #'
-#' @return Returns the `distance.profile` for the given query and the `last.product` for STOMP algorithm and `sumy2`.
+#' @return Returns the `distance_profile` for the given query and the `last_product` for STOMP algorithm and `sumy2`.
 #' @keywords internal
 #' @noRd
 #'

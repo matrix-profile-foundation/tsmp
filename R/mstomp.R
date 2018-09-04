@@ -17,10 +17,10 @@
 #'
 #' @param data a `matrix` of `numeric`, where each column is a time series. Accepts `vector` (see
 #'   details), `list` and `data.frame` too.
-#' @param window.size an `int` with the size of the sliding window.
-#' @param must.dim an `int` or `vector` of which dimensions to forcibly include (default is `NULL`).
-#' @param exc.dim an `int` or `vector` of which dimensions to exclude (default is `NULL`).
-#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on window size (default is
+#' @param window_size an `int` with the size of the sliding window.
+#' @param must_dim an `int` or `vector` of which dimensions to forcibly include (default is `NULL`).
+#' @param exc_dim an `int` or `vector` of which dimensions to exclude (default is `NULL`).
+#' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is
 #'   `1/2`).
 #' @param verbose an `int`. See details. (Default is `2`).
 #'
@@ -30,7 +30,7 @@
 #' @export
 #'
 #' @family matrix profile computations
-#' @seealso [stamp()], [stamp.par()], [mstomp.par()]
+#' @seealso [stamp()], [stamp_par()], [mstomp_par()]
 #' @references * Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif
 #'   Discovery.
 #' @references * Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A
@@ -43,9 +43,9 @@
 #' mp <- mstomp(mp_toy_data$data[1:200,], 30, verbose = 0)
 #' \dontrun{
 #' # force using dimensions 1 and 2
-#' mp <- mstomp(mp_toy_data$data[1:200,], 30, must.dim = c(1, 2))
+#' mp <- mstomp(mp_toy_data$data[1:200,], 30, must_dim = c(1, 2))
 #' # exclude dimensions 2 and 3
-#' mp <- mstomp(mp_toy_data$data[1:200,], 30, exc.dim = c(2, 3))
+#' mp <- mstomp(mp_toy_data$data[1:200,], 30, exc_dim = c(2, 3))
 #' }
 
 mstomp <- function(data, window_size, must_dim = NULL, exc_dim = NULL, exclusion_zone = 1 / 2, verbose = 2) {
@@ -81,7 +81,7 @@ mstomp <- function(data, window_size, must_dim = NULL, exc_dim = NULL, exclusion
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: Unknown type of data. Must be: matrix, data_frame, vector or list.", call. = FALSE)
+    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list.", call. = FALSE)
   }
 
   matrix_profile_size <- data_size - window_size + 1

@@ -7,13 +7,13 @@
 #'
 #' @param data a `vector` of `numeric`. Time series.
 #' @param label a `vector` of `logical`. Annotations.
-#' @param window.size an `int` or a `vector` of `int`. Sliding window sizes.
+#' @param window_size an `int` or a `vector` of `int`. Sliding window sizes.
 #' @param beta a `numeric`. See details. (default is `1`).
-#' @param pat.max an `int`. Max number of shape features captured. (default is `Inf``).
+#' @param pat_max an `int`. Max number of shape features captured. (default is `Inf``).
 #' @param parallel a `logical`. Use parallel computation inside (default is `TRUE`).
 #' @param verbose an `int`. See details. (Default is `2`).
 #'
-#' @return Returns a list with the learned dictionary `score` (estimated score), `score.hist`
+#' @return Returns a list with the learned dictionary `score` (estimated score), `score_hist`
 #'   (history of scores), `pattern` (shape features), `thold` (threshold values).
 #'
 #' @export
@@ -30,14 +30,14 @@
 #' tr_label <- mp_test_data$train$label[subs]
 #' te_data <- mp_test_data$test$data[subs]
 #' te_label <- mp_test_data$test$label[subs]
-#' model <- sdts.train(tr_data, tr_label, w, verbose = 0)
-#' predict <- sdts.predict(model, te_data, round(mean(w)))
-#' sdts.f.score(te_label, predict, 1)
+#' model <- sdts_train(tr_data, tr_label, w, verbose = 0)
+#' predict <- sdts_predict(model, te_data, round(mean(w)))
+#' sdts_f_score(te_label, predict, 1)
 #' \dontrun{
 #' windows <- c(110, 220, 330)
-#' model <- sdts.train(mp_test_data$train$data, mp_test_data$train$label, windows)
-#' predict <- sdts.predict(model, mp_test_data$test$data, round(mean(windows)))
-#' sdts.f.score(mp_test_data$test$label, predict, 1)
+#' model <- sdts_train(mp_test_data$train$data, mp_test_data$train$label, windows)
+#' predict <- sdts_predict(model, mp_test_data$test$data, round(mean(windows)))
+#' sdts_f_score(mp_test_data$test$label, predict, 1)
 #' }
 sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parallel = TRUE, verbose = 2) {
 
@@ -55,7 +55,7 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: Unknown type of data. Must be: matrix, data_frame, vector or list.", call. = FALSE)
+    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list.", call. = FALSE)
   }
 
   n_window_size <- length(window_size)
@@ -335,12 +335,12 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
 
 #' Computes the golden section for individual candidates
 #'
-#' @param dist.pro the candidate distance profile
+#' @param dist_pro the candidate distance profile
 #' @param label a vector with the data bool annotation
-#' @param pos.st a vector with the starting points of label
-#' @param pos.ed a vector with the ending points of label
+#' @param pos_st a vector with the starting points of label
+#' @param pos_ed a vector with the ending points of label
 #' @param beta a number that balance the F-Score. Beta > 1 towards recall, < towards precision
-#' @param window.size an integer with the sliding window size
+#' @param window_size an integer with the sliding window size
 #'
 #' @return Returns the best threshold and its F-Score
 #'
@@ -376,14 +376,14 @@ golden_section <- function(dist_pro, label, pos_st, pos_ed, beta, window_size) {
 
 #' Computes the golden section for combined candidates
 
-#' @param dist.pro the candidate distance profile
+#' @param dist_pro the candidate distance profile
 #' @param thold a number with the threshold used to calculate the F-Score
 #' @param label a vector with the data bool annotation
-#' @param pos.st a vector with the starting points of label
-#' @param pos.ed a vector with the ending points of label
+#' @param pos_st a vector with the starting points of label
+#' @param pos_ed a vector with the ending points of label
 #' @param beta a number that balance the F-Score. Beta > 1 towards recall, < towards precision
-#' @param window.size an integer with the sliding window size
-#' @param fit.idx an integer with the index of the current threshold
+#' @param window_size an integer with the sliding window size
+#' @param fit_idx an integer with the index of the current threshold
 #'
 #' @return Returns the best threshold and its F-Score
 #'
@@ -427,11 +427,11 @@ golden_section_2 <- function(dist_pro, thold, label, pos_st, pos_ed, beta, windo
 #' Computes de F-Score
 #'
 #' @param label a vector with the data bool annotation
-#' @param pos.st a vector with the starting points of label
-#' @param pos.ed a vector with the ending points of label
-#' @param dist.pro the distance profile of the data
+#' @param pos_st a vector with the starting points of label
+#' @param pos_ed a vector with the ending points of label
+#' @param dist_pro the distance profile of the data
 #' @param thold a number with the threshold used to compute the prediction
-#' @param window.size an integer with the sliding window size
+#' @param window_size an integer with the sliding window size
 #' @param beta a number that balance the F-Score. Beta > 1 towards recall, < towards precision
 #'
 #' @return Returns the F-Score, precision and recall values

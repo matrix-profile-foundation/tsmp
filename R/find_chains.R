@@ -13,8 +13,8 @@
 #' @examples
 #' w <- 50
 #' data <- mp_gait_data
-#' mp <- stamp(data, window.size = w, exclusion.zone = 1/4, verbose = 0)
-#' find.chains(mp)
+#' mp <- stamp(data, window_size = w, exclusion_zone = 1/4, verbose = 0)
+#' find_chains(mp)
 #'
 find_chains <- function(matrices) {
   size <- length(matrices$rpi)

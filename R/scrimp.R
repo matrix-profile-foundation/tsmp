@@ -12,13 +12,13 @@
 #' SCRIMP computes the Matrix Profile and Profile Index in such manner that it can be stopped before
 #' its complete calculation and return the best so far results allowing ultra-fast approximate
 #' solutions. `verbose` changes how much information is printed by this function; `0` means nothing,
-#' `1` means text, `2` means text and sound. `exclusion.zone` is used to avoid  trivial matches.
+#' `1` means text, `2` means text and sound. `exclusion_zone` is used to avoid  trivial matches.
 #'
 #' @param ... a `matrix` or a `vector`.
-#' @param window.size an `int`. Size of the sliding window.
-#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on window size (default is
+#' @param window_size an `int`. Size of the sliding window.
+#' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is
 #'   `1/2`). See details.
-#' @param s.size a `numeric`. for anytime algorithm, represents the size (in observations) the
+#' @param s_size a `numeric`. for anytime algorithm, represents the size (in observations) the
 #'   random calculation will occur (default is `Inf`).
 #' @param verbose an `int`. See details. (Default is `2`).
 #'
@@ -26,18 +26,18 @@
 #' @export
 #'
 #' @family matrix profile computations
-#' @seealso [mstomp()], [mstomp.par()]
+#' @seealso [mstomp()], [mstomp_par()]
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #'
 #' @examples
-#' mp <- scrimp(mp_toy_data$data[1:200,1], window.size = 30, verbose = 0)
+#' mp <- scrimp(mp_toy_data$data[1:200,1], window_size = 30, verbose = 0)
 #' \dontrun{
-#' ref.data <- mp_toy_data$data[,1]
-#' query.data <- mp_toy_data$data[,2]
+#' ref_data <- mp_toy_data$data[,1]
+#' query_data <- mp_toy_data$data[,2]
 #' # self similarity
-#' mp <- scrimp(ref.data, window.size = 30, s.size = round(nrow(ref.data) * 0.1))
+#' mp <- scrimp(ref_data, window_size = 30, s_size = round(nrow(ref_data) * 0.1))
 #' # join similarity
-#' mp <- scrimp(ref.data, query.data, window.size = 30, s.size = round(nrow(query.data) * 0.1))
+#' mp <- scrimp(ref_data, query_data, window_size = 30, s_size = round(nrow(query_data) * 0.1))
 #' }
 
 scrimp <- function(..., window_size, exclusion_zone = 1 / 2, s_size = Inf, verbose = 2) {
@@ -194,11 +194,11 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, s_size = Inf, verbo
 #'
 #' @param data a `matrix` or a `vector`.
 #' @param idx an `int`. The index of window to be computed.
-#' @param data.size an `int`.
-#' @param window.size an `int`.
-#' @param mp.size an `int`.
-#' @param data.mean result of `fast.movavg`.
-#' @param data.sd result of `fast.movsd`.
+#' @param data_size an `int`.
+#' @param window_size an `int`.
+#' @param mp_size an `int`.
+#' @param data_mean result of `fast_movavg`.
+#' @param data_sd result of `fast_movsd`.
 #'
 #' @return Returns the distance profile
 #' @keywords internal

@@ -6,18 +6,18 @@
 #'
 #' @param data a `matrix` of `numeric`, where each column is a time series. Accepts `vector` (see
 #'   details), `list` and `data.frame` too.
-#' @param window.size an `int` with the size of the sliding window.
-#' @param matrix.profile multidimensional matrix profile (from [mstomp()] or [mstomp.par()]).
-#' @param profile.index multidimensional profile index (from [mstomp()] or [mstomp.par()]).
-#' @param n.bit an `int`. Number of bits for MDL discretization. (Default is `4`).
+#' @param window_size an `int` with the size of the sliding window.
+#' @param matrix_profile multidimensional matrix profile (from [mstomp()] or [mstomp_par()]).
+#' @param profile_index multidimensional profile index (from [mstomp()] or [mstomp_par()]).
+#' @param n_bit an `int`. Number of bits for MDL discretization. (Default is `4`).
 #' @param k an `int`. The number of MOTIFs to retrieve. `Inf` means all possible MOTIFs. (Default is
 #'   `Inf`).
 #'
-#' @return Returns the `motif.idx` with the index of MOTIFs founded and `motif.dim` with the spanned
+#' @return Returns the `motif_idx` with the index of MOTIFs founded and `motif_dim` with the spanned
 #'   dimensions of respective MOTIF.
 #' @export
 #'
-#' @seealso [mstomp()], [mstomp.par()], [guide.search()]
+#' @seealso [mstomp()], [mstomp_par()], [guide_search()]
 #' @references * Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif
 #'   Discovery.
 #' @references * Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A
@@ -28,13 +28,13 @@
 #' @examples
 #' # This is a fast toy example and results are useless. For a complete result, run the code inside
 #' #'Not run' section below.
-#' w <- mp_toy_data$sub.len
+#' w <- mp_toy_data$sub_len
 #' mp <- mstomp(mp_toy_data$data[1:200,], w, verbose = 0)
-#' motifs <- unconstrain.search(mp_toy_data$data[1:200,], w, mp$mp, mp$pi, 2)
+#' motifs <- unconstrain_search(mp_toy_data$data[1:200,], w, mp$mp, mp$pi, 2)
 #' \dontrun{
-#' w <- mp_toy_data$sub.len
-#' mp <- mstomp.par(mp_toy_data$data, w)
-#' motifs <- unconstrain.search(mp_toy_data$data, w, mp$mp, mp$pi, 4, 2)
+#' w <- mp_toy_data$sub_len
+#' mp <- mstomp_par(mp_toy_data$data, w)
+#' motifs <- unconstrain_search(mp_toy_data$data, w, mp$mp, mp$pi, 4, 2)
 #' }
 #'
 
@@ -69,7 +69,7 @@ unconstrain_search <- function(data, window_size, matrix_profile, profile_index,
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: Unknown type of data. Must be: matrix, data_frame, vector or list.", call. = FALSE)
+    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list.", call. = FALSE)
   }
 
   exc_zone <- round(0.5 * window_size + vars()$eps)

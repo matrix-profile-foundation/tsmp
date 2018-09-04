@@ -1,13 +1,13 @@
 #' Fast implementation of moving standard deviation using filter
 #'
 #' @param data a `vector` or a column `matrix` of `numeric`.
-#' @param window.size moving sd window size
+#' @param window_size moving sd window size
 #'
 #' @return Returns a `vector` with the moving standard deviation
 #' @export
 #'
 #' @examples
-#' data.sd <- fast.movsd(mp_toy_data$data[,1], mp_toy_data$sub.len)
+#' data_sd <- fast_movsd(mp_toy_data$data[,1], mp_toy_data$sub_len)
 
 fast_movsd <- function(data, window_size) {
 
@@ -48,12 +48,12 @@ fast_movsd <- function(data, window_size) {
 #' Fast implementation of moving average using filter
 #'
 #' @param data a `vector` or a column `matrix` of `numeric`.
-#' @param window.size moving average window size
+#' @param window_size moving average window size
 #'
 #' @return Returns a `vector` with the moving average
 #' @export
 #' @examples
-#' data.avg <- fast.movavg(mp_toy_data$data[,1], mp_toy_data$sub.len)
+#' data_avg <- fast_movavg(mp_toy_data$data[,1], mp_toy_data$sub_len)
 
 fast_movavg <- function(data, window_size) {
   data_mean <- stats::filter(data, rep(1 / window_size, window_size), sides = 2)

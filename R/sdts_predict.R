@@ -1,8 +1,8 @@
 #' Scalable Dictionary learning for Time Series (SDTS) prediction function
 #'
-#' @param model a model created by SDTS training function [sdts.train()].
+#' @param model a model created by SDTS training function [sdts_train()].
 #' @param data a `vector` of `numeric`. Time series.
-#' @param window.size an `int`. The average sliding window size.
+#' @param window_size an `int`. The average sliding window size.
 #'
 #' @return Returns a `vector` of `logical` with predicted annotations.
 #'
@@ -20,14 +20,14 @@
 #' tr_label <- mp_test_data$train$label[subs]
 #' te_data <- mp_test_data$test$data[subs]
 #' te_label <- mp_test_data$test$label[subs]
-#' model <- sdts.train(tr_data, tr_label, w, verbose = 0)
-#' predict <- sdts.predict(model, te_data, round(mean(w)))
-#' sdts.f.score(te_label, predict, 1)
+#' model <- sdts_train(tr_data, tr_label, w, verbose = 0)
+#' predict <- sdts_predict(model, te_data, round(mean(w)))
+#' sdts_f_score(te_label, predict, 1)
 #' \dontrun{
 #' windows <- c(110, 220, 330)
-#' model <- sdts.train(mp_test_data$train$data, mp_test_data$train$label, windows, verbose = 0)
-#' predict <- sdts.predict(model, mp_test_data$test$data, round(mean(windows)))
-#' sdts.f.score(mp_test_data$test$label, predict, 1)
+#' model <- sdts_train(mp_test_data$train$data, mp_test_data$train$label, windows, verbose = 0)
+#' predict <- sdts_predict(model, mp_test_data$test$data, round(mean(windows)))
+#' sdts_f_score(mp_test_data$test$label, predict, 1)
 #' }
 
 sdts_predict <- function(model, data, window_size) {
@@ -89,10 +89,10 @@ sdts_predict <- function(model, data, window_size) {
 #' `beta` is used to balance F-score towards recall (`>1`) or precision (`<1`).
 #'
 #' @param gtruth a `vector` of `logical`. Ground truth annotation.
-#' @param pred a `vector` of `logical`. Predicted annotation from [sdts.predict()]
+#' @param pred a `vector` of `logical`. Predicted annotation from [sdts_predict()]
 #' @param beta a `numeric`. See details. (default is `1`).
 #'
-#' @return Returns a `list` with `f.score`, `precision` and `recall`.
+#' @return Returns a `list` with `f_score`, `precision` and `recall`.
 #'
 #' @export
 #'
@@ -109,14 +109,14 @@ sdts_predict <- function(model, data, window_size) {
 #' tr_label <- mp_test_data$train$label[subs]
 #' te_data <- mp_test_data$test$data[subs]
 #' te_label <- mp_test_data$test$label[subs]
-#' model <- sdts.train(tr_data, tr_label, w, verbose = 0)
-#' predict <- sdts.predict(model, te_data, round(mean(w)))
-#' sdts.f.score(te_label, predict, 1)
+#' model <- sdts_train(tr_data, tr_label, w, verbose = 0)
+#' predict <- sdts_predict(model, te_data, round(mean(w)))
+#' sdts_f_score(te_label, predict, 1)
 #' \dontrun{
 #' windows <- c(110, 220, 330)
-#' model <- sdts.train(mp_test_data$train$data, mp_test_data$train$label, windows)
-#' predict <- sdts.predict(model, mp_test_data$test$data, round(mean(windows)))
-#' sdts.f.score(mp_test_data$test$label, predict, 1)
+#' model <- sdts_train(mp_test_data$train$data, mp_test_data$train$label, windows)
+#' predict <- sdts_predict(model, mp_test_data$test$data, round(mean(windows)))
+#' sdts_f_score(mp_test_data$test$label, predict, 1)
 #' }
 #'
 sdts_f_score <- function(gtruth, pred, beta = 1) {
@@ -135,16 +135,16 @@ sdts_f_score <- function(gtruth, pred, beta = 1) {
   pred_ed <- pred_ed - 1
   sub_len <- mode(pred_ed - pred_st + 1)
 
-  is.tp <- rep(FALSE, length(pred_st))
+  is_tp <- rep(FALSE, length(pred_st))
   for (i in 1:length(pred_st)) {
     if (pred_ed[i] > length(gtruth)) {
       pred_ed[i] <- length(gtruth)
     }
     if (sum(gtruth[pred_st[i]:pred_ed[i]]) > 0.8 * sub_len) {
-      is.tp[i] <- TRUE
+      is_tp[i] <- TRUE
     }
   }
-  tp_pre <- sum(is.tp)
+  tp_pre <- sum(is_tp)
 
   gtruth_pad <- c(0, gtruth, 0)
   gtruth_st <- which((gtruth_pad[1:(length(gtruth_pad) - 1)] - gtruth_pad[2:length(gtruth_pad)]) == -1) + 1
@@ -152,16 +152,16 @@ sdts_f_score <- function(gtruth, pred, beta = 1) {
   gtruth_st <- gtruth_st - 1
   gtruth_ed <- gtruth_ed - 1
 
-  is.tp <- rep(FALSE, length(gtruth_st))
+  is_tp <- rep(FALSE, length(gtruth_st))
   for (i in 1:length(gtruth_st)) {
     if (gtruth_ed[i] > length(pred)) {
       gtruth_ed[i] <- length(gtruth)
     }
     if (sum(pred[gtruth_st[i]:gtruth_ed[i]]) > 0.8 * sub_len) {
-      is.tp[i] <- TRUE
+      is_tp[i] <- TRUE
     }
   }
-  tp_rec <- sum(is.tp)
+  tp_rec <- sum(is_tp)
 
   pre <- tp_pre / length(pred_st)
   rec <- tp_rec / length(gtruth_st)

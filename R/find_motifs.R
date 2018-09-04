@@ -1,12 +1,12 @@
 #' Find MOTIFs and Plot them
 #'
-#' @param matrix.profile
-#' @param profile.index
-#' @param window.size
+#' @param matrix_profile
+#' @param profile_index
+#' @param window_size
 #' @param data
-#' @param exclusion.zone
+#' @param exclusion_zone
 #' @param radius
-#' @param n.motifs
+#' @param n_motifs
 #' @param plot
 #' @param cols
 #'
@@ -14,9 +14,9 @@
 #' @export
 #'
 #' @examples
-find.motifs <- function(matrix.profile, profile.index,
-                        window.size, data,
-                        exclusion.zone = 1/2, radius = 3, n.motifs = 3, plot = TRUE, cols = 3) {
+find_motifs <- function(matrix_profile, profile_index,
+                        window_size, data,
+                        exclusion_zone = 1/2, radius = 3, n_motifs = 3, plot = TRUE, cols = 3) {
 
   # transform data into matrix
   if (is.vector(data)) {
@@ -30,71 +30,71 @@ find.motifs <- function(matrix.profile, profile.index,
     stop("Error: Unknown type of data. Must be: a column matrix or a vector.", call. = FALSE)
   }
 
-  exclusion.zone <- floor(window.size * exclusion.zone)
-  data.size <- nrow(data)
-  matrix.profile.size <- length(matrix.profile)
-  motif.idxs <- list(motifs = list(NULL), neighbors = list(NULL))
-  mp <- matrix.profile
+  exclusion_zone <- floor(window_size * exclusion_zone)
+  data_size <- nrow(data)
+  matrix_profile_size <- length(matrix_profile)
+  motif_idxs <- list(motifs = list(NULL), neighbors = list(NULL))
+  mp <- matrix_profile
 
-  nn.pre <- mass.pre(data, data.size, window.size = window.size)
+  nn_pre <- mass_pre(data, data_size, window_size = window_size)
 
-  for (i in 1:n.motifs) {
-    min.idx <- which.min(matrix.profile)
-    motif.distance <- matrix.profile[min.idx]
-    motif.distance <- motif.distance^2
-    motif.idxs[[1]][[i]] <- sort(c(min.idx, profile.index[min.idx]))
-    motif.idx <- motif.idxs[[1]][[i]][1]
+  for (i in 1:n_motifs) {
+    min_idx <- which.min(matrix_profile)
+    motif_distance <- matrix_profile[min_idx]
+    motif_distance <- motif_distance^2
+    motif_idxs[[1]][[i]] <- sort(c(min_idx, profile_index[min_idx]))
+    motif_idx <- motif_idxs[[1]][[i]][1]
 
-    query <- data[motif.idx:(motif.idx + window.size - 1)]
+    query <- data[motif_idx:(motif_idx + window_size - 1)]
 
-    distance.profile <- mass(
-      nn.pre$data.fft, query, data.size, window.size, nn.pre$data.mean, nn.pre$data.sd,
-      nn.pre$data.mean[motif.idx], nn.pre$data.sd[motif.idx]
+    distance_profile <- mass(
+      nn_pre$data_fft, query, data_size, window_size, nn_pre$data_mean, nn_pre$data_sd,
+      nn_pre$data_mean[motif_idx], nn_pre$data_sd[motif_idx]
     )
 
-    distance.profile <- Re(distance.profile$distance.profile)
-    distance.profile[distance.profile > motif.distance * radius] <- Inf
-    motif.zone.start <- max(1, motif.idx - exclusion.zone)
-    motif.zone.end <- min(matrix.profile.size, motif.idx + exclusion.zone)
-    distance.profile[motif.zone.start:motif.zone.end] <- Inf
-    motif.idx <- motif.idxs[[1]][[i]][2]
-    motif.zone.start <- max(1, motif.idx - exclusion.zone)
-    motif.zone.end <- min(matrix.profile.size, motif.idx + exclusion.zone)
-    distance.profile[motif.zone.start:motif.zone.end] <- Inf
-    st <- sort(distance.profile, index.return = TRUE)
-    distance.order <- st$x
-    distance.idx.order <- st$ix
+    distance_profile <- Re(distance_profile$distance_profile)
+    distance_profile[distance_profile > motif_distance * radius] <- Inf
+    motif_zone_start <- max(1, motif_idx - exclusion_zone)
+    motif_zone_end <- min(matrix_profile_size, motif_idx + exclusion_zone)
+    distance_profile[motif_zone_start:motif_zone_end] <- Inf
+    motif_idx <- motif_idxs[[1]][[i]][2]
+    motif_zone_start <- max(1, motif_idx - exclusion_zone)
+    motif_zone_end <- min(matrix_profile_size, motif_idx + exclusion_zone)
+    distance_profile[motif_zone_start:motif_zone_end] <- Inf
+    st <- sort(distance_profile, index.return = TRUE)
+    distance_order <- st$x
+    distance_idx_order <- st$ix
 
-    motif.neighbor <- vector(mode = "numeric")
+    motif_neighbor <- vector(mode = "numeric")
 
     for (j in 1:10) {
-      if (is.infinite(distance.order[1]) || length(distance.order) < j) {
+      if (is.infinite(distance_order[1]) || length(distance_order) < j) {
         break
       }
-      motif.neighbor[j] <- distance.idx.order[1]
-      distance.order <- distance.order[2:length(distance.order)]
-      distance.idx.order <- distance.idx.order[2:length(distance.idx.order)]
-      distance.order <- distance.order[!(abs(distance.idx.order - motif.neighbor[j]) < exclusion.zone)]
-      distance.idx.order <- distance.idx.order[!(abs(distance.idx.order - motif.neighbor[j]) < exclusion.zone)]
+      motif_neighbor[j] <- distance_idx_order[1]
+      distance_order <- distance_order[2:length(distance_order)]
+      distance_idx_order <- distance_idx_order[2:length(distance_idx_order)]
+      distance_order <- distance_order[!(abs(distance_idx_order - motif_neighbor[j]) < exclusion_zone)]
+      distance_idx_order <- distance_idx_order[!(abs(distance_idx_order - motif_neighbor[j]) < exclusion_zone)]
     }
 
-    motif.neighbor <- motif.neighbor[motif.neighbor != 0]
-    motif.idxs[[2]][[i]] <- motif.neighbor
+    motif_neighbor <- motif_neighbor[motif_neighbor != 0]
+    motif_idxs[[2]][[i]] <- motif_neighbor
 
-    remove.idx <- c(motif.idxs[[1]][[i]], motif.idxs[[2]][[i]])
+    remove_idx <- c(motif_idxs[[1]][[i]], motif_idxs[[2]][[i]])
 
-    for (j in 1:length(remove.idx)) {
-      remove.zone.start <- max(1, remove.idx[j] - exclusion.zone)
-      remove.zone.end <- min(matrix.profile.size, remove.idx[j] + exclusion.zone)
-      matrix.profile[remove.zone.start:remove.zone.end] <- Inf
+    for (j in 1:length(remove_idx)) {
+      remove_zone_start <- max(1, remove_idx[j] - exclusion_zone)
+      remove_zone_end <- min(matrix_profile_size, remove_idx[j] + exclusion_zone)
+      matrix_profile[remove_zone_start:remove_zone_end] <- Inf
     }
   }
 
   if (plot == TRUE) {
-    def.par <- par(no.readonly = TRUE)
+    def_par <- par(no.readonly = TRUE)
     # layout: matrix profile on top, motifs below.
-    layout(matrix(c(rep(1, cols), (seq_len(ceiling(n.motifs / cols) * cols) + 1)),
-      ceiling(n.motifs / cols) + 1,
+    layout(matrix(c(rep(1, cols), (seq_len(ceiling(n_motifs / cols) * cols) + 1)),
+      ceiling(n_motifs / cols) + 1,
       cols,
       byrow = TRUE
     ))
@@ -102,13 +102,13 @@ find.motifs <- function(matrix.profile, profile.index,
     par(oma = c(1, 1, 4, 0), cex.lab = 1.5)
     plot(mp, type = "l", main = "Matrix Profile", xlab = "index", ylab = "distance")
     mtext("MOTIF Discover", line = 4, font = 2, cex = 1.5)
-    abline(v = unlist(motif.idxs[[1]]), col = rep(1:n.motifs, each = 2), lwd = 2)
+    abline(v = unlist(motif_idxs[[1]]), col = rep(1:n_motifs, each = 2), lwd = 2)
     # plot motifs
-    for (i in 1:n.motifs) {
-      motif1 <- znorm(data[motif.idxs[[1]][[i]][1]:min((motif.idxs[[1]][[i]][1] +
-        window.size - 1), matrix.profile.size)])
-      motif2 <- znorm(data[motif.idxs[[1]][[i]][2]:min((motif.idxs[[1]][[i]][2] +
-        window.size - 1), matrix.profile.size)])
+    for (i in 1:n_motifs) {
+      motif1 <- znorm(data[motif_idxs[[1]][[i]][1]:min((motif_idxs[[1]][[i]][1] +
+        window_size - 1), matrix_profile_size)])
+      motif2 <- znorm(data[motif_idxs[[1]][[i]][2]:min((motif_idxs[[1]][[i]][2] +
+        window_size - 1), matrix_profile_size)])
 
       # blank plot
       plot(0.5, 0.5,
@@ -116,17 +116,17 @@ find.motifs <- function(matrix.profile, profile.index,
         xlim = c(0, length(motif1)), ylim = c(min(motif1), max(motif1))
       )
 
-      for (j in seq_len(length(motif.idxs[[2]][[i]]))) {
-        neigh <- znorm(data[motif.idxs[[2]][[i]][j]:min((motif.idxs[[2]][[i]][j] +
-          window.size - 1), matrix.profile.size)])
+      for (j in seq_len(length(motif_idxs[[2]][[i]]))) {
+        neigh <- znorm(data[motif_idxs[[2]][[i]][j]:min((motif_idxs[[2]][[i]][j] +
+          window_size - 1), matrix_profile_size)])
         lines(neigh, col = "gray70")
       }
 
       lines(motif2, col = "black")
       lines(motif1, col = i, lwd = 2)
     }
-    par(def.par)
+    par(def_par)
   }
 
-  return(motif.idxs)
+  return(motif_idxs)
 }

@@ -17,13 +17,13 @@
 #'
 #' @param data a `matrix` of `numeric`, where each column is a time series. Accepts `vector` (see
 #'   details), `list` and `data.frame` too.
-#' @param window.size an `int`. Size of the sliding window.
-#' @param must.dim an `int` or `vector` of which dimensions to forcibly include (default is `NULL`).
-#' @param exc.dim an `int` or `vector` of which dimensions to exclude (default is `NULL`).
-#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on window size (default is
+#' @param window_size an `int`. Size of the sliding window.
+#' @param must_dim an `int` or `vector` of which dimensions to forcibly include (default is `NULL`).
+#' @param exc_dim an `int` or `vector` of which dimensions to exclude (default is `NULL`).
+#' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is
 #'   `1/2`). See details.
 #' @param verbose an `int`. See details. (Default is `2`).
-#' @param n.workers an `int`. Number of workers for parallel. (Default is `2`).
+#' @param n_workers an `int`. Number of workers for parallel. (Default is `2`).
 #'
 #' @return Returns the matrix profile `mp` and profile index `pi`. It also returns the left and
 #'   right matrix profile `lmp`, `rmp` and profile index `lpi`, `rpi` that may be used to detect
@@ -31,7 +31,7 @@
 #' @export
 #'
 #' @family matrix profile computations
-#' @seealso [stamp()], [stamp.par()], [mstomp()]
+#' @seealso [stamp()], [stamp_par()], [mstomp()]
 #' @references * Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif
 #'   Discovery.
 #' @references * Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A
@@ -41,7 +41,7 @@
 #'
 #' @examples
 #' # using all dimensions
-#' mp <- mstomp.par(mp_toy_data$data[1:100,], 30, verbose = 0)
+#' mp <- mstomp_par(mp_toy_data$data[1:100,], 30, verbose = 0)
 #' @import doSNOW foreach parallel
 
 mstomp_par <- function(data, window_size, must_dim = NULL, exc_dim = NULL, exclusion_zone = 1 / 2, verbose = 2, n_workers = 2) {
@@ -77,7 +77,7 @@ mstomp_par <- function(data, window_size, must_dim = NULL, exc_dim = NULL, exclu
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: Unknown type of data. Must be: matrix, data_frame, vector or list.", call. = FALSE)
+    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list.", call. = FALSE)
   }
 
   matrix_profile_size <- data_size - window_size + 1

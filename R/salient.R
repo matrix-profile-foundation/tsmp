@@ -7,29 +7,29 @@
 #' The main purpose of this algorithm is to find subsequences in one time series, but this
 #' implementation also covers the experimental effectiveness evaluation with "whole sequence"
 #' setting. This means you can input a `matrix` where each column is a sequence and this algorithm
-#' will retrieve the most relevant sequences. For this setting, the `exclusion.zone` is ignored, and
+#' will retrieve the most relevant sequences. For this setting, the `exclusion_zone` is ignored, and
 #' you need to pre-compute the ordinary euclidean distance matrix. See examples.
 #'
-#' The `exclusion.zone` is used to avoid trivial matches.
+#' The `exclusion_zone` is used to avoid trivial matches.
 #'
 #' `verbose` changes how much information is printed by this function; `0` means nothing,
 #' `1` means text, `2` means text and sound.
 #'
 #' @param data a `vector`, column `matrix` or `data.frame`. If more than one column is provided, see
 #'   details.
-#' @param matrix.profile a result from STAMP or STOMP algorithms.
-#' @param profile.index a result from STAMP or STOMP algorithms.
-#' @param window.size an `int` with the size of the sliding window.
-#' @param n.bits an `int`. Number of bits for MDL discretization. (Default is `8`).
-#' @param n.cand an `int`. number of candidate when picking the subsequence in each iteration.
+#' @param matrix_profile a result from STAMP or STOMP algorithms.
+#' @param profile_index a result from STAMP or STOMP algorithms.
+#' @param window_size an `int` with the size of the sliding window.
+#' @param n_bits an `int`. Number of bits for MDL discretization. (Default is `8`).
+#' @param n_cand an `int`. number of candidate when picking the subsequence in each iteration.
 #'   (Default is `10`).
-#' @param exclusion.zone a `numeric`. Size of the exclusion zone, based on `window.size`. (Default
+#' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on `window_size`. (Default
 #'   is `1/2`). See details.
 #' @param verbose an `int`. See details. (Default is `2`).
 #'
 #' @return Returns a `list` with `indexes`, a `vector` with the starting position of each
-#'   subsequence, `idx.bit.size`, a `vector` with the associated bitsize for each iteration and
-#'   `bits` the value used as input on `n.bits`.
+#'   subsequence, `idx_bit_size`, a `vector` with the associated bitsize for each iteration and
+#'   `bits` the value used as input on `n_bits`.
 #' @references * Yeh CCM, Van Herle H, Keogh E. Matrix profile III: The matrix profile allows
 #'   visualization of salient subsequences in massive time series. Proc - IEEE Int Conf Data Mining,
 #'   ICDM. 2017;579–88.
@@ -42,23 +42,23 @@
 #' @examples
 #' \dontrun{
 #'   # subsequences setting (main purpose)
-#'   salient.subsequences(data, data$mp, data$pi, 30, n.bits = 8, n.cand = 10)
+#'   salient_subsequences(data, data$mp, data$pi, 30, n_bits = 8, n_cand = 10)
 #'
 #'   # sequences setting
-#'   dist.matrix <- as.matrix(stats::dist(carfull$data))
+#'   dist_matrix <- as.matrix(stats::dist(carfull$data))
 #'   mp <- matrix(0, nrow(carfull$data), 1)
 #'   pi <- matrix(0, nrow(carfull$data), 1)
 #'
 #'   for (i in 1:nrow(carfull$data)) {
-#'     dist.matrix[i, i] <- Inf;
-#'     pi[i] <- which.min(dist.matrix[i, ])
-#'     mp[i] <- dist.matrix[i, pi[i]]
+#'     dist_matrix[i, i] <- Inf;
+#'     pi[i] <- which.min(dist_matrix[i, ])
+#'     mp[i] <- dist_matrix[i, pi[i]]
 #'   }
 #'
-#'   n.bits <- 8
+#'   n_bits <- 8
 #'
-#'   subs <- salient.subsequences(t(carfull$data), mp, pi, 577, n.bits = n.bits, n.cand = 10)
-#'   cutoff <- which(diff(subs$idx.bit.size) > 0)[1] - 1
+#'   subs <- salient_subsequences(t(carfull$data), mp, pi, 577, n_bits = n_bits, n_cand = 10)
+#'   cutoff <- which(diff(subs$idx_bit_size) > 0)[1] - 1
 #'   if(cutoff > 0) {
 #'     carfull$lab[subs$indexes[1:(cutoff - 1)]]
 #'   } else {
@@ -97,7 +97,7 @@ salient_subsequences <- function(data, matrix_profile, profile_index, window_siz
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: Unknown type of data. Must be: matrix, data_frame, vector or list.", call. = FALSE)
+    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list.", call. = FALSE)
   }
 
   if (n_dim > 1) {
@@ -329,9 +329,9 @@ salient_subsequences <- function(data, matrix_profile, profile_index, window_siz
 
 #' Retrieve the index of a number of candidates from the lowest points of a MP
 #'
-#' @param matrix.profile the matrix profile
-#' @param n.cand number of candidates to extract
-#' @param exclusion.zone exclusion zone for extracting candidates (in absolute values)
+#' @param matrix_profile the matrix profile
+#' @param n_cand number of candidates to extract
+#' @param exclusion_zone exclusion zone for extracting candidates (in absolute values)
 #'
 #' @return Returns the indexes of candidates
 #'
@@ -366,9 +366,9 @@ get_sorted_idx <- function(matrix_profile, n_cand, exclusion_zone = 0) {
 #' Reduced description length
 #'
 #' @param x the difference between two time series (reference and candidate for compression)
-#' @param mismatch.bit sum of n.bits and log2(window.size)
+#' @param mismatch_bit sum of n_bits and log2(window_size)
 #'
-#' @return Returns the bit.size cost of compressing the time series
+#' @return Returns the bit_size cost of compressing the time series
 #' @keywords internal
 #' @noRd
 
@@ -381,7 +381,7 @@ get_bitsize <- function(x, mismatch_bit) {
 #' Precompute the max and min value for the discrete normalization
 #'
 #' @param data input time series
-#' @param window.size sliding window size
+#' @param window_size sliding window size
 #'
 #' @return Returns a list with the max and min value
 #' @keywords internal
@@ -428,9 +428,9 @@ discrete_norm_pre <- function(data, window_size = 1) {
 #' Discrete normalization
 #'
 #' @param data Input time series.
-#' @param n.bits Number of bits for MDL discretization.
-#' @param max Precomputed max from `discrete.norm.pre`.
-#' @param min Precomputed min from `discrete.norm.pre`.
+#' @param n_bits Number of bits for MDL discretization.
+#' @param max Precomputed max from `discrete_norm_pre`.
+#' @param min Precomputed min from `discrete_norm_pre`.
 #'
 #' @return Returns the data after discrete normalization.
 #' @keywords internal
@@ -458,8 +458,8 @@ discrete_norm <- function(data, n_bits, max, min) {
 #' Future function to see MDS
 #'
 #' @param data original data
-#' @param sub.picking picked subsequences
-#' @param window.size window size
+#' @param sub_picking picked subsequences
+#' @param window_size window size
 #'
 #' @keywords internal
 #' @noRd
@@ -483,15 +483,15 @@ salient_mds <- function(data, sub_picking, window_size) {
 #' Future function to check performance
 #'
 #' @param gtruth Ground truth annotation.
-#' @param subs Output from `salient.results`.
+#' @param subs Output from `salient_results`.
 #' @param window Sliding window size.
 #'
 #' @return Returns X,Y values for plotting
 #'
 #' @examples
 #' \dontrun{
-#'   salient.score(carfull$lab, subs)
-#'   salient.score(carsub$labIdx, subssub, carsub$subLen)
+#'   salient_score(carfull$lab, subs)
+#'   salient_score(carsub$labIdx, subssub, carsub$subLen)
 #' }
 #'
 #' @keywords internal

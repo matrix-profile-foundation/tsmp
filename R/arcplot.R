@@ -13,22 +13,22 @@
 #' the arc. If you use the `rpi` or `lpi` as input, you will see that these profile indexes have
 #' just one direction.
 #'
-#' `exclusion.zone` is used to filter out small arcs that may be useless (e.g. you may be interested
-#' in similarities that are far away). `edge.limit` is used to filter out spurious arcs that are
+#' `exclusion_zone` is used to filter out small arcs that may be useless (e.g. you may be interested
+#' in similarities that are far away). `edge_limit` is used to filter out spurious arcs that are
 #' used connect the beginning and the end of the profile (e.g. silent audio). `threshold` is used to
 #' filter indexes that have distant nearest neighbor (e.g. retrieve only the best motifs).
 #'
-#' @param mp a Matrix Profile, or a Corrected Arc Count profile from [fluss.cac()].
+#' @param mp a Matrix Profile, or a Corrected Arc Count profile from [fluss_cac()].
 #' @param pi a Profile Index.
-#' @param window.size an `int`. Size of the sliding window.
-#' @param exclusion.zone an `int`. (Default is `5`). Exclusion zone for small distances. See
+#' @param window_size an `int`. Size of the sliding window.
+#' @param exclusion_zone an `int`. (Default is `5`). Exclusion zone for small distances. See
 #'   details.
-#' @param edge.limit an `int`. (Default is `5`). Exclusion zone for the edges of the profile. See
+#' @param edge_limit an `int`. (Default is `5`). Exclusion zone for the edges of the profile. See
 #'   details.
 #' @param threshold a `numeric`. (Default is 10% of the lowest values). Threshold for retrieving
 #'   pairs. See details.
 #' @param pairs a `matrix` with 2 columns. (Default is `NULL`). Instead of `mp`, `pi`,
-#'   `window.size`, `edge.limit`, `threshold`, you can give your custom list of pairs.
+#'   `window_size`, `edge_limit`, `threshold`, you can give your custom list of pairs.
 #' @param alpha a `numeric`. (Default is `NULL`, automatic). Alpha value for lines transparency.
 #' @param quality an `int`. (Default is `30`). Number of segments to draw the arc. Bigger value,
 #'   harder to render.
