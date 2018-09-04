@@ -85,6 +85,21 @@ stamp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, verbos
   matrix.profile.size <- data.size - window.size + 1
   num.queries <- query.size - window.size + 1
 
+  ## check skip position
+  skip.location <- rep(FALSE, matrix.profile.size)
+
+  for (i in 1:matrix.profile.size) {
+    if (any(is.na(data[i:(i + window.size - 1)])) || any(is.infinite(data[i:(i + window.size - 1)]))) {
+      skip.location[i] <- TRUE
+    }
+  }
+
+  data[is.na(data)] <- 0
+  data[is.infinite(data)] <- 0
+
+  query[is.na(query)] <- 0
+  query[is.infinite(query)] <- 0
+
   if (query.size > data.size) {
     stop("Error: Query must be smaller or the same size as reference data.", call. = FALSE)
   }
@@ -135,8 +150,15 @@ stamp <- function(..., window.size, exclusion.zone = 1 / 2, s.size = Inf, verbos
 
     distance.profile <- Re(sqrt(nn$distance.profile))
 
+    # apply exclusion zone
     if (exclusion.zone > 0) {
-      distance.profile[max((i - exclusion.zone), 1):min((i + exclusion.zone), matrix.profile.size)] <- Inf
+      exc.st <- max(1, i - exclusion.zone)
+      exc.ed <- min(matrix.profile.size, i + exclusion.zone)
+      distance.profile[exc.st:exc.ed, 1] <- Inf
+      distance.profile[data.sd < vars()$eps] <- Inf
+      if (skip.location[i] || any(query.sd[i] < vars()$eps)) {
+        distance.profile[] <- Inf
+      }
     }
 
     # anytime version

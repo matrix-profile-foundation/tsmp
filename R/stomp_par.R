@@ -79,6 +79,21 @@ stomp.par <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2, n.w
   matrix.profile.size <- data.size - window.size + 1
   num.queries <- query.size - window.size + 1
 
+  ## check skip position
+  skip.location <- rep(FALSE, matrix.profile.size)
+
+  for (i in 1:matrix.profile.size) {
+    if (any(is.na(data[i:(i + window.size - 1)])) || any(is.infinite(data[i:(i + window.size - 1)]))) {
+      skip.location[i] <- TRUE
+    }
+  }
+
+  data[is.na(data)] <- 0
+  data[is.infinite(data)] <- 0
+
+  query[is.na(query)] <- 0
+  query[is.infinite(query)] <- 0
+
   if (query.size > data.size) {
     stop("Error: Query must be smaller or the same size as reference data.", call. = FALSE)
   }
@@ -218,6 +233,9 @@ stomp.par <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2, n.w
         exc.ed <- min(matrix.profile.size, idx + exclusion.zone)
         dist.pro[exc.st:exc.ed, 1] <- Inf
         dist.pro[data.sd < vars()$eps] <- Inf
+        if (skip.location[idx] || any(query.sd[idx] < vars()$eps)) {
+          dist.pro[] <- Inf
+        }
       }
 
       # left matrix.profile

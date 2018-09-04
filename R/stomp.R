@@ -78,6 +78,21 @@ stomp <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
   matrix.profile.size <- data.size - window.size + 1
   num.queries <- query.size - window.size + 1
 
+  ## check skip position
+  skip.location <- rep(FALSE, matrix.profile.size)
+
+  for (i in 1:matrix.profile.size) {
+    if (any(is.na(data[i:(i + window.size - 1)])) || any(is.infinite(data[i:(i + window.size - 1)]))) {
+      skip.location[i] <- TRUE
+    }
+  }
+
+  data[is.na(data)] <- 0
+  data[is.infinite(data)] <- 0
+
+  query[is.na(query)] <- 0
+  query[is.infinite(query)] <- 0
+
   if (window.size > query.size / 2) {
     stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
   }
@@ -164,6 +179,9 @@ stomp <- function(..., window.size, exclusion.zone = 1 / 2, verbose = 2) {
       exc.ed <- min(matrix.profile.size, i + exclusion.zone)
       distance.profile[exc.st:exc.ed, 1] <- Inf
       distance.profile[data.sd < vars()$eps] <- Inf
+      if (skip.location[i] || any(query.sd[i] < vars()$eps)) {
+        distance.profile[] <- Inf
+      }
     }
 
     # left matrix.profile
