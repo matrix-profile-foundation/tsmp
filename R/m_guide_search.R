@@ -27,13 +27,13 @@
 #' @examples
 #' # This is a fast toy example and results are useless. For a complete result, run the code inside
 #' #'Not run' section below.
-#' w <- toy_data$sub.len
-#' mp <- mstomp(toy_data$data[1:200,], w, verbose = 0)
-#' motifs <- guide.search(toy_data$data[1:200,], w, mp$mp, mp$pi, 2)
+#' w <- mp_toy_data$sub.len
+#' mp <- mstomp(mp_toy_data$data[1:200,], w, verbose = 0)
+#' motifs <- guide.search(mp_toy_data$data[1:200,], w, mp$mp, mp$pi, 2)
 #' \dontrun{
-#' w <- toy_data$sub.len
-#' mp <- mstomp.par(toy_data$data, w, verbose = 0)
-#' motifs <- guide.search(toy_data$data, w, mp$mp, mp$pi, 2)
+#' w <- mp_toy_data$sub.len
+#' mp <- mstomp.par(mp_toy_data$data, w, verbose = 0)
+#' motifs <- guide.search(mp_toy_data$data, w, mp$mp, mp$pi, 2)
 #' }
 
 guide_search <- function(data, window_size, matrix_profile, profile_index, n_dim) {

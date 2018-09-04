@@ -23,7 +23,7 @@
 #'
 #' @examples
 #' w <- 30
-#' data <- toy_data$data # 3 dimensions matrix
+#' data <- mp_toy_data$data # 3 dimensions matrix
 #' result <- simple.fast(data, window.size = w, verbose = 0)
 #'
 simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {

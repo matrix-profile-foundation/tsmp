@@ -37,7 +37,7 @@ knitr::opts_chunk$set(
 
 * Added SiMPle (Fast Similarity Matrix Profile for Music Analysis and Exploration).
 * Added FLUSS (Fast Low-cost Unipotent Semantic Segmentation).
-* Added [find.chains()] to look for chains primitives.
+* Added [find_chains()] to look for chains primitives.
 * Added Multivariate MOTIF Search (from mSTOMP)
 * Changed dependency from beepr to audio (actually beepr depends on audio, so less dependencies)
 * Added a `NEWS.md` file to track changes to the package.

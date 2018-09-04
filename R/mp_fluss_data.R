@@ -4,9 +4,12 @@
 #' WalkJogRun from PAMAP's dataset (3)
 #'
 #' @docType data
-#' @format A list containing: \describe{ \item{data}{one column matrix with the dataset's data}
+#' @format A list containing:
+#' \describe{
+#'   \item{data}{one column matrix with the dataset's data}
 #'   \item{gtruth}{a vector with the ground truth of semantic change according to provided dataset}
-#'   \item{window}{window size used in original paper} }
+#'   \item{window}{window size used in original paper}
+#' }
 #' @source \url{https://sites.google.com/site/onlinesemanticsegmentation/}
 #' @source \url{http://www.cs.ucr.edu/~eamonn/time_series_data/}
 #'
@@ -20,4 +23,4 @@
 #'   activity monitoring. In 16th International Symposium on Wearable Computers (ISWC), 2012, pages
 #'   108–109. IEEE, 2012.
 #' @keywords datasets
-"fluss_data"
+"mp_fluss_data"

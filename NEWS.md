@@ -1,7 +1,7 @@
 NEWS
 ================
 Francisco Bischoff
-\- 02 Sep 2018
+\- 04 Sep 2018
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
@@ -23,7 +23,7 @@ Francisco Bischoff
   - Added SiMPle (Fast Similarity Matrix Profile for Music Analysis and
     Exploration).
   - Added FLUSS (Fast Low-cost Unipotent Semantic Segmentation).
-  - Added \[find.chains()\] to look for chains primitives.
+  - Added \[find\_chains()\] to look for chains primitives.
   - Added Multivariate MOTIF Search (from mSTOMP)
   - Changed dependency from beepr to audio (actually beepr depends on
     audio, so less dependencies)

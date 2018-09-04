@@ -7,4 +7,4 @@
 #' @references * Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A
 #'   New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
 #' @keywords datasets
-"gait_data"
+"mp_gait_data"

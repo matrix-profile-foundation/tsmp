@@ -1,7 +1,7 @@
 README
 ================
 Francisco Bischoff
-\- 02 Sep 2018
+\- 04 Sep 2018
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -41,11 +41,11 @@ Please be welcome to suggest improvements.
 
 |                | Elapsed Time | Data size | Window size | Cores |
 | -------------- | :----------: | :-------: | :---------: | :---: |
-| `stomp.par()`  |    45.17s    |   55000   |     150     |   8   |
+| `stomp_par()`  |    45.17s    |   55000   |     150     |   8   |
 | `stomp()`      |    76.68s    |   55000   |     150     |   1   |
-| `mstomp.par()` |   113.03s    |   55000   |     150     |   8   |
+| `mstomp_par()` |   113.03s    |   55000   |     150     |   8   |
 | `mstomp()`     |   238.81s    |   55000   |     150     |   1   |
-| `stamp.par()`  |   852.11s    |   55000   |     150     |   8   |
+| `stamp_par()`  |   852.11s    |   55000   |     150     |   8   |
 | `stamp()`      |   2862.79s   |   55000   |     150     |   1   |
 
 ## Installation

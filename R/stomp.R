@@ -31,10 +31,10 @@
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #'
 #' @examples
-#' mp <- stomp(toy_data$data[1:200,1], window.size = 30, verbose = 0)
+#' mp <- stomp(mp_toy_data$data[1:200,1], window.size = 30, verbose = 0)
 #' \dontrun{
-#' ref.data <- toy_data$data[,1]
-#' query.data <- toy_data$data[,2]
+#' ref.data <- mp_toy_data$data[,1]
+#' query.data <- mp_toy_data$data[,2]
 #' # self similarity
 #' mp <- stomp(ref.data, window.size = 30)
 #' # join similarity

@@ -1,7 +1,7 @@
 context("Testing FLUSS functions")
 library(tsmp)
 
-data <- fluss_data$tilt_abp$data[1:1000]
+data <- mp_fluss_data$tilt_abp$data[1:1000]
 w <- 10
 truth <- 400
 nseg <- 3

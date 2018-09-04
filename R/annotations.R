@@ -11,7 +11,7 @@
 #'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
 #'   125–34.
 #' @examples
-#' data <- test_data$train$data[1:1000]
+#' data <- mp_test_data$train$data[1:1000]
 #' window <- 50
 #' av <- av.complexity(data, window)
 #'
@@ -57,7 +57,7 @@ av_complexity <- function(data, window_size, dilution_factor = 0) {
 #'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
 #'   125–34.
 #' @examples
-#' data <- test_data$train$data[1:1000]
+#' data <- mp_test_data$train$data[1:1000]
 #' window <- 50
 #' av <- av.zerocrossing(data, window)
 #'
@@ -97,7 +97,7 @@ av_zerocrossing <- function(data, window_size) {
 #'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
 #'   125–34.
 #' @examples
-#' data <- test_data$train$data[1:1000]
+#' data <- mp_test_data$train$data[1:1000]
 #' window <- 50
 #' av <- av.motion.artifact(data, window)
 #'
@@ -151,7 +151,7 @@ av_motion_artifact <- function(data, window_size) {
 #'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
 #'   125–34.
 #' @examples
-#' data <- test_data$train$data[1:1000]
+#' data <- mp_test_data$train$data[1:1000]
 #' window <- 50
 #' av <- av.stop.word(data, window, 150)
 #'
@@ -205,7 +205,7 @@ av_stop_word <- function(data, window_size, stop_word_loc, exclusion_zone = 1 / 
 #'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
 #'   125–34.
 #' @examples
-#' data <- test_data$train$data[1:1000]
+#' data <- mp_test_data$train$data[1:1000]
 #' window <- 50
 #' av <- av.hardlimit.artifact(data, window)
 #'

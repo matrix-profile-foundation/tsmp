@@ -4,7 +4,7 @@ library(tsmp)
 # fake data for now
 w <- 100
 len <- 5000
-data <- as.matrix(test_data$train$data[1:len])
+data <- as.matrix(mp_test_data$train$data[1:len])
 mps <- (length(data) - w + 1)
 mp <- (data - mean(data))[1:mps]
 pi <- floor((rev(mp) - min(mp)) / (max(mp) - min(mp)) * mps)

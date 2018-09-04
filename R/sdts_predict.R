@@ -16,18 +16,18 @@
 #' #'Not run' section below.
 #' w <- c(110, 220)
 #' subs <- 11000:20000
-#' tr_data <- test_data$train$data[subs]
-#' tr_label <- test_data$train$label[subs]
-#' te_data <- test_data$test$data[subs]
-#' te_label <- test_data$test$label[subs]
+#' tr_data <- mp_test_data$train$data[subs]
+#' tr_label <- mp_test_data$train$label[subs]
+#' te_data <- mp_test_data$test$data[subs]
+#' te_label <- mp_test_data$test$label[subs]
 #' model <- sdts.train(tr_data, tr_label, w, verbose = 0)
 #' predict <- sdts.predict(model, te_data, round(mean(w)))
 #' sdts.f.score(te_label, predict, 1)
 #' \dontrun{
 #' windows <- c(110, 220, 330)
-#' model <- sdts.train(test_data$train$data, test_data$train$label, windows, verbose = 0)
-#' predict <- sdts.predict(model, test_data$test$data, round(mean(windows)))
-#' sdts.f.score(test_data$test$label, predict, 1)
+#' model <- sdts.train(mp_test_data$train$data, mp_test_data$train$label, windows, verbose = 0)
+#' predict <- sdts.predict(model, mp_test_data$test$data, round(mean(windows)))
+#' sdts.f.score(mp_test_data$test$label, predict, 1)
 #' }
 
 sdts_predict <- function(model, data, window_size) {
@@ -105,18 +105,18 @@ sdts_predict <- function(model, data, window_size) {
 #' #'Not run' section below.
 #' w <- c(110, 220)
 #' subs <- 11000:20000
-#' tr_data <- test_data$train$data[subs]
-#' tr_label <- test_data$train$label[subs]
-#' te_data <- test_data$test$data[subs]
-#' te_label <- test_data$test$label[subs]
+#' tr_data <- mp_test_data$train$data[subs]
+#' tr_label <- mp_test_data$train$label[subs]
+#' te_data <- mp_test_data$test$data[subs]
+#' te_label <- mp_test_data$test$label[subs]
 #' model <- sdts.train(tr_data, tr_label, w, verbose = 0)
 #' predict <- sdts.predict(model, te_data, round(mean(w)))
 #' sdts.f.score(te_label, predict, 1)
 #' \dontrun{
 #' windows <- c(110, 220, 330)
-#' model <- sdts.train(test_data$train$data, test_data$train$label, windows)
-#' predict <- sdts.predict(model, test_data$test$data, round(mean(windows)))
-#' sdts.f.score(test_data$test$label, predict, 1)
+#' model <- sdts.train(mp_test_data$train$data, mp_test_data$train$label, windows)
+#' predict <- sdts.predict(model, mp_test_data$test$data, round(mean(windows)))
+#' sdts.f.score(mp_test_data$test$label, predict, 1)
 #' }
 #'
 sdts_f_score <- function(gtruth, pred, beta = 1) {

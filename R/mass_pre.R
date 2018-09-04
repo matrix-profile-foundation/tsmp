@@ -17,9 +17,9 @@
 #' @references Website: <https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html>
 #'
 #' @examples
-#' w <- toy_data$sub.len
-#' ref.data <- toy_data$data[,1]
-#' query.data <- toy_data$data[,1]
+#' w <- mp_toy_data$sub.len
+#' ref.data <- mp_toy_data$data[,1]
+#' query.data <- mp_toy_data$data[,1]
 #' d.size <- length(ref.data)
 #' q.size <- length(query.data)
 #'

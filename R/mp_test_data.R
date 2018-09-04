@@ -4,9 +4,13 @@
 #' dataset used here is originally from (1), and the version distributed here is from (2)
 #'
 #' @docType data
-#' @format A list of matrices with 215010 rows and 1 dimension: \describe{
-#'   \item{train$data}{training data} \item{train$label}{label for training data}
-#'   \item{test$data}{test data} \item{test$label}{label for test data} }
+#' @format A list of matrices with 215010 rows and 1 dimension:
+#' \describe{
+#'   \item{train$data}{training data}
+#'   \item{train$label}{label for training data}
+#'   \item{test$data}{test data}
+#'   \item{test$label}{label for test data}
+#' }
 #' @source \url{https://sites.google.com/view/weaklylabeled}
 #' @source \url{http://www.cs.ucr.edu/~eamonn/time_series_data/}
 #'
@@ -16,4 +20,4 @@
 #' @references * Yeh C-CM, Kavantzas N, Keogh E. Matrix profile IV: Using Weakly Labeled Time Series
 #'   to Predict Outcomes. Proc VLDB Endow. 2017 Aug 1;10(12):1802–12.
 #' @keywords datasets
-"test_data"
+"mp_test_data"

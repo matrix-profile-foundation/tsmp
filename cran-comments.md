@@ -2,6 +2,8 @@
 
 * Changed dependency from beepr to audio (actually beepr depends on audio, so less dependencies).
 * Added persons to DESCRIPTION as their code/research was implemented in this package.
+* Changed dotted.case to snake_case as usual in tidyverse. I've started with Google R style, but I
+concluded this is better. Since the package is starting, I don't think will have any impact on users.
 
 ## Test environments
 * Rhub

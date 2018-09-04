@@ -4,30 +4,30 @@ library(tsmp)
 if (skip_on_cran()) {
   test_that("Errors", {
     # big window size
-    expect_error(mstomp(toy_data$data[1:200, ], window_size = 500), regexp = "too short relative")
-    expect_error(mstomp_par(toy_data$data[1:200, ], window_size = 500), regexp = "too short relative")
-    expect_error(stomp(toy_data$data[1:200, ], window_size = 500), regexp = "too short relative")
-    expect_error(stomp_par(toy_data$data[1:200, ], window_size = 500), regexp = "too short relative")
-    expect_error(stamp(toy_data$data[1:200, ], window_size = 500), regexp = "too short relative")
-    expect_error(stamp_par(toy_data$data[1:200, ], window_size = 500), regexp = "too short relative")
+    expect_error(mstomp(mp_toy_data$data[1:200, ], window_size = 500), regexp = "too short relative")
+    expect_error(mstomp_par(mp_toy_data$data[1:200, ], window_size = 500), regexp = "too short relative")
+    expect_error(stomp(mp_toy_data$data[1:200, ], window_size = 500), regexp = "too short relative")
+    expect_error(stomp_par(mp_toy_data$data[1:200, ], window_size = 500), regexp = "too short relative")
+    expect_error(stamp(mp_toy_data$data[1:200, ], window_size = 500), regexp = "too short relative")
+    expect_error(stamp_par(mp_toy_data$data[1:200, ], window_size = 500), regexp = "too short relative")
 
     # intersect
-    expect_error(mstomp(toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2), exc_dim = c(2, 3)), regexp = "presented in both")
-    expect_error(mstomp_par(toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2), exc_dim = c(2, 3)), regexp = "presented in both")
+    expect_error(mstomp(mp_toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2), exc_dim = c(2, 3)), regexp = "presented in both")
+    expect_error(mstomp_par(mp_toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2), exc_dim = c(2, 3)), regexp = "presented in both")
     # too many must_dim
-    expect_error(mstomp(toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2, 3, 4)), regexp = "must have dimension must be less")
-    expect_error(mstomp_par(toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2, 3, 4)), regexp = "must have dimension must be less")
+    expect_error(mstomp(mp_toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2, 3, 4)), regexp = "must have dimension must be less")
+    expect_error(mstomp_par(mp_toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2, 3, 4)), regexp = "must have dimension must be less")
     # too many exc_dim
-    expect_error(mstomp(toy_data$data[1:200, ], window_size = 30, exc_dim = c(1, 2, 3, 4)), regexp = "exclusion dimension must be less")
-    expect_error(mstomp_par(toy_data$data[1:200, ], window_size = 30, exc_dim = c(1, 2, 3, 4)), regexp = "exclusion dimension must be less")
+    expect_error(mstomp(mp_toy_data$data[1:200, ], window_size = 30, exc_dim = c(1, 2, 3, 4)), regexp = "exclusion dimension must be less")
+    expect_error(mstomp_par(mp_toy_data$data[1:200, ], window_size = 30, exc_dim = c(1, 2, 3, 4)), regexp = "exclusion dimension must be less")
 
     # small window size
-    expect_error(stamp(toy_data$data[1:200, ], window_size = 2), regexp = "Window size")
-    expect_error(stamp_par(toy_data$data[1:200, ], window_size = 2), regexp = "Window size")
-    expect_error(mstomp(toy_data$data[1:200, ], window_size = 2), regexp = "Window size")
-    expect_error(mstomp_par(toy_data$data[1:200, ], window_size = 2), regexp = "Window size")
-    expect_error(stomp(toy_data$data[1:200, ], window_size = 2), regexp = "Window size")
-    expect_error(stomp_par(toy_data$data[1:200, ], window_size = 2), regexp = "Window size")
+    expect_error(stamp(mp_toy_data$data[1:200, ], window_size = 2), regexp = "Window size")
+    expect_error(stamp_par(mp_toy_data$data[1:200, ], window_size = 2), regexp = "Window size")
+    expect_error(mstomp(mp_toy_data$data[1:200, ], window_size = 2), regexp = "Window size")
+    expect_error(mstomp_par(mp_toy_data$data[1:200, ], window_size = 2), regexp = "Window size")
+    expect_error(stomp(mp_toy_data$data[1:200, ], window_size = 2), regexp = "Window size")
+    expect_error(stomp_par(mp_toy_data$data[1:200, ], window_size = 2), regexp = "Window size")
 
     # unknown data type
     expect_error(stamp(table(rpois(100, 5)), window_size = 30), regexp = "Unknown type")
@@ -39,36 +39,36 @@ if (skip_on_cran()) {
   })
 
   test_that("Finish", {
-    expect_message(stamp(toy_data$data[1:200, 1], window_size = 30), regex = "Finished")
-    expect_message(stamp_par(toy_data$data[1:200, 1], window_size = 30), regex = "Finished")
-    expect_message(mstomp(toy_data$data[1:200, 1], window_size = 30), regex = "Finished")
-    expect_message(mstomp_par(toy_data$data[1:200, 1], window_size = 30), regex = "Finished")
-    expect_message(stomp(toy_data$data[1:200, 1], window_size = 30), regex = "Finished")
-    expect_message(stomp_par(toy_data$data[1:200, 1], window_size = 30), regex = "Finished")
+    expect_message(stamp(mp_toy_data$data[1:200, 1], window_size = 30), regex = "Finished")
+    expect_message(stamp_par(mp_toy_data$data[1:200, 1], window_size = 30), regex = "Finished")
+    expect_message(mstomp(mp_toy_data$data[1:200, 1], window_size = 30), regex = "Finished")
+    expect_message(mstomp_par(mp_toy_data$data[1:200, 1], window_size = 30), regex = "Finished")
+    expect_message(stomp(mp_toy_data$data[1:200, 1], window_size = 30), regex = "Finished")
+    expect_message(stomp_par(mp_toy_data$data[1:200, 1], window_size = 30), regex = "Finished")
   })
 
   # STAMP
-  stamp_test <- stamp(toy_data$data[1:200, 1], window_size = 30, verbose = 0)
-  stamp_join_test <- stamp(toy_data$data[1:200, 1], toy_data$data[1:100, 2], window_size = 30, verbose = 0)
-  stamp_par_test <- stamp_par(toy_data$data[1:200, 1], window_size = 30, verbose = 0)
-  stamp_par_join_test <- stamp_par(toy_data$data[1:200, 1], toy_data$data[1:100, 2], window_size = 30, verbose = 0)
+  stamp_test <- stamp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+  stamp_join_test <- stamp(mp_toy_data$data[1:200, 1], mp_toy_data$data[1:100, 2], window_size = 30, verbose = 0)
+  stamp_par_test <- stamp_par(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+  stamp_par_join_test <- stamp_par(mp_toy_data$data[1:200, 1], mp_toy_data$data[1:100, 2], window_size = 30, verbose = 0)
 
   # STOMP
-  stomp_test <- stomp(toy_data$data[1:200, 1], window_size = 30, verbose = 0)
-  stomp_join_test <- stomp(toy_data$data[1:200, 1], toy_data$data[1:100, 2], window_size = 30, verbose = 0)
-  stomp_par_test <- stomp_par(toy_data$data[1:200, 1], window_size = 30, verbose = 0)
-  stomp_par_join_test <- stomp_par(toy_data$data[1:200, 1], toy_data$data[1:100, 2], window_size = 30, verbose = 0)
+  stomp_test <- stomp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+  stomp_join_test <- stomp(mp_toy_data$data[1:200, 1], mp_toy_data$data[1:100, 2], window_size = 30, verbose = 0)
+  stomp_par_test <- stomp_par(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+  stomp_par_join_test <- stomp_par(mp_toy_data$data[1:200, 1], mp_toy_data$data[1:100, 2], window_size = 30, verbose = 0)
 
   # MSTOMP Uni
-  mstomp_test1 <- mstomp(toy_data$data[1:200, 1], window_size = 30, verbose = 0)
-  mstomp_par_test1 <- mstomp_par(toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+  mstomp_test1 <- mstomp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+  mstomp_par_test1 <- mstomp_par(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
   # MSTOMP Multi
-  mstomp_test <- mstomp(toy_data$data[1:200, ], window_size = 30, verbose = 0)
-  mstomp_test_must <- mstomp(toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2), verbose = 0)
-  mstomp_test_exc <- mstomp(toy_data$data[1:200, ], window_size = 30, exc_dim = c(1, 2), verbose = 0)
-  mstomp_par_test <- mstomp_par(toy_data$data[1:200, ], window_size = 30, verbose = 0)
-  mstomp_par_test_must <- mstomp_par(toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2), verbose = 0)
-  mstomp_par_test_exc <- mstomp_par(toy_data$data[1:200, ], window_size = 30, exc_dim = c(1, 2), verbose = 0)
+  mstomp_test <- mstomp(mp_toy_data$data[1:200, ], window_size = 30, verbose = 0)
+  mstomp_test_must <- mstomp(mp_toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2), verbose = 0)
+  mstomp_test_exc <- mstomp(mp_toy_data$data[1:200, ], window_size = 30, exc_dim = c(1, 2), verbose = 0)
+  mstomp_par_test <- mstomp_par(mp_toy_data$data[1:200, ], window_size = 30, verbose = 0)
+  mstomp_par_test_must <- mstomp_par(mp_toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2), verbose = 0)
+  mstomp_par_test_exc <- mstomp_par(mp_toy_data$data[1:200, ], window_size = 30, exc_dim = c(1, 2), verbose = 0)
 
   if (skip_on_travis()) {
     test_that("Result hashes", {

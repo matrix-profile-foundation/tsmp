@@ -3,21 +3,21 @@ library(tsmp)
 
 test_that("Errors", {
   # big window size
-  expect_error(sdts_train(test_data$train$data[1:100], test_data$train$label[1:110], window_size = 5000), regexp = "Time series is too short")
+  expect_error(sdts_train(mp_test_data$train$data[1:100], mp_test_data$train$label[1:110], window_size = 5000), regexp = "Time series is too short")
 
   # small window size
-  expect_error(sdts_train(test_data$train$data[1:100], test_data$train$label[1:100], window_size = 2), regexp = "Window size")
+  expect_error(sdts_train(mp_test_data$train$data[1:100], mp_test_data$train$label[1:100], window_size = 2), regexp = "Window size")
 
   # unknown data type
-  expect_error(sdts_train(table(test_data$train$data[1:100]), test_data$train$label[1:100], window_size = 110), regexp = "Unknown type")
+  expect_error(sdts_train(table(mp_test_data$train$data[1:100]), mp_test_data$train$label[1:100], window_size = 110), regexp = "Unknown type")
 })
 
 w <- c(110, 220, 330)
 subs <- 20000:60000
-tr_data <- as.data.frame(test_data$train$data[subs])
-tr_label <- test_data$train$label[subs]
-te_data <- test_data$test$data[subs]
-te_label <- test_data$test$label[subs]
+tr_data <- as.data.frame(mp_test_data$train$data[subs])
+tr_label <- mp_test_data$train$label[subs]
+te_data <- mp_test_data$test$data[subs]
+te_label <- mp_test_data$test$label[subs]
 model <- sdts_train(tr_data, tr_label, w, verbose = 0)
 predict <- sdts_predict(model, te_data, round(mean(w)))
 pred_score <- sdts_f_score(te_label, predict, 1)

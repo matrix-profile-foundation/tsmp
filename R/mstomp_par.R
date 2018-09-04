@@ -41,7 +41,7 @@
 #'
 #' @examples
 #' # using all dimensions
-#' mp <- mstomp.par(toy_data$data[1:100,], 30, verbose = 0)
+#' mp <- mstomp.par(mp_toy_data$data[1:100,], 30, verbose = 0)
 #' @import doSNOW foreach parallel
 
 mstomp_par <- function(data, window_size, must_dim = NULL, exc_dim = NULL, exclusion_zone = 1 / 2, verbose = 2, n_workers = 2) {

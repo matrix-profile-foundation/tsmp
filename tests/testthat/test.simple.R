@@ -2,8 +2,8 @@ context("Testing SiMPle Fast")
 library(tsmp)
 
 w <- 30
-data <- toy_data$data[1:250, ] # 3 dimensions matrix
-query <- toy_data$data[251:500, ] # 3 dimensions matrix
+data <- mp_toy_data$data[1:250, ] # 3 dimensions matrix
+query <- mp_toy_data$data[251:500, ] # 3 dimensions matrix
 
 test_that("Errors", {
   # big window size

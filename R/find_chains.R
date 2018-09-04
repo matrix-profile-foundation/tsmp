@@ -12,7 +12,7 @@
 #' @references Website: <https://sites.google.com/site/timeserieschain/>
 #' @examples
 #' w <- 50
-#' data <- gait_data
+#' data <- mp_gait_data
 #' mp <- stamp(data, window.size = w, exclusion.zone = 1/4, verbose = 0)
 #' find.chains(mp)
 #'

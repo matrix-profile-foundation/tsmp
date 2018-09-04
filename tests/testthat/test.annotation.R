@@ -1,7 +1,7 @@
 context("Testing Annotation functions")
 library(tsmp)
 
-data <- as.matrix(test_data$train$data[1:1000])
+data <- as.matrix(mp_test_data$train$data[1:1000])
 window <- 50
 stop_loc <- 150
 prof_size <- nrow(data) - window + 1

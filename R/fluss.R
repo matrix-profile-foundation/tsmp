@@ -29,15 +29,15 @@
 #' @examples
 #' # This is a fast toy example and results are useless. For a complete result, run the code inside
 #' #'Not run' section below.
-#' data <- fluss_data$tilt.abp$data[1:1000]
+#' data <- mp_fluss_data$tilt.abp$data[1:1000]
 #' truth <- 400
 #' w <- 10
 #' segments <- fluss(data, w, 1, gtruth = truth, verbose = 0)
 #' \dontrun{
-#' data <- fluss_data$walkjogrun$data
-#' w <- fluss_data$walkjogrun$window # 80
-#' truth <- fluss_data$walkjogrun$gtruth # 3800 6800
-#' nseg <- length(fluss_data$walkjogrun$gtruth) # 2
+#' data <- mp_fluss_data$walkjogrun$data
+#' w <- mp_fluss_data$walkjogrun$window # 80
+#' truth <- mp_fluss_data$walkjogrun$gtruth # 3800 6800
+#' nseg <- length(mp_fluss_data$walkjogrun$gtruth) # 2
 #' segments <- fluss(data, w, nseg, gtruth = truth)
 #' }
 fluss <- function(data, window_size, num_segments, exclusion_zone = 5, gtruth = NULL, profile_index = NULL, verbose = 2) {
@@ -99,15 +99,15 @@ fluss <- function(data, window_size, num_segments, exclusion_zone = 5, gtruth = 
 #' @examples
 #' # This is a fast toy example and results are useless. For a complete result, run the code inside
 #' #'Not run' section below.
-#' data <- fluss_data$tilt.abp$data[1:1000]
+#' data <- mp_fluss_data$tilt.abp$data[1:1000]
 #' w <- 210
 #' mp <- stomp(data, window.size = w, verbose = 0)
 #' cac <- fluss.cac(mp$pi, w)
 #' segments <- fluss.extract(cac, 1, w)
 #' \dontrun{
-#' data <- fluss_data$walkjogrun$data
-#' w <- fluss_data$walkjogrun$window # 80
-#' nseg <- length(fluss_data$walkjogrun$gtruth) # 2
+#' data <- mp_fluss_data$walkjogrun$data
+#' w <- mp_fluss_data$walkjogrun$window # 80
+#' nseg <- length(mp_fluss_data$walkjogrun$gtruth) # 2
 #' mp <- stomp(data, window.size = w)
 #' cac <- fluss.cac(mp$pi, w)
 #' segments <- fluss.extract(cac, nseg, w)
@@ -152,14 +152,14 @@ fluss_extract <- function(arc_counts, num_segments, window_size, exclusion_zone 
 #' @examples
 #' # This is a fast toy example and results are useless. For a complete result, run the code inside
 #' #'Not run' section below.
-#' data <- fluss_data$tilt.abp$data[1:1000]
+#' data <- mp_fluss_data$tilt.abp$data[1:1000]
 #' w <- 210
 #' mp <- stomp(data, window.size = w, verbose = 0)
 #' cac <- fluss.cac(mp$pi, w)
 #'
 #' \dontrun{
-#' data <- fluss_data$walkjogrun$data
-#' w <- fluss_data$walkjogrun$window # 80
+#' data <- mp_fluss_data$walkjogrun$data
+#' w <- mp_fluss_data$walkjogrun$window # 80
 #' mp <- stomp(data, window.size = w)
 #' cac <- fluss.cac(mp$pi, w)
 #' }
@@ -202,7 +202,7 @@ fluss_cac <- function(profile_index, window_size, exclusion_zone = 5) {
 #' @examples
 #' # This is a fast toy example and results are useless. For a complete result, run the code inside
 #' #'Not run' section below.
-#' data <- fluss_data$tilt.abp$data[1:1000]
+#' data <- mp_fluss_data$tilt.abp$data[1:1000]
 #' w <- 10
 #' truth <- 400
 #' mp <- stomp(data, window.size = w, verbose = 0)
@@ -210,10 +210,10 @@ fluss_cac <- function(profile_index, window_size, exclusion_zone = 5) {
 #' segments <- fluss.extract(cac, 1, w)
 #' score <- fluss.score(truth, segments, length(data))
 #' \dontrun{
-#' data <- fluss_data$walkjogrun$data
-#' w <- fluss_data$walkjogrun$window # 80
-#' truth <- fluss_data$walkjogrun$gtruth # 3800 6800
-#' nseg <- length(fluss_data$walkjogrun$gtruth) # 2
+#' data <- mp_fluss_data$walkjogrun$data
+#' w <- mp_fluss_data$walkjogrun$window # 80
+#' truth <- mp_fluss_data$walkjogrun$gtruth # 3800 6800
+#' nseg <- length(mp_fluss_data$walkjogrun$gtruth) # 2
 #' mp <- stomp(data, window.size = w)
 #' cac <- fluss.cac(mp$pi, w)
 #' segments <- fluss.extract(cac, nseg, w)

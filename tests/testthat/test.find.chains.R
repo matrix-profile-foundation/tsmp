@@ -2,7 +2,7 @@ context("Testing Time Series Chains")
 library(tsmp)
 
 w <- 50
-data <- gait_data
+data <- mp_gait_data
 mp <- stamp(data, window_size = w, exclusion_zone = 1 / 4, verbose = 0)
 res <- find_chains(mp)
 
