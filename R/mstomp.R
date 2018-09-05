@@ -49,10 +49,11 @@
 #' }
 
 mstomp <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, must_dim = NULL, exc_dim = NULL) {
-  ## get various length
-  exclusion_zone <- floor(window_size * exclusion_zone)
+  # get various length
+  ez <- exclusion_zone # store original
+  exclusion_zone <- round(window_size * exclusion_zone + vars()$eps)
 
-  ## transform data list into matrix
+  # transform data list into matrix
   if (is.matrix(data) || is.data.frame(data)) {
     if (is.data.frame(data)) {
       data <- as.matrix(data)
@@ -86,7 +87,7 @@ mstomp <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, must_
 
   matrix_profile_size <- data_size - window_size + 1
 
-  ## check input
+  # check input
   if (window_size > data_size / 2) {
     stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
   }
@@ -103,7 +104,7 @@ mstomp <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, must_
     stop("Error: The same dimension is presented in both the exclusion dimension and must have dimension.", call. = FALSE)
   }
 
-  ## check skip position
+  # check skip position
   n_exc <- length(exc_dim)
   n_must <- length(must_dim)
   mask_exc <- rep(FALSE, n_dim)
@@ -127,7 +128,7 @@ mstomp <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, must_
     on.exit(beep(sounds[[1]]), TRUE)
   }
 
-  ## initialization
+  # initialization
   data_fft <- matrix(0, (window_size + data_size), n_dim)
   data_mean <- matrix(0, matrix_profile_size, n_dim)
   data_sd <- matrix(0, matrix_profile_size, n_dim)
@@ -143,7 +144,7 @@ mstomp <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, must_
   }
 
   tictac <- Sys.time()
-  ## compute the matrix profile
+  # compute the matrix profile
   matrix_profile <- matrix(0, matrix_profile_size, n_dim)
   profile_index <- matrix(0, matrix_profile_size, n_dim)
   left_matrix_profile <- matrix(Inf, matrix_profile_size, n_dim)
@@ -253,7 +254,7 @@ mstomp <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, must_
   right_matrix_profile <- sqrt(right_matrix_profile)
   left_matrix_profile <- sqrt(left_matrix_profile)
 
-  ## remove bad k setting in the returned matrix
+  # remove bad k setting in the returned matrix
   if (n_must > 1) {
     matrix_profile[, 1:(n_must - 1)] <- NA
     right_matrix_profile[, 1:(n_must - 1)] <- NA
@@ -281,9 +282,28 @@ mstomp <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, must_
     message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
   }
 
-  return(list(
-    rmp = right_matrix_profile, rpi = right_profile_index,
-    lmp = left_matrix_profile, lpi = left_profile_index,
-    mp = matrix_profile, pi = profile_index
-  ))
+  if (n_dim > 1) {
+    obj <- list(
+      mp = matrix_profile, pi = profile_index,
+      rmp = right_matrix_profile, rpi = right_profile_index,
+      lmp = left_matrix_profile, lpi = left_profile_index,
+      w = window_size,
+      ez = ez,
+      n_dim = n_dim,
+      must = must_dim,
+      exc = exc_dim
+    )
+    class(obj) <- "MultiMatrixProfile"
+  } else {
+    obj <- list(
+      mp = matrix_profile, pi = profile_index,
+      rmp = right_matrix_profile, rpi = right_profile_index,
+      lmp = left_matrix_profile, lpi = left_profile_index,
+      w = window_size,
+      ez = ez
+    )
+    class(obj) <- "MatrixProfile"
+  }
+
+  return(obj)
 }

@@ -4,18 +4,17 @@
 \alias{fluss}
 \title{Fast Low-cost Unipotent Semantic Segmentation (FLUSS)}
 \usage{
-fluss(data, window_size, num_segments, exclusion_zone = 5,
-  gtruth = NULL, profile_index = NULL, verbose = 2)
+fluss(.mp, num_segments, exclusion_zone = NULL)
 }
 \arguments{
-\item{data}{a \code{matrix} or a \code{vector}. Input data.}
-
-\item{window_size}{an \code{int}. Size of the sliding window.}
-
 \item{num_segments}{an \code{int}. Number of segments to extract. Based on domain knowledge.}
 
 \item{exclusion_zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is
 \code{5}).}
+
+\item{data}{a \code{matrix} or a \code{vector}. Input data.}
+
+\item{window_size}{an \code{int}. Size of the sliding window.}
 
 \item{gtruth}{an \code{int} or \code{vector} of \code{int} with the ground truth index of segments. (Default is
 \code{NULL}).}

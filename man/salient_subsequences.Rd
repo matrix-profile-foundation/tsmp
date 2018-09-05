@@ -4,18 +4,12 @@
 \alias{salient_subsequences}
 \title{Retrieve salient subsequences from a dataset}
 \usage{
-salient_subsequences(data, matrix_profile, profile_index, window_size,
-  n_bits = 8, n_cand = 10, exclusion_zone = 1/2, verbose = 2)
+salient_subsequences(.mp, data, n_bits = 8, n_cand = 10,
+  exclusion_zone = NULL, verbose = 2)
 }
 \arguments{
 \item{data}{a \code{vector}, column \code{matrix} or \code{data.frame}. If more than one column is provided, see
 details.}
-
-\item{matrix_profile}{a result from STAMP or STOMP algorithms.}
-
-\item{profile_index}{a result from STAMP or STOMP algorithms.}
-
-\item{window_size}{an \code{int} with the size of the sliding window.}
 
 \item{n_bits}{an \code{int}. Number of bits for MDL discretization. (Default is \code{8}).}
 
@@ -26,6 +20,12 @@ details.}
 is \code{1/2}). See details.}
 
 \item{verbose}{an \code{int}. See details. (Default is \code{2}).}
+
+\item{matrix_profile}{a result from STAMP or STOMP algorithms.}
+
+\item{profile_index}{a result from STAMP or STOMP algorithms.}
+
+\item{window_size}{an \code{int} with the size of the sliding window.}
 }
 \value{
 Returns a \code{list} with \code{indexes}, a \code{vector} with the starting position of each

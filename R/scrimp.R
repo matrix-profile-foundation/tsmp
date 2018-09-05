@@ -53,7 +53,7 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
     query <- data
   }
 
-  ## transform data into matrix
+  # transform data into matrix
   if (is.vector(data)) {
     data <- as.matrix(data)
   }
@@ -75,13 +75,14 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
     stop("Error: Unknown type of query. Must be: a column matrix or a vector.", call. = FALSE)
   }
 
-  exclusion_zone <- floor(window_size * exclusion_zone)
+  ez <- exclusion_zone # store original
+  exclusion_zone <- round(window_size * exclusion_zone + vars()$eps)
   data_size <- nrow(data)
   query_size <- nrow(query)
   matrix_profile_size <- data_size - window_size + 1
   num_queries <- query_size - window_size + 1
 
-  ## check skip position
+  # check skip position
   skip_location <- rep(FALSE, matrix_profile_size)
 
   for (i in 1:matrix_profile_size) {
@@ -109,9 +110,15 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
   message("DISCLAIMER: This algorithm still in development by its authors.")
 
   matrix_profile <- matrix(Inf, matrix_profile_size, 1)
-  left_matrix_profile <- right_matrix_profile <- matrix_profile
   profile_index <- matrix(-1, matrix_profile_size, 1)
-  left_profile_index <- right_profile_index <- profile_index
+
+  if (length(args) > 1) { # no RMP and LMP for joins
+    left_matrix_profile <- right_matrix_profile <- NULL
+    left_profile_index <- right_profile_index <- NULL
+  } else {
+    left_matrix_profile <- right_matrix_profile <- matrix_profile
+    left_profile_index <- right_profile_index <- profile_index
+  }
 
   j <- 1
   order <- (exclusion_zone + 1):num_queries
@@ -131,11 +138,17 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
     on.exit(beep(sounds[[1]]), TRUE)
   }
   # anytime must return the result always
-  on.exit(return(list(
-    rmp = right_matrix_profile, rpi = right_profile_index,
-    lmp = left_matrix_profile, lpi = left_profile_index,
-    mp = Re(sqrt(as.complex(matrix_profile))), pi = profile_index
-  )), TRUE)
+  on.exit(return({
+    obj <- list(
+      mp = matrix_profile, pi = profile_index,
+      rmp = right_matrix_profile, rpi = right_profile_index,
+      lmp = left_matrix_profile, lpi = left_profile_index,
+      w = window_size,
+      ez = ez
+    )
+    class(obj) <- "MatrixProfile"
+    obj
+  }), TRUE)
 
   pre <- mass_pre(data, data_size, query, query_size, window_size = window_size)
 

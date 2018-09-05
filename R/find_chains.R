@@ -2,7 +2,7 @@
 #'
 #' Time Series Chains is a new primitive for time series data mining.
 #'
-#' @param matrices a result from STAMP or STOMP algorithms
+#' @param .mp a `MatrixProfile` object.
 #'
 #' @return Returns `chains`, a `list` of chains founded with more than 2 patterns and `best` with
 #'   the best one.
@@ -16,8 +16,13 @@
 #' mp <- stamp(data, window_size = w, exclusion_zone = 1/4, verbose = 0)
 #' find_chains(mp)
 #'
-find_chains <- function(matrices) {
-  size <- length(matrices$rpi)
+find_chains <- function(.mp) {
+
+  if (!any(class(.mp) %in% "MatrixProfile")) {
+    stop("Error: First argument must be an object of class `MatrixProfile`.")
+  }
+
+  size <- length(.mp$rpi)
   chain_length <- rep(1, size)
   chain_set <- list()
 
@@ -28,8 +33,8 @@ find_chains <- function(matrices) {
       j <- i
       chain <- j
 
-      while (matrices$rpi[j] > 0 && matrices$lpi[matrices$rpi[j]] == j) {
-        j <- matrices$rpi[j]
+      while (.mp$rpi[j] > 0 && .mp$lpi[.mp$rpi[j]] == j) {
+        j <- .mp$rpi[j]
         chain_length[j] <- -1
         chain_length[i] <- chain_length[i] + 1
         chain <- c(chain, j)
@@ -48,7 +53,7 @@ find_chains <- function(matrices) {
   mean <- Inf
   for (i in seq_len(length(chain_set))) {
     if (length(chain_set[[i]]) == l) {
-      n <- mean(matrices$rmp[chain_set[[i]]])
+      n <- mean(.mp$rmp[chain_set[[i]]])
       if (n < mean) {
         mean <- n
         best_chain <- chain_set[[i]]
@@ -56,5 +61,8 @@ find_chains <- function(matrices) {
     }
   }
 
-  return(list(chains = chain_set, best = best_chain))
+  .mp$chain <- list(chains = chain_set, best = best_chain)
+  class(.mp) <- append(class(.mp), "Chain")
+
+  return(.mp)
 }

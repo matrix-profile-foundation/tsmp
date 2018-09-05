@@ -66,9 +66,12 @@
 #'   }
 #' }
 #'
-salient_subsequences <- function(data, matrix_profile, profile_index, window_size, n_bits = 8, n_cand = 10, exclusion_zone = 1 / 2, verbose = 2) {
+salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_zone = NULL, verbose = 2) {
+  if (!any(class(.mp) %in% c("MatrixProfile"))) {
+    stop("Error: First argument must be an object of class `MatrixProfile`.")
+  }
 
-  ## transform data list into matrix
+  # transform data list into matrix
   if (is.matrix(data) || is.data.frame(data)) {
     if (is.data.frame(data)) {
       data <- as.matrix(data)
@@ -103,48 +106,54 @@ salient_subsequences <- function(data, matrix_profile, profile_index, window_siz
   if (n_dim > 1) {
     exclusion_zone <- 0
   } else {
-    ## set trivial match exclusion zone
-    exclusion_zone <- round(window_size * exclusion_zone + vars()$eps)
+    # set trivial match exclusion zone
+    if (is.null(exclusion_zone)) {
+      exclusion_zone <- round(.mp$w * .mp$ez + vars()$eps)
+    } else {
+      exclusion_zone <- round(.mp$w * exclusion_zone + vars()$eps)
+    }
   }
+
+  matrix_profile <- .mp$mp # keep mp intact
 
   if (n_dim > 1) {
     max_index_num <- n_dim
   }
   else {
-    ## get data size
+    # get data size
     matrix_profile_size <- nrow(matrix_profile)
-    max_index_num <- round(data_size / window_size + vars()$eps)
+    max_index_num <- round(data_size / .mp$w + vars()$eps)
   }
 
-  ## preprocess for discretization
+  # preprocess for discretization
   if (n_dim > 1) {
     minmax <- discrete_norm_pre(data)
   } else {
-    minmax <- discrete_norm_pre(data, window_size)
+    minmax <- discrete_norm_pre(data, .mp$w)
   }
 
   data_min <- minmax$min
   data_max <- minmax$max
 
-  ## initialization various vectors
+  # initialization various vectors
   indexes <- rep(0, max_index_num)
   idx_bit_size <- rep(0, max_index_num)
   hypothesis_idx <- rep(0, max_index_num)
   compressible_idx <- rep(0, max_index_num)
-  hypothesis <- matrix(0, max_index_num, window_size)
-  compressible <- matrix(0, max_index_num, window_size)
+  hypothesis <- matrix(0, max_index_num, .mp$w)
+  compressible <- matrix(0, max_index_num, .mp$w)
 
-  ## initialization count related variables
+  # initialization count related variables
   hypothesis_count <- 0
   compressible_count <- 0
   indexes_count <- 0
   compressible_count_old <- 0
   hypothesis_count_old <- 0
 
-  ## initialization bit size related variables
+  # initialization bit size related variables
   compress_cost <- 0
-  uncompressed_bit <- n_bits * window_size
-  mismatch_bit <- n_bits + log2(window_size)
+  uncompressed_bit <- n_bits * .mp$w
+  mismatch_bit <- n_bits + log2(.mp$w)
 
   if (n_dim > 1) {
     idx_bit_size[1] <- uncompressed_bit * n_dim
@@ -163,14 +172,14 @@ salient_subsequences <- function(data, matrix_profile, profile_index, window_siz
 
   tictac <- Sys.time()
 
-  ## iteartivly expend list of hypothesis and compressiable
+  # iteartivly expend list of hypothesis and compressiable
   while (TRUE) {
     # get the newest hypothesis
     if (hypothesis_count_old != hypothesis_count) {
       if (n_dim > 1) {
         hypothesis[hypothesis_count, ] <- data[, hypothesis_idx[hypothesis_count]]
       } else {
-        hypothesis[hypothesis_count, ] <- data[hypothesis_idx[hypothesis_count]:(hypothesis_idx[hypothesis_count] + window_size - 1), ]
+        hypothesis[hypothesis_count, ] <- data[hypothesis_idx[hypothesis_count]:(hypothesis_idx[hypothesis_count] + .mp$w - 1), ]
       }
       hypothesis[hypothesis_count, ] <- discrete_norm(hypothesis[hypothesis_count, ], n_bits, data_max, data_min)
     }
@@ -180,7 +189,7 @@ salient_subsequences <- function(data, matrix_profile, profile_index, window_siz
       if (n_dim > 1) {
         compressible[compressible_count, ] <- data[, compressible_idx[compressible_count]]
       } else {
-        compressible[compressible_count, ] <- data[compressible_idx[compressible_count]:(compressible_idx[compressible_count] + window_size - 1), ]
+        compressible[compressible_count, ] <- data[compressible_idx[compressible_count]:(compressible_idx[compressible_count] + .mp$w - 1), ]
       }
       compressible[compressible_count, ] <- discrete_norm(compressible[compressible_count, ], n_bits, data_max, data_min)
     }
@@ -254,17 +263,17 @@ salient_subsequences <- function(data, matrix_profile, profile_index, window_siz
       if (n_dim > 1) {
         can <- data[, candidate_idx[i]]
       } else {
-        can <- as.matrix(data[candidate_idx[i]:(candidate_idx[i] + window_size - 1), ])
+        can <- as.matrix(data[candidate_idx[i]:(candidate_idx[i] + .mp$w - 1), ])
       }
 
       can <- discrete_norm(can, n_bits, data_max, data_min)
 
       # test the candiate as hypothesis
-      candidate_motif_idx <- profile_index[candidate_idx[i]]
+      candidate_motif_idx <- .mp$pi[candidate_idx[i]]
       if (n_dim > 1) {
         candidate_motif <- data[, candidate_motif_idx]
       } else {
-        candidate_motif <- as.matrix(data[candidate_motif_idx:(candidate_motif_idx + window_size - 1), ])
+        candidate_motif <- as.matrix(data[candidate_motif_idx:(candidate_motif_idx + .mp$w - 1), ])
       }
       candidate_motif <- discrete_norm(candidate_motif, n_bits, data_max, data_min)
       bitsave_hypothesis <- uncompressed_bit - get_bitsize(candidate_motif - can, mismatch_bit)
@@ -324,7 +333,9 @@ salient_subsequences <- function(data, matrix_profile, profile_index, window_siz
     message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
   }
 
-  return(list(indexes = indexes, idx_bit_size = idx_bit_size, bits = n_bits))
+  .mp$salient <- list(indexes = indexes, idx_bit_size = idx_bit_size, bits = n_bits)
+  class(.mp) <- append(class(.mp), "Salient")
+  return(.mp)
 }
 
 #' Retrieve the index of a number of candidates from the lowest points of a MP

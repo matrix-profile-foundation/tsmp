@@ -51,7 +51,7 @@ sdts_predict <- function(model, data, window_size) {
     anno_pad <- c(0, anno, 0)
 
     anno_st[[i]] <- which((anno_pad[1:(length(anno_pad) - 1)] - anno_pad[2:length(anno_pad)]) == -1) + 1
-    anno_st[[i]] <- anno_st[[i]] - 1 ## ???
+    anno_st[[i]] <- anno_st[[i]] - 1 # TODO: why this?
   }
 
   anno_st <- unlist(anno_st)

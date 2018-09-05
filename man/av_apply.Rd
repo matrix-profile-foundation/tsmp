@@ -4,10 +4,10 @@
 \alias{av_apply}
 \title{Corrects the matrix profile using an annotation vector}
 \usage{
-av_apply(matrix_profile, annotation_vector)
+av_apply(.mp, annotation_vector)
 }
 \arguments{
-\item{matrix_profile}{The matrix profile.}
+\item{.mp}{The matrix profile.}
 
 \item{annotation_vector}{The annotation vector.}
 }

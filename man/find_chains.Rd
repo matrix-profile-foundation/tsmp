@@ -4,10 +4,10 @@
 \alias{find_chains}
 \title{Find Time Series Chains}
 \usage{
-find_chains(matrices)
+find_chains(.mp)
 }
 \arguments{
-\item{matrices}{a result from STAMP or STOMP algorithms}
+\item{.mp}{a \code{MatrixProfile} object.}
 }
 \value{
 Returns \code{chains}, a \code{list} of chains founded with more than 2 patterns and \code{best} with

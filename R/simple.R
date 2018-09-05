@@ -42,7 +42,7 @@ simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
     query <- data
   }
 
-  ## transform data list into matrix
+  # transform data list into matrix
   if (is.matrix(data) || is.data.frame(data)) {
     if (is.data.frame(data)) {
       data <- as.matrix(data)
@@ -74,7 +74,7 @@ simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
     stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list.", call. = FALSE)
   }
 
-  ## transform query list into matrix
+  # transform query list into matrix
   if (is.matrix(query) || is.data.frame(query)) {
     if (is.data.frame(query)) {
       query <- as.matrix(query)
@@ -106,7 +106,7 @@ simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
     stop("Error: Unknown type of query. Must be: matrix, data.frame, vector or list.", call. = FALSE)
   }
 
-  ## check input
+  # check input
   if (q_dim != n_dim) {
     stop("Error: Data and query dimensions must be the same.", call. = FALSE)
   }
@@ -120,9 +120,10 @@ simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
     stop("Error: `window_size` must be at least 4.", call. = FALSE)
   }
 
-  exclusion_zone <- floor(window_size * exclusion_zone)
+ez <- exclusion_zone # store original
+  exclusion_zone <- round(window_size * exclusion_zone + vars()$eps)
 
-  ## initialization
+  # initialization
   matrix_profile_size <- data_size - window_size + 1
   matrix_profile <- rep(Inf, matrix_profile_size)
   profile_index <- rep(0, matrix_profile_size)
@@ -154,7 +155,7 @@ simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
   query_sumy2 <- res_query$sumy2
   dropval <- data_window[1, ] # dropval is the first element of refdata window
 
-  ## no ez if join
+  # no ez if join
   distance_profile[1:exclusion_zone] <- Inf
 
 
@@ -164,7 +165,7 @@ simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
 
   tictac <- Sys.time()
 
-  ## compute the remainder of the matrix profile
+  # compute the remainder of the matrix profile
   for (i in 2:matrix_profile_size) {
 
     # compute the distance profile
@@ -208,7 +209,15 @@ simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
     message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
   }
 
-  return(list(mp = matrix_profile, pi = profile_index))
+  obj <- list(
+    mp = matrix_profile, pi = profile_index,
+    rmp = NULL, rpi = NULL,
+    lmp = NULL, lpi = NULL,
+    w = window_size,
+    ez = ez
+  )
+  class(obj) <- "SimpleMatrixProfile"
+  return(obj)
 }
 
 #' Precomputes several values used on MASS

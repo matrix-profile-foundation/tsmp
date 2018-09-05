@@ -41,7 +41,7 @@
 #' }
 sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parallel = TRUE, verbose = 2) {
 
-  ## transform data list into matrix
+  # transform data list into matrix
   if (is.matrix(data) || is.data.frame(data)) {
     if (is.data.frame(data)) {
       data <- as.matrix(data)
@@ -60,7 +60,7 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
 
   n_window_size <- length(window_size)
 
-  ## check input
+  # check input
   for (i in 1:n_window_size) {
     if (window_size[i] > (data_size / 2)) {
       stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
@@ -70,7 +70,7 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
     }
   }
 
-  ## extract positive segment
+  # extract positive segment
   label_diff <- diff(c(0, label, 0))
   pos_st <- which(label_diff == 1) + 1
   pos_ed <- which(label_diff == -1)
@@ -93,7 +93,7 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
     pos_alt_st[length(pos_alt_st)] <- (length(pos) - min(window_size) + 1)
   }
 
-  ## run matrix profile on concatenated positive segment
+  # run matrix profile on concatenated positive segment
   if (verbose > 0) {
     message("stage 1 of 3, compute matrix profile ...")
   }
@@ -109,7 +109,7 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
     mat_pro[[i]] <- mp$mp
   }
 
-  ## extract candidate
+  # extract candidate
   candi <- list()
   candi_idx <- list()
 
@@ -132,7 +132,7 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
     candi_idx[[i]] <- candi_idx[[i]][candi_dist$ix]
   }
 
-  ## evaluate each candidate
+  # evaluate each candidate
   candi_score <- list()
   candi_thold <- list()
   candi_pro <- list()
@@ -207,13 +207,13 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
   candi_pro <- candi_pro[order]
   candi <- candi[order]
 
-  ## check max pattern allowed
+  # check max pattern allowed
   pat_max <- min(pat_max, floor(n_pos * 0.5))
   if (pat_max < 2) {
     return(list(score = candi_score[1], score_hist = candi_score[1], pattern = list(candi[[1]]), thold = candi_thold[1]))
   }
 
-  ## check combined pattern
+  # check combined pattern
   max_window_size <- max(window_size)
   max_pro_len <- length(data) - min(window_size) + 1
   best_pat <- rep(FALSE, n_pos * n_window_size)

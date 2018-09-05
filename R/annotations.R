@@ -42,6 +42,8 @@ av_complexity <- function(data, window_size, dilution_factor = 0) {
   av <- av + dilution_factor
   av <- av / (dilution_factor + 1)
 
+  av <- list(av = av, w = window_size)
+  class(av) <- "AnnotationVector"
   return(av)
 }
 
@@ -81,7 +83,8 @@ av_zerocrossing <- function(data, window_size) {
   }
 
   av <- zero_one_norm(av)
-
+  av <- list(av = av, w = window_size)
+  class(av) <- "AnnotationVector"
   return(av)
 }
 
@@ -128,6 +131,8 @@ av_motion_artifact <- function(data, window_size) {
   cav[av >= mu] <- 0
   cav[av < mu] <- 1
 
+  class(cav) <- "AnnotationVector"
+  cav <- list(av = cav, w = window_size)
   return(cav)
 }
 
@@ -190,6 +195,8 @@ av_stop_word <- function(data, window_size, stop_word_loc, exclusion_zone = 1 / 
     }
   }
 
+  av <- list(av = av, w = window_size)
+  class(av) <- "AnnotationVector"
   return(av)
 }
 
@@ -236,12 +243,14 @@ av_hardlimit_artifact <- function(data, window_size) {
   av <- zero_one_norm(av) # zero-one normalize the av
   av <- 1 - av
 
+  av <- list(av = av, w = window_size)
+  class(av) <- "AnnotationVector"
   return(av)
 }
 
 #' Corrects the matrix profile using an annotation vector
 #'
-#' @param matrix_profile The matrix profile.
+#' @param .mp The matrix profile.
 #' @param annotation_vector The annotation vector.
 #'
 #' @return Returns the corrected matrix profile
@@ -255,10 +264,21 @@ av_hardlimit_artifact <- function(data, window_size) {
 #'   av <- av_complexity(data, window)
 #'   mpc <- av_apply(mp, av)
 #' }
-av_apply <- function(matrix_profile, annotation_vector) {
-  corrected_mp <- matrix_profile + (1 - annotation_vector) * max(matrix_profile)
+av_apply <- function(.mp, annotation_vector) {
+  if (!any(class(.mp) %in% "MatrixProfile")) {
+    stop("Error: First argument must be an object of class `MatrixProfile`.")
+  }
 
-  return(corrected_mp)
+  if (!(class(annotation_vector) %in% c("AnnotationVector"))) {
+    stop("Error: `annotation_vector` must be an object of class `AnnotationVector`.")
+  }
+
+  if (.mp$w != annotation_vector$w) {
+    warning("Warning: `annotation_vector` window size is not the same as the Matrix Profile.")
+  }
+
+  # TODO: do not modify mp
+  .mp$mp <- .mp$mp + (1 - annotation_vector$av) * max(.mp$mp)
+
+  return(.mp)
 }
-
-# Guided motif search

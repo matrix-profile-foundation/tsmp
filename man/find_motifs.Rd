@@ -2,15 +2,14 @@
 % Please edit documentation in R/find_motifs.R
 \name{find_motifs}
 \alias{find_motifs}
-\title{Find MOTIFs and Plot them}
+\title{Find MOTIFs}
 \usage{
-find_motifs(matrix_profile, profile_index, window_size, data,
-  exclusion_zone = 1/2, radius = 3, n_motifs = 3, plot = TRUE,
-  cols = 3)
+find_motifs(.mp, data, n_motifs = 3, radius = 3, mode = c("guided",
+  "unguided"), n_bit = 4, exclusion_zone = NULL, n_dim = NULL)
 }
 \arguments{
-\item{cols}{}
+\item{n_dim}{}
 }
 \description{
-Find MOTIFs and Plot them
+Find MOTIFs
 }

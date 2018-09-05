@@ -57,7 +57,7 @@ stamp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size 
     query <- data
   }
 
-  ## transform data into matrix
+  # transform data into matrix
   if (is.vector(data)) {
     data <- as.matrix(data)
   }
@@ -79,7 +79,8 @@ stamp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size 
     stop("Error: Unknown type of query. Must be: a column matrix or a vector.", call. = FALSE)
   }
 
-  exclusion_zone <- floor(window_size * exclusion_zone)
+  ez <- exclusion_zone # store original
+  exclusion_zone <- round(window_size * exclusion_zone + vars()$eps)
   data_size <- nrow(data)
   query_size <- nrow(query)
   matrix_profile_size <- data_size - window_size + 1
@@ -95,7 +96,7 @@ stamp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size 
     stop("Error: `window_size` must be at least 4.", call. = FALSE)
   }
 
-  ## check skip position
+  # check skip position
   skip_location <- rep(FALSE, matrix_profile_size)
 
   for (i in 1:matrix_profile_size) {
@@ -111,9 +112,15 @@ stamp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size 
   query[is.infinite(query)] <- 0
 
   matrix_profile <- matrix(Inf, matrix_profile_size, 1)
-  left_matrix_profile <- right_matrix_profile <- matrix_profile
   profile_index <- matrix(-1, matrix_profile_size, 1)
-  left_profile_index <- right_profile_index <- profile_index
+
+  if (length(args) > 1) { # no RMP and LMP for joins
+    left_matrix_profile <- right_matrix_profile <- NULL
+    left_profile_index <- right_profile_index <- NULL
+  } else {
+    left_matrix_profile <- right_matrix_profile <- matrix_profile
+    left_profile_index <- right_profile_index <- profile_index
+  }
 
   j <- 1
   ssize <- min(s_size, num_queries)
@@ -132,11 +139,17 @@ stamp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size 
     on.exit(beep(sounds[[1]]), TRUE)
   }
   # anytime must return the result always
-  on.exit(return(list(
-    rmp = right_matrix_profile, rpi = right_profile_index,
-    lmp = left_matrix_profile, lpi = left_profile_index,
-    mp = matrix_profile, pi = profile_index
-  )), TRUE)
+  on.exit(return({
+    obj <- list(
+      mp = matrix_profile, pi = profile_index,
+      rmp = right_matrix_profile, rpi = right_profile_index,
+      lmp = left_matrix_profile, lpi = left_profile_index,
+      w = window_size,
+      ez = ez
+    )
+    class(obj) <- "MatrixProfile"
+    obj
+  }), TRUE)
 
   pre <- mass_pre(data, data_size, query, query_size, window_size = window_size)
 
@@ -162,17 +175,19 @@ stamp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size 
     }
 
     # anytime version
-    # left matrix_profile
-    ind <- (distance_profile[i:matrix_profile_size] < left_matrix_profile[i:matrix_profile_size])
-    ind <- c(rep(FALSE, (i - 1)), ind) # pad left
-    left_matrix_profile[ind] <- distance_profile[ind]
-    left_profile_index[which(ind)] <- i
+    if (length(args) == 1) { # no RMP and LMP for joins
+      # left matrix_profile
+      ind <- (distance_profile[i:matrix_profile_size] < left_matrix_profile[i:matrix_profile_size])
+      ind <- c(rep(FALSE, (i - 1)), ind) # pad left
+      left_matrix_profile[ind] <- distance_profile[ind]
+      left_profile_index[which(ind)] <- i
 
-    # right matrix_profile
-    ind <- (distance_profile[1:i] < right_matrix_profile[1:i])
-    ind <- c(ind, rep(FALSE, matrix_profile_size - i)) # pad right
-    right_matrix_profile[ind] <- distance_profile[ind]
-    right_profile_index[which(ind)] <- i
+      # right matrix_profile
+      ind <- (distance_profile[1:i] < right_matrix_profile[1:i])
+      ind <- c(ind, rep(FALSE, matrix_profile_size - i)) # pad right
+      right_matrix_profile[ind] <- distance_profile[ind]
+      right_profile_index[which(ind)] <- i
+    }
 
     # normal matrix_profile
     ind <- (distance_profile < matrix_profile)

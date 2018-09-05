@@ -4,17 +4,17 @@
 \alias{fluss_extract}
 \title{FLUSS - Extract Segments}
 \usage{
-fluss_extract(arc_counts, num_segments, window_size, exclusion_zone = 5)
+fluss_extract(.mpac, num_segments, exclusion_zone = NULL)
 }
 \arguments{
-\item{arc_counts}{a \code{matrix} with the corrected arc counts from \code{\link[=fluss_cac]{fluss_cac()}}.}
-
 \item{num_segments}{an \code{int}. Number of segments to extract. Based on domain knowledge.}
-
-\item{window_size}{an \code{int}. Size of the sliding window.}
 
 \item{exclusion_zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is
 \code{5}).}
+
+\item{arc_counts}{a \code{matrix} with the corrected arc counts from \code{\link[=fluss_cac]{fluss_cac()}}.}
+
+\item{window_size}{an \code{int}. Size of the sliding window.}
 }
 \value{
 Returns an \code{int} or a \code{vector} of \code{int} with the location of predicted semantic changes.

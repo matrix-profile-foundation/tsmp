@@ -60,8 +60,8 @@ plot_arc <- function(mp, pi, window_size, exclusion_zone = 5, edge_limit = 5, th
     }
 
     # remove excess of arcs
-    exclusion_zone <- floor(window_size * exclusion_zone)
-    edge_limit <- floor(window_size * edge_limit)
+    exclusion_zone <- round(window_size * exclusion_zone + vars()$eps)
+    edge_limit <- round(window_size * edge_limit + vars()$eps)
     data[1:edge_limit, ] <- Inf
     data[(data_size - edge_limit + 1):data_size, ] <- Inf
 

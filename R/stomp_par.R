@@ -51,7 +51,7 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
     query <- data
   }
 
-  ## transform data into matrix
+  # transform data into matrix
   if (is.vector(data)) {
     data <- as.matrix(data)
   }
@@ -73,7 +73,8 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
     stop("Error: Unknown type of query. Must be: a column matrix or a vector.", call. = FALSE)
   }
 
-  exclusion_zone <- floor(window_size * exclusion_zone)
+  ez <- exclusion_zone # store original
+  exclusion_zone <- round(window_size * exclusion_zone + vars()$eps)
   data_size <- nrow(data)
   query_size <- nrow(query)
   matrix_profile_size <- data_size - window_size + 1
@@ -89,7 +90,7 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
     stop("Error: `window_size` must be at least 4.", call. = FALSE)
   }
 
-  ## check skip position
+  # check skip position
   skip_location <- rep(FALSE, matrix_profile_size)
 
   for (i in 1:matrix_profile_size) {
@@ -153,7 +154,7 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
     on.exit(beep(sounds[[1]]), TRUE)
   }
 
-  ## seperate index into different job
+  # seperate index into different job
   per_work <- max(10, ceiling(num_queries / 100))
   n_work <- floor(num_queries / per_work)
   idx_work <- list()
@@ -178,7 +179,7 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
   i <- NULL # CRAN NOTE fix
   `%dopar%` <- foreach::`%dopar%` # CRAN NOTE fix
 
-  ## compute the matrix profile
+  # compute the matrix profile
   batch <- foreach(
     i = 1:n_work,
     .verbose = FALSE,
@@ -192,10 +193,13 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
     work_len <- length(idx_work[[i]])
     pro_muls <- matrix(Inf, matrix_profile_size, 1)
     pro_idxs <- matrix(-1, matrix_profile_size, 1)
-    pro_muls_right <- matrix(Inf, matrix_profile_size, 1)
-    pro_idxs_right <- matrix(-1, matrix_profile_size, 1)
-    pro_muls_left <- matrix(Inf, matrix_profile_size, 1)
-    pro_idxs_left <- matrix(-1, matrix_profile_size, 1)
+    if (length(args) > 1) { # no RMP and LMP for joins
+      pro_muls_right <- pro_muls_left <- NULL
+      pro_idxs_right <- pro_idxs_left <- NULL
+    } else {
+      pro_muls_right <- pro_muls_left <- pro_muls
+      pro_idxs_right <- pro_idxs_left <- pro_idxs
+    }
     dist_pro <- matrix(0, matrix_profile_size, 1)
     last_product <- matrix(0, matrix_profile_size, 1)
     drop_value <- matrix(0, 1, 1)
@@ -238,17 +242,19 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
         }
       }
 
-      # left matrix_profile
-      ind <- (dist_pro[idx:matrix_profile_size] < pro_muls_left[idx:matrix_profile_size])
-      ind <- c(rep(FALSE, (idx - 1)), ind) # pad left
-      pro_muls_left[ind] <- dist_pro[ind]
-      pro_idxs_left[which(ind)] <- idx
+      if (length(args) == 1) { # no RMP and LMP for joins
+        # left matrix_profile
+        ind <- (dist_pro[idx:matrix_profile_size] < pro_muls_left[idx:matrix_profile_size])
+        ind <- c(rep(FALSE, (idx - 1)), ind) # pad left
+        pro_muls_left[ind] <- dist_pro[ind]
+        pro_idxs_left[which(ind)] <- idx
 
-      # right matrix_profile
-      ind <- (dist_pro[1:idx] < pro_muls_right[1:idx])
-      ind <- c(ind, rep(FALSE, matrix_profile_size - idx)) # pad right
-      pro_muls_right[ind] <- dist_pro[ind]
-      pro_idxs_right[which(ind)] <- idx
+        # right matrix_profile
+        ind <- (dist_pro[1:idx] < pro_muls_right[1:idx])
+        ind <- c(ind, rep(FALSE, matrix_profile_size - idx)) # pad right
+        pro_muls_right[ind] <- dist_pro[ind]
+        pro_idxs_right[which(ind)] <- idx
+      }
 
       # normal matrix_profile
       ind <- (dist_pro < pro_muls)
@@ -267,23 +273,28 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
 
   matrix_profile <- matrix(Inf, matrix_profile_size, 1)
   profile_index <- matrix(-1, matrix_profile_size, 1)
-  left_matrix_profile <- matrix(Inf, matrix_profile_size, 1)
-  left_profile_index <- matrix(-1, matrix_profile_size, 1)
-  right_matrix_profile <- matrix(Inf, matrix_profile_size, 1)
-  right_profile_index <- matrix(-1, matrix_profile_size, 1)
+  if (length(args) > 1) { # no RMP and LMP for joins
+    left_matrix_profile <- right_matrix_profile <- NULL
+    left_profile_index <- right_profile_index <- NULL
+  } else {
+    left_matrix_profile <- right_matrix_profile <- matrix_profile
+    left_profile_index <- right_profile_index <- profile_index
+  }
 
   for (i in seq_len(length(batch))) {
     ind <- (batch[[i]]$pro_muls < matrix_profile)
     matrix_profile[ind] <- batch[[i]]$pro_muls[ind]
     profile_index[ind] <- batch[[i]]$pro_idxs[ind]
 
-    ind <- (batch[[i]]$pro_muls_left < left_matrix_profile)
-    left_matrix_profile[ind] <- batch[[i]]$pro_muls_left[ind]
-    left_profile_index[ind] <- batch[[i]]$pro_idxs_left[ind]
+    if (length(args) == 1) { # no RMP and LMP for joins
+      ind <- (batch[[i]]$pro_muls_left < left_matrix_profile)
+      left_matrix_profile[ind] <- batch[[i]]$pro_muls_left[ind]
+      left_profile_index[ind] <- batch[[i]]$pro_idxs_left[ind]
 
-    ind <- (batch[[i]]$pro_muls_right < right_matrix_profile)
-    right_matrix_profile[ind] <- batch[[i]]$pro_muls_right[ind]
-    right_profile_index[ind] <- batch[[i]]$pro_idxs_right[ind]
+      ind <- (batch[[i]]$pro_muls_right < right_matrix_profile)
+      right_matrix_profile[ind] <- batch[[i]]$pro_muls_right[ind]
+      right_profile_index[ind] <- batch[[i]]$pro_idxs_right[ind]
+    }
   }
 
   tictac <- Sys.time() - tictac
@@ -292,9 +303,15 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
     message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
   }
 
-  return(list(
-    rmp = right_matrix_profile, rpi = right_profile_index,
-    lmp = left_matrix_profile, lpi = left_profile_index,
-    mp = matrix_profile, pi = profile_index
-  ))
+  return({
+    obj <- list(
+      mp = matrix_profile, pi = profile_index,
+      rmp = right_matrix_profile, rpi = right_profile_index,
+      lmp = left_matrix_profile, lpi = left_profile_index,
+      w = window_size,
+      ez = ez
+    )
+    class(obj) <- "MatrixProfile"
+    obj
+  })
 }

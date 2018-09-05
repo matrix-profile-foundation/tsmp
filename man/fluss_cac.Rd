@@ -4,14 +4,14 @@
 \alias{fluss_cac}
 \title{FLUSS - Corrected Arc Counts}
 \usage{
-fluss_cac(profile_index, window_size, exclusion_zone = 5)
+fluss_cac(.mp, exclusion_zone = NULL)
 }
 \arguments{
+\item{exclusion_zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is \code{5}).}
+
 \item{profile_index}{the profile index for arc counting.}
 
 \item{window_size}{an \code{int}. Size of the sliding window.}
-
-\item{exclusion_zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is \code{5}).}
 }
 \value{
 Returns a companion matrix with the same size of profile index. This matrix contains the number of

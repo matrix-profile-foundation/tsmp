@@ -40,41 +40,8 @@
 #' nseg <- length(mp_fluss_data$walkjogrun$gtruth) # 2
 #' segments <- fluss(data, w, nseg, gtruth = truth)
 #' }
-fluss <- function(data, window_size, num_segments, exclusion_zone = 5, gtruth = NULL, profile_index = NULL, verbose = 2) {
-
-  ## Input validatin
-  if (is.matrix(data) || is.data.frame(data)) {
-    if (is.data.frame(data)) {
-      data <- as.matrix(data)
-    } # just to be uniform
-    if (ncol(data) > nrow(data)) {
-      data <- t(data)
-    }
-    data_size <- nrow(data)
-  } else if (is.vector(data)) {
-    data_size <- length(data)
-    data <- as.matrix(data) # just to be uniform
-  } else {
-    stop("Error: Unknown type of data. Must be: matrix, data.frame or vector.", call. = FALSE)
-  }
-
-  profile <- NULL
-  if (is.null(profile_index)) {
-    profile <- stomp_par(data, window_size = window_size, verbose = verbose)
-    profile_index <- profile$pi
-  }
-
-  cac <- fluss_cac(profile_index, window_size, exclusion_zone)
-
-  segments <- fluss_extract(cac, num_segments, window_size, exclusion_zone)
-
-  if (!is.null(gtruth)) {
-    score <- fluss_score(gtruth, segments, data_size)
-    return(list(segments = segments, mp = profile$mp, pi = profile_index, cac = cac, score = score))
-  }
-  else {
-    return(list(segments = segments, mp = profile$mp, pi = profile_index, cac = cac))
-  }
+fluss <- function(.mp, num_segments, exclusion_zone = NULL) {
+  fluss_cac(.mp, exclusion_zone) %>% fluss_extract(num_segments = num_segments, exclusion_zone = exclusion_zone)
 }
 
 #' FLUSS - Extract Segments
@@ -112,21 +79,35 @@ fluss <- function(data, window_size, num_segments, exclusion_zone = 5, gtruth = 
 #' cac <- fluss_cac(mp$pi, w)
 #' segments <- fluss_extract(cac, nseg, w)
 #' }
-fluss_extract <- function(arc_counts, num_segments, window_size, exclusion_zone = 5) {
+fluss_extract <- function(.mpac, num_segments, exclusion_zone = NULL) {
+  if (!any(class(.mpac) %in% "ArcCounts")) {
+    stop("Error: First argument must be an object of class `ArcCounts`.")
+  }
+
+  if (is.null(exclusion_zone)) {
+    exclusion_zone <- .mpac$ez * 10 # normally ez is 0.5, so ez here is 5
+  }
+
+  cac <- .mpac$cac # keep cac intact
+
   segments_positions <- vector(mode = "numeric")
-  arc_counts_size <- length(arc_counts)
-  exclusion_zone <- floor(window_size * exclusion_zone)
+  arc_counts_size <- length(cac)
+  exclusion_zone <- round(.mpac$w * exclusion_zone + vars()$eps)
 
   for (i in 1:num_segments) {
-    idx <- which.min(arc_counts)
-    if (arc_counts[idx] >= 1) {
+    idx <- which.min(cac)
+    if (cac[idx] >= 1) {
       break
     }
     segments_positions[i] <- idx
-    arc_counts[max(1, (idx - exclusion_zone)):min(arc_counts_size, (idx + exclusion_zone - 1))] <- Inf
+    cac[max(1, (idx - exclusion_zone)):min(arc_counts_size, (idx + exclusion_zone - 1))] <- Inf
   }
 
-  return(segments_positions)
+  .mpac$fluss <- segments_positions
+
+  class(.mpac) <- append(class(.mpac), "Fluss")
+
+  return(.mpac)
 }
 
 #' FLUSS - Corrected Arc Counts
@@ -163,14 +144,22 @@ fluss_extract <- function(arc_counts, num_segments, window_size, exclusion_zone 
 #' mp <- stomp(data, window_size = w)
 #' cac <- fluss_cac(mp$pi, w)
 #' }
-fluss_cac <- function(profile_index, window_size, exclusion_zone = 5) {
+fluss_cac <- function(.mp, exclusion_zone = NULL) {
+  if (!any(class(.mp) %in% "MatrixProfile")) {
+    stop("Error: First argument must be an object of class `MatrixProfile`.")
+  }
+
+  if (is.null(exclusion_zone)) {
+    exclusion_zone <- .mp$ez * 10 # normally ez is 0.5, so ez here is 5
+  }
+
   arc_counts <- vector(mode = "numeric")
-  profile_index_size <- length(profile_index)
+  profile_index_size <- length(.mp$pi)
 
   nnmark <- matrix(0, profile_index_size, 1)
 
   for (i in 1:profile_index_size) {
-    j <- profile_index[i]
+    j <- .mp$pi[i]
     nnmark[min(i, j)] <- nnmark[min(i, j)] + 1
     nnmark[max(i, j)] <- nnmark[max(i, j)] - 1
   }
@@ -179,11 +168,15 @@ fluss_cac <- function(profile_index, window_size, exclusion_zone = 5) {
 
   ideal_arc_counts <- stats::dbeta(seq(0, 1, length.out = profile_index_size), 2, 2) * profile_index_size / 3
   corrected_arc_counts <- pmin(arc_counts / ideal_arc_counts, 1)
-  exclusion_zone <- floor(window_size * exclusion_zone)
+  exclusion_zone <- round(.mp$w * exclusion_zone + vars()$eps)
   corrected_arc_counts[1:min(exclusion_zone, profile_index_size)] <- 1
   corrected_arc_counts[max((profile_index_size - exclusion_zone + 1), 1):profile_index_size] <- 1
 
-  return(corrected_arc_counts)
+  .mp$cac <- corrected_arc_counts
+
+  class(.mp) <- append(class(.mp), "ArcCounts")
+
+  return(.mp)
 }
 
 #' FLUSS - Prediction score calculation
