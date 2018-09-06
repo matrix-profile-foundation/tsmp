@@ -71,6 +71,10 @@ salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_z
     stop("Error: First argument must be an object of class `MatrixProfile`.")
   }
 
+  if (missing(data) && !is.null(.mp$data)) {
+    data <- .mp$data[[1]]
+  }
+
   # transform data list into matrix
   if (is.matrix(data) || is.data.frame(data)) {
     if (is.data.frame(data)) {
@@ -334,7 +338,7 @@ salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_z
   }
 
   .mp$salient <- list(indexes = indexes, idx_bit_size = idx_bit_size, bits = n_bits)
-  class(.mp) <- append(class(.mp), "Salient")
+  class(.mp) <- append("Salient", class(.mp))
   return(.mp)
 }
 

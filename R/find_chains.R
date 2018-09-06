@@ -62,7 +62,7 @@ find_chains <- function(.mp) {
   }
 
   .mp$chain <- list(chains = chain_set, best = best_chain)
-  class(.mp) <- append(class(.mp), "Chain")
+  class(.mp) <- append("Chain", class(.mp))
 
   return(.mp)
 }

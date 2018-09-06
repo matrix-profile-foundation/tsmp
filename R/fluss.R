@@ -105,7 +105,7 @@ fluss_extract <- function(.mpac, num_segments, exclusion_zone = NULL) {
 
   .mpac$fluss <- segments_positions
 
-  class(.mpac) <- append(class(.mpac), "Fluss")
+  class(.mpac) <- append("Fluss", class(.mpac))
 
   return(.mpac)
 }
@@ -174,7 +174,7 @@ fluss_cac <- function(.mp, exclusion_zone = NULL) {
 
   .mp$cac <- corrected_arc_counts
 
-  class(.mp) <- append(class(.mp), "ArcCounts")
+  class(.mp) <- append("ArcCounts", class(.mp))
 
   return(.mp)
 }

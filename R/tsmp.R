@@ -88,7 +88,7 @@
 #' mp <- tsmp(mp_toy_data$data[1:200,1], window_size = 30, verbose = 0)
 
 tsmp <- function(..., window_size, exclusion_zone = 1 / 2, mode = c("stomp", "stamp", "simple", "mstomp", "scrimp"),
-                 verbose = 2, s_size = Inf, must_dim = NULL, exc_dim = NULL, n_workers = 1) {
+                 verbose = 2, s_size = Inf, must_dim = NULL, exc_dim = NULL, n_workers = 1, .keep_data = TRUE) {
   algo <- match.arg(mode)
 
   if (length(list(...)) == 0) {
@@ -167,6 +167,10 @@ tsmp <- function(..., window_size, exclusion_zone = 1 / 2, mode = c("stomp", "st
     },
     stop("Error: `mode` must be ", mode)
   )
+
+  if (.keep_data) {
+    result$data <- list(...)
+  }
 
   return(result)
 }

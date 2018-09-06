@@ -135,6 +135,10 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
 
   cores <- min(max(2, n_workers), parallel::detectCores())
 
+  if (verbose > 0) {
+    message("Warming up parallel with ", cores, " cores.")
+  }
+
   # SNOW package
   if (verbose > 0) {
     progress <- function(n) utils::setTxtProgressBar(pb, n)
