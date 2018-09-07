@@ -89,7 +89,6 @@ fluss_extract <- function(.mpac, num_segments, exclusion_zone = NULL) {
   }
 
   cac <- .mpac$cac # keep cac intact
-
   segments_positions <- vector(mode = "numeric")
   arc_counts_size <- length(cac)
   exclusion_zone <- round(.mpac$w * exclusion_zone + vars()$eps)

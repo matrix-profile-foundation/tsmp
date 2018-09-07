@@ -4,7 +4,8 @@
 \alias{plot.MultiMatrixProfile}
 \title{Title}
 \usage{
-\method{plot}{MultiMatrixProfile}(.mp, ...)
+\method{plot}{MultiMatrixProfile}(.mp, ylab = "distance",
+  xlab = "index", main = "Multidimensional Matrix Profile", ...)
 }
 \description{
 Title

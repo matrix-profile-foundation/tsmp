@@ -4,7 +4,9 @@
 \alias{plot.MultiMotif}
 \title{Title}
 \usage{
-\method{plot}{MultiMotif}(.mp, data, ...)
+\method{plot}{MultiMotif}(.mp, data, type = c("data", "matrix"),
+  ncol = 3, main = "Multidimensional MOTIF Discover", xlab = "index",
+  ylab = "distance", ...)
 }
 \description{
 Title

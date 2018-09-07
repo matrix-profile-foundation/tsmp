@@ -352,6 +352,7 @@ mstomp_par <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, m
       lmp = left_matrix_profile, lpi = left_profile_index,
       w = window_size,
       ez = ez,
+      n_dim = n_dim,
       must = must_dim,
       exc = exc_dim
     )

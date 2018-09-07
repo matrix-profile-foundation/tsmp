@@ -4,7 +4,8 @@
 \alias{plot.Motif}
 \title{Title}
 \usage{
-\method{plot}{Motif}(.mp, data, cols = 3, ...)
+\method{plot}{Motif}(.mp, data, type = c("data", "matrix"), ncol = 3,
+  main = "MOTIF Discover", xlab = "index", ylab = "distance", ...)
 }
 \description{
 Title

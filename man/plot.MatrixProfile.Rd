@@ -4,7 +4,8 @@
 \alias{plot.MatrixProfile}
 \title{Title}
 \usage{
-\method{plot}{MatrixProfile}(.mp, ...)
+\method{plot}{MatrixProfile}(.mp, ylab = "distance", xlab = "index",
+  main = "Unidimensional Matrix Profile", ...)
 }
 \description{
 Title
