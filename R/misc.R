@@ -374,6 +374,125 @@ vars <- function() {
 
 # Misc -------------------------------------------------------------------------------------------
 
+#' Add class on front or move it to front if already exists
+#' @keywords internal
+#' @noRd
+#'
+
+update_class <- function(classes, new_class) {
+  classes <- classes[!(classes == new_class)]
+  classes <- c(new_class, classes)
+
+  return(classes)
+}
+
+#' Convert a tsmp object in another if possible
+#' @export
+#' @keywords internal
+#'
+
+as.matrix.profile <- function(.mp) {
+  if (!any(class(.mp) %in% c("MatrixProfile"))) {
+    stop("Error: This object cannot be a `MatrixProfile`.")
+  }
+
+  class(.mp) <- update_class(class(.mp), "MatrixProfile")
+
+  return(.mp)
+}
+#' Convert a tsmp object in another if possible
+#' @export
+#' @keywords internal
+#'
+as.multimatrix.profile <- function(.mp) {
+  if (!any(class(.mp) %in% c("MultiMatrixProfile"))) {
+    stop("Error: This object cannot be a `MultiMatrixProfile`.")
+  }
+
+  class(.mp) <- update_class(class(.mp), "MultiMatrixProfile")
+
+  return(.mp)
+}
+#' Convert a tsmp object in another if possible
+#' @export
+#' @keywords internal
+#'
+as.fluss <- function(.mp) {
+  if (!any(class(.mp) %in% c("Fluss"))) {
+    stop("Error: This object cannot be a `Fluss`.")
+  }
+
+  class(.mp) <- update_class(class(.mp), "Fluss")
+
+  return(.mp)
+}
+#' Convert a tsmp object in another if possible
+#' @export
+#' @keywords internal
+#'
+as.chain <- function(.mp) {
+  if (!any(class(.mp) %in% c("Chain"))) {
+    stop("Error: This object cannot be a `Chain`.")
+  }
+
+  class(.mp) <- update_class(class(.mp), "Chain")
+
+  return(.mp)
+}
+#' Convert a tsmp object in another if possible
+#' @export
+#' @keywords internal
+#'
+as.motif <- function(.mp) {
+  if (!any(class(.mp) %in% c("Motif"))) {
+    stop("Error: This object cannot be a `Motif`.")
+  }
+
+  class(.mp) <- update_class(class(.mp), "Motif")
+
+  return(.mp)
+}
+#' Convert a tsmp object in another if possible
+#' @export
+#' @keywords internal
+#'
+as.multimotif <- function(.mp) {
+  if (!any(class(.mp) %in% c("MultiMotif"))) {
+    stop("Error: This object cannot be a `MultiMotif`.")
+  }
+
+  class(.mp) <- update_class(class(.mp), "MultiMotif")
+
+  return(.mp)
+}
+#' Convert a tsmp object in another if possible
+#' @export
+#' @keywords internal
+#'
+as.arccount <- function(.mp) {
+  if (!any(class(.mp) %in% c("ArcCount"))) {
+    stop("Error: This object cannot be a `ArcCount`.")
+  }
+
+  class(.mp) <- update_class(class(.mp), "ArcCount")
+
+  return(.mp)
+}
+#' Convert a tsmp object in another if possible
+#' @export
+#' @keywords internal
+#'
+as.salient <- function(.mp) {
+  if (!any(class(.mp) %in% c("Salient"))) {
+    stop("Error: This object cannot be a `Salient`.")
+  }
+
+  class(.mp) <- update_class(class(.mp), "Salient")
+
+  return(.mp)
+}
+
+
 #' Play sound with `audio`
 #'
 #' @param data sound data provided by this package

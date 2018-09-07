@@ -17,7 +17,6 @@
 #' find_chains(mp)
 #'
 find_chains <- function(.mp) {
-
   if (!any(class(.mp) %in% "MatrixProfile")) {
     stop("Error: First argument must be an object of class `MatrixProfile`.")
   }
@@ -62,7 +61,7 @@ find_chains <- function(.mp) {
   }
 
   .mp$chain <- list(chains = chain_set, best = best_chain)
-  class(.mp) <- append("Chain", class(.mp))
+  class(.mp) <- update_class(class(.mp), "Chain")
 
   return(.mp)
 }

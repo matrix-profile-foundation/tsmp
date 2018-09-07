@@ -338,7 +338,7 @@ salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_z
   }
 
   .mp$salient <- list(indexes = indexes, idx_bit_size = idx_bit_size, bits = n_bits)
-  class(.mp) <- append("Salient", class(.mp))
+  class(.mp) <- update_class(class(.mp), "Salient")
   return(.mp)
 }
 

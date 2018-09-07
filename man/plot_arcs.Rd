@@ -4,13 +4,12 @@
 \alias{plot_arcs}
 \title{Plot arcs between indexes of a Profile Index}
 \usage{
-plot_arcs(.mp, pairs, alpha = NULL, quality = 30, lwd = 15,
+plot_arcs(pairs, alpha = NULL, quality = 30, lwd = 15,
   col = c("blue", "orange"), main = "Arc Plot", ylab = "",
   xlab = "Profile Index", ...)
 }
 \arguments{
-\item{pairs}{a \code{matrix} with 2 columns. (Default is \code{NULL}). Instead of \code{mp}, \code{pi},
-\code{window_size}, \code{edge_limit}, \code{threshold}, you can give your custom list of pairs.}
+\item{pairs}{a \code{matrix} with 2 columns.}
 
 \item{alpha}{a \code{numeric}. (Default is \code{NULL}, automatic). Alpha value for lines transparency.}
 
@@ -29,24 +28,9 @@ arc, respectively. Accepts one color.}
 \item{xlab}{a \code{string}. (Default is \code{"Profile Index"}). X label.}
 
 \item{...}{further arguments to be passed to \code{\link[=plot]{plot()}}. See \code{\link[=par]{par()}}.}
-
-\item{mp}{a Matrix Profile, or a Corrected Arc Count profile from \code{\link[=fluss_cac]{fluss_cac()}}.}
-
-\item{pi}{a Profile Index.}
-
-\item{window_size}{an \code{int}. Size of the sliding window.}
-
-\item{exclusion_zone}{an \code{int}. (Default is \code{5}). Exclusion zone for small distances. See
-details.}
-
-\item{edge_limit}{an \code{int}. (Default is \code{5}). Exclusion zone for the edges of the profile. See
-details.}
-
-\item{threshold}{a \code{numeric}. (Default is 10% of the lowest values). Threshold for retrieving
-pairs. See details.}
 }
 \value{
-Quietly returns the computed \code{pairs}, or those you gave as input.
+None (invisible NULL).
 }
 \description{
 Sometimes may be useful to see where is the nearest neighbor graphically. This is the reasoning

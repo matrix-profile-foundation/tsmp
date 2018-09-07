@@ -1,18 +1,35 @@
 NEWS
 ================
 Francisco Bischoff
-\- 04 Sep 2018
+\- 07 Sep 2018
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
 # tsmp 0.3.1
 
-  - Changed all functions from dotted.case to snake\_case.
+## IMPORTANT
+
+  - This version is a complete reestructuration. API has changed and
+    workflow is more friendly. This API is intended to be stable and
+    from now one any change will pass throught the “Deprecated” stage.
+
+## Added Features
+
+  - Outputs have a prettier print format.
+  - Outputs have a plot function. Try to plot a `tsmp()` output for
+    example.
+  - Now functions can work in `%>%` (pipe), e.g. `tsmp() %>%
+    find_motif()`.
+  - Added a wrapper function called `tsmp()` that handles the several
+    algorithms available.
+  - Added `as.*` functions to allow you to switch classes if you want,
+    e.g.: `as.matrix.profile()`.
+  - Changed all functions from dotted.case to snake\_case (except `as.*`
+    functions).
   - Added Annotation Vectors.
   - Fixed STOMP crash with Joins.
   - Added support to query \< data in Joins.
   - SCRIMP (experimental).
-  - FLUSS Arc Plot and SiMPle Arc Plot.
 
 # tsmp 0.2.15
 

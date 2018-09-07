@@ -1,61 +1,3 @@
-#' Title
-#' @export
-plot.MatrixProfile <- function(.mp, ylab = "distance", xlab = "index", main = "Unidimensional Matrix Profile", ...) {
-  message("DEBUG: calling ", match.call()[[1]])
-  def_par <- graphics::par(no.readonly = TRUE)
-  allmatrix <- FALSE
-
-  if (!is.null(.mp$lmp) && !all(.mp$lpi == -1)) {
-    allmatrix <- TRUE
-  }
-
-  if (allmatrix == TRUE) {
-    graphics::layout(matrix(c(1, 2, 3), ncol = 1, byrow = TRUE))
-  }
-  graphics::par(oma = c(1, 1, 4, 0), cex.lab = 1.5)
-  graphics::plot(.mp$mp, type = "l", main = paste0("Matrix Profile (w = ", .mp$w, "; ez = ", .mp$ez, ")"), ylab = ylab, xlab = xlab, ...)
-  graphics::mtext(text = main, line = 4, font = 2, cex = 1.5)
-
-  if (allmatrix == TRUE) {
-    graphics::plot(.mp$rmp, type = "l", main = "Right Matrix Profile", ylab = ylab, xlab = xlab, ...)
-    graphics::plot(.mp$lmp, type = "l", main = "Left Matrix Profile", ylab = ylab, xlab = xlab, ...)
-  }
-
-  graphics::par(def_par)
-}
-#' Title
-#' @export
-plot.MultiMatrixProfile <- function(.mp, ylab = "distance", xlab = "index", main = "Multidimensional Matrix Profile", ...) {
-  message("DEBUG: calling ", match.call()[[1]])
-  def_par <- graphics::par(no.readonly = TRUE)
-  allmatrix <- FALSE
-  n_dim <- ncol(.mp$mp)
-
-  if (!is.null(.mp$lmp) && !all(.mp$lpi == -1)) {
-    allmatrix <- TRUE
-  }
-
-  if (allmatrix == TRUE) {
-    graphics::layout(matrix(seq_len(3 * n_dim), ncol = 3, byrow = TRUE))
-  }
-  graphics::par(oma = c(1, 1, 3, 0), cex.lab = 1.5)
-  for (i in seq_len(n_dim)) {
-    graphics::plot(.mp$mp[, i], type = "l", main = paste0("Matrix Profile (w = ", .mp$w, "; ez = ", .mp$ez, ")"), ylab = ylab, xlab = xlab, ...)
-  }
-  graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
-
-  if (allmatrix == TRUE) {
-    for (i in seq_len(n_dim)) {
-      graphics::plot(.mp$rmp[, i], type = "l", main = "Right Matrix Profile", ylab = ylab, xlab = xlab, ...)
-    }
-    for (i in seq_len(n_dim)) {
-      graphics::plot(.mp$lmp[, i], type = "l", main = "Left Matrix Profile", ylab = ylab, xlab = xlab, ...)
-    }
-  }
-
-  graphics::par(def_par)
-}
-
 #' Plot arcs between indexes of a Profile Index
 #'
 #' Sometimes may be useful to see where is the nearest neighbor graphically. This is the reasoning
@@ -76,17 +18,7 @@ plot.MultiMatrixProfile <- function(.mp, ylab = "distance", xlab = "index", main
 #' used connect the beginning and the end of the profile (e.g. silent audio). `threshold` is used to
 #' filter indexes that have distant nearest neighbor (e.g. retrieve only the best motifs).
 #'
-#' @param mp a Matrix Profile, or a Corrected Arc Count profile from [fluss_cac()].
-#' @param pi a Profile Index.
-#' @param window_size an `int`. Size of the sliding window.
-#' @param exclusion_zone an `int`. (Default is `5`). Exclusion zone for small distances. See
-#'   details.
-#' @param edge_limit an `int`. (Default is `5`). Exclusion zone for the edges of the profile. See
-#'   details.
-#' @param threshold a `numeric`. (Default is 10% of the lowest values). Threshold for retrieving
-#'   pairs. See details.
-#' @param pairs a `matrix` with 2 columns. (Default is `NULL`). Instead of `mp`, `pi`,
-#'   `window_size`, `edge_limit`, `threshold`, you can give your custom list of pairs.
+#' @param pairs a `matrix` with 2 columns.
 #' @param alpha a `numeric`. (Default is `NULL`, automatic). Alpha value for lines transparency.
 #' @param quality an `int`. (Default is `30`). Number of segments to draw the arc. Bigger value,
 #'   harder to render.
@@ -98,12 +30,13 @@ plot.MultiMatrixProfile <- function(.mp, ylab = "distance", xlab = "index", main
 #' @param xlab a `string`. (Default is `"Profile Index"`). X label.
 #' @param ... further arguments to be passed to [plot()]. See [par()].
 #'
-#' @return Quietly returns the computed `pairs`, or those you gave as input.
+#' @return None (invisible NULL).
+#'
 #' @export
 #'
 #' @examples
 #' plot_arcs(pairs = matrix(c(5, 10, 1, 10, 20, 5), ncol = 2, byrow = TRUE))
-plot_arcs <- function(.mp, pairs, alpha = NULL, quality = 30, lwd = 15, col = c("blue", "orange"),
+plot_arcs <- function(pairs, alpha = NULL, quality = 30, lwd = 15, col = c("blue", "orange"),
                       main = "Arc Plot", ylab = "", xlab = "Profile Index", ...) {
   message("DEBUG: calling ", match.call()[[1]])
 
@@ -112,7 +45,7 @@ plot_arcs <- function(.mp, pairs, alpha = NULL, quality = 30, lwd = 15, col = c(
   max_arc <- max(abs(pairs[, 2] - pairs[, 1]))
   ymax <- (max_arc / 2 + (lwd * lwd) / 8)
   z_seq <- seq(0, base::pi, length.out = quality)
-  xlim <- c(xmin - .mp$w, xmax + .mp$w)
+  xlim <- c(xmin, xmax)
   ylim <- c(0, ymax)
 
   if (is.null(alpha)) {
@@ -155,11 +88,77 @@ plot_arcs <- function(.mp, pairs, alpha = NULL, quality = 30, lwd = 15, col = c(
     col = adjustcolor(col, alpha.f = 0.5), lty = 1, cex = 0.8, lwd = 5
   )
 }
-#' Title
+
+#' Plot a Matrix Profile
 #' @export
-plot.ArcCounts <- function(.mp, data, type = c("data", "matrix"), exclusion_zone = NULL, edge_limit = NULL,
-                           threshold = quantile(.mp$cac, 0.1), main = "Arcs Discover", xlab = "index",
-                           ylab = "distance", ...) {
+#' @keywords internal
+#' @noRd
+plot.MatrixProfile <- function(.mp, ylab = "distance", xlab = "index", main = "Unidimensional Matrix Profile", ...) {
+  message("DEBUG: calling ", match.call()[[1]])
+  def_par <- graphics::par(no.readonly = TRUE)
+  allmatrix <- FALSE
+
+  if (!is.null(.mp$lmp) && !all(.mp$lpi == -1)) {
+    allmatrix <- TRUE
+  }
+
+  if (allmatrix == TRUE) {
+    graphics::layout(matrix(c(1, 2, 3), ncol = 1, byrow = TRUE))
+  }
+  graphics::par(oma = c(1, 1, 4, 0), cex.lab = 1.5)
+  graphics::plot(.mp$mp, type = "l", main = paste0("Matrix Profile (w = ", .mp$w, "; ez = ", .mp$ez, ")"), ylab = ylab, xlab = xlab, ...)
+  graphics::mtext(text = main, line = 4, font = 2, cex = 1.5)
+
+  if (allmatrix == TRUE) {
+    graphics::plot(.mp$rmp, type = "l", main = "Right Matrix Profile", ylab = ylab, xlab = xlab, ...)
+    graphics::plot(.mp$lmp, type = "l", main = "Left Matrix Profile", ylab = ylab, xlab = xlab, ...)
+  }
+
+  graphics::par(def_par)
+}
+
+#' Plot a Multidimensional Matrix Profile
+#' @export
+#' @keywords internal
+#' @noRd
+plot.MultiMatrixProfile <- function(.mp, ylab = "distance", xlab = "index", main = "Multidimensional Matrix Profile", ...) {
+  message("DEBUG: calling ", match.call()[[1]])
+  def_par <- graphics::par(no.readonly = TRUE)
+  allmatrix <- FALSE
+  n_dim <- ncol(.mp$mp)
+
+  if (!is.null(.mp$lmp) && !all(.mp$lpi == -1)) {
+    allmatrix <- TRUE
+  }
+
+  if (allmatrix == TRUE) {
+    graphics::layout(matrix(seq_len(3 * n_dim), ncol = 3, byrow = TRUE))
+  }
+  graphics::par(oma = c(1, 1, 3, 0), cex.lab = 1.5)
+  for (i in seq_len(n_dim)) {
+    graphics::plot(.mp$mp[, i], type = "l", main = paste0("Matrix Profile (w = ", .mp$w, "; ez = ", .mp$ez, ")"), ylab = ylab, xlab = xlab, ...)
+  }
+  graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
+
+  if (allmatrix == TRUE) {
+    for (i in seq_len(n_dim)) {
+      graphics::plot(.mp$rmp[, i], type = "l", main = "Right Matrix Profile", ylab = ylab, xlab = xlab, ...)
+    }
+    for (i in seq_len(n_dim)) {
+      graphics::plot(.mp$lmp[, i], type = "l", main = "Left Matrix Profile", ylab = ylab, xlab = xlab, ...)
+    }
+  }
+
+  graphics::par(def_par)
+}
+
+#' Plot a CAC profile
+#' @export
+#' @keywords internal
+#' @noRd
+plot.ArcCount <- function(.mp, data, type = c("data", "matrix"), exclusion_zone = NULL, edge_limit = NULL,
+                          threshold = quantile(.mp$cac, 0.1), main = "Arcs Discover", xlab = "index",
+                          ylab = "distance", ...) {
   message("DEBUG: calling ", match.call()[[1]])
   def_par <- graphics::par(no.readonly = TRUE)
 
@@ -215,7 +214,7 @@ plot.ArcCounts <- function(.mp, data, type = c("data", "matrix"), exclusion_zone
 
   graphics::layout(matrix(c(1, 2, 3), ncol = 1, byrow = TRUE))
   graphics::par(oma = c(1, 1, 3, 0), cex.lab = 1.5)
-  plot_arcs(.mp, pairs, xlab = xlab, ...)
+  plot_arcs(pairs, xlab = xlab, ...)
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
   graphics::plot(.mp$cac, main = "Arc count", type = "l", xlab = xlab, ylab = "normalized count", ...)
   graphics::plot(plot_data, main = data_main, type = "l", xlab = xlab, ylab = data_lab, ...)
@@ -223,8 +222,10 @@ plot.ArcCounts <- function(.mp, data, type = c("data", "matrix"), exclusion_zone
   graphics::par(def_par)
 }
 
-#' Title
+#' Plot a FLUSS
 #' @export
+#' @keywords internal
+#' @noRd
 plot.Fluss <- function(.mp, data, type = c("data", "matrix"),
                        main = "Fast Low-cost Unipotent Semantic Segmentation", xlab = "index",
                        ylab = "distance", ...) {
@@ -270,7 +271,7 @@ plot.Fluss <- function(.mp, data, type = c("data", "matrix"),
 
   graphics::layout(matrix(c(1, 2, 3), ncol = 1, byrow = TRUE))
   graphics::par(oma = c(1, 1, 3, 0), cex.lab = 1.5)
-  plot_arcs(.mp, pairs, xlab = xlab, ...)
+  plot_arcs(pairs, xlab = xlab, ...)
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
   graphics::plot(plot_data, main = data_main, type = "l", xlab = xlab, ylab = data_lab, ...)
   graphics::plot(.mp$cac, main = "Arc count", type = "l", xlab = xlab, ylab = "normalized count", ...)
@@ -278,8 +279,10 @@ plot.Fluss <- function(.mp, data, type = c("data", "matrix"),
   graphics::par(def_par)
 }
 
-#' Title
+#' Plot a TS Chain
 #' @export
+#' @keywords internal
+#' @noRd
 plot.Chain <- function(.mp, data, type = c("data", "matrix"), main = "Chain Discover", xlab = "index", ylab = "distance", ...) {
   message("DEBUG: calling ", match.call()[[1]])
   def_par <- graphics::par(no.readonly = TRUE)
@@ -312,7 +315,7 @@ plot.Chain <- function(.mp, data, type = c("data", "matrix"), main = "Chain Disc
   # plot matrix profile
   layout(matrix(c(1, 2, 3), ncol = 1, byrow = TRUE))
   graphics::par(oma = c(1, 1, 3, 0), cex.lab = 1.5)
-  plot_arcs(.mp, pairs, xlab = xlab, ...)
+  plot_arcs(pairs, xlab = xlab, ...)
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
   plot(plot_data, type = "l", main = paste0("Matrix Profile (w = ", .mp$w, "; ez = ", .mp$ez, ")"), xlim = c(first - .mp$w, last + .mp$w), xlab = xlab, ylab = ylab, ...)
   abline(v = .mp$chain$best, col = 1:chain_size, lwd = 2)
@@ -332,8 +335,11 @@ plot.Chain <- function(.mp, data, type = c("data", "matrix"), main = "Chain Disc
 
   graphics::par(def_par)
 }
-#' Title
+
+#' Plot Motifs
 #' @export
+#' @keywords internal
+#' @noRd
 plot.Motif <- function(.mp, data, type = c("data", "matrix"), ncol = 3, main = "MOTIF Discover", xlab = "index", ylab = "distance", ...) {
   message("DEBUG: calling ", match.call()[[1]])
   def_par <- graphics::par(no.readonly = TRUE)
@@ -391,8 +397,11 @@ plot.Motif <- function(.mp, data, type = c("data", "matrix"), ncol = 3, main = "
 
   graphics::par(def_par)
 }
-#' Title
+
+#' Plot Multidimensional Motifs
 #' @export
+#' @keywords internal
+#' @noRd
 plot.MultiMotif <- function(.mp, data, type = c("data", "matrix"), ncol = 3, main = "Multidimensional MOTIF Discover", xlab = "index", ylab = "distance", ...) {
   message("DEBUG: calling ", match.call()[[1]])
   def_par <- graphics::par(no.readonly = TRUE)

@@ -120,7 +120,7 @@ simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
     stop("Error: `window_size` must be at least 4.", call. = FALSE)
   }
 
-ez <- exclusion_zone # store original
+  ez <- exclusion_zone # store original
   exclusion_zone <- round(window_size * exclusion_zone + vars()$eps)
 
   # initialization

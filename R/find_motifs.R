@@ -117,7 +117,7 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, radius = 3, exclus
   }
 
   .mp$motif <- list(motif_idx = motif_idxs[[1]], motif_neighbor = motif_idxs[[2]])
-  class(.mp) <- append("Motif", class(.mp))
+  class(.mp) <- update_class(class(.mp), "Motif")
   return(.mp)
 }
 
@@ -191,7 +191,7 @@ find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("gui
     motif_dim <- list(motif_dim, motif_dim)
 
     .mp$motif <- list(motif_idx = motif_idx, motif_dim = motif_dim)
-    class(.mp) <- append("MultiMotif", class(.mp))
+    class(.mp) <- update_class(class(.mp), "MultiMotif")
     return(.mp)
   } else {
     # Unguided Search -------------------------------------------------------------------
@@ -281,8 +281,7 @@ find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("gui
     motif_idx <- motif_idx[motif_idx != 0]
 
     .mp$motif <- list(motif_idx = motif_idx, motif_dim = motif_dim)
-    class(.mp) <- append("MultiMotif", class(.mp))
+    class(.mp) <- update_class(class(.mp), "MultiMotif")
     return(.mp)
   }
 }
-
