@@ -8,6 +8,9 @@
   mode = c("guided", "unguided"), n_bit = 4, exclusion_zone = NULL,
   n_dim = NULL)
 }
+\arguments{
+\item{n_dim}{}
+}
 \description{
 Title
 }

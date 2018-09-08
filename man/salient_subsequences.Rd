@@ -8,6 +8,8 @@ salient_subsequences(.mp, data, n_bits = 8, n_cand = 10,
   exclusion_zone = NULL, verbose = 2)
 }
 \arguments{
+\item{.mp}{}
+
 \item{data}{a \code{vector}, column \code{matrix} or \code{data.frame}. If more than one column is provided, see
 details.}
 
@@ -20,12 +22,6 @@ details.}
 is \code{1/2}). See details.}
 
 \item{verbose}{an \code{int}. See details. (Default is \code{2}).}
-
-\item{matrix_profile}{a result from STAMP or STOMP algorithms.}
-
-\item{profile_index}{a result from STAMP or STOMP algorithms.}
-
-\item{window_size}{an \code{int} with the size of the sliding window.}
 }
 \value{
 Returns a \code{list} with \code{indexes}, a \code{vector} with the starting position of each

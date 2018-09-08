@@ -29,7 +29,7 @@
 #' @export
 #'
 #' @family matrix profile computations
-#' @seealso [mstomp()], [mstomp_par()]
+#'
 #' @references * Yeh CCM, Zhu Y, Ulanova L, Begum N, Ding Y, Dau HA, et al. Matrix profile I: All
 #'   pairs similarity joins for time series: A unifying view that includes motifs, discords and
 #'   shapelets. Proc - IEEE Int Conf Data Mining, ICDM. 2017;1317–22.
@@ -68,7 +68,7 @@ stamp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_s
       data <- t(data)
     }
   } else {
-    stop("Error: Unknown type of data. Must be: a column matrix or a vector.", call. = FALSE)
+    stop("Error: Unknown type of data. Must be: a column matrix or a vector.")
   }
 
   if (is.vector(query)) {
@@ -78,7 +78,7 @@ stamp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_s
       query <- t(query)
     }
   } else {
-    stop("Error: Unknown type of query. Must be: a column matrix or a vector.", call. = FALSE)
+    stop("Error: Unknown type of query. Must be: a column matrix or a vector.")
   }
 
   ez <- exclusion_zone # store original
@@ -89,10 +89,10 @@ stamp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_s
   num_queries <- query_size - window_size + 1
 
   if (window_size > query_size / 2) {
-    stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
+    stop("Error: Time series is too short relative to desired window size.")
   }
   if (window_size < 4) {
-    stop("Error: `window_size` must be at least 4.", call. = FALSE)
+    stop("Error: `window_size` must be at least 4.")
   }
 
   # check skip position

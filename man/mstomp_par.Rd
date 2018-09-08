@@ -65,8 +65,6 @@ Website: \url{https://sites.google.com/view/mstamp/}
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-\code{\link[=stamp]{stamp()}}, \code{\link[=stamp_par]{stamp_par()}}, \code{\link[=mstomp]{mstomp()}}
-
 Other matrix profile computations: \code{\link{mstomp}},
   \code{\link{scrimp}}, \code{\link{stamp_par}},
   \code{\link{stamp}}, \code{\link{stomp_par}},

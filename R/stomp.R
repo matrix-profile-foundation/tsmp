@@ -24,7 +24,7 @@
 #' @export
 #'
 #' @family matrix profile computations
-#' @seealso [stamp()], [stamp_par()]; [mstomp()], [mstomp_par()] for multivariate analysis.
+#'
 #' @references * Zhu Y, Zimmerman Z, Senobari NS, Yeh CM, Funning G. Matrix Profile II : Exploiting
 #'   a Novel Algorithm and GPUs to Break the One Hundred Million Barrier for Time Series Motifs and
 #'   Joins. Icdm. 2016 Jan 22;54(1):739–48.

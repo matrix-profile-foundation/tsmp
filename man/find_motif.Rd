@@ -6,6 +6,9 @@
 \usage{
 find_motif(.mp, ...)
 }
+\arguments{
+\item{...}{}
+}
 \description{
 Title
 }

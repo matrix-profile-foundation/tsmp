@@ -61,6 +61,7 @@
 #' @param exc_dim an `int` or `vector` of which dimensions to exclude (default is `NULL`). See
 #'   details.
 #' @param n_workers an `int`. Number of workers for parallel. (Default is `1`).
+#' @param .keep_data
 #'
 #' @return Returns the matrix profile `mp` and profile index `pi`. It also returns the left and
 #'   right matrix profile `lmp`, `rmp` and profile index `lpi`, `rpi` that may be used to detect

@@ -1,4 +1,8 @@
 #' Prints a Matrix Profile
+#'
+#' @param .mp
+#' @param ...
+#'
 #' @export
 #' @keywords internal
 #' @noRd
@@ -24,6 +28,10 @@ print.MatrixProfile <- function(.mp, ...) {
 }
 
 #' Prints a Multidimensional Matrix Profile
+#'
+#' @param .mp
+#' @param ...
+#'
 #' @export
 #' @keywords internal
 #' @noRd
@@ -52,6 +60,10 @@ print.MultiMatrixProfile <- function(.mp, ...) {
 }
 
 #' Prints a CAC profile
+#'
+#' @param .mp
+#' @param ...
+#'
 #' @export
 #' @keywords internal
 #' @noRd
@@ -72,6 +84,10 @@ print.ArcCount <- function(.mp, ...) {
 }
 
 #' Prints a FLUSS
+#'
+#' @param .mp
+#' @param ...
+#'
 #' @export
 #' @keywords internal
 #' @noRd
@@ -90,6 +106,10 @@ print.Fluss <- function(.mp, ...) {
 }
 
 #' Prints a TS Chain
+#'
+#' @param .mp
+#' @param ...
+#'
 #' @export
 #' @keywords internal
 #' @noRd
@@ -111,6 +131,10 @@ print.Chain <- function(.mp, ...) {
 }
 
 #' Prints Motifs
+#'
+#' @param .mp
+#' @param ...
+#'
 #' @export
 #' @keywords internal
 #' @noRd
@@ -144,6 +168,10 @@ print.Motif <- function(.mp, ...) {
 }
 
 #' Prints Multidimensional Motifs
+#'
+#' @param .mp
+#' @param ...
+#'
 #' @export
 #' @keywords internal
 #' @noRd

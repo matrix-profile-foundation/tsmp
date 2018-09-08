@@ -4,14 +4,14 @@
 \alias{av_complexity}
 \title{Computes the annotation vector that favors complexity}
 \usage{
-av_complexity(data, window_size, dilution_factor = 0)
+av_complexity(.mp, data, dilution_factor = 0, apply = FALSE)
 }
 \arguments{
 \item{data}{a \code{vector} or a column \code{matrix} of \code{numeric}.}
 
-\item{window_size}{an \code{int}. Size of the sliding window.}
-
 \item{dilution_factor}{a \code{numeric}. (Default is \code{0}). Larger numbers means more dilution.}
+
+\item{apply}{}
 }
 \value{
 Returns the annotation vector for matrix profile correction.

@@ -17,15 +17,13 @@
 #'
 #' @param data a `vector`, column `matrix` or `data.frame`. If more than one column is provided, see
 #'   details.
-#' @param matrix_profile a result from STAMP or STOMP algorithms.
-#' @param profile_index a result from STAMP or STOMP algorithms.
-#' @param window_size an `int` with the size of the sliding window.
 #' @param n_bits an `int`. Number of bits for MDL discretization. (Default is `8`).
 #' @param n_cand an `int`. number of candidate when picking the subsequence in each iteration.
 #'   (Default is `10`).
 #' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on `window_size`. (Default
 #'   is `1/2`). See details.
 #' @param verbose an `int`. See details. (Default is `2`).
+#' @param .mp
 #'
 #' @return Returns a `list` with `indexes`, a `vector` with the starting position of each
 #'   subsequence, `idx_bit_size`, a `vector` with the associated bitsize for each iteration and
@@ -104,7 +102,7 @@ salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_z
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list.", call. = FALSE)
+    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list.")
   }
 
   if (n_dim > 1) {

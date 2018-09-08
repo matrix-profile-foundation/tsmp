@@ -7,21 +7,11 @@
 fluss(.mp, num_segments, exclusion_zone = NULL)
 }
 \arguments{
+\item{.mp}{\code{5}).}
+
 \item{num_segments}{an \code{int}. Number of segments to extract. Based on domain knowledge.}
 
-\item{exclusion_zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is
-\code{5}).}
-
-\item{data}{a \code{matrix} or a \code{vector}. Input data.}
-
-\item{window_size}{an \code{int}. Size of the sliding window.}
-
-\item{gtruth}{an \code{int} or \code{vector} of \code{int} with the ground truth index of segments. (Default is
-\code{NULL}).}
-
-\item{profile_index}{a pre-computed profile index. (Default is \code{NULL}).}
-
-\item{verbose}{an \code{int}. See details. (Default is \code{2}).}
+\item{exclusion_zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is}
 }
 \value{
 Returns a list with \code{segments} (location of semantic changes), \code{mp} (matrix profile if

@@ -19,12 +19,12 @@ Description: A toolkit implementing the Matrix Profile concept that was created 
 License: MIT + file LICENSE
 URL: https://github.com/franzbischoff/tsmp
 BugReports: https://github.com/franzbischoff/tsmp/issues
-Depends: R (>= 2.10), audio, doSNOW, parallel, foreach
+Depends: R (>= 2.10)
+Imports: audio, doSNOW, parallel, foreach
 Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.0.9000
 NeedsCompilation: no
-Suggests:
-    spelling, testthat
+Suggests: spelling, testthat, magrittr

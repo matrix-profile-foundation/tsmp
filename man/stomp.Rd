@@ -55,8 +55,6 @@ Joins. Icdm. 2016 Jan 22;54(1):739–48.
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-\code{\link[=stamp]{stamp()}}, \code{\link[=stamp_par]{stamp_par()}}; \code{\link[=mstomp]{mstomp()}}, \code{\link[=mstomp_par]{mstomp_par()}} for multivariate analysis.
-
 Other matrix profile computations: \code{\link{mstomp_par}},
   \code{\link{mstomp}}, \code{\link{scrimp}},
   \code{\link{stamp_par}}, \code{\link{stamp}},

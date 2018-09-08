@@ -4,13 +4,11 @@
 \alias{av_stop_word}
 \title{Computes the annotation vector that suppresses stop-word motifs}
 \usage{
-av_stop_word(data, window_size, stop_word_loc, exclusion_zone = 1/2,
-  threshold = 0.1)
+av_stop_word(.mp, data, stop_word_loc, exclusion_zone = NULL,
+  threshold = 0.1, apply = FALSE)
 }
 \arguments{
 \item{data}{a \code{vector} or a column \code{matrix} of \code{numeric}.}
-
-\item{window_size}{an \code{int}. Size of the sliding window.}
 
 \item{stop_word_loc}{an \code{int}. The index of stop word location.}
 
@@ -18,6 +16,8 @@ av_stop_word(data, window_size, stop_word_loc, exclusion_zone = 1/2,
 \code{1/2}). See details.}
 
 \item{threshold}{a \code{numeric}.}
+
+\item{apply}{}
 }
 \value{
 Returns the annotation vector for matrix profile correction.

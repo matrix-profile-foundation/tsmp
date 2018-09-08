@@ -33,6 +33,8 @@ See details.}
 details.}
 
 \item{n_workers}{an \code{int}. Number of workers for parallel. (Default is \code{1}).}
+
+\item{.keep_data}{}
 }
 \value{
 Returns the matrix profile \code{mp} and profile index \code{pi}. It also returns the left and

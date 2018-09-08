@@ -28,7 +28,7 @@
 #'
 simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
   if (!is.numeric(window_size) || length(window_size) > 1) {
-    stop("Error: Unknown type of `window_size`. Must be an `int` or `numeric`", call. = FALSE)
+    stop("Error: Unknown type of `window_size`. Must be an `int` or `numeric`")
   }
 
   args <- list(...)
@@ -71,7 +71,7 @@ simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list.", call. = FALSE)
+    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list.")
   }
 
   # transform query list into matrix
@@ -103,21 +103,21 @@ simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
     # transform query into 1-col matrix
     query <- as.matrix(query) # just to be uniform
   } else {
-    stop("Error: Unknown type of query. Must be: matrix, data.frame, vector or list.", call. = FALSE)
+    stop("Error: Unknown type of query. Must be: matrix, data.frame, vector or list.")
   }
 
   # check input
   if (q_dim != n_dim) {
-    stop("Error: Data and query dimensions must be the same.", call. = FALSE)
+    stop("Error: Data and query dimensions must be the same.")
   }
   if (window_size > data_size / 2) {
-    stop("Error: Reference Time series is too short relative to desired window size.", call. = FALSE)
+    stop("Error: Reference Time series is too short relative to desired window size.")
   }
   if (window_size > query_size / 2) {
-    stop("Error: Query Time series is too short relative to desired window size.", call. = FALSE)
+    stop("Error: Query Time series is too short relative to desired window size.")
   }
   if (window_size < 4) {
-    stop("Error: `window_size` must be at least 4.", call. = FALSE)
+    stop("Error: `window_size` must be at least 4.")
   }
 
   ez <- exclusion_zone # store original

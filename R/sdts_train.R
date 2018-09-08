@@ -55,7 +55,7 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list.", call. = FALSE)
+    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list.")
   }
 
   n_window_size <- length(window_size)
@@ -63,10 +63,10 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
   # check input
   for (i in 1:n_window_size) {
     if (window_size[i] > (data_size / 2)) {
-      stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
+      stop("Error: Time series is too short relative to desired window size.")
     }
     if (window_size[i] < 4) {
-      stop("Error: `window_size` must be at least 4.", call. = FALSE)
+      stop("Error: `window_size` must be at least 4.")
     }
   }
 
@@ -377,6 +377,7 @@ golden_section <- function(dist_pro, label, pos_st, pos_ed, beta, window_size) {
 #' Computes the golden section for combined candidates
 
 #' @param dist_pro the candidate distance profile
+#'
 #' @param thold a number with the threshold used to calculate the F-Score
 #' @param label a vector with the data bool annotation
 #' @param pos_st a vector with the starting points of label

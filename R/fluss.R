@@ -7,16 +7,10 @@
 #' `verbose` changes how much information is printed by this function; `0` means nothing, `1` means
 #' text, `2` means text and sound.
 #'
-#' @param data a `matrix` or a `vector`. Input data.
-#' @param window_size an `int`. Size of the sliding window.
 #' @param num_segments an `int`. Number of segments to extract. Based on domain knowledge.
 #' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is
+#' @param .mp
 #'   `5`).
-#' @param gtruth an `int` or `vector` of `int` with the ground truth index of segments. (Default is
-#'   `NULL`).
-#' @param profile_index a pre-computed profile index. (Default is `NULL`).
-#' @param verbose an `int`. See details. (Default is `2`).
-#'
 #' @return Returns a list with `segments` (location of semantic changes), `mp` (matrix profile if
 #'   computed), `pi` (profile index, input of computed), `cac` corrected arc count.
 #' @export
@@ -41,18 +35,17 @@
 #' segments <- fluss(data, w, nseg, gtruth = truth)
 #' }
 fluss <- function(.mp, num_segments, exclusion_zone = NULL) {
-  fluss_cac(.mp, exclusion_zone) %>% fluss_extract(num_segments = num_segments, exclusion_zone = exclusion_zone)
+  fluss_extract(fluss_cac(.mp, exclusion_zone), num_segments = num_segments, exclusion_zone = exclusion_zone)
 }
 
 #' FLUSS - Extract Segments
 #'
 #' Extract candidate points of semantic changes.
 #'
-#' @param arc_counts a `matrix` with the corrected arc counts from [fluss_cac()].
 #' @param num_segments an `int`. Number of segments to extract. Based on domain knowledge.
-#' @param window_size an `int`. Size of the sliding window.
 #' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is
 #'   `5`).
+#' @param .mpac
 #'
 #' @return Returns an `int` or a `vector` of `int` with the location of predicted semantic changes.
 #'   The number of locations is not greater than `num_segments`.
@@ -117,9 +110,8 @@ fluss_extract <- function(.mpac, num_segments, exclusion_zone = NULL) {
 #' where a semantic change may occur in CAC. This may be useful in real-time implementation as we don't
 #' know in advance the number of domain changes to look for. Please check original paper (1).
 #'
-#' @param profile_index the profile index for arc counting.
-#' @param window_size an `int`. Size of the sliding window.
 #' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is `5`).
+#' @param .mp
 #'
 #' @return Returns a companion matrix with the same size of profile index. This matrix contains the number of
 #' 'arcs' crossing over each index.

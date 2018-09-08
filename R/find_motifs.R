@@ -1,5 +1,8 @@
 #' Title
 #'
+#' @param .mp
+#' @param ...
+#'
 #' @export
 
 find_motif <- function(.mp, ...) {
@@ -7,6 +10,12 @@ find_motif <- function(.mp, ...) {
 }
 
 #' Title
+#'
+#' @param .mp
+#' @param data
+#' @param n_motifs
+#' @param radius
+#' @param exclusion_zone
 #'
 #' @export
 
@@ -48,7 +57,7 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, radius = 3, exclus
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: `data` must be `matrix`, `data.frame`, `vector` or `list`.", call. = FALSE)
+    stop("Error: `data` must be `matrix`, `data.frame`, `vector` or `list`.")
   }
 
   if (is.null(exclusion_zone)) {
@@ -123,6 +132,14 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, radius = 3, exclus
 
 #' Title
 #'
+#' @param .mp
+#' @param data
+#' @param n_motifs
+#' @param mode
+#' @param n_bit
+#' @param exclusion_zone
+#' @param n_dim
+#'
 #' @export
 
 find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("guided", "unguided"),
@@ -166,7 +183,7 @@ find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("gui
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: `data` must be `matrix`, `data.frame`, `vector` or `list`.", call. = FALSE)
+    stop("Error: `data` must be `matrix`, `data.frame`, `vector` or `list`.")
   }
 
   # Guided Search ------------------------------------------------------------------------

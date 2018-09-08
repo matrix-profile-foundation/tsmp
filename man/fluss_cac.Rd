@@ -7,11 +7,9 @@
 fluss_cac(.mp, exclusion_zone = NULL)
 }
 \arguments{
+\item{.mp}{}
+
 \item{exclusion_zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is \code{5}).}
-
-\item{profile_index}{the profile index for arc counting.}
-
-\item{window_size}{an \code{int}. Size of the sliding window.}
 }
 \value{
 Returns a companion matrix with the same size of profile index. This matrix contains the number of

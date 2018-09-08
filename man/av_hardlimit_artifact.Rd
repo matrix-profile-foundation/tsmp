@@ -4,12 +4,10 @@
 \alias{av_hardlimit_artifact}
 \title{Computes the annotation vector that suppresses hard-limited artifacts}
 \usage{
-av_hardlimit_artifact(data, window_size)
+av_hardlimit_artifact(.mp, data, apply = FALSE)
 }
 \arguments{
 \item{data}{a \code{vector} or a column \code{matrix} of \code{numeric}.}
-
-\item{window_size}{an \code{int}. Size of the sliding window.}
 }
 \value{
 Returns the annotation vector for matrix profile correction.

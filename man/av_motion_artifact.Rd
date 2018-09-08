@@ -4,12 +4,10 @@
 \alias{av_motion_artifact}
 \title{Computes the annotation vector that suppresses motion artifacts}
 \usage{
-av_motion_artifact(data, window_size)
+av_motion_artifact(.mp, data, apply = FALSE)
 }
 \arguments{
 \item{data}{a \code{vector} or a column \code{matrix} of \code{numeric}.}
-
-\item{window_size}{an \code{int}. Size of the sliding window.}
 }
 \value{
 Returns the annotation vector for matrix profile correction.

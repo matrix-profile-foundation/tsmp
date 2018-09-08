@@ -31,7 +31,7 @@
 #' @export
 #'
 #' @family matrix profile computations
-#' @seealso [stamp()], [stamp_par()], [mstomp()]
+#'
 #' @references * Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif
 #'   Discovery.
 #' @references * Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A
@@ -78,26 +78,26 @@ mstomp_par <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, m
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list.", call. = FALSE)
+    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list.")
   }
 
   matrix_profile_size <- data_size - window_size + 1
 
   # check input
   if (window_size > data_size / 2) {
-    stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
+    stop("Error: Time series is too short relative to desired window size.")
   }
   if (window_size < 4) {
-    stop("Error: `window_size` must be at least 4.", call. = FALSE)
+    stop("Error: `window_size` must be at least 4.")
   }
   if (any(must_dim > n_dim)) {
-    stop("Error: `must_dim` must be less then the total dimension.", call. = FALSE)
+    stop("Error: `must_dim` must be less then the total dimension.")
   }
   if (any(exc_dim > n_dim)) {
-    stop("Error: `exc_dim` must be less then the total dimension.", call. = FALSE)
+    stop("Error: `exc_dim` must be less then the total dimension.")
   }
   if (length(intersect(must_dim, exc_dim)) > 0) {
-    stop("Error: The same dimension is presented in both the exclusion dimension and must have dimension.", call. = FALSE)
+    stop("Error: The same dimension is presented in both the exclusion dimension and must have dimension.")
   }
 
   # check skip position

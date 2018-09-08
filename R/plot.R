@@ -30,7 +30,8 @@
 #' @param xlab a `string`. (Default is `"Profile Index"`). X label.
 #' @param ... further arguments to be passed to [plot()]. See [par()].
 #'
-#' @return None (invisible NULL).
+#' @return None
+#' @keywords hplot
 #'
 #' @export
 #'
@@ -90,8 +91,15 @@ plot_arcs <- function(pairs, alpha = NULL, quality = 30, lwd = 15, col = c("blue
 }
 
 #' Plot a Matrix Profile
+#'
+#' @param .mp
+#' @param ylab
+#' @param xlab
+#' @param main
+#' @param ...
+#'
 #' @export
-#' @keywords internal
+#' @keywords internal hplot
 #' @noRd
 plot.MatrixProfile <- function(.mp, ylab = "distance", xlab = "index", main = "Unidimensional Matrix Profile", ...) {
   message("DEBUG: calling ", match.call()[[1]])
@@ -118,8 +126,15 @@ plot.MatrixProfile <- function(.mp, ylab = "distance", xlab = "index", main = "U
 }
 
 #' Plot a Multidimensional Matrix Profile
+#'
+#' @param .mp
+#' @param ylab
+#' @param xlab
+#' @param main
+#' @param ...
+#'
 #' @export
-#' @keywords internal
+#' @keywords internal hplot
 #' @noRd
 plot.MultiMatrixProfile <- function(.mp, ylab = "distance", xlab = "index", main = "Multidimensional Matrix Profile", ...) {
   message("DEBUG: calling ", match.call()[[1]])
@@ -153,6 +168,18 @@ plot.MultiMatrixProfile <- function(.mp, ylab = "distance", xlab = "index", main
 }
 
 #' Plot a CAC profile
+#'
+#' @param .mp
+#' @param data
+#' @param type
+#' @param exclusion_zone
+#' @param edge_limit
+#' @param threshold
+#' @param main
+#' @param xlab
+#' @param ylab
+#' @param ...
+#'
 #' @export
 #' @keywords internal
 #' @noRd
@@ -196,7 +223,7 @@ plot.ArcCount <- function(.mp, data, type = c("data", "matrix"), exclusion_zone 
   pairs[, 2] <- .mp$pi
 
   if (threshold < min(cac)) {
-    stop(paste0("Error: `threshold` is too small for this Arc Count. Min: ", round(min(cac), 2), ", Max: ", round(max(cac), 2)), call. = FALSE)
+    stop(paste0("Error: `threshold` is too small for this Arc Count. Min: ", round(min(cac), 2), ", Max: ", round(max(cac), 2)))
   }
 
   # remove excess of arcs
@@ -223,8 +250,17 @@ plot.ArcCount <- function(.mp, data, type = c("data", "matrix"), exclusion_zone 
 }
 
 #' Plot a FLUSS
+#'
+#' @param .mp
+#' @param data
+#' @param type
+#' @param main
+#' @param xlab
+#' @param ylab
+#' @param ...
+#'
 #' @export
-#' @keywords internal
+#' @keywords internal hplot
 #' @noRd
 plot.Fluss <- function(.mp, data, type = c("data", "matrix"),
                        main = "Fast Low-cost Unipotent Semantic Segmentation", xlab = "index",
@@ -280,8 +316,17 @@ plot.Fluss <- function(.mp, data, type = c("data", "matrix"),
 }
 
 #' Plot a TS Chain
+#'
+#' @param .mp
+#' @param data
+#' @param type
+#' @param main
+#' @param xlab
+#' @param ylab
+#' @param ...
+#'
 #' @export
-#' @keywords internal
+#' @keywords internal hplot
 #' @noRd
 plot.Chain <- function(.mp, data, type = c("data", "matrix"), main = "Chain Discover", xlab = "index", ylab = "distance", ...) {
   message("DEBUG: calling ", match.call()[[1]])
@@ -337,8 +382,18 @@ plot.Chain <- function(.mp, data, type = c("data", "matrix"), main = "Chain Disc
 }
 
 #' Plot Motifs
+#'
+#' @param .mp
+#' @param data
+#' @param type
+#' @param ncol
+#' @param main
+#' @param xlab
+#' @param ylab
+#' @param ...
+#'
 #' @export
-#' @keywords internal
+#' @keywords internal hplot
 #' @noRd
 plot.Motif <- function(.mp, data, type = c("data", "matrix"), ncol = 3, main = "MOTIF Discover", xlab = "index", ylab = "distance", ...) {
   message("DEBUG: calling ", match.call()[[1]])
@@ -399,8 +454,18 @@ plot.Motif <- function(.mp, data, type = c("data", "matrix"), ncol = 3, main = "
 }
 
 #' Plot Multidimensional Motifs
+#'
+#' @param .mp
+#' @param data
+#' @param type
+#' @param ncol
+#' @param main
+#' @param xlab
+#' @param ylab
+#' @param ...
+#'
 #' @export
-#' @keywords internal
+#' @keywords internal hplot
 #' @noRd
 plot.MultiMotif <- function(.mp, data, type = c("data", "matrix"), ncol = 3, main = "Multidimensional MOTIF Discover", xlab = "index", ylab = "distance", ...) {
   message("DEBUG: calling ", match.call()[[1]])

@@ -4,12 +4,10 @@
 \alias{av_zerocrossing}
 \title{Computes the annotation vector that favors number of zero crossing}
 \usage{
-av_zerocrossing(data, window_size)
+av_zerocrossing(.mp, data, apply = FALSE)
 }
 \arguments{
 \item{data}{a \code{vector} or a column \code{matrix} of \code{numeric}.}
-
-\item{window_size}{an \code{int}. Size of the sliding window.}
 }
 \value{
 Returns the annotation vector for matrix profile correction.

@@ -17,11 +17,11 @@ fast_movsd <- function(data, window_size) {
   data_size <- length(data)
 
   if (window_size < 2) {
-    stop("Error: 'window_size' must be at least 2.", call. = FALSE)
+    stop("Error: 'window_size' must be at least 2.")
   }
 
   if (data_size < window_size) {
-    stop("Error: 'window_size' is too large for this series.", call. = FALSE)
+    stop("Error: 'window_size' is too large for this series.")
   }
 
   # Improve the numerical analysis by subtracting off the series mean
@@ -113,7 +113,7 @@ znorm <- function(data) {
 
 diff2 <- function(x, y) {
   if (!is.numeric(x) || !is.numeric(y)) {
-    stop("Error: `x` and `y` must be numeric vectors or matrices.", call. = FALSE)
+    stop("Error: `x` and `y` must be numeric vectors or matrices.")
   }
   if (is.vector(x)) {
     dim(x) <- c(1, length(x))
@@ -122,7 +122,7 @@ diff2 <- function(x, y) {
     dim(y) <- c(1, length(y))
   }
   if (ncol(x) != ncol(y)) {
-    stop("Error: `x` and `y` must have the same number of columns.", call. = FALSE)
+    stop("Error: `x` and `y` must have the same number of columns.")
   }
   m <- nrow(x)
   n <- nrow(y)
@@ -133,7 +133,6 @@ diff2 <- function(x, y) {
 }
 
 # Salient Aux functions --------------------------------------------------------------------------
-
 
 #' Reduced description length
 #'
@@ -251,11 +250,11 @@ zero_crossings <- function(data) {
 
   # error checks
   if (length(data) == 1) {
-    stop("Error: Input signal must have more than one element.", call. = FALSE)
+    stop("Error: Input signal must have more than one element.")
   }
 
   if ((ncol(data) != 1) && (nrow(data) != 1)) {
-    stop("Error: Input must be one-dimensional.", call. = FALSE)
+    stop("Error: Input must be one-dimensional.")
   }
 
   # force signal to be a vector oriented in the same direction
@@ -306,6 +305,17 @@ complexity <- function(data) {
 
 # Find Motif Ung Aux Functions -------------------------------------------------------------
 
+#' Title
+#'
+#' @param motif_1
+#' @param motif_2
+#' @param n_dim
+#' @param n_bit
+#'
+#' @return
+#' @keywords internal
+#' @noRd
+#'
 get_bit_save <- function(motif_1, motif_2, n_dim, n_bit) {
   if (is.vector(motif_1)) {
     motif_1 <- as.matrix(motif_1)
@@ -332,6 +342,15 @@ get_bit_save <- function(motif_1, motif_2, n_dim, n_bit) {
   return(list(bit_sz = bit_sz, dim_id = dim_id))
 }
 
+#' Title
+#'
+#' @param motif
+#' @param split_pt
+#'
+#' @return
+#' @keywords internal
+#' @noRd
+#'
 discretization <- function(motif, split_pt) {
   if (is.vector(motif)) {
     motif <- as.matrix(motif)
@@ -354,6 +373,14 @@ discretization <- function(motif, split_pt) {
   return(disc)
 }
 
+#' Title
+#'
+#' @param n_bit
+#'
+#' @return
+#' @keywords internal
+#' @noRd
+#'
 get_desc_split_pt <- function(n_bit) {
   split_pt <- stats::qnorm((1:((2^n_bit) - 1)) / (2^n_bit), 0, 1)
   return(split_pt)
@@ -375,6 +402,10 @@ vars <- function() {
 # Misc -------------------------------------------------------------------------------------------
 
 #' Add class on front or move it to front if already exists
+#'
+#' @param classes
+#' @param new_class
+#'
 #' @keywords internal
 #' @noRd
 #'
@@ -387,11 +418,22 @@ update_class <- function(classes, new_class) {
 }
 
 #' Convert a tsmp object in another if possible
+#'
+#' The base Classes are `MatrixProfile` and `MultiMatrixProfile`, but as other functions are used,
+#' classes are pushed behind, since the last output normally is the most significant. If you want,
+#' for example, to plot the Matrix Profile from a `Fluss` object, you may use `as.matrixprofile()`
+#' to cast it back.
+#'
+#' @param .mp a Matrix Profile object
+#'
 #' @export
-#' @keywords internal
+#' @examples
+#' \dontrun{
+#'   plot(as.matrixprofile(fluss_obj))
+#' }
 #'
 
-as.matrix.profile <- function(.mp) {
+as.matrixprofile <- function(.mp) {
   if (!any(class(.mp) %in% c("MatrixProfile"))) {
     stop("Error: This object cannot be a `MatrixProfile`.")
   }
@@ -400,11 +442,15 @@ as.matrix.profile <- function(.mp) {
 
   return(.mp)
 }
-#' Convert a tsmp object in another if possible
-#' @export
-#' @keywords internal
+
 #'
-as.multimatrix.profile <- function(.mp) {
+#' @inheritParams as.matrixprofile
+#'
+#' @describeIn as.matrixprofile Cast an object changed by another function back to `MultiMatrixProfile`.
+#' @export
+#' @examples
+#'
+as.multimatrixprofile <- function(.mp) {
   if (!any(class(.mp) %in% c("MultiMatrixProfile"))) {
     stop("Error: This object cannot be a `MultiMatrixProfile`.")
   }
@@ -413,9 +459,13 @@ as.multimatrix.profile <- function(.mp) {
 
   return(.mp)
 }
-#' Convert a tsmp object in another if possible
+
+#'
+#' @inheritParams as.matrixprofile
+#'
+#' @describeIn as.matrixprofile Cast an object changed by another function back to `Fluss`.
 #' @export
-#' @keywords internal
+#' @examples
 #'
 as.fluss <- function(.mp) {
   if (!any(class(.mp) %in% c("Fluss"))) {
@@ -426,9 +476,13 @@ as.fluss <- function(.mp) {
 
   return(.mp)
 }
-#' Convert a tsmp object in another if possible
+
+#'
+#' @inheritParams as.matrixprofile
+#'
+#' @describeIn as.matrixprofile Cast an object changed by another function back to `Chain`.
 #' @export
-#' @keywords internal
+#' @examples
 #'
 as.chain <- function(.mp) {
   if (!any(class(.mp) %in% c("Chain"))) {
@@ -439,9 +493,13 @@ as.chain <- function(.mp) {
 
   return(.mp)
 }
-#' Convert a tsmp object in another if possible
+
+#'
+#' @inheritParams as.matrixprofile
+#'
+#' @describeIn as.matrixprofile Cast an object changed by another function back to `Motif`.
 #' @export
-#' @keywords internal
+#' @examples
 #'
 as.motif <- function(.mp) {
   if (!any(class(.mp) %in% c("Motif"))) {
@@ -452,9 +510,13 @@ as.motif <- function(.mp) {
 
   return(.mp)
 }
-#' Convert a tsmp object in another if possible
+
+#'
+#' @inheritParams as.matrixprofile
+#'
+#' @describeIn as.matrixprofile Cast an object changed by another function back to `MultiMotif`.
 #' @export
-#' @keywords internal
+#' @examples
 #'
 as.multimotif <- function(.mp) {
   if (!any(class(.mp) %in% c("MultiMotif"))) {
@@ -465,9 +527,13 @@ as.multimotif <- function(.mp) {
 
   return(.mp)
 }
-#' Convert a tsmp object in another if possible
+
+#'
+#' @inheritParams as.matrixprofile
+#'
+#' @describeIn as.matrixprofile Cast an object changed by another function back to `ArcCount`.
 #' @export
-#' @keywords internal
+#' @examples
 #'
 as.arccount <- function(.mp) {
   if (!any(class(.mp) %in% c("ArcCount"))) {
@@ -478,9 +544,12 @@ as.arccount <- function(.mp) {
 
   return(.mp)
 }
-#' Convert a tsmp object in another if possible
+#'
+#' @inheritParams as.matrixprofile
+#'
+#' @describeIn as.matrixprofile Cast an object changed by another function back to `Salient`.
 #' @export
-#' @keywords internal
+#' @examples
 #'
 as.salient <- function(.mp) {
   if (!any(class(.mp) %in% c("Salient"))) {
@@ -492,14 +561,12 @@ as.salient <- function(.mp) {
   return(.mp)
 }
 
-
 #' Play sound with `audio`
 #'
 #' @param data sound data provided by this package
 #'
 #' @keywords internal
 #' @noRd
-#' @import audio
 #'
 beep <- function(data) {
   if (!(is.null(audio::audio.drivers()) || nrow(audio::audio.drivers()) == 0)) {

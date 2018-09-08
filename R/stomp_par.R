@@ -25,7 +25,7 @@
 #' @export
 #'
 #' @family matrix profile computations
-#' @seealso [stamp()], [stamp_par()]; [mstomp()], [mstomp_par()] for multivariate analysis.
+#'
 #' @references * Zhu Y, Zimmerman Z, Senobari NS, Yeh CM, Funning G. Matrix Profile II : Exploiting
 #'   a Novel Algorithm and GPUs to Break the One Hundred Million Barrier for Time Series Motifs and
 #'   Joins. Icdm. 2016 Jan 22;54(1):739–48.
@@ -70,7 +70,7 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
       query <- t(query)
     }
   } else {
-    stop("Error: Unknown type of query. Must be: a column matrix or a vector.", call. = FALSE)
+    stop("Error: Unknown type of query. Must be: a column matrix or a vector.")
   }
 
   ez <- exclusion_zone # store original
@@ -81,13 +81,13 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
   num_queries <- query_size - window_size + 1
 
   if (query_size > data_size) {
-    stop("Error: Query must be smaller or the same size as reference data.", call. = FALSE)
+    stop("Error: Query must be smaller or the same size as reference data.")
   }
   if (window_size > query_size / 2) {
-    stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
+    stop("Error: Time series is too short relative to desired window size.")
   }
   if (window_size < 4) {
-    stop("Error: `window_size` must be at least 4.", call. = FALSE)
+    stop("Error: `window_size` must be at least 4.")
   }
 
   # check skip position

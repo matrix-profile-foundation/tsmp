@@ -26,7 +26,7 @@
 #' @export
 #'
 #' @family matrix profile computations
-#' @seealso [mstomp()], [mstomp_par()]
+#'
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #'
 #' @examples
@@ -62,7 +62,7 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
       data <- t(data)
     }
   } else {
-    stop("Error: Unknown type of data. Must be: a column matrix or a vector.", call. = FALSE)
+    stop("Error: Unknown type of data. Must be: a column matrix or a vector.")
   }
 
   if (is.vector(query)) {
@@ -72,7 +72,7 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
       query <- t(query)
     }
   } else {
-    stop("Error: Unknown type of query. Must be: a column matrix or a vector.", call. = FALSE)
+    stop("Error: Unknown type of query. Must be: a column matrix or a vector.")
   }
 
   ez <- exclusion_zone # store original
@@ -98,13 +98,13 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
   query[is.infinite(query)] <- 0
 
   if (query_size > data_size) {
-    stop("Error: Query must be smaller or the same size as reference data.", call. = FALSE)
+    stop("Error: Query must be smaller or the same size as reference data.")
   }
   if (window_size > query_size / 2) {
-    stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
+    stop("Error: Time series is too short relative to desired window size.")
   }
   if (window_size < 4) {
-    stop("Error: `window_size` must be at least 4.", call. = FALSE)
+    stop("Error: `window_size` must be at least 4.")
   }
 
   message("DISCLAIMER: This algorithm still in development by its authors.")

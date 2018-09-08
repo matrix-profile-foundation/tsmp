@@ -7,6 +7,9 @@
 \method{find_motif}{MatrixProfile}(.mp, data, n_motifs = 3, radius = 3,
   exclusion_zone = NULL)
 }
+\arguments{
+\item{exclusion_zone}{}
+}
 \description{
 Title
 }

@@ -66,8 +66,6 @@ New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-\code{\link[=mstomp]{mstomp()}}, \code{\link[=mstomp_par]{mstomp_par()}}
-
 Other matrix profile computations: \code{\link{mstomp_par}},
   \code{\link{mstomp}}, \code{\link{scrimp}},
   \code{\link{stamp_par}}, \code{\link{stomp_par}},
