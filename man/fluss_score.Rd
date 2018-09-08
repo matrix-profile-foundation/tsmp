@@ -51,7 +51,7 @@ Website: \url{https://sites.google.com/site/onlinesemanticsegmentation/}
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other fluss: \code{\link{fluss_cac}},
+Other Semantic Segmentations: \code{\link{fluss_cac}},
   \code{\link{fluss_extract}}, \code{\link{fluss}}
 }
-\concept{fluss}
+\concept{Semantic Segmentations}

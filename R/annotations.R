@@ -14,8 +14,9 @@
 #'   125–34.
 #' @examples
 #' data <- mp_test_data$train$data[1:1000]
-#' window <- 50
-#' av <- av_zerocrossing(data, window)
+#' w <- 50
+#' mp <- tsmp(data, window_size = w, verbose = 0)
+#' av <- av_zerocrossing(mp, apply = TRUE)
 #'
 av_zerocrossing <- function(.mp, data, apply = FALSE) {
   if (missing(data) && !is.null(.mp$data)) {
@@ -58,8 +59,9 @@ av_zerocrossing <- function(.mp, data, apply = FALSE) {
 #'   125–34.
 #' @examples
 #' data <- mp_test_data$train$data[1:1000]
-#' window <- 50
-#' av <- av_complexity(data, window)
+#' w <- 50
+#' mp <- tsmp(data, window_size = w, verbose = 0)
+#' av <- av_complexity(mp, apply = TRUE)
 #'
 av_complexity <- function(.mp, data, dilution_factor = 0, apply = FALSE) {
   if (missing(data) && !is.null(.mp$data)) {
@@ -108,8 +110,9 @@ av_complexity <- function(.mp, data, dilution_factor = 0, apply = FALSE) {
 #'   125–34.
 #' @examples
 #' data <- mp_test_data$train$data[1:1000]
-#' window <- 50
-#' av <- av_motion_artifact(data, window)
+#' w <- 50
+#' mp <- tsmp(data, window_size = w, verbose = 0)
+#' av <- av_motion_artifact(mp, apply = TRUE)
 #'
 av_motion_artifact <- function(.mp, data, apply = FALSE) {
   if (missing(data) && !is.null(.mp$data)) {
@@ -165,8 +168,9 @@ av_motion_artifact <- function(.mp, data, apply = FALSE) {
 #'   125–34.
 #' @examples
 #' data <- mp_test_data$train$data[1:1000]
-#' window <- 50
-#' av <- av_stop_word(data, window, 150)
+#' w <- 50
+#' mp <- tsmp(data, window_size = w, verbose = 0)
+#' av <- av_stop_word(mp, stop_word_loc = 150, apply = TRUE)
 #'
 av_stop_word <- function(.mp, data, stop_word_loc, exclusion_zone = NULL, threshold = 0.1, apply = FALSE) {
   if (missing(data) && !is.null(.mp$data)) {
@@ -227,8 +231,9 @@ av_stop_word <- function(.mp, data, stop_word_loc, exclusion_zone = NULL, thresh
 #'   125–34.
 #' @examples
 #' data <- mp_test_data$train$data[1:1000]
-#' window <- 50
-#' av <- av_hardlimit_artifact(data, window)
+#' w <- 50
+#' mp <- tsmp(data, window_size = w, verbose = 0)
+#' av <- av_hardlimit_artifact(mp, apply = TRUE)
 #'
 av_hardlimit_artifact <- function(.mp, data, apply = FALSE) {
   if (missing(data) && !is.null(.mp$data)) {
@@ -278,8 +283,11 @@ av_hardlimit_artifact <- function(.mp, data, apply = FALSE) {
 #'   125–34.
 #' @examples
 #' \dontrun{
-#'   av <- av_complexity(data, window)
-#'   mpc <- av_apply(mp)
+#' data <- mp_test_data$train$data[1:1000]
+#' w <- 50
+#' mp <- tsmp(data, window_size = w, verbose = 0)
+#' mp <- av_complexity(mp)
+#' av <- av_apply(mp)
 #' }
 av_apply <- function(.mp) {
   if (!any(class(.mp) %in% "MatrixProfile")) {
@@ -290,7 +298,7 @@ av_apply <- function(.mp) {
     stop("Error: First argument must be an object of class `AnnotationVector`.")
   }
 
-  if (attr(.mp, "comment") == "Annotated") {
+  if (!is.null(attr(.mp, "comment")) && attr(.mp, "comment") == "Annotated") {
     stop("Error: This Matrix Profile has already been annotated.")
   }
 

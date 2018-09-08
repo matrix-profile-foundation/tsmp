@@ -7,12 +7,11 @@
 fluss_extract(.mpac, num_segments, exclusion_zone = NULL)
 }
 \arguments{
-\item{.mpac}{}
+\item{.mpac}{a TSMP object of class \code{ArcCount}.}
 
 \item{num_segments}{an \code{int}. Number of segments to extract. Based on domain knowledge.}
 
-\item{exclusion_zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is
-\code{5}).}
+\item{exclusion_zone}{if a \code{number} will be used instead of embeded value. (Default is \code{NULL}).}
 }
 \value{
 Returns an \code{int} or a \code{vector} of \code{int} with the location of predicted semantic changes.
@@ -50,7 +49,7 @@ Website: \url{https://sites.google.com/site/onlinesemanticsegmentation/}
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other fluss: \code{\link{fluss_cac}},
+Other Semantic Segmentations: \code{\link{fluss_cac}},
   \code{\link{fluss_score}}, \code{\link{fluss}}
 }
-\concept{fluss}
+\concept{Semantic Segmentations}

@@ -29,6 +29,8 @@
 #'   Time Series Chains (Yan Zhu 2018).
 #' @export
 #'
+#' @describeIn mstomp Single thread version.
+#'
 #' @family matrix profile computations
 #'
 #' @references * Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif

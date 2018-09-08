@@ -47,5 +47,6 @@
 #' @references Website: <http://www.cs.ucr.edu/~hdau001/guided_motif_search/>
 #'
 #' @importFrom magrittr %>%
+#' @rdname tspkg
 
 "_PACKAGE"

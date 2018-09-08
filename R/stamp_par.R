@@ -1,54 +1,11 @@
 #' Anytime univariate STAMP algorithm Parallel version
 #'
-#' Computes the best so far Matrix Profile and Profile Index for Univariate Time Series.
-#'
-#' @details
-#' The Matrix Profile, has the potential to revolutionize time series data mining because of its
-#' generality, versatility, simplicity and scalability. In particular it has implications for time
-#' series motif discovery, time series joins, shapelet discovery (classification), density
-#' estimation, semantic segmentation, visualization, rule discovery, clustering etc. The anytime
-#' STAMP computes the Matrix Profile and Profile Index in such manner that it can be stopped before
-#' its complete calculation and return the best so far results allowing ultra-fast approximate
-#' solutions. `verbose` changes how much information is printed by this function; `0` means nothing,
-#' `1` means text, `2` means text and sound. `exclusion_zone` is used to avoid  trivial matches; if
-#' a query data is provided (join similarity), this parameter is ignored.
-#'
-#' @param ... a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix
-#'   profile.
-#' @param window_size an `int`. Size of the sliding window.
-#' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is
-#'   `1/2`). See details.
-#' @param verbose an `int`. See details. (Default is `2`).
-#' @param s_size a `numeric`. for anytime algorithm, represents the size (in observations) the
-#'   random calculation will occur (default is `Inf`).
 #' @param n_workers an `int`. Number of workers for parallel. (Default is `2`).
 #'
-#' @return Returns the matrix profile `mp` and profile index `pi`. It also returns the left and
-#'   right matrix profile `lmp`, `rmp` and profile index `lpi`, `rpi` that may be used to detect
-#'   Time Series Chains (Yan Zhu 2018).
 #' @export
 #'
-#' @family matrix profile computations
-#'
-#' @references * Yeh CCM, Zhu Y, Ulanova L, Begum N, Ding Y, Dau HA, et al. Matrix profile I: All
-#'   pairs similarity joins for time series: A unifying view that includes motifs, discords and
-#'   shapelets. Proc - IEEE Int Conf Data Mining, ICDM. 2017;1317–22.
-#' @references * Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A
-#'   New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
-#' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
-#'
-#' @examples
-#' mp <- stamp_par(mp_toy_data$data[1:200,1], window_size = 30, verbose = 0)
-#' \dontrun{
-#' ref_data <- mp_toy_data$data[,1]
-#' query_data <- mp_toy_data$data[,2]
-#' # self similarity
-#' mp <- stamp_par(ref_data, window_size = 30, s_size = round(nrow(ref_data) * 0.1))
-#' # join similarity
-#' mp <- stamp_par(ref_data, query_data, window_size = 30, s_size = round(nrow(query_data) * 0.1))
-#' }
-#'
-#' @import doSNOW foreach parallel
+#' @describeIn stamp Parallel version.
+
 stamp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size = Inf, n_workers = 2) {
   args <- list(...)
   data <- args[[1]]
@@ -166,7 +123,7 @@ stamp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_s
   `%dopar%` <- foreach::`%dopar%` # CRAN NOTE fix
 
   for (k in lines) {
-    batch <- foreach(
+    batch <- foreach::foreach(
       j = 1:cols,
       # .verbose = FALSE,
       .inorder = FALSE,

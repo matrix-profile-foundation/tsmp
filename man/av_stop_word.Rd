@@ -34,8 +34,9 @@ The function is intended to be generic. However, its parameters (\code{stop_word
 }
 \examples{
 data <- mp_test_data$train$data[1:1000]
-window <- 50
-av <- av_stop_word(data, window, 150)
+w <- 50
+mp <- tsmp(data, window_size = w, verbose = 0)
+av <- av_stop_word(mp, stop_word_loc = 150, apply = TRUE)
 
 }
 \references{

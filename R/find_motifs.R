@@ -4,6 +4,11 @@
 #' @param ... further arguments to be passed to class specific function.
 #' @name find_motif
 #' @export
+#' @examples
+#' w <- 50
+#' data <- mp_gait_data
+#' mp <- tsmp(data, window_size = w, exclusion_zone = 1/4, verbose = 0)
+#' mp <- find_motif(mp)
 
 find_motif <- function(.mp, ...) {
   UseMethod("find_motif", .mp)
@@ -133,6 +138,11 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, radius = 3, exclus
 #'
 #' @name find_motif
 #' @export
+#' @examples
+#' w <- mp_toy_data$sub_len
+#' data <- mp_toy_data$data[1:300, ]
+#' mp <- tsmp(data, window_size = w, mode = "mstomp", verbose = 0)
+#' mp <- find_motif(mp)
 
 find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("guided", "unconstrained"),
                                           n_bit = 4, exclusion_zone = NULL, n_dim = NULL) {

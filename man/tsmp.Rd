@@ -132,9 +132,8 @@ Website: \url{https://sites.google.com/site/ismir2016simple/home}
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other matrix profile computations: \code{\link{mstomp_par}},
-  \code{\link{mstomp}}, \code{\link{scrimp}},
-  \code{\link{stamp_par}}, \code{\link{stamp}},
-  \code{\link{stomp_par}}, \code{\link{stomp}}
+Other matrix profile computations: \code{\link{mstomp}},
+  \code{\link{scrimp}}, \code{\link{stamp}},
+  \code{\link{stomp}}
 }
 \concept{matrix profile computations}

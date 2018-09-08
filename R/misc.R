@@ -50,11 +50,11 @@ fast_movsd <- function(data, window_size) {
 
 #' Fast implementation of moving average using filter
 #'
-#' @param data a `vector` or a column `matrix` of `numeric`.
-#' @param window_size moving average window size
+#' @inheritParams fast_movsd
 #'
 #' @return Returns a `vector` with the moving average
 #' @export
+#'
 #' @examples
 #' data_avg <- fast_movavg(mp_toy_data$data[,1], mp_toy_data$sub_len)
 
@@ -65,7 +65,7 @@ fast_movavg <- function(data, window_size) {
 
 #' Population SD, as R always calculate with n-1 (sample), here we fix it
 #'
-#' @param data a `vector` or a column `matrix` of `numeric`.
+#' @inheritParams fast_movsd
 #'
 #' @return Returns the corrected standard deviation from sample to population
 #' @keywords internal
@@ -83,7 +83,7 @@ std <- function(data) {
 
 #' Normalizes data for mean Zero and Standard Deviation One
 #'
-#' @param data a `vector` or a column `matrix` of `numeric`.
+#' @inheritParams fast_movsd
 #'
 #' @return Returns the normalized data
 #' @keywords internal

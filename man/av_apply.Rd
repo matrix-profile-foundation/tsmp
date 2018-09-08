@@ -17,8 +17,11 @@ This function overwrites the current Matrix Profile using the Annotation Vector.
 }
 \examples{
 \dontrun{
-  av <- av_complexity(data, window)
-  mpc <- av_apply(mp)
+data <- mp_test_data$train$data[1:1000]
+w <- 50
+mp <- tsmp(data, window_size = w, verbose = 0)
+mp <- av_complexity(mp)
+av <- av_apply(mp)
 }
 }
 \references{

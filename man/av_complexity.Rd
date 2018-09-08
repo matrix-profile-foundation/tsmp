@@ -24,8 +24,9 @@ Computes the annotation vector that favors complexity
 }
 \examples{
 data <- mp_test_data$train$data[1:1000]
-window <- 50
-av <- av_complexity(data, window)
+w <- 50
+mp <- tsmp(data, window_size = w, verbose = 0)
+av <- av_complexity(mp, apply = TRUE)
 
 }
 \references{

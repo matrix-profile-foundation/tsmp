@@ -7,9 +7,9 @@
 fluss_cac(.mp, exclusion_zone = NULL)
 }
 \arguments{
-\item{.mp}{}
+\item{.mp}{a TSMP object of class \code{MatrixProfile}.}
 
-\item{exclusion_zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is \code{5}).}
+\item{exclusion_zone}{if a \code{number} will be used instead of embeded value. (Default is \code{NULL}).}
 }
 \value{
 Returns a companion matrix with the same size of profile index. This matrix contains the number of
@@ -48,7 +48,7 @@ Website: \url{https://sites.google.com/site/onlinesemanticsegmentation/}
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other fluss: \code{\link{fluss_extract}},
+Other Semantic Segmentations: \code{\link{fluss_extract}},
   \code{\link{fluss_score}}, \code{\link{fluss}}
 }
-\concept{fluss}
+\concept{Semantic Segmentations}

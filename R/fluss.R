@@ -3,18 +3,14 @@
 #' FLUSS is a Domain Agnostic Online Semantic Segmentation that uses the assumption that when few
 #' arc are crossing a given index point, means that there is a high probability of semantic change.
 #'
-#' @details
-#' `verbose` changes how much information is printed by this function; `0` means nothing, `1` means
-#' text, `2` means text and sound.
-#'
+#' @param .mp a TSMP object of class `ArcCount`.
 #' @param num_segments an `int`. Number of segments to extract. Based on domain knowledge.
-#' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is
-#' @param .mp
-#'   `5`).
+#' @param exclusion_zone if a `number` will be used instead of embeded value. (Default is `NULL`).
+#'
 #' @return Returns a list with `segments` (location of semantic changes), `mp` (matrix profile if
 #'   computed), `pi` (profile index, input of computed), `cac` corrected arc count.
 #' @export
-#' @family fluss
+#' @family Semantic Segmentations
 #' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII:
 #'   Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE
 #'   International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
@@ -42,15 +38,14 @@ fluss <- function(.mp, num_segments, exclusion_zone = NULL) {
 #'
 #' Extract candidate points of semantic changes.
 #'
+#' @param .mpac a TSMP object of class `ArcCount`.
 #' @param num_segments an `int`. Number of segments to extract. Based on domain knowledge.
-#' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is
-#'   `5`).
-#' @param .mpac
+#' @param exclusion_zone if a `number` will be used instead of embeded value. (Default is `NULL`).
 #'
 #' @return Returns an `int` or a `vector` of `int` with the location of predicted semantic changes.
 #'   The number of locations is not greater than `num_segments`.
 #' @export
-#' @family fluss
+#' @family Semantic Segmentations
 #' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII:
 #'   Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE
 #'   International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
@@ -73,8 +68,8 @@ fluss <- function(.mp, num_segments, exclusion_zone = NULL) {
 #' segments <- fluss_extract(cac, nseg, w)
 #' }
 fluss_extract <- function(.mpac, num_segments, exclusion_zone = NULL) {
-  if (!any(class(.mpac) %in% "ArcCounts")) {
-    stop("Error: First argument must be an object of class `ArcCounts`.")
+  if (!any(class(.mpac) %in% "ArcCount")) {
+    stop("Error: First argument must be an object of class `ArcCount`.")
   }
 
   if (is.null(exclusion_zone)) {
@@ -110,14 +105,14 @@ fluss_extract <- function(.mpac, num_segments, exclusion_zone = NULL) {
 #' where a semantic change may occur in CAC. This may be useful in real-time implementation as we don't
 #' know in advance the number of domain changes to look for. Please check original paper (1).
 #'
-#' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is `5`).
-#' @param .mp
+#' @param .mp a TSMP object of class `MatrixProfile`.
+#' @param exclusion_zone if a `number` will be used instead of embeded value. (Default is `NULL`).
 #'
 #' @return Returns a companion matrix with the same size of profile index. This matrix contains the number of
 #' 'arcs' crossing over each index.
 #'
 #' @export
-#' @family fluss
+#' @family Semantic Segmentations
 #' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
 #' @references Website: <https://sites.google.com/site/onlinesemanticsegmentation/>
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
@@ -179,7 +174,7 @@ fluss_cac <- function(.mp, exclusion_zone = NULL) {
 #' @return Returns the score of predicted semantic transitions compared with the ground truth.
 #' Zero is the best, One is the worst.
 #' @export
-#' @family fluss
+#' @family Semantic Segmentations
 #' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
 #' @references Website: <https://sites.google.com/site/onlinesemanticsegmentation/>
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>

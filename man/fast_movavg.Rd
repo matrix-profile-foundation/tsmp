@@ -9,7 +9,7 @@ fast_movavg(data, window_size)
 \arguments{
 \item{data}{a \code{vector} or a column \code{matrix} of \code{numeric}.}
 
-\item{window_size}{moving average window size}
+\item{window_size}{moving sd window size}
 }
 \value{
 Returns a \code{vector} with the moving average

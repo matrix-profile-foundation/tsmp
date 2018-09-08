@@ -7,11 +7,11 @@
 fluss(.mp, num_segments, exclusion_zone = NULL)
 }
 \arguments{
-\item{.mp}{\code{5}).}
+\item{.mp}{a TSMP object of class \code{ArcCount}.}
 
 \item{num_segments}{an \code{int}. Number of segments to extract. Based on domain knowledge.}
 
-\item{exclusion_zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is}
+\item{exclusion_zone}{if a \code{number} will be used instead of embeded value. (Default is \code{NULL}).}
 }
 \value{
 Returns a list with \code{segments} (location of semantic changes), \code{mp} (matrix profile if
@@ -20,10 +20,6 @@ computed), \code{pi} (profile index, input of computed), \code{cac} corrected ar
 \description{
 FLUSS is a Domain Agnostic Online Semantic Segmentation that uses the assumption that when few
 arc are crossing a given index point, means that there is a high probability of semantic change.
-}
-\details{
-\code{verbose} changes how much information is printed by this function; \code{0} means nothing, \code{1} means
-text, \code{2} means text and sound.
 }
 \examples{
 # This is a fast toy example and results are useless. For a complete result, run the code inside
@@ -52,7 +48,7 @@ Website: \url{https://sites.google.com/site/onlinesemanticsegmentation/}
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other fluss: \code{\link{fluss_cac}},
+Other Semantic Segmentations: \code{\link{fluss_cac}},
   \code{\link{fluss_extract}}, \code{\link{fluss_score}}
 }
-\concept{fluss}
+\concept{Semantic Segmentations}

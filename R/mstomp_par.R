@@ -1,48 +1,11 @@
 #' Multivariate STOMP algorithm Parallel version
 #'
-#' Computes the Matrix Profile and Profile Index for Multivariate Time Series.
-#'
-#' @details
-#' The Matrix Profile, has the potential to revolutionize time series data mining because of its
-#' generality, versatility, simplicity and scalability. In particular it has implications for time
-#' series motif discovery, time series joins, shapelet discovery (classification), density
-#' estimation, semantic segmentation, visualization, rule discovery, clustering etc. The MSTOMP
-#' computes the Matrix Profile and Profile Index for Multivariate Time Series that is meaningful for
-#' multidimensional MOTIF discovery. It uses the STOMP algorithm that is faster than STAMP but lacks
-#' its anytime property.
-#'
-#' Although this functions handles Multivariate Time Series, it can also be used to handle
-#' Univariate Time Series. `verbose` changes how much information is printed by this function; `0`
-#' means nothing, `1` means text, `2` means text and sound.
-#'
-#' @param data a `matrix` of `numeric`, where each column is a time series. Accepts `vector` (see
-#'   details), `list` and `data.frame` too.
-#' @param window_size an `int`. Size of the sliding window.
-#' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is
-#'   `1/2`). See details.
-#' @param verbose an `int`. See details. (Default is `2`).
-#' @param must_dim an `int` or `vector` of which dimensions to forcibly include (default is `NULL`).
-#' @param exc_dim an `int` or `vector` of which dimensions to exclude (default is `NULL`).
 #' @param n_workers an `int`. Number of workers for parallel. (Default is `2`).
 #'
-#' @return Returns the matrix profile `mp` and profile index `pi`. It also returns the left and
-#'   right matrix profile `lmp`, `rmp` and profile index `lpi`, `rpi` that may be used to detect
-#'   Time Series Chains (Yan Zhu 2018).
 #' @export
 #'
-#' @family matrix profile computations
-#'
-#' @references * Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif
-#'   Discovery.
-#' @references * Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A
-#'   New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
-#' @references Website: <https://sites.google.com/view/mstamp/>
-#' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
-#'
-#' @examples
-#' # using all dimensions
-#' mp <- mstomp_par(mp_toy_data$data[1:100,], 30, verbose = 0)
-#' @import doSNOW foreach parallel
+#' @describeIn mstomp Parallel version.
+
 
 mstomp_par <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, must_dim = NULL, exc_dim = NULL, n_workers = 2) {
   # get various length
@@ -182,7 +145,7 @@ mstomp_par <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, m
   `%dopar%` <- foreach::`%dopar%` # CRAN NOTE fix
 
   # compute the matrix profile
-  batch <- foreach(
+  batch <- foreach::foreach(
     i = 1:n_work,
     .verbose = FALSE,
     .inorder = FALSE,
