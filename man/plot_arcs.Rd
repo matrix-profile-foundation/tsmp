@@ -23,7 +23,7 @@ arc, respectively. Accepts one color.}
 
 \item{main}{a \code{string}. (Default is \code{"Arc Plot"}). Main title.}
 
-\item{ylab}{a \code{string}. (Default is \code{""}). Y label}
+\item{ylab}{a \code{string}. (Default is \code{""}). Y label.}
 
 \item{xlab}{a \code{string}. (Default is \code{"Profile Index"}). X label.}
 

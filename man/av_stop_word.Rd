@@ -8,16 +8,19 @@ av_stop_word(.mp, data, stop_word_loc, exclusion_zone = NULL,
   threshold = 0.1, apply = FALSE)
 }
 \arguments{
+\item{.mp}{a Matrix Profile object.}
+
 \item{data}{a \code{vector} or a column \code{matrix} of \code{numeric}.}
 
 \item{stop_word_loc}{an \code{int}. The index of stop word location.}
 
 \item{exclusion_zone}{a \code{numeric}. Size of the exclusion zone, based on window_size (default is
-\code{1/2}). See details.}
+\code{NULL}). See details.}
 
-\item{threshold}{a \code{numeric}.}
+\item{threshold}{a \code{numeric}. (default is \code{0.1}).}
 
-\item{apply}{}
+\item{apply}{logical. (Default is \code{FALSE}). Applies the Annotation Vector over the Matrix Profile.
+Use with caution.}
 }
 \value{
 Returns the annotation vector for matrix profile correction.
@@ -43,3 +46,11 @@ on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM
 125–34.
 }
 }
+\seealso{
+Other Annotation vectors: \code{\link{av_apply}},
+  \code{\link{av_complexity}},
+  \code{\link{av_hardlimit_artifact}},
+  \code{\link{av_motion_artifact}},
+  \code{\link{av_zerocrossing}}
+}
+\concept{Annotation vectors}

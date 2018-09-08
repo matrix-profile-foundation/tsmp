@@ -1,11 +1,11 @@
 #' Prints a Matrix Profile
 #'
-#' @param .mp
-#' @param ...
-#'
+#' @param .mp a TSMP object of class `MatrixProfile`.
+#' @param ... additional arguments ignored.
 #' @export
 #' @keywords internal
 #' @noRd
+
 print.MatrixProfile <- function(.mp, ...) {
   message("DEBUG: calling ", match.call()[[1]])
 
@@ -29,12 +29,13 @@ print.MatrixProfile <- function(.mp, ...) {
 
 #' Prints a Multidimensional Matrix Profile
 #'
-#' @param .mp
-#' @param ...
-#'
+#' @param .mp a TSMP object of class `MultiMatrixProfile`.
+#' @param ... additional arguments ignored.
 #' @export
 #' @keywords internal
 #' @noRd
+
+
 print.MultiMatrixProfile <- function(.mp, ...) {
   message("DEBUG: calling ", match.call()[[1]])
 
@@ -61,9 +62,8 @@ print.MultiMatrixProfile <- function(.mp, ...) {
 
 #' Prints a CAC profile
 #'
-#' @param .mp
-#' @param ...
-#'
+#' @param .mp a TSMP object of class `ArcCount`.
+#' @param ... additional arguments ignored.
 #' @export
 #' @keywords internal
 #' @noRd
@@ -85,9 +85,8 @@ print.ArcCount <- function(.mp, ...) {
 
 #' Prints a FLUSS
 #'
-#' @param .mp
-#' @param ...
-#'
+#' @param .mp a TSMP object of class `Fluss`.
+#' @param ... additional arguments ignored.
 #' @export
 #' @keywords internal
 #' @noRd
@@ -107,9 +106,8 @@ print.Fluss <- function(.mp, ...) {
 
 #' Prints a TS Chain
 #'
-#' @param .mp
-#' @param ...
-#'
+#' @param .mp a TSMP object of class `Chain`.
+#' @param ... additional arguments ignored.
 #' @export
 #' @keywords internal
 #' @noRd
@@ -132,9 +130,8 @@ print.Chain <- function(.mp, ...) {
 
 #' Prints Motifs
 #'
-#' @param .mp
-#' @param ...
-#'
+#' @param .mp a TSMP object of class `Motif`.
+#' @param ... additional arguments ignored.
 #' @export
 #' @keywords internal
 #' @noRd
@@ -169,9 +166,8 @@ print.Motif <- function(.mp, ...) {
 
 #' Prints Multidimensional Motifs
 #'
-#' @param .mp
-#' @param ...
-#'
+#' @param .mp a TSMP object of class `MultiMotif`.
+#' @param ... additional arguments ignored.
 #' @export
 #' @keywords internal
 #' @noRd

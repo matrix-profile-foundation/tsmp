@@ -13,12 +13,12 @@ av_apply(.mp)
 Returns the corrected matrix profile.
 }
 \description{
-Corrects the matrix profile using an annotation vector
+This function overwrites the current Matrix Profile using the Annotation Vector. Use with caution.
 }
 \examples{
 \dontrun{
   av <- av_complexity(data, window)
-  mpc <- av_apply(mp, av)
+  mpc <- av_apply(mp)
 }
 }
 \references{
@@ -29,3 +29,10 @@ on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM
 125–34.
 }
 }
+\seealso{
+Other Annotation vectors: \code{\link{av_complexity}},
+  \code{\link{av_hardlimit_artifact}},
+  \code{\link{av_motion_artifact}},
+  \code{\link{av_stop_word}}, \code{\link{av_zerocrossing}}
+}
+\concept{Annotation vectors}

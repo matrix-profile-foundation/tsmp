@@ -7,7 +7,7 @@
 find_chains(.mp)
 }
 \arguments{
-\item{.mp}{a \code{MatrixProfile} object.}
+\item{.mp}{a TSMP object of class \code{MatrixProfile}.}
 }
 \value{
 Returns \code{chains}, a \code{list} of chains founded with more than 2 patterns and \code{best} with

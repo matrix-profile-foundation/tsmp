@@ -1,3 +1,4 @@
+
 # Math functions ------------------------------------------------------------------------------
 
 #' Fast implementation of moving standard deviation using filter
@@ -305,14 +306,14 @@ complexity <- function(data) {
 
 # Find Motif Ung Aux Functions -------------------------------------------------------------
 
-#' Title
+#' Computes the bits saved using basic compactation algorithm
 #'
-#' @param motif_1
-#' @param motif_2
-#' @param n_dim
-#' @param n_bit
+#' @param motif_1 reference motif
+#' @param motif_2 difference motif
+#' @param n_dim data dimensions
+#' @param n_bit bits for discretization
 #'
-#' @return
+#' @return Returns the amount of bits saved
 #' @keywords internal
 #' @noRd
 #'
@@ -342,12 +343,12 @@ get_bit_save <- function(motif_1, motif_2, n_dim, n_bit) {
   return(list(bit_sz = bit_sz, dim_id = dim_id))
 }
 
-#' Title
+#' Discretize a time series using split points.
 #'
-#' @param motif
-#' @param split_pt
+#' @param motif a `matrix` with the motif.
+#' @param split_pt split points for discretization.
 #'
-#' @return
+#' @return Returns the discretized time series.
 #' @keywords internal
 #' @noRd
 #'
@@ -373,11 +374,11 @@ discretization <- function(motif, split_pt) {
   return(disc)
 }
 
-#' Title
+#' Get the split points for discretization
 #'
-#' @param n_bit
+#' @param n_bit number of bits for discretization.
 #'
-#' @return
+#' @return Returns the split points.
 #' @keywords internal
 #' @noRd
 #'
@@ -387,6 +388,7 @@ get_desc_split_pt <- function(n_bit) {
 }
 
 # Global constants ---------------------------------------------------------------------------
+
 #' Global constants
 #'
 #' @return Returns a `list` with the global constants
@@ -403,9 +405,10 @@ vars <- function() {
 
 #' Add class on front or move it to front if already exists
 #'
-#' @param classes
-#' @param new_class
+#' @param classes result from `class()`
+#' @param new_class string with the new class to add or update (put on front).
 #'
+#' @return Returns a vector with classes names.
 #' @keywords internal
 #' @noRd
 #'
@@ -417,15 +420,16 @@ update_class <- function(classes, new_class) {
   return(classes)
 }
 
-#' Convert a tsmp object in another if possible
+#' Convert a TSMP object into another if possible
 #'
 #' The base Classes are `MatrixProfile` and `MultiMatrixProfile`, but as other functions are used,
 #' classes are pushed behind, since the last output normally is the most significant. If you want,
 #' for example, to plot the Matrix Profile from a `Fluss` object, you may use `as.matrixprofile()`
 #' to cast it back.
 #'
-#' @param .mp a Matrix Profile object
+#' @param .mp a TSMP object.
 #'
+#' @describeIn as.matrixprofile Cast an object changed by another function back to `MatrixProfile`.
 #' @export
 #' @examples
 #' \dontrun{
@@ -443,13 +447,10 @@ as.matrixprofile <- function(.mp) {
   return(.mp)
 }
 
-#'
-#' @inheritParams as.matrixprofile
-#'
 #' @describeIn as.matrixprofile Cast an object changed by another function back to `MultiMatrixProfile`.
 #' @export
-#' @examples
 #'
+
 as.multimatrixprofile <- function(.mp) {
   if (!any(class(.mp) %in% c("MultiMatrixProfile"))) {
     stop("Error: This object cannot be a `MultiMatrixProfile`.")
@@ -460,13 +461,10 @@ as.multimatrixprofile <- function(.mp) {
   return(.mp)
 }
 
-#'
-#' @inheritParams as.matrixprofile
-#'
+
 #' @describeIn as.matrixprofile Cast an object changed by another function back to `Fluss`.
 #' @export
-#' @examples
-#'
+
 as.fluss <- function(.mp) {
   if (!any(class(.mp) %in% c("Fluss"))) {
     stop("Error: This object cannot be a `Fluss`.")
@@ -477,13 +475,10 @@ as.fluss <- function(.mp) {
   return(.mp)
 }
 
-#'
-#' @inheritParams as.matrixprofile
-#'
+
 #' @describeIn as.matrixprofile Cast an object changed by another function back to `Chain`.
 #' @export
-#' @examples
-#'
+
 as.chain <- function(.mp) {
   if (!any(class(.mp) %in% c("Chain"))) {
     stop("Error: This object cannot be a `Chain`.")
@@ -494,13 +489,10 @@ as.chain <- function(.mp) {
   return(.mp)
 }
 
-#'
-#' @inheritParams as.matrixprofile
-#'
+
 #' @describeIn as.matrixprofile Cast an object changed by another function back to `Motif`.
 #' @export
-#' @examples
-#'
+
 as.motif <- function(.mp) {
   if (!any(class(.mp) %in% c("Motif"))) {
     stop("Error: This object cannot be a `Motif`.")
@@ -511,13 +503,10 @@ as.motif <- function(.mp) {
   return(.mp)
 }
 
-#'
-#' @inheritParams as.matrixprofile
-#'
+
 #' @describeIn as.matrixprofile Cast an object changed by another function back to `MultiMotif`.
 #' @export
-#' @examples
-#'
+
 as.multimotif <- function(.mp) {
   if (!any(class(.mp) %in% c("MultiMotif"))) {
     stop("Error: This object cannot be a `MultiMotif`.")
@@ -528,13 +517,10 @@ as.multimotif <- function(.mp) {
   return(.mp)
 }
 
-#'
-#' @inheritParams as.matrixprofile
-#'
+
 #' @describeIn as.matrixprofile Cast an object changed by another function back to `ArcCount`.
 #' @export
-#' @examples
-#'
+
 as.arccount <- function(.mp) {
   if (!any(class(.mp) %in% c("ArcCount"))) {
     stop("Error: This object cannot be a `ArcCount`.")
@@ -544,13 +530,10 @@ as.arccount <- function(.mp) {
 
   return(.mp)
 }
-#'
-#' @inheritParams as.matrixprofile
-#'
+
 #' @describeIn as.matrixprofile Cast an object changed by another function back to `Salient`.
 #' @export
-#' @examples
-#'
+
 as.salient <- function(.mp) {
   if (!any(class(.mp) %in% c("Salient"))) {
     stop("Error: This object cannot be a `Salient`.")

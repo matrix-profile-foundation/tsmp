@@ -7,7 +7,12 @@
 av_zerocrossing(.mp, data, apply = FALSE)
 }
 \arguments{
+\item{.mp}{a Matrix Profile object.}
+
 \item{data}{a \code{vector} or a column \code{matrix} of \code{numeric}.}
+
+\item{apply}{logical. (Default is \code{FALSE}). Applies the Annotation Vector over the Matrix Profile.
+Use with caution.}
 }
 \value{
 Returns the annotation vector for matrix profile correction.
@@ -29,3 +34,11 @@ on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM
 125–34.
 }
 }
+\seealso{
+Other Annotation vectors: \code{\link{av_apply}},
+  \code{\link{av_complexity}},
+  \code{\link{av_hardlimit_artifact}},
+  \code{\link{av_motion_artifact}},
+  \code{\link{av_stop_word}}
+}
+\concept{Annotation vectors}

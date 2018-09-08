@@ -2,7 +2,7 @@
 #'
 #' Time Series Chains is a new primitive for time series data mining.
 #'
-#' @param .mp a `MatrixProfile` object.
+#' @param .mp a TSMP object of class `MatrixProfile`.
 #'
 #' @return Returns `chains`, a `list` of chains founded with more than 2 patterns and `best` with
 #'   the best one.

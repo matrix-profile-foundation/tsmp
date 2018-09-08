@@ -1,22 +1,19 @@
-#' Title
+#' Search for Motifs
 #'
-#' @param .mp
-#' @param ...
-#'
+#' @param .mp a TSMP object of class `MatrixProfile` or `MultiMatrixProfile`.
+#' @param ... further arguments to be passed to class specific function.
+#' @name find_motif
 #' @export
 
 find_motif <- function(.mp, ...) {
   UseMethod("find_motif", .mp)
 }
 
-#' Title
-#'
-#' @param .mp
-#' @param data
-#' @param n_motifs
-#' @param radius
-#' @param exclusion_zone
-#'
+#' @param data the data used to build the Matrix Profile, if not embeded.
+#' @param n_motifs an `int`. Number of motifs to find. (Default is `3`).
+#' @param radius an `int`. Radius. (Default is `3`).
+#' @param exclusion_zone if a `number` will be used instead of embeded value. (Default is `NULL`).
+#' @name find_motif
 #' @export
 
 find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, radius = 3, exclusion_zone = NULL) {
@@ -130,19 +127,14 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, radius = 3, exclus
   return(.mp)
 }
 
-#' Title
+#' @param mode a `string`. Guided or Unconstrained search. Allow partial match. (Default is `guided`).
+#' @param n_bit an `ìnt`. Bit size for discretization. Ignored on Guided search. (Default is `4`).
+#' @param n_dim an `int`. Number of dimensions to use on Guided search instead of embeded value. (Default is `NULL`).
 #'
-#' @param .mp
-#' @param data
-#' @param n_motifs
-#' @param mode
-#' @param n_bit
-#' @param exclusion_zone
-#' @param n_dim
-#'
+#' @name find_motif
 #' @export
 
-find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("guided", "unguided"),
+find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("guided", "unconstrained"),
                                           n_bit = 4, exclusion_zone = NULL, n_dim = NULL) {
   if (!any(class(.mp) %in% "MultiMatrixProfile")) {
     stop("Error: First argument must be an object of class `MultiMatrixProfile`.")

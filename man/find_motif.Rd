@@ -2,13 +2,38 @@
 % Please edit documentation in R/find_motifs.R
 \name{find_motif}
 \alias{find_motif}
-\title{Title}
+\alias{find_motif.MatrixProfile}
+\alias{find_motif.MultiMatrixProfile}
+\title{Search for Motifs}
 \usage{
 find_motif(.mp, ...)
+
+\method{find_motif}{MatrixProfile}(.mp, data, n_motifs = 3, radius = 3,
+  exclusion_zone = NULL)
+
+\method{find_motif}{MultiMatrixProfile}(.mp, data, n_motifs = 3,
+  mode = c("guided", "unconstrained"), n_bit = 4,
+  exclusion_zone = NULL, n_dim = NULL)
 }
 \arguments{
-\item{...}{}
+\item{.mp}{a TSMP object of class \code{MatrixProfile} or \code{MultiMatrixProfile}.}
+
+\item{...}{further arguments to be passed to class specific function.}
+
+\item{data}{the data used to build the Matrix Profile, if not embeded.}
+
+\item{n_motifs}{an \code{int}. Number of motifs to find. (Default is \code{3}).}
+
+\item{radius}{an \code{int}. Radius. (Default is \code{3}).}
+
+\item{exclusion_zone}{if a \code{number} will be used instead of embeded value. (Default is \code{NULL}).}
+
+\item{mode}{a \code{string}. Guided or Unconstrained search. Allow partial match. (Default is \code{guided}).}
+
+\item{n_bit}{an \code{ìnt}. Bit size for discretization. Ignored on Guided search. (Default is \code{4}).}
+
+\item{n_dim}{an \code{int}. Number of dimensions to use on Guided search instead of embeded value. (Default is \code{NULL}).}
 }
 \description{
-Title
+Search for Motifs
 }

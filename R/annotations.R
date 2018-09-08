@@ -1,12 +1,57 @@
-#' Computes the annotation vector that favors complexity
+#' Computes the annotation vector that favors number of zero crossing
 #'
+#' @param .mp a Matrix Profile object.
 #' @param data a `vector` or a column `matrix` of `numeric`.
-#' @param dilution_factor a `numeric`. (Default is `0`). Larger numbers means more dilution.
-#' @param .mp
-#' @param apply
+#' @param apply logical. (Default is `FALSE`). Applies the Annotation Vector over the Matrix Profile.
+#'  Use with caution.
 #'
 #' @return Returns the annotation vector for matrix profile correction.
 #' @export
+#' @family Annotation vectors
+#' @references * Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
+#'   Knowledge into Motif Discovery. In: Proceedings of the 23rd ACM SIGKDD International Conference
+#'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
+#'   125–34.
+#' @examples
+#' data <- mp_test_data$train$data[1:1000]
+#' window <- 50
+#' av <- av_zerocrossing(data, window)
+#'
+av_zerocrossing <- function(.mp, data, apply = FALSE) {
+  if (missing(data) && !is.null(.mp$data)) {
+    data <- .mp$data[[1]]
+  }
+
+  data <- as.matrix(data)
+  data <- as.matrix(data[, 1])
+  data <- znorm(data)
+  profile_size <- length(.mp$mp)
+  av <- matrix(0, profile_size, 1)
+  for (j in 1:profile_size) {
+    av[j] <- zero_crossings(data[j:(j + .mp$w - 1), ])
+  }
+
+  av <- zero_one_norm(av)
+
+  .mp$av <- av
+
+  class(.mp) <- update_class(class(.mp), "AnnotationVector")
+
+  if (apply == TRUE) {
+    .mp <- av_apply(.mp)
+  }
+
+  return(.mp)
+}
+
+#' Computes the annotation vector that favors complexity
+#'
+#' @inheritParams av_zerocrossing
+#' @param dilution_factor a `numeric`. (Default is `0`). Larger numbers means more dilution.
+#'
+#' @return Returns the annotation vector for matrix profile correction.
+#' @export
+#' @family Annotation vectors
 #' @references * Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
 #'   Knowledge into Motif Discovery. In: Proceedings of the 23rd ACM SIGKDD International Conference
 #'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
@@ -49,58 +94,14 @@ av_complexity <- function(.mp, data, dilution_factor = 0, apply = FALSE) {
   return(.mp)
 }
 
-#' Computes the annotation vector that favors number of zero crossing
-#'
-#' @param .mp
-#' @param apply
-#' @param data a `vector` or a column `matrix` of `numeric`.
-#'
-#' @return Returns the annotation vector for matrix profile correction.
-#' @export
-#' @references * Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
-#'   Knowledge into Motif Discovery. In: Proceedings of the 23rd ACM SIGKDD International Conference
-#'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
-#'   125–34.
-#' @examples
-#' data <- mp_test_data$train$data[1:1000]
-#' window <- 50
-#' av <- av_zerocrossing(data, window)
-#'
-av_zerocrossing <- function(.mp, data, apply = FALSE) {
-  if (missing(data) && !is.null(.mp$data)) {
-    data <- .mp$data[[1]]
-  }
-
-  data <- as.matrix(data)
-  data <- as.matrix(data[, 1])
-  data <- znorm(data)
-  profile_size <- length(.mp$mp)
-  av <- matrix(0, profile_size, 1)
-  for (j in 1:profile_size) {
-    av[j] <- zero_crossings(data[j:(j + .mp$w - 1), ])
-  }
-
-  av <- zero_one_norm(av)
-
-  .mp$av <- av
-
-  class(.mp) <- update_class(class(.mp), "AnnotationVector")
-
-  if (apply == TRUE) {
-    .mp <- av_apply(.mp)
-  }
-
-  return(.mp)
-}
 
 #' Computes the annotation vector that suppresses motion artifacts
 #'
-#' @param .mp
-#' @param apply
-#' @param data a `vector` or a column `matrix` of `numeric`.
+#' @inheritParams av_zerocrossing
 #'
 #' @return Returns the annotation vector for matrix profile correction.
 #' @export
+#' @family Annotation vectors
 #' @references * Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
 #'   Knowledge into Motif Discovery. In: Proceedings of the 23rd ACM SIGKDD International Conference
 #'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
@@ -149,16 +150,15 @@ av_motion_artifact <- function(.mp, data, apply = FALSE) {
 #' The function is intended to be generic. However, its parameters (`stop_word_loc`,
 #' `exclusion_zone` and `threshold`) are highly dataset dependent.
 #'
-#' @param data a `vector` or a column `matrix` of `numeric`.
+#' @inheritParams av_zerocrossing
 #' @param stop_word_loc an `int`. The index of stop word location.
 #' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window_size (default is
-#'   `1/2`). See details.
-#' @param threshold a `numeric`.
-#' @param .mp
-#' @param apply
+#'   `NULL`). See details.
+#' @param threshold a `numeric`. (default is `0.1`).
 #'
 #' @return Returns the annotation vector for matrix profile correction.
 #' @export
+#' @family Annotation vectors
 #' @references * Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
 #'   Knowledge into Motif Discovery. In: Proceedings of the 23rd ACM SIGKDD International Conference
 #'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
@@ -216,12 +216,11 @@ av_stop_word <- function(.mp, data, stop_word_loc, exclusion_zone = NULL, thresh
 
 #' Computes the annotation vector that suppresses hard-limited artifacts
 #'
-#' @param .mp
-#' @param apply
-#' @param data a `vector` or a column `matrix` of `numeric`.
+#' @inheritParams av_zerocrossing
 #'
 #' @return Returns the annotation vector for matrix profile correction.
 #' @export
+#' @family Annotation vectors
 #' @references * Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
 #'   Knowledge into Motif Discovery. In: Proceedings of the 23rd ACM SIGKDD International Conference
 #'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
@@ -266,10 +265,13 @@ av_hardlimit_artifact <- function(.mp, data, apply = FALSE) {
 
 #' Corrects the matrix profile using an annotation vector
 #'
+#' This function overwrites the current Matrix Profile using the Annotation Vector. Use with caution.
+#'
 #' @param .mp A Matrix Profile with an Annotation Vector.
 #'
 #' @return Returns the corrected matrix profile.
 #' @export
+#' @family Annotation vectors
 #' @references * Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
 #'   Knowledge into Motif Discovery. In: Proceedings of the 23rd ACM SIGKDD International Conference
 #'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
@@ -277,7 +279,7 @@ av_hardlimit_artifact <- function(.mp, data, apply = FALSE) {
 #' @examples
 #' \dontrun{
 #'   av <- av_complexity(data, window)
-#'   mpc <- av_apply(mp, av)
+#'   mpc <- av_apply(mp)
 #' }
 av_apply <- function(.mp) {
   if (!any(class(.mp) %in% "MatrixProfile")) {

@@ -7,11 +7,14 @@
 av_complexity(.mp, data, dilution_factor = 0, apply = FALSE)
 }
 \arguments{
+\item{.mp}{a Matrix Profile object.}
+
 \item{data}{a \code{vector} or a column \code{matrix} of \code{numeric}.}
 
 \item{dilution_factor}{a \code{numeric}. (Default is \code{0}). Larger numbers means more dilution.}
 
-\item{apply}{}
+\item{apply}{logical. (Default is \code{FALSE}). Applies the Annotation Vector over the Matrix Profile.
+Use with caution.}
 }
 \value{
 Returns the annotation vector for matrix profile correction.
@@ -33,3 +36,10 @@ on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM
 125–34.
 }
 }
+\seealso{
+Other Annotation vectors: \code{\link{av_apply}},
+  \code{\link{av_hardlimit_artifact}},
+  \code{\link{av_motion_artifact}},
+  \code{\link{av_stop_word}}, \code{\link{av_zerocrossing}}
+}
+\concept{Annotation vectors}

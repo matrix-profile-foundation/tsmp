@@ -9,7 +9,7 @@
 \alias{as.multimotif}
 \alias{as.arccount}
 \alias{as.salient}
-\title{Convert a tsmp object in another if possible}
+\title{Convert a TSMP object into another if possible}
 \usage{
 as.matrixprofile(.mp)
 
@@ -28,7 +28,7 @@ as.arccount(.mp)
 as.salient(.mp)
 }
 \arguments{
-\item{.mp}{a Matrix Profile object}
+\item{.mp}{a TSMP object.}
 }
 \description{
 The base Classes are \code{MatrixProfile} and \code{MultiMatrixProfile}, but as other functions are used,
@@ -38,6 +38,8 @@ to cast it back.
 }
 \section{Functions}{
 \itemize{
+\item \code{as.matrixprofile}: Cast an object changed by another function back to \code{MatrixProfile}.
+
 \item \code{as.multimatrixprofile}: Cast an object changed by another function back to \code{MultiMatrixProfile}.
 
 \item \code{as.fluss}: Cast an object changed by another function back to \code{Fluss}.
@@ -57,12 +59,5 @@ to cast it back.
 \dontrun{
   plot(as.matrixprofile(fluss_obj))
 }
-
-
-
-
-
-
-
 
 }
