@@ -21,7 +21,9 @@ scrimp(..., window_size, exclusion_zone = 1/2, verbose = 2,
 random calculation will occur (default is \code{Inf}).}
 }
 \value{
-Returns the matrix profile \code{mp} and profile index \code{pi}.
+Returns a \code{MatrixProfile} object, a \code{list} with the matrix profile \code{mp}, profile index \code{pi}
+left and right matrix profile \code{lmp}, \code{rmp} and profile index \code{lpi}, \code{rpi}, window size \code{w} and
+exclusion zone \code{ez}.
 }
 \description{
 Computes the best so far Matrix Profile and Profile Index for Univariate Time Series.
@@ -39,10 +41,11 @@ solutions. \code{verbose} changes how much information is printed by this functi
 \code{1} means text, \code{2} means text and sound. \code{exclusion_zone} is used to avoid  trivial matches.
 }
 \examples{
-mp <- scrimp(mp_toy_data$data[1:200,1], window_size = 30, verbose = 0)
+mp <- scrimp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+
 \dontrun{
-ref_data <- mp_toy_data$data[,1]
-query_data <- mp_toy_data$data[,2]
+ref_data <- mp_toy_data$data[, 1]
+query_data <- mp_toy_data$data[, 2]
 # self similarity
 mp <- scrimp(ref_data, window_size = 30, s_size = round(nrow(ref_data) * 0.1))
 # join similarity

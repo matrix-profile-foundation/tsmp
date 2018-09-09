@@ -16,7 +16,7 @@ sdts_train(data, label, window_size, beta = 1, pat_max = Inf,
 
 \item{beta}{a \code{numeric}. See details. (default is \code{1}).}
 
-\item{pat_max}{an \code{int}. Max number of shape features captured. (default is `Inf``).}
+\item{pat_max}{an \code{int}. Max number of shape features captured. (default is \code{Inf}).}
 
 \item{parallel}{a \code{logical}. Use parallel computation inside (default is \code{TRUE}).}
 
@@ -27,7 +27,11 @@ Returns a list with the learned dictionary \code{score} (estimated score), \code
 (history of scores), \code{pattern} (shape features), \code{thold} (threshold values).
 }
 \description{
-Scalable Dictionary learning for Time Series (SDTS) training function
+This function trains a model that uses a dictionary to predict state changes. Differently from
+\code{\link[=fluss]{fluss()}}, it doesn't look for semantic changes (that may be several), but for binary states like
+"on" or "off". Think for example that a human annotator is pressing a switch any time he thinks
+that the recorded data is relevant, and releases the switch when he thinks the data is noise. This
+algorithm will learn the switching points (even better) and try to predict using new data.
 }
 \details{
 \code{beta} is used to balance F-score towards recall (\code{>1}) or precision (\code{<1}). \code{verbose} changes
@@ -46,6 +50,7 @@ te_label <- mp_test_data$test$label[subs]
 model <- sdts_train(tr_data, tr_label, w, verbose = 0)
 predict <- sdts_predict(model, te_data, round(mean(w)))
 sdts_score(te_label, predict, 1)
+
 \dontrun{
 windows <- c(110, 220, 330)
 model <- sdts_train(mp_test_data$train$data, mp_test_data$train$label, windows)
@@ -62,7 +67,7 @@ to Predict Outcomes. Proc VLDB Endow. 2017 Aug 1;10(12):1802–12.
 Website: \url{https://sites.google.com/view/weaklylabeled}
 }
 \seealso{
-Other SDTS: \code{\link{sdts_predict}},
+Other Scalable Dictionaries: \code{\link{sdts_predict}},
   \code{\link{sdts_score}}
 }
-\concept{SDTS}
+\concept{Scalable Dictionaries}

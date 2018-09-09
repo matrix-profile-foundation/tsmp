@@ -24,9 +24,12 @@
 #' @param must_dim an `int` or `vector` of which dimensions to forcibly include (default is `NULL`).
 #' @param exc_dim an `int` or `vector` of which dimensions to exclude (default is `NULL`).
 #'
-#' @return Returns the matrix profile `mp` and profile index `pi`. It also returns the left and
-#'   right matrix profile `lmp`, `rmp` and profile index `lpi`, `rpi` that may be used to detect
-#'   Time Series Chains (Yan Zhu 2018).
+#' @return Returns a `MultiMatrixProfile` object, a `list` with the matrix profile `mp`, profile index `pi`
+#'   left and right matrix profile `lmp`, `rmp` and profile index `lpi`, `rpi`, window size `w`,
+#'   number of dimensions `n_dim`, exclusion zone `ez`, must dimensions `must` and excluded dimensions `exc`.
+#'
+#'   If the input has only one dimension, returns the same as [stomp()].
+#'
 #' @export
 #'
 #' @describeIn mstomp Single thread version.
@@ -43,6 +46,10 @@
 #' @examples
 #' # using all dimensions
 #' mp <- mstomp(mp_toy_data$data[1:200,], 30, verbose = 0)
+#'
+#' # using threads
+#' mp <- mstomp_par(mp_toy_data$data[1:200,], 30, verbose = 0)
+#'
 #' \dontrun{
 #' # force using dimensions 1 and 2
 #' mp <- mstomp(mp_toy_data$data[1:200,], 30, must_dim = c(1, 2))

@@ -5,7 +5,7 @@
 #' @param apply logical. (Default is `FALSE`). Applies the Annotation Vector over the Matrix Profile.
 #'  Use with caution.
 #'
-#' @return Returns the annotation vector for matrix profile correction.
+#' @return Returns the input `.mp` object with an embedded annotation vector.
 #' @export
 #' @family Annotation vectors
 #' @references * Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
@@ -50,7 +50,7 @@ av_zerocrossing <- function(.mp, data, apply = FALSE) {
 #' @inheritParams av_zerocrossing
 #' @param dilution_factor a `numeric`. (Default is `0`). Larger numbers means more dilution.
 #'
-#' @return Returns the annotation vector for matrix profile correction.
+#' @return Returns the input `.mp` object with an embedded annotation vector.
 #' @export
 #' @family Annotation vectors
 #' @references * Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
@@ -101,7 +101,7 @@ av_complexity <- function(.mp, data, dilution_factor = 0, apply = FALSE) {
 #'
 #' @inheritParams av_zerocrossing
 #'
-#' @return Returns the annotation vector for matrix profile correction.
+#' @return Returns the input `.mp` object with an embedded annotation vector.
 #' @export
 #' @family Annotation vectors
 #' @references * Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
@@ -159,7 +159,7 @@ av_motion_artifact <- function(.mp, data, apply = FALSE) {
 #'   `NULL`). See details.
 #' @param threshold a `numeric`. (default is `0.1`).
 #'
-#' @return Returns the annotation vector for matrix profile correction.
+#' @return Returns the input `.mp` object with an embedded annotation vector.
 #' @export
 #' @family Annotation vectors
 #' @references * Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
@@ -222,7 +222,7 @@ av_stop_word <- function(.mp, data, stop_word_loc, exclusion_zone = NULL, thresh
 #'
 #' @inheritParams av_zerocrossing
 #'
-#' @return Returns the annotation vector for matrix profile correction.
+#' @return Returns the input `.mp` object with an embedded annotation vector.
 #' @export
 #' @family Annotation vectors
 #' @references * Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
@@ -274,7 +274,7 @@ av_hardlimit_artifact <- function(.mp, data, apply = FALSE) {
 #'
 #' @param .mp A Matrix Profile with an Annotation Vector.
 #'
-#' @return Returns the corrected matrix profile.
+#' @return Returns the input `.mp` object corrected by the embedded annotation vector.
 #' @export
 #' @family Annotation vectors
 #' @references * Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
@@ -282,19 +282,18 @@ av_hardlimit_artifact <- function(.mp, data, apply = FALSE) {
 #'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
 #'   125–34.
 #' @examples
-#' \dontrun{
 #' data <- mp_test_data$train$data[1:1000]
 #' w <- 50
 #' mp <- tsmp(data, window_size = w, verbose = 0)
 #' mp <- av_complexity(mp)
 #' av <- av_apply(mp)
-#' }
+
 av_apply <- function(.mp) {
   if (!any(class(.mp) %in% "MatrixProfile")) {
     stop("Error: First argument must be an object of class `MatrixProfile`.")
   }
 
-  if (!any(class(.mp) %in% c("AnnotationVector"))) {
+  if (!any(class(.mp) %in% "AnnotationVector")) {
     stop("Error: First argument must be an object of class `AnnotationVector`.")
   }
 

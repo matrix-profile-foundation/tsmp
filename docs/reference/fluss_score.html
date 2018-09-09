@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tsmp</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.15.9004</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.15.9009</span>
       </span>
     </div>
 
@@ -147,29 +147,18 @@ Zero is the best, One is the worst.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other fluss: <code><a href='fluss_cac.html'>fluss_cac</a></code>,
+    <div class='dont-index'><p>Other Semantic Segmentations: <code><a href='fluss_cac.html'>fluss_cac</a></code>,
   <code><a href='fluss_extract.html'>fluss_extract</a></code>, <code><a href='fluss.html'>fluss</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># This is a fast toy example and results are useless. For a complete result, run the code inside</span>
-<span class='co'>#'Not run' section below.</span>
-<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_fluss_data</span>$<span class='no'>tilt_abp</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>1000</span>]
+    <pre class="examples"><div class='input'><span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_fluss_data</span>$<span class='no'>tilt_abp</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>1000</span>]
 <span class='no'>w</span> <span class='kw'>&lt;-</span> <span class='fl'>10</span>
-<span class='no'>truth</span> <span class='kw'>&lt;-</span> <span class='fl'>400</span>
-<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='stomp.html'>stomp</a></span>(<span class='no'>data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='no'>w</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
-<span class='no'>cac</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fluss_cac.html'>fluss_cac</a></span>(<span class='no'>mp</span>$<span class='no'>pi</span>, <span class='no'>w</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: In seq.default(0, 1, length_out = profile_index_size) :</span>
-#&gt; <span class='warning'> extra argument 'length_out' will be disregarded</span></div><div class='output co'>#&gt; <span class='warning'>Warning: longer object length is not a multiple of shorter object length</span></div><div class='input'><span class='no'>segments</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fluss_extract.html'>fluss_extract</a></span>(<span class='no'>cac</span>, <span class='fl'>1</span>, <span class='no'>w</span>)
-<span class='no'>score</span> <span class='kw'>&lt;-</span> <span class='fu'>fluss_score</span>(<span class='no'>truth</span>, <span class='no'>segments</span>, <span class='fu'>length</span>(<span class='no'>data</span>))</div><div class='output co'>#&gt; <span class='error'>Error in if (abs(extracted[i] - gtruth[j]) &lt; abs(minv[j])) {    minv[j] &lt;- abs(extracted[i] - gtruth[j])}: missing value where TRUE/FALSE needed</span></div><span class='co'># NOT RUN {</span>
-<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_fluss_data</span>$<span class='no'>walkjogrun</span>$<span class='no'>data</span>
-<span class='no'>w</span> <span class='kw'>&lt;-</span> <span class='no'>mp_fluss_data</span>$<span class='no'>walkjogrun</span>$<span class='no'>window</span> <span class='co'># 80</span>
-<span class='no'>truth</span> <span class='kw'>&lt;-</span> <span class='no'>mp_fluss_data</span>$<span class='no'>walkjogrun</span>$<span class='no'>gtruth</span> <span class='co'># 3800 6800</span>
-<span class='no'>nseg</span> <span class='kw'>&lt;-</span> <span class='fu'>length</span>(<span class='no'>mp_fluss_data</span>$<span class='no'>walkjogrun</span>$<span class='no'>gtruth</span>) <span class='co'># 2</span>
-<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='stomp.html'>stomp</a></span>(<span class='no'>data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='no'>w</span>)
-<span class='no'>cac</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fluss_cac.html'>fluss_cac</a></span>(<span class='no'>mp</span>$<span class='no'>pi</span>, <span class='no'>w</span>)
-<span class='no'>segments</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fluss_extract.html'>fluss_extract</a></span>(<span class='no'>cac</span>, <span class='no'>nseg</span>, <span class='no'>w</span>)
-<span class='no'>score</span> <span class='kw'>&lt;-</span> <span class='fu'>fluss_score</span>(<span class='no'>truth</span>, <span class='no'>segments</span>, <span class='fu'>length</span>(<span class='no'>data</span>))
-<span class='co'># }</span></pre>
+<span class='no'>truth</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>945</span>, <span class='fl'>875</span>)
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>tsmp</span>(<span class='no'>data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='no'>w</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fluss_cac.html'>fluss_cac</a></span>(<span class='no'>mp</span>)
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fluss_extract.html'>fluss_extract</a></span>(<span class='no'>mp</span>, <span class='fl'>2</span>)
+<span class='no'>score</span> <span class='kw'>&lt;-</span> <span class='fu'>fluss_score</span>(<span class='no'>truth</span>, <span class='no'>mp</span>$<span class='no'>fluss</span>, <span class='fu'>length</span>(<span class='no'>data</span>))</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

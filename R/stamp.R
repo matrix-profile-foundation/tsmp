@@ -22,9 +22,10 @@
 #' @param s_size a `numeric`. for anytime algorithm, represents the size (in observations) the
 #'   random calculation will occur (default is `Inf`).
 #'
-#' @return Returns the matrix profile `mp` and profile index `pi`. It also returns the left and
-#'   right matrix profile `lmp`, `rmp` and profile index `lpi`, `rpi` that may be used to detect
-#'   Time Series Chains (Yan Zhu 2018).
+#' @return Returns a `MatrixProfile` object, a `list` with the matrix profile `mp`, profile index `pi`
+#'   left and right matrix profile `lmp`, `rmp` and profile index `lpi`, `rpi`, window size `w` and
+#'   exclusion zone `ez`.
+#'
 #' @export
 #'
 #' @family matrix profile computations
@@ -39,10 +40,14 @@
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #'
 #' @examples
-#' mp <- stamp(mp_toy_data$data[1:200,1], window_size = 30, verbose = 0)
+#' mp <- stamp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+#'
+#' # using threads
+#' mp <- stamp_par(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+#'
 #' \dontrun{
-#' ref_data <- mp_toy_data$data[,1]
-#' query_data <- mp_toy_data$data[,2]
+#' ref_data <- mp_toy_data$data[, 1]
+#' query_data <- mp_toy_data$data[, 2]
 #' # self similarity
 #' mp <- stamp(ref_data, window_size = 30, s_size = round(nrow(ref_data) * 0.1))
 #' # join similarity
@@ -116,7 +121,8 @@ stamp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size 
   matrix_profile <- matrix(Inf, matrix_profile_size, 1)
   profile_index <- matrix(-1, matrix_profile_size, 1)
 
-  if (length(args) > 1) { # no RMP and LMP for joins
+  if (length(args) > 1) {
+    # no RMP and LMP for joins
     left_matrix_profile <- right_matrix_profile <- NULL
     left_profile_index <- right_profile_index <- NULL
   } else {
@@ -177,7 +183,8 @@ stamp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size 
     }
 
     # anytime version
-    if (length(args) == 1) { # no RMP and LMP for joins
+    if (length(args) == 1) {
+      # no RMP and LMP for joins
       # left matrix_profile
       ind <- (distance_profile[i:matrix_profile_size] < left_matrix_profile[i:matrix_profile_size])
       ind <- c(rep(FALSE, (i - 1)), ind) # pad left

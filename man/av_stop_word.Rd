@@ -23,7 +23,7 @@ av_stop_word(.mp, data, stop_word_loc, exclusion_zone = NULL,
 Use with caution.}
 }
 \value{
-Returns the annotation vector for matrix profile correction.
+Returns the input \code{.mp} object with an embedded annotation vector.
 }
 \description{
 Computes the annotation vector that suppresses stop-word motifs

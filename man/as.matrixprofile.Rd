@@ -30,6 +30,9 @@ as.salient(.mp)
 \arguments{
 \item{.mp}{a TSMP object.}
 }
+\value{
+Returns the object with the new class, if possible.
+}
 \description{
 The base Classes are \code{MatrixProfile} and \code{MultiMatrixProfile}, but as other functions are used,
 classes are pushed behind, since the last output normally is the most significant. If you want,
@@ -56,8 +59,15 @@ to cast it back.
 }}
 
 \examples{
-\dontrun{
-  plot(as.matrixprofile(fluss_obj))
-}
+
+w <- 50
+data <- mp_gait_data
+mp <- tsmp(data, window_size = w, exclusion_zone = 1/4, verbose = 0)
+mp <- find_motif(mp)
+class(mp) # first class will be "Motif"
+
+plot(mp) # plots a motif plot
+
+plot(as.matrixprofile(mp)) # plots a matrix profile plot
 
 }

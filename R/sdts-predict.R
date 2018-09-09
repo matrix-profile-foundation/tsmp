@@ -1,5 +1,11 @@
 #' Scalable Dictionary learning for Time Series (SDTS) prediction function
 #'
+#' This function trains a model that uses a dictionary to predict state changes. Differently from
+#' [fluss()], it doesn't look for semantic changes (that may be several), but for binary states like
+#' "on" or "off". Think for example that a human annotator is pressing a switch any time he thinks
+#' that the recorded data is relevant, and releases the switch when he thinks the data is noise. This
+#' algorithm will learn the switching points (even better) and try to predict using new data.
+#'
 #' @param model a model created by SDTS training function [sdts_train()].
 #' @param data a `vector` of `numeric`. Time series.
 #' @param window_size an `int`. The average sliding window size.
@@ -7,7 +13,7 @@
 #' @return Returns a `vector` of `logical` with predicted annotations.
 #'
 #' @export
-#' @family SDTS
+#' @family Scalable Dictionaries
 #' @references * Yeh C-CM, Kavantzas N, Keogh E. Matrix profile IV: Using Weakly Labeled Time Series
 #'   to Predict Outcomes. Proc VLDB Endow. 2017 Aug 1;10(12):1802–12.
 #' @references Website: <https://sites.google.com/view/weaklylabeled>
@@ -23,6 +29,7 @@
 #' model <- sdts_train(tr_data, tr_label, w, verbose = 0)
 #' predict <- sdts_predict(model, te_data, round(mean(w)))
 #' sdts_score(te_label, predict, 1)
+#'
 #' \dontrun{
 #' windows <- c(110, 220, 330)
 #' model <- sdts_train(mp_test_data$train$data, mp_test_data$train$label, windows, verbose = 0)
@@ -96,7 +103,7 @@ sdts_predict <- function(model, data, window_size) {
 #'
 #' @export
 #'
-#' @family SDTS
+#' @family Scalable Dictionaries
 #' @references * Yeh C-CM, Kavantzas N, Keogh E. Matrix profile IV: Using Weakly Labeled Time Series
 #'   to Predict Outcomes. Proc VLDB Endow. 2017 Aug 1;10(12):1802–12.
 #' @references Website: <https://sites.google.com/view/weaklylabeled>
@@ -112,6 +119,7 @@ sdts_predict <- function(model, data, window_size) {
 #' model <- sdts_train(tr_data, tr_label, w, verbose = 0)
 #' predict <- sdts_predict(model, te_data, round(mean(w)))
 #' sdts_score(te_label, predict, 1)
+#'
 #' \dontrun{
 #' windows <- c(110, 220, 330)
 #' model <- sdts_train(mp_test_data$train$data, mp_test_data$train$label, windows)
@@ -174,17 +182,4 @@ sdts_score <- function(gtruth, pred, beta = 1) {
   f_score <- (1 + beta^2) * (pre * rec) / ((beta^2) * pre + rec)
 
   return(list(f_score = f_score, precision = pre, recall = rec))
-}
-
-#' Calculates the mode of a vector
-#'
-#' @param x
-#'
-#' @return the mode
-#' @keywords internal
-#' @noRd
-
-mode <- function(x) {
-  ux <- unique(x)
-  ux[which.max(tabulate(match(x, ux)))]
 }

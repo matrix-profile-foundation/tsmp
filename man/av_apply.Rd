@@ -10,19 +10,17 @@ av_apply(.mp)
 \item{.mp}{A Matrix Profile with an Annotation Vector.}
 }
 \value{
-Returns the corrected matrix profile.
+Returns the input \code{.mp} object corrected by the embedded annotation vector.
 }
 \description{
 This function overwrites the current Matrix Profile using the Annotation Vector. Use with caution.
 }
 \examples{
-\dontrun{
 data <- mp_test_data$train$data[1:1000]
 w <- 50
 mp <- tsmp(data, window_size = w, verbose = 0)
 mp <- av_complexity(mp)
 av <- av_apply(mp)
-}
 }
 \references{
 \itemize{

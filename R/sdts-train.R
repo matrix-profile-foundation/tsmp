@@ -1,5 +1,11 @@
 #' Scalable Dictionary learning for Time Series (SDTS) training function
 #'
+#' This function trains a model that uses a dictionary to predict state changes. Differently from
+#' [fluss()], it doesn't look for semantic changes (that may be several), but for binary states like
+#' "on" or "off". Think for example that a human annotator is pressing a switch any time he thinks
+#' that the recorded data is relevant, and releases the switch when he thinks the data is noise. This
+#' algorithm will learn the switching points (even better) and try to predict using new data.
+#'
 #' @details
 #' `beta` is used to balance F-score towards recall (`>1`) or precision (`<1`). `verbose` changes
 #' how much information is printed by this function; `0` means nothing, `1` means text, `2` means
@@ -9,7 +15,7 @@
 #' @param label a `vector` of `logical`. Annotations.
 #' @param window_size an `int` or a `vector` of `int`. Sliding window sizes.
 #' @param beta a `numeric`. See details. (default is `1`).
-#' @param pat_max an `int`. Max number of shape features captured. (default is `Inf``).
+#' @param pat_max an `int`. Max number of shape features captured. (default is `Inf`).
 #' @param parallel a `logical`. Use parallel computation inside (default is `TRUE`).
 #' @param verbose an `int`. See details. (Default is `2`).
 #'
@@ -17,7 +23,7 @@
 #'   (history of scores), `pattern` (shape features), `thold` (threshold values).
 #'
 #' @export
-#' @family SDTS
+#' @family Scalable Dictionaries
 #' @references * Yeh C-CM, Kavantzas N, Keogh E. Matrix profile IV: Using Weakly Labeled Time Series
 #'   to Predict Outcomes. Proc VLDB Endow. 2017 Aug 1;10(12):1802–12.
 #' @references Website: <https://sites.google.com/view/weaklylabeled>
@@ -33,6 +39,7 @@
 #' model <- sdts_train(tr_data, tr_label, w, verbose = 0)
 #' predict <- sdts_predict(model, te_data, round(mean(w)))
 #' sdts_score(te_label, predict, 1)
+#'
 #' \dontrun{
 #' windows <- c(110, 220, 330)
 #' model <- sdts_train(mp_test_data$train$data, mp_test_data$train$label, windows)
@@ -331,193 +338,4 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
 
 
   return(list(score = best_score, score_hist = score_hist, pattern = pattern, thold = candi_thold[best_pat]))
-}
-
-#' Computes the golden section for individual candidates
-#'
-#' @param dist_pro the candidate distance profile
-#' @param label a vector with the data bool annotation
-#' @param pos_st a vector with the starting points of label
-#' @param pos_ed a vector with the ending points of label
-#' @param beta a number that balance the F-Score. Beta > 1 towards recall, < towards precision
-#' @param window_size an integer with the sliding window size
-#'
-#' @return Returns the best threshold and its F-Score
-#'
-#' @keywords internal
-#' @noRd
-#'
-golden_section <- function(dist_pro, label, pos_st, pos_ed, beta, window_size) {
-  golden_ratio <- (1 + sqrt(5)) / 2
-  a_thold <- min(dist_pro)
-  b_thold <- max(dist_pro[!is.infinite(dist_pro)])
-  c_thold <- b_thold - (b_thold - a_thold) / golden_ratio
-  d_thold <- a_thold + (b_thold - a_thold) / golden_ratio
-  tol <- max((b_thold - a_thold) * 0.001, 0.0001)
-
-  while (abs(c_thold - d_thold) > tol) {
-    c_score <- compute_f_meas(label, pos_st, pos_ed, dist_pro, c_thold, window_size, beta)
-    d_score <- compute_f_meas(label, pos_st, pos_ed, dist_pro, d_thold, window_size, beta)
-
-    if (c_score$f_meas > d_score$f_meas) {
-      b_thold <- d_thold
-    } else {
-      a_thold <- c_thold
-    }
-
-    c_thold <- b_thold - (b_thold - a_thold) / golden_ratio
-    d_thold <- a_thold + (b_thold - a_thold) / golden_ratio
-  }
-  thold <- (a_thold + b_thold) * 0.5
-  score <- compute_f_meas(label, pos_st, pos_ed, dist_pro, thold, window_size, beta)
-
-  return(list(thold = thold, score = score$f_meas))
-}
-
-#' Computes the golden section for combined candidates
-
-#' @param dist_pro the candidate distance profile
-#'
-#' @param thold a number with the threshold used to calculate the F-Score
-#' @param label a vector with the data bool annotation
-#' @param pos_st a vector with the starting points of label
-#' @param pos_ed a vector with the ending points of label
-#' @param beta a number that balance the F-Score. Beta > 1 towards recall, < towards precision
-#' @param window_size an integer with the sliding window size
-#' @param fit_idx an integer with the index of the current threshold
-#'
-#' @return Returns the best threshold and its F-Score
-#'
-#' @keywords internal
-#' @noRd
-
-golden_section_2 <- function(dist_pro, thold, label, pos_st, pos_ed, beta, window_size, fit_idx) {
-  golden_ratio <- (1 + sqrt(5)) / 2
-  a_thold <- min(dist_pro[[fit_idx]], na.rm = TRUE)
-  b_thold <- max(dist_pro[[fit_idx]][!is.infinite(dist_pro[[fit_idx]])], na.rm = TRUE)
-  c_thold <- b_thold - (b_thold - a_thold) / golden_ratio
-  d_thold <- a_thold + (b_thold - a_thold) / golden_ratio
-  tol <- max((b_thold - a_thold) * 0.001, 0.0001)
-
-  while (abs(c_thold - d_thold) > tol) {
-    c_thold_combined <- thold
-    d_thold_combined <- thold
-    c_thold_combined[fit_idx] <- c_thold
-    d_thold_combined[fit_idx] <- d_thold
-
-    c_score <- compute_f_meas(label, pos_st, pos_ed, dist_pro, c_thold_combined, window_size, beta)
-    d_score <- compute_f_meas(label, pos_st, pos_ed, dist_pro, d_thold_combined, window_size, beta)
-
-    if (c_score$f_meas > d_score$f_meas) {
-      b_thold <- d_thold
-    } else {
-      a_thold <- c_thold
-    }
-
-    c_thold <- b_thold - (b_thold - a_thold) / golden_ratio
-    d_thold <- a_thold + (b_thold - a_thold) / golden_ratio
-  }
-  thold[fit_idx] <- (a_thold + b_thold) * 0.5
-  score <- compute_f_meas(label, pos_st, pos_ed, dist_pro, thold, window_size, beta)
-
-  # beta = 2;   emphacise recall
-  # beta = 0.5; emphacise precision
-  return(list(thold = thold, score = score$f_meas))
-}
-
-#' Computes de F-Score
-#'
-#' @param label a vector with the data bool annotation
-#' @param pos_st a vector with the starting points of label
-#' @param pos_ed a vector with the ending points of label
-#' @param dist_pro the distance profile of the data
-#' @param thold a number with the threshold used to compute the prediction
-#' @param window_size an integer with the sliding window size
-#' @param beta a number that balance the F-Score. Beta > 1 towards recall, < towards precision
-#'
-#' @return Returns the F-Score, precision and recall values
-#'
-#' @keywords internal
-#' @noRd
-
-compute_f_meas <- function(label, pos_st, pos_ed, dist_pro, thold, window_size, beta) {
-  # generate annotation curve for each pattern
-  if (is.list(dist_pro)) {
-    anno_st <- list()
-    n_pat <- length(dist_pro)
-
-    for (i in 1:n_pat) {
-      annor <- dist_pro[[i]] - thold[i]
-      annor[annor > 0] <- 0
-      annor[annor < 0] <- -1
-      annor <- -annor
-      anno_st[[i]] <- which(diff(c(0, annor, 0)) == 1) + 1
-      anno_st[[i]] <- anno_st[[i]] - 1
-    }
-
-    anno_st <- unlist(anno_st)
-    anno_st <- sort(anno_st)
-
-    i <- 1
-    while (TRUE) {
-      if (i >= length(anno_st)) {
-        break
-      }
-
-      first_part <- anno_st[1:i]
-      second_part <- anno_st[(i + 1):length(anno_st)]
-      bad_st <- abs(second_part - anno_st[i]) < window_size
-
-      second_part <- second_part[!bad_st]
-      anno_st <- c(first_part, second_part)
-      i <- i + 1
-    }
-
-    anno_ed <- anno_st + window_size - 1
-  } else {
-    anno <- dist_pro - thold
-    anno[anno > 0] <- 0
-    anno[anno < 0] <- -1
-    anno <- -anno
-
-    anno_st <- which(diff(c(0, anno, 0)) == 1) + 1
-    anno_ed <- anno_st + window_size - 1
-    anno_st <- anno_st - 1
-    anno_ed <- anno_ed - 1
-  }
-
-  anno <- rep(FALSE, length(label))
-
-  for (i in seq_len(length(anno_st))) {
-    anno[anno_st[i]:anno_ed[i]] <- 1
-  }
-
-  is.tp <- rep(FALSE, length(anno_st))
-
-  for (i in seq_len(length(anno_st))) {
-    if (anno_ed[i] > length(label)) {
-      anno_ed[i] <- length(label)
-    }
-    if (sum(label[anno_st[i]:anno_ed[i]]) > (0.8 * window_size)) {
-      is.tp[i] <- TRUE
-    }
-  }
-  tp_pre <- sum(is.tp)
-
-  is.tp <- rep(FALSE, length(pos_st))
-  for (i in seq_len(length(pos_st))) {
-    if (sum(anno[pos_st[i]:pos_ed[i]]) > (0.8 * window_size)) {
-      is.tp[i] <- TRUE
-    }
-  }
-  tp_rec <- sum(is.tp)
-
-  pre <- tp_pre / length(anno_st)
-  rec <- tp_rec / length(pos_st)
-
-  f_meas <- (1 + beta^2) * (pre * rec) / ((beta^2) * pre + rec)
-  if (is.na(f_meas)) {
-    f_meas <- 0
-  }
-  return(list(f_meas = f_meas, pre = pre, rec = rec))
 }

@@ -9,11 +9,10 @@ fluss_cac(.mp, exclusion_zone = NULL)
 \arguments{
 \item{.mp}{a TSMP object of class \code{MatrixProfile}.}
 
-\item{exclusion_zone}{if a \code{number} will be used instead of embeded value. (Default is \code{NULL}).}
+\item{exclusion_zone}{if a \code{number} will be used instead of embedded value. (Default is \code{NULL}).}
 }
 \value{
-Returns a companion matrix with the same size of profile index. This matrix contains the number of
-'arcs' crossing over each index.
+Returns the input \code{.mp} object a new name \code{cac} with the corrected arc count.
 }
 \description{
 Computes the arc count with edge correction (CAC).
@@ -24,19 +23,10 @@ where a semantic change may occur in CAC. This may be useful in real-time implem
 know in advance the number of domain changes to look for. Please check original paper (1).
 }
 \examples{
-# This is a fast toy example and results are useless. For a complete result, run the code inside
-#'Not run' section below.
 data <- mp_fluss_data$tilt_abp$data[1:1000]
-w <- 210
-mp <- stomp(data, window_size = w, verbose = 0)
-cac <- fluss_cac(mp$pi, w)
-
-\dontrun{
-data <- mp_fluss_data$walkjogrun$data
-w <- mp_fluss_data$walkjogrun$window # 80
-mp <- stomp(data, window_size = w)
-cac <- fluss_cac(mp$pi, w)
-}
+w <- 10
+mp <- tsmp(data, window_size = w, verbose = 0)
+mp <- fluss_cac(mp)
 }
 \references{
 \itemize{

@@ -64,7 +64,7 @@ retrieves the most relevant subsequences using Minimal Description Length (MDL) 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tsmp</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.15.9004</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.15.9009</span>
       </span>
     </div>
 
@@ -115,28 +115,19 @@ retrieves the most relevant subsequences using Minimal Description Length (MDL) 
     
     </div>
 
-    <pre class="usage"><span class='fu'>salient_subsequences</span>(<span class='no'>data</span>, <span class='no'>matrix_profile</span>, <span class='no'>profile_index</span>, <span class='no'>window_size</span>,
-  <span class='kw'>n_bits</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>n_cand</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>exclusion_zone</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>2</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>2</span>)</pre>
+    <pre class="usage"><span class='fu'>salient_subsequences</span>(<span class='no'>.mp</span>, <span class='no'>data</span>, <span class='kw'>n_bits</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>n_cand</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>exclusion_zone</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>2</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>.mp</th>
+      <td><p>a TSMP object of class <code>MatrixProfile</code>.</p></td>
+    </tr>
+    <tr>
       <th>data</th>
-      <td><p>a <code>vector</code>, column <code>matrix</code> or <code>data.frame</code>. If more than one column is provided, see
-details.</p></td>
-    </tr>
-    <tr>
-      <th>matrix_profile</th>
-      <td><p>a result from STAMP or STOMP algorithms.</p></td>
-    </tr>
-    <tr>
-      <th>profile_index</th>
-      <td><p>a result from STAMP or STOMP algorithms.</p></td>
-    </tr>
-    <tr>
-      <th>window_size</th>
-      <td><p>an <code>int</code> with the size of the sliding window.</p></td>
+      <td><p>the data used to build the Matrix Profile, if not embedded.</p></td>
     </tr>
     <tr>
       <th>n_bits</th>
@@ -149,8 +140,7 @@ details.</p></td>
     </tr>
     <tr>
       <th>exclusion_zone</th>
-      <td><p>a <code>numeric</code>. Size of the exclusion zone, based on <code>window_size</code>. (Default
-is <code>1/2</code>). See details.</p></td>
+      <td><p>if a <code>number</code> will be used instead of embedded value. (Default is <code>NULL</code>).</p></td>
     </tr>
     <tr>
       <th>verbose</th>
@@ -160,19 +150,13 @@ is <code>1/2</code>). See details.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Returns a <code>list</code> with <code>indexes</code>, a <code>vector</code> with the starting position of each
-subsequence, <code>idx_bit_size</code>, a <code>vector</code> with the associated bitsize for each iteration and
-<code>bits</code> the value used as input on <code>n_bits</code>.</p>
+    <p>Returns the input <code>.mp</code> object with a new name <code>salient</code>. It contains: <code>indexes</code>, a <code>vector</code>
+with the starting position of each subsequence, <code>idx_bit_size</code>, a <code>vector</code> with the associated
+bitsize for each iteration and <code>bits</code> the value used as input on <code>n_bits</code>.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The main purpose of this algorithm is to find subsequences in one time series, but this
-implementation also covers the experimental effectiveness evaluation with "whole sequence"
-setting. This means you can input a <code>matrix</code> where each column is a sequence and this algorithm
-will retrieve the most relevant sequences. For this setting, the <code>exclusion_zone</code> is ignored, and
-you need to pre-compute the ordinary euclidean distance matrix. See examples.</p>
-<p>The <code>exclusion_zone</code> is used to avoid trivial matches.</p>
-<p><code>verbose</code> changes how much information is printed by this function; <code>0</code> means nothing,
+    <p><code>verbose</code> changes how much information is printed by this function; <code>0</code> means nothing,
 <code>1</code> means text, <code>2</code> means text and sound.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
@@ -191,32 +175,9 @@ Conference on Data Mining. IEEE; 2011. p. 1086–91.</p></li>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-  <span class='co'># subsequences setting (main purpose)</span>
-  <span class='fu'>salient_subsequences</span>(<span class='no'>data</span>, <span class='no'>data</span>$<span class='no'>mp</span>, <span class='no'>data</span>$<span class='no'>pi</span>, <span class='fl'>30</span>, <span class='kw'>n_bits</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>n_cand</span> <span class='kw'>=</span> <span class='fl'>10</span>)
-
-  <span class='co'># sequences setting</span>
-  <span class='no'>dist_matrix</span> <span class='kw'>&lt;-</span> <span class='fu'>as.matrix</span>(<span class='kw pkg'>stats</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/stats/topics/dist'>dist</a></span>(<span class='no'>carfull</span>$<span class='no'>data</span>))
-  <span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>matrix</span>(<span class='fl'>0</span>, <span class='fu'>nrow</span>(<span class='no'>carfull</span>$<span class='no'>data</span>), <span class='fl'>1</span>)
-  <span class='no'>pi</span> <span class='kw'>&lt;-</span> <span class='fu'>matrix</span>(<span class='fl'>0</span>, <span class='fu'>nrow</span>(<span class='no'>carfull</span>$<span class='no'>data</span>), <span class='fl'>1</span>)
-
-  <span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='fu'>nrow</span>(<span class='no'>carfull</span>$<span class='no'>data</span>)) {
-    <span class='no'>dist_matrix</span>[<span class='no'>i</span>, <span class='no'>i</span>] <span class='kw'>&lt;-</span> <span class='fl'>Inf</span>;
-    <span class='no'>pi</span>[<span class='no'>i</span>] <span class='kw'>&lt;-</span> <span class='fu'>which.min</span>(<span class='no'>dist_matrix</span>[<span class='no'>i</span>, ])
-    <span class='no'>mp</span>[<span class='no'>i</span>] <span class='kw'>&lt;-</span> <span class='no'>dist_matrix</span>[<span class='no'>i</span>, <span class='no'>pi</span>[<span class='no'>i</span>]]
-  }
-
-  <span class='no'>n_bits</span> <span class='kw'>&lt;-</span> <span class='fl'>8</span>
-
-  <span class='no'>subs</span> <span class='kw'>&lt;-</span> <span class='fu'>salient_subsequences</span>(<span class='fu'>t</span>(<span class='no'>carfull</span>$<span class='no'>data</span>), <span class='no'>mp</span>, <span class='no'>pi</span>, <span class='fl'>577</span>, <span class='kw'>n_bits</span> <span class='kw'>=</span> <span class='no'>n_bits</span>, <span class='kw'>n_cand</span> <span class='kw'>=</span> <span class='fl'>10</span>)
-  <span class='no'>cutoff</span> <span class='kw'>&lt;-</span> <span class='fu'>which</span>(<span class='fu'>diff</span>(<span class='no'>subs</span>$<span class='no'>idx_bit_size</span>) <span class='kw'>&gt;</span> <span class='fl'>0</span>)[<span class='fl'>1</span>] - <span class='fl'>1</span>
-  <span class='kw'>if</span>(<span class='no'>cutoff</span> <span class='kw'>&gt;</span> <span class='fl'>0</span>) {
-    <span class='no'>carfull</span>$<span class='no'>lab</span>[<span class='no'>subs</span>$<span class='no'>indexes</span>[<span class='fl'>1</span>:(<span class='no'>cutoff</span> - <span class='fl'>1</span>)]]
-  } <span class='kw'>else</span> {
-    <span class='fu'>message</span>(<span class='st'>"nothing to do"</span>)
-  }
-<span class='co'># }</span><div class='input'>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_toy_data</span>$<span class='no'>data</span>[, <span class='fl'>1</span>]
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>tsmp</span>(<span class='no'>data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+<span class='no'>mps</span> <span class='kw'>&lt;-</span> <span class='fu'>salient_subsequences</span>(<span class='no'>mp</span>, <span class='no'>data</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

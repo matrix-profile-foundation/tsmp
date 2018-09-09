@@ -61,7 +61,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tsmp</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.15.9004</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.15.9009</span>
       </span>
     </div>
 
@@ -108,14 +108,29 @@
 <h1 class="page-header">
 <a href="#tsmp-0-3-1" class="anchor"></a>tsmp 0.3.1<small> Unreleased </small>
 </h1>
+<div id="important" class="section level2">
+<h2 class="hasAnchor">
+<a href="#important" class="anchor"></a>IMPORTANT</h2>
 <ul>
-<li>Changed all functions from dotted.case to snake_case.</li>
+<li>This version is a complete reestructuration. API has changed and workflow is more friendly. This API is intended to be stable and from now one any change will pass throught the “Deprecated” stage.</li>
+</ul>
+</div>
+<div id="added-features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#added-features" class="anchor"></a>Added Features</h2>
+<ul>
+<li>Outputs have a prettier print format.</li>
+<li>Outputs have a plot function. Try to plot a <code>tsmp()</code> output for example.</li>
+<li>Now functions can work in <code>%&gt;%</code> (pipe), e.g. <code>tsmp() %&gt;% find_motif()</code>.</li>
+<li>Added a wrapper function called <code>tsmp()</code> that handles the several algorithms available.</li>
+<li>Added <code>as.*</code> functions to allow you to switch classes if you want, e.g.: <code>as.matrix.profile()</code>.</li>
+<li>Changed all functions from dotted.case to snake_case (except <code>as.*</code> functions).</li>
 <li>Added Annotation Vectors.</li>
 <li>Fixed STOMP crash with Joins.</li>
 <li>Added support to query &lt; data in Joins.</li>
 <li>SCRIMP (experimental).</li>
-<li>FLUSS Arc Plot and SiMPle Arc Plot.</li>
 </ul>
+</div>
 </div>
     <div id="tsmp-0-2-15" class="section level1">
 <h1 class="page-header">

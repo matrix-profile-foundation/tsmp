@@ -20,28 +20,38 @@ find_motif(.mp, ...)
 
 \item{...}{further arguments to be passed to class specific function.}
 
-\item{data}{the data used to build the Matrix Profile, if not embeded.}
+\item{data}{the data used to build the Matrix Profile, if not embedded.}
 
 \item{n_motifs}{an \code{int}. Number of motifs to find. (Default is \code{3}).}
 
 \item{radius}{an \code{int}. Radius. (Default is \code{3}).}
 
-\item{exclusion_zone}{if a \code{number} will be used instead of embeded value. (Default is \code{NULL}).}
+\item{exclusion_zone}{if a \code{number} will be used instead of embedded value. (Default is \code{NULL}).}
 
 \item{mode}{a \code{string}. Guided or Unconstrained search. Allow partial match. (Default is \code{guided}).}
 
 \item{n_bit}{an \code{ìnt}. Bit size for discretization. Ignored on Guided search. (Default is \code{4}).}
 
-\item{n_dim}{an \code{int}. Number of dimensions to use on Guided search instead of embeded value. (Default is \code{NULL}).}
+\item{n_dim}{an \code{int}. Number of dimensions to use on Guided search instead of embedded value. (Default is \code{NULL}).}
+}
+\value{
+For class \code{MatrixProfile}, returns the input \code{.mp} object with a new name \code{motif}. It contains: \code{motif_idx}, a \code{list}
+of motif pairs founded and \code{motif_neighbor} a \code{list} with respective motif's neighbors.
+
+For class \code{MultiMatrixProfile}, returns the input \code{.mp} object with a new name \code{motif}. It contains: \code{motif_idx}, a \code{vector}
+of motifs founded and \code{motif_dim} a \code{list} the dimensions where the motifs were founded.
 }
 \description{
 Search for Motifs
 }
 \examples{
+# Single dimension data
 w <- 50
 data <- mp_gait_data
 mp <- tsmp(data, window_size = w, exclusion_zone = 1/4, verbose = 0)
 mp <- find_motif(mp)
+
+# Multidimension data
 w <- mp_toy_data$sub_len
 data <- mp_toy_data$data[1:300, ]
 mp <- tsmp(data, window_size = w, mode = "mstomp", verbose = 0)

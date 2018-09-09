@@ -11,7 +11,8 @@
 #'   `1/2`).
 #' @param verbose an `int`. See details. (Default is `2`).
 #'
-#' @return Returns a list with the Matrix Profile `mp` and Profile Index `pi`.
+#' @return Returns a `SimpleMatrixProfile` object, a `list` with the matrix profile `mp`, profile index `pi`,
+#' window size `w` and exclusion zone `ez`.
 #'
 #' @export
 #' @references * Silva D, Yeh C, Batista G, Keogh E. Simple: Assessing Music Similarity Using

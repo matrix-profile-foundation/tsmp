@@ -29,9 +29,11 @@ details), \code{list} and \code{data.frame} too.}
 \item{n_workers}{an \code{int}. Number of workers for parallel. (Default is \code{2}).}
 }
 \value{
-Returns the matrix profile \code{mp} and profile index \code{pi}. It also returns the left and
-right matrix profile \code{lmp}, \code{rmp} and profile index \code{lpi}, \code{rpi} that may be used to detect
-Time Series Chains (Yan Zhu 2018).
+Returns a \code{MultiMatrixProfile} object, a \code{list} with the matrix profile \code{mp}, profile index \code{pi}
+left and right matrix profile \code{lmp}, \code{rmp} and profile index \code{lpi}, \code{rpi}, window size \code{w},
+number of dimensions \code{n_dim}, exclusion zone \code{ez}, must dimensions \code{must} and excluded dimensions \code{exc}.
+
+If the input has only one dimension, returns the same as \code{\link[=stomp]{stomp()}}.
 }
 \description{
 Computes the Matrix Profile and Profile Index for Multivariate Time Series.
@@ -59,6 +61,10 @@ means nothing, \code{1} means text, \code{2} means text and sound.
 \examples{
 # using all dimensions
 mp <- mstomp(mp_toy_data$data[1:200,], 30, verbose = 0)
+
+# using threads
+mp <- mstomp_par(mp_toy_data$data[1:200,], 30, verbose = 0)
+
 \dontrun{
 # force using dimensions 1 and 2
 mp <- mstomp(mp_toy_data$data[1:200,], 30, must_dim = c(1, 2))

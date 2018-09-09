@@ -70,7 +70,8 @@ stamp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_s
   matrix_profile <- matrix(Inf, matrix_profile_size, 1)
   profile_index <- matrix(-1, matrix_profile_size, 1)
 
-  if (length(args) > 1) { # no RMP and LMP for joins
+  if (length(args) > 1) {
+    # no RMP and LMP for joins
     left_matrix_profile <- right_matrix_profile <- NULL
     left_profile_index <- right_profile_index <- NULL
   } else {
@@ -162,7 +163,8 @@ stamp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_s
       curr <- batch[[i]]$i
 
       if (!is.null(curr)) {
-        if (length(args) == 1) { # no RMP and LMP for joins
+        if (length(args) == 1) {
+          # no RMP and LMP for joins
           # left matrix_profile
           ind <- (batch[[i]]$dp[curr:matrix_profile_size] < left_matrix_profile[curr:matrix_profile_size])
           ind <- c(rep(FALSE, (curr - 1)), ind) # pad left

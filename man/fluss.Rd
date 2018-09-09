@@ -7,34 +7,26 @@
 fluss(.mp, num_segments, exclusion_zone = NULL)
 }
 \arguments{
-\item{.mp}{a TSMP object of class \code{ArcCount}.}
+\item{.mp}{a TSMP object of class \code{MatrixProfile}.}
 
 \item{num_segments}{an \code{int}. Number of segments to extract. Based on domain knowledge.}
 
-\item{exclusion_zone}{if a \code{number} will be used instead of embeded value. (Default is \code{NULL}).}
+\item{exclusion_zone}{if a \code{number} will be used instead of embedded value. (Default is \code{NULL}).}
 }
 \value{
-Returns a list with \code{segments} (location of semantic changes), \code{mp} (matrix profile if
-computed), \code{pi} (profile index, input of computed), \code{cac} corrected arc count.
+Returns the input \code{.mp} object new names: \code{cac}, corrected arc count and \code{fluss} with
+the location of semantic changes.
 }
 \description{
 FLUSS is a Domain Agnostic Online Semantic Segmentation that uses the assumption that when few
 arc are crossing a given index point, means that there is a high probability of semantic change.
+This function is a wrap to \code{\link[=fluss_cac]{fluss_cac()}} and \code{\link[=fluss_extract]{fluss_extract()}}.
 }
 \examples{
-# This is a fast toy example and results are useless. For a complete result, run the code inside
-#'Not run' section below.
 data <- mp_fluss_data$tilt_abp$data[1:1000]
-truth <- 400
 w <- 10
-segments <- fluss(data, w, 1, gtruth = truth, verbose = 0)
-\dontrun{
-data <- mp_fluss_data$walkjogrun$data
-w <- mp_fluss_data$walkjogrun$window # 80
-truth <- mp_fluss_data$walkjogrun$gtruth # 3800 6800
-nseg <- length(mp_fluss_data$walkjogrun$gtruth) # 2
-segments <- fluss(data, w, nseg, gtruth = truth)
-}
+mp <- tsmp(data, window_size = w, verbose = 0)
+mp <- fluss(mp, 2)
 }
 \references{
 \itemize{

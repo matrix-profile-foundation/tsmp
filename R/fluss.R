@@ -2,13 +2,14 @@
 #'
 #' FLUSS is a Domain Agnostic Online Semantic Segmentation that uses the assumption that when few
 #' arc are crossing a given index point, means that there is a high probability of semantic change.
+#' This function is a wrap to [fluss_cac()] and [fluss_extract()].
 #'
-#' @param .mp a TSMP object of class `ArcCount`.
+#' @param .mp a TSMP object of class `MatrixProfile`.
 #' @param num_segments an `int`. Number of segments to extract. Based on domain knowledge.
-#' @param exclusion_zone if a `number` will be used instead of embeded value. (Default is `NULL`).
+#' @param exclusion_zone if a `number` will be used instead of embedded value. (Default is `NULL`).
 #'
-#' @return Returns a list with `segments` (location of semantic changes), `mp` (matrix profile if
-#'   computed), `pi` (profile index, input of computed), `cac` corrected arc count.
+#' @return Returns the input `.mp` object new names: `cac`, corrected arc count and `fluss` with
+#' the location of semantic changes.
 #' @export
 #' @family Semantic Segmentations
 #' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII:
@@ -17,19 +18,11 @@
 #' @references Website: <https://sites.google.com/site/onlinesemanticsegmentation/>
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #' @examples
-#' # This is a fast toy example and results are useless. For a complete result, run the code inside
-#' #'Not run' section below.
 #' data <- mp_fluss_data$tilt_abp$data[1:1000]
-#' truth <- 400
 #' w <- 10
-#' segments <- fluss(data, w, 1, gtruth = truth, verbose = 0)
-#' \dontrun{
-#' data <- mp_fluss_data$walkjogrun$data
-#' w <- mp_fluss_data$walkjogrun$window # 80
-#' truth <- mp_fluss_data$walkjogrun$gtruth # 3800 6800
-#' nseg <- length(mp_fluss_data$walkjogrun$gtruth) # 2
-#' segments <- fluss(data, w, nseg, gtruth = truth)
-#' }
+#' mp <- tsmp(data, window_size = w, verbose = 0)
+#' mp <- fluss(mp, 2)
+
 fluss <- function(.mp, num_segments, exclusion_zone = NULL) {
   fluss_extract(fluss_cac(.mp, exclusion_zone), num_segments = num_segments, exclusion_zone = exclusion_zone)
 }
@@ -40,10 +33,9 @@ fluss <- function(.mp, num_segments, exclusion_zone = NULL) {
 #'
 #' @param .mpac a TSMP object of class `ArcCount`.
 #' @param num_segments an `int`. Number of segments to extract. Based on domain knowledge.
-#' @param exclusion_zone if a `number` will be used instead of embeded value. (Default is `NULL`).
+#' @param exclusion_zone if a `number` will be used instead of embedded value. (Default is `NULL`).
 #'
-#' @return Returns an `int` or a `vector` of `int` with the location of predicted semantic changes.
-#'   The number of locations is not greater than `num_segments`.
+#' @return Returns the input `.mp` object a new name `fluss` with the location of semantic changes.
 #' @export
 #' @family Semantic Segmentations
 #' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII:
@@ -52,21 +44,13 @@ fluss <- function(.mp, num_segments, exclusion_zone = NULL) {
 #' @references Website: <https://sites.google.com/site/onlinesemanticsegmentation/>
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #' @examples
-#' # This is a fast toy example and results are useless. For a complete result, run the code inside
-#' #'Not run' section below.
 #' data <- mp_fluss_data$tilt_abp$data[1:1000]
-#' w <- 210
-#' mp <- stomp(data, window_size = w, verbose = 0)
-#' cac <- fluss_cac(mp$pi, w)
-#' segments <- fluss_extract(cac, 1, w)
-#' \dontrun{
-#' data <- mp_fluss_data$walkjogrun$data
-#' w <- mp_fluss_data$walkjogrun$window # 80
-#' nseg <- length(mp_fluss_data$walkjogrun$gtruth) # 2
-#' mp <- stomp(data, window_size = w)
-#' cac <- fluss_cac(mp$pi, w)
-#' segments <- fluss_extract(cac, nseg, w)
-#' }
+#' w <- 10
+#' mp <- tsmp(data, window_size = w, verbose = 0)
+#' mp <- fluss_cac(mp)
+#' mp <- fluss_extract(mp, 2)
+
+
 fluss_extract <- function(.mpac, num_segments, exclusion_zone = NULL) {
   if (!any(class(.mpac) %in% "ArcCount")) {
     stop("Error: First argument must be an object of class `ArcCount`.")
@@ -106,10 +90,9 @@ fluss_extract <- function(.mpac, num_segments, exclusion_zone = NULL) {
 #' know in advance the number of domain changes to look for. Please check original paper (1).
 #'
 #' @param .mp a TSMP object of class `MatrixProfile`.
-#' @param exclusion_zone if a `number` will be used instead of embeded value. (Default is `NULL`).
+#' @param exclusion_zone if a `number` will be used instead of embedded value. (Default is `NULL`).
 #'
-#' @return Returns a companion matrix with the same size of profile index. This matrix contains the number of
-#' 'arcs' crossing over each index.
+#' @return Returns the input `.mp` object a new name `cac` with the corrected arc count.
 #'
 #' @export
 #' @family Semantic Segmentations
@@ -117,19 +100,10 @@ fluss_extract <- function(.mpac, num_segments, exclusion_zone = NULL) {
 #' @references Website: <https://sites.google.com/site/onlinesemanticsegmentation/>
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #' @examples
-#' # This is a fast toy example and results are useless. For a complete result, run the code inside
-#' #'Not run' section below.
 #' data <- mp_fluss_data$tilt_abp$data[1:1000]
-#' w <- 210
-#' mp <- stomp(data, window_size = w, verbose = 0)
-#' cac <- fluss_cac(mp$pi, w)
-#'
-#' \dontrun{
-#' data <- mp_fluss_data$walkjogrun$data
-#' w <- mp_fluss_data$walkjogrun$window # 80
-#' mp <- stomp(data, window_size = w)
-#' cac <- fluss_cac(mp$pi, w)
-#' }
+#' w <- 10
+#' mp <- tsmp(data, window_size = w, verbose = 0)
+#' mp <- fluss_cac(mp)
 fluss_cac <- function(.mp, exclusion_zone = NULL) {
   if (!any(class(.mp) %in% "MatrixProfile")) {
     stop("Error: First argument must be an object of class `MatrixProfile`.")
@@ -179,25 +153,14 @@ fluss_cac <- function(.mp, exclusion_zone = NULL) {
 #' @references Website: <https://sites.google.com/site/onlinesemanticsegmentation/>
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #' @examples
-#' # This is a fast toy example and results are useless. For a complete result, run the code inside
-#' #'Not run' section below.
 #' data <- mp_fluss_data$tilt_abp$data[1:1000]
 #' w <- 10
-#' truth <- 400
-#' mp <- stomp(data, window_size = w, verbose = 0)
-#' cac <- fluss_cac(mp$pi, w)
-#' segments <- fluss_extract(cac, 1, w)
-#' score <- fluss_score(truth, segments, length(data))
-#' \dontrun{
-#' data <- mp_fluss_data$walkjogrun$data
-#' w <- mp_fluss_data$walkjogrun$window # 80
-#' truth <- mp_fluss_data$walkjogrun$gtruth # 3800 6800
-#' nseg <- length(mp_fluss_data$walkjogrun$gtruth) # 2
-#' mp <- stomp(data, window_size = w)
-#' cac <- fluss_cac(mp$pi, w)
-#' segments <- fluss_extract(cac, nseg, w)
-#' score <- fluss_score(truth, segments, length(data))
-#' }
+#' truth <- c(945, 875)
+#' mp <- tsmp(data, window_size = w, verbose = 0)
+#' mp <- fluss_cac(mp)
+#' mp <- fluss_extract(mp, 2)
+#' score <- fluss_score(truth, mp$fluss, length(data))
+
 fluss_score <- function(gtruth, extracted, data_size) {
   n <- length(gtruth)
   m <- length(extracted)

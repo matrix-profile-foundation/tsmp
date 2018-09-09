@@ -36,9 +36,9 @@
 #' @export
 #' @examples
 #' plot_arcs(pairs = matrix(c(5, 10, 1, 10, 20, 5), ncol = 2, byrow = TRUE))
+#'
 plot_arcs <- function(pairs, alpha = NULL, quality = 30, lwd = 15, col = c("blue", "orange"),
                       main = "Arc Plot", ylab = "", xlab = "Profile Index", ...) {
-  message("DEBUG: calling ", match.call()[[1]])
 
   xmin <- min(pairs)
   xmax <- max(pairs)
@@ -89,11 +89,10 @@ plot_arcs <- function(pairs, alpha = NULL, quality = 30, lwd = 15, col = c("blue
   )
 }
 
-
 #' Plot a TSMP object
 #'
 #' @param .mp a Matrix Profile
-#' @param data the data used to build the Matrix Profile, if not embeded to it.
+#' @param data the data used to build the Matrix Profile, if not embedded to it.
 #' @param type "data" or "matrix". Choose what will be plotted.
 #' @param exclusion_zone if a `number` will be used instead of Matrix Profile's. (Default is `NULL`).
 #' @param edge_limit if a `number` will be used instead of Matrix Profile's exclusion zone. (Default is `NULL`).
@@ -103,13 +102,21 @@ plot_arcs <- function(pairs, alpha = NULL, quality = 30, lwd = 15, col = c("blue
 #' @param ylab a `string`. Y label.
 #' @param ... further arguments to be passed to [plot()]. See [par()].
 #'
+#' @return None
+#'
 #' @export
 #' @keywords hplot
 #' @name plot
+#'
+#' @examples
+#'
+#' mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+#' plot(mp)
+#'
 plot.ArcCount <- function(.mp, data, type = c("data", "matrix"), exclusion_zone = NULL, edge_limit = NULL,
                           threshold = quantile(.mp$cac, 0.1), main = "Arcs Discover", xlab = "index",
                           ylab = "distance", ...) {
-  message("DEBUG: calling ", match.call()[[1]])
+
   def_par <- graphics::par(no.readonly = TRUE)
 
   if (missing(data) && !is.null(.mp$data)) {
@@ -175,8 +182,9 @@ plot.ArcCount <- function(.mp, data, type = c("data", "matrix"), exclusion_zone 
 #' @export
 #' @keywords hplot
 #' @name plot
+#'
 plot.MatrixProfile <- function(.mp, ylab = "distance", xlab = "index", main = "Unidimensional Matrix Profile", ...) {
-  message("DEBUG: calling ", match.call()[[1]])
+
   def_par <- graphics::par(no.readonly = TRUE)
   allmatrix <- FALSE
 
@@ -202,8 +210,9 @@ plot.MatrixProfile <- function(.mp, ylab = "distance", xlab = "index", main = "U
 #' @export
 #' @keywords hplot
 #' @name plot
+#'
 plot.MultiMatrixProfile <- function(.mp, ylab = "distance", xlab = "index", main = "Multidimensional Matrix Profile", ...) {
-  message("DEBUG: calling ", match.call()[[1]])
+
   def_par <- graphics::par(no.readonly = TRUE)
   allmatrix <- FALSE
   n_dim <- ncol(.mp$mp)
@@ -236,10 +245,11 @@ plot.MultiMatrixProfile <- function(.mp, ylab = "distance", xlab = "index", main
 #' @export
 #' @keywords hplot
 #' @name plot
+#'
 plot.Fluss <- function(.mp, data, type = c("data", "matrix"),
                        main = "Fast Low-cost Unipotent Semantic Segmentation", xlab = "index",
                        ylab = "distance", ...) {
-  message("DEBUG: calling ", match.call()[[1]])
+
   def_par <- graphics::par(no.readonly = TRUE)
 
   if (missing(data) && !is.null(.mp$data)) {
@@ -292,8 +302,9 @@ plot.Fluss <- function(.mp, data, type = c("data", "matrix"),
 #' @export
 #' @keywords hplot
 #' @name plot
+#'
 plot.Chain <- function(.mp, data, type = c("data", "matrix"), main = "Chain Discover", xlab = "index", ylab = "distance", ...) {
-  message("DEBUG: calling ", match.call()[[1]])
+
   def_par <- graphics::par(no.readonly = TRUE)
 
   if (missing(data) && !is.null(.mp$data)) {
@@ -350,8 +361,9 @@ plot.Chain <- function(.mp, data, type = c("data", "matrix"), main = "Chain Disc
 #' @export
 #' @keywords hplot
 #' @name plot
+#'
 plot.Motif <- function(.mp, data, type = c("data", "matrix"), ncol = 3, main = "MOTIF Discover", xlab = "index", ylab = "distance", ...) {
-  message("DEBUG: calling ", match.call()[[1]])
+
   def_par <- graphics::par(no.readonly = TRUE)
 
   if (missing(data) && !is.null(.mp$data)) {
@@ -411,8 +423,9 @@ plot.Motif <- function(.mp, data, type = c("data", "matrix"), ncol = 3, main = "
 #' @export
 #' @keywords hplot
 #' @name plot
+#'
 plot.MultiMotif <- function(.mp, data, type = c("data", "matrix"), ncol = 3, main = "Multidimensional MOTIF Discover", xlab = "index", ylab = "distance", ...) {
-  message("DEBUG: calling ", match.call()[[1]])
+
   def_par <- graphics::par(no.readonly = TRUE)
 
   if (missing(data) && !is.null(.mp$data)) {

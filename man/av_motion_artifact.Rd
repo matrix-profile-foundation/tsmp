@@ -15,7 +15,7 @@ av_motion_artifact(.mp, data, apply = FALSE)
 Use with caution.}
 }
 \value{
-Returns the annotation vector for matrix profile correction.
+Returns the input \code{.mp} object with an embedded annotation vector.
 }
 \description{
 Computes the annotation vector that suppresses motion artifacts

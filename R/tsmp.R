@@ -61,7 +61,7 @@
 #' @param exc_dim an `int` or `vector` of which dimensions to exclude (default is `NULL`). See
 #'   details.
 #' @param n_workers an `int`. Number of workers for parallel. (Default is `1`).
-#' @param .keep_data
+#' @param .keep_data a `logical`. (Default is `TRUE`). Keeps the data embedded to resultant object.
 #'
 #' @return Returns the matrix profile `mp` and profile index `pi`. It also returns the left and
 #'   right matrix profile `lmp`, `rmp` and profile index `lpi`, `rpi` that may be used to detect
@@ -86,7 +86,20 @@
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #' @family matrix profile computations
 #' @examples
-#' mp <- tsmp(mp_toy_data$data[1:200,1], window_size = 30, verbose = 0)
+#' # default with [stomp()]
+#' mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+#'
+#' # parallel with [stomp_par()]
+#' mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, n_workers = 2, verbose = 0)
+#'
+#' # Anytime STAMP
+#' mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, mode = "stamp", s_size = 50, verbose = 0)
+#'
+#' # [mstomp()]
+#' mp <- tsmp(mp_toy_data$data[1:200, ], window_size = 30, mode = "mstomp", verbose = 0)
+#'
+#' # [simple_fast()]
+#' mp <- tsmp(mp_toy_data$data[1:200, ], window_size = 30, mode = "simple", verbose = 0)
 
 tsmp <- function(..., window_size, exclusion_zone = 1 / 2, mode = c("stomp", "stamp", "simple", "mstomp", "scrimp"),
                  verbose = 2, s_size = Inf, must_dim = NULL, exc_dim = NULL, n_workers = 1, .keep_data = TRUE) {

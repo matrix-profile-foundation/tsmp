@@ -7,7 +7,6 @@
 #' @noRd
 
 print.MatrixProfile <- function(.mp, ...) {
-  message("DEBUG: calling ", match.call()[[1]])
 
   cat("Matrix Profile\n")
   cat("--------------\n")
@@ -37,7 +36,6 @@ print.MatrixProfile <- function(.mp, ...) {
 
 
 print.MultiMatrixProfile <- function(.mp, ...) {
-  message("DEBUG: calling ", match.call()[[1]])
 
   cat("Multidimensional Matrix Profile\n")
   cat("-------------------------------\n")
@@ -68,11 +66,10 @@ print.MultiMatrixProfile <- function(.mp, ...) {
 #' @keywords internal
 #' @noRd
 print.ArcCount <- function(.mp, ...) {
-  message("DEBUG: calling ", match.call()[[1]])
 
-  if (any(class(.mp) %in% c("MatrixProfile"))) {
+  if (any(class(.mp) %in% "MatrixProfile")) {
     print.MatrixProfile(.mp, ...)
-  } else if (any(class(.mp) %in% c("MultiMatrixProfile"))) {
+  } else if (any(class(.mp) %in% "MultiMatrixProfile")) {
     print.MultiMatrixProfile(.mp, ...)
   }
 
@@ -91,9 +88,8 @@ print.ArcCount <- function(.mp, ...) {
 #' @keywords internal
 #' @noRd
 print.Fluss <- function(.mp, ...) {
-  message("DEBUG: calling ", match.call()[[1]])
 
-  if (any(class(.mp) %in% c("ArcCount"))) {
+  if (any(class(.mp) %in% "ArcCount")) {
     print.ArcCount(.mp, ...)
   }
 
@@ -112,11 +108,10 @@ print.Fluss <- function(.mp, ...) {
 #' @keywords internal
 #' @noRd
 print.Chain <- function(.mp, ...) {
-  message("DEBUG: calling ", match.call()[[1]])
 
-  if (any(class(.mp) %in% c("MatrixProfile"))) {
+  if (any(class(.mp) %in% "MatrixProfile")) {
     print.MatrixProfile(.mp, ...)
-  } else if (any(class(.mp) %in% c("MultiMatrixProfile"))) {
+  } else if (any(class(.mp) %in% "MultiMatrixProfile")) {
     print.MultiMatrixProfile(.mp, ...)
   }
 
@@ -136,11 +131,10 @@ print.Chain <- function(.mp, ...) {
 #' @keywords internal
 #' @noRd
 print.Motif <- function(.mp, ...) {
-  message("DEBUG: calling ", match.call()[[1]])
 
-  if (any(class(.mp) %in% c("MatrixProfile"))) {
+  if (any(class(.mp) %in% "MatrixProfile")) {
     print.MatrixProfile(.mp, ...)
-  } else if (any(class(.mp) %in% c("MultiMatrixProfile"))) {
+  } else if (any(class(.mp) %in% "MultiMatrixProfile")) {
     print.MultiMatrixProfile(.mp, ...)
   }
 
@@ -172,11 +166,10 @@ print.Motif <- function(.mp, ...) {
 #' @keywords internal
 #' @noRd
 print.MultiMotif <- function(.mp, ...) {
-  message("DEBUG: calling ", match.call()[[1]])
 
-  if (any(class(.mp) %in% c("MatrixProfile"))) {
+  if (any(class(.mp) %in% "MatrixProfile")) {
     print.MatrixProfile(.mp, ...)
-  } else if (any(class(.mp) %in% c("MultiMatrixProfile"))) {
+  } else if (any(class(.mp) %in% "MultiMatrixProfile")) {
     print.MultiMatrixProfile(.mp, ...)
   }
 

@@ -17,7 +17,11 @@ sdts_predict(model, data, window_size)
 Returns a \code{vector} of \code{logical} with predicted annotations.
 }
 \description{
-Scalable Dictionary learning for Time Series (SDTS) prediction function
+This function trains a model that uses a dictionary to predict state changes. Differently from
+\code{\link[=fluss]{fluss()}}, it doesn't look for semantic changes (that may be several), but for binary states like
+"on" or "off". Think for example that a human annotator is pressing a switch any time he thinks
+that the recorded data is relevant, and releases the switch when he thinks the data is noise. This
+algorithm will learn the switching points (even better) and try to predict using new data.
 }
 \examples{
 # This is a fast toy example and results are useless. For a complete result, run the code inside
@@ -31,6 +35,7 @@ te_label <- mp_test_data$test$label[subs]
 model <- sdts_train(tr_data, tr_label, w, verbose = 0)
 predict <- sdts_predict(model, te_data, round(mean(w)))
 sdts_score(te_label, predict, 1)
+
 \dontrun{
 windows <- c(110, 220, 330)
 model <- sdts_train(mp_test_data$train$data, mp_test_data$train$label, windows, verbose = 0)
@@ -47,7 +52,7 @@ to Predict Outcomes. Proc VLDB Endow. 2017 Aug 1;10(12):1802–12.
 Website: \url{https://sites.google.com/view/weaklylabeled}
 }
 \seealso{
-Other SDTS: \code{\link{sdts_score}},
+Other Scalable Dictionaries: \code{\link{sdts_score}},
   \code{\link{sdts_train}}
 }
-\concept{SDTS}
+\concept{Scalable Dictionaries}

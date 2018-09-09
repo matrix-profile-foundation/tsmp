@@ -11,31 +11,20 @@ fluss_extract(.mpac, num_segments, exclusion_zone = NULL)
 
 \item{num_segments}{an \code{int}. Number of segments to extract. Based on domain knowledge.}
 
-\item{exclusion_zone}{if a \code{number} will be used instead of embeded value. (Default is \code{NULL}).}
+\item{exclusion_zone}{if a \code{number} will be used instead of embedded value. (Default is \code{NULL}).}
 }
 \value{
-Returns an \code{int} or a \code{vector} of \code{int} with the location of predicted semantic changes.
-The number of locations is not greater than \code{num_segments}.
+Returns the input \code{.mp} object a new name \code{fluss} with the location of semantic changes.
 }
 \description{
 Extract candidate points of semantic changes.
 }
 \examples{
-# This is a fast toy example and results are useless. For a complete result, run the code inside
-#'Not run' section below.
 data <- mp_fluss_data$tilt_abp$data[1:1000]
-w <- 210
-mp <- stomp(data, window_size = w, verbose = 0)
-cac <- fluss_cac(mp$pi, w)
-segments <- fluss_extract(cac, 1, w)
-\dontrun{
-data <- mp_fluss_data$walkjogrun$data
-w <- mp_fluss_data$walkjogrun$window # 80
-nseg <- length(mp_fluss_data$walkjogrun$gtruth) # 2
-mp <- stomp(data, window_size = w)
-cac <- fluss_cac(mp$pi, w)
-segments <- fluss_extract(cac, nseg, w)
-}
+w <- 10
+mp <- tsmp(data, window_size = w, verbose = 0)
+mp <- fluss_cac(mp)
+mp <- fluss_extract(mp, 2)
 }
 \references{
 \itemize{

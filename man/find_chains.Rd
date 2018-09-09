@@ -10,8 +10,8 @@ find_chains(.mp)
 \item{.mp}{a TSMP object of class \code{MatrixProfile}.}
 }
 \value{
-Returns \code{chains}, a \code{list} of chains founded with more than 2 patterns and \code{best} with
-the best one.
+Returns the input \code{.mp} object with a new name \code{chain}. It contains: \code{chains}, a \code{list}
+of chains founded with more than 2 patterns and \code{best} with the best one.
 }
 \description{
 Time Series Chains is a new primitive for time series data mining.

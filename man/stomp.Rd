@@ -24,9 +24,9 @@ profile.}
 \item{n_workers}{an \code{int}. Number of workers for parallel. (Default is \code{2}).}
 }
 \value{
-Returns the matrix profile \code{mp} and profile index \code{pi}. It also returns the left and
-right matrix profile \code{lmp}, \code{rmp} and profile index \code{lpi}, \code{rpi} that may be used to detect
-Time Series Chains (Yan Zhu 2018).
+Returns a \code{MatrixProfile} object, a \code{list} with the matrix profile \code{mp}, profile index \code{pi}
+left and right matrix profile \code{lmp}, \code{rmp} and profile index \code{lpi}, \code{rpi}, window size \code{w} and
+exclusion zone \code{ez}.
 }
 \description{
 Computes the Matrix Profile and Profile Index for Univariate Time Series.
@@ -48,10 +48,14 @@ provided (join similarity), this parameter is ignored.
 }}
 
 \examples{
-mp <- stomp(mp_toy_data$data[1:200,1], window_size = 30, verbose = 0)
+mp <- stomp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+
+# using threads
+mp <- stomp_par(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+
 \dontrun{
-ref_data <- mp_toy_data$data[,1]
-query_data <- mp_toy_data$data[,2]
+ref_data <- mp_toy_data$data[, 1]
+query_data <- mp_toy_data$data[, 2]
 # self similarity
 mp <- stomp(ref_data, window_size = 30)
 # join similarity

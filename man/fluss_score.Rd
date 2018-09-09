@@ -21,25 +21,13 @@ Zero is the best, One is the worst.
 FLUSS - Prediction score calculation
 }
 \examples{
-# This is a fast toy example and results are useless. For a complete result, run the code inside
-#'Not run' section below.
 data <- mp_fluss_data$tilt_abp$data[1:1000]
 w <- 10
-truth <- 400
-mp <- stomp(data, window_size = w, verbose = 0)
-cac <- fluss_cac(mp$pi, w)
-segments <- fluss_extract(cac, 1, w)
-score <- fluss_score(truth, segments, length(data))
-\dontrun{
-data <- mp_fluss_data$walkjogrun$data
-w <- mp_fluss_data$walkjogrun$window # 80
-truth <- mp_fluss_data$walkjogrun$gtruth # 3800 6800
-nseg <- length(mp_fluss_data$walkjogrun$gtruth) # 2
-mp <- stomp(data, window_size = w)
-cac <- fluss_cac(mp$pi, w)
-segments <- fluss_extract(cac, nseg, w)
-score <- fluss_score(truth, segments, length(data))
-}
+truth <- c(945, 875)
+mp <- tsmp(data, window_size = w, verbose = 0)
+mp <- fluss_cac(mp)
+mp <- fluss_extract(mp, 2)
+score <- fluss_score(truth, mp$fluss, length(data))
 }
 \references{
 \itemize{

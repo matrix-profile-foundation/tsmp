@@ -34,6 +34,7 @@ te_label <- mp_test_data$test$label[subs]
 model <- sdts_train(tr_data, tr_label, w, verbose = 0)
 predict <- sdts_predict(model, te_data, round(mean(w)))
 sdts_score(te_label, predict, 1)
+
 \dontrun{
 windows <- c(110, 220, 330)
 model <- sdts_train(mp_test_data$train$data, mp_test_data$train$label, windows)
@@ -51,7 +52,7 @@ to Predict Outcomes. Proc VLDB Endow. 2017 Aug 1;10(12):1802–12.
 Website: \url{https://sites.google.com/view/weaklylabeled}
 }
 \seealso{
-Other SDTS: \code{\link{sdts_predict}},
+Other Scalable Dictionaries: \code{\link{sdts_predict}},
   \code{\link{sdts_train}}
 }
-\concept{SDTS}
+\concept{Scalable Dictionaries}

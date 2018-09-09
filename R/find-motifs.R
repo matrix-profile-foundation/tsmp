@@ -4,25 +4,28 @@
 #' @param ... further arguments to be passed to class specific function.
 #' @name find_motif
 #' @export
-#' @examples
-#' w <- 50
-#' data <- mp_gait_data
-#' mp <- tsmp(data, window_size = w, exclusion_zone = 1/4, verbose = 0)
-#' mp <- find_motif(mp)
 
 find_motif <- function(.mp, ...) {
   UseMethod("find_motif", .mp)
 }
 
-#' @param data the data used to build the Matrix Profile, if not embeded.
+#' @param data the data used to build the Matrix Profile, if not embedded.
 #' @param n_motifs an `int`. Number of motifs to find. (Default is `3`).
 #' @param radius an `int`. Radius. (Default is `3`).
-#' @param exclusion_zone if a `number` will be used instead of embeded value. (Default is `NULL`).
+#' @param exclusion_zone if a `number` will be used instead of embedded value. (Default is `NULL`).
 #' @name find_motif
 #' @export
+#' @return For class `MatrixProfile`, returns the input `.mp` object with a new name `motif`. It contains: `motif_idx`, a `list`
+#' of motif pairs founded and `motif_neighbor` a `list` with respective motif's neighbors.
+#' @examples
+#' # Single dimension data
+#' w <- 50
+#' data <- mp_gait_data
+#' mp <- tsmp(data, window_size = w, exclusion_zone = 1/4, verbose = 0)
+#' mp <- find_motif(mp)
 
 find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, radius = 3, exclusion_zone = NULL) {
-  if (!any(class(.mp) %in% c("MatrixProfile"))) {
+  if (!any(class(.mp) %in% "MatrixProfile")) {
     stop("Error: First argument must be an object of class `MatrixProfile`.")
   }
 
@@ -134,11 +137,16 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, radius = 3, exclus
 
 #' @param mode a `string`. Guided or Unconstrained search. Allow partial match. (Default is `guided`).
 #' @param n_bit an `ìnt`. Bit size for discretization. Ignored on Guided search. (Default is `4`).
-#' @param n_dim an `int`. Number of dimensions to use on Guided search instead of embeded value. (Default is `NULL`).
+#' @param n_dim an `int`. Number of dimensions to use on Guided search instead of embedded value. (Default is `NULL`).
+#'
+#' @return For class `MultiMatrixProfile`, returns the input `.mp` object with a new name `motif`. It contains: `motif_idx`, a `vector`
+#' of motifs founded and `motif_dim` a `list` the dimensions where the motifs were founded.
 #'
 #' @name find_motif
 #' @export
 #' @examples
+#'
+#' # Multidimension data
 #' w <- mp_toy_data$sub_len
 #' data <- mp_toy_data$data[1:300, ]
 #' mp <- tsmp(data, window_size = w, mode = "mstomp", verbose = 0)

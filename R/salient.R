@@ -4,30 +4,21 @@
 #' retrieves the most relevant subsequences using Minimal Description Length (MDL) framework.
 #'
 #' @details
-#' The main purpose of this algorithm is to find subsequences in one time series, but this
-#' implementation also covers the experimental effectiveness evaluation with "whole sequence"
-#' setting. This means you can input a `matrix` where each column is a sequence and this algorithm
-#' will retrieve the most relevant sequences. For this setting, the `exclusion_zone` is ignored, and
-#' you need to pre-compute the ordinary euclidean distance matrix. See examples.
-#'
-#' The `exclusion_zone` is used to avoid trivial matches.
-#'
 #' `verbose` changes how much information is printed by this function; `0` means nothing,
 #' `1` means text, `2` means text and sound.
 #'
-#' @param data a `vector`, column `matrix` or `data.frame`. If more than one column is provided, see
-#'   details.
+#' @param .mp a TSMP object of class `MatrixProfile`.
+#' @param data the data used to build the Matrix Profile, if not embedded.
 #' @param n_bits an `int`. Number of bits for MDL discretization. (Default is `8`).
 #' @param n_cand an `int`. number of candidate when picking the subsequence in each iteration.
 #'   (Default is `10`).
-#' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on `window_size`. (Default
-#'   is `1/2`). See details.
+#' @param exclusion_zone if a `number` will be used instead of embedded value. (Default is `NULL`).
 #' @param verbose an `int`. See details. (Default is `2`).
-#' @param .mp
 #'
-#' @return Returns a `list` with `indexes`, a `vector` with the starting position of each
-#'   subsequence, `idx_bit_size`, a `vector` with the associated bitsize for each iteration and
-#'   `bits` the value used as input on `n_bits`.
+#' @return Returns the input `.mp` object with a new name `salient`. It contains: `indexes`, a `vector`
+#' with the starting position of each subsequence, `idx_bit_size`, a `vector` with the associated
+#' bitsize for each iteration and `bits` the value used as input on `n_bits`.
+#'
 #' @references * Yeh CCM, Van Herle H, Keogh E. Matrix profile III: The matrix profile allows
 #'   visualization of salient subsequences in massive time series. Proc - IEEE Int Conf Data Mining,
 #'   ICDM. 2017;579–88.
@@ -38,34 +29,12 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#'   # subsequences setting (main purpose)
-#'   salient_subsequences(data, data$mp, data$pi, 30, n_bits = 8, n_cand = 10)
-#'
-#'   # sequences setting
-#'   dist_matrix <- as.matrix(stats::dist(carfull$data))
-#'   mp <- matrix(0, nrow(carfull$data), 1)
-#'   pi <- matrix(0, nrow(carfull$data), 1)
-#'
-#'   for (i in 1:nrow(carfull$data)) {
-#'     dist_matrix[i, i] <- Inf;
-#'     pi[i] <- which.min(dist_matrix[i, ])
-#'     mp[i] <- dist_matrix[i, pi[i]]
-#'   }
-#'
-#'   n_bits <- 8
-#'
-#'   subs <- salient_subsequences(t(carfull$data), mp, pi, 577, n_bits = n_bits, n_cand = 10)
-#'   cutoff <- which(diff(subs$idx_bit_size) > 0)[1] - 1
-#'   if(cutoff > 0) {
-#'     carfull$lab[subs$indexes[1:(cutoff - 1)]]
-#'   } else {
-#'     message("nothing to do")
-#'   }
-#' }
+#' data <- mp_toy_data$data[, 1]
+#' mp <- tsmp(data, window_size = 30, verbose = 0)
+#' mps <- salient_subsequences(mp, data, verbose = 0)
 #'
 salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_zone = NULL, verbose = 2) {
-  if (!any(class(.mp) %in% c("MatrixProfile"))) {
+  if (!any(class(.mp) %in% "MatrixProfile")) {
     stop("Error: First argument must be an object of class `MatrixProfile`.")
   }
 
@@ -338,42 +307,6 @@ salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_z
   .mp$salient <- list(indexes = indexes, idx_bit_size = idx_bit_size, bits = n_bits)
   class(.mp) <- update_class(class(.mp), "Salient")
   return(.mp)
-}
-
-#' Retrieve the index of a number of candidates from the lowest points of a MP
-#'
-#' @param matrix_profile the matrix profile
-#' @param n_cand number of candidates to extract
-#' @param exclusion_zone exclusion zone for extracting candidates (in absolute values)
-#'
-#' @return Returns the indexes of candidates
-#'
-#' @keywords internal
-#' @noRd
-#'
-get_sorted_idx <- function(matrix_profile, n_cand, exclusion_zone = 0) {
-  idx <- sort(matrix_profile, index.return = TRUE)$ix
-
-  if (exclusion_zone > 0) {
-    for (i in seq_len(length(idx))) {
-      if (i > min(n_cand, length(idx))) {
-        break
-      }
-      idx_temp <- idx[(i + 1):length(idx)]
-      idx_temp <- idx_temp[abs(idx_temp - idx[i]) >= exclusion_zone]
-      idx <- c(idx[1:i], idx_temp)
-    }
-  }
-
-  idx <- idx[!is.infinite(matrix_profile[idx])]
-
-  if (n_cand > length(idx)) {
-    n_cand <- length(idx)
-  }
-
-  idx <- idx[1:n_cand]
-
-  return(idx)
 }
 
 # To be ------------------------------------------------------------------------------------------

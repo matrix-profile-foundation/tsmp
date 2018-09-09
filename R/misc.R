@@ -81,6 +81,19 @@ std <- function(data) {
   return(sqrt((length(data) - 1) / length(data)) * sdx)
 }
 
+#' Calculates the mode of a vector
+#'
+#' @param x
+#'
+#' @return the mode
+#' @keywords internal
+#' @noRd
+
+mode <- function(x) {
+  ux <- unique(x)
+  ux[which.max(tabulate(match(x, ux)))]
+}
+
 #' Normalizes data for mean Zero and Standard Deviation One
 #'
 #' @inheritParams fast_movsd
@@ -133,7 +146,236 @@ diff2 <- function(x, y) {
   sqrt(pmax(xx + yy - 2 * xy, 0))
 }
 
+# SDTS Aux functions -----------------------------------------------------------------------------
+
+
+#' Computes the golden section for individual candidates
+#'
+#' @param dist_pro the candidate distance profile
+#' @param label a vector with the data bool annotation
+#' @param pos_st a vector with the starting points of label
+#' @param pos_ed a vector with the ending points of label
+#' @param beta a number that balance the F-Score. Beta > 1 towards recall, < towards precision
+#' @param window_size an integer with the sliding window size
+#'
+#' @return Returns the best threshold and its F-Score
+#'
+#' @keywords internal
+#' @noRd
+#'
+golden_section <- function(dist_pro, label, pos_st, pos_ed, beta, window_size) {
+  golden_ratio <- (1 + sqrt(5)) / 2
+  a_thold <- min(dist_pro)
+  b_thold <- max(dist_pro[!is.infinite(dist_pro)])
+  c_thold <- b_thold - (b_thold - a_thold) / golden_ratio
+  d_thold <- a_thold + (b_thold - a_thold) / golden_ratio
+  tol <- max((b_thold - a_thold) * 0.001, 0.0001)
+
+  while (abs(c_thold - d_thold) > tol) {
+    c_score <- compute_f_meas(label, pos_st, pos_ed, dist_pro, c_thold, window_size, beta)
+    d_score <- compute_f_meas(label, pos_st, pos_ed, dist_pro, d_thold, window_size, beta)
+
+    if (c_score$f_meas > d_score$f_meas) {
+      b_thold <- d_thold
+    } else {
+      a_thold <- c_thold
+    }
+
+    c_thold <- b_thold - (b_thold - a_thold) / golden_ratio
+    d_thold <- a_thold + (b_thold - a_thold) / golden_ratio
+  }
+  thold <- (a_thold + b_thold) * 0.5
+  score <- compute_f_meas(label, pos_st, pos_ed, dist_pro, thold, window_size, beta)
+
+  return(list(thold = thold, score = score$f_meas))
+}
+
+#' Computes the golden section for combined candidates
+
+#' @param dist_pro the candidate distance profile
+#'
+#' @param thold a number with the threshold used to calculate the F-Score
+#' @param label a vector with the data bool annotation
+#' @param pos_st a vector with the starting points of label
+#' @param pos_ed a vector with the ending points of label
+#' @param beta a number that balance the F-Score. Beta > 1 towards recall, < towards precision
+#' @param window_size an integer with the sliding window size
+#' @param fit_idx an integer with the index of the current threshold
+#'
+#' @return Returns the best threshold and its F-Score
+#'
+#' @keywords internal
+#' @noRd
+
+golden_section_2 <- function(dist_pro, thold, label, pos_st, pos_ed, beta, window_size, fit_idx) {
+  golden_ratio <- (1 + sqrt(5)) / 2
+  a_thold <- min(dist_pro[[fit_idx]], na.rm = TRUE)
+  b_thold <- max(dist_pro[[fit_idx]][!is.infinite(dist_pro[[fit_idx]])], na.rm = TRUE)
+  c_thold <- b_thold - (b_thold - a_thold) / golden_ratio
+  d_thold <- a_thold + (b_thold - a_thold) / golden_ratio
+  tol <- max((b_thold - a_thold) * 0.001, 0.0001)
+
+  while (abs(c_thold - d_thold) > tol) {
+    c_thold_combined <- thold
+    d_thold_combined <- thold
+    c_thold_combined[fit_idx] <- c_thold
+    d_thold_combined[fit_idx] <- d_thold
+
+    c_score <- compute_f_meas(label, pos_st, pos_ed, dist_pro, c_thold_combined, window_size, beta)
+    d_score <- compute_f_meas(label, pos_st, pos_ed, dist_pro, d_thold_combined, window_size, beta)
+
+    if (c_score$f_meas > d_score$f_meas) {
+      b_thold <- d_thold
+    } else {
+      a_thold <- c_thold
+    }
+
+    c_thold <- b_thold - (b_thold - a_thold) / golden_ratio
+    d_thold <- a_thold + (b_thold - a_thold) / golden_ratio
+  }
+  thold[fit_idx] <- (a_thold + b_thold) * 0.5
+  score <- compute_f_meas(label, pos_st, pos_ed, dist_pro, thold, window_size, beta)
+
+  # beta = 2;   emphacise recall
+  # beta = 0.5; emphacise precision
+  return(list(thold = thold, score = score$f_meas))
+}
+
+#' Computes de F-Score
+#'
+#' @param label a vector with the data bool annotation
+#' @param pos_st a vector with the starting points of label
+#' @param pos_ed a vector with the ending points of label
+#' @param dist_pro the distance profile of the data
+#' @param thold a number with the threshold used to compute the prediction
+#' @param window_size an integer with the sliding window size
+#' @param beta a number that balance the F-Score. Beta > 1 towards recall, < towards precision
+#'
+#' @return Returns the F-Score, precision and recall values
+#'
+#' @keywords internal
+#' @noRd
+
+compute_f_meas <- function(label, pos_st, pos_ed, dist_pro, thold, window_size, beta) {
+  # generate annotation curve for each pattern
+  if (is.list(dist_pro)) {
+    anno_st <- list()
+    n_pat <- length(dist_pro)
+
+    for (i in 1:n_pat) {
+      annor <- dist_pro[[i]] - thold[i]
+      annor[annor > 0] <- 0
+      annor[annor < 0] <- -1
+      annor <- -annor
+      anno_st[[i]] <- which(diff(c(0, annor, 0)) == 1) + 1
+      anno_st[[i]] <- anno_st[[i]] - 1
+    }
+
+    anno_st <- unlist(anno_st)
+    anno_st <- sort(anno_st)
+
+    i <- 1
+    while (TRUE) {
+      if (i >= length(anno_st)) {
+        break
+      }
+
+      first_part <- anno_st[1:i]
+      second_part <- anno_st[(i + 1):length(anno_st)]
+      bad_st <- abs(second_part - anno_st[i]) < window_size
+
+      second_part <- second_part[!bad_st]
+      anno_st <- c(first_part, second_part)
+      i <- i + 1
+    }
+
+    anno_ed <- anno_st + window_size - 1
+  } else {
+    anno <- dist_pro - thold
+    anno[anno > 0] <- 0
+    anno[anno < 0] <- -1
+    anno <- -anno
+
+    anno_st <- which(diff(c(0, anno, 0)) == 1) + 1
+    anno_ed <- anno_st + window_size - 1
+    anno_st <- anno_st - 1
+    anno_ed <- anno_ed - 1
+  }
+
+  anno <- rep(FALSE, length(label))
+
+  for (i in seq_len(length(anno_st))) {
+    anno[anno_st[i]:anno_ed[i]] <- 1
+  }
+
+  is.tp <- rep(FALSE, length(anno_st))
+
+  for (i in seq_len(length(anno_st))) {
+    if (anno_ed[i] > length(label)) {
+      anno_ed[i] <- length(label)
+    }
+    if (sum(label[anno_st[i]:anno_ed[i]]) > (0.8 * window_size)) {
+      is.tp[i] <- TRUE
+    }
+  }
+  tp_pre <- sum(is.tp)
+
+  is.tp <- rep(FALSE, length(pos_st))
+  for (i in seq_len(length(pos_st))) {
+    if (sum(anno[pos_st[i]:pos_ed[i]]) > (0.8 * window_size)) {
+      is.tp[i] <- TRUE
+    }
+  }
+  tp_rec <- sum(is.tp)
+
+  pre <- tp_pre / length(anno_st)
+  rec <- tp_rec / length(pos_st)
+
+  f_meas <- (1 + beta^2) * (pre * rec) / ((beta^2) * pre + rec)
+  if (is.na(f_meas)) {
+    f_meas <- 0
+  }
+  return(list(f_meas = f_meas, pre = pre, rec = rec))
+}
+
+
 # Salient Aux functions --------------------------------------------------------------------------
+
+#' Retrieve the index of a number of candidates from the lowest points of a MP
+#'
+#' @param matrix_profile the matrix profile
+#' @param n_cand number of candidates to extract
+#' @param exclusion_zone exclusion zone for extracting candidates (in absolute values)
+#'
+#' @return Returns the indexes of candidates
+#'
+#' @keywords internal
+#' @noRd
+#'
+get_sorted_idx <- function(matrix_profile, n_cand, exclusion_zone = 0) {
+  idx <- sort(matrix_profile, index.return = TRUE)$ix
+
+  if (exclusion_zone > 0) {
+    for (i in seq_len(length(idx))) {
+      if (i > min(n_cand, length(idx))) {
+        break
+      }
+      idx_temp <- idx[(i + 1):length(idx)]
+      idx_temp <- idx_temp[abs(idx_temp - idx[i]) >= exclusion_zone]
+      idx <- c(idx[1:i], idx_temp)
+    }
+  }
+
+  idx <- idx[!is.infinite(matrix_profile[idx])]
+
+  if (n_cand > length(idx)) {
+    n_cand <- length(idx)
+  }
+
+  idx <- idx[1:n_cand]
+
+  return(idx)
+}
 
 #' Reduced description length
 #'
@@ -429,16 +671,25 @@ update_class <- function(classes, new_class) {
 #'
 #' @param .mp a TSMP object.
 #'
+#' @return Returns the object with the new class, if possible.
+#'
 #' @describeIn as.matrixprofile Cast an object changed by another function back to `MatrixProfile`.
 #' @export
 #' @examples
-#' \dontrun{
-#'   plot(as.matrixprofile(fluss_obj))
-#' }
+#'
+#' w <- 50
+#' data <- mp_gait_data
+#' mp <- tsmp(data, window_size = w, exclusion_zone = 1/4, verbose = 0)
+#' mp <- find_motif(mp)
+#' class(mp) # first class will be "Motif"
+#'
+#' plot(mp) # plots a motif plot
+#'
+#' plot(as.matrixprofile(mp)) # plots a matrix profile plot
 #'
 
 as.matrixprofile <- function(.mp) {
-  if (!any(class(.mp) %in% c("MatrixProfile"))) {
+  if (!any(class(.mp) %in% "MatrixProfile")) {
     stop("Error: This object cannot be a `MatrixProfile`.")
   }
 
@@ -452,7 +703,7 @@ as.matrixprofile <- function(.mp) {
 #'
 
 as.multimatrixprofile <- function(.mp) {
-  if (!any(class(.mp) %in% c("MultiMatrixProfile"))) {
+  if (!any(class(.mp) %in% "MultiMatrixProfile")) {
     stop("Error: This object cannot be a `MultiMatrixProfile`.")
   }
 
@@ -466,7 +717,7 @@ as.multimatrixprofile <- function(.mp) {
 #' @export
 
 as.fluss <- function(.mp) {
-  if (!any(class(.mp) %in% c("Fluss"))) {
+  if (!any(class(.mp) %in% "Fluss")) {
     stop("Error: This object cannot be a `Fluss`.")
   }
 
@@ -480,7 +731,7 @@ as.fluss <- function(.mp) {
 #' @export
 
 as.chain <- function(.mp) {
-  if (!any(class(.mp) %in% c("Chain"))) {
+  if (!any(class(.mp) %in% "Chain")) {
     stop("Error: This object cannot be a `Chain`.")
   }
 
@@ -494,7 +745,7 @@ as.chain <- function(.mp) {
 #' @export
 
 as.motif <- function(.mp) {
-  if (!any(class(.mp) %in% c("Motif"))) {
+  if (!any(class(.mp) %in% "Motif")) {
     stop("Error: This object cannot be a `Motif`.")
   }
 
@@ -508,7 +759,7 @@ as.motif <- function(.mp) {
 #' @export
 
 as.multimotif <- function(.mp) {
-  if (!any(class(.mp) %in% c("MultiMotif"))) {
+  if (!any(class(.mp) %in% "MultiMotif")) {
     stop("Error: This object cannot be a `MultiMotif`.")
   }
 
@@ -522,7 +773,7 @@ as.multimotif <- function(.mp) {
 #' @export
 
 as.arccount <- function(.mp) {
-  if (!any(class(.mp) %in% c("ArcCount"))) {
+  if (!any(class(.mp) %in% "ArcCount")) {
     stop("Error: This object cannot be a `ArcCount`.")
   }
 
@@ -535,7 +786,7 @@ as.arccount <- function(.mp) {
 #' @export
 
 as.salient <- function(.mp) {
-  if (!any(class(.mp) %in% c("Salient"))) {
+  if (!any(class(.mp) %in% "Salient")) {
     stop("Error: This object cannot be a `Salient`.")
   }
 

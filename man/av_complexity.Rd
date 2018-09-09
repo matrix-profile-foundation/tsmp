@@ -17,7 +17,7 @@ av_complexity(.mp, data, dilution_factor = 0, apply = FALSE)
 Use with caution.}
 }
 \value{
-Returns the annotation vector for matrix profile correction.
+Returns the input \code{.mp} object with an embedded annotation vector.
 }
 \description{
 Computes the annotation vector that favors complexity

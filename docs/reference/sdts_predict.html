@@ -32,7 +32,11 @@
 
 <meta property="og:title" content="Scalable Dictionary learning for Time Series (SDTS) prediction function — sdts_predict" />
 
-<meta property="og:description" content="Scalable Dictionary learning for Time Series (SDTS) prediction function" />
+<meta property="og:description" content="This function trains a model that uses a dictionary to predict state changes. Differently from
+fluss(), it doesn't look for semantic changes (that may be several), but for binary states like
+&quot;on&quot; or &quot;off&quot;. Think for example that a human annotator is pressing a switch any time he thinks
+that the recorded data is relevant, and releases the switch when he thinks the data is noise. This
+algorithm will learn the switching points (even better) and try to predict using new data." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -63,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tsmp</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.15.9004</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.15.9009</span>
       </span>
     </div>
 
@@ -109,7 +113,11 @@
 
     <div class="ref-description">
     
-    <p>Scalable Dictionary learning for Time Series (SDTS) prediction function</p>
+    <p>This function trains a model that uses a dictionary to predict state changes. Differently from
+<code><a href='fluss.html'>fluss()</a></code>, it doesn't look for semantic changes (that may be several), but for binary states like
+"on" or "off". Think for example that a human annotator is pressing a switch any time he thinks
+that the recorded data is relevant, and releases the switch when he thinks the data is noise. This
+algorithm will learn the switching points (even better) and try to predict using new data.</p>
     
     </div>
 
@@ -146,7 +154,7 @@ to Predict Outcomes. Proc VLDB Endow. 2017 Aug 1;10(12):1802–12.</p></li>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other SDTS: <code><a href='sdts_f_score.html'>sdts_f_score</a></code>,
+    <div class='dont-index'><p>Other Scalable Dictionaries: <code><a href='sdts_score.html'>sdts_score</a></code>,
   <code><a href='sdts_train.html'>sdts_train</a></code></p></div>
     
 
@@ -161,7 +169,7 @@ to Predict Outcomes. Proc VLDB Endow. 2017 Aug 1;10(12):1802–12.</p></li>
 <span class='no'>te_label</span> <span class='kw'>&lt;-</span> <span class='no'>mp_test_data</span>$<span class='no'>test</span>$<span class='no'>label</span>[<span class='no'>subs</span>]
 <span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sdts_train.html'>sdts_train</a></span>(<span class='no'>tr_data</span>, <span class='no'>tr_label</span>, <span class='no'>w</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 <span class='no'>predict</span> <span class='kw'>&lt;-</span> <span class='fu'>sdts_predict</span>(<span class='no'>model</span>, <span class='no'>te_data</span>, <span class='fu'>round</span>(<span class='fu'>mean</span>(<span class='no'>w</span>)))
-<span class='fu'><a href='sdts_f_score.html'>sdts_f_score</a></span>(<span class='no'>te_label</span>, <span class='no'>predict</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: longer object length is not a multiple of shorter object length</span></div><div class='output co'>#&gt; $f_score
+<span class='fu'><a href='sdts_score.html'>sdts_score</a></span>(<span class='no'>te_label</span>, <span class='no'>predict</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; $f_score
 #&gt; [1] 0.06451613
 #&gt; 
 #&gt; $precision
@@ -169,11 +177,12 @@ to Predict Outcomes. Proc VLDB Endow. 2017 Aug 1;10(12):1802–12.</p></li>
 #&gt; 
 #&gt; $recall
 #&gt; [1] 1
-#&gt; </div><span class='co'># NOT RUN {</span>
+#&gt; </div><div class='input'>
+</div><span class='co'># NOT RUN {</span>
 <span class='no'>windows</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>110</span>, <span class='fl'>220</span>, <span class='fl'>330</span>)
 <span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sdts_train.html'>sdts_train</a></span>(<span class='no'>mp_test_data</span>$<span class='no'>train</span>$<span class='no'>data</span>, <span class='no'>mp_test_data</span>$<span class='no'>train</span>$<span class='no'>label</span>, <span class='no'>windows</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 <span class='no'>predict</span> <span class='kw'>&lt;-</span> <span class='fu'>sdts_predict</span>(<span class='no'>model</span>, <span class='no'>mp_test_data</span>$<span class='no'>test</span>$<span class='no'>data</span>, <span class='fu'>round</span>(<span class='fu'>mean</span>(<span class='no'>windows</span>)))
-<span class='fu'><a href='sdts_f_score.html'>sdts_f_score</a></span>(<span class='no'>mp_test_data</span>$<span class='no'>test</span>$<span class='no'>label</span>, <span class='no'>predict</span>, <span class='fl'>1</span>)
+<span class='fu'><a href='sdts_score.html'>sdts_score</a></span>(<span class='no'>mp_test_data</span>$<span class='no'>test</span>$<span class='no'>label</span>, <span class='no'>predict</span>, <span class='fl'>1</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

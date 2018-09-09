@@ -162,7 +162,8 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
     work_len <- length(idx_work[[i]])
     pro_muls <- matrix(Inf, matrix_profile_size, 1)
     pro_idxs <- matrix(-1, matrix_profile_size, 1)
-    if (length(args) > 1) { # no RMP and LMP for joins
+    if (length(args) > 1) {
+      # no RMP and LMP for joins
       pro_muls_right <- pro_muls_left <- NULL
       pro_idxs_right <- pro_idxs_left <- NULL
     } else {
@@ -211,7 +212,8 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
         }
       }
 
-      if (length(args) == 1) { # no RMP and LMP for joins
+      if (length(args) == 1) {
+        # no RMP and LMP for joins
         # left matrix_profile
         ind <- (dist_pro[idx:matrix_profile_size] < pro_muls_left[idx:matrix_profile_size])
         ind <- c(rep(FALSE, (idx - 1)), ind) # pad left
@@ -242,7 +244,8 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
 
   matrix_profile <- matrix(Inf, matrix_profile_size, 1)
   profile_index <- matrix(-1, matrix_profile_size, 1)
-  if (length(args) > 1) { # no RMP and LMP for joins
+  if (length(args) > 1) {
+    # no RMP and LMP for joins
     left_matrix_profile <- right_matrix_profile <- NULL
     left_profile_index <- right_profile_index <- NULL
   } else {
@@ -255,7 +258,8 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
     matrix_profile[ind] <- batch[[i]]$pro_muls[ind]
     profile_index[ind] <- batch[[i]]$pro_idxs[ind]
 
-    if (length(args) == 1) { # no RMP and LMP for joins
+    if (length(args) == 1) {
+      # no RMP and LMP for joins
       ind <- (batch[[i]]$pro_muls_left < left_matrix_profile)
       left_matrix_profile[ind] <- batch[[i]]$pro_muls_left[ind]
       left_profile_index[ind] <- batch[[i]]$pro_idxs_left[ind]

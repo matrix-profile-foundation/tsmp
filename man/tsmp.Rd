@@ -34,7 +34,7 @@ details.}
 
 \item{n_workers}{an \code{int}. Number of workers for parallel. (Default is \code{1}).}
 
-\item{.keep_data}{}
+\item{.keep_data}{a \code{logical}. (Default is \code{TRUE}). Keeps the data embedded to resultant object.}
 }
 \value{
 Returns the matrix profile \code{mp} and profile index \code{pi}. It also returns the left and
@@ -90,7 +90,20 @@ If the value is 2 or more, the '_par' version of the algorithm will be used.}
 \code{mode} can be any of the following: \code{stomp}, \code{stamp}, \code{simple}, \code{mstomp}, \code{scrimp}.
 }
 \examples{
-mp <- tsmp(mp_toy_data$data[1:200,1], window_size = 30, verbose = 0)
+# default with [stomp()]
+mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+
+# parallel with [stomp_par()]
+mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, n_workers = 2, verbose = 0)
+
+# Anytime STAMP
+mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, mode = "stamp", s_size = 50, verbose = 0)
+
+# [mstomp()]
+mp <- tsmp(mp_toy_data$data[1:200, ], window_size = 30, mode = "mstomp", verbose = 0)
+
+# [simple_fast()]
+mp <- tsmp(mp_toy_data$data[1:200, ], window_size = 30, mode = "simple", verbose = 0)
 }
 \references{
 \itemize{

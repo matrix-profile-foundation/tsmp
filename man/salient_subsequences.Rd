@@ -8,68 +8,36 @@ salient_subsequences(.mp, data, n_bits = 8, n_cand = 10,
   exclusion_zone = NULL, verbose = 2)
 }
 \arguments{
-\item{.mp}{}
+\item{.mp}{a TSMP object of class \code{MatrixProfile}.}
 
-\item{data}{a \code{vector}, column \code{matrix} or \code{data.frame}. If more than one column is provided, see
-details.}
+\item{data}{the data used to build the Matrix Profile, if not embedded.}
 
 \item{n_bits}{an \code{int}. Number of bits for MDL discretization. (Default is \code{8}).}
 
 \item{n_cand}{an \code{int}. number of candidate when picking the subsequence in each iteration.
 (Default is \code{10}).}
 
-\item{exclusion_zone}{a \code{numeric}. Size of the exclusion zone, based on \code{window_size}. (Default
-is \code{1/2}). See details.}
+\item{exclusion_zone}{if a \code{number} will be used instead of embedded value. (Default is \code{NULL}).}
 
 \item{verbose}{an \code{int}. See details. (Default is \code{2}).}
 }
 \value{
-Returns a \code{list} with \code{indexes}, a \code{vector} with the starting position of each
-subsequence, \code{idx_bit_size}, a \code{vector} with the associated bitsize for each iteration and
-\code{bits} the value used as input on \code{n_bits}.
+Returns the input \code{.mp} object with a new name \code{salient}. It contains: \code{indexes}, a \code{vector}
+with the starting position of each subsequence, \code{idx_bit_size}, a \code{vector} with the associated
+bitsize for each iteration and \code{bits} the value used as input on \code{n_bits}.
 }
 \description{
 In order to allow a meaningful visualization in Multi-Dimensional Space (MDS), this function
 retrieves the most relevant subsequences using Minimal Description Length (MDL) framework.
 }
 \details{
-The main purpose of this algorithm is to find subsequences in one time series, but this
-implementation also covers the experimental effectiveness evaluation with "whole sequence"
-setting. This means you can input a \code{matrix} where each column is a sequence and this algorithm
-will retrieve the most relevant sequences. For this setting, the \code{exclusion_zone} is ignored, and
-you need to pre-compute the ordinary euclidean distance matrix. See examples.
-
-The \code{exclusion_zone} is used to avoid trivial matches.
-
 \code{verbose} changes how much information is printed by this function; \code{0} means nothing,
 \code{1} means text, \code{2} means text and sound.
 }
 \examples{
-\dontrun{
-  # subsequences setting (main purpose)
-  salient_subsequences(data, data$mp, data$pi, 30, n_bits = 8, n_cand = 10)
-
-  # sequences setting
-  dist_matrix <- as.matrix(stats::dist(carfull$data))
-  mp <- matrix(0, nrow(carfull$data), 1)
-  pi <- matrix(0, nrow(carfull$data), 1)
-
-  for (i in 1:nrow(carfull$data)) {
-    dist_matrix[i, i] <- Inf;
-    pi[i] <- which.min(dist_matrix[i, ])
-    mp[i] <- dist_matrix[i, pi[i]]
-  }
-
-  n_bits <- 8
-
-  subs <- salient_subsequences(t(carfull$data), mp, pi, 577, n_bits = n_bits, n_cand = 10)
-  cutoff <- which(diff(subs$idx_bit_size) > 0)[1] - 1
-  if(cutoff > 0) {
-    carfull$lab[subs$indexes[1:(cutoff - 1)]]
-  } else {
-    message("nothing to do")
-  }
-}
+data <- mp_toy_data$data[, 1]
+mp <- tsmp(data, window_size = 30, verbose = 0)
+mps <- salient_subsequences(mp, data, verbose = 0)
 
 }
 \references{

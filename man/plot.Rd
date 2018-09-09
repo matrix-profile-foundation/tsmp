@@ -39,7 +39,7 @@
 \arguments{
 \item{.mp}{a Matrix Profile}
 
-\item{data}{the data used to build the Matrix Profile, if not embeded to it.}
+\item{data}{the data used to build the Matrix Profile, if not embedded to it.}
 
 \item{type}{"data" or "matrix". Choose what will be plotted.}
 
@@ -59,7 +59,16 @@
 
 \item{ncol}{an \code{int}. Number of columns to plot Motifs.}
 }
+\value{
+None
+}
 \description{
 Plot a TSMP object
+}
+\examples{
+
+mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+plot(mp)
+
 }
 \keyword{hplot}

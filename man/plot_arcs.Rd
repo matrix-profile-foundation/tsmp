@@ -53,5 +53,6 @@ filter indexes that have distant nearest neighbor (e.g. retrieve only the best m
 }
 \examples{
 plot_arcs(pairs = matrix(c(5, 10, 1, 10, 20, 5), ncol = 2, byrow = TRUE))
+
 }
 \keyword{hplot}

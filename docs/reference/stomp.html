@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tsmp</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.15.9004</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.15.9009</span>
       </span>
     </div>
 
@@ -103,7 +103,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Univariate STOMP algorithm</h1>
-    <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/stomp.R'><code>R/stomp.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/stomp.R'><code>R/stomp.R</code></a>, <a href='https://github.com/franzbischoff/tsmp/blob/master/R/stomp_par.R'><code>R/stomp_par.R</code></a></small>
     <div class="hidden name"><code>stomp.Rd</code></div>
     </div>
 
@@ -113,7 +113,10 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>stomp</span>(<span class='no'>...</span>, <span class='no'>window_size</span>, <span class='kw'>exclusion_zone</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>2</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>2</span>)</pre>
+    <pre class="usage"><span class='fu'>stomp</span>(<span class='no'>...</span>, <span class='no'>window_size</span>, <span class='kw'>exclusion_zone</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>2</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+
+<span class='fu'>stomp_par</span>(<span class='no'>...</span>, <span class='no'>window_size</span>, <span class='kw'>exclusion_zone</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>2</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>n_workers</span> <span class='kw'>=</span> <span class='fl'>2</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -136,13 +139,17 @@ profile.</p></td>
       <th>verbose</th>
       <td><p>an <code>int</code>. See details. (Default is <code>2</code>).</p></td>
     </tr>
+    <tr>
+      <th>n_workers</th>
+      <td><p>an <code>int</code>. Number of workers for parallel. (Default is <code>2</code>).</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Returns the matrix profile <code>mp</code> and profile index <code>pi</code>. It also returns the left and
-right matrix profile <code>lmp</code>, <code>rmp</code> and profile index <code>lpi</code>, <code>rpi</code> that may be used to detect
-Time Series Chains (Yan Zhu 2018).</p>
+    <p>Returns a <code>MatrixProfile</code> object, a <code>list</code> with the matrix profile <code>mp</code>, profile index <code>pi</code>
+left and right matrix profile <code>lmp</code>, <code>rmp</code> and profile index <code>lpi</code>, <code>rpi</code>, window size <code>w</code> and
+exclusion zone <code>ez</code>.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -153,6 +160,13 @@ estimation, semantic segmentation, visualization, rule discovery, clustering etc
 changes how much information is printed by this function; <code>0</code> means nothing, <code>1</code> means text, <code>2</code>
 means text and sound. <code>exclusion_zone</code> is used to avoid  trivial matches; if a query data is
 provided (join similarity), this parameter is ignored.</p>
+    
+    <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
+
+    <ul>
+<li><p><code>stomp</code>: Single thread version.</p></li>
+<li><p><code>stomp_par</code>: Parallel version.</p></li>
+</ul>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -165,17 +179,18 @@ Joins. Icdm. 2016 Jan 22;54(1):739–48.</p></li>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='stamp.html'>stamp()</a></code>, <code><a href='stamp_par.html'>stamp_par()</a></code>; <code><a href='mstomp.html'>mstomp()</a></code>, <code><a href='mstomp_par.html'>mstomp_par()</a></code> for multivariate analysis.</p>
-<p>Other matrix profile computations: <code><a href='mstomp_par.html'>mstomp_par</a></code>,
-  <code><a href='mstomp.html'>mstomp</a></code>, <code><a href='scrimp.html'>scrimp</a></code>,
-  <code><a href='stamp_par.html'>stamp_par</a></code>, <code><a href='stamp.html'>stamp</a></code>,
-  <code><a href='stomp_par.html'>stomp_par</a></code></p></div>
+    <div class='dont-index'><p>Other matrix profile computations: <code><a href='mstomp.html'>mstomp</a></code>,
+  <code><a href='scrimp.html'>scrimp</a></code>, <code><a href='stamp.html'>stamp</a></code>,
+  <code>tsmp</code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>stomp</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>200</span>,<span class='fl'>1</span>], <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><span class='co'># NOT RUN {</span>
-<span class='no'>ref_data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_toy_data</span>$<span class='no'>data</span>[,<span class='fl'>1</span>]
-<span class='no'>query_data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_toy_data</span>$<span class='no'>data</span>[,<span class='fl'>2</span>]
+    <pre class="examples"><div class='input'><span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>stomp</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>200</span>, <span class='fl'>1</span>], <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+
+<span class='co'># using threads</span>
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>stomp_par</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>200</span>, <span class='fl'>1</span>], <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><span class='co'># NOT RUN {</span>
+<span class='no'>ref_data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_toy_data</span>$<span class='no'>data</span>[, <span class='fl'>1</span>]
+<span class='no'>query_data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_toy_data</span>$<span class='no'>data</span>[, <span class='fl'>2</span>]
 <span class='co'># self similarity</span>
 <span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>stomp</span>(<span class='no'>ref_data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='fl'>30</span>)
 <span class='co'># join similarity</span>
@@ -190,6 +205,8 @@ Joins. Icdm. 2016 Jan 22;54(1):739–48.</p></li>
       <li><a href="#value">Value</a></li>
 
       <li><a href="#details">Details</a></li>
+
+      <li><a href="#functions">Functions</a></li>
 
       <li><a href="#references">References</a></li>
 

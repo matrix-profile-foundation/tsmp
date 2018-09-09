@@ -18,7 +18,8 @@ simple_fast(..., window_size, exclusion_zone = 1/2, verbose = 2)
 \item{verbose}{an \code{int}. See details. (Default is \code{2}).}
 }
 \value{
-Returns a list with the Matrix Profile \code{mp} and Profile Index \code{pi}.
+Returns a \code{SimpleMatrixProfile} object, a \code{list} with the matrix profile \code{mp}, profile index \code{pi},
+window size \code{w} and exclusion zone \code{ez}.
 }
 \description{
 Compute the join similarity for Sound data
