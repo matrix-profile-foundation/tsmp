@@ -13,7 +13,7 @@
 \usage{
 \method{plot}{ArcCount}(.mp, data, type = c("data", "matrix"),
   exclusion_zone = NULL, edge_limit = NULL,
-  threshold = quantile(.mp$cac, 0.1), main = "Arcs Discover",
+  threshold = stats::quantile(.mp$cac, 0.1), main = "Arcs Discover",
   xlab = "index", ylab = "distance", ...)
 
 \method{plot}{MatrixProfile}(.mp, ylab = "distance", xlab = "index",

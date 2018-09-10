@@ -7,7 +7,6 @@
 #' @noRd
 
 print.MatrixProfile <- function(.mp, ...) {
-
   cat("Matrix Profile\n")
   cat("--------------\n")
 
@@ -36,7 +35,6 @@ print.MatrixProfile <- function(.mp, ...) {
 
 
 print.MultiMatrixProfile <- function(.mp, ...) {
-
   cat("Multidimensional Matrix Profile\n")
   cat("-------------------------------\n")
 
@@ -66,7 +64,6 @@ print.MultiMatrixProfile <- function(.mp, ...) {
 #' @keywords internal
 #' @noRd
 print.ArcCount <- function(.mp, ...) {
-
   if (any(class(.mp) %in% "MatrixProfile")) {
     print.MatrixProfile(.mp, ...)
   } else if (any(class(.mp) %in% "MultiMatrixProfile")) {
@@ -88,7 +85,6 @@ print.ArcCount <- function(.mp, ...) {
 #' @keywords internal
 #' @noRd
 print.Fluss <- function(.mp, ...) {
-
   if (any(class(.mp) %in% "ArcCount")) {
     print.ArcCount(.mp, ...)
   }
@@ -108,7 +104,6 @@ print.Fluss <- function(.mp, ...) {
 #' @keywords internal
 #' @noRd
 print.Chain <- function(.mp, ...) {
-
   if (any(class(.mp) %in% "MatrixProfile")) {
     print.MatrixProfile(.mp, ...)
   } else if (any(class(.mp) %in% "MultiMatrixProfile")) {
@@ -131,7 +126,6 @@ print.Chain <- function(.mp, ...) {
 #' @keywords internal
 #' @noRd
 print.Motif <- function(.mp, ...) {
-
   if (any(class(.mp) %in% "MatrixProfile")) {
     print.MatrixProfile(.mp, ...)
   } else if (any(class(.mp) %in% "MultiMatrixProfile")) {
@@ -166,7 +160,6 @@ print.Motif <- function(.mp, ...) {
 #' @keywords internal
 #' @noRd
 print.MultiMotif <- function(.mp, ...) {
-
   if (any(class(.mp) %in% "MatrixProfile")) {
     print.MatrixProfile(.mp, ...)
   } else if (any(class(.mp) %in% "MultiMatrixProfile")) {

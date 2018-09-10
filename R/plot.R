@@ -39,7 +39,6 @@
 #'
 plot_arcs <- function(pairs, alpha = NULL, quality = 30, lwd = 15, col = c("blue", "orange"),
                       main = "Arc Plot", ylab = "", xlab = "Profile Index", ...) {
-
   xmin <- min(pairs)
   xmax <- max(pairs)
   max_arc <- max(abs(pairs[, 2] - pairs[, 1]))
@@ -52,11 +51,11 @@ plot_arcs <- function(pairs, alpha = NULL, quality = 30, lwd = 15, col = c("blue
     alpha <- min(0.5, max(10 / nrow(pairs), 0.03))
   }
 
-  arccolr <- adjustcolor(col, alpha.f = alpha)
+  arccolr <- grDevices::adjustcolor(col, alpha.f = alpha)
   if (length(col) > 1) {
-    arccoll <- adjustcolor(col[2], alpha.f = alpha)
+    arccoll <- grDevices::adjustcolor(col[2], alpha.f = alpha)
   } else {
-    arccoll <- adjustcolor(col, alpha.f = alpha)
+    arccoll <- grDevices::adjustcolor(col, alpha.f = alpha)
   }
 
   # blank plot
@@ -85,7 +84,7 @@ plot_arcs <- function(pairs, alpha = NULL, quality = 30, lwd = 15, col = c("blue
 
   graphics::legend(xmin, ymax,
     legend = c("Right", "Left"),
-    col = adjustcolor(col, alpha.f = 0.5), lty = 1, cex = 0.8, lwd = 5
+    col = grDevices::adjustcolor(col, alpha.f = 0.5), lty = 1, cex = 0.8, lwd = 5
   )
 }
 
@@ -114,9 +113,8 @@ plot_arcs <- function(pairs, alpha = NULL, quality = 30, lwd = 15, col = c("blue
 #' plot(mp)
 #'
 plot.ArcCount <- function(.mp, data, type = c("data", "matrix"), exclusion_zone = NULL, edge_limit = NULL,
-                          threshold = quantile(.mp$cac, 0.1), main = "Arcs Discover", xlab = "index",
+                          threshold = stats::quantile(.mp$cac, 0.1), main = "Arcs Discover", xlab = "index",
                           ylab = "distance", ...) {
-
   def_par <- graphics::par(no.readonly = TRUE)
 
   if (missing(data) && !is.null(.mp$data)) {
@@ -184,7 +182,6 @@ plot.ArcCount <- function(.mp, data, type = c("data", "matrix"), exclusion_zone 
 #' @name plot
 #'
 plot.MatrixProfile <- function(.mp, ylab = "distance", xlab = "index", main = "Unidimensional Matrix Profile", ...) {
-
   def_par <- graphics::par(no.readonly = TRUE)
   allmatrix <- FALSE
 
@@ -212,7 +209,6 @@ plot.MatrixProfile <- function(.mp, ylab = "distance", xlab = "index", main = "U
 #' @name plot
 #'
 plot.MultiMatrixProfile <- function(.mp, ylab = "distance", xlab = "index", main = "Multidimensional Matrix Profile", ...) {
-
   def_par <- graphics::par(no.readonly = TRUE)
   allmatrix <- FALSE
   n_dim <- ncol(.mp$mp)
@@ -249,7 +245,6 @@ plot.MultiMatrixProfile <- function(.mp, ylab = "distance", xlab = "index", main
 plot.Fluss <- function(.mp, data, type = c("data", "matrix"),
                        main = "Fast Low-cost Unipotent Semantic Segmentation", xlab = "index",
                        ylab = "distance", ...) {
-
   def_par <- graphics::par(no.readonly = TRUE)
 
   if (missing(data) && !is.null(.mp$data)) {
@@ -304,7 +299,6 @@ plot.Fluss <- function(.mp, data, type = c("data", "matrix"),
 #' @name plot
 #'
 plot.Chain <- function(.mp, data, type = c("data", "matrix"), main = "Chain Discover", xlab = "index", ylab = "distance", ...) {
-
   def_par <- graphics::par(no.readonly = TRUE)
 
   if (missing(data) && !is.null(.mp$data)) {
@@ -333,12 +327,12 @@ plot.Chain <- function(.mp, data, type = c("data", "matrix"), main = "Chain Disc
   }
 
   # plot matrix profile
-  layout(matrix(c(1, 2, 3), ncol = 1, byrow = TRUE))
+  graphics::layout(matrix(c(1, 2, 3), ncol = 1, byrow = TRUE))
   graphics::par(oma = c(1, 1, 3, 0), cex.lab = 1.5)
   plot_arcs(pairs, xlab = xlab, ...)
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
-  plot(plot_data, type = "l", main = paste0("Matrix Profile (w = ", .mp$w, "; ez = ", .mp$ez, ")"), xlim = c(first - .mp$w, last + .mp$w), xlab = xlab, ylab = ylab, ...)
-  abline(v = .mp$chain$best, col = 1:chain_size, lwd = 2)
+  graphics::plot(plot_data, type = "l", main = paste0("Matrix Profile (w = ", .mp$w, "; ez = ", .mp$ez, ")"), xlim = c(first - .mp$w, last + .mp$w), xlab = xlab, ylab = ylab, ...)
+  graphics::abline(v = .mp$chain$best, col = 1:chain_size, lwd = 2)
 
   # blank plot
   motif <- znorm(data[.mp$chain$best[1]:min((.mp$chain$best[1] + .mp$w - 1), matrix_profile_size)])
@@ -363,7 +357,6 @@ plot.Chain <- function(.mp, data, type = c("data", "matrix"), main = "Chain Disc
 #' @name plot
 #'
 plot.Motif <- function(.mp, data, type = c("data", "matrix"), ncol = 3, main = "MOTIF Discover", xlab = "index", ylab = "distance", ...) {
-
   def_par <- graphics::par(no.readonly = TRUE)
 
   if (missing(data) && !is.null(.mp$data)) {
@@ -386,7 +379,7 @@ plot.Motif <- function(.mp, data, type = c("data", "matrix"), ncol = 3, main = "
   matrix_profile_size <- nrow(.mp$mp)
 
   # layout: matrix profile on top, motifs below.
-  layout(matrix(
+  graphics::layout(matrix(
     c(rep(1, ncol), (seq_len(ceiling(n_motifs / ncol) * ncol) + 1)),
     ceiling(n_motifs / ncol) + 1,
     ncol,
@@ -396,7 +389,7 @@ plot.Motif <- function(.mp, data, type = c("data", "matrix"), ncol = 3, main = "
   graphics::par(oma = c(1, 1, 3, 0), cex.lab = 1.5)
   graphics::plot(plot_data, type = "l", main = paste0("Matrix Profile (w = ", .mp$w, "; ez = ", .mp$ez, ")"), xlab = xlab, ylab = ylab)
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
-  abline(v = unlist(motifs), col = rep(1:n_motifs, each = 2), lwd = 2)
+  graphics::abline(v = unlist(motifs), col = rep(1:n_motifs, each = 2), lwd = 2)
   # plot motifs
   for (i in 1:n_motifs) {
     motif1 <- znorm(data[motifs[[i]][1]:min((motifs[[i]][1] + .mp$w - 1), matrix_profile_size)])
@@ -425,7 +418,6 @@ plot.Motif <- function(.mp, data, type = c("data", "matrix"), ncol = 3, main = "
 #' @name plot
 #'
 plot.MultiMotif <- function(.mp, data, type = c("data", "matrix"), ncol = 3, main = "Multidimensional MOTIF Discover", xlab = "index", ylab = "distance", ...) {
-
   def_par <- graphics::par(no.readonly = TRUE)
 
   if (missing(data) && !is.null(.mp$data)) {
@@ -460,7 +452,7 @@ plot.MultiMotif <- function(.mp, data, type = c("data", "matrix"), ncol = 3, mai
   }
 
   # layout: matrix profile on top, motifs below.
-  layout(matrix(
+  graphics::layout(matrix(
     c(rep(seq_len(n_dim), each = ncol), (seq_len(ceiling(n_motifs / ncol) * ncol) + n_dim)),
     # ceiling(n_motifs / ncol) + 1,
     ncol = ncol,
@@ -471,7 +463,7 @@ plot.MultiMotif <- function(.mp, data, type = c("data", "matrix"), ncol = 3, mai
   for (i in seq_len(n_dim)) {
     graphics::plot(plot_data[, i], type = "l", main = paste0("Matrix Profile ", i, " (w = ", .mp$w, "; ez = ", .mp$ez, ")"), xlab = xlab, ylab = ylab)
     midx <- dim_idx[[i]]
-    abline(v = motifs[midx], col = midx, lwd = 2)
+    graphics::abline(v = motifs[midx], col = midx, lwd = 2)
   }
 
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)

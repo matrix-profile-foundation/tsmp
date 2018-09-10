@@ -1,7 +1,7 @@
 Package: tsmp
 Type: Package
 Title: Time Series with Matrix Profile
-Version: 0.2.15.9012
+Version: 0.2.15.9014
 Authors@R: c(
     person("Francisco", "Bischoff", email = "fbischoff@med.up.pt", role = c("aut", "cre"),
     comment = c(ORCID = "https://orcid.org/0000-0002-5301-8672")),
@@ -20,11 +20,11 @@ License: MIT + file LICENSE
 URL: https://github.com/franzbischoff/tsmp
 BugReports: https://github.com/franzbischoff/tsmp/issues
 Depends: R (>= 2.10)
-Imports: audio, doSNOW, parallel, foreach
+Imports: audio, doSNOW, parallel, foreach, magrittr
 Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.0.9000
 NeedsCompilation: no
-Suggests: spelling, testthat, magrittr
+Suggests: spelling, testthat
