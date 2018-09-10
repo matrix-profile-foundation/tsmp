@@ -9,11 +9,11 @@
 find_motif(.mp, ...)
 
 \method{find_motif}{MatrixProfile}(.mp, data, n_motifs = 3, radius = 3,
-  exclusion_zone = NULL)
+  exclusion_zone = NULL, ...)
 
 \method{find_motif}{MultiMatrixProfile}(.mp, data, n_motifs = 3,
   mode = c("guided", "unconstrained"), n_bit = 4,
-  exclusion_zone = NULL, n_dim = NULL)
+  exclusion_zone = NULL, n_dim = NULL, ...)
 }
 \arguments{
 \item{.mp}{a TSMP object of class \code{MatrixProfile} or \code{MultiMatrixProfile}.}

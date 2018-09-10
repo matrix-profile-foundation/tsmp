@@ -24,7 +24,7 @@ find_motif <- function(.mp, ...) {
 #' mp <- tsmp(data, window_size = w, exclusion_zone = 1/4, verbose = 0)
 #' mp <- find_motif(mp)
 
-find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, radius = 3, exclusion_zone = NULL) {
+find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, radius = 3, exclusion_zone = NULL, ...) {
   if (!any(class(.mp) %in% "MatrixProfile")) {
     stop("Error: First argument must be an object of class `MatrixProfile`.")
   }
@@ -153,7 +153,7 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, radius = 3, exclus
 #' mp <- find_motif(mp)
 
 find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("guided", "unconstrained"),
-                                          n_bit = 4, exclusion_zone = NULL, n_dim = NULL) {
+                                          n_bit = 4, exclusion_zone = NULL, n_dim = NULL, ...) {
   if (!any(class(.mp) %in% "MultiMatrixProfile")) {
     stop("Error: First argument must be an object of class `MultiMatrixProfile`.")
   }
