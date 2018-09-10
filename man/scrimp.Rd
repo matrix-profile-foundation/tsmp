@@ -56,8 +56,8 @@ mp <- scrimp(ref_data, query_data, window_size = 30, s_size = round(nrow(query_d
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other matrix profile computations: \code{\link{mstomp}},
-  \code{\link{stamp}}, \code{\link{stomp}},
+Other matrix profile computations: \code{\link{mstomp_par}},
+  \code{\link{stamp_par}}, \code{\link{stomp_par}},
   \code{\link{tsmp}}
 }
 \concept{matrix profile computations}

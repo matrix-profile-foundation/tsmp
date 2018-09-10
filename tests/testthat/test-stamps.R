@@ -1,7 +1,7 @@
-context("Testing if Stamps and Stomps algorithms agree")
-library(tsmp)
-
 if (skip_on_cran()) {
+  context("Testing if Stamps and Stomps algorithms agree")
+  library(tsmp)
+
   test_that("Errors", {
     # big window size
     expect_error(mstomp(mp_toy_data$data[1:200, ], window_size = 500), regexp = "too short relative")
@@ -70,18 +70,20 @@ if (skip_on_cran()) {
   mstomp_par_test_must <- mstomp_par(mp_toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2), verbose = 0)
   mstomp_par_test_exc <- mstomp_par(mp_toy_data$data[1:200, ], window_size = 30, exc_dim = c(1, 2), verbose = 0)
 
-  if (skip_on_travis()) {
-    test_that("Result hashes", {
-      expect_known_hash(stamp_test, "1016c61c9f")
-      expect_known_hash(stamp_join_test, "585be5fedc")
-      expect_known_hash(stomp_test, "bd71cbd417")
-      expect_known_hash(stomp_join_test, "5521be09db")
-      expect_known_hash(mstomp_test, "fa0c150b92")
-      expect_known_hash(mstomp_test1, "9c2bf3197d")
-      expect_known_hash(mstomp_test_must, "13cefe2517")
-      expect_known_hash(mstomp_test_exc, "b872f44cc5")
-    })
-  }
+  test_that("Basic Results", {
+    expect_equal(round(sum(stamp_test$mp) / sd(stamp_test$mp), 3), 461.894)
+    expect_equal(sum(which(is.infinite(stamp_test$rmp))), 2616)
+    expect_equal(round(sum(stamp_test$rmp[1:155]) / sd(stamp_test$rmp[1:155]), 3), 370.885)
+    expect_equal(sum(which(is.infinite(stamp_test$lmp))), 136)
+    expect_equal(round(sum(stamp_test$lmp[17:171]) / sd(stamp_test$lmp[17:171]), 3), 345.977)
+    expect_equal(round(sum(stamp_test$pi) / sd(stamp_test$pi), 3), 302.063)
+    expect_equal(round(sum(stamp_test$rpi) / sd(stamp_test$rpi), 3), 437.43)
+    expect_equal(round(sum(stamp_test$lpi) / sd(stamp_test$lpi), 3), 174.392)
+    expect_equal(stamp_test$w, 30)
+    expect_equal(stamp_test$ez, 0.5)
+    expect_equal(class(stamp_test), "MatrixProfile")
+  })
+
 
   # stamp_test and stamp_par_test
   test_that("Stamp equals to Stamp_par", {
