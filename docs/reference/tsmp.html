@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Time Series with Matrix Profile — tsmp • tsmp</title>
+<title>Computes the Matrix Profile and Profile Index — tsmp • tsmp</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,10 +30,10 @@
 
 
 
-<meta property="og:title" content="Time Series with Matrix Profile — tsmp" />
+<meta property="og:title" content="Computes the Matrix Profile and Profile Index — tsmp" />
 
-<meta property="og:description" content="
-A toolkit implementing the Matrix Profile concept that was created by CS-UCR &amp;lt;http://www.cs.ucr.edu/~eamonn/MatrixProfile.html&amp;gt;." />
+<meta property="og:description" content="This is a wrap function that makes easy to use all available algorithms to compute the Matrix
+Profile and Profile Index for multiple purposes." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -64,7 +64,7 @@ A toolkit implementing the Matrix Profile concept that was created by CS-UCR &am
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tsmp</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.15.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
       </span>
     </div>
 
@@ -103,51 +103,120 @@ A toolkit implementing the Matrix Profile concept that was created by CS-UCR &am
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Time Series with Matrix Profile</h1>
-    <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/tsmp-package.R'><code>R/tsmp-package.R</code></a></small>
+    <h1>Computes the Matrix Profile and Profile Index</h1>
+    <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/tsmp.R'><code>R/tsmp.R</code></a></small>
     <div class="hidden name"><code>tsmp.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><img src='figures/logo.png' align='right' /></p>
-<p>A toolkit implementing the Matrix Profile concept that was created by CS-UCR &lt;http://www.cs.ucr.edu/~eamonn/MatrixProfile.html&gt;.</p>
+    <p>This is a wrap function that makes easy to use all available algorithms to compute the Matrix
+Profile and Profile Index for multiple purposes.</p>
     
     </div>
 
-        
+    <pre class="usage"><span class='fu'>tsmp</span>(<span class='no'>...</span>, <span class='no'>window_size</span>, <span class='kw'>exclusion_zone</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>2</span>, <span class='kw'>mode</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"stomp"</span>, <span class='st'>"stamp"</span>,
+  <span class='st'>"simple"</span>, <span class='st'>"mstomp"</span>, <span class='st'>"scrimp"</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>s_size</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
+  <span class='kw'>must_dim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>exc_dim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n_workers</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>.keep_data</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>...</th>
+      <td><p>a <code>matrix</code> or a <code>vector</code>. If a second time series is supplied it will be a join matrix
+profile (except for <code><a href='mstomp.html'>mstomp()</a></code>).</p></td>
+    </tr>
+    <tr>
+      <th>window_size</th>
+      <td><p>an <code>int</code> with the size of the sliding window.</p></td>
+    </tr>
+    <tr>
+      <th>exclusion_zone</th>
+      <td><p>a <code>numeric</code>. Size of the exclusion zone, based on window size (default is
+<code>1/2</code>). See details.</p></td>
+    </tr>
+    <tr>
+      <th>mode</th>
+      <td><p>the algorithm that will be used to compute the matrix profile. (Default is <code>stomp</code>).
+See details.</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>an <code>int</code>. (Default is <code>2</code>). See details.</p></td>
+    </tr>
+    <tr>
+      <th>s_size</th>
+      <td><p>a <code>numeric</code>. for anytime algorithm, represents the size (in observations) the
+random calculation will occur (default is <code>Inf</code>). See details.</p></td>
+    </tr>
+    <tr>
+      <th>must_dim</th>
+      <td><p>an <code>int</code> or <code>vector</code> of which dimensions to forcibly include (default is <code>NULL</code>).
+See details.</p></td>
+    </tr>
+    <tr>
+      <th>exc_dim</th>
+      <td><p>an <code>int</code> or <code>vector</code> of which dimensions to exclude (default is <code>NULL</code>). See
+details.</p></td>
+    </tr>
+    <tr>
+      <th>n_workers</th>
+      <td><p>an <code>int</code>. Number of workers for parallel. (Default is <code>1</code>).</p></td>
+    </tr>
+    <tr>
+      <th>.keep_data</th>
+      <td><p>a <code>logical</code>. (Default is <code>TRUE</code>). Keeps the data embedded to resultant object.</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Returns the matrix profile <code>mp</code> and profile index <code>pi</code>. It also returns the left and
+right matrix profile <code>lmp</code>, <code>rmp</code> and profile index <code>lpi</code>, <code>rpi</code> that may be used to detect
+Time Series Chains. <code><a href='mstomp.html'>mstomp()</a></code> returns a multidimensional Matrix Profile.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The Matrix Profile, has the potential to revolutionize time series data mining because
+of its generality, versatility, simplicity and scalability. In particular it has implications
+for time series motif discovery, time series joins, shapelet discovery (classification),
+density estimation, semantic segmentation, visualization, rule discovery, clustering etc.</p>
+<p>The first algorithm invented was the <code><a href='stamp.html'>stamp()</a></code> that using <code><a href='mass.html'>mass()</a></code> as an ultra-fast Algorithm
+for Similarity Search allowed to compute the Matrix Profile in reasonable time. One of its main
+feature was its Anytime property which using a randomized approach could return a "best-so-far"
+matrix that could give us the correct answer (using for example 1/10 of all iterations) almost
+every time.</p>
+<p>The next algorithm was <code><a href='stomp.html'>stomp()</a></code> that currently is the most used. Researchers noticed that the
+dot products do not need to be recalculated from scratch for each subsequence. Instead, we can
+reuse the values calculated for the first subsequence to make a faster calculation in the next
+iterations. The idea is to make use of the intersections between the required products in
+consecutive iterations. This approach reduced the time to compute the Matrix Profile to about
+3<!-- % compared to \code{\link[=stamp]{stamp()}}, but on the other hand, we lost the Anytime property. --></p>
+<p>Currently there is a new algorithm that I'll not explain further here. It is called <code><a href='scrimp.html'>scrimp()</a></code>,
+and is as fast as <code><a href='stomp.html'>stomp()</a></code>, and have the Anytime property. This algorithm is implemented in
+this package, but stills experimental, so expect minor discrepancies compared to previous
+algorithms.</p>
+<p>Further, there is the <code><a href='mstomp.html'>mstomp()</a></code> that computes a multidimensional Matrix Profile that allows to
+meaningful MOTIF discovery in Multivariate Time Series. And <code><a href='simple_fast.html'>simple_fast()</a></code> that also handles
+Multivariate Time Series, but focused in Music Analysis and Exploration.</p>
+<p>Some parameters are global across the algorithms:</p><dl class='dl-horizontal'>
+<dt>...</dt><dd><p>One or two time series (except for <code><a href='mstomp.html'>mstomp()</a></code>). The second time series can be smaller than the first.</p></dd>
+<dt>window_size</dt><dd><p>The sliding window.</p></dd>
+<dt>exclusion_zone</dt><dd><p>Is used to avoid trivial matches; if a query data is provided
+(join similarity), this parameter is ignored.</p></dd>
+<dt>verbose</dt><dd><p>Changes how much information is printed by this function; <code>0</code> means nothing,
+<code>1</code> means text, <code>2</code> means text and sound.</p></dd>
+<dt>n_workers</dt><dd><p>number of threads for parallel computing (except <code>simple_fast</code> and <code>scrimp</code>).
+If the value is 2 or more, the '_par' version of the algorithm will be used.</p></dd>
+</dl>
+    <p><code>s_size</code> is used only in Anytime algorithms: <code><a href='stamp.html'>stamp()</a></code> and <code><a href='scrimp.html'>scrimp()</a></code>.
+<code>must_dim</code> and <code>exc_dim</code> are used only in <code><a href='mstomp.html'>mstomp()</a></code>.
+<code>mode</code> can be any of the following: <code>stomp</code>, <code>stamp</code>, <code>simple</code>, <code>mstomp</code>, <code>scrimp</code>.</p>
+    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <ul>
-<li><p>Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan,
-Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time
-Series Subsequences under Euclidean Distance</p></li>
-</ul>
-    <ul>
-<li><p>Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII:
-Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE
-International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.</p></li>
-</ul>
-    <ul>
-<li><p>Heldt, T., Oefinger, M.B., Hoshiyama, M. and Mark, R.G., 2003, September.
-Circulatory response to passive and active changes in posture. In IEEE Computers in Cardiology,
-2003 (pp. 263-266).</p></li>
-</ul>
-    <ul>
-<li><p>Hu B, Rakthanmanon T, Hao Y, Evans S, Lonardi S, Keogh E. Discovering the Intrinsic
-Cardinality and Dimensionality of Time Series Using MDL. In: 2011 IEEE 11th International
-Conference on Data Mining. IEEE; 2011. p. 1086–91.</p></li>
-</ul>
-    <ul>
-<li><p>Reiss, A. and Stricker, D., 2012. Introducing a new benchmarked dataset for
-activity monitoring. In 16th International Symposium on Wearable Computers (ISWC), 2012, pages
-108–109. IEEE, 2012.</p></li>
-</ul>
-    <ul>
-<li><p>Roverso, D., Multivariate temporal classification by windowed wavelet decomposition
-and recurrent neural networks, in 3rd ANS Int’l Topical Meeting on Nuclear Plant
-Instrumentation, Control and Human-Machine Interface, vol. 20, Washington, DC, USA, 2000.</p></li>
-</ul>
     <ul>
 <li><p>Silva D, Yeh C, Batista G, Keogh E. Simple: Assessing Music Similarity Using
 Subsequences Joins. Proc 17th ISMIR Conf. 2016;23–30.</p></li>
@@ -157,61 +226,65 @@ Subsequences Joins. Proc 17th ISMIR Conf. 2016;23–30.</p></li>
 Music Analysis and Exploration. IEEE Trans Multimed. 2018;14(8):1–1.</p></li>
 </ul>
     <ul>
-<li><p>Yeh CCM, Van Herle H, Keogh E. Matrix profile III: The matrix profile allows
-visualization of salient subsequences in massive time series. Proc - IEEE Int Conf Data Mining,
-ICDM. 2017;579–88.</p></li>
-</ul>
-    <ul>
-<li><p>Yeh C-CM, Kavantzas N, Keogh E. Matrix profile IV: Using Weakly Labeled Time Series
-to Predict Outcomes. Proc VLDB Endow. 2017 Aug 1;10(12):1802–12.</p></li>
-</ul>
-    <ul>
 <li><p>Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif
 Discovery.</p></li>
+</ul>
+    <ul>
+<li><p>Yeh CCM, Zhu Y, Ulanova L, Begum N, Ding Y, Dau HA, et al. Matrix profile I: All
+pairs similarity joins for time series: A unifying view that includes motifs, discords and
+shapelets. Proc - IEEE Int Conf Data Mining, ICDM. 2017;1317–22.</p></li>
 </ul>
     <ul>
 <li><p>Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A
 New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.</p></li>
 </ul>
-    <p>Website: <a href='http://www.cs.ucr.edu/~eamonn/MatrixProfile.html'>http://www.cs.ucr.edu/~eamonn/MatrixProfile.html</a></p>
-<p>Website: <a href='https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html'>https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html</a></p>
-<p>Website: <a href='https://sites.google.com/site/timeserieschain/'>https://sites.google.com/site/timeserieschain/</a></p>
-<p>Website: <a href='https://sites.google.com/site/onlinesemanticsegmentation/'>https://sites.google.com/site/onlinesemanticsegmentation/</a></p>
-<p>Website: <a href='https://sites.google.com/site/salientsubs/'>https://sites.google.com/site/salientsubs/</a></p>
-<p>Website: <a href='https://sites.google.com/view/mstamp/'>https://sites.google.com/view/mstamp/</a></p>
-<p>Website: <a href='https://sites.google.com/view/simple-fast'>https://sites.google.com/view/simple-fast</a></p>
+    <ul>
+<li><p>Zhu Y, Zimmerman Z, Senobari NS, Yeh CM, Funning G. Matrix Profile II : Exploiting
+a Novel Algorithm and GPUs to Break the One Hundred Million Barrier for Time Series Motifs and
+Joins. Icdm. 2016 Jan 22;54(1):739–48.</p></li>
+</ul>
+    <p>Website: <a href='https://sites.google.com/view/simple-fast'>https://sites.google.com/view/simple-fast</a></p>
 <p>Website: <a href='https://sites.google.com/site/ismir2016simple/home'>https://sites.google.com/site/ismir2016simple/home</a></p>
-<p>Website: <a href='https://sites.google.com/view/weaklylabeled'>https://sites.google.com/view/weaklylabeled</a></p>
+<p>Website: <a href='http://www.cs.ucr.edu/~eamonn/MatrixProfile.html'>http://www.cs.ucr.edu/~eamonn/MatrixProfile.html</a></p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Useful links:</p><ul>
-<li><p><a href='https://github.com/franzbischoff/tsmp'>https://github.com/franzbischoff/tsmp</a></p></li>
-<li><p>Report bugs at <a href='https://github.com/franzbischoff/tsmp/issues'>https://github.com/franzbischoff/tsmp/issues</a></p></li>
-</ul></div>
+    <div class='dont-index'><p>Other matrix profile computations: <code><a href='mstomp.html'>mstomp_par</a></code>,
+  <code><a href='scrimp.html'>scrimp</a></code>, <code><a href='stamp.html'>stamp_par</a></code>,
+  <code><a href='stomp.html'>stomp_par</a></code></p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># default with [stomp()]</span>
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>tsmp</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>200</span>, <span class='fl'>1</span>], <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+
+<span class='co'># parallel with [stomp_par()]</span>
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>tsmp</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>200</span>, <span class='fl'>1</span>], <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>n_workers</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+
+<span class='co'># Anytime STAMP</span>
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>tsmp</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>200</span>, <span class='fl'>1</span>], <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"stamp"</span>, <span class='kw'>s_size</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+
+<span class='co'># [mstomp()]</span>
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>tsmp</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>200</span>, ], <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"mstomp"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+
+<span class='co'># [simple_fast()]</span>
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>tsmp</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>200</span>, ], <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"simple"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
+
       <li><a href="#references">References</a></li>
 
       <li><a href="#see-also">See also</a></li>
-          </ul>
-
-    <h2>Author</h2>
-    
-<strong>Maintainer</strong>: Francisco Bischoff <a href='mailto:fbischoff@med.up.pt'>fbischoff@med.up.pt</a> (https://orcid.org/0000-0002-5301-8672)
-
-Other contributors:
-<ul>
-<li><p>Michael Yeh <a href='mailto:myeh003@ucr.edu'>myeh003@ucr.edu</a> (https://orcid.org/0000-0002-9807-2963) [researcher, conceptor, contributor]</p></li>
-<li><p>Diego Silva <a href='mailto:diegofs@ufscar.br'>diegofs@ufscar.br</a> (https://orcid.org/0000-0002-5184-9413) [researcher, conceptor, contributor]</p></li>
-<li><p>Yan Zhu <a href='mailto:yzhu015@ucr.edu'>yzhu015@ucr.edu</a> (https://orcid.org/0000-0002-5952-2108) [researcher, conceptor, contributor]</p></li>
-</ul>
-
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

@@ -3,4 +3,4 @@
 .Rhistory
 packrat/lib*/
 .httr-oauth
-make.R
+packrat/src/

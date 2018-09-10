@@ -1,24 +1,30 @@
 Package: tsmp
 Type: Package
 Title: Time Series with Matrix Profile
-Version: 0.2.15.9000
+Version: 0.3.1.9000
 Authors@R: c(
-    person("Francisco", "Bischoff", email = "fbischoff@med.up.pt", role = c("aut", "cre"), comment = c(ORCID = "https://orcid.org/0000-0002-5301-8672")),
-    person("Michael", "Yeh", email = "myeh003@ucr.edu", role = c("res", "ccp", "ctb"), comment = c(ORCID = "https://orcid.org/0000-0002-9807-2963")),
-    person("Diego", "Silva", email = "diegofs@ufscar.br", role = c("res", "ccp", "ctb"), comment = c(ORCID = "https://orcid.org/0000-0002-5184-9413")),
-    person("Yan", "Zhu", email = "yzhu015@ucr.edu", role = c("res", "ccp", "ctb"), comment = c(ORCID = "https://orcid.org/0000-0002-5952-2108"))
+    person("Francisco", "Bischoff", email = "fbischoff@med.up.pt", role = c("aut", "cre"),
+    comment = c(ORCID = "https://orcid.org/0000-0002-5301-8672")),
+    person("Michael", "Yeh", email = "myeh003@ucr.edu", role = c("res", "ccp", "ctb"),
+    comment = c(ORCID = "https://orcid.org/0000-0002-9807-2963")),
+    person("Diego", "Silva", email = "diegofs@ufscar.br", role = c("res", "ccp", "ctb"),
+    comment = c(ORCID = "https://orcid.org/0000-0002-5184-9413")),
+    person("Yan", "Zhu", email = "yzhu015@ucr.edu", role = c("res", "ccp", "ctb"),
+    comment = c(ORCID = "https://orcid.org/0000-0002-5952-2108")),
+    person("Hoang", "Dau", email = "hdau001@ucr.edu", role = c("res", "ccp", "ctb"),
+    comment = c(ORCID = "https://orcid.org/0000-0003-2439-5185"))
   )
 Maintainer: Francisco Bischoff <fbischoff@med.up.pt>
 Description: A toolkit implementing the Matrix Profile concept that was created by CS-UCR <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>.
 License: MIT + file LICENSE
 URL: https://github.com/franzbischoff/tsmp
 BugReports: https://github.com/franzbischoff/tsmp/issues
-Depends: R (>= 2.10), audio, doSNOW, parallel, foreach
+Depends: R (>= 2.10)
+Imports: audio, doSNOW, parallel, foreach, magrittr
 Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.0.9000
 NeedsCompilation: no
-Suggests:
-    spelling, testthat
+Suggests: spelling, testthat

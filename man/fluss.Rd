@@ -4,52 +4,29 @@
 \alias{fluss}
 \title{Fast Low-cost Unipotent Semantic Segmentation (FLUSS)}
 \usage{
-fluss(data, window.size, num.segments, exclusion.zone = 5,
-  gtruth = NULL, profile.index = NULL, verbose = 2)
+fluss(.mp, num_segments, exclusion_zone = NULL)
 }
 \arguments{
-\item{data}{a \code{matrix} or a \code{vector}. Input data.}
+\item{.mp}{a TSMP object of class \code{MatrixProfile}.}
 
-\item{window.size}{an \code{int}. Size of the sliding window.}
+\item{num_segments}{an \code{int}. Number of segments to extract. Based on domain knowledge.}
 
-\item{num.segments}{an \code{int}. Number of segments to extract. Based on domain knowledge.}
-
-\item{exclusion.zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is
-\code{5}).}
-
-\item{gtruth}{an \code{int} or \code{vector} of \code{int} with the ground truth index of segments. (Default is
-\code{NULL}).}
-
-\item{profile.index}{a pre-computed profile index. (Default is \code{NULL}).}
-
-\item{verbose}{an \code{int}. See details. (Default is \code{2}).}
+\item{exclusion_zone}{if a \code{number} will be used instead of embedded value. (Default is \code{NULL}).}
 }
 \value{
-Returns a list with \code{segments} (location of semantic changes), \code{mp} (matrix profile if
-computed), \code{pi} (profile index, input of computed), \code{cac} corrected arc count.
+Returns the input \code{.mp} object new names: \code{cac}, corrected arc count and \code{fluss} with
+the location of semantic changes.
 }
 \description{
 FLUSS is a Domain Agnostic Online Semantic Segmentation that uses the assumption that when few
 arc are crossing a given index point, means that there is a high probability of semantic change.
-}
-\details{
-\code{verbose} changes how much information is printed by this function; \code{0} means nothing, \code{1} means
-text, \code{2} means text and sound.
+This function is a wrap to \code{\link[=fluss_cac]{fluss_cac()}} and \code{\link[=fluss_extract]{fluss_extract()}}.
 }
 \examples{
-# This is a fast toy example and results are useless. For a complete result, run the code inside
-#'Not run' section below.
-data <- fluss_data$tilt.abp$data[1:1000]
-truth <- 400
+data <- mp_fluss_data$tilt_abp$data[1:1000]
 w <- 10
-segments <- fluss(data, w, 1, gtruth = truth, verbose = 0)
-\dontrun{
-data <- fluss_data$walkjogrun$data
-w <- fluss_data$walkjogrun$window # 80
-truth <- fluss_data$walkjogrun$gtruth # 3800 6800
-nseg <- length(fluss_data$walkjogrun$gtruth) # 2
-segments <- fluss(data, w, nseg, gtruth = truth)
-}
+mp <- tsmp(data, window_size = w, verbose = 0)
+mp <- fluss(mp, 2)
 }
 \references{
 \itemize{
@@ -63,7 +40,7 @@ Website: \url{https://sites.google.com/site/onlinesemanticsegmentation/}
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other fluss: \code{\link{fluss.cac}},
-  \code{\link{fluss.extract}}, \code{\link{fluss.score}}
+Other Semantic Segmentations: \code{\link{fluss_cac}},
+  \code{\link{fluss_extract}}, \code{\link{fluss_score}}
 }
-\concept{fluss}
+\concept{Semantic Segmentations}

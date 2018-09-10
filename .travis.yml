@@ -1,19 +1,23 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
-
-language: R
+warnings_are_errors: false
+os:
+  - linux
+  - osx
+matrix:
+  allow_failures:
+    - os: osx
+language: r
+r:
+  - oldrel
+  - release
+  - devel
 cache:
-  directories:
-    - $TRAVIS_BUILD_DIR/packrat/src
-    - $TRAVIS_BUILD_DIR/packrat/lib
   packages: true
 sudo: false
 install:
   - Rscript -e "if (!require('devtools')) install.packages('devtools')"
   - Rscript -e "devtools::install_deps(dep = TRUE)"
   - Rscript -e "devtools::install_github('jimhester/covr')"
-  - R -e "0" --args --bootstrap-packrat
-  - R -e "packrat::restore(restart = FALSE)"
 r_check_args: --as-cran
-
 after_success:
   - Rscript -e 'library(covr); codecov()'

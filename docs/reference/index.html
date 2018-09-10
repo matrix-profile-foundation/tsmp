@@ -61,7 +61,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tsmp</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.15.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
       </span>
     </div>
 
@@ -121,33 +121,69 @@
       <tr>
         
         <td>
-          <p><code><a href="fast.movavg.html">fast.movavg()</a></code> </p>
+          <p><code><a href="as.matrixprofile.html">as.matrixprofile()</a></code> <code><a href="as.matrixprofile.html">as.multimatrixprofile()</a></code> <code><a href="as.matrixprofile.html">as.fluss()</a></code> <code><a href="as.matrixprofile.html">as.chain()</a></code> <code><a href="as.matrixprofile.html">as.motif()</a></code> <code><a href="as.matrixprofile.html">as.multimotif()</a></code> <code><a href="as.matrixprofile.html">as.arccount()</a></code> <code><a href="as.matrixprofile.html">as.salient()</a></code> </p>
+        </td>
+        <td><p>Convert a TSMP object into another if possible</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="av_apply.html">av_apply()</a></code> </p>
+        </td>
+        <td><p>Corrects the matrix profile using an annotation vector</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="av_complexity.html">av_complexity()</a></code> </p>
+        </td>
+        <td><p>Computes the annotation vector that favors complexity</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="av_hardlimit_artifact.html">av_hardlimit_artifact()</a></code> </p>
+        </td>
+        <td><p>Computes the annotation vector that suppresses hard-limited artifacts</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="av_motion_artifact.html">av_motion_artifact()</a></code> </p>
+        </td>
+        <td><p>Computes the annotation vector that suppresses motion artifacts</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="av_stop_word.html">av_stop_word()</a></code> </p>
+        </td>
+        <td><p>Computes the annotation vector that suppresses stop-word motifs</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="av_zerocrossing.html">av_zerocrossing()</a></code> </p>
+        </td>
+        <td><p>Computes the annotation vector that favors number of zero crossing</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="fast_movavg.html">fast_movavg()</a></code> </p>
         </td>
         <td><p>Fast implementation of moving average using filter</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="fast.movsd.html">fast.movsd()</a></code> </p>
+          <p><code><a href="fast_movsd.html">fast_movsd()</a></code> </p>
         </td>
         <td><p>Fast implementation of moving standard deviation using filter</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="find.chains.html">find.chains()</a></code> </p>
+          <p><code><a href="find_chains.html">find_chains()</a></code> </p>
         </td>
         <td><p>Find Time Series Chains</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="fluss.cac.html">fluss.cac()</a></code> </p>
+          <p><code><a href="find_motif.html">find_motif()</a></code> </p>
         </td>
-        <td><p>FLUSS - Corrected Arc Counts</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="fluss.extract.html">fluss.extract()</a></code> </p>
-        </td>
-        <td><p>FLUSS - Extract Segments</p></td>
+        <td><p>Search for Motifs</p></td>
       </tr><tr>
         
         <td>
@@ -157,33 +193,21 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="fluss.score.html">fluss.score()</a></code> </p>
+          <p><code><a href="fluss_cac.html">fluss_cac()</a></code> </p>
+        </td>
+        <td><p>FLUSS - Corrected Arc Counts</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="fluss_extract.html">fluss_extract()</a></code> </p>
+        </td>
+        <td><p>FLUSS - Extract Segments</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="fluss_score.html">fluss_score()</a></code> </p>
         </td>
         <td><p>FLUSS - Prediction score calculation</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="fluss_data.html">fluss_data</a></code> </p>
-        </td>
-        <td><p>Original data used in the FLUSS paper</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gait_data.html">gait_data</a></code> </p>
-        </td>
-        <td><p>Original data used in the Time Series Chain demo</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="guide.search.html">guide.search()</a></code> </p>
-        </td>
-        <td><p>Guided MOTIF Discovery for Multidimensional Matrix Profile</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="mass.pre.html">mass.pre()</a></code> </p>
-        </td>
-        <td><p>Precomputes several values used on MASS</p></td>
       </tr><tr>
         
         <td>
@@ -193,93 +217,105 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="mstomp.par.html">mstomp.par()</a></code> </p>
+          <p><code><a href="mass_pre.html">mass_pre()</a></code> </p>
         </td>
-        <td><p>Multivariate STOMP algorithm Parallel version</p></td>
+        <td><p>Precomputes several values used on MASS</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="mstomp.html">mstomp()</a></code> </p>
+          <p><code><a href="mp_fluss_data.html">mp_fluss_data</a></code> </p>
         </td>
-        <td><p>Multivariate STOMP algorithm</p></td>
+        <td><p>Original data used in the FLUSS paper</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="salient.subsequences.html">salient.subsequences()</a></code> </p>
+          <p><code><a href="mp_gait_data.html">mp_gait_data</a></code> </p>
         </td>
-        <td><p>Retrieve salient subsequences from a dataset</p></td>
+        <td><p>Original data used in the Time Series Chain demo</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="sdts.f.score.html">sdts.f.score()</a></code> </p>
-        </td>
-        <td><p>Computes the F-Score of a SDTS prediction</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sdts.predict.html">sdts.predict()</a></code> </p>
-        </td>
-        <td><p>Scalable Dictionary learning for Time Series (SDTS) prediction function.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sdts.train.html">sdts.train()</a></code> </p>
-        </td>
-        <td><p>Scalable Dictionary learning for Time Series (SDTS) training function.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="simple.fast.html">simple.fast()</a></code> </p>
-        </td>
-        <td><p>Compute the join similarity for Sound data.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="stamp.par.html">stamp.par()</a></code> </p>
-        </td>
-        <td><p>Anytime univariate STAMP algorithm Parallel version</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="stamp.html">stamp()</a></code> </p>
-        </td>
-        <td><p>Anytime univariate STAMP algorithm</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="stomp.par.html">stomp.par()</a></code> </p>
-        </td>
-        <td><p>Univariate STOMP algorithm</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="stomp.html">stomp()</a></code> </p>
-        </td>
-        <td><p>Univariate STOMP algorithm</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="test_data.html">test_data</a></code> </p>
+          <p><code><a href="mp_test_data.html">mp_test_data</a></code> </p>
         </td>
         <td><p>Original data used in the STDS demo</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="toy_data.html">toy_data</a></code> </p>
+          <p><code><a href="mp_toy_data.html">mp_toy_data</a></code> </p>
         </td>
         <td><p>Original data used in the mSTAMP demo</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="tsmp.html">tsmp</a></code> </p>
+          <p><code><a href="mstomp.html">mstomp_par()</a></code> <code><a href="mstomp.html">mstomp()</a></code> </p>
         </td>
-        <td><p>Time Series with Matrix Profile</p></td>
+        <td><p>Multivariate STOMP algorithm Parallel version</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="unconstrain.search.html">unconstrain.search()</a></code> </p>
+          <p><code><a href="plot.html">plot(<i>&lt;ArcCount&gt;</i>)</a></code> <code><a href="plot.html">plot(<i>&lt;MatrixProfile&gt;</i>)</a></code> <code><a href="plot.html">plot(<i>&lt;MultiMatrixProfile&gt;</i>)</a></code> <code><a href="plot.html">plot(<i>&lt;Fluss&gt;</i>)</a></code> <code><a href="plot.html">plot(<i>&lt;Chain&gt;</i>)</a></code> <code><a href="plot.html">plot(<i>&lt;Motif&gt;</i>)</a></code> <code><a href="plot.html">plot(<i>&lt;MultiMotif&gt;</i>)</a></code> </p>
         </td>
-        <td><p>MDL Based MOTIF Discovery for Multidimensional Matrix Profile</p></td>
+        <td><p>Plot a TSMP object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="plot_arcs.html">plot_arcs()</a></code> </p>
+        </td>
+        <td><p>Plot arcs between indexes of a Profile Index</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="salient_subsequences.html">salient_subsequences()</a></code> </p>
+        </td>
+        <td><p>Retrieve salient subsequences from a dataset</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="scrimp.html">scrimp()</a></code> </p>
+        </td>
+        <td><p>Anytime univariate SCRIMP algorithm (experimental)</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sdts_predict.html">sdts_predict()</a></code> </p>
+        </td>
+        <td><p>Scalable Dictionary learning for Time Series (SDTS) prediction function</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sdts_score.html">sdts_score()</a></code> </p>
+        </td>
+        <td><p>Computes the F-Score of a SDTS prediction</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sdts_train.html">sdts_train()</a></code> </p>
+        </td>
+        <td><p>Scalable Dictionary learning for Time Series (SDTS) training function</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="simple_fast.html">simple_fast()</a></code> </p>
+        </td>
+        <td><p>Compute the join similarity for Sound data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="stamp.html">stamp_par()</a></code> <code><a href="stamp.html">stamp()</a></code> </p>
+        </td>
+        <td><p>Anytime univariate STAMP algorithm Parallel version</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="stomp.html">stomp_par()</a></code> <code><a href="stomp.html">stomp()</a></code> </p>
+        </td>
+        <td><p>Univariate STOMP algorithm</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="tsmp.html">tsmp()</a></code> </p>
+        </td>
+        <td><p>Computes the Matrix Profile and Profile Index</p></td>
       </tr>
     </tbody>
     </table>

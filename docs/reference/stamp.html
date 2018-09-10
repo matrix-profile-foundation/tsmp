@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Anytime univariate STAMP algorithm — stamp • tsmp</title>
+<title>Anytime univariate STAMP algorithm Parallel version — stamp_par • tsmp</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,7 +30,7 @@
 
 
 
-<meta property="og:title" content="Anytime univariate STAMP algorithm — stamp" />
+<meta property="og:title" content="Anytime univariate STAMP algorithm Parallel version — stamp_par" />
 
 <meta property="og:description" content="Computes the best so far Matrix Profile and Profile Index for Univariate Time Series." />
 
@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tsmp</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.15.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
       </span>
     </div>
 
@@ -102,8 +102,8 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Anytime univariate STAMP algorithm</h1>
-    <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/stamp.R'><code>R/stamp.R</code></a></small>
+    <h1>Anytime univariate STAMP algorithm Parallel version</h1>
+    <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/stamp-par.R'><code>R/stamp-par.R</code></a>, <a href='https://github.com/franzbischoff/tsmp/blob/master/R/stamp.R'><code>R/stamp.R</code></a></small>
     <div class="hidden name"><code>stamp.Rd</code></div>
     </div>
 
@@ -113,8 +113,11 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>stamp</span>(<span class='no'>...</span>, <span class='no'>window.size</span>, <span class='kw'>exclusion.zone</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>2</span>, <span class='kw'>s.size</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>2</span>)</pre>
+    <pre class="usage"><span class='fu'>stamp_par</span>(<span class='no'>...</span>, <span class='no'>window_size</span>, <span class='kw'>exclusion_zone</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>2</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>s_size</span> <span class='kw'>=</span> <span class='fl'>Inf</span>, <span class='kw'>n_workers</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+
+<span class='fu'>stamp</span>(<span class='no'>...</span>, <span class='no'>window_size</span>, <span class='kw'>exclusion_zone</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>2</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>s_size</span> <span class='kw'>=</span> <span class='fl'>Inf</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -125,30 +128,34 @@
 profile.</p></td>
     </tr>
     <tr>
-      <th>window.size</th>
+      <th>window_size</th>
       <td><p>an <code>int</code>. Size of the sliding window.</p></td>
     </tr>
     <tr>
-      <th>exclusion.zone</th>
-      <td><p>a <code>numeric</code>. Size of the exclusion zone, based on query size (default is
+      <th>exclusion_zone</th>
+      <td><p>a <code>numeric</code>. Size of the exclusion zone, based on window size (default is
 <code>1/2</code>). See details.</p></td>
-    </tr>
-    <tr>
-      <th>s.size</th>
-      <td><p>a <code>numeric</code>. for anytime algorithm, represents the size (in observations) the
-random calculation will occur (default is <code>Inf</code>).</p></td>
     </tr>
     <tr>
       <th>verbose</th>
       <td><p>an <code>int</code>. See details. (Default is <code>2</code>).</p></td>
     </tr>
+    <tr>
+      <th>s_size</th>
+      <td><p>a <code>numeric</code>. for anytime algorithm, represents the size (in observations) the
+random calculation will occur (default is <code>Inf</code>).</p></td>
+    </tr>
+    <tr>
+      <th>n_workers</th>
+      <td><p>an <code>int</code>. Number of workers for parallel. (Default is <code>2</code>).</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Returns the matrix profile <code>mp</code> and profile index <code>pi</code>. It also returns the left and
-right matrix profile <code>lmp</code>, <code>rmp</code> and profile index <code>lpi</code>, <code>rpi</code> that may be used to detect
-Time Series Chains (Yan Zhu 2018).</p>
+    <p>Returns a <code>MatrixProfile</code> object, a <code>list</code> with the matrix profile <code>mp</code>, profile index <code>pi</code>
+left and right matrix profile <code>lmp</code>, <code>rmp</code> and profile index <code>lpi</code>, <code>rpi</code>, window size <code>w</code> and
+exclusion zone <code>ez</code>.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -159,8 +166,15 @@ estimation, semantic segmentation, visualization, rule discovery, clustering etc
 STAMP computes the Matrix Profile and Profile Index in such manner that it can be stopped before
 its complete calculation and return the best so far results allowing ultra-fast approximate
 solutions. <code>verbose</code> changes how much information is printed by this function; <code>0</code> means nothing,
-<code>1</code> means text, <code>2</code> means text and sound. <code>exclusion.zone</code> is used to avoid  trivial matches; if
+<code>1</code> means text, <code>2</code> means text and sound. <code>exclusion_zone</code> is used to avoid  trivial matches; if
 a query data is provided (join similarity), this parameter is ignored.</p>
+    
+    <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
+
+    <ul>
+<li><p><code>stamp_par</code>: Parallel version.</p></li>
+<li><p><code>stamp</code>: Single thread version.</p></li>
+</ul>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -177,18 +191,22 @@ New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.</p
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='mstomp.html'>mstomp()</a></code>, <code><a href='mstomp.par.html'>mstomp.par()</a></code></p>
-<p>Other Stamp: <code><a href='stamp.par.html'>stamp.par</a></code></p></div>
+    <div class='dont-index'><p>Other matrix profile computations: <code><a href='mstomp.html'>mstomp_par</a></code>,
+  <code><a href='scrimp.html'>scrimp</a></code>, <code><a href='stomp.html'>stomp_par</a></code>,
+  <code><a href='tsmp.html'>tsmp</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>stamp</span>(<span class='no'>toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>200</span>,<span class='fl'>1</span>], <span class='kw'>window.size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><span class='co'># NOT RUN {</span>
-<span class='no'>ref.data</span> <span class='kw'>&lt;-</span> <span class='no'>toy_data</span>$<span class='no'>data</span>[,<span class='fl'>1</span>]
-<span class='no'>query.data</span> <span class='kw'>&lt;-</span> <span class='no'>toy_data</span>$<span class='no'>data</span>[,<span class='fl'>2</span>]
+    <pre class="examples"><div class='input'><span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>stamp</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>200</span>, <span class='fl'>1</span>], <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+
+<span class='co'># using threads</span>
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>stamp_par</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>200</span>, <span class='fl'>1</span>], <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><span class='co'># NOT RUN {</span>
+<span class='no'>ref_data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_toy_data</span>$<span class='no'>data</span>[, <span class='fl'>1</span>]
+<span class='no'>query_data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_toy_data</span>$<span class='no'>data</span>[, <span class='fl'>2</span>]
 <span class='co'># self similarity</span>
-<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>stamp</span>(<span class='no'>ref.data</span>, <span class='kw'>window.size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>s.size</span> <span class='kw'>=</span> <span class='fu'>round</span>(<span class='fu'>nrows</span>(<span class='no'>ref.data</span>) * <span class='fl'>0.1</span>))
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>stamp</span>(<span class='no'>ref_data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>s_size</span> <span class='kw'>=</span> <span class='fu'>round</span>(<span class='fu'>nrow</span>(<span class='no'>ref_data</span>) * <span class='fl'>0.1</span>))
 <span class='co'># join similarity</span>
-<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>stamp</span>(<span class='no'>ref.data</span>, <span class='no'>query.data</span>, <span class='kw'>window.size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>s.size</span> <span class='kw'>=</span> <span class='fu'>round</span>(<span class='fu'>nrows</span>(<span class='no'>query.data</span>) * <span class='fl'>0.1</span>))
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>stamp</span>(<span class='no'>ref_data</span>, <span class='no'>query_data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>s_size</span> <span class='kw'>=</span> <span class='fu'>round</span>(<span class='fu'>nrow</span>(<span class='no'>query_data</span>) * <span class='fl'>0.1</span>))
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -199,6 +217,8 @@ New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.</p
       <li><a href="#value">Value</a></li>
 
       <li><a href="#details">Details</a></li>
+
+      <li><a href="#functions">Functions</a></li>
 
       <li><a href="#references">References</a></li>
 

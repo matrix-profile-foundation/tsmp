@@ -61,7 +61,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tsmp</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.15.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
       </span>
     </div>
 
@@ -104,13 +104,41 @@
       <small>Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="tsmp-0-3-1" class="section level1">
+<h1 class="page-header">
+<a href="#tsmp-0-3-1" class="anchor"></a>tsmp 0.3.1<small> Unreleased </small>
+</h1>
+<div id="important" class="section level2">
+<h2 class="hasAnchor">
+<a href="#important" class="anchor"></a>IMPORTANT</h2>
+<ul>
+<li>This version is a complete reestructuration. API has changed and workflow is more friendly. This API is intended to be stable and from now one any change will pass throught the “Deprecated” stage.</li>
+</ul>
+</div>
+<div id="added-features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#added-features" class="anchor"></a>Added Features</h2>
+<ul>
+<li>Outputs have a prettier print format.</li>
+<li>Outputs have a plot function. Try to plot a <code><a href="../reference/tsmp.html">tsmp()</a></code> output for example.</li>
+<li>Now functions can work in <code>%&gt;%</code> (pipe), e.g. <code>tsmp() %&gt;% find_motif()</code>. Except for SDTS that has a proper way to work.</li>
+<li>Added a wrapper function called <code><a href="../reference/tsmp.html">tsmp()</a></code> that handles the several algorithms available.</li>
+<li>Added <code>as.*</code> functions to allow you to switch classes if you want, e.g.: <code>as.matrix.profile()</code>.</li>
+<li>Changed all functions from dotted.case to snake_case (except <code>as.*</code> functions).</li>
+<li>Added Annotation Vectors.</li>
+<li>Fixed STOMP crash with Joins.</li>
+<li>Added support to query &lt; data in Joins.</li>
+<li>SCRIMP (experimental).</li>
+</ul>
+</div>
+</div>
     <div id="tsmp-0-2-15" class="section level1">
 <h1 class="page-header">
 <a href="#tsmp-0-2-15" class="anchor"></a>tsmp 0.2.15<small> Unreleased </small>
 </h1>
 <ul>
-<li>Code linting</li>
-<li>Added Salient Subsequences search</li>
+<li>Code linting.</li>
+<li>Added Salient Subsequences search.</li>
 </ul>
 </div>
     <div id="tsmp-0-2-14" class="section level1">
@@ -120,9 +148,9 @@
 <ul>
 <li>Added SiMPle (Fast Similarity Matrix Profile for Music Analysis and Exploration).</li>
 <li>Added FLUSS (Fast Low-cost Unipotent Semantic Segmentation).</li>
-<li>Added [find.chains()] to look for chains primitives.</li>
+<li>Added [find_chains()] to look for chains primitives.</li>
 <li>Added Multivariate MOTIF Search (from mSTOMP)</li>
-<li>Changed dependency from beepr to audio (actually beepr depends on audio, so less dependencies)</li>
+<li>Changed dependency from beepr to audio (actually beepr depends on audio, so less dependencies).</li>
 <li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
 </ul>
 </div>
@@ -131,8 +159,8 @@
 <a href="#tsmp-0-2-12" class="anchor"></a>tsmp 0.2.12<small> 2018-08-17 </small>
 </h1>
 <ul>
-<li>Added Multivariate STOMP parallel version</li>
-<li>Added SDTS algorithm (Scalable Dictionary learning for Time Series)</li>
+<li>Added Multivariate STOMP parallel version.</li>
+<li>Added SDTS algorithm (Scalable Dictionary learning for Time Series).</li>
 </ul>
 </div>
     <div id="tsmp-0-1-0" class="section level1">
@@ -140,9 +168,9 @@
 <a href="#tsmp-0-1-0" class="anchor"></a>tsmp 0.1.0<small> Unreleased </small>
 </h1>
 <ul>
-<li>STAMP and STAMP parallel Algorithm</li>
-<li>Multivariate STOMP algorithm</li>
-<li>MASS algorithm</li>
+<li>STAMP and STAMP parallel Algorithm.</li>
+<li>Multivariate STOMP algorithm.</li>
+<li>MASS algorithm.</li>
 </ul>
 </div>
   </div>
@@ -151,6 +179,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#tsmp-0-3-1">0.3.1</a></li>
         <li><a href="#tsmp-0-2-15">0.2.15</a></li>
         <li><a href="#tsmp-0-2-14">0.2.14</a></li>
         <li><a href="#tsmp-0-2-12">0.2.12</a></li>

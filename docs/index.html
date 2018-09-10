@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">tsmp</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.15.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
       </span>
     </div>
 
@@ -72,11 +72,11 @@
     
     
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-<p><img src="reference/figures/logo.png" style="float: right;"></p>
+<p><img src="reference/figures/logo.png" align="right" style="float:right;"></p>
 <div id="time-series-with-matrix-profile" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#time-series-with-matrix-profile" class="anchor"></a>Time Series with Matrix Profile</h1></div>
-<p><a href="https://choosealicense.com/licenses/mit"><img src="https://img.shields.io/packagist/l/doctrine/orm.svg" alt="Packagist"></a> <a href="https://www.tidyverse.org/lifecycle/#maturing"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="lifecycle"></a> <a href="https://cran.r-project.org/package=tsmp"><img src="http://www.r-pkg.org/badges/version/tsmp" alt="CRAN version"></a> <a href="https://cran.r-project.org/package=tsmp"><img src="https://cranlogs.r-pkg.org/badges/tsmp" alt="CRAN Downloads"></a></p>
+<p><a href="https://choosealicense.com/licenses/mit"><img src="https://img.shields.io/packagist/l/doctrine/orm.svg" alt="Packagist"></a> <a href="https://www.tidyverse.org/lifecycle/#stable"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="lifecycle"></a> <a href="https://cran.r-project.org/package=tsmp"><img src="http://www.r-pkg.org/badges/version/tsmp" alt="CRAN version"></a> <a href="https://cran.r-project.org/package=tsmp"><img src="https://cranlogs.r-pkg.org/badges/tsmp" alt="CRAN Downloads"></a></p>
 <table class="table">
 <thead><tr class="header">
 <th></th>
@@ -95,6 +95,11 @@
 <td><a href="https://travis-ci.com/franzbischoff/tsmp"><img src="https://travis-ci.com/franzbischoff/tsmp.svg?branch=develop" alt="Build Status"></a></td>
 </tr>
 <tr class="odd">
+<td>Windows</td>
+<td><a href="https://ci.appveyor.com/project/franzbischoff/tsmp"><img src="https://ci.appveyor.com/api/projects/status/github/franzbischoff/tsmp?branch=master&amp;svg=true" alt="AppVeyor build status"></a></td>
+<td><a href="https://ci.appveyor.com/project/franzbischoff/tsmp"><img src="https://ci.appveyor.com/api/projects/status/github/franzbischoff/tsmp?branch=develop&amp;svg=true" alt="AppVeyor build status"></a></td>
+</tr>
+<tr class="even">
 <td>Coverage</td>
 <td><a href="https://codecov.io/gh/franzbischoff/tsmp"><img src="https://codecov.io/gh/franzbischoff/tsmp/branch/master/graph/badge.svg" alt="codecov"></a></td>
 <td><a href="https://codecov.io/gh/franzbischoff/tsmp"><img src="https://codecov.io/gh/franzbischoff/tsmp/branch/develop/graph/badge.svg" alt="codecov"></a></td>
@@ -105,8 +110,23 @@
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
 <p>R Functions implementing UCR Matrix Profile Algorithm (<a href="http://www.cs.ucr.edu/~eamonn/MatrixProfile.html" class="uri">http://www.cs.ucr.edu/~eamonn/MatrixProfile.html</a>).</p>
-<p>This is under development and is intended to be a general purpose MP toolkit</p>
-<p>After basic tools are finished and API is mature, further functions for ‘Classification’, ‘MOTIF extraction’, ‘MDS visualization’ etc. will be added.</p>
+<p>This package allows you to use the Matrix Profile concept as a toolkit.</p>
+<p>This package provides:</p>
+<ul>
+<li>Algorithms to build a Matrix Profile: STAMP, STOMP, SCRIMP (experimental), SIMPLE and MSTOMP.</li>
+<li>Algorithms for MOTIF search for Unidimensional and Multidimensional Matrix Profiles.</li>
+<li>Algorithm for Chains search for Unidimensional Matrix Profile.</li>
+<li>Algorithms for Semantic Segmentation (FLUSS) and Weakly Labeled data (SDTS).</li>
+<li>Algorithm for Salient Subsections detection allowing MDS plotting.</li>
+<li>Basic plotting for all outputs generated here.</li>
+<li>Sequencial workflow, see below.</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># Basic workflow:</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">matrix &lt;-<span class="st"> </span><span class="kw"><a href="reference/tsmp.html">tsmp</a></span>(data, <span class="dt">window_size =</span> <span class="dv">30</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="reference/find_motif.html">find_motif</a></span>(<span class="dt">n_motifs =</span> <span class="dv">3</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="reference/plot.html">plot</a></span>()</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co"># SDTS still have a unique way to work:</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">model &lt;-<span class="st"> </span><span class="kw"><a href="reference/sdts_train.html">sdts_train</a></span>(data, labels, windows); result &lt;-<span class="st"> </span><span class="kw"><a href="reference/sdts_predict.html">sdts_predict</a></span>(model, data, <span class="kw">round</span>(<span class="kw">mean</span>(windows)))</a></code></pre></div>
+<p>Please refer to the <a href="https://franzbischoff.github.io/tsmp/reference/">User Manual</a> for more details.</p>
 <p>Please be welcome to suggest improvements.</p>
 <div id="performance-on-an-intelr-coretm-i7-7700-cpu-3-60ghz" class="section level3">
 <h3 class="hasAnchor">
@@ -121,7 +141,7 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td><code><a href="reference/stomp.par.html">stomp.par()</a></code></td>
+<td><code><a href="reference/stomp.html">stomp_par()</a></code></td>
 <td align="center">45.17s</td>
 <td align="center">55000</td>
 <td align="center">150</td>
@@ -135,7 +155,7 @@
 <td align="center">1</td>
 </tr>
 <tr class="odd">
-<td><code><a href="reference/mstomp.par.html">mstomp.par()</a></code></td>
+<td><code><a href="reference/mstomp.html">mstomp_par()</a></code></td>
 <td align="center">113.03s</td>
 <td align="center">55000</td>
 <td align="center">150</td>
@@ -149,7 +169,7 @@
 <td align="center">1</td>
 </tr>
 <tr class="odd">
-<td><code><a href="reference/stamp.par.html">stamp.par()</a></code></td>
+<td><code><a href="reference/stamp.html">stamp_par()</a></code></td>
 <td align="center">852.11s</td>
 <td align="center">55000</td>
 <td align="center">150</td>
@@ -169,12 +189,12 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># Install the released version from CRAN</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">install.packages</span>(<span class="st">"tsmp"</span>)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co"># Or the development version from GitHub:</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co"># install.packages("devtools")</span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"franzbischoff/tsmp"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># Install the released version from CRAN</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">install.packages</span>(<span class="st">"tsmp"</span>)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co"># Or the development version from GitHub:</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co"># install.packages("devtools")</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"franzbischoff/tsmp"</span>)</a></code></pre></div>
 </div>
 <div id="currently-available-features" class="section level2">
 <h2 class="hasAnchor">
@@ -182,6 +202,7 @@
 <ul>
 <li>STAMP (single and multi-thread versions)</li>
 <li>STOMP (single and multi-thread versions)</li>
+<li>SCRIMP (single-thread, still experimental)</li>
 <li>Time Series Chains</li>
 <li>Multivariate STOMP (mSTOMP)</li>
 <li>Multivariate MOTIF Search (from mSTOMP)</li>
@@ -189,6 +210,8 @@
 <li>Scalable Dictionary learning for Time Series (SDTS) prediction</li>
 <li>FLUSS (Fast Low-cost Unipotent Semantic Segmentation)</li>
 <li>SiMPle-Fast (Fast Similarity Matrix Profile for Music Analysis and Exploration)</li>
+<li>Annotation vectors (e.g.: Stop-word MOTIF bias, Actionability bias)</li>
+<li>FLUSS Arc Plot and SiMPle Arc Plot</li>
 <li>Misc:
 <ul>
 <li>MASS v2.0</li>
@@ -202,13 +225,12 @@
 <h2 class="hasAnchor">
 <a href="#road-map" class="anchor"></a>Road map</h2>
 <ul>
-<li>FLUSS Arc Plot and SiMPle Arc Plot</li>
-<li>Annotation vectors (e.g.: Stop-word MOTIF bias, Actionability bias)</li>
 <li>MOTIFs under Uniform Scaling</li>
+<li>Exact Detection of Variable Length Motifs</li>
+<li>Profile-Based Shapelet Discovery</li>
 <li>GPU-STOMP</li>
 <li>Real-time version of previous algorithms (STAMPI, FLOSS, etc)</li>
 <li>MASS Extensions (ADP, WQ, QwG)</li>
-<li>SCRIMP (waiting for publication)</li>
 </ul>
 </div>
 <div id="other-projects-with-matrix-profile" class="section level2">
@@ -220,6 +242,10 @@
 <li>Python: <a href="https://github.com/jbeleno/owlpy" class="uri">https://github.com/jbeleno/owlpy</a>
 </li>
 <li>Python: <a href="https://github.com/javidlakha/matrix-profile" class="uri">https://github.com/javidlakha/matrix-profile</a>
+</li>
+<li>CUDA: <a href="https://github.com/zpzim/STOMPSelfJoin" class="uri">https://github.com/zpzim/STOMPSelfJoin</a>
+</li>
+<li>CUDA: <a href="https://github.com/zpzim/SCAMP" class="uri">https://github.com/zpzim/SCAMP</a>
 </li>
 </ul>
 </div>
