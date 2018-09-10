@@ -32,7 +32,8 @@ API is intended to be stable and from now one any change will pass throught the 
 
 * Outputs have a prettier print format.
 * Outputs have a plot function. Try to plot a `tsmp()` output for example.
-* Now functions can work in `%>%` (pipe), e.g. `tsmp() %>% find_motif()`.
+* Now functions can work in `%>%` (pipe), e.g. `tsmp() %>% find_motif()`. Except for SDTS that has
+  a proper way to work.
 * Added a wrapper function called `tsmp()` that handles the several algorithms available.
 * Added `as.*` functions to allow you to switch classes if you want, e.g.: `as.matrix.profile()`.
 * Changed all functions from dotted.case to snake_case (except `as.*` functions).

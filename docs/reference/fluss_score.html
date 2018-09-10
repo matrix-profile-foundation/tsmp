@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tsmp</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.15.9009</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
       </span>
     </div>
 
@@ -155,7 +155,7 @@ Zero is the best, One is the worst.</p>
     <pre class="examples"><div class='input'><span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_fluss_data</span>$<span class='no'>tilt_abp</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>1000</span>]
 <span class='no'>w</span> <span class='kw'>&lt;-</span> <span class='fl'>10</span>
 <span class='no'>truth</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>945</span>, <span class='fl'>875</span>)
-<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>tsmp</span>(<span class='no'>data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='no'>w</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span>(<span class='no'>data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='no'>w</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 <span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fluss_cac.html'>fluss_cac</a></span>(<span class='no'>mp</span>)
 <span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fluss_extract.html'>fluss_extract</a></span>(<span class='no'>mp</span>, <span class='fl'>2</span>)
 <span class='no'>score</span> <span class='kw'>&lt;-</span> <span class='fu'>fluss_score</span>(<span class='no'>truth</span>, <span class='no'>mp</span>$<span class='no'>fluss</span>, <span class='fu'>length</span>(<span class='no'>data</span>))</div></pre>

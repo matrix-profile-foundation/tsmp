@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Find Time Series Chains — find_chains • tsmp</title>
+<title>Search for Motifs — find_motif • tsmp</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Find Time Series Chains — find_chains" />
+<meta property="og:title" content="Search for Motifs — find_motif" />
 
-<meta property="og:description" content="Time Series Chains is a new primitive for time series data mining." />
+<meta property="og:description" content="Search for Motifs" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -102,47 +102,89 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Find Time Series Chains</h1>
-    <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/find-chains.R'><code>R/find-chains.R</code></a></small>
-    <div class="hidden name"><code>find_chains.Rd</code></div>
+    <h1>Search for Motifs</h1>
+    <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/find-motifs.R'><code>R/find-motifs.R</code></a></small>
+    <div class="hidden name"><code>find_motif.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Time Series Chains is a new primitive for time series data mining.</p>
+    <p>Search for Motifs</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>find_chains</span>(<span class='no'>.mp</span>)</pre>
+    <pre class="usage"><span class='fu'>find_motif</span>(<span class='no'>.mp</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for MatrixProfile</span>
+<span class='fu'>find_motif</span>(<span class='no'>.mp</span>, <span class='no'>data</span>, <span class='kw'>n_motifs</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>radius</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>exclusion_zone</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for MultiMatrixProfile</span>
+<span class='fu'>find_motif</span>(<span class='no'>.mp</span>, <span class='no'>data</span>, <span class='kw'>n_motifs</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>mode</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"guided"</span>, <span class='st'>"unconstrained"</span>), <span class='kw'>n_bit</span> <span class='kw'>=</span> <span class='fl'>4</span>,
+  <span class='kw'>exclusion_zone</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n_dim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>.mp</th>
-      <td><p>a TSMP object of class <code>MatrixProfile</code>.</p></td>
+      <td><p>a TSMP object of class <code>MatrixProfile</code> or <code>MultiMatrixProfile</code>.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>further arguments to be passed to class specific function.</p></td>
+    </tr>
+    <tr>
+      <th>data</th>
+      <td><p>the data used to build the Matrix Profile, if not embedded.</p></td>
+    </tr>
+    <tr>
+      <th>n_motifs</th>
+      <td><p>an <code>int</code>. Number of motifs to find. (Default is <code>3</code>).</p></td>
+    </tr>
+    <tr>
+      <th>radius</th>
+      <td><p>an <code>int</code>. Radius. (Default is <code>3</code>).</p></td>
+    </tr>
+    <tr>
+      <th>exclusion_zone</th>
+      <td><p>if a <code>number</code> will be used instead of embedded value. (Default is <code>NULL</code>).</p></td>
+    </tr>
+    <tr>
+      <th>mode</th>
+      <td><p>a <code>string</code>. Guided or Unconstrained search. Allow partial match. (Default is <code>guided</code>).</p></td>
+    </tr>
+    <tr>
+      <th>n_bit</th>
+      <td><p>an <code>ìnt</code>. Bit size for discretization. Ignored on Guided search. (Default is <code>4</code>).</p></td>
+    </tr>
+    <tr>
+      <th>n_dim</th>
+      <td><p>an <code>int</code>. Number of dimensions to use on Guided search instead of embedded value. (Default is <code>NULL</code>).</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Returns the input <code>.mp</code> object with a new name <code>chain</code>. It contains: <code>chains</code>, a <code>list</code>
-of chains founded with more than 2 patterns and <code>best</code> with the best one.</p>
-    
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
-    <ul>
-<li><p>Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A
-New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.</p></li>
-</ul>
-    <p>Website: <a href='https://sites.google.com/site/timeserieschain/'>https://sites.google.com/site/timeserieschain/</a></p>
+    <p>For class <code>MatrixProfile</code>, returns the input <code>.mp</code> object with a new name <code>motif</code>. It contains: <code>motif_idx</code>, a <code>list</code>
+of motif pairs founded and <code>motif_neighbor</code> a <code>list</code> with respective motif's neighbors.</p>
+<p>For class <code>MultiMatrixProfile</code>, returns the input <code>.mp</code> object with a new name <code>motif</code>. It contains: <code>motif_idx</code>, a <code>vector</code>
+of motifs founded and <code>motif_dim</code> a <code>list</code> the dimensions where the motifs were founded.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>w</span> <span class='kw'>&lt;-</span> <span class='fl'>50</span>
+    <pre class="examples"><div class='input'><span class='co'># Single dimension data</span>
+<span class='no'>w</span> <span class='kw'>&lt;-</span> <span class='fl'>50</span>
 <span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_gait_data</span>
 <span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span>(<span class='no'>data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='no'>w</span>, <span class='kw'>exclusion_zone</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>4</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
-<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>find_chains</span>(<span class='no'>mp</span>)</div></pre>
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>find_motif</span>(<span class='no'>mp</span>)
+
+<span class='co'># Multidimension data</span>
+<span class='no'>w</span> <span class='kw'>&lt;-</span> <span class='no'>mp_toy_data</span>$<span class='no'>sub_len</span>
+<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>300</span>, ]
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span>(<span class='no'>data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='no'>w</span>, <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"mstomp"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>find_motif</span>(<span class='no'>mp</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -150,8 +192,6 @@ New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.</p
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#references">References</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

@@ -1,7 +1,7 @@
 NEWS
 ================
 Francisco Bischoff
-\- 09 Sep 2018
+\- 10 Sep 2018
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
@@ -19,7 +19,7 @@ Francisco Bischoff
   - Outputs have a plot function. Try to plot a `tsmp()` output for
     example.
   - Now functions can work in `%>%` (pipe), e.g. `tsmp() %>%
-    find_motif()`.
+    find_motif()`. Except for SDTS that has a proper way to work.
   - Added a wrapper function called `tsmp()` that handles the several
     algorithms available.
   - Added `as.*` functions to allow you to switch classes if you want,
