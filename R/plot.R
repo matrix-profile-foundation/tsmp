@@ -461,7 +461,11 @@ plot.MultiMotif <- function(x, data, type = c("data", "matrix"), ncol = 3, main 
   # plot matrix profile
   graphics::par(oma = c(1, 1, 3, 0), cex.lab = 1.5)
   for (i in seq_len(n_dim)) {
-    graphics::plot(plot_data[, i], type = "l", main = paste0("Matrix Profile ", i, " (w = ", x$w, "; ez = ", x$ez, ")"), xlab = xlab, ylab = ylab)
+    graphics::plot(plot_data[, i],
+      type = "l",
+      main = paste0("Matrix Profile ", i, " (w = ", x$w, "; ez = ", x$ez, ")"),
+      xlab = xlab, ylab = ylab
+    )
     midx <- dim_idx[[i]]
     graphics::abline(v = motifs[midx], col = midx, lwd = 2)
   }

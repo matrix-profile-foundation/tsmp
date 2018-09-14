@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Computes the annotation vector that suppresses stop-word motifs — av_stop_word • tsmp</title>
+<title>Computes the F-Score of a SDTS prediction — sdts_score • tsmp</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Computes the annotation vector that suppresses stop-word motifs — av_stop_word" />
+<meta property="og:title" content="Computes the F-Score of a SDTS prediction — sdts_score" />
 
-<meta property="og:description" content="Computes the annotation vector that suppresses stop-word motifs" />
+<meta property="og:description" content="Computes the F-Score of a SDTS prediction." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -114,83 +114,85 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Computes the annotation vector that suppresses stop-word motifs</h1>
-    <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/annotations.R'><code>R/annotations.R</code></a></small>
-    <div class="hidden name"><code>av_stop_word.Rd</code></div>
+    <h1>Computes the F-Score of a SDTS prediction</h1>
+    <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/sdts-predict.R'><code>R/sdts-predict.R</code></a></small>
+    <div class="hidden name"><code>sdts_score.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Computes the annotation vector that suppresses stop-word motifs</p>
+    <p>Computes the F-Score of a SDTS prediction.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>av_stop_word</span>(<span class='no'>.mp</span>, <span class='no'>data</span>, <span class='no'>stop_word_loc</span>, <span class='kw'>exclusion_zone</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>0.1</span>, <span class='kw'>apply</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>sdts_score</span>(<span class='no'>gtruth</span>, <span class='no'>pred</span>, <span class='kw'>beta</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>.mp</th>
-      <td><p>a Matrix Profile object.</p></td>
+      <th>gtruth</th>
+      <td><p>a <code>vector</code> of <code>logical</code>. Ground truth annotation.</p></td>
     </tr>
     <tr>
-      <th>data</th>
-      <td><p>a <code>vector</code> or a column <code>matrix</code> of <code>numeric</code>.</p></td>
+      <th>pred</th>
+      <td><p>a <code>vector</code> of <code>logical</code>. Predicted annotation from <code><a href='sdts_predict.html'>sdts_predict()</a></code></p></td>
     </tr>
     <tr>
-      <th>stop_word_loc</th>
-      <td><p>an <code>int</code>. The index of stop word location.</p></td>
-    </tr>
-    <tr>
-      <th>exclusion_zone</th>
-      <td><p>a <code>numeric</code>. Size of the exclusion zone, based on window_size (default is
-<code>NULL</code>). See details.</p></td>
-    </tr>
-    <tr>
-      <th>threshold</th>
-      <td><p>a <code>numeric</code>. (default is <code>0.1</code>).</p></td>
-    </tr>
-    <tr>
-      <th>apply</th>
-      <td><p>logical. (Default is <code>FALSE</code>). Applies the Annotation Vector over the Matrix Profile.
-Use with caution.</p></td>
+      <th>beta</th>
+      <td><p>a <code>numeric</code>. See details. (default is <code>1</code>).</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Returns the input <code>.mp</code> object with an embedded annotation vector.</p>
+    <p>Returns a <code>list</code> with <code>f_score</code>, <code>precision</code> and <code>recall</code>.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The function is intended to be generic. However, its parameters (<code>stop_word_loc</code>,
-<code>exclusion_zone</code> and <code>threshold</code>) are highly dataset dependent.</p>
+    <p><code>beta</code> is used to balance F-score towards recall (<code>&gt;1</code>) or precision (<code>&lt;1</code>).</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <ul>
-<li><p>Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
-Knowledge into Motif Discovery. In: Proceedings of the 23rd ACM SIGKDD International Conference
-on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
-125–34.</p></li>
+<li><p>Yeh C-CM, Kavantzas N, Keogh E. Matrix profile IV: Using Weakly Labeled Time Series
+to Predict Outcomes. Proc VLDB Endow. 2017 Aug 1;10(12):1802–12.</p></li>
 </ul>
+    <p>Website: <a href='https://sites.google.com/view/weaklylabeled'>https://sites.google.com/view/weaklylabeled</a></p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other Annotation vectors: <code><a href='av_apply.html'>av_apply</a></code>,
-  <code><a href='av_complexity.html'>av_complexity</a></code>,
-  <code><a href='av_hardlimit_artifact.html'>av_hardlimit_artifact</a></code>,
-  <code><a href='av_motion_artifact.html'>av_motion_artifact</a></code>,
-  <code><a href='av_zerocrossing.html'>av_zerocrossing</a></code></p></div>
+    <div class='dont-index'><p>Other Scalable Dictionaries: <code><a href='sdts_predict.html'>sdts_predict</a></code>,
+  <code><a href='sdts_train.html'>sdts_train</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_test_data</span>$<span class='no'>train</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>1000</span>]
-<span class='no'>w</span> <span class='kw'>&lt;-</span> <span class='fl'>50</span>
-<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span>(<span class='no'>data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='no'>w</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
-<span class='no'>av</span> <span class='kw'>&lt;-</span> <span class='fu'>av_stop_word</span>(<span class='no'>mp</span>, <span class='kw'>stop_word_loc</span> <span class='kw'>=</span> <span class='fl'>150</span>, <span class='kw'>apply</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div></pre>
+    <pre class="examples"><div class='input'><span class='co'># This is a fast toy example and results are useless. For a complete result, run the code inside</span>
+<span class='co'>#'Not run' section below.</span>
+<span class='no'>w</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>110</span>, <span class='fl'>220</span>)
+<span class='no'>subs</span> <span class='kw'>&lt;-</span> <span class='fl'>11000</span>:<span class='fl'>20000</span>
+<span class='no'>tr_data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_test_data</span>$<span class='no'>train</span>$<span class='no'>data</span>[<span class='no'>subs</span>]
+<span class='no'>tr_label</span> <span class='kw'>&lt;-</span> <span class='no'>mp_test_data</span>$<span class='no'>train</span>$<span class='no'>label</span>[<span class='no'>subs</span>]
+<span class='no'>te_data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_test_data</span>$<span class='no'>test</span>$<span class='no'>data</span>[<span class='no'>subs</span>]
+<span class='no'>te_label</span> <span class='kw'>&lt;-</span> <span class='no'>mp_test_data</span>$<span class='no'>test</span>$<span class='no'>label</span>[<span class='no'>subs</span>]
+<span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sdts_train.html'>sdts_train</a></span>(<span class='no'>tr_data</span>, <span class='no'>tr_label</span>, <span class='no'>w</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+<span class='no'>predict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sdts_predict.html'>sdts_predict</a></span>(<span class='no'>model</span>, <span class='no'>te_data</span>, <span class='fu'>round</span>(<span class='fu'>mean</span>(<span class='no'>w</span>)))
+<span class='fu'>sdts_score</span>(<span class='no'>te_label</span>, <span class='no'>predict</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; $f_score
+#&gt; [1] 0.06451613
+#&gt; 
+#&gt; $precision
+#&gt; [1] 0.03333333
+#&gt; 
+#&gt; $recall
+#&gt; [1] 1
+#&gt; </div><div class='input'>
+</div><span class='co'># NOT RUN {</span>
+<span class='no'>windows</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>110</span>, <span class='fl'>220</span>, <span class='fl'>330</span>)
+<span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sdts_train.html'>sdts_train</a></span>(<span class='no'>mp_test_data</span>$<span class='no'>train</span>$<span class='no'>data</span>, <span class='no'>mp_test_data</span>$<span class='no'>train</span>$<span class='no'>label</span>, <span class='no'>windows</span>)
+<span class='no'>predict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sdts_predict.html'>sdts_predict</a></span>(<span class='no'>model</span>, <span class='no'>mp_test_data</span>$<span class='no'>test</span>$<span class='no'>data</span>, <span class='fu'>round</span>(<span class='fu'>mean</span>(<span class='no'>windows</span>)))
+<span class='fu'>sdts_score</span>(<span class='no'>mp_test_data</span>$<span class='no'>test</span>$<span class='no'>label</span>, <span class='no'>predict</span>, <span class='fl'>1</span>)
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

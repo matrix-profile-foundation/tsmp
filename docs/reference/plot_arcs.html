@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Computes the annotation vector that suppresses stop-word motifs — av_stop_word • tsmp</title>
+<title>Plot arcs between indexes of a Profile Index — plot_arcs • tsmp</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +30,12 @@
 
 
 
-<meta property="og:title" content="Computes the annotation vector that suppresses stop-word motifs — av_stop_word" />
+<meta property="og:title" content="Plot arcs between indexes of a Profile Index — plot_arcs" />
 
-<meta property="og:description" content="Computes the annotation vector that suppresses stop-word motifs" />
+<meta property="og:description" content="Sometimes may be useful to see where is the nearest neighbor graphically. This is the reasoning
+behind, for example, FLUSS which uses the arc count to infer a semantic change, and SiMPle which
+infer that arcs connect similar segments of a music. See details for a deeper explanation how to
+use this function." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -114,83 +117,88 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Computes the annotation vector that suppresses stop-word motifs</h1>
-    <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/annotations.R'><code>R/annotations.R</code></a></small>
-    <div class="hidden name"><code>av_stop_word.Rd</code></div>
+    <h1>Plot arcs between indexes of a Profile Index</h1>
+    <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/plot.R'><code>R/plot.R</code></a></small>
+    <div class="hidden name"><code>plot_arcs.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Computes the annotation vector that suppresses stop-word motifs</p>
+    <p>Sometimes may be useful to see where is the nearest neighbor graphically. This is the reasoning
+behind, for example, FLUSS which uses the arc count to infer a semantic change, and SiMPle which
+infer that arcs connect similar segments of a music. See details for a deeper explanation how to
+use this function.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>av_stop_word</span>(<span class='no'>.mp</span>, <span class='no'>data</span>, <span class='no'>stop_word_loc</span>, <span class='kw'>exclusion_zone</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>0.1</span>, <span class='kw'>apply</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>plot_arcs</span>(<span class='no'>pairs</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quality</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>15</span>,
+  <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"blue"</span>, <span class='st'>"orange"</span>), <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Arc Plot"</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Profile Index"</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>.mp</th>
-      <td><p>a Matrix Profile object.</p></td>
+      <th>pairs</th>
+      <td><p>a <code>matrix</code> with 2 columns.</p></td>
     </tr>
     <tr>
-      <th>data</th>
-      <td><p>a <code>vector</code> or a column <code>matrix</code> of <code>numeric</code>.</p></td>
+      <th>alpha</th>
+      <td><p>a <code>numeric</code>. (Default is <code>NULL</code>, automatic). Alpha value for lines transparency.</p></td>
     </tr>
     <tr>
-      <th>stop_word_loc</th>
-      <td><p>an <code>int</code>. The index of stop word location.</p></td>
+      <th>quality</th>
+      <td><p>an <code>int</code>. (Default is <code>30</code>). Number of segments to draw the arc. Bigger value,
+harder to render.</p></td>
     </tr>
     <tr>
-      <th>exclusion_zone</th>
-      <td><p>a <code>numeric</code>. Size of the exclusion zone, based on window_size (default is
-<code>NULL</code>). See details.</p></td>
+      <th>lwd</th>
+      <td><p>an <code>int</code>. (Default is <code>15</code>). Line width.</p></td>
     </tr>
     <tr>
-      <th>threshold</th>
-      <td><p>a <code>numeric</code>. (default is <code>0.1</code>).</p></td>
+      <th>col</th>
+      <td><p>a <code>vector</code> of colors. (Default is <code>c("blue", "orange")</code>). Colors for right and left
+arc, respectively. Accepts one color.</p></td>
     </tr>
     <tr>
-      <th>apply</th>
-      <td><p>logical. (Default is <code>FALSE</code>). Applies the Annotation Vector over the Matrix Profile.
-Use with caution.</p></td>
+      <th>main</th>
+      <td><p>a <code>string</code>. (Default is <code>"Arc Plot"</code>). Main title.</p></td>
+    </tr>
+    <tr>
+      <th>ylab</th>
+      <td><p>a <code>string</code>. (Default is <code>""</code>). Y label.</p></td>
+    </tr>
+    <tr>
+      <th>xlab</th>
+      <td><p>a <code>string</code>. (Default is <code>"Profile Index"</code>). X label.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>further arguments to be passed to <code><a href='plot.html'>plot()</a></code>. See <code>par()</code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Returns the input <code>.mp</code> object with an embedded annotation vector.</p>
+    <p>None</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The function is intended to be generic. However, its parameters (<code>stop_word_loc</code>,
-<code>exclusion_zone</code> and <code>threshold</code>) are highly dataset dependent.</p>
-    
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
-    <ul>
-<li><p>Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
-Knowledge into Motif Discovery. In: Proceedings of the 23rd ACM SIGKDD International Conference
-on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
-125–34.</p></li>
-</ul>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Other Annotation vectors: <code><a href='av_apply.html'>av_apply</a></code>,
-  <code><a href='av_complexity.html'>av_complexity</a></code>,
-  <code><a href='av_hardlimit_artifact.html'>av_hardlimit_artifact</a></code>,
-  <code><a href='av_motion_artifact.html'>av_motion_artifact</a></code>,
-  <code><a href='av_zerocrossing.html'>av_zerocrossing</a></code></p></div>
+    <p>You have two options to use this function. First you can provide just the data, and the function
+will try its best to retrieve the pairs for plotting. Second, you can skip the first parameters
+and just provide the <code>pairs</code>, which is a <code>matrix</code> with two columns; the first is the starting
+index, the second is the end index. Two colors are used to allow you to identify the direction of
+the arc. If you use the <code>rpi</code> or <code>lpi</code> as input, you will see that these profile indexes have
+just one direction.</p>
+<p><code>exclusion_zone</code> is used to filter out small arcs that may be useless (e.g. you may be interested
+in similarities that are far away). <code>edge_limit</code> is used to filter out spurious arcs that are
+used connect the beginning and the end of the profile (e.g. silent audio). <code>threshold</code> is used to
+filter indexes that have distant nearest neighbor (e.g. retrieve only the best motifs).</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_test_data</span>$<span class='no'>train</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>1000</span>]
-<span class='no'>w</span> <span class='kw'>&lt;-</span> <span class='fl'>50</span>
-<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span>(<span class='no'>data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='no'>w</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
-<span class='no'>av</span> <span class='kw'>&lt;-</span> <span class='fu'>av_stop_word</span>(<span class='no'>mp</span>, <span class='kw'>stop_word_loc</span> <span class='kw'>=</span> <span class='fl'>150</span>, <span class='kw'>apply</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>plot_arcs</span>(<span class='kw'>pairs</span> <span class='kw'>=</span> <span class='fu'>matrix</span>(<span class='fu'>c</span>(<span class='fl'>5</span>, <span class='fl'>10</span>, <span class='fl'>1</span>, <span class='fl'>10</span>, <span class='fl'>20</span>, <span class='fl'>5</span>), <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='img'><img src='plot_arcs-1.png' alt='' width='700' height='433' /></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -200,10 +208,6 @@ on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM
       <li><a href="#value">Value</a></li>
 
       <li><a href="#details">Details</a></li>
-
-      <li><a href="#references">References</a></li>
-
-      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

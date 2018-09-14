@@ -27,4 +27,9 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.0.9000
 NeedsCompilation: no
-Suggests: spelling, testthat
+Suggests: 
+    spelling,
+    testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

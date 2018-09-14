@@ -1,14 +1,6 @@
 ## Comments
 
-* Big API changes, so this version was increased from 0.2.x to 0.3.x. API will be stable from now
-on with Deprecated messages. Since the package is starting, I don't think will have any impact on
-users.
-
-* Changed dependency from beepr to audio (actually beepr depends on audio, so less dependencies).
-* Added pipe support, so magrittr dependency was added.
-* Added persons to DESCRIPTION as their code/research was implemented in this package.
-* Changed dotted.case to snake_case as usual in tidyverse. I've started with Google R style, but I
-concluded this is better. 
+* none yet
 
 ## Test environments
 * Rhub
