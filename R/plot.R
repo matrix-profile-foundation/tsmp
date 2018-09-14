@@ -192,9 +192,12 @@ plot.MatrixProfile <- function(x, ylab = "distance", xlab = "index", main = "Uni
   if (allmatrix == TRUE) {
     graphics::layout(matrix(c(1, 2, 3), ncol = 1, byrow = TRUE))
   }
-  graphics::par(oma = c(1, 1, 4, 0), cex.lab = 1.5)
+  graphics::par(
+    mar = c(4.1, 4.1, 2.1, 2.1),
+    oma = c(1, 1, 3, 0), cex.lab = 1.5
+  )
   graphics::plot(x$mp, type = "l", main = paste0("Matrix Profile (w = ", x$w, "; ez = ", x$ez, ")"), ylab = ylab, xlab = xlab, ...)
-  graphics::mtext(text = main, line = 4, font = 2, cex = 1.5)
+  graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
 
   if (allmatrix == TRUE) {
     graphics::plot(x$rmp, type = "l", main = "Right Matrix Profile", ylab = ylab, xlab = xlab, ...)
@@ -220,7 +223,10 @@ plot.MultiMatrixProfile <- function(x, ylab = "distance", xlab = "index", main =
   if (allmatrix == TRUE) {
     graphics::layout(matrix(seq_len(3 * n_dim), ncol = 3, byrow = TRUE))
   }
-  graphics::par(oma = c(1, 1, 3, 0), cex.lab = 1.5)
+  graphics::par(
+    mar = c(4.1, 4.1, 2.1, 2.1),
+    oma = c(1, 1, 3, 0), cex.lab = 1.5
+  )
   for (i in seq_len(n_dim)) {
     graphics::plot(x$mp[, i], type = "l", main = paste0("Matrix Profile (w = ", x$w, "; ez = ", x$ez, ")"), ylab = ylab, xlab = xlab, ...)
   }
@@ -459,7 +465,10 @@ plot.MultiMotif <- function(x, data, type = c("data", "matrix"), ncol = 3, main 
     byrow = TRUE
   ))
   # plot matrix profile
-  graphics::par(oma = c(1, 1, 3, 0), cex.lab = 1.5)
+  graphics::par(
+    mar = c(4.1, 4.1, 2.1, 2.1),
+    oma = c(1, 1, 3, 0), cex.lab = 1.5
+  )
   for (i in seq_len(n_dim)) {
     graphics::plot(plot_data[, i],
       type = "l",

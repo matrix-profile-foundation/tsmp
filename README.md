@@ -1,7 +1,7 @@
 README
 ================
 Francisco Bischoff
-\- 09 Sep 2018
+\- 10 Sep 2018
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -10,7 +10,7 @@ Francisco Bischoff
 # Time Series with Matrix Profile
 
 [![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)](https://choosealicense.com/licenses/mit)
-[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
 [![CRAN
 version](http://www.r-pkg.org/badges/version/tsmp)](https://cran.r-project.org/package=tsmp)
 [![CRAN
@@ -28,12 +28,34 @@ Downloads](https://cranlogs.r-pkg.org/badges/tsmp)](https://cran.r-project.org/p
 R Functions implementing UCR Matrix Profile Algorithm
 (<http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>).
 
-This is under development and is intended to be a general purpose MP
-toolkit
+This package allows you to use the Matrix Profile concept as a toolkit.
 
-After basic tools are finished and API is mature, further functions for
-‘Classification’, ‘MOTIF extraction’, ‘MDS visualization’ etc. will be
-added.
+This package provides:
+
+  - Algorithms to build a Matrix Profile: STAMP, STOMP, SCRIMP
+    (experimental), SIMPLE and MSTOMP.
+  - Algorithms for MOTIF search for Unidimensional and Multidimensional
+    Matrix Profiles.
+  - Algorithm for Chains search for Unidimensional Matrix Profile.
+  - Algorithms for Semantic Segmentation (FLUSS) and Weakly Labeled data
+    (SDTS).
+  - Algorithm for Salient Subsections detection allowing MDS plotting.
+  - Basic plotting for all outputs generated here.
+  - Sequencial workflow, see below.
+
+<!-- end list -->
+
+``` r
+# Basic workflow:
+matrix <- tsmp(data, window_size = 30) %>% find_motif(n_motifs = 3) %>% plot()
+
+# SDTS still have a unique way to work:
+model <- sdts_train(data, labels, windows); result <- sdts_predict(model, data, round(mean(windows)))
+```
+
+Please refer to the [User
+Manual](https://franzbischoff.github.io/tsmp/reference/) for more
+details.
 
 Please be welcome to suggest improvements.
 
