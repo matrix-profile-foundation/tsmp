@@ -60,7 +60,8 @@ This package provides:
 matrix <- tsmp(data, window_size = 30) %>% find_motif(n_motifs = 3) %>% plot()
 
 # SDTS still have a unique way to work:
-model <- sdts_train(data, labels, windows); result <- sdts_predict(model, data, round(mean(windows)))
+model <- sdts_train(data, labels, windows)
+result <- sdts_predict(model, data, round(mean(windows)))
 ```
 
 Please refer to the [User Manual](https://franzbischoff.github.io/tsmp/reference/) for more details.

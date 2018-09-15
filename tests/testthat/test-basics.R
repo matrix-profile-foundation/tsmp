@@ -9,15 +9,18 @@ if (skip_on_cran()) {
 
   test_that("Errors", {
     # big window size
-    expect_error(fast_movsd(mp_toy_data$data[, 1], 1), regexp = "must be at least 2")
-    expect_error(fast_movsd(mp_toy_data$data[1:100, 1], 500), regexp = "is too large")
+    expect_error(fast_movsd(mp_toy_data$data[, 1], 1), "must be at least 2")
+    expect_error(fast_movsd(mp_toy_data$data[1:100, 1], 500), "is too large")
     expect_error(expect_message(beep(audio::close.audioInstance(99)), "Failed"))
-    expect_error(tsmp:::diff2(data.frame(1:10), as.matrix(10:1)), regexp = "matrices")
-    expect_error(tsmp:::diff2(as.matrix(1:10), matrix(10:1, ncol = 2)), regexp = "columns")
+    expect_error(tsmp:::diff2(data.frame(1:10), as.matrix(10:1)), "matrices")
+    expect_error(tsmp:::diff2(as.matrix(1:10), matrix(10:1, ncol = 2)), "columns")
   })
 
   pre <- mass_pre(ref_data, d_size, query_data, q_size, w)
-  res <- mass(pre$data_fft, query_data[1:w], d_size, w, pre$data_mean, pre$data_sd, pre$query_mean[1], pre$query_sd[1])
+  res <- mass(
+    pre$data_fft, query_data[1:w], d_size, w, pre$data_mean, pre$data_sd,
+    pre$query_mean[1], pre$query_sd[1]
+  )
   movsd <- fast_movsd(mp_toy_data$data[, 1], 30)
   movavg <- fast_movavg(mp_toy_data$data[, 1], 30)
 
