@@ -38,7 +38,6 @@ fast_movsd <- function(data, window_size) {
   data_sqr <- data^2
 
   b <- rep(1, window_size)
-  # s <- sqrt((stats::filter(data_sqr, b, sides = 1) - (stats::filter(data, b, sides = 1)^2) * (1 / window_size)) / (window_size - 1))
   s <- sqrt((stats::convolve(data_sqr, b, type = "filter") - (stats::convolve(data, b, type = "filter")^2) * (1 / window_size)) / (window_size - 1))
 
   # restore the scale factor that was used before to normalize the data
@@ -60,7 +59,6 @@ fast_movsd <- function(data, window_size) {
 #' data_avg <- fast_movavg(mp_toy_data$data[,1], mp_toy_data$sub_len)
 
 fast_movavg <- function(data, window_size) {
-  # data_mean <- stats::filter(data, rep(1 / window_size, window_size), sides = 2)
   data_mean <- stats::convolve(data, rep(1 / window_size, window_size), type = "filter")
   return(data_mean[!is.na(data_mean)])
 }

@@ -5,7 +5,7 @@ if (skip_on_cran()) {
   data <- mp_toy_data$data[1:100, ]
   w <- 10
   nseg <- 3
-  mp <- tsmp(data[,1], window_size = w, verbose = 0)
+  mp <- tsmp(data[, 1], window_size = w, verbose = 0)
   mmp <- tsmp(data, mode = "mstomp", window_size = w, verbose = 0)
   cac <- fluss_cac(mp)
   segments <- fluss_extract(cac, nseg)

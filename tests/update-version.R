@@ -1,7 +1,6 @@
 if (identical(Sys.getenv("NOT_CRAN"), "true") &&
-    !identical(Sys.getenv("TRAVIS"), "true") &&
-    !identical(Sys.getenv("APPVEYOR"), "True")) {
-
+  !identical(Sys.getenv("TRAVIS"), "true") &&
+  !identical(Sys.getenv("APPVEYOR"), "True")) {
   get_package_version <- function(package_location = ".") {
     ## Read DESCRIPTION file
     desc <- readLines(file.path(package_location, "DESCRIPTION"))
