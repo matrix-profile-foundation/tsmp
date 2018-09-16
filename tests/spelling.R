@@ -1,5 +1,6 @@
-library(testthat)
-if (all(skip_on_cran(), skip_on_travis(), (is.null(skip_on_appveyor())))) {
+if (identical(Sys.getenv("NOT_CRAN"), "true") &&
+  !identical(Sys.getenv("TRAVIS"), "true") &&
+  !identical(Sys.getenv("APPVEYOR"), "True")) {
   if (requireNamespace("spelling", quietly = TRUE)) {
     spelling::spell_check_test(vignettes = TRUE, error = FALSE)
   }
