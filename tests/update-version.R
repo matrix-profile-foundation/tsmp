@@ -1,5 +1,6 @@
-if (all(skip_on_cran(), skip_on_travis(), (is.null(skip_on_appveyor())))) {
-  context("Increase Package version")
+if (identical(Sys.getenv("NOT_CRAN"), "true") &&
+    !identical(Sys.getenv("TRAVIS"), "true") &&
+    !identical(Sys.getenv("APPVEYOR"), "True")) {
 
   get_package_version <- function(package_location = ".") {
     ## Read DESCRIPTION file
@@ -50,8 +51,4 @@ if (all(skip_on_cran(), skip_on_travis(), (is.null(skip_on_appveyor())))) {
 
   curr <- get_package_version(Sys.getenv("R_PACKRAT_PROJECT_DIR"))
   new <- update_package_version(Sys.getenv("R_PACKRAT_PROJECT_DIR"))
-
-  test_that("New version is not old version", {
-    expect_false(isTRUE(all.equal(new, curr)))
-  })
 }

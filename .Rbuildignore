@@ -1,5 +1,5 @@
 ^CRAN-RELEASE$
-^API$
+^API.*$
 ^appveyor\.yml$
 ^revdep$
 ^cran-comments\.md$

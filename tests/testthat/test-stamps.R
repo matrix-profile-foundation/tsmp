@@ -9,38 +9,41 @@ if (skip_on_cran()) {
 
   test_that("Errors", {
     # big window size
-    expect_error(mstomp(mp_toy_data$data[1:200, ], window_size = 500), regexp = "too short relative")
-    expect_error(mstomp_par(mp_toy_data$data[1:200, ], window_size = 500), regexp = "too short relative")
-    expect_error(stomp(mp_toy_data$data[1:200, ], window_size = 500), regexp = "too short relative")
-    expect_error(stomp_par(mp_toy_data$data[1:200, ], window_size = 500), regexp = "too short relative")
-    expect_error(stamp(mp_toy_data$data[1:200, ], window_size = 500), regexp = "too short relative")
-    expect_error(stamp_par(mp_toy_data$data[1:200, ], window_size = 500), regexp = "too short relative")
+    expect_error(mstomp(mp_toy_data$data[1:200, ], window_size = 500), "too short relative")
+    expect_error(mstomp_par(mp_toy_data$data[1:200, ], window_size = 500), "too short relative")
+    expect_error(stomp(mp_toy_data$data[1:200, ], window_size = 500), "too short relative")
+    expect_error(stomp_par(mp_toy_data$data[1:200, ], window_size = 500), "too short relative")
+    expect_error(stamp(mp_toy_data$data[1:200, ], window_size = 500), "too short relative")
+    expect_error(stamp_par(mp_toy_data$data[1:200, ], window_size = 500), "too short relative")
+    expect_error(scrimp(mp_toy_data$data[1:200, ], window_size = 500), "too short relative")
 
     # intersect
-    expect_error(mstomp(mp_toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2), exc_dim = c(2, 3)), regexp = "presented in both")
-    expect_error(mstomp_par(mp_toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2), exc_dim = c(2, 3)), regexp = "presented in both")
+    expect_error(mstomp(mp_toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2), exc_dim = c(2, 3)), "presented in both")
+    expect_error(mstomp_par(mp_toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2), exc_dim = c(2, 3)), "presented in both")
     # too many must_dim
-    expect_error(mstomp(mp_toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2, 3, 4)), regexp = "must_dim")
-    expect_error(mstomp_par(mp_toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2, 3, 4)), regexp = "must_dim")
+    expect_error(mstomp(mp_toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2, 3, 4)), "must_dim")
+    expect_error(mstomp_par(mp_toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2, 3, 4)), "must_dim")
     # too many exc_dim
-    expect_error(mstomp(mp_toy_data$data[1:200, ], window_size = 30, exc_dim = c(1, 2, 3, 4)), regexp = "exc_dim")
-    expect_error(mstomp_par(mp_toy_data$data[1:200, ], window_size = 30, exc_dim = c(1, 2, 3, 4)), regexp = "exc_dim")
+    expect_error(mstomp(mp_toy_data$data[1:200, ], window_size = 30, exc_dim = c(1, 2, 3, 4)), "exc_dim")
+    expect_error(mstomp_par(mp_toy_data$data[1:200, ], window_size = 30, exc_dim = c(1, 2, 3, 4)), "exc_dim")
 
     # small window size
-    expect_error(stamp(mp_toy_data$data[1:200, ], window_size = 2), regexp = "window_size")
-    expect_error(stamp_par(mp_toy_data$data[1:200, ], window_size = 2), regexp = "window_size")
-    expect_error(mstomp(mp_toy_data$data[1:200, ], window_size = 2), regexp = "window_size")
-    expect_error(mstomp_par(mp_toy_data$data[1:200, ], window_size = 2), regexp = "window_size")
-    expect_error(stomp(mp_toy_data$data[1:200, ], window_size = 2), regexp = "window_size")
-    expect_error(stomp_par(mp_toy_data$data[1:200, ], window_size = 2), regexp = "window_size")
+    expect_error(stamp(mp_toy_data$data[1:200, ], window_size = 2), "window_size")
+    expect_error(stamp_par(mp_toy_data$data[1:200, ], window_size = 2), "window_size")
+    expect_error(mstomp(mp_toy_data$data[1:200, ], window_size = 2), "window_size")
+    expect_error(mstomp_par(mp_toy_data$data[1:200, ], window_size = 2), "window_size")
+    expect_error(stomp(mp_toy_data$data[1:200, ], window_size = 2), "window_size")
+    expect_error(stomp_par(mp_toy_data$data[1:200, ], window_size = 2), "window_size")
+    expect_error(scrimp(mp_toy_data$data[1:200, ], window_size = 2), "window_size")
 
     # unknown data type
-    expect_error(stamp(table(rpois(100, 5)), window_size = 30), regexp = "Unknown type")
-    expect_error(stamp_par(table(rpois(100, 5)), window_size = 30), regexp = "Unknown type")
-    expect_error(mstomp(table(rpois(100, 5)), window_size = 30), regexp = "Unknown type")
-    expect_error(mstomp_par(table(rpois(100, 5)), window_size = 30), regexp = "Unknown type")
-    expect_error(stomp(table(rpois(100, 5)), window_size = 30), regexp = "Unknown type")
-    expect_error(stomp_par(table(rpois(100, 5)), window_size = 30), regexp = "Unknown type")
+    expect_error(stamp(table(rpois(100, 5)), window_size = 30), "Unknown type")
+    expect_error(stamp_par(table(rpois(100, 5)), window_size = 30), "Unknown type")
+    expect_error(mstomp(table(rpois(100, 5)), window_size = 30), "Unknown type")
+    expect_error(mstomp_par(table(rpois(100, 5)), window_size = 30), "Unknown type")
+    expect_error(stomp(table(rpois(100, 5)), window_size = 30), "Unknown type")
+    expect_error(stomp_par(table(rpois(100, 5)), window_size = 30), "Unknown type")
+    expect_error(scrimp(table(rpois(100, 5)), window_size = 30), "Unknown type")
   })
 
   ## Test finish ----
@@ -53,6 +56,12 @@ if (skip_on_cran()) {
     expect_message(tsmp(mp_toy_data$data[1:200, 1], mode = "mstomp", window_size = 30), "Finished")
     expect_message(tsmp(mp_toy_data$data[1:200, 1], mode = "mstomp", window_size = 30, n_workers = 2), "Finished")
     expect_message(tsmp(mp_toy_data$data[1:200, 1], mode = "scrimp", window_size = 30), "Finished")
+    expect_message(tsmp(mp_toy_data$data[1:200, 1], mp_toy_data$data[1:200, 1], mode = "scrimp", window_size = 30), "not implemented")
+  })
+
+  ## Test data handle ----
+  test_that("Handle data types", {
+    expect_message(tsmp(t(mp_toy_data$data[1:200, 1]), mode = "scrimp", window_size = 30, verbose = 0), "development")
   })
 
   ## Create MP's ----
