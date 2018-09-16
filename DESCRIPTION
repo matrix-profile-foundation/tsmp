@@ -1,7 +1,7 @@
 Package: tsmp
 Type: Package
 Title: Time Series with Matrix Profile
-Version: 0.3.1.9000
+Version: 0.3.1.9022
 Authors@R: c(
     person("Francisco", "Bischoff", email = "fbischoff@med.up.pt", role = c("aut", "cre"),
     comment = c(ORCID = "https://orcid.org/0000-0002-5301-8672")),
@@ -27,4 +27,11 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.0.9000
 NeedsCompilation: no
-Suggests: spelling, testthat
+Suggests: 
+    spelling,
+    testthat,
+    knitr,
+    rmarkdown,
+    gdtools,
+    vdiffr
+VignetteBuilder: knitr

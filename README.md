@@ -1,7 +1,7 @@
 README
 ================
 Francisco Bischoff
-\- 10 Sep 2018
+\- 17 Sep 2018
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -50,7 +50,8 @@ This package provides:
 matrix <- tsmp(data, window_size = 30) %>% find_motif(n_motifs = 3) %>% plot()
 
 # SDTS still have a unique way to work:
-model <- sdts_train(data, labels, windows); result <- sdts_predict(model, data, round(mean(windows)))
+model <- sdts_train(data, labels, windows)
+result <- sdts_predict(model, data, round(mean(windows)))
 ```
 
 Please refer to the [User

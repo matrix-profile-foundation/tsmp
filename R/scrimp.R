@@ -82,6 +82,17 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
   exclusion_zone <- round(window_size * exclusion_zone + vars()$eps)
   data_size <- nrow(data)
   query_size <- nrow(query)
+
+  if (query_size > data_size) {
+    stop("Error: Query must be smaller or the same size as reference data.")
+  }
+  if (window_size > query_size / 2) {
+    stop("Error: Time series is too short relative to desired window size.")
+  }
+  if (window_size < 4) {
+    stop("Error: `window_size` must be at least 4.")
+  }
+
   matrix_profile_size <- data_size - window_size + 1
   num_queries <- query_size - window_size + 1
 
@@ -99,16 +110,6 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
 
   query[is.na(query)] <- 0
   query[is.infinite(query)] <- 0
-
-  if (query_size > data_size) {
-    stop("Error: Query must be smaller or the same size as reference data.")
-  }
-  if (window_size > query_size / 2) {
-    stop("Error: Time series is too short relative to desired window size.")
-  }
-  if (window_size < 4) {
-    stop("Error: `window_size` must be at least 4.")
-  }
 
   message("DISCLAIMER: This algorithm still in development by its authors.")
 

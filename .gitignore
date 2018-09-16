@@ -1,6 +1,8 @@
+inst/doc
 .Rproj.user
 .RData
 .Rhistory
 packrat/lib*/
 .httr-oauth
 packrat/src/
+/LOCAL_APPDATA_FONTCONFIG_CACHE/

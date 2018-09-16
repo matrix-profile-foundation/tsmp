@@ -21,6 +21,11 @@ knitr::opts_chunk$set(
 )
 ```
 
+# tsmp 0.3.2
+
+* Fixed Matrix Profile print, dimensions are now reported correctly.
+
+
 # tsmp 0.3.1
 
 ## IMPORTANT
@@ -35,7 +40,7 @@ API is intended to be stable and from now one any change will pass throught the 
 * Now functions can work in `%>%` (pipe), e.g. `tsmp() %>% find_motif()`. Except for SDTS that has
   a proper way to work.
 * Added a wrapper function called `tsmp()` that handles the several algorithms available.
-* Added `as.*` functions to allow you to switch classes if you want, e.g.: `as.matrix.profile()`.
+* Added `as.*` functions to allow you to switch classes if you want, e.g.: `as.matrixprofile()`.
 * Changed all functions from dotted.case to snake_case (except `as.*` functions).
 * Added Annotation Vectors.
 * Fixed STOMP crash with Joins.

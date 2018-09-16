@@ -4,13 +4,19 @@ if (skip_on_cran()) {
 
   test_that("Errors", {
     # big window size
-    expect_error(sdts_train(mp_test_data$train$data[1:100], mp_test_data$train$label[1:110], window_size = 5000), regexp = "Time series is too short")
+    expect_error(sdts_train(mp_test_data$train$data[1:100], mp_test_data$train$label[1:110],
+      window_size = 5000
+    ), "Time series is too short")
 
     # small window size
-    expect_error(sdts_train(mp_test_data$train$data[1:100], mp_test_data$train$label[1:100], window_size = 2), regexp = "window_size")
+    expect_error(sdts_train(mp_test_data$train$data[1:100], mp_test_data$train$label[1:100],
+      window_size = 2
+    ), "window_size")
 
     # unknown data type
-    expect_error(sdts_train(table(mp_test_data$train$data[1:100]), mp_test_data$train$label[1:100], window_size = 110), regexp = "Unknown type")
+    expect_error(sdts_train(table(mp_test_data$train$data[1:100]), mp_test_data$train$label[1:100],
+      window_size = 110
+    ), "Unknown type")
   })
 
   w <- c(110, 220, 330)

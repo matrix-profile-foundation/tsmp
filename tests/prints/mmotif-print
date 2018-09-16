@@ -1,0 +1,15 @@
+Multidimensional Matrix Profile
+-------------------------------
+Profile size = 171 
+Dimensions = 3 
+Window size = 30 
+Exclusion zone = 15 
+Must dimensions = None 
+Excluded dimensions = None 
+Contains 1 set of data with 200 observations and 3 dimensions 
+
+Multidimensional Motif
+----------------------
+Motifs founded = 2 
+Motifs indexes = 45 108 
+Motifs dimensions = [1, 2, 3] [1, 2, 3]  

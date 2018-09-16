@@ -1,5 +1,5 @@
 ^CRAN-RELEASE$
-^API$
+^API.*$
 ^appveyor\.yml$
 ^revdep$
 ^cran-comments\.md$
@@ -25,3 +25,4 @@
 ^CONTRIBUTING\.md$
 ^CONTRIBUTING\.Rmd$
 ^\.github/
+^LOCAL_APPDATA_FONTCONFIG_CACHE/

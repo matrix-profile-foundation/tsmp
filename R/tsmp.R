@@ -183,7 +183,8 @@ tsmp <- function(..., window_size, exclusion_zone = 1 / 2, mode = c("stomp", "st
   )
 
   if (.keep_data) {
-    result$data <- list(...)
+    args <- list(...)
+    result$data <- lapply(args, as.matrix)
   }
 
   return(result)

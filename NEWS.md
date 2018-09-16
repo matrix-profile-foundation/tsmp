@@ -1,9 +1,13 @@
 NEWS
 ================
 Francisco Bischoff
-\- 10 Sep 2018
+\- 17 Sep 2018
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
+
+# tsmp 0.3.2
+
+  - Fixed Matrix Profile print, dimensions are now reported correctly.
 
 # tsmp 0.3.1
 
@@ -23,7 +27,7 @@ Francisco Bischoff
   - Added a wrapper function called `tsmp()` that handles the several
     algorithms available.
   - Added `as.*` functions to allow you to switch classes if you want,
-    e.g.: `as.matrix.profile()`.
+    e.g.: `as.matrixprofile()`.
   - Changed all functions from dotted.case to snake\_case (except `as.*`
     functions).
   - Added Annotation Vectors.

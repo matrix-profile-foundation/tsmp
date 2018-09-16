@@ -61,7 +61,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tsmp</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1.9022</span>
       </span>
     </div>
 
@@ -75,6 +75,18 @@
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/press.html">Time Series with Matrix Profile</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">Changelog</a>
@@ -104,9 +116,17 @@
       <small>Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="tsmp-0-3-2" class="section level1">
+<h1 class="page-header">
+<a href="#tsmp-0-3-2" class="anchor"></a>tsmp 0.3.2<small> Unreleased </small>
+</h1>
+<ul>
+<li>Fixed Matrix Profile print, dimensions are now reported correctly.</li>
+</ul>
+</div>
     <div id="tsmp-0-3-1" class="section level1">
 <h1 class="page-header">
-<a href="#tsmp-0-3-1" class="anchor"></a>tsmp 0.3.1<small> Unreleased </small>
+<a href="#tsmp-0-3-1" class="anchor"></a>tsmp 0.3.1<small> 2018-09-10 </small>
 </h1>
 <div id="important" class="section level2">
 <h2 class="hasAnchor">
@@ -123,7 +143,7 @@
 <li>Outputs have a plot function. Try to plot a <code><a href="../reference/tsmp.html">tsmp()</a></code> output for example.</li>
 <li>Now functions can work in <code>%&gt;%</code> (pipe), e.g. <code>tsmp() %&gt;% find_motif()</code>. Except for SDTS that has a proper way to work.</li>
 <li>Added a wrapper function called <code><a href="../reference/tsmp.html">tsmp()</a></code> that handles the several algorithms available.</li>
-<li>Added <code>as.*</code> functions to allow you to switch classes if you want, e.g.: <code>as.matrix.profile()</code>.</li>
+<li>Added <code>as.*</code> functions to allow you to switch classes if you want, e.g.: <code><a href="../reference/as.matrixprofile.html">as.matrixprofile()</a></code>.</li>
 <li>Changed all functions from dotted.case to snake_case (except <code>as.*</code> functions).</li>
 <li>Added Annotation Vectors.</li>
 <li>Fixed STOMP crash with Joins.</li>
@@ -179,6 +199,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#tsmp-0-3-2">0.3.2</a></li>
         <li><a href="#tsmp-0-3-1">0.3.1</a></li>
         <li><a href="#tsmp-0-2-15">0.2.15</a></li>
         <li><a href="#tsmp-0-2-14">0.2.14</a></li>

@@ -26,9 +26,9 @@ if (skip_on_cran()) {
     expect_silent(salient_subsequences(dummy, verbose = 0))
 
     if (skip_on_cran()) {
-      expect_message(res <<- salient_subsequences(dummy, verbose = 2), regex = "Finished")
+      expect_message(res <<- salient_subsequences(dummy, verbose = 2), "Finished")
     } else {
-      expect_message(res <<- salient_subsequences(dummy, verbose = 1), regex = "Finished")
+      expect_message(res <<- salient_subsequences(dummy, verbose = 1), "Finished")
     }
   })
 

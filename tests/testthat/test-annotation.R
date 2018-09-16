@@ -8,6 +8,7 @@ if (skip_on_cran()) {
   stop_loc <- 150
   prof_size <- nrow(data) - window + 1
   comp <- hard <- motion <- stopw <- zero <- NULL
+  avcomp <- av_complexity(mp, apply = TRUE)
 
   test_that("Silent", {
     expect_silent(comp <<- av_complexity(mp))
@@ -15,6 +16,15 @@ if (skip_on_cran()) {
     expect_silent(motion <<- av_motion_artifact(mp))
     expect_silent(stopw <<- av_stop_word(mp, stop_word_loc = stop_loc))
     expect_silent(zero <<- av_zerocrossing(mp))
+  })
+
+  test_that("Apply", {
+    expect_equal(av_apply(comp), avcomp)
+    expect_error(av_apply(avcomp), "already")
+    class(avcomp) <- "MatrixProfile"
+    expect_error(av_apply(avcomp), "class `AnnotationVector`")
+    class(avcomp) <- "test"
+    expect_error(av_apply(avcomp), "class `MatrixProfile`")
   })
 
   test_that("Result dim", {
