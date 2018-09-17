@@ -29,9 +29,18 @@
 #' @export
 #'
 #' @examples
+#' # toy example
 #' data <- mp_toy_data$data[, 1]
 #' mp <- tsmp(data, window_size = 30, verbose = 0)
 #' mps <- salient_subsequences(mp, data, verbose = 0)
+#'
+#' \dontrun{
+#' # full example
+#' data <- mp_meat_data$sub$data
+#' w <- mp_meat_data$sub$sub_len
+#' mp <- tsmp(data, window_size = w, verbose = 1)
+#' mps <- salient_subsequences(mp, data, verbose = 1)
+#' }
 #'
 salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_zone = NULL, verbose = 2) {
   if (!any(class(.mp) %in% "MatrixProfile")) {

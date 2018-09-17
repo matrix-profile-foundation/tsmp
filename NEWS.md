@@ -1,13 +1,15 @@
 NEWS
 ================
 Francisco Bischoff
-\- 16 Sep 2018
+\- 21 Sep 2018
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
 # tsmp 0.3.2
 
   - Fixed Matrix Profile print, dimensions are now reported correctly.
+  - Fixed pipe imports.
+  - Changed package license to GPL-3.
 
 # tsmp 0.3.1
 

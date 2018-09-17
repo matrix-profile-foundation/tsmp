@@ -16,7 +16,7 @@ Authors@R: c(
   )
 Maintainer: Francisco Bischoff <fbischoff@med.up.pt>
 Description: A toolkit implementing the Matrix Profile concept that was created by CS-UCR <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>.
-License: MIT + file LICENSE
+License: GPL-3
 URL: https://github.com/franzbischoff/tsmp
 BugReports: https://github.com/franzbischoff/tsmp/issues
 Depends: R (>= 2.10)
