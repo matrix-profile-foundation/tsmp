@@ -102,7 +102,7 @@ mstomp_par <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, m
   }
 
   # SNOW package
-  if (verbose > 0) {
+  if (verbose > 1) {
     progress <- function(n) utils::setTxtProgressBar(pb, n)
   }
   else {
@@ -113,10 +113,10 @@ mstomp_par <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, m
   cl <- parallel::makeCluster(cores)
   doSNOW::registerDoSNOW(cl)
   on.exit(parallel::stopCluster(cl))
-  if (verbose > 0) {
+  if (verbose > 1) {
     on.exit(close(pb), TRUE)
   }
-  if (verbose > 1) {
+  if (verbose > 2) {
     on.exit(beep(sounds[[1]]), TRUE)
   }
 
@@ -137,7 +137,7 @@ mstomp_par <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, m
 
   tictac <- Sys.time()
 
-  if (verbose > 0) {
+  if (verbose > 1) {
     pb <- utils::txtProgressBar(min = 0, max = n_work, style = 3, width = 80)
   }
 
@@ -153,7 +153,7 @@ mstomp_par <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, m
     .options.snow = opts,
     # .combine = combiner,
     # .errorhandling = 'remove',
-    .export = "mass"
+    .export = c("mass", "vars")
   ) %dopar% {
     pro_muls <- matrix(0, length(idx_work[[i]]), n_dim)
     pro_idxs <- matrix(0, length(idx_work[[i]]), n_dim)

@@ -37,7 +37,7 @@
 #'     \item{exclusion_zone}{Is used to avoid trivial matches; if a query data is provided
 #'       (join similarity), this parameter is ignored.}
 #'     \item{verbose}{Changes how much information is printed by this function; `0` means nothing,
-#'     `1` means text, `2` means text and sound.}
+#'     `1` means text, `2` adds the progress bar, `3` adds the finish sound.}
 #'     \item{n_workers}{number of threads for parallel computing (except `simple_fast` and `scrimp`).
 #'     If the value is 2 or more, the '_par' version of the algorithm will be used.}
 #'   }

@@ -1,13 +1,18 @@
 NEWS
 ================
 Francisco Bischoff
-\- 17 Sep 2018
+\- 26 Sep 2018
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
 # tsmp 0.3.2
 
   - Fixed Matrix Profile print, dimensions are now reported correctly.
+  - Fixed pipe imports. Issue \#22
+  - Fixed bug with `vars`. Issue \#23
+  - Changed package license to GPL-3.
+  - Changed verbose mode, added one more step to separate messages from
+    progression bar.
 
 # tsmp 0.3.1
 

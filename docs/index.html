@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">tsmp</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1.9022</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1.9023</span>
       </span>
     </div>
 
@@ -88,7 +88,7 @@
 <div id="time-series-with-matrix-profile" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#time-series-with-matrix-profile" class="anchor"></a>Time Series with Matrix Profile</h1></div>
-<p><a href="https://choosealicense.com/licenses/mit"><img src="https://img.shields.io/packagist/l/doctrine/orm.svg" alt="Packagist"></a> <a href="https://www.tidyverse.org/lifecycle/#stable"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="lifecycle"></a> <a href="https://cran.r-project.org/package=tsmp"><img src="http://www.r-pkg.org/badges/version/tsmp" alt="CRAN version"></a> <a href="https://cran.r-project.org/package=tsmp"><img src="https://cranlogs.r-pkg.org/badges/tsmp" alt="CRAN Downloads"></a></p>
+<p><a href="https://choosealicense.com/licenses/gpl-3.0/"><img src="https://img.shields.io/badge/license-GPL--3-brightgreen.svg" alt="Packagist"></a> <a href="https://www.tidyverse.org/lifecycle/#stable"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="lifecycle"></a> <a href="https://cran.r-project.org/package=tsmp"><img src="http://www.r-pkg.org/badges/version/tsmp" alt="CRAN version"></a> <a href="https://cran.r-project.org/package=tsmp"><img src="https://cranlogs.r-pkg.org/badges/tsmp" alt="CRAN Downloads"></a></p>
 <table class="table">
 <thead><tr class="header">
 <th></th>
@@ -141,58 +141,53 @@
 <a class="sourceLine" id="cb1-6" data-line-number="6">result &lt;-<span class="st"> </span><span class="kw"><a href="reference/sdts_predict.html">sdts_predict</a></span>(model, data, <span class="kw">round</span>(<span class="kw">mean</span>(windows)))</a></code></pre></div>
 <p>Please refer to the <a href="https://franzbischoff.github.io/tsmp/reference/">User Manual</a> for more details.</p>
 <p>Please be welcome to suggest improvements.</p>
-<div id="performance-on-an-intelr-coretm-i7-7700-cpu-3-60ghz" class="section level3">
+<div id="performance-on-an-intelr-coretm-i7-7700-cpu-3-60ghz-using-a-random-walk-dataset" class="section level3">
 <h3 class="hasAnchor">
-<a href="#performance-on-an-intelr-coretm-i7-7700-cpu-3-60ghz" class="anchor"></a>Performance on an Intel(R) Core(TM) i7-7700 CPU @ 3.60GHz</h3>
+<a href="#performance-on-an-intelr-coretm-i7-7700-cpu-3-60ghz-using-a-random-walk-dataset" class="anchor"></a>Performance on an Intel(R) Core(TM) i7-7700 CPU @ 3.60GHz using a random walk dataset</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">2018</span>)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">data &lt;-<span class="st"> </span><span class="kw">cumsum</span>(<span class="kw">sample</span>(<span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="dv">40000</span>, <span class="ot">TRUE</span>))</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th></th>
 <th align="center">Elapsed Time</th>
 <th align="center">Data size</th>
 <th align="center">Window size</th>
-<th align="center">Cores</th>
+<th align="center">Threads</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
+<td><code><a href="reference/scrimp.html">scrimp()</a></code></td>
+<td align="center">45.30s</td>
+<td align="center">40000</td>
+<td align="center">1000</td>
+<td align="center">1</td>
+</tr>
+<tr class="even">
 <td><code><a href="reference/stomp.html">stomp_par()</a></code></td>
-<td align="center">45.17s</td>
-<td align="center">55000</td>
-<td align="center">150</td>
+<td align="center">52.72s</td>
+<td align="center">40000</td>
+<td align="center">1000</td>
 <td align="center">8</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code><a href="reference/stomp.html">stomp()</a></code></td>
-<td align="center">76.68s</td>
-<td align="center">55000</td>
-<td align="center">150</td>
+<td align="center">136.01s</td>
+<td align="center">40000</td>
+<td align="center">1000</td>
 <td align="center">1</td>
-</tr>
-<tr class="odd">
-<td><code><a href="reference/mstomp.html">mstomp_par()</a></code></td>
-<td align="center">113.03s</td>
-<td align="center">55000</td>
-<td align="center">150</td>
-<td align="center">8</td>
 </tr>
 <tr class="even">
-<td><code><a href="reference/mstomp.html">mstomp()</a></code></td>
-<td align="center">238.81s</td>
-<td align="center">55000</td>
-<td align="center">150</td>
-<td align="center">1</td>
-</tr>
-<tr class="odd">
 <td><code><a href="reference/stamp.html">stamp_par()</a></code></td>
-<td align="center">852.11s</td>
-<td align="center">55000</td>
-<td align="center">150</td>
+<td align="center">140.25s</td>
+<td align="center">40000</td>
+<td align="center">1000</td>
 <td align="center">8</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code><a href="reference/stamp.html">stamp()</a></code></td>
-<td align="center">2862.79s</td>
-<td align="center">55000</td>
-<td align="center">150</td>
+<td align="center">262.03s</td>
+<td align="center">40000</td>
+<td align="center">1000</td>
 <td align="center">1</td>
 </tr>
 </tbody>
@@ -202,12 +197,12 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># Install the released version from CRAN</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">install.packages</span>(<span class="st">"tsmp"</span>)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co"># Or the development version from GitHub:</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co"># install.packages("devtools")</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"franzbischoff/tsmp"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Install the released version from CRAN</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">install.packages</span>(<span class="st">"tsmp"</span>)</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co"># Or the development version from GitHub:</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co"># install.packages("devtools")</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"franzbischoff/tsmp"</span>)</a></code></pre></div>
 </div>
 <div id="currently-available-features" class="section level2">
 <h2 class="hasAnchor">
@@ -286,7 +281,7 @@
 <h2>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
+<li><small><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></small></li>
 </ul>
 </div>
 <div class="developers">

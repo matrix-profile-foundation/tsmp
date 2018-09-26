@@ -32,12 +32,21 @@ retrieves the most relevant subsequences using Minimal Description Length (MDL) 
 }
 \details{
 \code{verbose} changes how much information is printed by this function; \code{0} means nothing,
-\code{1} means text, \code{2} means text and sound.
+\code{1} means text, \code{2} adds the progress bar, \code{3} adds the finish sound.
 }
 \examples{
+# toy example
 data <- mp_toy_data$data[, 1]
 mp <- tsmp(data, window_size = 30, verbose = 0)
 mps <- salient_subsequences(mp, data, verbose = 0)
+
+\dontrun{
+# full example
+data <- mp_meat_data$sub$data
+w <- mp_meat_data$sub$sub_len
+mp <- tsmp(data, window_size = w, verbose = 1)
+mps <- salient_subsequences(mp, data, verbose = 1)
+}
 
 }
 \references{

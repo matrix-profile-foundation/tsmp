@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tsmp</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1.9022</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1.9023</span>
       </span>
     </div>
 
@@ -83,7 +83,7 @@
       <h1>Time Series with Matrix Profile</h1>
                         <h4 class="author">Francisco Bischoff</h4>
             
-            <h4 class="date">2018-09-16</h4>
+            <h4 class="date">2018-09-26</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/franzbischoff/tsmp/blob/master/vignettes/press.Rmd"><code>vignettes/press.Rmd</code></a></small>
       <div class="hidden name"><code>press.Rmd</code></div>
@@ -92,7 +92,7 @@
 
     
     
-<p>Recently I began to look further into Time Series(TS). During the course of my Master’s degree I used the <a href="https://CRAN.R-project.org/package=forecast">forecast</a> package quite a bit (Thanks to Prof. Hyndman), and TS got my attention. So, after reading lots of publications about everything you can imagine about TS, I came across one publication from Prof. Eamonn, of the University of California, that made me contact him to ask a few questions. After receiving a huge amount of information from him, one particular subject caught my attention: Matrix Profile. I was so much impressed that I started to write the <a href="https://franzbischoff.github.io/tsmp/">TSMP R Package</a>.</p>
+<p>Recently I began to look further into Time Series(TS). During the course of my Master’s degree, I used the <a href="https://CRAN.R-project.org/package=forecast">forecast</a> package quite a bit (Thanks to Prof. Hyndman), and TS got my attention. So, after reading lots of publications about everything you can imagine about TS, I came across one publication from Prof. Eamonn, of the University of California, that made me contact him to ask a few questions. After receiving a huge amount of information from him, one particular subject caught my attention: Matrix Profile. I was so much impressed that I started to write the <a href="https://franzbischoff.github.io/tsmp/">TSMP R Package</a>.</p>
 <p>Enough talking, so what is a Matrix Profile? Why should you care about it?</p>
 <div id="matrix-profile" class="section level2">
 <h2 class="hasAnchor">
@@ -120,9 +120,11 @@ Figure 1: Distance Matrix and its Matrix Profile.
 <li>It provides <em>full joins</em>, eliminating the need to specify a similarity <em>threshold</em>, which is a near impossible task in this domain.</li>
 <li>It is embarrassingly <strong>parallelizable</strong>, both on multicore processors and in distributed systems.</li>
 </ul>
-<div id="performance-on-an-intelr-coretm-i7-7700-cpu-3-60ghz-using-a-toy-dataset" class="section level3">
+<div id="performance-on-an-intelr-coretm-i7-7700-cpu-3-60ghz-using-a-random-walk-dataset" class="section level3">
 <h3 class="hasAnchor">
-<a href="#performance-on-an-intelr-coretm-i7-7700-cpu-3-60ghz-using-a-toy-dataset" class="anchor"></a>Performance on an Intel(R) Core(TM) i7-7700 CPU @ 3.60GHz using a toy dataset</h3>
+<a href="#performance-on-an-intelr-coretm-i7-7700-cpu-3-60ghz-using-a-random-walk-dataset" class="anchor"></a>Performance on an Intel(R) Core(TM) i7-7700 CPU @ 3.60GHz using a random walk dataset</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">2018</span>)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">data &lt;-<span class="st"> </span><span class="kw">cumsum</span>(<span class="kw">sample</span>(<span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="dv">40000</span>, <span class="ot">TRUE</span>))</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th></th>
@@ -130,49 +132,42 @@ Figure 1: Distance Matrix and its Matrix Profile.
 </th>
 <th align="center">Data size</th>
 <th align="center">Window size</th>
-<th align="center">Cores</th>
+<th align="center">Threads</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
+<td><code><a href="../reference/scrimp.html">scrimp()</a></code></td>
+<td align="center">45.30s</td>
+<td align="center">40000</td>
+<td align="center">1000</td>
+<td align="center">1</td>
+</tr>
+<tr class="even">
 <td><code><a href="../reference/stomp.html">stomp_par()</a></code></td>
-<td align="center">45.17s</td>
-<td align="center">55000</td>
-<td align="center">150</td>
+<td align="center">52.72s</td>
+<td align="center">40000</td>
+<td align="center">1000</td>
 <td align="center">8</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code><a href="../reference/stomp.html">stomp()</a></code></td>
-<td align="center">76.68s</td>
-<td align="center">55000</td>
-<td align="center">150</td>
+<td align="center">136.01s</td>
+<td align="center">40000</td>
+<td align="center">1000</td>
 <td align="center">1</td>
-</tr>
-<tr class="odd">
-<td><code><a href="../reference/mstomp.html">mstomp_par()</a></code></td>
-<td align="center">113.03s</td>
-<td align="center">55000</td>
-<td align="center">150</td>
-<td align="center">8</td>
 </tr>
 <tr class="even">
-<td><code><a href="../reference/mstomp.html">mstomp()</a></code></td>
-<td align="center">238.81s</td>
-<td align="center">55000</td>
-<td align="center">150</td>
-<td align="center">1</td>
-</tr>
-<tr class="odd">
 <td><code><a href="../reference/stamp.html">stamp_par()</a></code></td>
-<td align="center">852.11s</td>
-<td align="center">55000</td>
-<td align="center">150</td>
+<td align="center">140.25s</td>
+<td align="center">40000</td>
+<td align="center">1000</td>
 <td align="center">8</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code><a href="../reference/stamp.html">stamp()</a></code></td>
-<td align="center">2862.79s</td>
-<td align="center">55000</td>
-<td align="center">150</td>
+<td align="center">262.03s</td>
+<td align="center">40000</td>
+<td align="center">1000</td>
 <td align="center">1</td>
 </tr>
 </tbody>

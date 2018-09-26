@@ -36,8 +36,9 @@ mass_pre <- function(data, data_size, query = NULL, query_size = NULL, window_si
     data <- as.vector(data)
   }
 
-  data_mean <- fast_movavg(data, window_size) # precompute moving average
-  data_sd <- fast_movsd(data, window_size) # precompute moving SD
+  data_avgsd <- fast_avg_sd(data, window_size) # precompute moving average and SD
+  data_mean <- data_avgsd$avg
+  data_sd <- data_avgsd$sd
   data[(data_size + 1):(window_size + data_size)] <- 0
   data_fft <- stats::fft(data) # precompute fft of data
 
@@ -47,8 +48,9 @@ mass_pre <- function(data, data_size, query = NULL, query_size = NULL, window_si
       query <- as.vector(query)
     }
 
-    query_mean <- fast_movavg(query, window_size) # precompute moving average
-    query_sd <- fast_movsd(query, window_size) # precompute moving SD
+    query_avgsd <- fast_avg_sd(query, window_size) # precompute moving average and SD
+    query_mean <- query_avgsd$avg
+    query_sd <- query_avgsd$sd
   } else {
     query_mean <- data_mean
     query_sd <- data_sd

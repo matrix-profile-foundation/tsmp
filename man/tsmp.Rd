@@ -80,7 +80,7 @@ Some parameters are global across the algorithms:
 \item{exclusion_zone}{Is used to avoid trivial matches; if a query data is provided
 (join similarity), this parameter is ignored.}
 \item{verbose}{Changes how much information is printed by this function; \code{0} means nothing,
-\code{1} means text, \code{2} means text and sound.}
+\code{1} means text, \code{2} adds the progress bar, \code{3} adds the finish sound.}
 \item{n_workers}{number of threads for parallel computing (except \code{simple_fast} and \code{scrimp}).
 If the value is 2 or more, the '_par' version of the algorithm will be used.}
 }

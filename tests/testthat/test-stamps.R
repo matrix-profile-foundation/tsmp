@@ -113,7 +113,7 @@ if (skip_on_cran()) {
 
   test_that("Scrimp Results", {
     expect_equal(class(scrimp_test), "MatrixProfile")
-    expect_equal(round(sum(scrimp_test$mp) / sd(scrimp_test$mp), 2), 227.28)
+    expect_equal(round(sum(scrimp_test$mp) / sd(scrimp_test$mp), 2), 451.15)
     expect_equal(round(sum(scrimp_test$pi) / sd(scrimp_test$pi), 3), 299.455)
     expect_equal(scrimp_test$w, 30)
     expect_equal(scrimp_test$ez, 0.5)

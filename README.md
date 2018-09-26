@@ -1,7 +1,7 @@
 README
 ================
 Francisco Bischoff
-\- 17 Sep 2018
+\- 26 Sep 2018
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -9,7 +9,7 @@ Francisco Bischoff
 
 # Time Series with Matrix Profile
 
-[![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)](https://choosealicense.com/licenses/mit)
+[![Packagist](https://img.shields.io/badge/license-GPL--3-brightgreen.svg)](https://choosealicense.com/licenses/gpl-3.0/)
 [![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
 [![CRAN
 version](http://www.r-pkg.org/badges/version/tsmp)](https://cran.r-project.org/package=tsmp)
@@ -58,18 +58,23 @@ Please refer to the [User
 Manual](https://franzbischoff.github.io/tsmp/reference/) for more
 details.
 
-Please be welcome to suggest improvements.
+Please be welcome to suggest
+improvements.
 
-### Performance on an Intel(R) Core(TM) i7-7700 CPU @ 3.60GHz
+### Performance on an Intel(R) Core(TM) i7-7700 CPU @ 3.60GHz using a random walk dataset
 
-|                | Elapsed Time | Data size | Window size | Cores |
-| -------------- | :----------: | :-------: | :---------: | :---: |
-| `stomp_par()`  |    45.17s    |   55000   |     150     |   8   |
-| `stomp()`      |    76.68s    |   55000   |     150     |   1   |
-| `mstomp_par()` |   113.03s    |   55000   |     150     |   8   |
-| `mstomp()`     |   238.81s    |   55000   |     150     |   1   |
-| `stamp_par()`  |   852.11s    |   55000   |     150     |   8   |
-| `stamp()`      |   2862.79s   |   55000   |     150     |   1   |
+``` r
+set.seed(2018)
+data <- cumsum(sample(c(-1, 1), 40000, TRUE))
+```
+
+|               | Elapsed Time | Data size | Window size | Threads |
+| ------------- | :----------: | :-------: | :---------: | :-----: |
+| `scrimp()`    |    45.30s    |   40000   |    1000     |    1    |
+| `stomp_par()` |    52.72s    |   40000   |    1000     |    8    |
+| `stomp()`     |   136.01s    |   40000   |    1000     |    1    |
+| `stamp_par()` |   140.25s    |   40000   |    1000     |    8    |
+| `stamp()`     |   262.03s    |   40000   |    1000     |    1    |
 
 ## Installation
 

@@ -43,8 +43,8 @@ estimation, semantic segmentation, visualization, rule discovery, clustering etc
 STAMP computes the Matrix Profile and Profile Index in such manner that it can be stopped before
 its complete calculation and return the best so far results allowing ultra-fast approximate
 solutions. \code{verbose} changes how much information is printed by this function; \code{0} means nothing,
-\code{1} means text, \code{2} means text and sound. \code{exclusion_zone} is used to avoid  trivial matches; if
-a query data is provided (join similarity), this parameter is ignored.
+\code{1} means text, \code{2} adds the progress bar, \code{3} adds the finish sound. \code{exclusion_zone} is used to
+avoid  trivial matches; if a query data is provided (join similarity), this parameter is ignored.
 }
 \section{Functions}{
 \itemize{

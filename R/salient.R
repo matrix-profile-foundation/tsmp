@@ -5,7 +5,7 @@
 #'
 #' @details
 #' `verbose` changes how much information is printed by this function; `0` means nothing,
-#' `1` means text, `2` means text and sound.
+#' `1` means text, `2` adds the progress bar, `3` adds the finish sound.
 #'
 #' @param .mp a TSMP object of class `MatrixProfile`.
 #' @param data the data used to build the Matrix Profile, if not embedded.
@@ -29,9 +29,18 @@
 #' @export
 #'
 #' @examples
+#' # toy example
 #' data <- mp_toy_data$data[, 1]
 #' mp <- tsmp(data, window_size = 30, verbose = 0)
 #' mps <- salient_subsequences(mp, data, verbose = 0)
+#'
+#' \dontrun{
+#' # full example
+#' data <- mp_meat_data$sub$data
+#' w <- mp_meat_data$sub$sub_len
+#' mp <- tsmp(data, window_size = w, verbose = 1)
+#' mps <- salient_subsequences(mp, data, verbose = 1)
+#' }
 #'
 salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_zone = NULL, verbose = 2) {
   if (!any(class(.mp) %in% "MatrixProfile")) {
@@ -132,12 +141,12 @@ salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_z
     idx_bit_size[1] <- uncompressed_bit * matrix_profile_size
   }
 
-  if (verbose > 0) {
+  if (verbose > 1) {
     pb <- utils::txtProgressBar(min = 0, max = max_index_num, style = 3, width = 80)
     on.exit(close(pb))
   }
 
-  if (verbose > 1) {
+  if (verbose > 2) {
     on.exit(beep(sounds[[1]]), TRUE)
   }
 
@@ -280,7 +289,7 @@ salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_z
 
     indexes_count <- indexes_count + 1
 
-    if (verbose > 0) {
+    if (verbose > 1) {
       utils::setTxtProgressBar(pb, indexes_count)
     }
 
@@ -299,8 +308,11 @@ salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_z
 
   tictac <- Sys.time() - tictac
 
-  if (verbose > 0) {
+  if (verbose > 1) {
     utils::setTxtProgressBar(pb, max_index_num)
+  }
+
+  if (verbose > 0) {
     message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
   }
 

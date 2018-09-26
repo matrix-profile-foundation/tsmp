@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-Recently I began to look further into Time Series(TS). During the course of my Master's degree I used the [forecast](https://CRAN.R-project.org/package=forecast) package quite a bit (Thanks to Prof. Hyndman), and TS got my attention. So, after reading lots of publications about everything you can imagine about TS, I came across one publication from Prof. Eamonn, of the University of California, that made me contact him to ask a few questions. After receiving a huge amount of information from him, one particular subject caught my attention: Matrix Profile. I was so much impressed that I started to write the [TSMP R Package](https://franzbischoff.github.io/tsmp/).
+Recently I began to look further into Time Series(TS). During the course of my Master's degree, I used the [forecast](https://CRAN.R-project.org/package=forecast) package quite a bit (Thanks to Prof. Hyndman), and TS got my attention. So, after reading lots of publications about everything you can imagine about TS, I came across one publication from Prof. Eamonn, of the University of California, that made me contact him to ask a few questions. After receiving a huge amount of information from him, one particular subject caught my attention: Matrix Profile. I was so much impressed that I started to write the [TSMP R Package](https://franzbischoff.github.io/tsmp/).
 
 Enough talking, so what is a Matrix Profile? Why should you care about it?
 
@@ -49,18 +49,22 @@ This method has the following advantages/features:
 - It is embarrassingly **parallelizable**, both on multicore processors and in distributed systems.
 
 
-### Performance on an Intel(R) Core(TM) i7-7700 CPU @ 3.60GHz using a toy dataset
+### Performance on an Intel(R) Core(TM) i7-7700 CPU @ 3.60GHz using a random walk dataset
+
+```{r eval=FALSE, include=TRUE}
+set.seed(2018)
+data <- cumsum(sample(c(-1, 1), 40000, TRUE))
+```
 
 ```{r table1, echo=FALSE, message=FALSE, warnings=FALSE, results='asis'}
 tabl <- "
-|  | Elapsed Time^[These are results using only R code, no low-level C code optimizations] | Data size | Window size | Cores |
+|  | Elapsed Time^[These are results using only R code, no low-level C code optimizations] | Data size | Window size | Threads |
 |-----------|:------------:|:---------:|:-----------:|:-------:|
-| `stomp_par()` | 45.17s | 55000 | 150 | 8 |
-| `stomp()` | 76.68s | 55000 | 150 | 1 |
-| `mstomp_par()` | 113.03s | 55000 | 150 | 8 |
-| `mstomp()` | 238.81s | 55000 | 150 | 1 |
-| `stamp_par()` | 852.11s | 55000 | 150 | 8 |
-| `stamp()` | 2862.79s | 55000 | 150 | 1 |
+| `scrimp()` | 45.30s | 40000 | 1000 | 1 |
+| `stomp_par()` | 52.72s | 40000 | 1000 | 8 |
+| `stomp()` | 136.01s | 40000 | 1000 | 1 |
+| `stamp_par()` | 140.25s | 40000 | 1000 | 8 |
+| `stamp()` | 262.03s | 40000 | 1000 | 1 |
 "
 cat(tabl) # output the table in a format good for HTML/PDF/docx conversion
 ```
