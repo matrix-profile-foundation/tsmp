@@ -8,8 +8,8 @@
 #'
 #' @details
 #' `beta` is used to balance F-score towards recall (`>1`) or precision (`<1`). `verbose` changes
-#' how much information is printed by this function; `0` means nothing, `1` means text, `2` means
-#' text and sound.
+#' how much information is printed by this function; `0` means nothing, `1` means text, `2` adds the
+#' progress bar, `3` adds the finish sound.
 #'
 #' @param data a `vector` of `numeric`. Time series.
 #' @param label a `vector` of `logical`. Annotations.
@@ -150,11 +150,11 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
     message("stage 2 of 3, evaluate individual candidate ...")
   }
 
-  if (verbose > 0) {
+  if (verbose > 1) {
     pb <- utils::txtProgressBar(min = 0, max = n_window_size * n_pos, style = 3, width = 80)
     on.exit(close(pb))
   }
-  if (verbose > 1) {
+  if (verbose > 2) {
     on.exit(beep(sounds[[1]]), TRUE)
   }
 
@@ -179,7 +179,7 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
       candi_thold[[i]][j] <- golden$thold
       candi_score[[i]][j] <- golden$score
 
-      if (verbose > 0) {
+      if (verbose > 1) {
         utils::setTxtProgressBar(pb, ((i - 1) * n_pos + j))
       }
     }
@@ -233,7 +233,7 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
     message("stage 3 of 3, evaluate combination of candidates ...")
   }
 
-  if (verbose > 0) {
+  if (verbose > 1) {
     close(pb)
     pb <- utils::txtProgressBar(min = 0, max = pat_max * n_window_size * n_pos, style = 3, width = 80)
   }
@@ -298,11 +298,11 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
       pat_score[j] <- score
       exc_mask_cur[exc_st[j]:exc_ed[j]] <- FALSE
 
-      if (verbose > 0) {
+      if (verbose > 1) {
         utils::setTxtProgressBar(pb, ((i - 1) * (n_pos * n_window_size) + j))
       }
     }
-    if (verbose > 0) {
+    if (verbose > 1) {
       utils::setTxtProgressBar(pb, ((i - 1) * (n_pos * n_window_size) + (n_pos * n_window_size)))
     }
 
@@ -319,7 +319,7 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
     }
   }
 
-  if (verbose > 0) {
+  if (verbose > 1) {
     utils::setTxtProgressBar(pb, (pat_max * n_pos * n_window_size))
   }
 

@@ -10,8 +10,8 @@
 #' STAMP computes the Matrix Profile and Profile Index in such manner that it can be stopped before
 #' its complete calculation and return the best so far results allowing ultra-fast approximate
 #' solutions. `verbose` changes how much information is printed by this function; `0` means nothing,
-#' `1` means text, `2` means text and sound. `exclusion_zone` is used to avoid  trivial matches; if
-#' a query data is provided (join similarity), this parameter is ignored.
+#' `1` means text, `2` adds the progress bar, `3` adds the finish sound. `exclusion_zone` is used to
+#' avoid  trivial matches; if a query data is provided (join similarity), this parameter is ignored.
 #'
 #' @param ... a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix
 #'   profile.
@@ -136,14 +136,14 @@ stamp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size 
 
   tictac <- Sys.time()
 
-  if (verbose > 0) {
+  if (verbose > 1) {
     pb <- utils::txtProgressBar(min = 1, max = ssize, style = 3, width = 80)
   }
 
-  if (verbose > 0) {
+  if (verbose > 1) {
     on.exit(close(pb))
   }
-  if (verbose > 1) {
+  if (verbose > 2) {
     on.exit(beep(sounds[[1]]), TRUE)
   }
   # anytime must return the result always
@@ -203,7 +203,7 @@ stamp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size 
     matrix_profile[ind] <- distance_profile[ind]
     profile_index[which(ind)] <- i
 
-    if (verbose > 0) {
+    if (verbose > 1) {
       utils::setTxtProgressBar(pb, j)
     }
   }

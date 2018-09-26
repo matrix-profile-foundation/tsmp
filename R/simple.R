@@ -2,7 +2,7 @@
 #'
 #' @details
 #' `verbose` changes how much information is printed by this function; `0` means nothing, `1` means
-#' text, `2` means text and sound.
+#' text, `2` adds the progress bar, `3` adds the finish sound.
 #'
 #' @param ... a `matrix` of `numeric`, where each column is a time series. Accepts `list` and
 #'   `data.frame` too. If a second time series is supplied it will be a join matrix profile.
@@ -129,11 +129,11 @@ simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
   matrix_profile <- rep(Inf, matrix_profile_size)
   profile_index <- rep(0, matrix_profile_size)
 
-  if (verbose > 0) {
+  if (verbose > 1) {
     pb <- utils::txtProgressBar(min = 0, max = matrix_profile_size, style = 3, width = 80)
     on.exit(close(pb))
   }
-  if (verbose > 1) {
+  if (verbose > 2) {
     on.exit(beep(sounds[[1]]), TRUE)
   }
 
@@ -170,7 +170,7 @@ simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
   for (i in 2:matrix_profile_size) {
 
     # compute the distance profile
-    if (verbose > 0) {
+    if (verbose > 1) {
       utils::setTxtProgressBar(pb, i)
     }
 

@@ -38,7 +38,7 @@ fast_movsd <- function(data, window_size) {
   data_sqr <- data^2
 
   b <- rep(1, window_size)
-  s <- sqrt((stats::convolve(data_sqr, b, type = "filter") - (stats::convolve(data, b, type = "filter")^2) * (1 / window_size)) / (window_size - 1))
+  s <- sqrt((stats::filter(data_sqr, b, sides = 1) - (stats::filter(data, b, sides = 1)^2) * (1 / window_size)) / (window_size - 1))
 
   # restore the scale factor that was used before to normalize the data
   s <- s * data_sd
@@ -48,7 +48,7 @@ fast_movsd <- function(data, window_size) {
   return(s[!is.na(s)])
 }
 
-#' Fast implementation of moving average using filter
+#' Fast implementation of moving average and
 #'
 #' @inheritParams fast_movsd
 #'
@@ -59,8 +59,36 @@ fast_movsd <- function(data, window_size) {
 #' data_avg <- fast_movavg(mp_toy_data$data[,1], mp_toy_data$sub_len)
 
 fast_movavg <- function(data, window_size) {
-  data_mean <- stats::convolve(data, rep(1 / window_size, window_size), type = "filter")
+  data_mean <- stats::filter(data, rep(1 / window_size, window_size), sides = 2)
   return(data_mean[!is.na(data_mean)])
+}
+
+#' Fast implementation of moving average and moving standard deviation using cumsum
+#'
+#' @inheritParams fast_movsd
+#'
+#' @return Returns a `list` with `avg` and `sd` `vector`s
+#' @keywords internal
+#' @noRd
+
+fast_avg_sd <- function(data, window_size) {
+  data_len <- length(data)
+
+  data[(data_len + 1):(window_size + data_len)] <- 0
+
+  data_cum <- cumsum(data)
+  data2_cum <- cumsum(data^2)
+  data2_sum <- data2_cum[window_size:data_len] - c(0, data2_cum[1:(data_len - window_size)])
+  data_sum <- data_cum[window_size:data_len] - c(0, data_cum[1:(data_len - window_size)])
+
+  data_mean <- data_sum / window_size
+
+  data_sd2 <- (data2_sum / window_size) - (data_mean^2)
+  data_sd2 <- Re(data_sd2)
+  data_sd2 <- pmax(data_sd2, 0)
+  data_sd <- sqrt(data_sd2)
+
+  return(list(avg = data_mean, sd = data_sd))
 }
 
 #' Population SD, as R always calculate with n-1 (sample), here we fix it

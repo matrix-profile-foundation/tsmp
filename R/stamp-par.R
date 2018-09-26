@@ -93,16 +93,16 @@ stamp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_s
   cols <- min(num_queries, 100)
 
   lines <- 0:(ceiling(ssize / cols) - 1)
-  if (verbose > 0) {
+  if (verbose > 1) {
     pb <- utils::txtProgressBar(min = 0, max = max(lines), style = 3, width = 80)
   }
   cl <- parallel::makeCluster(cores)
   doSNOW::registerDoSNOW(cl)
   on.exit(parallel::stopCluster(cl))
-  if (verbose > 0) {
+  if (verbose > 1) {
     on.exit(close(pb), TRUE)
   }
-  if (verbose > 1) {
+  if (verbose > 2) {
     on.exit(beep(sounds[[1]]), TRUE)
   }
   # anytime must return the result always
@@ -132,7 +132,7 @@ stamp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_s
       # .options.snow = opts,
       # .combine = combiner,
       # .errorhandling = 'remove',
-      .export = "mass"
+      .export = c("mass", "vars")
     ) %dopar% {
       res <- NULL
 
@@ -185,7 +185,7 @@ stamp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_s
       }
     }
 
-    if (verbose > 0) {
+    if (verbose > 1) {
       utils::setTxtProgressBar(pb, k)
     }
   }

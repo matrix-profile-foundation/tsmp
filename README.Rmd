@@ -69,18 +69,22 @@ Please refer to the [User Manual](https://franzbischoff.github.io/tsmp/reference
 
 Please be welcome to suggest improvements.
 
-### Performance on an Intel(R) Core(TM) i7-7700 CPU @ 3.60GHz
+### Performance on an Intel(R) Core(TM) i7-7700 CPU @ 3.60GHz using a random walk dataset
+
+```{r eval=FALSE, include=TRUE}
+set.seed(2018)
+data <- cumsum(sample(c(-1, 1), 40000, TRUE))
+```
 
 ```{r table2, echo=FALSE, message=FALSE, warnings=FALSE, results='asis'}
 tabl <- "
-|  | Elapsed Time | Data size | Window size | Cores |
+|  | Elapsed Time | Data size | Window size | Threads |
 |-----------|:------------:|:---------:|:-----------:|:-------:|
-| `stomp_par()` | 45.17s | 55000 | 150 | 8 |
-| `stomp()` | 76.68s | 55000 | 150 | 1 |
-| `mstomp_par()` | 113.03s | 55000 | 150 | 8 |
-| `mstomp()` | 238.81s | 55000 | 150 | 1 |
-| `stamp_par()` | 852.11s | 55000 | 150 | 8 |
-| `stamp()` | 2862.79s | 55000 | 150 | 1 |
+| `scrimp()` | 45.30s | 40000 | 1000 | 1 |
+| `stomp_par()` | 52.72s | 40000 | 1000 | 8 |
+| `stomp()` | 136.01s | 40000 | 1000 | 1 |
+| `stamp_par()` | 140.25s | 40000 | 1000 | 8 |
+| `stamp()` | 262.03s | 40000 | 1000 | 1 |
 "
 cat(tabl) # output the table in a format good for HTML/PDF/docx conversion
 ```
