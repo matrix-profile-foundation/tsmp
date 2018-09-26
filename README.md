@@ -9,7 +9,7 @@ Francisco Bischoff
 
 # Time Series with Matrix Profile
 
-[![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)](https://choosealicense.com/licenses/mit)
+[![Packagist](https://img.shields.io/badge/license-GPL--3-brightgreen.svg)](https://choosealicense.com/licenses/gpl-3.0/)
 [![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
 [![CRAN
 version](http://www.r-pkg.org/badges/version/tsmp)](https://cran.r-project.org/package=tsmp)

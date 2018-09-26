@@ -19,16 +19,8 @@ knitr::opts_chunk$set(
 
 # Time Series with Matrix Profile 
 
-```{r include=FALSE}
-library(git2r)
-# current.branch <- repository_head()$name
-lifecycle <- "stable" # maturing-blue # stable-brightgreen
-lifecycle.color <- "brightgreen"
-```
-
-
-[![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)](https://choosealicense.com/licenses/mit)
-[![lifecycle](https://img.shields.io/badge/lifecycle-`r lifecycle`-`r lifecycle.color`.svg)](https://www.tidyverse.org/lifecycle/#`r lifecycle`)
+[![Packagist](https://img.shields.io/badge/license-GPL--3-brightgreen.svg)](https://choosealicense.com/licenses/gpl-3.0/)
+[![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
 [![CRAN version](http://www.r-pkg.org/badges/version/tsmp)](https://cran.r-project.org/package=tsmp)
 [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/tsmp)](https://cran.r-project.org/package=tsmp)
 
