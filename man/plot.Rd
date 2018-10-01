@@ -14,7 +14,7 @@
 \method{plot}{ArcCount}(x, data, type = c("data", "matrix"),
   exclusion_zone = NULL, edge_limit = NULL,
   threshold = stats::quantile(x$cac, 0.1), main = "Arcs Discover",
-  xlab = "index", ylab = "distance", ...)
+  xlab = "index", ylab = "", ...)
 
 \method{plot}{MatrixProfile}(x, ylab = "distance", xlab = "index",
   main = "Unidimensional Matrix Profile", ...)
@@ -24,17 +24,17 @@
 
 \method{plot}{Fluss}(x, data, type = c("data", "matrix"),
   main = "Fast Low-cost Unipotent Semantic Segmentation",
-  xlab = "index", ylab = "distance", ...)
+  xlab = "index", ylab = "", ...)
 
 \method{plot}{Chain}(x, data, type = c("data", "matrix"),
-  main = "Chain Discover", xlab = "index", ylab = "distance", ...)
+  main = "Chain Discover", xlab = "index", ylab = "", ...)
 
 \method{plot}{Motif}(x, data, type = c("data", "matrix"), ncol = 3,
-  main = "MOTIF Discover", xlab = "index", ylab = "distance", ...)
+  main = "MOTIF Discover", xlab = "index", ylab = "", ...)
 
 \method{plot}{MultiMotif}(x, data, type = c("data", "matrix"),
   ncol = 3, main = "Multidimensional MOTIF Discover", xlab = "index",
-  ylab = "distance", ...)
+  ylab = "", ...)
 }
 \arguments{
 \item{x}{a Matrix Profile}

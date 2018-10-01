@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tsmp</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1.9023</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1.9024</span>
       </span>
     </div>
 
@@ -128,8 +128,8 @@
     <pre class="usage"><span class='fu'>find_motif</span>(<span class='no'>.mp</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for MatrixProfile</span>
-<span class='fu'>find_motif</span>(<span class='no'>.mp</span>, <span class='no'>data</span>, <span class='kw'>n_motifs</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>radius</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>exclusion_zone</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+<span class='fu'>find_motif</span>(<span class='no'>.mp</span>, <span class='no'>data</span>, <span class='kw'>n_motifs</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>n_neighbors</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>radius</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>exclusion_zone</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for MultiMatrixProfile</span>
 <span class='fu'>find_motif</span>(<span class='no'>.mp</span>, <span class='no'>data</span>, <span class='kw'>n_motifs</span> <span class='kw'>=</span> <span class='fl'>3</span>,
@@ -156,8 +156,13 @@
       <td><p>an <code>int</code>. Number of motifs to find. (Default is <code>3</code>).</p></td>
     </tr>
     <tr>
+      <th>n_neighbors</th>
+      <td><p>an <code>int</code>. Number of neighbors to find. (Default is <code>10</code>).</p></td>
+    </tr>
+    <tr>
       <th>radius</th>
-      <td><p>an <code>int</code>. Radius. (Default is <code>3</code>).</p></td>
+      <td><p>an <code>int</code>. Set a threshold to exclude matching neighbors with distance &gt; current
+motif distance * <code>radius</code>. (Default is <code>3</code>).</p></td>
     </tr>
     <tr>
       <th>exclusion_zone</th>
