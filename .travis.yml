@@ -3,6 +3,10 @@ warnings_are_errors: false
 os:
   - linux
   - osx
+branches:
+  only:
+  - master
+  - develop
 matrix:
   allow_failures:
     - os: osx
