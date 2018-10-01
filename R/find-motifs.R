@@ -11,7 +11,9 @@ find_motif <- function(.mp, ...) {
 
 #' @param data the data used to build the Matrix Profile, if not embedded.
 #' @param n_motifs an `int`. Number of motifs to find. (Default is `3`).
-#' @param radius an `int`. Radius. (Default is `3`).
+#' @param n_neighbors an `int`. Number of neighbors to find. (Default is `10`).
+#' @param radius an `int`. Set a threshold to exclude matching neighbors with distance > current
+#' motif distance * `radius`. (Default is `3`).
 #' @param exclusion_zone if a `number` will be used instead of embedded value. (Default is `NULL`).
 #' @name find_motif
 #' @export
@@ -24,7 +26,7 @@ find_motif <- function(.mp, ...) {
 #' mp <- tsmp(data, window_size = w, exclusion_zone = 1/4, verbose = 0)
 #' mp <- find_motif(mp)
 
-find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, radius = 3, exclusion_zone = NULL, ...) {
+find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, radius = 3, exclusion_zone = NULL, ...) {
   if (!any(class(.mp) %in% "MatrixProfile")) {
     stop("Error: First argument must be an object of class `MatrixProfile`.")
   }
@@ -78,7 +80,7 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, radius = 3, exclus
 
   nn_pre <- mass_pre(data, data_size, window_size = .mp$w)
 
-  for (i in 1:n_motifs) {
+  for (i in seq_len(n_motifs)) {
     min_idx <- which.min(matrix_profile)
     motif_distance <- matrix_profile[min_idx]
     motif_distance <- motif_distance^2
@@ -107,7 +109,7 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, radius = 3, exclus
 
     motif_neighbor <- vector(mode = "numeric")
 
-    for (j in 1:10) {
+    for (j in seq_len(n_neighbors)) {
       if (is.infinite(distance_order[1]) || length(distance_order) < j) {
         break
       }

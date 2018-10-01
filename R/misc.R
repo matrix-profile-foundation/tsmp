@@ -102,6 +102,10 @@ fast_avg_sd <- function(data, window_size) {
 std <- function(data) {
   sdx <- stats::sd(data)
 
+  if (is.na(sdx)) {
+    return(1.0)
+  }
+
   if (sdx == 0) {
     return(sdx)
   }

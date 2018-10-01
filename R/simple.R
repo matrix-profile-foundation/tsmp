@@ -211,7 +211,7 @@ simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
   }
 
   obj <- list(
-    mp = matrix_profile, pi = profile_index,
+    mp = as.matrix(matrix_profile), pi = as.matrix(profile_index),
     rmp = NULL, rpi = NULL,
     lmp = NULL, lpi = NULL,
     w = window_size,

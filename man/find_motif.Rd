@@ -8,8 +8,8 @@
 \usage{
 find_motif(.mp, ...)
 
-\method{find_motif}{MatrixProfile}(.mp, data, n_motifs = 3, radius = 3,
-  exclusion_zone = NULL, ...)
+\method{find_motif}{MatrixProfile}(.mp, data, n_motifs = 3,
+  n_neighbors = 10, radius = 3, exclusion_zone = NULL, ...)
 
 \method{find_motif}{MultiMatrixProfile}(.mp, data, n_motifs = 3,
   mode = c("guided", "unconstrained"), n_bit = 4,
@@ -24,7 +24,10 @@ find_motif(.mp, ...)
 
 \item{n_motifs}{an \code{int}. Number of motifs to find. (Default is \code{3}).}
 
-\item{radius}{an \code{int}. Radius. (Default is \code{3}).}
+\item{n_neighbors}{an \code{int}. Number of neighbors to find. (Default is \code{10}).}
+
+\item{radius}{an \code{int}. Set a threshold to exclude matching neighbors with distance > current
+motif distance * \code{radius}. (Default is \code{3}).}
 
 \item{exclusion_zone}{if a \code{number} will be used instead of embedded value. (Default is \code{NULL}).}
 

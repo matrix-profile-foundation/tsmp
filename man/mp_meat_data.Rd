@@ -11,7 +11,7 @@
 \item{sub_len}{size of sliding window.}
 }
 
-\code{sub} is the original dataset embeded in random walks:
+\code{sub} is the original dataset embedded in random walks:
 
 \describe{
 \item{data}{One time series with length of 107520.}
