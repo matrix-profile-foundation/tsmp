@@ -206,11 +206,13 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
         exc_st <- max(1, idx - exclusion_zone)
         exc_ed <- min(matrix_profile_size, idx + exclusion_zone)
         dist_pro[exc_st:exc_ed, 1] <- Inf
-        dist_pro[data_sd < vars()$eps] <- Inf
-        if (skip_location[idx] || any(query_sd[idx] < vars()$eps)) {
-          dist_pro[] <- Inf
-        }
       }
+
+      dist_pro[data_sd < vars()$eps] <- Inf
+      if (skip_location[idx] || any(query_sd[idx] < vars()$eps)) {
+        dist_pro[] <- Inf
+      }
+      dist_pro[skip_location] <- Inf
 
       if (length(args) == 1) {
         # no RMP and LMP for joins
