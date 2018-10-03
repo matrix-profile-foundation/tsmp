@@ -203,6 +203,10 @@ golden_section <- function(dist_pro, label, pos_st, pos_ed, beta, window_size) {
   d_thold <- a_thold + (b_thold - a_thold) / golden_ratio
   tol <- max((b_thold - a_thold) * 0.001, 0.0001)
 
+  if (anyNA(c(c_thold, d_thold, tol))) {
+    return(list(thold = NA, score = 0))
+  }
+
   while (abs(c_thold - d_thold) > tol) {
     c_score <- compute_f_meas(label, pos_st, pos_ed, dist_pro, c_thold, window_size, beta)
     d_score <- compute_f_meas(label, pos_st, pos_ed, dist_pro, d_thold, window_size, beta)
@@ -241,11 +245,15 @@ golden_section <- function(dist_pro, label, pos_st, pos_ed, beta, window_size) {
 
 golden_section_2 <- function(dist_pro, thold, label, pos_st, pos_ed, beta, window_size, fit_idx) {
   golden_ratio <- (1 + sqrt(5)) / 2
-  a_thold <- min(dist_pro[[fit_idx]], na.rm = TRUE)
-  b_thold <- max(dist_pro[[fit_idx]][!is.infinite(dist_pro[[fit_idx]])], na.rm = TRUE)
+  a_thold <- min(dist_pro[[fit_idx]])
+  b_thold <- max(dist_pro[[fit_idx]][!is.infinite(dist_pro[[fit_idx]])])
   c_thold <- b_thold - (b_thold - a_thold) / golden_ratio
   d_thold <- a_thold + (b_thold - a_thold) / golden_ratio
   tol <- max((b_thold - a_thold) * 0.001, 0.0001)
+
+  if (anyNA(c(c_thold, d_thold, tol))) {
+    return(list(thold = NA, score = 0))
+  }
 
   while (abs(c_thold - d_thold) > tol) {
     c_thold_combined <- thold
@@ -676,6 +684,60 @@ vars <- function() {
 }
 
 # Misc -------------------------------------------------------------------------------------------
+
+#' Set/changes the data included in TSMP object.
+#'
+#' This may be useful if you want to include the data lately or remove the included data (set as `NULL`).
+#'
+#' @param .mp a TSMP object.
+#' @param data a `matrix` (for one series) or a `list` of matrices (for two series).
+#'
+#' @return Returns silently the original TSMP object with changed data.
+#' @export
+#'
+#' @examples
+#' mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+#' mp <- set_data(mp, NULL)
+set_data <- function(.mp, data) {
+  if (!is.null(data)) {
+    if (!is.list(data)) {
+      data <- list(data)
+    }
+
+    data <- lapply(data, as.matrix)
+
+    # data should be this size
+    data_size <- (nrow(.mp$mp) + .mp$w - 1)
+
+    for (i in seq_len(length(data))) {
+      if (nrow(data[[i]]) != data_size) {
+        warning("WARNING: data size is ", nrow(data[[i]]), ", but should be ", data_size, " for this matrix profile.")
+      }
+    }
+  }
+
+  .mp$data <- data
+
+  invisible(.mp)
+}
+
+#' Get the data included in a TSMP object, if any.
+#'
+#' @param .mp a TSMP object.
+#'
+#' @return Returns the data as `matrix`. If there is more than one series, returns a `list`.
+#' @export
+#'
+#' @examples
+#' mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+#' get_data(mp)
+get_data <- function(.mp) {
+  if (length(.mp$data) == 1) {
+    return(as.matrix(.mp$data[[1]]))
+  } else {
+    return(as.matrix(.mp$data))
+  }
+}
 
 #' Add class on front or move it to front if already exists
 #'

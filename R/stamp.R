@@ -176,11 +176,13 @@ stamp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size 
       exc_st <- max(1, i - exclusion_zone)
       exc_ed <- min(matrix_profile_size, i + exclusion_zone)
       distance_profile[exc_st:exc_ed] <- Inf
-      distance_profile[pre$data_sd < vars()$eps] <- Inf
-      if (skip_location[i] || any(pre$query_sd[i] < vars()$eps)) {
-        distance_profile[] <- Inf
-      }
     }
+
+    distance_profile[pre$data_sd < vars()$eps] <- Inf
+    if (skip_location[i] || any(pre$query_sd[i] < vars()$eps)) {
+      distance_profile[] <- Inf
+    }
+    distance_profile[skip_location] <- Inf
 
     # anytime version
     if (length(args) == 1) {

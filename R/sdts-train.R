@@ -96,8 +96,8 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
   pos_alt_ed <- which(is.infinite(pos)) - 1
   pos_alt_ed <- c(pos_alt_ed[-1], length(pos))
 
-  if (pos_alt_st[length(pos_alt_st)] > (length(pos) - min(window_size) + 1)) {
-    pos_alt_st[length(pos_alt_st)] <- (length(pos) - min(window_size) + 1)
+  if (pos_alt_st[length(pos_alt_st)] > (length(pos) - max(window_size) + 1)) {
+    pos_alt_st[length(pos_alt_st)] <- (length(pos) - max(window_size) + 1)
   }
 
   # run matrix profile on concatenated positive segment
@@ -264,7 +264,8 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
       for (k in seq_len(length(pro_cur))) {
         pro_max <- max(max(pro_cur[[k]][!is.infinite(pro_cur[[k]])]), pro_max)
         pro_min <- min(min(pro_cur[[k]]), pro_min)
-        pro_cur[[k]][exc_mask_cur] <- Inf
+        # exc_mask_cur is trimmed because if not, will insert NA in pro_cur
+        pro_cur[[k]][exc_mask_cur[seq_len(length(pro_cur[[k]]))]] <- Inf
       }
 
       thold_cur[[j]] <- candi_thold[best_pat_cur]
@@ -290,8 +291,14 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
           score <- gold$score
         }
 
-        if ((iter > 200) || (mean(thold_cur[[j]] - thold_old) < ((pro_max - pro_min) * 0.001))) {
+        if (iter > 200) {
           break
+        }
+
+        if (!anyNA(c(thold_cur[[j]], thold_old, pro_max, pro_min))) {
+          if ((mean(thold_cur[[j]] - thold_old) < ((pro_max - pro_min) * 0.001))) {
+            break
+          }
         }
       }
 

@@ -190,11 +190,13 @@ stomp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
       exc_st <- max(1, i - exclusion_zone)
       exc_ed <- min(matrix_profile_size, i + exclusion_zone)
       distance_profile[exc_st:exc_ed, 1] <- Inf
-      distance_profile[data_sd < vars()$eps] <- Inf
-      if (skip_location[i] || any(query_sd[i] < vars()$eps)) {
-        distance_profile[] <- Inf
-      }
     }
+
+    distance_profile[data_sd < vars()$eps] <- Inf
+    if (skip_location[i] || any(query_sd[i] < vars()$eps)) {
+      distance_profile[] <- Inf
+    }
+    distance_profile[skip_location] <- Inf
 
     if (length(args) == 1) {
       # no RMP and LMP for joins

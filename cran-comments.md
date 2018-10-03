@@ -1,6 +1,8 @@
 ## Comments
 
-* none yet
+* New Note: `installed size is 5.5Mb`. 
+  * This is due to datasets in this package. I believe they are essential to learn all the features
+  of this package.
 
 ## Test environments
 * Rhub
@@ -8,14 +10,14 @@
   * Fedora Linux, R-devel, clang, gfortran
   * Ubuntu Linux 16.04 LTS, R-release, GCC
 * Travis-CI
-  * Ubuntu Linux 14.04.5 LTS, R-release, GCC
+  * Ubuntu Linux 14.04.5 LTS, R-oldrel, R-release, R-devel, GCC
+  * Mac OS X 10.13.3, R-oldrel, R-release, xcode 9.4.1
 * Win-builder
-  * R-devel
-  * R-release
+  * R-release, R-devel
 
 ## R CMD check results
 
-`0 errors | 0 warnings | 0 notes`
+`0 errors | 0 warnings | 1 note`
 
 ## Downstream dependencies
 
