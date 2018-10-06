@@ -132,7 +132,8 @@ stamp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size 
 
   j <- 1
   ssize <- min(s_size, num_queries)
-  order <- sample(1:num_queries, size = ssize)
+  order <- 1:num_queries
+  order <- sample(order, size = ssize)
 
   tictac <- Sys.time()
 
