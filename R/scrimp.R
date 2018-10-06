@@ -48,7 +48,7 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
   args <- list(...)
   data <- args[[1]]
   if (length(args) > 1) {
-    # message("Join similarity not implemented yet.")
+    message("Join similarity not implemented yet.")
     # invisible(return(NULL))
     query <- args[[2]]
     exclusion_zone <- 0 # don't use exclusion zone for joins
@@ -129,7 +129,7 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
   }
   order <- (exclusion_zone + 1):num_queries
   ssize <- min(s_size, length(order))
-  #  order <- sample(order, size = ssize)
+  order <- sample(order, size = ssize)
 
   tictac <- Sys.time()
 
@@ -157,12 +157,11 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
     obj
   }), TRUE)
 
-  #pre <- mass_pre(data, data_size, query, query_size, window_size = window_size)
   pre_data <- fast_avg_sd(data, window_size)
   pre_query <- fast_avg_sd(query, window_size)
 
-  curlastz <- matrix(0, num_queries, 1)
-  curdistance <- matrix(0, num_queries, 1)
+  curlastz <- rep(0, num_queries)
+  curdistance <- rep(0, num_queries)
   dist1 <- rep(Inf, num_queries)
   dist2 <- rep(Inf, num_queries)
   index_order <- seq_len(num_queries)
@@ -170,45 +169,39 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
   for (i in order) {
     j <- j + 1
 
-    # distance_profile <- diagonal_dist(
-    #   data, query, i, data_size, query_size, window_size, num_queries, pre_data$avg, pre_data$sd, pre_query$avg, pre_query$sd
-    # )
-
-    curlastz[i] <- sum(data[1:window_size] * data[i:(i + window_size - 1)])
+    curlastz[i] <- sum(data[1:window_size] * query[i:(i + window_size - 1)])
 
     curlastz[(i + 1):num_queries] <-
       curlastz[i] +
       cumsum(
-        data[(i + window_size):data_size] * data[(window_size + 1):(data_size - i + 1)] # a_term
-        - data[1:(num_queries - i)] * data[i:(num_queries - 1)] # m_term
+        query[(i + window_size):data_size] * data[(window_size + 1):(query_size - i + 1)] # a_term
+        - data[1:(num_queries - i)] * query[i:(num_queries - 1)] # m_term
       )
 
     curdistance[i:num_queries] <-
       2 * (window_size -
         (curlastz[i:num_queries] # x_term
-        - window_size * pre_data$avg[i:num_queries] * pre_data$avg[1:(num_queries - i + 1)]) /
-          (pre_data$sd[i:num_queries] * pre_data$sd[1:(num_queries - i + 1)])
+        - window_size * pre_query$avg[i:num_queries] * pre_data$avg[1:(num_queries - i + 1)]) /
+          (pre_query$sd[i:num_queries] * pre_data$sd[1:(num_queries - i + 1)])
       )
 
     # Skip positions
     skipped_curdistance <- curdistance
-    skipped_curdistance[pre_data$sd[i:num_queries] < vars()$eps] <- Inf
-    if (skip_location[i] || any(pre_query$sd[i] < vars()$eps)) {
-      skipped_curdistance[] <- Inf
-    }
-    skipped_curdistance[skip_location[i:num_queries]] <- Inf
+    # skipped_curdistance[pre_data$sd[i:num_queries] < vars()$eps] <- Inf
+    # if (skip_location[i] || any(pre_query$sd[i] < vars()$eps)) {
+    #   skipped_curdistance[] <- Inf
+    # }
+    # skipped_curdistance[skip_location[i:num_queries]] <- Inf
 
     # update matrix profile
     dist1[1:(i - 1)] <- Inf
     dist1[i:num_queries] <- skipped_curdistance[i:num_queries]
-
     dist2[1:(num_queries - i + 1)] <- skipped_curdistance[i:num_queries]
     dist2[(num_queries - i + 2):num_queries] <- Inf
 
     loc1 <- (dist1 < matrix_profile)
     matrix_profile[loc1] <- dist1[loc1]
     profile_index[loc1] <- index_order[loc1] - i + 1
-
     loc2 <- (dist2 < matrix_profile)
     matrix_profile[loc2] <- dist2[loc2]
     profile_index[loc2] <- index_order[loc2] + i - 1
