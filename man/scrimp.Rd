@@ -5,7 +5,7 @@
 \title{Anytime univariate SCRIMP algorithm (experimental)}
 \usage{
 scrimp(..., window_size, exclusion_zone = 1/2, verbose = 2,
-  s_size = Inf)
+  s_size = Inf, pre_scrimp = 1/4)
 }
 \arguments{
 \item{...}{a \code{matrix} or a \code{vector}.}
@@ -19,6 +19,9 @@ scrimp(..., window_size, exclusion_zone = 1/2, verbose = 2,
 
 \item{s_size}{a \code{numeric}. for anytime algorithm, represents the size (in observations) the
 random calculation will occur (default is \code{Inf}).}
+
+\item{pre_scrimp}{a \code{numeric}. Set the pre-scrimp step based on \code{window_size}, if \code{0}, disables pre-scrimp.
+(default is \code{1/4}).}
 }
 \value{
 Returns a \code{MatrixProfile} object, a \code{list} with the matrix profile \code{mp}, profile index \code{pi}

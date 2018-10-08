@@ -60,8 +60,8 @@ plot_arcs <- function(pairs, alpha = NULL, quality = 30, lwd = 15, col = c("blue
 
   # blank plot
   graphics::plot(0.5, 0.5,
-                 type = "n", main = main, xlab = xlab, ylab = ylab,
-                 xlim = xlim, ylim = ylim, yaxt = "n", ...
+    type = "n", main = main, xlab = xlab, ylab = ylab,
+    xlim = xlim, ylim = ylim, yaxt = "n", ...
   )
 
   for (i in seq_len(nrow(pairs))) {
@@ -78,13 +78,13 @@ plot_arcs <- function(pairs, alpha = NULL, quality = 30, lwd = 15, col = c("blue
     x_seq <- center + radius * cos(z_seq)
     y_seq <- radius * sin(z_seq)
     graphics::lines(x_seq, y_seq,
-                    col = arccol, lwd = lwd, lty = 1, lend = 1
+      col = arccol, lwd = lwd, lty = 1, lend = 1
     )
   }
 
   graphics::legend(xmin, ymax,
-                   legend = c("Right", "Left"),
-                   col = grDevices::adjustcolor(col, alpha.f = 0.5), lty = 1, cex = 0.8, lwd = 5
+    legend = c("Right", "Left"),
+    col = grDevices::adjustcolor(col, alpha.f = 0.5), lty = 1, cex = 0.8, lwd = 5
   )
 }
 
@@ -336,7 +336,7 @@ plot.Chain <- function(x, data, type = c("data", "matrix"), main = "Chain Discov
     plot_subtitle <- "Data"
   } else {
     plot_data <- x$mp
-    ylab = "distance"
+    ylab <- "distance"
     plot_subtitle <- paste0("Matrix Profile (w = ", x$w, "; ez = ", x$ez, ")")
   }
 
@@ -359,16 +359,16 @@ plot.Chain <- function(x, data, type = c("data", "matrix"), main = "Chain Discov
   plot_arcs(pairs, xlab = xlab, ...)
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
   graphics::plot(plot_data,
-                 type = "l", main = plot_subtitle,
-                 xlim = xlim, xlab = xlab, ylab = ylab, ...
+    type = "l", main = plot_subtitle,
+    xlim = xlim, xlab = xlab, ylab = ylab, ...
   )
   graphics::abline(v = x$chain$best, col = 1:chain_size, lwd = 2)
 
   # blank plot
   motif <- znorm(data[x$chain$best[1]:min((x$chain$best[1] + x$w - 1), matrix_profile_size)])
   graphics::plot(motif,
-                 type = "l", main = "Motifs", xlab = "length", ylab = "normalized data",
-                 xlim = c(0, length(motif)), ylim = c(min(motif) - chain_size / 2, max(motif)), ...
+    type = "l", main = "Motifs", xlab = "length", ylab = "normalized data",
+    xlim = c(0, length(motif)), ylim = c(min(motif) - chain_size / 2, max(motif)), ...
   )
 
   for (i in 2:chain_size) {
@@ -402,7 +402,7 @@ plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "MO
     plot_subtitle <- "Data"
   } else {
     plot_data <- x$mp
-    ylab = "distance"
+    ylab <- "distance"
     plot_subtitle <- paste0("Matrix Profile (w = ", x$w, "; ez = ", x$ez, ")")
   }
 
@@ -430,8 +430,8 @@ plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "MO
 
     # blank plot
     graphics::plot(0.5, 0.5,
-                   type = "n", main = paste("Motif", i), xlab = "length", ylab = "normalized data",
-                   xlim = c(0, length(motif1)), ylim = c(min(motif1), max(motif1))
+      type = "n", main = paste("Motif", i), xlab = "length", ylab = "normalized data",
+      xlim = c(0, length(motif1)), ylim = c(min(motif1), max(motif1))
     )
 
     for (j in seq_len(length(neighbors[[i]]))) {
@@ -466,7 +466,7 @@ plot.MultiMotif <- function(x, data, type = c("data", "matrix"), ncol = 3, main 
     plot_subtitle <- "Data"
   } else {
     plot_data <- x$mp
-    ylab = "distance"
+    ylab <- "distance"
     plot_subtitle <- paste0("Matrix Profile ", i, " (w = ", x$w, "; ez = ", x$ez, ")")
   }
 
@@ -501,9 +501,9 @@ plot.MultiMotif <- function(x, data, type = c("data", "matrix"), ncol = 3, main 
   )
   for (i in seq_len(length(dim_idx))) {
     graphics::plot(plot_data[, i],
-                   type = "l",
-                   main = plot_subtitle,
-                   xlab = xlab, ylab = ylab
+      type = "l",
+      main = plot_subtitle,
+      xlab = xlab, ylab = ylab
     )
 
     midx <- dim_idx[[i]]
@@ -524,8 +524,8 @@ plot.MultiMotif <- function(x, data, type = c("data", "matrix"), ncol = 3, main 
 
     # blank plot
     graphics::plot(0.5, 0.5,
-                   type = "n", main = paste("Motif", i), xlab = "length", ylab = "normalized data",
-                   xlim = c(0, length(motif_data[[1]])), ylim = c(min(unlist(motif_data)), max(unlist(motif_data)))
+      type = "n", main = paste("Motif", i), xlab = "length", ylab = "normalized data",
+      xlim = c(0, length(motif_data[[1]])), ylim = c(min(unlist(motif_data)), max(unlist(motif_data)))
     )
 
     if (length(motif_data) > 1) {

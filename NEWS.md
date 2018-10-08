@@ -1,7 +1,7 @@
 NEWS
 ================
 Francisco Bischoff
-\- 03 Oct 2018
+\- 08 Oct 2018
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
@@ -13,6 +13,7 @@ Francisco Bischoff
   - Changed package license to GPL-3.
   - Changed verbose mode, added one more step to separate messages from
     progression bar.
+  - Fixed SCRIMP and added PRE-SCRIMP, so this is the SCRIMP++
 
 # tsmp 0.3.1
 

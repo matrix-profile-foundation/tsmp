@@ -59,11 +59,6 @@ if (skip_on_cran()) {
     expect_message(tsmp(mp_toy_data$data[1:200, 1], mp_toy_data$data[1:200, 1], mode = "scrimp", window_size = 30), "not implemented")
   })
 
-  ## Test data handle ----
-  test_that("Handle data types", {
-    expect_message(tsmp(t(mp_toy_data$data[1:200, 1]), mode = "scrimp", window_size = 30, verbose = 0), "development")
-  })
-
   ## Create MP's ----
 
   # STAMP
@@ -113,8 +108,8 @@ if (skip_on_cran()) {
 
   test_that("Scrimp Results", {
     expect_equal(class(scrimp_test), "MatrixProfile")
-    expect_equal(round(sum(scrimp_test$mp) / sd(scrimp_test$mp), 2), 451.15)
-    expect_equal(round(sum(scrimp_test$pi) / sd(scrimp_test$pi), 3), 299.455)
+    expect_equal(round(sum(scrimp_test$mp) / sd(scrimp_test$mp), 2), 461.89)
+    expect_equal(round(sum(scrimp_test$pi) / sd(scrimp_test$pi), 3), 302.063)
     expect_equal(scrimp_test$w, 30)
     expect_equal(scrimp_test$ez, 0.5)
   })
@@ -134,6 +129,11 @@ if (skip_on_cran()) {
   # stamp_test and stomp_test
   test_that("Stamp equals to Stomp_par", {
     expect_equal(stamp_test, stomp_test)
+  })
+
+  # scrimp_test and stomp_test
+  test_that("Scrimp equals to Stomp_par", {
+    expect_equal(scrimp_test, stomp_test)
   })
 
   test_that("Stomp Join equals to Stomp_par Join", {
