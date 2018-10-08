@@ -1,7 +1,7 @@
 README
 ================
 Francisco Bischoff
-\- 03 Oct 2018
+\- 08 Oct 2018
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -32,8 +32,8 @@ This package allows you to use the Matrix Profile concept as a toolkit.
 
 This package provides:
 
-  - Algorithms to build a Matrix Profile: STAMP, STOMP, SCRIMP
-    (experimental), SIMPLE and MSTOMP.
+  - Algorithms to build a Matrix Profile: STAMP, STOMP, SCRIMP++, SIMPLE
+    and MSTOMP.
   - Algorithms for MOTIF search for Unidimensional and Multidimensional
     Matrix Profiles.
   - Algorithm for Chains search for Unidimensional Matrix Profile.
@@ -70,9 +70,9 @@ data <- cumsum(sample(c(-1, 1), 40000, TRUE))
 
 |               | Elapsed Time | Data size | Window size | Threads |
 | ------------- | :----------: | :-------: | :---------: | :-----: |
-| `scrimp()`    |    45.30s    |   40000   |    1000     |    1    |
 | `stomp_par()` |    52.72s    |   40000   |    1000     |    8    |
-| `stomp()`     |   136.01s    |   40000   |    1000     |    1    |
+| `scrimp()`    |    92.44s    |   40000   |    1000     |    1    |
+| `stomp()`     |   133.16s    |   40000   |    1000     |    1    |
 | `stamp_par()` |   140.25s    |   40000   |    1000     |    8    |
 | `stamp()`     |   262.03s    |   40000   |    1000     |    1    |
 

@@ -8,6 +8,7 @@ tsmp 0.3.2
 -   Changed package license to GPL-3.
 -   Changed verbose mode, added one more step to separate messages from
     progression bar.
+-   Fixed SCRIMP and added PRE-SCRIMP, so this is the SCRIMP++
 
 tsmp 0.3.1
 ==========

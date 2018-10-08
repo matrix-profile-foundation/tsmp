@@ -22,6 +22,8 @@
 #' @param verbose an `int`. See details. (Default is `2`).
 #' @param s_size a `numeric`. for anytime algorithm, represents the size (in observations) the
 #'   random calculation will occur (default is `Inf`).
+#' @param pre_scrimp a `numeric`. Set the pre-scrimp step based on `window_size`, if `0`, disables pre-scrimp.
+#' (default is `1/4`).
 #'
 #' @return Returns a `MatrixProfile` object, a `list` with the matrix profile `mp`, profile index `pi`
 #'   left and right matrix profile `lmp`, `rmp` and profile index `lpi`, `rpi`, window size `w` and
@@ -44,31 +46,28 @@
 #' mp <- scrimp(ref_data, query_data, window_size = 30, s_size = round(nrow(query_data) * 0.1))
 #' }
 
-scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size = Inf) {
+scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size = Inf, pre_scrimp = 1 / 4) {
   args <- list(...)
   data <- args[[1]]
   if (length(args) > 1) {
     message("Join similarity not implemented yet.")
-    # invisible(return(NULL))
     query <- args[[2]]
     exclusion_zone <- 0 # don't use exclusion zone for joins
   } else {
     query <- data
   }
 
-  step <- 0.75
-
-    # transform data into matrix
-    if (is.vector(data)) {
-      data <- as.matrix(data)
+  # transform data into matrix
+  if (is.vector(data)) {
+    data <- as.matrix(data)
+  }
+  else if (is.matrix(data)) {
+    if (ncol(data) > nrow(data)) {
+      data <- t(data)
     }
-    else if (is.matrix(data)) {
-      if (ncol(data) > nrow(data)) {
-        data <- t(data)
-      }
-    } else {
-      stop("Error: Unknown type of data. Must be: a column matrix or a vector.")
-    }
+  } else {
+    stop("Error: Unknown type of data. Must be: a column matrix or a vector.")
+  }
 
   if (is.vector(query)) {
     query <- as.matrix(query)
@@ -125,17 +124,22 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
     left_profile_index <- right_profile_index <- profile_index
   }
 
-  if (exclusion_zone > 0) {
-    exclusion_zone <- exclusion_zone + 1
-  }
-
   orig_index <- seq_len(matrix_profile_size)
   order <- orig_index[orig_index > (exclusion_zone + 1)]
+  if (pre_scrimp > 0) {
+    current_step <- floor(window_size * pre_scrimp)
+    indexes <- seq(2, matrix_profile_size, by = current_step)
+  }
   ssize <- min(s_size, length(order))
   order <- sample(order, size = ssize)
 
   if (verbose > 1) {
-    pb <- utils::txtProgressBar(min = 1, max = ssize, style = 3, width = 80)
+    if (pre_scrimp > 0) {
+      pb <- utils::txtProgressBar(min = 1, max = length(indexes), style = 3, width = 80)
+    } else {
+      pb <- utils::txtProgressBar(min = 1, max = ssize, style = 3, width = 80)
+    }
+
     on.exit(close(pb))
   }
   if (verbose > 2) {
@@ -144,11 +148,11 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
   # anytime must return the result always
   on.exit(return({
     if (length(args) == 1) {
-      right_matrix_profile <- sqrt(abs(right_matrix_profile))
-      left_matrix_profile <- sqrt(abs(left_matrix_profile))
+      right_matrix_profile <- Re(sqrt(right_matrix_profile))
+      left_matrix_profile <- Re(sqrt(left_matrix_profile))
     }
     obj <- list(
-      mp = sqrt(abs(matrix_profile)), pi = profile_index,
+      mp = Re(sqrt(matrix_profile)), pi = profile_index,
       rmp = right_matrix_profile, rpi = right_profile_index,
       lmp = left_matrix_profile, lpi = left_profile_index,
       w = window_size,
@@ -163,87 +167,94 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
   tictac <- Sys.time()
 
   # PRE-SCRIMP ----
-  # initialization
+  if (pre_scrimp > 0) {
+    # initialization
+    message("Pre-SCRIMP")
+    # compute the matrix profile
+    dotproduct <- matrix(0, matrix_profile_size, 1)
+    refine_distance <- matrix(Inf, matrix_profile_size, 1)
 
-  # compute the matrix profile
-  current_step <- floor(window_size * step)
-  indexes <- seq(1, matrix_profile_size, by = current_step)
+    j <- 1
+    for (i in indexes) {
+      # compute the distance profile
+      query_window <- data[i:(i + window_size - 1)]
+      distance_profile <- mass(pre$data_fft, query_window, data_size, window_size, pre$data_mean, pre$data_sd, pre$query_mean[i], pre$query_sd[i])$distance_profile
+      distance_profile <- Re(distance_profile)
 
-  dotproduct <- matrix(0, matrix_profile_size, 1)
-  refine_distance <- matrix(Inf, matrix_profile_size, 1)
+      # apply exclusion zone
+      exc_st <- max(1, (i - exclusion_zone))
+      exc_ed <- min(matrix_profile_size, (i + exclusion_zone))
+      distance_profile[exc_st:exc_ed] <- Inf
 
-  j <- 1
-  for (i in indexes) {
-    # compute the distance profile
-    query_window <- data[i:(i + window_size - 1)]
-    distance_profile <- mass(pre$data_fft, query_window, data_size, window_size, pre$data_mean, pre$data_sd, pre$query_mean, pre$query_sd)$distance_profile
-    distance_profile <- abs(distance_profile)
+      # figure out and store the neareest neighbor
+      if (j == 1) {
+        matrix_profile <- as.matrix(distance_profile)
+        profile_index[] <- i
+        min_idx <- which.min(distance_profile)
+        profile_index[i] <- min_idx
+        matrix_profile[i] <- distance_profile[min_idx]
+        j <- j + 1
+      } else {
+        update_pos <- distance_profile < matrix_profile
+        profile_index[update_pos] <- i
+        matrix_profile[update_pos] <- distance_profile[update_pos]
+        min_idx <- which.min(distance_profile)
+        profile_index[i] <- min_idx
+        matrix_profile[i] <- distance_profile[min_idx]
+      }
 
-    # apply exclusion zone
-    exc_st <- max(1, (i - exclusion_zone))
-    exc_ed <- min(matrix_profile_size, (i + exclusion_zone))
-    distance_profile[exc_st:exc_ed] <- Inf
+      idx_nn <- profile_index[i]
+      idx_diff <- idx_nn - i
+      dotproduct[i] <- (window_size - matrix_profile[i]^2 / 2) * pre$data_sd[i] * pre$data_sd[idx_nn] +
+        window_size * pre$data_mean[i] * pre$data_mean[idx_nn]
 
-    # figure out and store the neareest neighbor
-    if (j == 1) {
-      matrix_profile <- distance_profile
-      profile_index[] <- i
-      min_idx <- which.min(distance_profile)
-      profile_index[i] <- min_idx
-      matrix_profile[i] <- distance_profile[min_idx]
-      j <- j + 1
-    } else {
-      update_pos <- distance_profile < matrix_profile
-      profile_index[update_pos] <- i
-      matrix_profile[update_pos] <- distance_profile[update_pos]
-      min_idx <- which.min(distance_profile)
-      profile_index[i] <- min_idx
-      matrix_profile[i] <- distance_profile[min_idx]
-    }
+      endidx <- min(matrix_profile_size, (i + current_step - 1), (matrix_profile_size - idx_diff))
 
-    idx_nn <- profile_index[i]
-    idx_diff <- idx_nn - i
-    dotproduct[i] <- (window_size - matrix_profile[i]^2 / 2) * pre$data_sd[i] * pre$data_sd[idx_nn] +
-      window_size * pre$data_mean[i] * pre$data_mean[idx_nn]
-
-    endidx <- min(matrix_profile_size, (i + current_step - 1), (matrix_profile_size - idx_diff))
-
-    dotproduct[(i + 1):endidx] <- dotproduct[i] +
-      cumsum(data[(i + window_size):(endidx + window_size - 1)] *
+      dotproduct[(i + 1):endidx] <- dotproduct[i] +
+        cumsum(data[(i + window_size):(endidx + window_size - 1)] *
           data[(idx_nn + window_size):(endidx + window_size - 1 + idx_diff)] -
           data[i:(endidx - 1)] * data[idx_nn:(endidx - 1 + idx_diff)])
 
-    refine_distance[(i + 1):endidx] <- sqrt(abs(
+      refine_distance[(i + 1):endidx] <-
         2 * (window_size - (dotproduct[(i + 1):endidx] - window_size * pre$data_mean[(i + 1):endidx] *
           pre$data_mean[(idx_nn + 1):(endidx + idx_diff)]) /
-          (pre$data_sd[(i + 1):endidx] * pre$data_sd[(idx_nn + 1):(endidx + idx_diff)]))))
+          (pre$data_sd[(i + 1):endidx] * pre$data_sd[(idx_nn + 1):(endidx + idx_diff)]))
 
-    beginidx <- max(1, (i - current_step + 1), (1 - idx_diff))
+      beginidx <- max(1, (i - current_step + 1), (1 - idx_diff))
 
-    dotproduct[(i - 1):beginidx] <- dotproduct[i] +
-      cumsum(data[(i - 1):beginidx] * data[(idx_nn - 1):(beginidx + idx_diff)] -
+      dotproduct[(i - 1):beginidx] <- dotproduct[i] +
+        cumsum(data[(i - 1):beginidx] * data[(idx_nn - 1):(beginidx + idx_diff)] -
           data[(i - 1 + window_size):(beginidx + window_size)] *
             data[(idx_nn - 1 + window_size):(beginidx + idx_diff + window_size)])
 
-    refine_distance[beginidx:(i - 1)] <- sqrt(abs(
-      2 * (window_size - (dotproduct[beginidx:(i - 1)] - window_size * pre$data_mean[beginidx:(i - 1)] *
-            pre$data_mean[(beginidx + idx_diff):(idx_nn - 1)]) /
-            (pre$data_sd[beginidx:(i - 1)] * pre$data_sd[(beginidx + idx_diff):(idx_nn - 1)]))))
+      refine_distance[beginidx:(i - 1)] <-
+        2 * (window_size - (dotproduct[beginidx:(i - 1)] - window_size * pre$data_mean[beginidx:(i - 1)] *
+          pre$data_mean[(beginidx + idx_diff):(idx_nn - 1)]) /
+          (pre$data_sd[beginidx:(i - 1)] * pre$data_sd[(beginidx + idx_diff):(idx_nn - 1)]))
 
-    update_pos1 <- which(refine_distance[beginidx:endidx] < matrix_profile[beginidx:endidx])
-    matrix_profile[(update_pos1 + beginidx - 1)] <- refine_distance[(update_pos1 + beginidx - 1)]
-    profile_index[(update_pos1 + beginidx - 1)] <- orig_index[(update_pos1 + beginidx - 1)] + idx_diff
+      update_pos1 <- which(refine_distance[beginidx:endidx] < matrix_profile[beginidx:endidx])
+      matrix_profile[(update_pos1 + beginidx - 1)] <- refine_distance[(update_pos1 + beginidx - 1)]
+      profile_index[(update_pos1 + beginidx - 1)] <- orig_index[(update_pos1 + beginidx - 1)] + idx_diff
 
-    update_pos2 <- which(refine_distance[beginidx:endidx] < matrix_profile[(beginidx + idx_diff):(endidx + idx_diff)])
-    matrix_profile[(update_pos2 + beginidx + idx_diff - 1)] <- refine_distance[(update_pos2 + beginidx - 1)]
-    profile_index[(update_pos2 + beginidx + idx_diff - 1)] <- orig_index[(update_pos2 + beginidx + idx_diff - 1)] - idx_diff
+      update_pos2 <- which(refine_distance[beginidx:endidx] < matrix_profile[(beginidx + idx_diff):(endidx + idx_diff)])
+      matrix_profile[(update_pos2 + beginidx + idx_diff - 1)] <- refine_distance[(update_pos2 + beginidx - 1)]
+      profile_index[(update_pos2 + beginidx + idx_diff - 1)] <- orig_index[(update_pos2 + beginidx + idx_diff - 1)] - idx_diff
+
+      j <- j + 1
+
+      if (verbose > 1) {
+        utils::setTxtProgressBar(pb, j)
+      }
+    }
+
+    if (verbose > 1) {
+      close(pb)
+      pb <- utils::txtProgressBar(min = 1, max = ssize, style = 3, width = 80)
+    }
   }
-
-  pre_matrix_profile <- matrix_profile
-  pre_profile_index <- profile_index
-
   # SCRIMP ----
 
+  message("SCRIMP")
   curlastz <- rep(0, num_queries)
   curdistance <- rep(0, num_queries)
   dist1 <- rep(Inf, num_queries)
@@ -272,11 +283,11 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
 
     # Skip positions
     skipped_curdistance <- curdistance
-    # skipped_curdistance[pre_data$sd[i:num_queries] < vars()$eps] <- Inf
-    # if (skip_location[i] || any(pre_query$sd[i] < vars()$eps)) {
-    #   skipped_curdistance[] <- Inf
-    # }
-    # skipped_curdistance[skip_location[i:num_queries]] <- Inf
+    skipped_curdistance[pre$data_sd[i:num_queries] < vars()$eps] <- Inf
+    if (skip_location[i] || any(pre$query_sd[i] < vars()$eps)) {
+      skipped_curdistance[] <- Inf
+    }
+    skipped_curdistance[skip_location[i:num_queries]] <- Inf
 
     # update matrix profile
     dist1[1:(i - 1)] <- Inf

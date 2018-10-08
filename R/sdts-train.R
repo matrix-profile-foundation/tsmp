@@ -127,7 +127,7 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
     for (j in 1:n_pos) {
       temp <- mat_pro[[i]][pos_alt_st[j]:max(pos_alt_st[j], (pos_alt_ed[j] - window_size[i] + 1), na.rm = TRUE)]
       rlt_idx <- which.min(temp)
-      if(length(temp[rlt_idx]) == 0) {
+      if (length(temp[rlt_idx]) == 0) {
         print("Zero")
       }
 
