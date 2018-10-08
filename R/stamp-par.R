@@ -90,17 +90,36 @@ stamp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_s
     message("Warming up parallel with ", cores, " cores.")
   }
 
-  cols <- min(num_queries, 100)
+  cols <- min(num_queries, 200)
 
   lines <- 0:(ceiling(ssize / cols) - 1)
   if (verbose > 1) {
-    pb <- utils::txtProgressBar(min = 0, max = max(lines), style = 3, width = 80)
+    pb <- progress::progress_bar$new(
+      format = "STAMP [:bar] :percent at :tick_rate it/s, elapsed: :elapsed, eta: :eta",
+      clear = FALSE, total = num_queries, width = 80
+    )
   }
+
+  # SNOW package
+  if (verbose > 1) {
+    prog <- function(n) {
+      if (!pb$finished) {
+        pb$tick()
+      }
+    }
+  }
+  else {
+    prog <- function(n) {
+      return(invisible(TRUE))
+      }
+  }
+  opts <- list(progress = prog)
+
   cl <- parallel::makeCluster(cores)
   doSNOW::registerDoSNOW(cl)
   on.exit(parallel::stopCluster(cl))
   if (verbose > 1) {
-    on.exit(close(pb), TRUE)
+    on.exit(pb$terminate(), TRUE)
   }
   if (verbose > 2) {
     on.exit(beep(sounds[[1]]), TRUE)
@@ -129,8 +148,7 @@ stamp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_s
       # .verbose = FALSE,
       .inorder = FALSE,
       .multicombine = TRUE,
-      # .options.snow = opts,
-      # .combine = combiner,
+      .options.snow = opts,
       # .errorhandling = 'remove',
       .export = c("mass", "vars")
     ) %dopar% {
@@ -185,10 +203,6 @@ stamp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_s
         matrix_profile[ind] <- batch[[i]]$dp[ind]
         profile_index[which(ind)] <- curr
       }
-    }
-
-    if (verbose > 1) {
-      utils::setTxtProgressBar(pb, k)
     }
   }
 

@@ -135,12 +135,14 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
 
   if (verbose > 1) {
     if (pre_scrimp > 0) {
-      pb <- utils::txtProgressBar(min = 1, max = length(indexes), style = 3, width = 80)
+      pb <- progress::progress_bar$new(format = "PRE-SCRIMP [:bar] :percent at :tick_rate it/s, elapsed: :elapsed, eta: :eta",
+                                       clear = FALSE, total = length(indexes), width = 80)
     } else {
-      pb <- utils::txtProgressBar(min = 1, max = ssize, style = 3, width = 80)
+      pb <- progress::progress_bar$new(format = "SCRIMP [:bar] :percent at :tick_rate it/s, elapsed: :elapsed, eta: :eta",
+                                       clear = FALSE, total = ssize, width = 80)
     }
 
-    on.exit(close(pb))
+    on.exit(pb$terminate())
   }
   if (verbose > 2) {
     on.exit(beep(sounds[[1]]), TRUE)
@@ -169,7 +171,6 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
   # PRE-SCRIMP ----
   if (pre_scrimp > 0) {
     # initialization
-    message("Pre-SCRIMP")
     # compute the matrix profile
     dotproduct <- matrix(0, matrix_profile_size, 1)
     refine_distance <- matrix(Inf, matrix_profile_size, 1)
@@ -243,18 +244,17 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
       j <- j + 1
 
       if (verbose > 1) {
-        utils::setTxtProgressBar(pb, j)
+        pb$tick()
       }
     }
 
     if (verbose > 1) {
-      close(pb)
-      pb <- utils::txtProgressBar(min = 1, max = ssize, style = 3, width = 80)
+      pb$terminate()
+      pb <- progress::progress_bar$new(format = "SCRIMP [:bar] :percent at :tick_rate it/s, elapsed: :elapsed, eta: :eta",
+                                       clear = FALSE, total = ssize, width = 80)
     }
   }
   # SCRIMP ----
-
-  message("SCRIMP")
   curlastz <- rep(0, num_queries)
   curdistance <- rep(0, num_queries)
   dist1 <- rep(Inf, num_queries)
@@ -315,7 +315,7 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
     }
 
     if (verbose > 1) {
-      utils::setTxtProgressBar(pb, j)
+      pb$tick()
     }
   }
 

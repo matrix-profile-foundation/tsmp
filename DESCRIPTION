@@ -20,7 +20,7 @@ License: GPL-3
 URL: https://github.com/franzbischoff/tsmp
 BugReports: https://github.com/franzbischoff/tsmp/issues
 Depends: R (>= 2.10)
-Imports: audio, doSNOW, parallel, foreach, magrittr
+Imports: audio, doSNOW, parallel, foreach, progress, magrittr
 Encoding: UTF-8
 Language: en-US
 LazyData: true
