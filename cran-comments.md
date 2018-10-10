@@ -1,8 +1,9 @@
 ## Comments
 
 * New Note: `installed size is 5.5Mb`. 
-  * This is due to datasets in this package. I believe they are essential to learn all the features
+  * This is due to datasets in this package. I believe they are essential to learning all the features
   of this package.
+* Added import to package `progress`. It allows better information to the user.
 
 ## Test environments
 * Rhub
@@ -26,11 +27,11 @@
 ## Known Issues (a.k.a NOTES)
 
 * Uses the superseded package: `doSNOW`
-  * `doSNOW` has a property that allow to use progress bar that `parallel` does not.
-  * Working in finding a good solution to drop this dependency.
+  * `doSNOW` has a property that allows to use progress bar that `parallel` does not.
+  * Working in finding a better solution to drop this dependency. Not found yet.
   
 * (possibly) invalid URLs: https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html
-  * Debian: libcurl throws error on certificate check. Nothing to do about this.
+  * Debian: libcurl throws an error on certificate check. Nothing to do about this.
 
 * Authors@R field gives persons with non-standard roles
-  * These non-standard roles where chosen properly using [MARC Code List for Relators](https://www.loc.gov/marc/relators/relaterm.html)
+  * These non-standard roles where appropriately chosen using [MARC Code List for Relators](https://www.loc.gov/marc/relators/relaterm.html)

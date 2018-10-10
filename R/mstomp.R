@@ -130,8 +130,10 @@ mstomp <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, must_
   data[is.infinite(data)] <- 0
 
   if (verbose > 1) {
-    pb <- utils::txtProgressBar(min = 0, max = matrix_profile_size, style = 3, width = 80)
-    on.exit(close(pb))
+    pb <- progress::progress_bar$new(
+      format = "mSTOMP [:bar] :percent at :tick_rate it/s, elapsed: :elapsed, eta: :eta",
+      clear = FALSE, total = matrix_profile_size, width = 80
+    )
   }
   if (verbose > 2) {
     on.exit(beep(sounds[[1]]), TRUE)
@@ -167,7 +169,7 @@ mstomp <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, must_
   for (i in 1:matrix_profile_size) {
     # compute the distance profile
     if (verbose > 1) {
-      utils::setTxtProgressBar(pb, i)
+      pb$tick()
     }
 
     query <- as.matrix(data[i:(i + window_size - 1), ])
@@ -288,7 +290,7 @@ mstomp <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, must_
   tictac <- Sys.time() - tictac
 
   if (verbose > 0) {
-    message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
+    message(sprintf("Finished in %.2f %s", tictac, units(tictac)))
   }
 
   if (n_dim > 1) {

@@ -104,27 +104,16 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
     message("Warming up parallel with ", cores, " cores.")
   }
 
-  # SNOW package
-  if (verbose > 1) {
-    progress <- function(n) utils::setTxtProgressBar(pb, n)
-  }
-  else {
-    progress <- function(n) return(invisible(TRUE))
-  }
-  opts <- list(progress = progress)
-
   cl <- parallel::makeCluster(cores)
   doSNOW::registerDoSNOW(cl)
   on.exit(parallel::stopCluster(cl))
-  if (verbose > 1) {
-    on.exit(close(pb), TRUE)
-  }
+
   if (verbose > 2) {
     on.exit(beep(sounds[[1]]), TRUE)
   }
 
   # seperate index into different job
-  per_work <- max(10, ceiling(num_queries / 100))
+  per_work <- max(10, min(250, ceiling(num_queries / 100)))
   n_work <- floor(num_queries / per_work)
   idx_work <- list()
 
@@ -140,10 +129,25 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
 
   tictac <- Sys.time()
 
-
+  # SNOW package
   if (verbose > 1) {
-    pb <- utils::txtProgressBar(min = 0, max = n_work, style = 3, width = 80)
+    pb <- progress::progress_bar$new(
+      format = "STOMP [:bar] :percent at :tick_rate it/s, elapsed: :elapsed, eta: :eta",
+      clear = FALSE, total = n_work * per_work, width = 80
+    )
+
+    prog <- function(n) {
+      if (!pb$finished) {
+        pb$tick(per_work)
+      }
+    }
   }
+  else {
+    prog <- function(n) {
+      return(invisible(TRUE))
+    }
+  }
+  opts <- list(progress = prog)
 
   i <- NULL # CRAN NOTE fix
   `%dopar%` <- foreach::`%dopar%` # CRAN NOTE fix
@@ -155,7 +159,6 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
     .inorder = FALSE,
     .multicombine = TRUE,
     .options.snow = opts,
-    # .combine = combiner,
     # .errorhandling = 'remove',
     .export = c("mass", "vars")
   ) %dopar% {
@@ -275,7 +278,7 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
   tictac <- Sys.time() - tictac
 
   if (verbose > 0) {
-    message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
+    message(sprintf("Finished in %.2f %s", tictac, units(tictac)))
   }
 
   return({

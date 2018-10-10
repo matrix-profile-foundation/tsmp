@@ -125,34 +125,35 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
   }
 
   orig_index <- seq_len(matrix_profile_size)
+  # exclusion_zone <- exclusion_zone + 1
   order <- orig_index[orig_index > (exclusion_zone + 1)]
   if (pre_scrimp > 0) {
-    current_step <- floor(window_size * pre_scrimp)
-    indexes <- seq(2, matrix_profile_size, by = current_step)
+    current_step <- floor(window_size * pre_scrimp + vars()$eps)
+    pre_scrimp_idxs <- seq(2, matrix_profile_size, by = current_step)
   }
   ssize <- min(s_size, length(order))
   order <- sample(order, size = ssize)
 
   if (verbose > 1) {
     if (pre_scrimp > 0) {
-      pb <- utils::txtProgressBar(min = 1, max = length(indexes), style = 3, width = 80)
+      pb <- progress::progress_bar$new(
+        format = "PRE-SCRIMP [:bar] :percent at :tick_rate it/s, elapsed: :elapsed, eta: :eta",
+        clear = FALSE, total = length(pre_scrimp_idxs), width = 80
+      )
     } else {
-      pb <- utils::txtProgressBar(min = 1, max = ssize, style = 3, width = 80)
+      pb <- progress::progress_bar$new(
+        format = "SCRIMP [:bar] :percent at :tick_rate it/s, elapsed: :elapsed, eta: :eta",
+        clear = FALSE, total = ssize, width = 80
+      )
     }
-
-    on.exit(close(pb))
   }
   if (verbose > 2) {
     on.exit(beep(sounds[[1]]), TRUE)
   }
   # anytime must return the result always
   on.exit(return({
-    if (length(args) == 1) {
-      right_matrix_profile <- Re(sqrt(right_matrix_profile))
-      left_matrix_profile <- Re(sqrt(left_matrix_profile))
-    }
     obj <- list(
-      mp = Re(sqrt(matrix_profile)), pi = profile_index,
+      mp = matrix_profile, pi = profile_index,
       rmp = right_matrix_profile, rpi = right_profile_index,
       lmp = left_matrix_profile, lpi = left_profile_index,
       w = window_size,
@@ -169,17 +170,16 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
   # PRE-SCRIMP ----
   if (pre_scrimp > 0) {
     # initialization
-    message("Pre-SCRIMP")
     # compute the matrix profile
     dotproduct <- matrix(0, matrix_profile_size, 1)
     refine_distance <- matrix(Inf, matrix_profile_size, 1)
 
     j <- 1
-    for (i in indexes) {
+    for (i in pre_scrimp_idxs) {
       # compute the distance profile
       query_window <- data[i:(i + window_size - 1)]
       distance_profile <- mass(pre$data_fft, query_window, data_size, window_size, pre$data_mean, pre$data_sd, pre$query_mean[i], pre$query_sd[i])$distance_profile
-      distance_profile <- Re(distance_profile)
+      distance_profile <- abs(sqrt(distance_profile))
 
       # apply exclusion zone
       exc_st <- max(1, (i - exclusion_zone))
@@ -216,9 +216,9 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
           data[i:(endidx - 1)] * data[idx_nn:(endidx - 1 + idx_diff)])
 
       refine_distance[(i + 1):endidx] <-
-        2 * (window_size - (dotproduct[(i + 1):endidx] - window_size * pre$data_mean[(i + 1):endidx] *
+        sqrt(abs(2 * (window_size - (dotproduct[(i + 1):endidx] - window_size * pre$data_mean[(i + 1):endidx] *
           pre$data_mean[(idx_nn + 1):(endidx + idx_diff)]) /
-          (pre$data_sd[(i + 1):endidx] * pre$data_sd[(idx_nn + 1):(endidx + idx_diff)]))
+          (pre$data_sd[(i + 1):endidx] * pre$data_sd[(idx_nn + 1):(endidx + idx_diff)]))))
 
       beginidx <- max(1, (i - current_step + 1), (1 - idx_diff))
 
@@ -228,9 +228,9 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
             data[(idx_nn - 1 + window_size):(beginidx + idx_diff + window_size)])
 
       refine_distance[beginidx:(i - 1)] <-
-        2 * (window_size - (dotproduct[beginidx:(i - 1)] - window_size * pre$data_mean[beginidx:(i - 1)] *
+        sqrt(abs(2 * (window_size - (dotproduct[beginidx:(i - 1)] - window_size * pre$data_mean[beginidx:(i - 1)] *
           pre$data_mean[(beginidx + idx_diff):(idx_nn - 1)]) /
-          (pre$data_sd[beginidx:(i - 1)] * pre$data_sd[(beginidx + idx_diff):(idx_nn - 1)]))
+          (pre$data_sd[beginidx:(i - 1)] * pre$data_sd[(beginidx + idx_diff):(idx_nn - 1)]))))
 
       update_pos1 <- which(refine_distance[beginidx:endidx] < matrix_profile[beginidx:endidx])
       matrix_profile[(update_pos1 + beginidx - 1)] <- refine_distance[(update_pos1 + beginidx - 1)]
@@ -240,31 +240,25 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
       matrix_profile[(update_pos2 + beginidx + idx_diff - 1)] <- refine_distance[(update_pos2 + beginidx - 1)]
       profile_index[(update_pos2 + beginidx + idx_diff - 1)] <- orig_index[(update_pos2 + beginidx + idx_diff - 1)] - idx_diff
 
-      j <- j + 1
-
       if (verbose > 1) {
-        utils::setTxtProgressBar(pb, j)
+        pb$tick()
       }
     }
 
     if (verbose > 1) {
-      close(pb)
-      pb <- utils::txtProgressBar(min = 1, max = ssize, style = 3, width = 80)
+      pb <- progress::progress_bar$new(
+        format = "SCRIMP [:bar] :percent at :tick_rate it/s, elapsed: :elapsed, eta: :eta",
+        clear = FALSE, total = ssize, width = 80
+      )
     }
   }
   # SCRIMP ----
-
-  message("SCRIMP")
   curlastz <- rep(0, num_queries)
   curdistance <- rep(0, num_queries)
   dist1 <- rep(Inf, num_queries)
   dist2 <- rep(Inf, num_queries)
 
-  j <- 1
-
   for (i in order) {
-    j <- j + 1
-
     curlastz[i] <- sum(data[1:window_size] * query[i:(i + window_size - 1)])
 
     curlastz[(i + 1):num_queries] <-
@@ -275,11 +269,11 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
       )
 
     curdistance[i:num_queries] <-
-      2 * (window_size -
+      sqrt(abs(2 * (window_size -
         (curlastz[i:num_queries] # x_term
         - window_size * pre$query_mean[i:num_queries] * pre$data_mean[1:(num_queries - i + 1)]) /
           (pre$query_sd[i:num_queries] * pre$data_sd[1:(num_queries - i + 1)])
-      )
+      )))
 
     # Skip positions
     skipped_curdistance <- curdistance
@@ -315,14 +309,14 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
     }
 
     if (verbose > 1) {
-      utils::setTxtProgressBar(pb, j)
+      pb$tick()
     }
   }
 
   tictac <- Sys.time() - tictac
 
   if (verbose > 0) {
-    message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
+    message(sprintf("Finished in %.2f %s", tictac, units(tictac)))
   }
 
   # return() is at on.exit() function

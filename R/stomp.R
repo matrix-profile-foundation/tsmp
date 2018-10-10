@@ -109,9 +109,12 @@ stomp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
   query[is.infinite(query)] <- 0
 
   if (verbose > 1) {
-    pb <- utils::txtProgressBar(min = 0, max = num_queries, style = 3, width = 80)
-    on.exit(close(pb))
+    pb <- progress::progress_bar$new(
+      format = "STOMP [:bar] :percent at :tick_rate it/s, elapsed: :elapsed, eta: :eta",
+      clear = FALSE, total = num_queries, width = 80
+    )
   }
+
   if (verbose > 2) {
     on.exit(beep(sounds[[1]]), TRUE)
   }
@@ -218,14 +221,14 @@ stomp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
     profile_index[which(ind)] <- i
 
     if (verbose > 1) {
-      utils::setTxtProgressBar(pb, i)
+      pb$tick()
     }
   }
 
   tictac <- Sys.time() - tictac
 
   if (verbose > 0) {
-    message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
+    message(sprintf("Finished in %.2f %s", tictac, units(tictac)))
   }
 
   return({

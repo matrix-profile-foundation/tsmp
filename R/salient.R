@@ -142,8 +142,10 @@ salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_z
   }
 
   if (verbose > 1) {
-    pb <- utils::txtProgressBar(min = 0, max = max_index_num, style = 3, width = 80)
-    on.exit(close(pb))
+    pb <- progress::progress_bar$new(
+      format = "Salient [:bar] :percent at :tick_rate it/s, elapsed: :elapsed, eta: :eta",
+      clear = FALSE, total = max_index_num, width = 80
+    )
   }
 
   if (verbose > 2) {
@@ -290,7 +292,7 @@ salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_z
     indexes_count <- indexes_count + 1
 
     if (verbose > 1) {
-      utils::setTxtProgressBar(pb, indexes_count)
+      pb$tick()
     }
 
     indexes[indexes_count] <- candidate_idx[best_candidate]
@@ -308,12 +310,8 @@ salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_z
 
   tictac <- Sys.time() - tictac
 
-  if (verbose > 1) {
-    utils::setTxtProgressBar(pb, max_index_num)
-  }
-
   if (verbose > 0) {
-    message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
+    message(sprintf("Finished in %.2f %s", tictac, units(tictac)))
   }
 
   .mp$salient <- list(indexes = indexes, idx_bit_size = idx_bit_size, bits = n_bits)

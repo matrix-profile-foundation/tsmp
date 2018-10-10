@@ -130,8 +130,10 @@ simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
   profile_index <- rep(0, matrix_profile_size)
 
   if (verbose > 1) {
-    pb <- utils::txtProgressBar(min = 0, max = matrix_profile_size, style = 3, width = 80)
-    on.exit(close(pb))
+    pb <- progress::progress_bar$new(
+      format = "SiMPle [:bar] :percent at :tick_rate it/s, elapsed: :elapsed, eta: :eta",
+      clear = FALSE, total = matrix_profile_size, width = 80
+    )
   }
   if (verbose > 2) {
     on.exit(beep(sounds[[1]]), TRUE)
@@ -143,6 +145,10 @@ simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
   data_sumx2 <- pre_data$sumx2
   query_window <- query[1:window_size, ]
   res_data <- mass_simple(data_fft, query_window, data_size, window_size, data_sumx2)
+
+  if (verbose > 1) {
+    pb$tick()
+  }
 
   pre_query <- mass_simple_pre(query, query_size, window_size = window_size)
   query_fft <- pre_query$data_fft
@@ -171,7 +177,7 @@ simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
 
     # compute the distance profile
     if (verbose > 1) {
-      utils::setTxtProgressBar(pb, i)
+      pb$tick()
     }
 
     data_window <- data[i:(i + window_size - 1), ]
@@ -207,7 +213,7 @@ simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
   tictac <- Sys.time() - tictac
 
   if (verbose > 0) {
-    message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
+    message(sprintf("Finished in %.2f %s", tictac, units(tictac)))
   }
 
   obj <- list(
