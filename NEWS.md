@@ -1,11 +1,11 @@
 NEWS
 ================
 Francisco Bischoff
-\- 08 Oct 2018
+\- 10 Oct 2018
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
-# tsmp 0.3.2
+# tsmp 0.3.1.9000
 
   - Fixed Matrix Profile print, dimensions are now reported correctly.
   - Fixed pipe imports. Issue \#22
@@ -13,15 +13,17 @@ Francisco Bischoff
   - Changed package license to GPL-3.
   - Changed verbose mode, added one more step to separate messages from
     progression bar.
-  - Fixed SCRIMP and added PRE-SCRIMP, so this is the SCRIMP++
+  - Fixed SCRIMP and added PRE-SCRIMP, so this is the SCRIMP++. AB-join
+    not yet implemented.
+  - Changed progress bar for a better one from `progress` package.
 
 # tsmp 0.3.1
 
 ## IMPORTANT
 
-  - This version is a complete reestructuration. API has changed and
-    workflow is more friendly. This API is intended to be stable and
-    from now one any change will pass throught the “Deprecated” stage.
+  - This version is a complete restructuration. The API has changed, and
+    the workflow is more friendly. This API is intended to be stable,
+    and from now on any change will pass through the “Deprecated” stage.
 
 ## Added Features
 
@@ -54,7 +56,7 @@ Francisco Bischoff
   - Added \[find\_chains()\] to look for chains primitives.
   - Added Multivariate MOTIF Search (from mSTOMP)
   - Changed dependency from beepr to audio (actually beepr depends on
-    audio, so less dependencies).
+    audio, so fewer dependencies).
   - Added a `NEWS.md` file to track changes to the package.
 
 # tsmp 0.2.12

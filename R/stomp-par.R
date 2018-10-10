@@ -107,9 +107,7 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
   cl <- parallel::makeCluster(cores)
   doSNOW::registerDoSNOW(cl)
   on.exit(parallel::stopCluster(cl))
-  if (verbose > 1) {
-    on.exit(pb$terminate(), TRUE)
-  }
+
   if (verbose > 2) {
     on.exit(beep(sounds[[1]]), TRUE)
   }
@@ -133,6 +131,11 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
 
   # SNOW package
   if (verbose > 1) {
+    pb <- progress::progress_bar$new(
+      format = "STOMP [:bar] :percent at :tick_rate it/s, elapsed: :elapsed, eta: :eta",
+      clear = FALSE, total = n_work * per_work, width = 80
+    )
+
     prog <- function(n) {
       if (!pb$finished) {
         pb$tick(per_work)
@@ -145,14 +148,6 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
     }
   }
   opts <- list(progress = prog)
-
-
-  if (verbose > 1) {
-    pb <- progress::progress_bar$new(
-      format = "STOMP [:bar] :percent at :tick_rate it/s, elapsed: :elapsed, eta: :eta",
-      clear = FALSE, total = n_work * per_work, width = 80
-    )
-  }
 
   i <- NULL # CRAN NOTE fix
   `%dopar%` <- foreach::`%dopar%` # CRAN NOTE fix
@@ -283,7 +278,7 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
   tictac <- Sys.time() - tictac
 
   if (verbose > 0) {
-    message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
+    message(sprintf("Finished in %.2f %s", tictac, units(tictac)))
   }
 
   return({

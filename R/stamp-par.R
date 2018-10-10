@@ -111,16 +111,14 @@ stamp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_s
   else {
     prog <- function(n) {
       return(invisible(TRUE))
-      }
+    }
   }
   opts <- list(progress = prog)
 
   cl <- parallel::makeCluster(cores)
   doSNOW::registerDoSNOW(cl)
   on.exit(parallel::stopCluster(cl))
-  if (verbose > 1) {
-    on.exit(pb$terminate(), TRUE)
-  }
+
   if (verbose > 2) {
     on.exit(beep(sounds[[1]]), TRUE)
   }
@@ -209,7 +207,7 @@ stamp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_s
   tictac <- Sys.time() - tictac
 
   if (verbose > 0) {
-    message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
+    message(sprintf("Finished in %.2f %s", tictac, units(tictac)))
   }
 
   # return() is at on.exit() function

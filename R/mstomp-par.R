@@ -101,27 +101,15 @@ mstomp_par <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, m
     message("Warming up parallel with ", cores, " cores.")
   }
 
-  # SNOW package
-  if (verbose > 1) {
-    progress <- function(n) utils::setTxtProgressBar(pb, n)
-  }
-  else {
-    progress <- function(n) return(invisible(TRUE))
-  }
-  opts <- list(progress = progress)
-
   cl <- parallel::makeCluster(cores)
   doSNOW::registerDoSNOW(cl)
   on.exit(parallel::stopCluster(cl))
-  if (verbose > 1) {
-    on.exit(close(pb), TRUE)
-  }
   if (verbose > 2) {
     on.exit(beep(sounds[[1]]), TRUE)
   }
 
   # initialize variable
-  per_work <- max(10, ceiling(matrix_profile_size / 100))
+  per_work <- max(10, min(250, ceiling(matrix_profile_size / 100)))
   n_work <- floor(matrix_profile_size / per_work)
   idx_work <- list()
 
@@ -137,9 +125,25 @@ mstomp_par <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, m
 
   tictac <- Sys.time()
 
+  # SNOW package
   if (verbose > 1) {
-    pb <- utils::txtProgressBar(min = 0, max = n_work, style = 3, width = 80)
+    pb <- progress::progress_bar$new(
+      format = "mSTOMP [:bar] :percent at :tick_rate it/s, elapsed: :elapsed, eta: :eta",
+      clear = FALSE, total = n_work * per_work, width = 80
+    )
+
+    prog <- function(n) {
+      if (!pb$finished) {
+        pb$tick(per_work)
+      }
+    }
   }
+  else {
+    prog <- function(n) {
+      return(invisible(TRUE))
+    }
+  }
+  opts <- list(progress = prog)
 
   i <- NULL # CRAN NOTE fix
   `%dopar%` <- foreach::`%dopar%` # CRAN NOTE fix
@@ -305,7 +309,7 @@ mstomp_par <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, m
   tictac <- Sys.time() - tictac
 
   if (verbose > 0) {
-    message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
+    message(sprintf("Finished in %.2f %s", tictac, units(tictac)))
   }
 
   if (n_dim > 1) {

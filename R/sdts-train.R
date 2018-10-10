@@ -101,7 +101,7 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
 
   # run matrix profile on concatenated positive segment ----
   if (verbose > 0) {
-    message("stage 1 of 3, compute matrix profile ...")
+    message("Stage 1 of 3, compute matrix profile...")
   }
 
   mat_pro <- list()
@@ -151,12 +151,14 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
   tictac <- Sys.time()
 
   if (verbose > 0) {
-    message("stage 2 of 3, evaluate individual candidate ...")
+    message("Stage 2 of 3, evaluate individual candidates...")
   }
 
   if (verbose > 1) {
-    pb <- utils::txtProgressBar(min = 0, max = n_window_size * n_pos, style = 3, width = 80)
-    on.exit(close(pb))
+    pb <- progress::progress_bar$new(
+      format = "SDTS-Train [:bar] :percent at :tick_rate it/s, elapsed: :elapsed, eta: :eta",
+      clear = FALSE, total = n_window_size * n_pos, width = 80
+    )
   }
   if (verbose > 2) {
     on.exit(beep(sounds[[1]]), TRUE)
@@ -184,14 +186,14 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
       candi_score[[i]][j] <- golden$score
 
       if (verbose > 1) {
-        utils::setTxtProgressBar(pb, ((i - 1) * n_pos + j))
+        pb$tick()
       }
     }
   }
 
   tictac <- Sys.time() - tictac
   if (verbose > 0) {
-    message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
+    message(sprintf("Finished in %.2f %s", tictac, units(tictac)))
   }
 
   candi_pro_exp <- list()
@@ -234,12 +236,14 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
   tictac <- Sys.time()
 
   if (verbose > 0) {
-    message("stage 3 of 3, evaluate combination of candidates ...")
+    message("Stage 3 of 3, evaluate combination of candidates...")
   }
 
   if (verbose > 1) {
-    close(pb)
-    pb <- utils::txtProgressBar(min = 0, max = pat_max * n_window_size * n_pos, style = 3, width = 80)
+    pb <- progress::progress_bar$new(
+      format = "SDTS-Train [:bar] :percent at :tick_rate it/s, elapsed: :elapsed, eta: :eta",
+      clear = FALSE, total = pat_max * n_window_size * n_pos, width = 80
+    )
   }
 
   for (i in 1:pat_max) {
@@ -310,11 +314,8 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
       exc_mask_cur[exc_st[j]:exc_ed[j]] <- FALSE
 
       if (verbose > 1) {
-        utils::setTxtProgressBar(pb, ((i - 1) * (n_pos * n_window_size) + j))
+        pb$tick()
       }
-    }
-    if (verbose > 1) {
-      utils::setTxtProgressBar(pb, ((i - 1) * (n_pos * n_window_size) + (n_pos * n_window_size)))
     }
 
     best_candi_idx <- which.max(pat_score)
@@ -331,12 +332,12 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
   }
 
   if (verbose > 1) {
-    utils::setTxtProgressBar(pb, (pat_max * n_pos * n_window_size))
+    pb$update(ratio = 1)
   }
 
   tictac <- Sys.time() - tictac
   if (verbose > 0) {
-    message(sprintf("\nFinished in %.2f %s", tictac, units(tictac)))
+    message(sprintf("Finished in %.2f %s", tictac, units(tictac)))
   }
 
   score_hist <- score_hist[!is.infinite(score_hist)]

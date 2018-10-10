@@ -1,7 +1,7 @@
 README
 ================
 Francisco Bischoff
-\- 08 Oct 2018
+\- 10 Oct 2018
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -91,7 +91,7 @@ devtools::install_github("franzbischoff/tsmp")
 
   - STAMP (single and multi-thread versions)
   - STOMP (single and multi-thread versions)
-  - SCRIMP (single-thread, still experimental)
+  - SCRIMP (single-thread, not for AB-joins yet)
   - Time Series Chains
   - Multivariate STOMP (mSTOMP)
   - Multivariate MOTIF Search (from mSTOMP)
@@ -100,20 +100,20 @@ devtools::install_github("franzbischoff/tsmp")
   - FLUSS (Fast Low-cost Unipotent Semantic Segmentation)
   - SiMPle-Fast (Fast Similarity Matrix Profile for Music Analysis and
     Exploration)
-  - Annotation vectors (e.g.: Stop-word MOTIF bias, Actionability bias)
+  - Annotation vectors (e.g., Stop-word MOTIF bias, Actionability bias)
   - FLUSS Arc Plot and SiMPle Arc Plot
   - Misc:
       - MASS v2.0
       - Fast moving average
       - Fast moving SD
 
-## Road map
+## Roadmap
 
   - MOTIFs under Uniform Scaling
   - Exact Detection of Variable Length Motifs
   - Profile-Based Shapelet Discovery
   - GPU-STOMP
-  - Real-time version of previous algorithms (STAMPI, FLOSS, etc)
+  - Real-time version of previous algorithms (STAMPI, FLOSS, etc.)
   - MASS Extensions (ADP, WQ, QwG)
 
 ## Other projects with Matrix Profile
@@ -127,5 +127,5 @@ devtools::install_github("franzbischoff/tsmp")
 ## Code of Conduct
 
 Please note that this project is released with a [Contributor Code of
-Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree
-to abide by its terms.
+Conduct](CODE_OF_CONDUCT.md). By participating in this project, you
+agree to abide by its terms.
