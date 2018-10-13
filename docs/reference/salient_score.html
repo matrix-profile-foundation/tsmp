@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Fast implementation of moving average and — fast_movavg • tsmp</title>
+<title>Computes the F-Score of salient algorithm. — salient_score • tsmp</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +30,11 @@
 
 
 
-<meta property="og:title" content="Fast implementation of moving average and — fast_movavg" />
+<meta property="og:title" content="Computes the F-Score of salient algorithm. — salient_score" />
 
-<meta property="og:description" content="Fast implementation of moving average and" />
+<meta property="og:description" content="This score function is useful for testing several values of n_bits for MDL discretization and
+checking against a known set of indexes. This increase the probability of better results on
+relevant subsequence extraction." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -114,39 +116,60 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Fast implementation of moving average and</h1>
-    <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/misc.R'><code>R/misc.R</code></a></small>
-    <div class="hidden name"><code>fast_movavg.Rd</code></div>
+    <h1>Computes the F-Score of salient algorithm.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/salient.R'><code>R/salient.R</code></a></small>
+    <div class="hidden name"><code>salient_score.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Fast implementation of moving average and</p>
+    <p>This score function is useful for testing several values of <code>n_bits</code> for MDL discretization and
+checking against a known set of indexes. This increase the probability of better results on
+relevant subsequence extraction.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>fast_movavg</span>(<span class='no'>data</span>, <span class='no'>window_size</span>)</pre>
+    <pre class="usage"><span class='fu'>salient_score</span>(<span class='no'>.mp</span>, <span class='no'>gtruth</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data</th>
-      <td><p>a <code>vector</code> or a column <code>matrix</code> of <code>numeric</code>.</p></td>
+      <th>.mp</th>
+      <td><p>a Matrix Profile object.</p></td>
     </tr>
     <tr>
-      <th>window_size</th>
-      <td><p>moving sd window size</p></td>
+      <th>gtruth</th>
+      <td><p>a <code>vector</code> of <code>integers</code> with the indexes of relevant subsequences.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Returns a <code>vector</code> with the moving average</p>
+    <p>Returns a <code>list</code> with <code>f_score</code>, <code>precision</code>, <code>recall</code> and <code>bits</code> used in the algorithm.</p>
+    
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <ul>
+<li><p>Yeh CCM, Van Herle H, Keogh E. Matrix profile III: The matrix profile allows
+visualization of salient subsequences in massive time series. Proc - IEEE Int Conf Data Mining,
+ICDM. 2017;579–88.</p></li>
+</ul>
+    <ul>
+<li><p>Hu B, Rakthanmanon T, Hao Y, Evans S, Lonardi S, Keogh E. Discovering the Intrinsic
+Cardinality and Dimensionality of Time Series Using MDL. In: 2011 IEEE 11th International
+Conference on Data Mining. IEEE; 2011. p. 1086–91.</p></li>
+</ul>
+    <p>Website: <a href='https://sites.google.com/site/salientsubs/'>https://sites.google.com/site/salientsubs/</a></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>data_avg</span> <span class='kw'>&lt;-</span> <span class='fu'>fast_movavg</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[,<span class='fl'>1</span>], <span class='no'>mp_toy_data</span>$<span class='no'>sub_len</span>)</div></pre>
+    <pre class="examples"><div class='input'><span class='co'># toy example</span>
+  <span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_toy_data</span>$<span class='no'>data</span>[, <span class='fl'>1</span>]
+  <span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span>(<span class='no'>data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+  <span class='no'>mps</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='salient_subsequences.html'>salient_subsequences</a></span>(<span class='no'>mp</span>, <span class='kw'>n_bits</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>4</span>, <span class='fl'>6</span>, <span class='fl'>8</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+  <span class='no'>label_idx</span> <span class='kw'>&lt;-</span> <span class='fu'>seq</span>(<span class='fl'>2</span>, <span class='fl'>500</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='fl'>110</span>) <span class='co'># fake data</span>
+  <span class='fu'>salient_score</span>(<span class='no'>mps</span>, <span class='no'>label_idx</span>)</div><div class='output co'>#&gt; <span class='message'>Bits: 4</span></div><div class='output co'>#&gt; <span class='message'>Precision: 0.3333</span></div><div class='output co'>#&gt; <span class='message'>Recall: 0.2</span></div><div class='output co'>#&gt; <span class='message'>F_1 Score: 0.25</span></div><div class='output co'>#&gt; <span class='message'>-----------------</span></div><div class='output co'>#&gt; <span class='message'>Bits: 6</span></div><div class='output co'>#&gt; <span class='message'>Precision: 0.5</span></div><div class='output co'>#&gt; <span class='message'>Recall: 0.2</span></div><div class='output co'>#&gt; <span class='message'>F_1 Score: 0.2857</span></div><div class='output co'>#&gt; <span class='message'>-----------------</span></div><div class='output co'>#&gt; <span class='message'>Bits: 8</span></div><div class='output co'>#&gt; <span class='message'>Precision: 0.5</span></div><div class='output co'>#&gt; <span class='message'>Recall: 0.2</span></div><div class='output co'>#&gt; <span class='message'>F_1 Score: 0.2857</span></div><div class='output co'>#&gt; <span class='message'>-----------------</span></div><div class='output co'>#&gt; <span class='message'>Best F_1 Score: 0.2857 Bits: 6</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -154,6 +177,8 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#references">References</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

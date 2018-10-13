@@ -42,8 +42,8 @@ if (skip_on_cran()) {
   })
 
   pred <- rep(c(rep(1, 220), rep(0, 7830)), 27)[1:214791]
-  fs1 <- sdts_score(mp_test_data$test$label, pred, 1)
-  fs2 <- sdts_score(mp_test_data$train$label, pred, 1)
+  fs1 <- sdts_score(pred, mp_test_data$test$label, 1)
+  fs2 <- sdts_score(pred, mp_test_data$train$label, 1)
 
   test_that("F-Score is ok", {
     expect_known_hash(lapply(fs1, round, 3), "8241d8411e")

@@ -1,4 +1,4 @@
-#' Scalable Dictionary learning for Time Series (SDTS) prediction function
+#' Framework for Scalable Dictionary learning for Time Series (SDTS) prediction function
 #'
 #' This function trains a model that uses a dictionary to predict state changes. Differently from
 #' [fluss()], it doesn't look for semantic changes (that may be several), but for binary states like
@@ -28,13 +28,13 @@
 #' te_label <- mp_test_data$test$label[subs]
 #' model <- sdts_train(tr_data, tr_label, w, verbose = 0)
 #' predict <- sdts_predict(model, te_data, round(mean(w)))
-#' sdts_score(te_label, predict, 1)
+#' sdts_score(predict, te_label, 1)
 #'
 #' \dontrun{
 #' windows <- c(110, 220, 330)
 #' model <- sdts_train(mp_test_data$train$data, mp_test_data$train$label, windows, verbose = 0)
 #' predict <- sdts_predict(model, mp_test_data$test$data, round(mean(windows)))
-#' sdts_score(mp_test_data$test$label, predict, 1)
+#' sdts_score(predict, mp_test_data$test$label, 1)
 #' }
 
 sdts_predict <- function(model, data, window_size) {
@@ -95,8 +95,8 @@ sdts_predict <- function(model, data, window_size) {
 #'
 #' `beta` is used to balance F-score towards recall (`>1`) or precision (`<1`).
 #'
-#' @param gtruth a `vector` of `logical`. Ground truth annotation.
 #' @param pred a `vector` of `logical`. Predicted annotation from [sdts_predict()]
+#' @param gtruth a `vector` of `logical`. Ground truth annotation.
 #' @param beta a `numeric`. See details. (default is `1`).
 #'
 #' @return Returns a `list` with `f_score`, `precision` and `recall`.
@@ -118,16 +118,16 @@ sdts_predict <- function(model, data, window_size) {
 #' te_label <- mp_test_data$test$label[subs]
 #' model <- sdts_train(tr_data, tr_label, w, verbose = 0)
 #' predict <- sdts_predict(model, te_data, round(mean(w)))
-#' sdts_score(te_label, predict, 1)
+#' sdts_score(predict, te_label, 1)
 #'
 #' \dontrun{
 #' windows <- c(110, 220, 330)
 #' model <- sdts_train(mp_test_data$train$data, mp_test_data$train$label, windows)
 #' predict <- sdts_predict(model, mp_test_data$test$data, round(mean(windows)))
-#' sdts_score(mp_test_data$test$label, predict, 1)
+#' sdts_score(predict, mp_test_data$test$label, 1)
 #' }
 #'
-sdts_score <- function(gtruth, pred, beta = 1) {
+sdts_score <- function(pred, gtruth, beta = 1) {
   if (length(pred) > length(gtruth)) {
     pred <- pred[seq_len(length(gtruth))]
   } else if (length(pred) < length(gtruth)) {

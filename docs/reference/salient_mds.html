@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Original data used in the mSTAMP demo — mp_toy_data • tsmp</title>
+<title>Convert salient sequences into MDS space — salient_mds • tsmp</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Original data used in the mSTAMP demo — mp_toy_data" />
+<meta property="og:title" content="Convert salient sequences into MDS space — salient_mds" />
 
-<meta property="og:description" content="A synthetic dataset with embedded MOTIFs for multidimensional discovery" />
+<meta property="og:description" content="Convert salient sequences into MDS space" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -114,50 +114,75 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Original data used in the mSTAMP demo</h1>
-    <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/mp-toy-data.R'><code>R/mp-toy-data.R</code></a></small>
-    <div class="hidden name"><code>mp_toy_data.Rd</code></div>
+    <h1>Convert salient sequences into MDS space</h1>
+    <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/salient.R'><code>R/salient.R</code></a></small>
+    <div class="hidden name"><code>salient_mds.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>A synthetic dataset with embedded MOTIFs for multidimensional discovery</p>
+    <p>Convert salient sequences into MDS space</p>
     
     </div>
 
-    <pre class="usage"><span class='no'>mp_toy_data</span></pre>
-        
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p>A <code>list</code> with a <code>matrix</code> with 550 rows and 3 dimensions and an <code>int</code>:</p><dl class='dl-horizontal'>
-<dt>data</dt><dd><p>data with embedded MOTIFs</p></dd>
-<dt>sub_len</dt><dd><p>size of sliding window</p></dd>
-</dl>
+    <pre class="usage"><span class='fu'>salient_mds</span>(<span class='no'>.mp</span>, <span class='no'>data</span>, <span class='kw'>bit_idx</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
     
-    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>.mp</th>
+      <td><p>a Matrix Profile object.</p></td>
+    </tr>
+    <tr>
+      <th>data</th>
+      <td><p>the data used to build the Matrix Profile, if not embedded.</p></td>
+    </tr>
+    <tr>
+      <th>bit_idx</th>
+      <td><p>an <code>int</code>. The index of <code>n_bits</code> used for MDL discretization if more than one was
+used. (Default is <code>1</code>).</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><a href='https://sites.google.com/view/mstamp/'>https://sites.google.com/view/mstamp/</a></p>
+    <p>Returns X,Y values for plotting</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <ul>
-<li><p>Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif
-Discovery.</p></li>
+<li><p>Yeh CCM, Van Herle H, Keogh E. Matrix profile III: The matrix profile allows
+visualization of salient subsequences in massive time series. Proc - IEEE Int Conf Data Mining,
+ICDM. 2017;579–88.</p></li>
 </ul>
-    <p>Website: <a href='http://www.cs.ucr.edu/~eamonn/MatrixProfile.html'>http://www.cs.ucr.edu/~eamonn/MatrixProfile.html</a></p>
+    <ul>
+<li><p>Hu B, Rakthanmanon T, Hao Y, Evans S, Lonardi S, Keogh E. Discovering the Intrinsic
+Cardinality and Dimensionality of Time Series Using MDL. In: 2011 IEEE 11th International
+Conference on Data Mining. IEEE; 2011. p. 1086–91.</p></li>
+</ul>
+    <p>Website: <a href='https://sites.google.com/site/salientsubs/'>https://sites.google.com/site/salientsubs/</a></p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># toy example</span>
+<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_toy_data</span>$<span class='no'>data</span>[, <span class='fl'>1</span>]
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span>(<span class='no'>data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+<span class='no'>mps</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='salient_subsequences.html'>salient_subsequences</a></span>(<span class='no'>mp</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+<span class='no'>mds_data</span> <span class='kw'>&lt;-</span> <span class='fu'>salient_mds</span>(<span class='no'>mps</span>)
+<span class='fu'><a href='plot.html'>plot</a></span>(<span class='no'>mds_data</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Multi dimensional scale"</span>)</div><div class='img'><img src='salient_mds-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#format">Format</a></li>
-
-      <li><a href="#source">Source</a></li>
+      <li><a href="#value">Value</a></li>
 
       <li><a href="#references">References</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

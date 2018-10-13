@@ -4,12 +4,12 @@
 \alias{sdts_score}
 \title{Computes the F-Score of a SDTS prediction}
 \usage{
-sdts_score(gtruth, pred, beta = 1)
+sdts_score(pred, gtruth, beta = 1)
 }
 \arguments{
-\item{gtruth}{a \code{vector} of \code{logical}. Ground truth annotation.}
-
 \item{pred}{a \code{vector} of \code{logical}. Predicted annotation from \code{\link[=sdts_predict]{sdts_predict()}}}
+
+\item{gtruth}{a \code{vector} of \code{logical}. Ground truth annotation.}
 
 \item{beta}{a \code{numeric}. See details. (default is \code{1}).}
 }
@@ -33,13 +33,13 @@ te_data <- mp_test_data$test$data[subs]
 te_label <- mp_test_data$test$label[subs]
 model <- sdts_train(tr_data, tr_label, w, verbose = 0)
 predict <- sdts_predict(model, te_data, round(mean(w)))
-sdts_score(te_label, predict, 1)
+sdts_score(predict, te_label, 1)
 
 \dontrun{
 windows <- c(110, 220, 330)
 model <- sdts_train(mp_test_data$train$data, mp_test_data$train$label, windows)
 predict <- sdts_predict(model, mp_test_data$test$data, round(mean(windows)))
-sdts_score(mp_test_data$test$label, predict, 1)
+sdts_score(predict, mp_test_data$test$label, 1)
 }
 
 }

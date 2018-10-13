@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Retrieve salient subsequences from a dataset — salient_subsequences • tsmp</title>
+<title>Framework for retrieve salient subsequences from a dataset — salient_subsequences • tsmp</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,7 +30,7 @@
 
 
 
-<meta property="og:title" content="Retrieve salient subsequences from a dataset — salient_subsequences" />
+<meta property="og:title" content="Framework for retrieve salient subsequences from a dataset — salient_subsequences" />
 
 <meta property="og:description" content="In order to allow a meaningful visualization in Multi-Dimensional Space (MDS), this function
 retrieves the most relevant subsequences using Minimal Description Length (MDL) framework." />
@@ -64,7 +64,7 @@ retrieves the most relevant subsequences using Minimal Description Length (MDL) 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tsmp</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1.9026</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1.9028</span>
       </span>
     </div>
 
@@ -115,7 +115,7 @@ retrieves the most relevant subsequences using Minimal Description Length (MDL) 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Retrieve salient subsequences from a dataset</h1>
+    <h1>Framework for retrieve salient subsequences from a dataset</h1>
     <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/salient.R'><code>R/salient.R</code></a></small>
     <div class="hidden name"><code>salient_subsequences.Rd</code></div>
     </div>
@@ -143,7 +143,7 @@ retrieves the most relevant subsequences using Minimal Description Length (MDL) 
     </tr>
     <tr>
       <th>n_bits</th>
-      <td><p>an <code>int</code>. Number of bits for MDL discretization. (Default is <code>8</code>).</p></td>
+      <td><p>an <code>int</code> or <code>vector</code> of <code>int</code>. Number of bits for MDL discretization. (Default is <code>8</code>).</p></td>
     </tr>
     <tr>
       <th>n_cand</th>
@@ -194,8 +194,8 @@ Conference on Data Mining. IEEE; 2011. p. 1086–91.</p></li>
 <span class='co'># full example</span>
 <span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_meat_data</span>$<span class='no'>sub</span>$<span class='no'>data</span>
 <span class='no'>w</span> <span class='kw'>&lt;-</span> <span class='no'>mp_meat_data</span>$<span class='no'>sub</span>$<span class='no'>sub_len</span>
-<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span>(<span class='no'>data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='no'>w</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-<span class='no'>mps</span> <span class='kw'>&lt;-</span> <span class='fu'>salient_subsequences</span>(<span class='no'>mp</span>, <span class='no'>data</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span>(<span class='no'>data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='no'>w</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>n_workers</span> <span class='kw'>=</span> <span class='fl'>6</span>)
+<span class='no'>mps</span> <span class='kw'>&lt;-</span> <span class='fu'>salient_subsequences</span>(<span class='no'>mp</span>, <span class='no'>data</span>, <span class='kw'>n_bits</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>4</span>, <span class='fl'>6</span>, <span class='fl'>8</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 <span class='co'># }</span><div class='input'>
 </div></pre>
   </div>

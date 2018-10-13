@@ -1,4 +1,4 @@
-#' Anytime univariate SCRIMP algorithm (experimental)
+#' Anytime univariate SCRIMP++ algorithm
 #'
 #' Computes the best so far Matrix Profile and Profile Index for Univariate Time Series.
 #' DISCLAIMER: This algorithm still in development by its authors.
@@ -270,12 +270,13 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
 
     curdistance[i:num_queries] <-
       sqrt(abs(2 * (window_size -
-        (curlastz[i:num_queries] # x_term
-        - window_size * pre$query_mean[i:num_queries] * pre$data_mean[1:(num_queries - i + 1)]) /
+        (curlastz[i:num_queries] - # x_term
+           window_size * pre$query_mean[i:num_queries] * pre$data_mean[1:(num_queries - i + 1)]) /
           (pre$query_sd[i:num_queries] * pre$data_sd[1:(num_queries - i + 1)])
       )))
 
     # Skip positions
+    curdistance[is.na(curdistance)] <- Inf
     skipped_curdistance <- curdistance
     skipped_curdistance[pre$data_sd[i:num_queries] < vars()$eps] <- Inf
     if (skip_location[i] || any(pre$query_sd[i] < vars()$eps)) {

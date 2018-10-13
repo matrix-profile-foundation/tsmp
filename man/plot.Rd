@@ -9,6 +9,7 @@
 \alias{plot.Chain}
 \alias{plot.Motif}
 \alias{plot.MultiMotif}
+\alias{plot.Salient}
 \title{Plot a TSMP object}
 \usage{
 \method{plot}{ArcCount}(x, data, type = c("data", "matrix"),
@@ -35,6 +36,9 @@
 \method{plot}{MultiMotif}(x, data, type = c("data", "matrix"),
   ncol = 3, main = "Multidimensional MOTIF Discover", xlab = "index",
   ylab = "", ...)
+
+\method{plot}{Salient}(x, data, main = "Salient Subsections",
+  xlab = "index", ylab = "", ...)
 }
 \arguments{
 \item{x}{a Matrix Profile}
