@@ -2,7 +2,7 @@
 % Please edit documentation in R/scrimp.R
 \name{scrimp}
 \alias{scrimp}
-\title{Anytime univariate SCRIMP algorithm (experimental)}
+\title{Anytime univariate SCRIMP++ algorithm}
 \usage{
 scrimp(..., window_size, exclusion_zone = 1/2, verbose = 2,
   s_size = Inf, pre_scrimp = 1/4)

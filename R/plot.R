@@ -539,3 +539,40 @@ plot.MultiMotif <- function(x, data, type = c("data", "matrix"), ncol = 3, main 
 
   graphics::par(def_par)
 }
+
+#' @export
+#' @keywords hplot
+#' @name plot
+#'
+
+plot.Salient <- function(x, data, main = "Salient Subsections", xlab = "index", ylab = "", ...) {
+  def_par <- graphics::par(no.readonly = TRUE)
+
+  if (missing(data) && !is.null(x$data)) {
+    data <- x$data[[1]]
+  } else {
+    is.null(data) # check data presence before plotting anything
+  }
+
+  plot_data <- data
+  plot_subtitle <- "Data"
+  y_min <- min(data)
+  y_max <- max(data)
+
+  mds <- salient_mds(x, data)
+  idxs <- sort(x$salient$indexes[,1])
+
+  # layout: matrix profile on top, motifs below.
+  graphics::layout(matrix(c(1, 1, 1, 0, 2, 0), ncol = 3, byrow = TRUE))
+  # plot matrix profile
+  graphics::par(oma = c(1, 1, 3, 0), cex.lab = 1.5)
+  graphics::plot(plot_data, type = "l", main = plot_subtitle, xlab = xlab, ylab = ylab)
+  graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
+
+  graphics::rect(idxs, y_min, xright = idxs + x$w, y_max, border = NA,
+                 col = grDevices::adjustcolor("blue", alpha.f = 0.1))
+
+  graphics::plot(mds, main = "MDS")
+
+  graphics::par(def_par)
+}

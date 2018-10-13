@@ -23,8 +23,7 @@
 #'
 #'   Currently there is a new algorithm that I'll not explain further here. It is called [scrimp()],
 #'   and is as fast as [stomp()], and have the Anytime property. This algorithm is implemented in
-#'   this package, but stills experimental, so expect minor discrepancies compared to previous
-#'   algorithms.
+#'   this package, but still waiting for an article publication.
 #'
 #'   Further, there is the [mstomp()] that computes a multidimensional Matrix Profile that allows to
 #'   meaningful MOTIF discovery in Multivariate Time Series. And [simple_fast()] that also handles

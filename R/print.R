@@ -179,3 +179,26 @@ print.MultiMotif <- function(x, ...) {
   cat("Motifs indexes =", x$motif$motif_idx, "\n")
   cat("Motifs dimensions =", dims, "\n")
 }
+
+#' Prints Salient subsequences summary
+#'
+#' @param x a TSMP object of class `Salient`.
+#' @param ... additional arguments ignored.
+#' @export
+#' @keywords internal
+#' @noRd
+print.Salient <- function(x, ...) {
+  if (any(class(x) %in% "MatrixProfile")) {
+    print.MatrixProfile(x, ...)
+  } else if (any(class(x) %in% "MultiMatrixProfile")) {
+    print.MultiMatrixProfile(x, ...)
+  }
+
+  cat("\nSalient Subsequences\n")
+  cat("----------------------\n")
+
+  salient_len <- nrow(x$salient$indexes)
+
+  cat("Subsequences founded =", salient_len, "\n")
+  cat("Bitsizes tested =", x$salient$bits, "\n")
+}

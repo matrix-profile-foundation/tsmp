@@ -2,7 +2,7 @@
 % Please edit documentation in R/sdts-predict.R
 \name{sdts_predict}
 \alias{sdts_predict}
-\title{Scalable Dictionary learning for Time Series (SDTS) prediction function}
+\title{Framework for Scalable Dictionary learning for Time Series (SDTS) prediction function}
 \usage{
 sdts_predict(model, data, window_size)
 }
@@ -34,13 +34,13 @@ te_data <- mp_test_data$test$data[subs]
 te_label <- mp_test_data$test$label[subs]
 model <- sdts_train(tr_data, tr_label, w, verbose = 0)
 predict <- sdts_predict(model, te_data, round(mean(w)))
-sdts_score(te_label, predict, 1)
+sdts_score(predict, te_label, 1)
 
 \dontrun{
 windows <- c(110, 220, 330)
 model <- sdts_train(mp_test_data$train$data, mp_test_data$train$label, windows, verbose = 0)
 predict <- sdts_predict(model, mp_test_data$test$data, round(mean(windows)))
-sdts_score(mp_test_data$test$label, predict, 1)
+sdts_score(predict, mp_test_data$test$label, 1)
 }
 }
 \references{
