@@ -430,7 +430,7 @@ salient_score <- function(.mp, gtruth) {
       }
     }
 
-    cutoff <- which(diff(.mp$salient$idx_bit_size[,b]) > 0)[1] - 1
+    cutoff <- which(diff(.mp$salient$idx_bit_size[, b]) > 0)[1] - 1
 
     if (!is.na(cutoff) && cutoff > 0) {
       hit_miss <- hit_miss[1:cutoff]

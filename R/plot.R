@@ -260,6 +260,43 @@ plot.MultiMatrixProfile <- function(x, ylab = "distance", xlab = "index", main =
 #' @keywords hplot
 #' @name plot
 #'
+plot.SimpleMatrixProfile <- function(x, ylab = "distance", xlab = "index", main = "SiMPle Matrix Profile", ...) {
+  def_par <- graphics::par(no.readonly = TRUE)
+  allmatrix <- FALSE
+  n_dim <- ncol(x$mp)
+
+  if (!is.null(x$lmp) && !all(x$lpi == -1)) {
+    allmatrix <- TRUE
+  }
+
+  if (allmatrix == TRUE) {
+    graphics::layout(matrix(seq_len(3 * n_dim), ncol = 3, byrow = TRUE))
+  }
+  graphics::par(
+    mar = c(4.1, 4.1, 2.1, 2.1),
+    oma = c(1, 1, 3, 0), cex.lab = 1.5
+  )
+  for (i in seq_len(n_dim)) {
+    graphics::plot(x$mp[, i], type = "l", main = paste0("Matrix Profile (w = ", x$w, "; ez = ", x$ez, ")"), ylab = ylab, xlab = xlab, ...)
+  }
+  graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
+
+  if (allmatrix == TRUE) {
+    for (i in seq_len(n_dim)) {
+      graphics::plot(x$rmp[, i], type = "l", main = "Right Matrix Profile", ylab = ylab, xlab = xlab, ...)
+    }
+    for (i in seq_len(n_dim)) {
+      graphics::plot(x$lmp[, i], type = "l", main = "Left Matrix Profile", ylab = ylab, xlab = xlab, ...)
+    }
+  }
+
+  graphics::par(def_par)
+}
+
+#' @export
+#' @keywords hplot
+#' @name plot
+#'
 plot.Fluss <- function(x, data, type = c("data", "matrix"),
                        main = "Fast Low-cost Unipotent Semantic Segmentation", xlab = "index",
                        ylab = "", ...) {
@@ -560,7 +597,7 @@ plot.Salient <- function(x, data, main = "Salient Subsections", xlab = "index", 
   y_max <- max(data)
 
   mds <- salient_mds(x, data)
-  idxs <- sort(x$salient$indexes[,1])
+  idxs <- sort(x$salient$indexes[, 1])
 
   # layout: matrix profile on top, motifs below.
   graphics::layout(matrix(c(1, 1, 1, 0, 2, 0), ncol = 3, byrow = TRUE))
@@ -569,8 +606,10 @@ plot.Salient <- function(x, data, main = "Salient Subsections", xlab = "index", 
   graphics::plot(plot_data, type = "l", main = plot_subtitle, xlab = xlab, ylab = ylab)
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
 
-  graphics::rect(idxs, y_min, xright = idxs + x$w, y_max, border = NA,
-                 col = grDevices::adjustcolor("blue", alpha.f = 0.1))
+  graphics::rect(idxs, y_min,
+    xright = idxs + x$w, y_max, border = NA,
+    col = grDevices::adjustcolor("blue", alpha.f = 0.1)
+  )
 
   graphics::plot(mds, main = "MDS")
 

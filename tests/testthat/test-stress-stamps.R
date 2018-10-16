@@ -1,5 +1,5 @@
 if (identical(Sys.getenv("STRESS_TEST"), "true") &&
-    identical(Sys.getenv("NOT_CRAN"), "true") &&
+  identical(Sys.getenv("NOT_CRAN"), "true") &&
   !identical(Sys.getenv("TRAVIS"), "true") &&
   !identical(Sys.getenv("APPVEYOR"), "True")) {
   context("Stress test for STAMP, STOMP and SCRIMP")

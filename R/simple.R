@@ -12,7 +12,7 @@
 #' @param verbose an `int`. See details. (Default is `2`).
 #'
 #' @return Returns a `SimpleMatrixProfile` object, a `list` with the matrix profile `mp`, profile index `pi`,
-#' window size `w` and exclusion zone `ez`.
+#' number of dimensions `n_dim`, window size `w` and exclusion zone `ez`.
 #'
 #' @export
 #' @references * Silva D, Yeh C, Batista G, Keogh E. Simple: Assessing Music Similarity Using
@@ -220,6 +220,7 @@ simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
     mp = as.matrix(matrix_profile), pi = as.matrix(profile_index),
     rmp = NULL, rpi = NULL,
     lmp = NULL, lpi = NULL,
+    n_dim = n_dim,
     w = window_size,
     ez = ez
   )

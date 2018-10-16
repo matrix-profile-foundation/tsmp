@@ -1,7 +1,7 @@
 NEWS
 ================
 Francisco Bischoff
-\- 13 Oct 2018
+\- 16 Oct 2018
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
@@ -16,6 +16,8 @@ Francisco Bischoff
   - Fixed SCRIMP and added PRE-SCRIMP, so this is the SCRIMP++. AB-join
     not yet implemented.
   - Changed progress bar for a better one from `progress` package.
+  - Added Print and Plot to SiMPle. Issue \#24
+  - Added Print and Plot to Salient.
 
 # tsmp 0.3.1
 

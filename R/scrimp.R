@@ -271,7 +271,7 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
     curdistance[i:num_queries] <-
       sqrt(abs(2 * (window_size -
         (curlastz[i:num_queries] - # x_term
-           window_size * pre$query_mean[i:num_queries] * pre$data_mean[1:(num_queries - i + 1)]) /
+          window_size * pre$query_mean[i:num_queries] * pre$data_mean[1:(num_queries - i + 1)]) /
           (pre$query_sd[i:num_queries] * pre$data_sd[1:(num_queries - i + 1)])
       )))
 
