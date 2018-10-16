@@ -5,6 +5,7 @@
 \alias{plot.ArcCount}
 \alias{plot.MatrixProfile}
 \alias{plot.MultiMatrixProfile}
+\alias{plot.SimpleMatrixProfile}
 \alias{plot.Fluss}
 \alias{plot.Chain}
 \alias{plot.Motif}
@@ -22,6 +23,9 @@
 
 \method{plot}{MultiMatrixProfile}(x, ylab = "distance", xlab = "index",
   main = "Multidimensional Matrix Profile", ...)
+
+\method{plot}{SimpleMatrixProfile}(x, ylab = "distance",
+  xlab = "index", main = "SiMPle Matrix Profile", ...)
 
 \method{plot}{Fluss}(x, data, type = c("data", "matrix"),
   main = "Fast Low-cost Unipotent Semantic Segmentation",
