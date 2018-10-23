@@ -113,7 +113,6 @@ devtools::install_github("franzbischoff/tsmp")
 
 ## Roadmap
 
-* MOTIFs under Uniform Scaling
 * Exact Detection of Variable Length Motifs
 * Profile-Based Shapelet Discovery
 * GPU-STOMP

@@ -1,7 +1,7 @@
 README
 ================
 Francisco Bischoff
-\- 16 Oct 2018
+\- 23 Oct 2018
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -109,7 +109,6 @@ devtools::install_github("franzbischoff/tsmp")
 
 ## Roadmap
 
-  - MOTIFs under Uniform Scaling
   - Exact Detection of Variable Length Motifs
   - Profile-Based Shapelet Discovery
   - GPU-STOMP

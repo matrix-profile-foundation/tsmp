@@ -92,12 +92,17 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
   }
 
   pos <- unlist(pos)
-  pos_alt_st <- which(is.infinite(pos)) + 1
+  pos_alt_st <- list()
+  for (i in 1:n_window_size) {
+    pos_alt_st[[i]] <- which(is.infinite(pos)) + 1
+    max_pos_idx <- pos_alt_st[[i]] > (length(pos) - window_size[i] + 1)
+    pos_alt_st[[i]][max_pos_idx] <- (length(pos) - window_size[i] + 1)
+  }
+
   pos_alt_ed <- which(is.infinite(pos)) - 1
   pos_alt_ed <- c(pos_alt_ed[-1], length(pos))
 
-  max_pos_idx <- pos_alt_st > (length(pos) - max(window_size) + 1)
-  pos_alt_st[max_pos_idx] <- (length(pos) - max(window_size) + 1)
+
 
   # run matrix profile on concatenated positive segment ----
   if (verbose > 0) {
@@ -125,7 +130,7 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
     candi_dist <- rep(0, n_pos)
 
     for (j in 1:n_pos) {
-      temp <- mat_pro[[i]][pos_alt_st[j]:max(pos_alt_st[j], (pos_alt_ed[j] - window_size[i] + 1), na.rm = TRUE)]
+      temp <- mat_pro[[i]][pos_alt_st[[i]][j]:max(pos_alt_st[[i]][j], (pos_alt_ed[j] - window_size[i] + 1), na.rm = TRUE)]
       rlt_idx <- which.min(temp)
       if (length(temp[rlt_idx]) == 0) {
         print("Zero")
@@ -133,7 +138,7 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
 
       candi_dist[j] <- temp[rlt_idx]
 
-      alt_idx <- pos_alt_st[j] + rlt_idx - 1
+      alt_idx <- pos_alt_st[[i]][j] + rlt_idx - 1
       candi[[i]][[j]] <- pos[alt_idx:(alt_idx + window_size[i] - 1)]
       candi_idx[[i]][j] <- pos_st[j] + rlt_idx - 1
     }
