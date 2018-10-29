@@ -86,6 +86,8 @@ sdts_predict <- function(model, data, window_size) {
     pred[anno_st[i]:anno_ed[i]] <- TRUE
   }
 
+  pred <- pred[seq_len(data_size - window_size + 1)]
+
   return(pred)
 }
 
@@ -134,6 +136,14 @@ sdts_score <- function(pred, gtruth, beta = 1) {
     pred_tmp <- rep(FALSE, length(gtruth))
     pred_tmp[seq_len(length(pred))] <- pred
     pred <- pred_tmp
+  }
+
+  if (anyNA(gtruth)) {
+    stop("Error: `gtruth` contains NA values.", call. = FALSE)
+  }
+
+  if (anyNA(pred)) {
+    stop("Error: `pred` contains NA values.", call. = FALSE)
   }
 
   pred_pad <- c(0, pred, 0)
