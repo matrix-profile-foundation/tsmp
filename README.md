@@ -1,7 +1,7 @@
 README
 ================
 Francisco Bischoff
-\- 23 Oct 2018
+\- 20 Nov 2018
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -72,7 +72,7 @@ data <- cumsum(sample(c(-1, 1), 40000, TRUE))
 | ------------- | :----------: | :-------: | :---------: | :-----: |
 | `stomp_par()` |    52.72s    |   40000   |    1000     |    8    |
 | `scrimp()`    |    92.44s    |   40000   |    1000     |    1    |
-| `stomp()`     |   133.16s    |   40000   |    1000     |    1    |
+| `stomp()`     |   136.01s    |   40000   |    1000     |    1    |
 | `stamp_par()` |   140.25s    |   40000   |    1000     |    8    |
 | `stamp()`     |   262.03s    |   40000   |    1000     |    1    |
 
@@ -120,6 +120,12 @@ devtools::install_github("franzbischoff/tsmp")
   - Python: <https://github.com/ZiyaoWei/pyMatrixProfile>
   - Python: <https://github.com/jbeleno/owlpy>
   - Python: <https://github.com/javidlakha/matrix-profile>
+  - Python: <https://github.com/shapelets/khiva-python>
+  - R: <https://github.com/shapelets/khiva-r>
+  - Matlab: <https://github.com/shapelets/khiva-matlab>
+  - Java: <https://github.com/shapelets/khiva-java>
+  - Kotlin: <https://github.com/shapelets/khiva-kotlin>
+  - C++ (CUDA and OPENCL): <https://github.com/shapelets/khiva>
   - CUDA: <https://github.com/zpzim/STOMPSelfJoin>
   - CUDA: <https://github.com/zpzim/SCAMP>
 

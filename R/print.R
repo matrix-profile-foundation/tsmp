@@ -146,6 +146,40 @@ print.Chain <- function(x, ...) {
   cat("Best Chain indexes =", x$chain$best, "\n")
 }
 
+#' Prints Discords
+#'
+#' @param x a TSMP object of class `Discord`.
+#' @param ... additional arguments ignored.
+#' @export
+#' @keywords internal
+#' @noRd
+print.Discord <- function(x, ...) {
+  if (any(class(x) %in% "MatrixProfile")) {
+    print.MatrixProfile(x, ...)
+  } else if (any(class(x) %in% "MultiMatrixProfile")) {
+    print.MultiMatrixProfile(x, ...)
+  }
+
+  cat("\nDiscord\n")
+  cat("-------\n")
+
+  dis_len <- length(x$discord$discord_idx)
+  cat("Discords founded =", dis_len, "\n")
+
+  indexes <- NULL
+  for (i in seq_len(dis_len)) {
+    indexes <- paste0(indexes, "[", paste(x$discord$discord_idx[i], collapse = ", "), "] ")
+  }
+
+  neighbors <- NULL
+  for (i in seq_len(dis_len)) {
+    neighbors <- paste0(neighbors, "[", paste(x$discord$discord_neighbor[[i]], collapse = ", "), "] ")
+  }
+
+  cat("Discords indexes =", indexes, "\n")
+  cat("Discords neighbors =", neighbors, "\n")
+}
+
 #' Prints Motifs
 #'
 #' @param x a TSMP object of class `Motif`.

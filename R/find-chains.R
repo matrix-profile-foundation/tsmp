@@ -52,7 +52,9 @@ find_chains <- function(.mp) {
   mean <- Inf
   for (i in seq_len(length(chain_set))) {
     if (length(chain_set[[i]]) == l) {
-      n <- mean(.mp$rmp[chain_set[[i]]])
+      vals <- .mp$rmp[chain_set[[i]]]
+      vals <- vals[!is.infinite(vals)]
+      n <- mean(vals)
       if (n < mean) {
         mean <- n
         best_chain <- chain_set[[i]]

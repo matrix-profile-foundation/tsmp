@@ -834,6 +834,18 @@ as.chain <- function(.mp) {
   return(.mp)
 }
 
+#' @describeIn as.matrixprofile Cast an object changed by another function back to `Discord`.
+#' @export
+
+as.discord <- function(.mp) {
+  if (!any(class(.mp) %in% "Discord")) {
+    stop("Error: This object cannot be a `Discord`.")
+  }
+
+  class(.mp) <- update_class(class(.mp), "Discord")
+
+  return(.mp)
+}
 
 #' @describeIn as.matrixprofile Cast an object changed by another function back to `Motif`.
 #' @export

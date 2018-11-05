@@ -83,10 +83,10 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
   for (i in seq_len(n_motifs)) {
     min_idx <- which.min(matrix_profile)
     motif_distance <- matrix_profile[min_idx]
-    motif_distance <- motif_distance^2
     motif_idxs[[1]][[i]] <- sort(c(min_idx, .mp$pi[min_idx]))
     motif_idx <- motif_idxs[[1]][[i]][1]
 
+    # query using the motif to find its neighbors
     query <- data[motif_idx:(motif_idx + .mp$w - 1)]
 
     distance_profile <- mass(
@@ -95,7 +95,7 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
     )
 
     distance_profile <- Re(distance_profile$distance_profile)
-    distance_profile[distance_profile > motif_distance * radius] <- Inf
+    distance_profile[distance_profile > (motif_distance * radius)^2] <- Inf
     motif_zone_start <- max(1, motif_idx - exclusion_zone)
     motif_zone_end <- min(matrix_profile_size, motif_idx + exclusion_zone)
     distance_profile[motif_zone_start:motif_zone_end] <- Inf

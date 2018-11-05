@@ -423,6 +423,71 @@ plot.Chain <- function(x, data, type = c("data", "matrix"), main = "Chain Discov
 #' @keywords hplot
 #' @name plot
 #'
+plot.Discord <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "Discord Discover", xlab = "index", ylab = "", ...) {
+  def_par <- graphics::par(no.readonly = TRUE)
+
+  if (missing(data) && !is.null(x$data)) {
+    data <- x$data[[1]]
+  } else {
+    is.null(data) # check data presence before plotting anything
+  }
+
+  type <- match.arg(type)
+
+  if (type == "data") {
+    plot_data <- data
+    plot_subtitle <- "Data"
+  } else {
+    plot_data <- x$mp
+    ylab <- "distance"
+    plot_subtitle <- paste0("Matrix Profile (w = ", x$w, "; ez = ", x$ez, ")")
+  }
+
+  discords <- x$discord$discord_idx
+  n_discords <- length(x$discord$discord_idx)
+  neighbors <- x$discord$discord_neighbor
+  matrix_profile_size <- nrow(x$mp)
+
+  # layout: matrix profile on top, discords below.
+  graphics::layout(matrix(
+    c(rep(1, ncol), (seq_len(ceiling(n_discords / ncol) * ncol) + 1)),
+    ceiling(n_discords / ncol) + 1,
+    ncol,
+    byrow = TRUE
+  ))
+  # plot matrix profile
+  graphics::par(oma = c(1, 1, 3, 0), cex.lab = 1.5)
+  graphics::plot(plot_data, type = "l", main = plot_subtitle, xlab = xlab, ylab = ylab)
+  graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
+  graphics::abline(v = discords, col = seq_len(n_discords), lwd = 3)
+  graphics::abline(v = unlist(neighbors), col = rep(seq_len(n_discords), sapply(neighbors, length)), lwd = 1, lty = 2)
+  # plot discords
+  for (i in 1:n_discords) {
+    discord1 <- znorm(data[discords[i]:min((discords[i] + x$w - 1), matrix_profile_size)])
+
+    # blank plot
+    graphics::plot(0.5, 0.5,
+                   type = "n", main = paste("Discord", i), xlab = "length", ylab = "normalized data",
+                   xlim = c(0, length(discord1)), ylim = c(min(discord1), max(discord1))
+    )
+
+    for (j in seq_len(length(neighbors[[i]]))) {
+      neigh <- znorm(data[neighbors[[i]][j]:min((neighbors[[i]][j] + x$w - 1), matrix_profile_size)])
+      graphics::lines(neigh, col = "gray70", lty = 2)
+    }
+
+    graphics::lines(discord1, col = i, lwd = 2)
+  }
+
+  graphics::par(def_par)
+}
+
+#' @param ncol an `int`. Number of columns to plot Motifs.
+#'
+#' @export
+#' @keywords hplot
+#' @name plot
+#'
 plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "MOTIF Discover", xlab = "index", ylab = "", ...) {
   def_par <- graphics::par(no.readonly = TRUE)
 
@@ -459,7 +524,9 @@ plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "MO
   graphics::par(oma = c(1, 1, 3, 0), cex.lab = 1.5)
   graphics::plot(plot_data, type = "l", main = plot_subtitle, xlab = xlab, ylab = ylab)
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
-  graphics::abline(v = unlist(motifs), col = rep(1:n_motifs, each = 2), lwd = 2)
+  graphics::abline(v = unlist(motifs), col = rep(1:n_motifs, each = 2), lwd = 3)
+  graphics::abline(v = unlist(neighbors), col = rep(1:n_motifs, sapply(neighbors, length)), lwd = 1, lty = 2)
+
   # plot motifs
   for (i in 1:n_motifs) {
     motif1 <- znorm(data[motifs[[i]][1]:min((motifs[[i]][1] + x$w - 1), matrix_profile_size)])
@@ -473,7 +540,7 @@ plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "MO
 
     for (j in seq_len(length(neighbors[[i]]))) {
       neigh <- znorm(data[neighbors[[i]][j]:min((neighbors[[i]][j] + x$w - 1), matrix_profile_size)])
-      graphics::lines(neigh, col = "gray70")
+      graphics::lines(neigh, col = "gray70", lty = 2)
     }
 
     graphics::lines(motif2, col = "black")
