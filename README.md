@@ -120,6 +120,12 @@ devtools::install_github("franzbischoff/tsmp")
   - Python: <https://github.com/ZiyaoWei/pyMatrixProfile>
   - Python: <https://github.com/jbeleno/owlpy>
   - Python: <https://github.com/javidlakha/matrix-profile>
+  - C++ (CUDA and OPENCL): <https://github.com/shapelets/khiva>
+  - R: <https://github.com/shapelets/khiva-r>
+  - Matlab: <https://github.com/shapelets/khiva-matlab>
+  - Python: <https://github.com/shapelets/khiva-python>
+  - Java: <https://github.com/shapelets/khiva-java>
+  - Kotlin: <https://github.com/shapelets/khiva-kotlin>
   - CUDA: <https://github.com/zpzim/STOMPSelfJoin>
   - CUDA: <https://github.com/zpzim/SCAMP>
 
