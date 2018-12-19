@@ -3,13 +3,21 @@
 \name{plot}
 \alias{plot}
 \alias{plot.ArcCount}
+\alias{plot}
 \alias{plot.MatrixProfile}
+\alias{plot}
 \alias{plot.MultiMatrixProfile}
+\alias{plot}
 \alias{plot.SimpleMatrixProfile}
+\alias{plot}
 \alias{plot.Fluss}
+\alias{plot}
 \alias{plot.Chain}
+\alias{plot}
 \alias{plot.Motif}
+\alias{plot}
 \alias{plot.MultiMotif}
+\alias{plot}
 \alias{plot.Salient}
 \title{Plot a TSMP object}
 \usage{
@@ -24,12 +32,12 @@
 \method{plot}{MultiMatrixProfile}(x, ylab = "distance", xlab = "index",
   main = "Multidimensional Matrix Profile", ...)
 
-\method{plot}{SimpleMatrixProfile}(x, ylab = "distance",
-  xlab = "index", main = "SiMPle Matrix Profile", ...)
+\method{plot}{SimpleMatrixProfile}(x, ylab = "distance", xlab = "index",
+  main = "SiMPle Matrix Profile", ...)
 
 \method{plot}{Fluss}(x, data, type = c("data", "matrix"),
-  main = "Fast Low-cost Unipotent Semantic Segmentation",
-  xlab = "index", ylab = "", ...)
+  main = "Fast Low-cost Unipotent Semantic Segmentation", xlab = "index",
+  ylab = "", ...)
 
 \method{plot}{Chain}(x, data, type = c("data", "matrix"),
   main = "Chain Discover", xlab = "index", ylab = "", ...)
@@ -37,9 +45,9 @@
 \method{plot}{Motif}(x, data, type = c("data", "matrix"), ncol = 3,
   main = "MOTIF Discover", xlab = "index", ylab = "", ...)
 
-\method{plot}{MultiMotif}(x, data, type = c("data", "matrix"),
-  ncol = 3, main = "Multidimensional MOTIF Discover", xlab = "index",
-  ylab = "", ...)
+\method{plot}{MultiMotif}(x, data, type = c("data", "matrix"), ncol = 3,
+  main = "Multidimensional MOTIF Discover", xlab = "index", ylab = "",
+  ...)
 
 \method{plot}{Salient}(x, data, main = "Salient Subsections",
   xlab = "index", ylab = "", ...)

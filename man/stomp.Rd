@@ -29,6 +29,8 @@ left and right matrix profile \code{lmp}, \code{rmp} and profile index \code{lpi
 exclusion zone \code{ez}.
 }
 \description{
+Univariate STOMP algorithm
+
 Computes the Matrix Profile and Profile Index for Univariate Time Series.
 }
 \details{
@@ -76,4 +78,3 @@ Other matrix profile computations: \code{\link{mstomp_par}},
   \code{\link{scrimp}}, \code{\link{stamp_par}},
   \code{\link{tsmp}}
 }
-\concept{matrix profile computations}

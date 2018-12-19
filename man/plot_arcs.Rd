@@ -4,9 +4,8 @@
 \alias{plot_arcs}
 \title{Plot arcs between indexes of a Profile Index}
 \usage{
-plot_arcs(pairs, alpha = NULL, quality = 30, lwd = 15,
-  col = c("blue", "orange"), main = "Arc Plot", ylab = "",
-  xlab = "Profile Index", ...)
+plot_arcs(pairs, alpha = NULL, quality = 30, lwd = 15, col = c("blue",
+  "orange"), main = "Arc Plot", ylab = "", xlab = "Profile Index", ...)
 }
 \arguments{
 \item{pairs}{a \code{matrix} with 2 columns.}

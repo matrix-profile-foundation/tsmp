@@ -4,8 +4,8 @@
 \alias{scrimp}
 \title{Anytime univariate SCRIMP++ algorithm}
 \usage{
-scrimp(..., window_size, exclusion_zone = 1/2, verbose = 2,
-  s_size = Inf, pre_scrimp = 1/4)
+scrimp(..., window_size, exclusion_zone = 1/2, verbose = 2, s_size = Inf,
+  pre_scrimp = 1/4)
 }
 \arguments{
 \item{...}{a \code{matrix} or a \code{vector}.}
@@ -64,4 +64,3 @@ Other matrix profile computations: \code{\link{mstomp_par}},
   \code{\link{stamp_par}}, \code{\link{stomp_par}},
   \code{\link{tsmp}}
 }
-\concept{matrix profile computations}

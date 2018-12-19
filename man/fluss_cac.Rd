@@ -41,4 +41,3 @@ Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 Other Semantic Segmentations: \code{\link{fluss_extract}},
   \code{\link{fluss_score}}, \code{\link{fluss}}
 }
-\concept{Semantic Segmentations}

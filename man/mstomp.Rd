@@ -36,6 +36,8 @@ number of dimensions \code{n_dim}, exclusion zone \code{ez}, must dimensions \co
 If the input has only one dimension, returns the same as \code{\link[=stomp]{stomp()}}.
 }
 \description{
+Multivariate STOMP algorithm Parallel version
+
 Computes the Matrix Profile and Profile Index for Multivariate Time Series.
 }
 \details{
@@ -92,4 +94,3 @@ Other matrix profile computations: \code{\link{scrimp}},
   \code{\link{stamp_par}}, \code{\link{stomp_par}},
   \code{\link{tsmp}}
 }
-\concept{matrix profile computations}

@@ -41,4 +41,3 @@ Other Annotation vectors: \code{\link{av_apply}},
   \code{\link{av_hardlimit_artifact}},
   \code{\link{av_stop_word}}, \code{\link{av_zerocrossing}}
 }
-\concept{Annotation vectors}

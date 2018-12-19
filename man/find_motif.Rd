@@ -2,7 +2,9 @@
 % Please edit documentation in R/find-motifs.R
 \name{find_motif}
 \alias{find_motif}
+\alias{find_motif}
 \alias{find_motif.MatrixProfile}
+\alias{find_motif}
 \alias{find_motif.MultiMatrixProfile}
 \title{Search for Motifs}
 \usage{
@@ -12,8 +14,8 @@ find_motif(.mp, ...)
   n_neighbors = 10, radius = 3, exclusion_zone = NULL, ...)
 
 \method{find_motif}{MultiMatrixProfile}(.mp, data, n_motifs = 3,
-  mode = c("guided", "unconstrained"), n_bit = 4,
-  exclusion_zone = NULL, n_dim = NULL, ...)
+  mode = c("guided", "unconstrained"), n_bit = 4, exclusion_zone = NULL,
+  n_dim = NULL, ...)
 }
 \arguments{
 \item{.mp}{a TSMP object of class \code{MatrixProfile} or \code{MultiMatrixProfile}.}

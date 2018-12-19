@@ -42,4 +42,3 @@ Other Annotation vectors: \code{\link{av_apply}},
   \code{\link{av_motion_artifact}},
   \code{\link{av_stop_word}}
 }
-\concept{Annotation vectors}

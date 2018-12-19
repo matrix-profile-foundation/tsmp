@@ -36,4 +36,3 @@ Other Annotation vectors: \code{\link{av_complexity}},
   \code{\link{av_motion_artifact}},
   \code{\link{av_stop_word}}, \code{\link{av_zerocrossing}}
 }
-\concept{Annotation vectors}

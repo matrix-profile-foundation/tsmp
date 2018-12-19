@@ -8,8 +8,7 @@
 stamp_par(..., window_size, exclusion_zone = 1/2, verbose = 2,
   s_size = Inf, n_workers = 2)
 
-stamp(..., window_size, exclusion_zone = 1/2, verbose = 2,
-  s_size = Inf)
+stamp(..., window_size, exclusion_zone = 1/2, verbose = 2, s_size = Inf)
 }
 \arguments{
 \item{...}{a \code{matrix} or a \code{vector}. If a second time series is supplied it will be a join matrix
@@ -33,6 +32,8 @@ left and right matrix profile \code{lmp}, \code{rmp} and profile index \code{lpi
 exclusion zone \code{ez}.
 }
 \description{
+Anytime univariate STAMP algorithm Parallel version
+
 Computes the best so far Matrix Profile and Profile Index for Univariate Time Series.
 }
 \details{
@@ -87,4 +88,3 @@ Other matrix profile computations: \code{\link{mstomp_par}},
   \code{\link{scrimp}}, \code{\link{stomp_par}},
   \code{\link{tsmp}}
 }
-\concept{matrix profile computations}

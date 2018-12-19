@@ -70,4 +70,3 @@ Website: \url{https://sites.google.com/view/weaklylabeled}
 Other Scalable Dictionaries: \code{\link{sdts_predict}},
   \code{\link{sdts_score}}
 }
-\concept{Scalable Dictionaries}
