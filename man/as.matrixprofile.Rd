@@ -5,6 +5,7 @@
 \alias{as.multimatrixprofile}
 \alias{as.fluss}
 \alias{as.chain}
+\alias{as.discord}
 \alias{as.motif}
 \alias{as.multimotif}
 \alias{as.arccount}
@@ -18,6 +19,8 @@ as.multimatrixprofile(.mp)
 as.fluss(.mp)
 
 as.chain(.mp)
+
+as.discord(.mp)
 
 as.motif(.mp)
 
@@ -48,6 +51,8 @@ to cast it back.
 \item \code{as.fluss}: Cast an object changed by another function back to \code{Fluss}.
 
 \item \code{as.chain}: Cast an object changed by another function back to \code{Chain}.
+
+\item \code{as.discord}: Cast an object changed by another function back to \code{Discord}.
 
 \item \code{as.motif}: Cast an object changed by another function back to \code{Motif}.
 

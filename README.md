@@ -1,7 +1,7 @@
 README
 ================
 Francisco Bischoff
-\- 20 Nov 2018
+\- 20 Jan 2019
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -117,6 +117,7 @@ devtools::install_github("franzbischoff/tsmp")
 
 ## Other projects with Matrix Profile
 
+  - Python: <https://github.com/target/matrixprofile-ts>
   - Python: <https://github.com/ZiyaoWei/pyMatrixProfile>
   - Python: <https://github.com/jbeleno/owlpy>
   - Python: <https://github.com/javidlakha/matrix-profile>
@@ -124,6 +125,7 @@ devtools::install_github("franzbischoff/tsmp")
   - R: <https://github.com/shapelets/khiva-r>
   - Matlab: <https://github.com/shapelets/khiva-matlab>
   - Java: <https://github.com/shapelets/khiva-java>
+  - Java: <https://github.com/ensozos/Matrix-Profile>
   - Kotlin: <https://github.com/shapelets/khiva-kotlin>
   - C++ (CUDA and OPENCL): <https://github.com/shapelets/khiva>
   - CUDA: <https://github.com/zpzim/STOMPSelfJoin>

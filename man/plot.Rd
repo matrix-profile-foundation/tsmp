@@ -8,6 +8,7 @@
 \alias{plot.SimpleMatrixProfile}
 \alias{plot.Fluss}
 \alias{plot.Chain}
+\alias{plot.Discord}
 \alias{plot.Motif}
 \alias{plot.MultiMotif}
 \alias{plot.Salient}
@@ -33,6 +34,9 @@
 
 \method{plot}{Chain}(x, data, type = c("data", "matrix"),
   main = "Chain Discover", xlab = "index", ylab = "", ...)
+
+\method{plot}{Discord}(x, data, type = c("data", "matrix"), ncol = 3,
+  main = "Discord Discover", xlab = "index", ylab = "", ...)
 
 \method{plot}{Motif}(x, data, type = c("data", "matrix"), ncol = 3,
   main = "MOTIF Discover", xlab = "index", ylab = "", ...)
@@ -64,6 +68,8 @@
 \item{ylab}{a \code{string}. Y label.}
 
 \item{...}{further arguments to be passed to \code{\link[=plot]{plot()}}. See \code{\link[=par]{par()}}.}
+
+\item{ncol}{an \code{int}. Number of columns to plot Motifs.}
 
 \item{ncol}{an \code{int}. Number of columns to plot Motifs.}
 }
