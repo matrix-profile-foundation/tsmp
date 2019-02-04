@@ -88,7 +88,7 @@ fast_avg_sd <- function(data, window_size) {
   data_sd2 <- pmax(data_sd2, 0)
   data_sd <- sqrt(data_sd2)
 
-  return(list(avg = data_mean, sd = data_sd))
+  return(list(avg = data_mean, sd = data_sd, sum = data_sum, sqrsum = data2_sum))
 }
 
 #' Population SD, as R always calculate with n-1 (sample), here we fix it
@@ -176,6 +176,32 @@ diff2 <- function(x, y) {
   xx <- matrix(rep(apply(x * x, 1, sum), n), m, n, byrow = FALSE)
   yy <- matrix(rep(apply(y * y, 1, sum), m), m, n, byrow = TRUE)
   sqrt(pmax(xx + yy - 2 * xy, 0))
+}
+
+#' Distance between two matrices
+#'
+#' Computes the Euclidean distance between rows of two matrices.
+#'
+#' @param x a `matrix`.
+#' @param y a `matrix`.
+#'
+#' @return Returns a `matrix` of size m x n if x is of size m x k and y is of size n x k.
+#' @keywords internal
+#' @noRd
+
+bubble_up <- function(data, len) {
+
+    pos <- len
+
+    while (pos > 0 && data[pos / 2] < data[pos]) {
+      # &&
+       #    heap->heap_[pos / 2].distance >= 0 &&
+        #   heap->heap_[pos].distance >= 0) {
+      t <- data[pos]
+      data[pos] <- data[pos / 2]
+      data[pos / 2] <- t
+      pos <- pos / 2
+    }
 }
 
 # SDTS Aux functions -----------------------------------------------------------------------------
