@@ -145,7 +145,6 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
 
     if (offset == 0 || motifs_per_size == 0 || lb == FALSE) {
       # ==== STOMP ====
-      stp <- 0
       message("STOMP")
       tictac_stomp <- Sys.time()
 
@@ -226,10 +225,10 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
 
         # distance_profile <- Re(sqrt(distance_profile))
         distance_profile <- Re(distance_profile)
-        distance_profile[distance_profile < 0] <- Inf
+        distance_profile[distance_profile < 0] <- 0
 
         new_lb_profile <- Re(((last_product / window_size) - (query_mean[i] * data_mean)) / (query_sd[i] * data_sd))
-        new_lb_profile[new_lb_profile < 0] <- Inf
+        new_lb_profile[new_lb_profile < 0] <- 0
         new_lb_profile_len <- length(new_lb_profile)
 
         if (new_lb_profile_len != matrix_profile_size) {
@@ -262,7 +261,8 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
         distance_profile[skip_location] <- Inf
         lb_profile[skip_location] <- Inf
 
-        stp <- stp + 1
+        # ==== Store best 'p' LB DPs  ====
+
         lb_idxs <- sort.int(lb_profile, index.return = TRUE)$ix[1:heap_size]
 
         if (any(lb_idxs > matrix_profile_size)) {
@@ -300,6 +300,8 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
         # }
 
         ind <- (distance_profile < matrix_profile)
+        matrix_profile[is.na(ind)] <- NA
+        ind <- ind & !is.na(ind)
         matrix_profile[ind] <- distance_profile[ind]
         profile_index[which(ind)] <- i
 
@@ -308,7 +310,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
         }
       }
 
-      # update valmp
+      # ==== Update VALMP  ====
       ind <- (matrix_profile < valmp$matrix_profile_non_length_normalized[1:matrix_profile_size])
       valmp$matrix_profile_non_length_normalized[which(ind)] <- matrix_profile[which(ind)]
       valmp$profile_index_non_length_normalized[which(ind)] <- profile_index[which(ind)]
@@ -332,8 +334,6 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
       }
     } else {
       #### LB Pruning ####
-      slb <- 0
-
       message("LB Pruning")
       tictac_lb <- Sys.time()
 
@@ -421,7 +421,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
           dist <- Re(dist)
 
           if (dist < 0) {
-            dist <- Inf
+            dist <- 0
           }
 
           current_motif_profile$distances[j] <- dist
@@ -563,11 +563,11 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
             )
 
             distance_profile <- Re(nn$distance_profile)
-            distance_profile[distance_profile < 0] <- Inf
+            distance_profile[distance_profile < 0] <- 0
 
             new_lb_profile <- Re(((nn$last_product / window_size) - (pre$query_mean[index_to_update] *
               pre$data_mean)) / (pre$query_sd[index_to_update] * pre$data_sd))
-            new_lb_profile[new_lb_profile < 0] <- Inf
+            new_lb_profile[new_lb_profile < 0] <- 0
             new_lb_profile_len <- length(new_lb_profile)
 
             if (new_lb_profile_len != matrix_profile_size) {
@@ -597,9 +597,6 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
 
             distance_profile[skip_location] <- Inf
             lb_profile[skip_location] <- Inf
-
-            message(paste("Sort LB ", slb))
-            slb <- slb + 1
 
             lb_idxs <- sort(lb_profile, index.return = TRUE)$ix[1:heap_size]
 
