@@ -154,7 +154,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
 
     if (offset == 0 || motifs_per_size == 0 || lb == FALSE) {
       # ==== STOMP ====
-      message("STOMP")
+      message("========= STOMP =========")
       tictac_stomp <- Sys.time()
 
       if (verbose > 1) {
@@ -347,7 +347,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
       if (offset == 0) {
         message("OFFSET ZERO?")
       }
-      # TODO: offset never gets zero in this block, why check offset == 0 ?
+      # offset never gets zero in this block, why check offset == 0 ?
 
       matrix_profiles_elements_per_size <- 1
       motifs_per_size <- 0
@@ -355,128 +355,113 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
       list_valid_entries <- vector(mode = "numeric", length = matrix_profile_size)
       index_valid_entries <- vector(mode = "numeric", length = matrix_profile_size)
       non_valid_smaller <- -1
-
-      max_entry_valid <- NULL
       min_abs_true_dist <- -1
-
       non_valid_lb <- 1
 
-      for (i in seq_len(matrix_profile_size)) {
-        # --- First Outer Loop ----
+      # for (i in seq_len(matrix_profile_size)) {
+      i_v <- seq_len(matrix_profile_size)
+      # --- First Outer Loop ----
 
-        max_lb <- list_motifs_profile[i, "lb_distances", heap_size]
-        max_query_sd <- list_motifs_profile[i, "query_sd", heap_size]
-        curr_query_sd <- query_stats[[offset + 1]]$sd[i] # std(query[i:(i + window_size - 1)])
-        lower_bound <- max_lb * max_query_sd^2 / curr_query_sd^2
+      new_index_query_v <- list_motifs_profile[i_v, "index_query", 1] + window_size - 1
 
-        min_entry_idx <- NULL
-        min_entry_lb <- -1
+      i_v <- i_v[new_index_query_v <= query_size]
+      new_index_query_v <- new_index_query_v[new_index_query_v <= query_size]
 
-        # message(sprintf("heap_size %s", heap_size))
-        new_index_query <- list_motifs_profile[i, "index_query", 1] + window_size - 1
+      max_lb <- list_motifs_profile[i_v, "lb_distances", heap_size]
+      max_query_sd <- list_motifs_profile[i_v, "query_sd", heap_size]
+      curr_query_sd <- query_stats[[offset + 1]]$sd[i_v] # std(query[i:(i + window_size - 1)])
+      lower_bound <- max_lb * max_query_sd^2 / curr_query_sd^2
 
-        if (new_index_query > query_size) {
-          next # not valid offset
-        }
+      min_entry_idx <- NULL
+      min_entry_lb <- -1
 
-        list_motifs_profile[i, "sum_query", ] <- list_motifs_profile[i, "sum_query", ] + query[new_index_query]
-        list_motifs_profile[i, "sqrsum_query", ] <- list_motifs_profile[i, "sqrsum_query", ] + (query[new_index_query] * query[new_index_query])
-        query_mean_v <- list_motifs_profile[i, "sum_query", ] / window_size
-        query_sd_v <- (list_motifs_profile[i, "sqrsum_query", ] / window_size) - (query_mean_v * query_mean_v)
+      list_motifs_profile[i_v, "sum_query", ] <- list_motifs_profile[i_v, "sum_query", ] + query[new_index_query_v]
+      list_motifs_profile[i_v, "sqrsum_query", ] <- list_motifs_profile[i_v, "sqrsum_query", ] + (query[new_index_query_v] * query[new_index_query_v])
+      query_mean_v <- list_motifs_profile[i_v, "sum_query", ] / window_size
+      query_sd_v <- (list_motifs_profile[i_v, "sqrsum_query", ] / window_size) - (query_mean_v * query_mean_v)
 
-        query_sd_v[query_sd_v < 0] <- 0
-        query_sd_v <- sqrt(query_sd_v)
+      query_sd_v[query_sd_v < 0] <- 0
+      query_sd_v <- sqrt(query_sd_v) # TODO: same as curr_query_sd?
 
-        # --- First Inner Loop ----
-        j_v <- seq(heap_size, 2, by = -1)
+      # --- First Inner Loop ----
+      j_v <- seq(heap_size, 2, by = -1)
 
-        # apply exclusion zone
-        ez_v <- (list_motifs_profile[i, "indexes_data", j_v] <= max(1, list_motifs_profile[i, "indexes_data", j_v] - exclusion_zone) |
-          list_motifs_profile[i, "indexes_data", j_v] >= min(matrix_profile_size, list_motifs_profile[i, "indexes_data", j_v] + exclusion_zone)) |
-          list_motifs_profile[i, "indexes_data", j_v] + window_size - 1 <= data_size
-        j_v <- j_v[ez_v]
+      # apply exclusion zone
+      # !ezx_v contains all trival matches to recompute the DP
+      ezx_v <- (list_motifs_profile[i_v, "index_query", j_v] <= (list_motifs_profile[i_v, "indexes_data", j_v] - exclusion_zone) |
+        list_motifs_profile[i_v, "index_query", j_v] >= (list_motifs_profile[i_v, "indexes_data", j_v] + exclusion_zone))
 
-        new_index_data_v <- list_motifs_profile[i, "indexes_data", j_v] + window_size - 1
+      ez_v <- ezx_v & (list_motifs_profile[i_v, "indexes_data", j_v] + window_size - 1 <= data_size)
 
-        # --- Compute true distance entry heapentry ----
-        list_motifs_profile[i, "dps", j_v] <- list_motifs_profile[i, "dps", j_v] + (query[new_index_query] * data[new_index_data_v])
-        list_motifs_profile[i, "sum_data", j_v] <- list_motifs_profile[i, "sum_data", j_v] + data[new_index_data_v]
-        list_motifs_profile[i, "sqrsum_data", j_v] <- list_motifs_profile[i, "sqrsum_data", j_v] + (data[new_index_data_v] * data[new_index_data_v])
+      # j_v <- j_v[ez_v]
 
-        data_mean_v <- list_motifs_profile[i, "sum_data", j_v] / window_size
-        data_sd_v <- (list_motifs_profile[i, "sqrsum_data", j_v] / window_size) - (data_mean_v * data_mean_v)
+      new_index_data_v <- list_motifs_profile[i_v, "indexes_data", j_v] + window_size - 1
 
-        data_sd_v[data_sd_v < 0] <- 0
-        data_sd_v <- sqrt(data_sd_v)
+      # --- Compute true distance entry heapentry ----
+      list_motifs_profile[i_v, "dps", j_v] <- list_motifs_profile[i_v, "dps", j_v] + matrix(query[new_index_query_v] * data[new_index_data_v], ncol = ncol(new_index_data_v))
+      list_motifs_profile[i_v, "sum_data", j_v] <- list_motifs_profile[i_v, "sum_data", j_v] + data[new_index_data_v]
+      list_motifs_profile[i_v, "sqrsum_data", j_v] <- list_motifs_profile[i_v, "sqrsum_data", j_v] + (data[new_index_data_v] * data[new_index_data_v])
 
-        dist_v <- ((2 * window_size) * (1 - ((list_motifs_profile[i, "dps", j_v] - (window_size * query_mean_v[j_v] * data_mean_v)) /
-          (window_size * query_sd_v[j_v] * data_sd_v))))
+      data_mean_v <- list_motifs_profile[i_v, "sum_data", ] / window_size
+      data_sd_v <- (list_motifs_profile[i_v, "sqrsum_data", ] / window_size) - (data_mean_v * data_mean_v)
 
-        dist_v <- Re(dist_v)
-        dist_v[dist_v < 0 ] <- 0
 
-        list_motifs_profile[i, "distances", j_v] <- dist_v
+      data_sd_v[data_sd_v < 0] <- 0
+      data_sd_v <- sqrt(data_sd_v)
 
-        # ---- Define min_entry ----
-        min_entry_idx <- j_v[which.min(list_motifs_profile[i, "distances", j_v])]
-        min_entry_lb <- max(list_motifs_profile[i, "lb_distances", j_v] * list_motifs_profile[i, "query_sd", j_v]^2 / curr_query_sd^2)
+      dist_v <- ifelse(ez_v,
+        ((2 * window_size) * (1 - ((list_motifs_profile[i_v, "dps", j_v] -
+          (window_size * query_mean_v[i_v, j_v] * data_mean_v[i_v, j_v])) /
+          (window_size * query_sd_v[i_v, j_v] * data_sd_v[i_v, j_v])))),
+        list_motifs_profile[i_v, "distances", j_v]
+      )
 
-        # if (is.null(min_entry_idx)) {
-        #   min_entry_idx <- j_v
-        #   min_entry_lb <- list_motifs_profile[i, "lb_distances", j_v] * list_motifs_profile[i, "query_sd", j_v]^2 / curr_query_sd^2
-        # }
-        # else {
-        #   if (list_motifs_profile[i, "distances", min_entry_idx] > dist_v) {
-        #     min_entry_idx <- j_v
-        #   }
+      dist_v <- Re(dist_v)
+      dist_v[dist_v < 0 ] <- 0
 
-        #   lb <- list_motifs_profile[i, "lb_distances", j_v] * list_motifs_profile[i, "query_sd", j_v]^2 / curr_query_sd^2
-        #   if (min_entry_lb < lb) {
-        #     min_entry_lb <- lb
-        #   }
-        # }
+      list_motifs_profile[i_v, "distances", j_v] <- dist_v
 
-        if (!is.null(min_entry_idx) && list_motifs_profile[i, "distances", min_entry_idx] < lower_bound) {
-          #### Pruning is effective global min found ####
-          # update the min OOOOONLYYYY IF it is a correct min of the distance profile
+      # ---- Define min_entry ----
+      distances <- list_motifs_profile[i_v, "distances", j_v]
+      distances[!ez_v] <- Inf
+      min_entry_idx <- j_v[apply(distances, 1, which.min)]
+      lbdistances <- list_motifs_profile[i_v, "lb_distances", j_v]
+      lbdistances[!ez_v] <- 0
+      lbdistances <- lbdistances * list_motifs_profile[i_v, "query_sd", j_v]^2 / curr_query_sd^2
+      min_entry_lb <- do.call(pmax, lapply(seq_len(ncol(lbdistances)), function(i) lbdistances[, i]))
 
-          if (min_abs_true_dist == -1) {
-            min_abs_true_dist <- list_motifs_profile[i, "distances", min_entry_idx]
-          } else if (list_motifs_profile[i, "distances", min_entry_idx] < min_abs_true_dist) {
-            min_abs_true_dist <- list_motifs_profile[i, "distances", min_entry_idx]
-          }
 
-          list_valid_entries[matrix_profiles_elements_per_size] <- i
-          index_valid_entries[matrix_profiles_elements_per_size] <- min_entry_idx
+      #### Pruning is effective global min found ####
+      # update the min OOOOONLYYYY IF it is a correct min of the distance profile
+      min_distances <- list_motifs_profile[i_v, "distances", ][cbind(seq_along(min_entry_idx), min_entry_idx)]
+      valid_entries <- min_distances < lower_bound
 
-          # new element of the matrix profile
-          matrix_profiles_elements_per_size <- matrix_profiles_elements_per_size + 1
-          if (is.null(max_entry_valid)) {
-            max_entry_valid <- list_motifs_profile[i, "distances", min_entry_idx]
-          } else if (max_entry_valid < list_motifs_profile[i, "distances", min_entry_idx]) {
-            max_entry_valid <- list_motifs_profile[i, "distances", min_entry_idx]
-          }
-        } else if (min_entry_lb >= 0) {
-          #### The distance profile has elements but nothing to say, store the min max LB ####
-          list_lb_min_non_valid[non_valid_lb] <- min_entry_lb
-          index_lb_min_non_valid[non_valid_lb] <- i
+      if (any(valid_entries)) {
+        min_abs_true_dist <- min(min_distances)
+        list_valid_entries <- i_v[valid_entries]
+        index_valid_entries <- min_entry_idx[valid_entries]
 
-          # store the non valid entry with the smallest LB.
-          # (I am sure that this guy correctly lowerbounds the MP  )
-
-          if (non_valid_smaller == -1) {
-            non_valid_smaller <- min_entry_lb
-          } else if (non_valid_smaller > min_entry_lb) {
-            non_valid_smaller <- min_entry_lb
-          }
-
-          non_valid_lb <- non_valid_lb + 1
-        } else {
-          #### All trival matches recompute the DP ####
-          list_lb_min_non_valid[non_valid_lb] <- -1
-          index_lb_min_non_valid[non_valid_lb] <- i
-        }
+        matrix_profiles_elements_per_size <- sum(valid_entries)
       }
+
+      #### The distance profile has elements but nothing to say, store the min max LB ####
+      if (any(!valid_entries)) {
+        # store the non valid entry with the smallest LB.
+        # (I am sure that this guy correctly lowerbounds the MP  )
+        non_valid_entries <- (!valid_entries) & (min_entry_lb >= 0)
+        list_lb_min_non_valid <- min_entry_lb[non_valid_entries]
+        index_lb_min_non_valid <- i_v[non_valid_entries]
+        non_valid_smaller <- min(list_lb_min_non_valid)
+
+        non_valid_lb <- sum(non_valid_entries)
+      }
+
+      # } else {
+      #   #### All trival matches recompute the DP ####
+      #   # TODO: recompute the DP from ez_v == FALSE
+      #   list_lb_min_non_valid[non_valid_lb] <- -1
+      #   index_lb_min_non_valid[non_valid_lb] <- i_v
+      # }
 
       # check to see how many valid motifs (smallest value of the Matrix Profile) I have among
       # the valid entries.
@@ -485,11 +470,15 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
 
       message(sprintf("matrix_profiles_elements_per_size %s", matrix_profiles_elements_per_size))
 
-      for (m in seq_len(matrix_profiles_elements_per_size - 1)) {
+      for (m in seq_len(matrix_profiles_elements_per_size)) {
         # --- Second Outer Loop ----
 
         i <- list_valid_entries[m]
         j <- index_valid_entries[m]
+
+        if (list_motifs_profile[i, "distances", j] == 0) {
+          message(paste("** DEBUG **", m, i, j, list_motifs_profile[i, "distances", j], non_valid_smaller))
+        }
 
         if (list_motifs_profile[i, "distances", j] < non_valid_smaller) {
           # UPDATE VALMAP_t!
@@ -511,7 +500,6 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
             valmp$length_profile_non_length_normalized[index_update_vm] <- window_size
           }
 
-          # TODO: check why distancesEvolutionMotif is not updated
           # TODO: check if offset MUST be reduced when re-STOMP
 
           if (is.null(best_motif)) {
@@ -525,7 +513,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
       }
 
       if (is.null(best_motif)) {
-        message("best_motif NULL")
+        # message("best_motif NULL")
 
         # matrix profile may not be containing the minimum
         # Here I do not want to call STOMP just update the distance profiles which have the max
@@ -533,15 +521,17 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
 
         min_lb <- -1
 
-        message(sprintf("non_valid_lb %s", non_valid_lb))
+        # message(sprintf("non_valid_lb %s", non_valid_lb))
 
-        for (z in seq_len(non_valid_lb - 1)) {
+        for (z in seq_len(non_valid_lb)) {
           if (list_lb_min_non_valid[z] <= min_abs_true_dist) {
             index_to_update <- index_lb_min_non_valid[z]
 
             if (index_to_update > matrix_profile_size) {
               stop("index_to_update > matrix_profile_size")
             }
+
+            message("*** MASS ***")
 
             pre <- mass_pre(data, data_size, query, query_size, window_size = window_size)
 
@@ -594,7 +584,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
             }
 
             list_motifs_profile[index_to_update, "distances", ] <- distance_profile[lb_idxs]
-            list_motifs_profile[index_to_update, "query_sd", ] <- query_sd_v
+            list_motifs_profile[index_to_update, "query_sd", ] <- query_sd_v[index_to_update, ]
             list_motifs_profile[index_to_update, "sum_query", ] <- query_stats[[offset + 1]]$sum[index_to_update]
             list_motifs_profile[index_to_update, "sum_data", ] <- data_stats[[offset + 1]]$sum[lb_idxs]
             list_motifs_profile[index_to_update, "sqrsum_query", ] <- query_stats[[offset + 1]]$sqrsum[index_to_update]
@@ -602,7 +592,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
             list_motifs_profile[index_to_update, "lb_distances", ] <- lb_profile[lb_idxs]
             list_motifs_profile[index_to_update, "index_query", ] <- index_to_update
             list_motifs_profile[index_to_update, "indexes_data", ] <- lb_idxs
-            list_motifs_profile[index_to_update, "dps", ] <- Re(last_product[lb_idxs])
+            list_motifs_profile[index_to_update, "dps", ] <- Re(nn$last_product[lb_idxs])
 
             list_valid_entries[matrix_profiles_elements_per_size] <- index_to_update
             index_valid_entries[matrix_profiles_elements_per_size] <- 1
@@ -619,7 +609,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
 
         non_valid_smaller <- min_lb
 
-        message(sprintf("matrix_profiles_elements_per_size %s", matrix_profiles_elements_per_size))
+        # message(sprintf("matrix_profiles_elements_per_size %s", matrix_profiles_elements_per_size))
 
         # Re-check
         for (m in seq_len(matrix_profiles_elements_per_size - 1)) {
