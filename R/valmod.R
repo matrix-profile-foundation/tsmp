@@ -45,7 +45,7 @@
 # valmp.distancesEvolutionMotif[offset] <- bestMP.distance * sqrt(1.0 / sizeQuery) # normalized_distance
 #' @export
 
-valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone = 1 / 2, verbose = 2, lb = FALSE) {
+valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone = 1 / 2, lb = TRUE, verbose = 2) {
   args <- list(...)
   data <- args[[1]]
   if (length(args) > 1) {
@@ -135,9 +135,15 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
     query_stats[[i]] <- fast_avg_sd(query, window_size)
   }
 
+  if (verbose > 1) {
+    pbp <- progress::progress_bar$new(
+      format = ":what [:bar] :percent at :tick_rate it/s, elapsed: :elapsed, eta: :eta",
+      clear = FALSE, total = range_size, width = 80
+    )
+  }
+
   for (window_size in seq(window_min, window_max, 1)) {
     # ============== Valmod loop ===============
-    message(sprintf("Window size %s", window_size))
 
     exclusion_zone <- round(window_size * ez + vars()$eps)
     matrix_profile_size <- data_size - window_size + 1
@@ -154,10 +160,9 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
 
     if (offset == 0 || motifs_per_size == 0 || lb == FALSE) {
       # ==== STOMP ====
-      message("========= STOMP =========")
-      tictac_stomp <- Sys.time()
 
       if (verbose > 1) {
+        pbp$tick(0, tokens = list(what = "STOMP  "))
         pb <- progress::progress_bar$new(
           format = "STOMP [:bar] :percent at :tick_rate it/s, elapsed: :elapsed, eta: :eta",
           clear = FALSE, total = num_queries, width = 80
@@ -330,22 +335,25 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
       valmp$length_profile[ind] <- window_size
 
       valmp$distances_evolution_motif[offset + 1, ] <- min(matrix_profile)^2 * sqrt(1.0 / window_size)
-      message(sprintf("distances_evolution_motif %s", valmp$distances_evolution_motif[offset + 1, ]))
 
       motifs_per_size <- -1
 
-      tictac_stomp <- Sys.time() - tictac_stomp
+      if (verbose > 1) {
+        pbp$tick()
 
-      if (verbose > 0) {
-        message(sprintf("Finished STOMP in %.2f %s", tictac_stomp, units(tictac_stomp)))
+        if (!pb$finished) {
+          pb$terminate()
+        }
       }
     } else {
       #### LB Pruning ####
-      message("LB Pruning")
-      tictac_lb <- Sys.time()
+
+      if (verbose > 1) {
+        pbp$tick(0, tokens = list(what = "Pruning"))
+      }
 
       if (offset == 0) {
-        message("OFFSET ZERO?")
+        warning("OFFSET ZERO?")
       }
       # offset never gets zero in this block, why check offset == 0 ?
 
@@ -358,7 +366,6 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
       min_abs_true_dist <- -1
       non_valid_lb <- 1
 
-      # for (i in seq_len(matrix_profile_size)) {
       i_v <- seq_len(matrix_profile_size)
       # --- First Outer Loop ----
 
@@ -458,7 +465,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
 
       # } else {
       #   #### All trival matches recompute the DP ####
-      #   # TODO: recompute the DP from ez_v == FALSE
+      #   TODO: recompute the DP from ez_v == FALSE
       #   list_lb_min_non_valid[non_valid_lb] <- -1
       #   index_lb_min_non_valid[non_valid_lb] <- i_v
       # }
@@ -467,8 +474,6 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
       # the valid entries.
 
       best_motif <- NULL
-
-      message(sprintf("matrix_profiles_elements_per_size %s", matrix_profiles_elements_per_size))
 
       # --- Second Outer Loop ----
       m <- (list_motifs_profile[list_valid_entries, "distances", , drop = FALSE][cbind(seq_along(index_valid_entries), 1, index_valid_entries)] < non_valid_smaller)
@@ -482,8 +487,6 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
         # UPDATE VALMAP_t!
         real_distance <- sqrt(distances)
         normalized_distance <- sqrt(distances) * sqrt(1.0 / window_size)
-
-        # index_update_vm <- list_motifs_profile[i, "index_query", j] # same as "i"
 
         n <- (normalized_distance < valmp$matrix_profile[i])
 
@@ -513,23 +516,21 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
       }
 
       if (is.null(best_motif)) {
-        # message("best_motif NULL")
-
         # matrix profile may not be containing the minimum
         # Here I do not want to call STOMP just update the distance profiles which have the max
         # LB smaller than the minimum motif pair
 
-        # message(sprintf("non_valid_lb %s", non_valid_lb))
         non_valid_idxs <- (list_lb_min_non_valid <= min_abs_true_dist)
 
         if (any(non_valid_idxs)) {
           indexes_to_update <- index_lb_min_non_valid[non_valid_idxs]
 
-          message(paste("*** MASS *** ->", length(indexes_to_update)))
+          pre <- mass_pre(data, data_size, query, query_size, window_size = window_size)
+          if (verbose > 1) {
+            pbp$tick(0, tokens = list(what = "MASS   "))
+          }
 
           for (i in indexes_to_update) {
-            pre <- mass_pre(data, data_size, query, query_size, window_size = window_size)
-
             nn <- mass(
               pre$data_fft, query[i:(i + window_size - 1)], data_size,
               window_size, pre$data_mean, pre$data_sd, pre$query_mean[i],
@@ -600,6 +601,10 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
           non_valid_smaller <- -1
         }
 
+        if (verbose > 1) {
+          pbp$tick(0, tokens = list(what = "ReCheck"))
+        }
+
         # Re-check
         m <- (list_motifs_profile[list_valid_entries, "distances", , drop = FALSE][cbind(seq_along(index_valid_entries), 1, index_valid_entries)] < non_valid_smaller)
         motifs_per_size <- sum(m)
@@ -612,8 +617,6 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
           # UPDATE VALMAP_t!
           real_distance <- sqrt(distances)
           normalized_distance <- sqrt(distances) * sqrt(1.0 / window_size)
-
-          # index_update_vm <- list_motifs_profile[i, "index_query", j] # same as "i"
 
           n <- (normalized_distance < valmp$matrix_profile[i])
 
@@ -643,11 +646,8 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
         }
       }
 
-      message(sprintf("motifs_per_size %s", motifs_per_size))
-
       if (!is.null(best_motif)) {
         valmp$distances_evolution_motif[offset + 1, ] <- best_motif * sqrt(1.0 / window_size)
-        message(sprintf("distances_evolution_motif %s", valmp$distances_evolution_motif[offset + 1, ]))
       }
 
       if (max_number_motifs_found < motifs_per_size) {
@@ -657,29 +657,38 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
         min_number_motifs_found <- motifs_per_size
       }
 
-      tictac_lb <- Sys.time() - tictac_lb
-
-      if (verbose > 0) {
-        message(sprintf("Finished LB in %.2f %s", tictac_lb, units(tictac_lb)))
+      if (verbose > 1) {
+        pbp$tick(tokens = list(what = "Pruning"))
       }
     }
   }
   tictac <- Sys.time() - tictac
 
+  if (verbose > 1) {
+    if (!pbp$finished) {
+      pbp$terminate()
+    }
+  }
+
   if (verbose > 0) {
+    message(sprintf("max_number_motifs_found %s", max_number_motifs_found))
+    message(sprintf("min_number_motifs_found %s", min_number_motifs_found))
     message(sprintf("Finished in %.2f %s", tictac, units(tictac)))
   }
 
   return({
     obj <- list(
       mp = valmp$matrix_profile, pi = valmp$profile_index,
-      rmp = right_matrix_profile, rpi = right_profile_index,
-      lmp = left_matrix_profile, lpi = left_profile_index,
+      rmp = NULL, rpi = NULL,
+      lmp = NULL, lpi = NULL,
       w = valmp$length_profile,
-      valmp = valmp,
-      ez = ez
+      ez = ez,
+      evolution_motif = valmp$distances_evolution_motif,
+      mpnn = valmp$matrix_profile_non_length_normalized,
+      pinn = valmp$profile_index_non_length_normalized,
+      wnn = valmp$length_profile_non_length_normalized
     )
-    class(obj) <- "matrix_profile"
+    class(obj) <- c("MatrixProfile", "Valmod")
     obj
   })
 }
