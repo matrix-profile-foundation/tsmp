@@ -376,7 +376,8 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
 
       max_lb <- list_motifs_profile[i_v, "lb_distances", heap_size]
       max_query_sd <- list_motifs_profile[i_v, "query_sd", heap_size]
-      curr_query_sd <- query_stats[[offset + 1]]$sd[i_v] # std(query[i:(i + window_size - 1)])
+      curr_query_mean <- query_stats[[offset + 1]]$avg[i_v]
+      curr_query_sd <- query_stats[[offset + 1]]$sd[i_v]
       lower_bound <- max_lb * max_query_sd^2 / curr_query_sd^2
 
       min_entry_idx <- NULL
@@ -384,11 +385,8 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
 
       list_motifs_profile[i_v, "sum_query", ] <- list_motifs_profile[i_v, "sum_query", ] + query[new_index_query_v]
       list_motifs_profile[i_v, "sqrsum_query", ] <- list_motifs_profile[i_v, "sqrsum_query", ] + (query[new_index_query_v] * query[new_index_query_v])
-      query_mean_v <- list_motifs_profile[i_v, "sum_query", ] / window_size
-      query_sd_v <- (list_motifs_profile[i_v, "sqrsum_query", ] / window_size) - (query_mean_v * query_mean_v)
-
-      query_sd_v[query_sd_v < 0] <- 0
-      query_sd_v <- sqrt(query_sd_v) # TODO: same as curr_query_sd?
+      query_mean_v <- matrix(rep(curr_query_mean, heap_size), ncol = heap_size)
+      query_sd_v <- matrix(rep(curr_query_sd, heap_size), ncol = heap_size)
 
       # --- First Inner Loop ----
       j_v <- seq(heap_size, 2, by = -1)
@@ -399,8 +397,6 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
         list_motifs_profile[i_v, "index_query", j_v] >= (list_motifs_profile[i_v, "indexes_data", j_v] + exclusion_zone))
 
       ez_v <- ezx_v & (list_motifs_profile[i_v, "indexes_data", j_v] + window_size - 1 <= data_size)
-
-      # j_v <- j_v[ez_v]
 
       new_index_data_v <- list_motifs_profile[i_v, "indexes_data", j_v] + window_size - 1
 
@@ -463,11 +459,23 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
         non_valid_lb <- sum(non_valid_entries)
       }
 
+
+      # TODO: AND ALL cols < EZ
+      trivial <- (which(abs(list_motifs_profile[seq_len(matrix_profile_size), "indexes_data", j_v] - seq_len(matrix_profile_size)) <= exclusion_zone) %% matrix_profile_size)
+      trivial <- trivial[!(trivial %in% !valid_entries)]
+      trivial <- trivial[!(trivial %in% valid_entries)]
+      trivial <- i_v[i_v %in% trivial]
+
+      if (length(trivial) > 0) {
+        message(sprintf("window: %s", window_size))
+        message(paste("", trivial))
+      }
+
       # } else {
       #   #### All trival matches recompute the DP ####
       #   TODO: recompute the DP from ez_v == FALSE
-      #   list_lb_min_non_valid[non_valid_lb] <- -1
-      #   index_lb_min_non_valid[non_valid_lb] <- i_v
+      #   c(list_lb_min_non_valid, rep(-1, XXX))
+      #   index_lb_min_non_valid[non_valid_lb] <- i_v # any(apply(!ezx_v, 1, function(x) sum(x) == 49))
       # }
 
       # check to see how many valid motifs (smallest value of the Matrix Profile) I have among
