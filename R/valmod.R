@@ -1,49 +1,55 @@
-# compute STOMP for lmin and store best 'p' LB DPs /// STOMP_MotifsProfile_VALMOD()
-# update VALMP /// valmp->distancesEvolutionMotif[offset] = bestMP.distance * ln1SQ;
-# for each other window size:
-# Compute SubMP
-# if best
-# update VALMP
-# else
-# compute STOMP and store best 'p' LB DPs
-# update VALMP
-
-# motifIdx is g_orderedidP.bestIdx
-# motifDistance is g_orderedidP.bestDist
-
-# if (offset == 0 || motifs_per_size == 0)
-#    do stomp_valmod
-#
-# Retrieve the best motif distance and index
-# pushes lbDistance, motifDistance, queryIdx, motifIdx, querySize into a list and sort by lbDistance
-# lbDistance:
-# q <- ((z[i] / querySize) - ((sumQuery / querySize) * (sumData / querySize))) / (stdDevQuery * stdDevData);
-# if (q > 0)
-#   lbDistance <- querySize * (1 - (q * q))
-# else
-#   lbDistance <- querySize
-#
-# real_distance <- sqrt(motifDistance)
-# normalized_distance <- real_distance * sqrt(1.0 / sizeQuery)
-# lowerbound <- lbDistance * stdDevQuery^2 / stdDevQueryNext^2
-#
-# if (normalized_distance < valmp.matrix_profile || offset == 0)
-#   valmp.matrix_profile <- normalized_distance
-#   valmp.profile_index <- motifIdx # g_orderedidP.bestIdx
-#   valmp.length_profile <- sizeQuery
-#
-# if (real_distance < valmp.matrix_profile_non_length_normalized || offset == 0)
-#   valmp.matrix_profile_non_length_normalized <- real_distance
-#   valmp.profile_index_non_length_normalized <- motifIdx
-#   valmp.length_profile_non_length_normalized <- sizeQuery
-#
-# stomp_valmod returns bestMP which stores:
-# bestMP.distance # motifDistance
-# bestMP.index_query # queryIdx
-# bestMP.indexes_data # motifIdx
-#
-# valmp.distancesEvolutionMotif[offset] <- bestMP.distance * sqrt(1.0 / sizeQuery) # normalized_distance
+#' Variable Length STOMP algorithm
+#'
+#' Computes the Matrix Profile and Profile Index for Univariate Time Series.
+#'
+#' @details
+#' The Matrix Profile, has the potential to revolutionize time series data mining because of its
+#' generality, versatility, simplicity and scalability. In particular it has implications for time
+#' series motif discovery, time series joins, shapelet discovery (classification), density
+#' estimation, semantic segmentation, visualization, rule discovery, clustering etc. `verbose`
+#' changes how much information is printed by this function; `0` means nothing, `1` means text, `2`
+#' adds the progress bar, `3` adds the finish sound. `exclusion_zone` is used to avoid  trivial
+#' matches; if a query data is provided (join similarity), this parameter is ignored.
+#'
+#' @param ... a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix
+#'   profile.
+#' @param window_min an `int`. Size of the sliding window.
+#' @param window_max an `int`. Size of the sliding window.
+#' @param heap_size an `int`. Size of the sliding window.
+#' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is
+#'   `1/2`). See details.
+#' @param lb an `int`. See details.
+#' @param verbose an `int`. See details. (Default is `2`).
+#'
+#' @return Returns a `MatrixProfile` object, a `list` with the matrix profile `mp`, profile index `pi`
+#'   left and right matrix profile `lmp`, `rmp` and profile index `lpi`, `rpi`, window size `w` and
+#'   exclusion zone `ez`.
+#'
 #' @export
+#'
+#' @family matrix profile computations
+#'
+#' @describeIn stomp Single thread version.
+#'
+#' @references * Zhu Y, Zimmerman Z, Senobari NS, Yeh CM, Funning G. Matrix Profile II : Exploiting
+#'   a Novel Algorithm and GPUs to Break the One Hundred Million Barrier for Time Series Motifs and
+#'   Joins. Icdm. 2016 Jan 22;54(1):739–48.
+#' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
+#'
+#' @examples
+#' mp <- stomp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+#'
+#' # using threads
+#' mp <- stomp_par(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+#'
+#' \dontrun{
+#' ref_data <- mp_toy_data$data[, 1]
+#' query_data <- mp_toy_data$data[, 2]
+#' # self similarity
+#' mp <- stomp(ref_data, window_size = 30)
+#' # join similarity
+#' mp <- stomp(ref_data, query_data, window_size = 30)
+#' }
 
 valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone = 1 / 2, lb = TRUE, verbose = 2) {
   args <- list(...)
@@ -108,12 +114,12 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
   )
 
   list_motifs_profile <- array(0,
-    dim = c(max_profile_size, 10, heap_size),
-    dimnames = list(NULL, vars = c(
-      "distances", "query_sd", "sum_query", "sum_data",
-      "sqrsum_query", "sqrsum_data", "lb_distances",
-      "index_query", "indexes_data", "dps"
-    ), NULL)
+                               dim = c(max_profile_size, 10, heap_size),
+                               dimnames = list(NULL, vars = c(
+                                 "distances", "query_sd", "sum_query", "sum_data",
+                                 "sqrsum_query", "sqrsum_data", "lb_distances",
+                                 "index_query", "indexes_data", "dps"
+                               ), NULL)
   )
 
 
@@ -160,6 +166,10 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
 
     if (offset == 0 || motifs_per_size == 0 || lb == FALSE) {
       # ==== STOMP ====
+
+      if (verbose > 0) {
+        message("=== STOMP ===")
+      }
 
       if (verbose > 1) {
         pbp$tick(0, tokens = list(what = "STOMP  "))
@@ -234,7 +244,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
 
           last_product[1, 1] <- first_product[i, 1]
           distance_profile <- 2 * (window_size - (last_product - window_size * data_mean * query_mean[i]) /
-            (data_sd * query_sd[i]))
+                                     (data_sd * query_sd[i]))
         }
 
         # distance_profile <- Re(sqrt(distance_profile))
@@ -345,6 +355,10 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
           pb$terminate()
         }
       }
+
+      if (verbose > 0) {
+        message("=== PRUNING ===")
+      }
     } else {
       #### LB Pruning ####
 
@@ -393,8 +407,8 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
 
       # apply exclusion zone
       # !ezx_v contains all trival matches to recompute the DP
-      ezx_v <- (list_motifs_profile[i_v, "index_query", j_v] <= (list_motifs_profile[i_v, "indexes_data", j_v] - exclusion_zone) |
-        list_motifs_profile[i_v, "index_query", j_v] >= (list_motifs_profile[i_v, "indexes_data", j_v] + exclusion_zone))
+      ezx_v <- (((list_motifs_profile[i_v, "indexes_data", j_v]) < (list_motifs_profile[i_v, "index_query", j_v] - exclusion_zone)) |
+                  ((list_motifs_profile[i_v, "indexes_data", j_v]) > (list_motifs_profile[i_v, "index_query", j_v] + exclusion_zone)))
 
       ez_v <- ezx_v & (list_motifs_profile[i_v, "indexes_data", j_v] + window_size - 1 <= data_size)
 
@@ -413,10 +427,10 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
       data_sd_v <- sqrt(data_sd_v)
 
       dist_v <- ifelse(ez_v,
-        ((2 * window_size) * (1 - ((list_motifs_profile[i_v, "dps", j_v] -
-          (window_size * query_mean_v[i_v, j_v] * data_mean_v[i_v, j_v])) /
-          (window_size * query_sd_v[i_v, j_v] * data_sd_v[i_v, j_v])))),
-        list_motifs_profile[i_v, "distances", j_v]
+                       ((2 * window_size) * (1 - ((list_motifs_profile[i_v, "dps", j_v] -
+                                                     (window_size * query_mean_v[i_v, j_v] * data_mean_v[i_v, j_v])) /
+                                                    (window_size * query_sd_v[i_v, j_v] * data_sd_v[i_v, j_v])))),
+                       list_motifs_profile[i_v, "distances", j_v]
       )
 
       dist_v <- Re(dist_v)
@@ -459,24 +473,13 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
         non_valid_lb <- sum(non_valid_entries)
       }
 
+      all_trivial <- which(apply(ezx_v, 1, sum) == 0)
 
-      # TODO: AND ALL cols < EZ
-      trivial <- (which(abs(list_motifs_profile[seq_len(matrix_profile_size), "indexes_data", j_v] - seq_len(matrix_profile_size)) <= exclusion_zone) %% matrix_profile_size)
-      trivial <- trivial[!(trivial %in% !valid_entries)]
-      trivial <- trivial[!(trivial %in% valid_entries)]
-      trivial <- i_v[i_v %in% trivial]
-
-      if (length(trivial) > 0) {
-        message(sprintf("window: %s", window_size))
-        message(paste("", trivial))
+      if (length(all_trivial) > 0) {
+        if (length(i_v[!(i_v[all_trivial] %in% i_v[!valid_entries])]) > 0) {
+          warning("Some trivial matches might not have been recomputed")
+        }
       }
-
-      # } else {
-      #   #### All trival matches recompute the DP ####
-      #   TODO: recompute the DP from ez_v == FALSE
-      #   c(list_lb_min_non_valid, rep(-1, XXX))
-      #   index_lb_min_non_valid[non_valid_lb] <- i_v # any(apply(!ezx_v, 1, function(x) sum(x) == 49))
-      # }
 
       # check to see how many valid motifs (smallest value of the Matrix Profile) I have among
       # the valid entries.
@@ -549,7 +552,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
             distance_profile[distance_profile < 0] <- 0
 
             new_lb_profile <- Re(((nn$last_product / window_size) - (pre$query_mean[i] *
-              pre$data_mean)) / (pre$query_sd[i] * pre$data_sd))
+                                                                       pre$data_mean)) / (pre$query_sd[i] * pre$data_sd))
             new_lb_profile[new_lb_profile < 0] <- 0
             new_lb_profile_len <- length(new_lb_profile)
 
