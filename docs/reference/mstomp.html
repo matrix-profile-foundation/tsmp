@@ -173,7 +173,7 @@ details), <code>list</code> and <code>data.frame</code> too.</p></td>
     <p>Returns a <code>MultiMatrixProfile</code> object, a <code>list</code> with the matrix profile <code>mp</code>, profile index <code>pi</code>
 left and right matrix profile <code>lmp</code>, <code>rmp</code> and profile index <code>lpi</code>, <code>rpi</code>, window size <code>w</code>,
 number of dimensions <code>n_dim</code>, exclusion zone <code>ez</code>, must dimensions <code>must</code> and excluded dimensions <code>exc</code>.</p>
-<p>If the input has only one dimension, returns the same as <code>stomp()</code>.</p>
+<p>If the input has only one dimension, returns the same as <code><a href='stomp.html'>stomp()</a></code>.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -210,22 +210,23 @@ New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.</p
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other matrix profile computations: <code>scrimp</code>,
-  <code>stamp_par</code>, <code>stomp_par</code>,
-  <code>tsmp</code></p></div>
+    <div class='dont-index'><p>Other matrix profile computations: <code><a href='scrimp.html'>scrimp</a></code>,
+  <code><a href='stamp.html'>stamp_par</a></code>, <code><a href='stomp.html'>stomp_par</a></code>,
+  <code><a href='tsmp.html'>tsmp</a></code>, <code><a href='valmod.html'>valmod</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># using all dimensions</span>
-<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>mstomp</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>200</span>,], <span class='fl'>30</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>mstomp</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>200</span>, ], <span class='fl'>30</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 
 <span class='co'># using threads</span>
-<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>mstomp_par</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>200</span>,], <span class='fl'>30</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><span class='co'># NOT RUN {</span>
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>mstomp_par</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>200</span>, ], <span class='fl'>30</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><span class='co'># NOT RUN {</span>
 <span class='co'># force using dimensions 1 and 2</span>
-<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>mstomp</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>200</span>,], <span class='fl'>30</span>, <span class='kw'>must_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>))
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>mstomp</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>200</span>, ], <span class='fl'>30</span>, <span class='kw'>must_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>))
 <span class='co'># exclude dimensions 2 and 3</span>
-<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>mstomp</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>200</span>,], <span class='fl'>30</span>, <span class='kw'>exc_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>3</span>))
-<span class='co'># }</span></pre>
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>mstomp</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>200</span>, ], <span class='fl'>30</span>, <span class='kw'>exc_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>3</span>))
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

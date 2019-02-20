@@ -137,9 +137,13 @@ to cast it back.</p>
 
 <span class='fu'>as.multimatrixprofile</span>(<span class='no'>.mp</span>)
 
+<span class='fu'>as.valmod</span>(<span class='no'>.mp</span>)
+
 <span class='fu'>as.fluss</span>(<span class='no'>.mp</span>)
 
 <span class='fu'>as.chain</span>(<span class='no'>.mp</span>)
+
+<span class='fu'>as.discord</span>(<span class='no'>.mp</span>)
 
 <span class='fu'>as.motif</span>(<span class='no'>.mp</span>)
 
@@ -167,8 +171,10 @@ to cast it back.</p>
     <ul>
 <li><p><code>as.matrixprofile</code>: Cast an object changed by another function back to <code>MatrixProfile</code>.</p></li>
 <li><p><code>as.multimatrixprofile</code>: Cast an object changed by another function back to <code>MultiMatrixProfile</code>.</p></li>
+<li><p><code>as.valmod</code>: Cast an object changed by another function back to <code>MultiMatrixProfile</code>.</p></li>
 <li><p><code>as.fluss</code>: Cast an object changed by another function back to <code>Fluss</code>.</p></li>
 <li><p><code>as.chain</code>: Cast an object changed by another function back to <code>Chain</code>.</p></li>
+<li><p><code>as.discord</code>: Cast an object changed by another function back to <code>Discord</code>.</p></li>
 <li><p><code>as.motif</code>: Cast an object changed by another function back to <code>Motif</code>.</p></li>
 <li><p><code>as.multimotif</code>: Cast an object changed by another function back to <code>MultiMotif</code>.</p></li>
 <li><p><code>as.arccount</code>: Cast an object changed by another function back to <code>ArcCount</code>.</p></li>
@@ -180,12 +186,11 @@ to cast it back.</p>
     <pre class="examples"><div class='input'>
 <span class='no'>w</span> <span class='kw'>&lt;-</span> <span class='fl'>50</span>
 <span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_gait_data</span>
-<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>tsmp</span>(<span class='no'>data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='no'>w</span>, <span class='kw'>exclusion_zone</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>4</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
-<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>find_motif</span>(<span class='no'>mp</span>)
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span>(<span class='no'>data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='no'>w</span>, <span class='kw'>exclusion_zone</span> <span class='kw'>=</span> <span class='fl'>1</span> / <span class='fl'>4</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='find_motif.html'>find_motif</a></span>(<span class='no'>mp</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/class'>class</a></span>(<span class='no'>mp</span>) <span class='co'># first class will be "Motif"</span></div><div class='output co'>#&gt; [1] "Motif"         "MatrixProfile"</div><div class='input'>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>mp</span>) <span class='co'># plots a motif plot</span></div><div class='img'><img src='as.matrixprofile-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='fu'>as.matrixprofile</span>(<span class='no'>mp</span>)) <span class='co'># plots a matrix profile plot</span></div><div class='img'><img src='as.matrixprofile-2.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></pre>
+<span class='fu'><a href='plot.html'>plot</a></span>(<span class='no'>mp</span>) <span class='co'># plots a motif plot</span></div><div class='img'><img src='as.matrixprofile-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='plot.html'>plot</a></span>(<span class='fu'>as.matrixprofile</span>(<span class='no'>mp</span>)) <span class='co'># plots a matrix profile plot</span></div><div class='img'><img src='as.matrixprofile-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

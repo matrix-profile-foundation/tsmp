@@ -18,5 +18,5 @@ Returns a \code{vector} with the moving average
 Fast implementation of moving average and
 }
 \examples{
-data_avg <- fast_movavg(mp_toy_data$data[,1], mp_toy_data$sub_len)
+data_avg <- fast_movavg(mp_toy_data$data[, 1], mp_toy_data$sub_len)
 }

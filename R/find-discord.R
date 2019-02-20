@@ -23,12 +23,15 @@ find_discord <- function(.mp, ...) {
 #' # Single dimension data
 #' w <- 50
 #' data <- mp_gait_data
-#' mp <- tsmp(data, window_size = w, exclusion_zone = 1/4, verbose = 0)
+#' mp <- tsmp(data, window_size = w, exclusion_zone = 1 / 4, verbose = 0)
 #' mp <- find_discord(mp)
-
 find_discord.MatrixProfile <- function(.mp, data, n_discords = 1, n_neighbors = 3, radius = 3, exclusion_zone = NULL, ...) {
-  if (!any(class(.mp) %in% "MatrixProfile")) {
+  if (!("MatrixProfile" %in% class(.mp))) {
     stop("Error: First argument must be an object of class `MatrixProfile`.")
+  }
+
+  if ("Valmod" %in% class(.mp)) {
+    stop("Error: Function not implemented for objects of class `Valmod`.")
   }
 
   if (missing(data) && !is.null(.mp$data)) {

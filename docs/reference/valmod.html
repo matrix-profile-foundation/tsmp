@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Anytime univariate STAMP algorithm Parallel version — stamp_par • tsmp</title>
+<title>Variable Length Motif Discovery — valmod • tsmp</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Anytime univariate STAMP algorithm Parallel version — stamp_par" />
+<meta property="og:title" content="Variable Length Motif Discovery — valmod" />
 
-<meta property="og:description" content="Computes the best so far Matrix Profile and Profile Index for Univariate Time Series." />
+<meta property="og:description" content="Computes the Matrix Profile and Profile Index for a range of query window sizes" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -116,22 +116,19 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Anytime univariate STAMP algorithm Parallel version</h1>
-    <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/stamp-par.R'><code>R/stamp-par.R</code></a>, <a href='https://github.com/franzbischoff/tsmp/blob/master/R/stamp.R'><code>R/stamp.R</code></a></small>
-    <div class="hidden name"><code>stamp.Rd</code></div>
+    <h1>Variable Length Motif Discovery</h1>
+    <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/valmod.R'><code>R/valmod.R</code></a></small>
+    <div class="hidden name"><code>valmod.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Computes the best so far Matrix Profile and Profile Index for Univariate Time Series.</p>
+    <p>Computes the Matrix Profile and Profile Index for a range of query window sizes</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>stamp_par</span>(<span class='no'>...</span>, <span class='no'>window_size</span>, <span class='kw'>exclusion_zone</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>2</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>s_size</span> <span class='kw'>=</span> <span class='fl'>Inf</span>, <span class='kw'>n_workers</span> <span class='kw'>=</span> <span class='fl'>2</span>)
-
-<span class='fu'>stamp</span>(<span class='no'>...</span>, <span class='no'>window_size</span>, <span class='kw'>exclusion_zone</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>2</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>s_size</span> <span class='kw'>=</span> <span class='fl'>Inf</span>)</pre>
+    <pre class="usage"><span class='fu'>valmod</span>(<span class='no'>...</span>, <span class='no'>window_min</span>, <span class='no'>window_max</span>, <span class='kw'>heap_size</span> <span class='kw'>=</span> <span class='fl'>50</span>,
+  <span class='kw'>exclusion_zone</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>2</span>, <span class='kw'>lb</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>2</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -142,8 +139,16 @@
 profile.</p></td>
     </tr>
     <tr>
-      <th>window_size</th>
-      <td><p>an <code>int</code>. Size of the sliding window.</p></td>
+      <th>window_min</th>
+      <td><p>an <code>int</code>. Minimum size of the sliding window.</p></td>
+    </tr>
+    <tr>
+      <th>window_max</th>
+      <td><p>an <code>int</code>. Maximum size of the sliding window.</p></td>
+    </tr>
+    <tr>
+      <th>heap_size</th>
+      <td><p>an <code>int</code>. (Default is <code>50</code>). Size of the distance profile heap buffer</p></td>
     </tr>
     <tr>
       <th>exclusion_zone</th>
@@ -151,76 +156,55 @@ profile.</p></td>
 <code>1/2</code>). See details.</p></td>
     </tr>
     <tr>
+      <th>lb</th>
+      <td><p>a <code>logical</code>. (Default is <code>TRUE</code>). If <code>FALSE</code> all window sizes will be calculated using
+STOMP instead of pruning. This is just for academic purposes.</p></td>
+    </tr>
+    <tr>
       <th>verbose</th>
       <td><p>an <code>int</code>. See details. (Default is <code>2</code>).</p></td>
-    </tr>
-    <tr>
-      <th>s_size</th>
-      <td><p>a <code>numeric</code>. for anytime algorithm, represents the size (in observations) the
-random calculation will occur (default is <code>Inf</code>).</p></td>
-    </tr>
-    <tr>
-      <th>n_workers</th>
-      <td><p>an <code>int</code>. Number of workers for parallel. (Default is <code>2</code>).</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Returns a <code>MatrixProfile</code> object, a <code>list</code> with the matrix profile <code>mp</code>, profile index <code>pi</code>
-left and right matrix profile <code>lmp</code>, <code>rmp</code> and profile index <code>lpi</code>, <code>rpi</code>, window size <code>w</code> and
-exclusion zone <code>ez</code>.</p>
+    <p>Returns a <code>Valmod</code> object, a <code>list</code> with the matrix profile <code>mp</code>, profile index <code>pi</code>
+left and right matrix profile <code>lmp</code>, <code>rmp</code> and profile index <code>lpi</code>, <code>rpi</code>, best window size <code>w</code>
+for each index and exclusion zone <code>ez</code>. Additionally: <code>evolution_motif</code> the best motif distance
+per window size, and non-length normalized versions of <code>mp</code>, <code>pi</code> and <code>w</code>: <code>mpnn</code>, <code>pinn</code> and <code>wnn</code>.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The Matrix Profile, has the potential to revolutionize time series data mining because of its
-generality, versatility, simplicity and scalability. In particular it has implications for time
-series motif discovery, time series joins, shapelet discovery (classification), density
-estimation, semantic segmentation, visualization, rule discovery, clustering etc. The anytime
-STAMP computes the Matrix Profile and Profile Index in such manner that it can be stopped before
-its complete calculation and return the best so far results allowing ultra-fast approximate
-solutions. <code>verbose</code> changes how much information is printed by this function; <code>0</code> means nothing,
-<code>1</code> means text, <code>2</code> adds the progress bar, <code>3</code> adds the finish sound. <code>exclusion_zone</code> is used to
-avoid  trivial matches; if a query data is provided (join similarity), this parameter is ignored.</p>
-    
-    <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
-
-    <ul>
-<li><p><code>stamp_par</code>: Parallel version.</p></li>
-<li><p><code>stamp</code>: Single thread version.</p></li>
-</ul>
+    <p>This algorithm uses an exact algorithm based on a novel lower bounding technique, which is
+specifically designed for the motif discovery problem. <code>verbose</code> changes how much information
+is printed by this function; <code>0</code> means nothing, <code>1</code> means text, <code>2</code> adds the progress bar,
+<code>3</code> adds the finish sound. <code>exclusion_zone</code> is used to avoid  trivial matches; if a query data
+is provided (join similarity), this parameter is ignored.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <ul>
-<li><p>Yeh CCM, Zhu Y, Ulanova L, Begum N, Ding Y, Dau HA, et al. Matrix profile I: All
-pairs similarity joins for time series: A unifying view that includes motifs, discords and
-shapelets. Proc - IEEE Int Conf Data Mining, ICDM. 2017;1317–22.</p></li>
-</ul>
-    <ul>
-<li><p>Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A
-New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.</p></li>
+<li><p>Linardi M, Zhu Y, Palpanas T, Keogh E. VALMOD: A Suite for Easy and Exact Detection
+of Variable Length Motifs in Data Series. In: Proceedings of the 2018 International Conference
+on Management of Data - SIGMOD ’18. New York, New York, USA: ACM Press; 2018. p. 1757–60.</p></li>
 </ul>
     <p>Website: <a href='http://www.cs.ucr.edu/~eamonn/MatrixProfile.html'>http://www.cs.ucr.edu/~eamonn/MatrixProfile.html</a></p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other matrix profile computations: <code><a href='mstomp.html'>mstomp_par</a></code>,
-  <code><a href='scrimp.html'>scrimp</a></code>, <code><a href='stomp.html'>stomp_par</a></code>,
-  <code><a href='tsmp.html'>tsmp</a></code>, <code><a href='valmod.html'>valmod</a></code></p></div>
+  <code><a href='scrimp.html'>scrimp</a></code>, <code><a href='stamp.html'>stamp_par</a></code>,
+  <code><a href='stomp.html'>stomp_par</a></code>, <code><a href='tsmp.html'>tsmp</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>stamp</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>200</span>, <span class='fl'>1</span>], <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
-
-<span class='co'># using threads</span>
-<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>stamp_par</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>200</span>, <span class='fl'>1</span>], <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><span class='co'># NOT RUN {</span>
+    <pre class="examples"><div class='input'><span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>valmod</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>200</span>, <span class='fl'>1</span>], <span class='kw'>window_min</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>window_max</span> <span class='kw'>=</span> <span class='fl'>40</span>)</div><div class='output co'>#&gt; <span class='message'>max_number_motifs_found 129</span></div><div class='output co'>#&gt; <span class='message'>min_number_motifs_found 1</span></div><div class='output co'>#&gt; <span class='message'>Finished in 0.11 secs</span></div><span class='co'># NOT RUN {</span>
 <span class='no'>ref_data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_toy_data</span>$<span class='no'>data</span>[, <span class='fl'>1</span>]
 <span class='no'>query_data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_toy_data</span>$<span class='no'>data</span>[, <span class='fl'>2</span>]
 <span class='co'># self similarity</span>
-<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>stamp</span>(<span class='no'>ref_data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>s_size</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Round'>round</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>ref_data</span>) * <span class='fl'>0.1</span>))
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>valmod</span>(<span class='no'>ref_data</span>, <span class='kw'>window_min</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>window_max</span> <span class='kw'>=</span> <span class='fl'>40</span>)
 <span class='co'># join similarity</span>
-<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>stamp</span>(<span class='no'>ref_data</span>, <span class='no'>query_data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>s_size</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Round'>round</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>query_data</span>) * <span class='fl'>0.1</span>))
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>valmod</span>(<span class='no'>ref_data</span>, <span class='no'>query_data</span>, <span class='kw'>window_min</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>window_max</span> <span class='kw'>=</span> <span class='fl'>40</span>)
 <span class='co'># }</span><div class='input'>
 </div></pre>
   </div>
@@ -232,8 +216,6 @@ New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.</p
       <li><a href="#value">Value</a></li>
 
       <li><a href="#details">Details</a></li>
-
-      <li><a href="#functions">Functions</a></li>
 
       <li><a href="#references">References</a></li>
 

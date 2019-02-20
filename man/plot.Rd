@@ -3,6 +3,7 @@
 \name{plot}
 \alias{plot}
 \alias{plot.ArcCount}
+\alias{plot.Valmod}
 \alias{plot.MatrixProfile}
 \alias{plot.MultiMatrixProfile}
 \alias{plot.SimpleMatrixProfile}
@@ -18,6 +19,9 @@
   exclusion_zone = NULL, edge_limit = NULL,
   threshold = stats::quantile(x$cac, 0.1), main = "Arcs Discover",
   xlab = "index", ylab = "", ...)
+
+\method{plot}{Valmod}(x, ylab = "distance", xlab = "index",
+  main = "Valmod Matrix Profile", ...)
 
 \method{plot}{MatrixProfile}(x, ylab = "distance", xlab = "index",
   main = "Unidimensional Matrix Profile", ...)
@@ -83,6 +87,5 @@ Plot a TSMP object
 
 mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
 plot(mp)
-
 }
 \keyword{hplot}

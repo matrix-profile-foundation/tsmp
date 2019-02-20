@@ -128,43 +128,51 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for ArcCount</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>x</span>, <span class='no'>data</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"data"</span>, <span class='st'>"matrix"</span>),
+<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='no'>data</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"data"</span>, <span class='st'>"matrix"</span>),
   <span class='kw'>exclusion_zone</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>edge_limit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='kw pkg'>stats</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/quantile'>quantile</a></span>(<span class='no'>x</span>$<span class='no'>cac</span>, <span class='fl'>0.1</span>), <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Arcs Discover"</span>,
   <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"index"</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='no'>...</span>)
 
+<span class='co'># S3 method for Valmod</span>
+<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"distance"</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"index"</span>,
+  <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Valmod Matrix Profile"</span>, <span class='no'>...</span>)
+
 <span class='co'># S3 method for MatrixProfile</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>x</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"distance"</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"index"</span>,
+<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"distance"</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"index"</span>,
   <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Unidimensional Matrix Profile"</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for MultiMatrixProfile</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>x</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"distance"</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"index"</span>,
+<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"distance"</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"index"</span>,
   <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Multidimensional Matrix Profile"</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for SimpleMatrixProfile</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>x</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"distance"</span>,
+<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"distance"</span>,
   <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"index"</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"SiMPle Matrix Profile"</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for Fluss</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>x</span>, <span class='no'>data</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"data"</span>, <span class='st'>"matrix"</span>),
+<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='no'>data</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"data"</span>, <span class='st'>"matrix"</span>),
   <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Fast Low-cost Unipotent Semantic Segmentation"</span>,
   <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"index"</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for Chain</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>x</span>, <span class='no'>data</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"data"</span>, <span class='st'>"matrix"</span>),
+<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='no'>data</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"data"</span>, <span class='st'>"matrix"</span>),
   <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Chain Discover"</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"index"</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='no'>...</span>)
 
+<span class='co'># S3 method for Discord</span>
+<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='no'>data</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"data"</span>, <span class='st'>"matrix"</span>), <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Discord Discover"</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"index"</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='no'>...</span>)
+
 <span class='co'># S3 method for Motif</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>x</span>, <span class='no'>data</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"data"</span>, <span class='st'>"matrix"</span>), <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='no'>data</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"data"</span>, <span class='st'>"matrix"</span>), <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>3</span>,
   <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"MOTIF Discover"</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"index"</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for MultiMotif</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>x</span>, <span class='no'>data</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"data"</span>, <span class='st'>"matrix"</span>),
+<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='no'>data</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"data"</span>, <span class='st'>"matrix"</span>),
   <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Multidimensional MOTIF Discover"</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"index"</span>,
   <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for Salient</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>x</span>, <span class='no'>data</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Salient Subsections"</span>,
+<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='no'>data</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Salient Subsections"</span>,
   <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"index"</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -208,7 +216,11 @@
     </tr>
     <tr>
       <th>...</th>
-      <td><p>further arguments to be passed to <code><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot()</a></code>. See <code><a href='https://www.rdocumentation.org/packages/graphics/topics/par'>par()</a></code>.</p></td>
+      <td><p>further arguments to be passed to <code>plot()</code>. See <code><a href='https://www.rdocumentation.org/packages/graphics/topics/par'>par()</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>ncol</th>
+      <td><p>an <code>int</code>. Number of columns to plot Motifs.</p></td>
     </tr>
     <tr>
       <th>ncol</th>
@@ -223,9 +235,8 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>tsmp</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>200</span>, <span class='fl'>1</span>], <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>mp</span>)</div><div class='img'><img src='plot-1.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></pre>
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>200</span>, <span class='fl'>1</span>], <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+<span class='fu'>plot</span>(<span class='no'>mp</span>)</div><div class='img'><img src='plot-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

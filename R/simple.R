@@ -26,7 +26,6 @@
 #' w <- 30
 #' data <- mp_toy_data$data # 3 dimensions matrix
 #' result <- simple_fast(data, window_size = w, verbose = 0)
-#'
 simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
   if (!is.numeric(window_size) || length(window_size) > 1) {
     stop("Error: Unknown type of `window_size`. Must be an `int` or `numeric`")

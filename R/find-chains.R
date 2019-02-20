@@ -13,12 +13,15 @@
 #' @examples
 #' w <- 50
 #' data <- mp_gait_data
-#' mp <- tsmp(data, window_size = w, exclusion_zone = 1/4, verbose = 0)
+#' mp <- tsmp(data, window_size = w, exclusion_zone = 1 / 4, verbose = 0)
 #' mp <- find_chains(mp)
-#'
 find_chains <- function(.mp) {
-  if (!any(class(.mp) %in% "MatrixProfile")) {
+  if (!("MatrixProfile" %in% class(.mp))) {
     stop("Error: First argument must be an object of class `MatrixProfile`.")
+  }
+
+  if ("Valmod" %in% class(.mp)) {
+    stop("Error: Function not implemented for objects of class `Valmod`.")
   }
 
   size <- length(.mp$rpi)

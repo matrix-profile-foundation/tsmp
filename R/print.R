@@ -1,3 +1,30 @@
+#' Prints a Valmod Matrix Profile
+#'
+#' @param x a TSMP object of class `Valmod`.
+#' @param ... additional arguments ignored.
+#' @export
+#' @keywords internal
+#' @noRd
+
+print.Valmod <- function(x, ...) {
+  cat("Valmod Matrix Profile\n")
+  cat("---------------------\n")
+
+  cat("Profile size =", nrow(x$mp), "\n")
+  cat("Window size =", min(x$w), "-", max(x$w), "\n")
+  cat("Exclusion zone =", x$ez, "times the windows size\n")
+
+  if (!is.null(x$data)) {
+    set <- length(x$data)
+    obs <- nrow(x$data[[1]])
+    dim <- ncol(x$data[[1]])
+    cat(
+      "Contains", set, ifelse(set > 1, "sets", "set"), "of data with", obs, "observations and", dim,
+      ifelse(dim > 1, "dimensions", "dimension"), "\n"
+    )
+  }
+}
+
 #' Prints a Matrix Profile
 #'
 #' @param x a TSMP object of class `MatrixProfile`.
@@ -188,14 +215,24 @@ print.Discord <- function(x, ...) {
 #' @keywords internal
 #' @noRd
 print.Motif <- function(x, ...) {
-  if (any(class(x) %in% "MatrixProfile")) {
+  valmod <- FALSE
+
+  if ("Valmod" %in% class(x)) {
+    valmod <- TRUE
+    print.Valmod(x, ...)
+  } else if ("MatrixProfile" %in% class(x)) {
     print.MatrixProfile(x, ...)
-  } else if (any(class(x) %in% "MultiMatrixProfile")) {
+  } else if ("MultiMatrixProfile" %in% class(x)) {
     print.MultiMatrixProfile(x, ...)
   }
 
-  cat("\nMotif\n")
-  cat("-----\n")
+  if (valmod) {
+    cat("\nValmod Motif\n")
+    cat("------------\n")
+  } else {
+    cat("\nMotif\n")
+    cat("-----\n")
+  }
 
   pairs_len <- length(x$motif$motif_idx)
   cat("Motif pairs founded =", pairs_len, "\n")
@@ -212,6 +249,14 @@ print.Motif <- function(x, ...) {
 
   cat("Motif pairs indexes =", indexes, "\n")
   cat("Motif pairs neighbors =", neighbors, "\n")
+
+  if (valmod) {
+    windows <- NULL
+    for (i in seq_len(pairs_len)) {
+      windows <- paste0(windows, "[", paste(x$motif$motif_window[[i]], collapse = ", "), "] ")
+    }
+    cat("Motif pairs windows =", windows, "\n")
+  }
 }
 
 #' Prints Multidimensional Motifs

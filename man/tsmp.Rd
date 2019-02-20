@@ -5,15 +5,15 @@
 \title{Computes the Matrix Profile and Profile Index}
 \usage{
 tsmp(..., window_size, exclusion_zone = 1/2, mode = c("stomp", "stamp",
-  "simple", "mstomp", "scrimp"), verbose = 2, s_size = Inf,
-  must_dim = NULL, exc_dim = NULL, n_workers = 1,
+  "simple", "mstomp", "scrimp", "valmod"), verbose = 2, n_workers = 1,
+  s_size = Inf, must_dim = NULL, exc_dim = NULL, heap_size = 50,
   .keep_data = TRUE)
 }
 \arguments{
 \item{...}{a \code{matrix} or a \code{vector}. If a second time series is supplied it will be a join matrix
 profile (except for \code{\link[=mstomp]{mstomp()}}).}
 
-\item{window_size}{an \code{int} with the size of the sliding window.}
+\item{window_size}{an \code{int} with the size of the sliding window. Use a vector for Valmod.}
 
 \item{exclusion_zone}{a \code{numeric}. Size of the exclusion zone, based on window size (default is
 \code{1/2}). See details.}
@@ -22,6 +22,8 @@ profile (except for \code{\link[=mstomp]{mstomp()}}).}
 See details.}
 
 \item{verbose}{an \code{int}. (Default is \code{2}). See details.}
+
+\item{n_workers}{an \code{int}. Number of workers for parallel. (Default is \code{1}).}
 
 \item{s_size}{a \code{numeric}. for anytime algorithm, represents the size (in observations) the
 random calculation will occur (default is \code{Inf}). See details.}
@@ -32,7 +34,7 @@ See details.}
 \item{exc_dim}{an \code{int} or \code{vector} of which dimensions to exclude (default is \code{NULL}). See
 details.}
 
-\item{n_workers}{an \code{int}. Number of workers for parallel. (Default is \code{1}).}
+\item{heap_size}{an \code{int}. (Default is \code{50}). Size of the distance profile heap buffer.}
 
 \item{.keep_data}{a \code{logical}. (Default is \code{TRUE}). Keeps the data embedded to resultant object.}
 }
@@ -72,6 +74,9 @@ Further, there is the \code{\link[=mstomp]{mstomp()}} that computes a multidimen
 meaningful MOTIF discovery in Multivariate Time Series. And \code{\link[=simple_fast]{simple_fast()}} that also handles
 Multivariate Time Series, but focused in Music Analysis and Exploration.
 
+The \code{\link[=valmod]{valmod()}} uses a new pruning algorithm allowing a similarity search with a range of sliding
+window sizes.
+
 Some parameters are global across the algorithms:
 \describe{
 \item{...}{One or two time series (except for \code{\link[=mstomp]{mstomp()}}). The second time series can be smaller than the first.}
@@ -80,13 +85,14 @@ Some parameters are global across the algorithms:
 (join similarity), this parameter is ignored.}
 \item{verbose}{Changes how much information is printed by this function; \code{0} means nothing,
 \code{1} means text, \code{2} adds the progress bar, \code{3} adds the finish sound.}
-\item{n_workers}{number of threads for parallel computing (except \code{simple_fast} and \code{scrimp}).
+\item{n_workers}{number of threads for parallel computing (except \code{simple_fast}, \code{scrimp} and \code{valmod}).
 If the value is 2 or more, the '_par' version of the algorithm will be used.}
 }
 
 \code{s_size} is used only in Anytime algorithms: \code{\link[=stamp]{stamp()}} and \code{\link[=scrimp]{scrimp()}}.
 \code{must_dim} and \code{exc_dim} are used only in \code{\link[=mstomp]{mstomp()}}.
-\code{mode} can be any of the following: \code{stomp}, \code{stamp}, \code{simple}, \code{mstomp}, \code{scrimp}.
+\code{heap_size} is used only for \code{\link[=valmod]{valmod()}}
+\code{mode} can be any of the following: \code{stomp}, \code{stamp}, \code{simple}, \code{mstomp}, \code{scrimp}, \code{valmod}.
 }
 \examples{
 # default with [stomp()]
@@ -146,6 +152,6 @@ Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 \seealso{
 Other matrix profile computations: \code{\link{mstomp_par}},
   \code{\link{scrimp}}, \code{\link{stamp_par}},
-  \code{\link{stomp_par}}
+  \code{\link{stomp_par}}, \code{\link{valmod}}
 }
 \concept{matrix profile computations}

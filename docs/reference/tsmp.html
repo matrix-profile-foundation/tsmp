@@ -130,8 +130,8 @@ Profile and Profile Index for multiple purposes.</p>
     </div>
 
     <pre class="usage"><span class='fu'>tsmp</span>(<span class='no'>...</span>, <span class='no'>window_size</span>, <span class='kw'>exclusion_zone</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>2</span>, <span class='kw'>mode</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"stomp"</span>, <span class='st'>"stamp"</span>,
-  <span class='st'>"simple"</span>, <span class='st'>"mstomp"</span>, <span class='st'>"scrimp"</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>s_size</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
-  <span class='kw'>must_dim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>exc_dim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n_workers</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='st'>"simple"</span>, <span class='st'>"mstomp"</span>, <span class='st'>"scrimp"</span>, <span class='st'>"valmod"</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>n_workers</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>s_size</span> <span class='kw'>=</span> <span class='fl'>Inf</span>, <span class='kw'>must_dim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>exc_dim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>heap_size</span> <span class='kw'>=</span> <span class='fl'>50</span>,
   <span class='kw'>.keep_data</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -140,11 +140,11 @@ Profile and Profile Index for multiple purposes.</p>
     <tr>
       <th>...</th>
       <td><p>a <code>matrix</code> or a <code>vector</code>. If a second time series is supplied it will be a join matrix
-profile (except for <code>mstomp()</code>).</p></td>
+profile (except for <code><a href='mstomp.html'>mstomp()</a></code>).</p></td>
     </tr>
     <tr>
       <th>window_size</th>
-      <td><p>an <code>int</code> with the size of the sliding window.</p></td>
+      <td><p>an <code>int</code> with the size of the sliding window. Use a vector for Valmod.</p></td>
     </tr>
     <tr>
       <th>exclusion_zone</th>
@@ -159,6 +159,10 @@ See details.</p></td>
     <tr>
       <th>verbose</th>
       <td><p>an <code>int</code>. (Default is <code>2</code>). See details.</p></td>
+    </tr>
+    <tr>
+      <th>n_workers</th>
+      <td><p>an <code>int</code>. Number of workers for parallel. (Default is <code>1</code>).</p></td>
     </tr>
     <tr>
       <th>s_size</th>
@@ -176,8 +180,8 @@ See details.</p></td>
 details.</p></td>
     </tr>
     <tr>
-      <th>n_workers</th>
-      <td><p>an <code>int</code>. Number of workers for parallel. (Default is <code>1</code>).</p></td>
+      <th>heap_size</th>
+      <td><p>an <code>int</code>. (Default is <code>50</code>). Size of the distance profile heap buffer.</p></td>
     </tr>
     <tr>
       <th>.keep_data</th>
@@ -189,7 +193,7 @@ details.</p></td>
 
     <p>Returns the matrix profile <code>mp</code> and profile index <code>pi</code>. It also returns the left and
 right matrix profile <code>lmp</code>, <code>rmp</code> and profile index <code>lpi</code>, <code>rpi</code> that may be used to detect
-Time Series Chains. <code>mstomp()</code> returns a multidimensional Matrix Profile.</p>
+Time Series Chains. <code><a href='mstomp.html'>mstomp()</a></code> returns a multidimensional Matrix Profile.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -197,36 +201,39 @@ Time Series Chains. <code>mstomp()</code> returns a multidimensional Matrix Prof
 of its generality, versatility, simplicity and scalability. In particular it has implications
 for time series motif discovery, time series joins, shapelet discovery (classification),
 density estimation, semantic segmentation, visualization, rule discovery, clustering etc.</p>
-<p>The first algorithm invented was the <code>stamp()</code> that using <code>mass()</code> as an ultra-fast Algorithm
+<p>The first algorithm invented was the <code><a href='stamp.html'>stamp()</a></code> that using <code><a href='mass.html'>mass()</a></code> as an ultra-fast Algorithm
 for Similarity Search allowed to compute the Matrix Profile in reasonable time. One of its main
 feature was its Anytime property which using a randomized approach could return a "best-so-far"
 matrix that could give us the correct answer (using for example 1/10 of all iterations) almost
 every time.</p>
-<p>The next algorithm was <code>stomp()</code> that currently is the most used. Researchers noticed that the
+<p>The next algorithm was <code><a href='stomp.html'>stomp()</a></code> that currently is the most used. Researchers noticed that the
 dot products do not need to be recalculated from scratch for each subsequence. Instead, we can
 reuse the values calculated for the first subsequence to make a faster calculation in the next
 iterations. The idea is to make use of the intersections between the required products in
 consecutive iterations. This approach reduced the time to compute the Matrix Profile to about
 3<!-- % compared to \code{\link[=stamp]{stamp()}}, but on the other hand, we lost the Anytime property. --></p>
-<p>Currently there is a new algorithm that I'll not explain further here. It is called <code>scrimp()</code>,
-and is as fast as <code>stomp()</code>, and have the Anytime property. This algorithm is implemented in
+<p>Currently there is a new algorithm that I'll not explain further here. It is called <code><a href='scrimp.html'>scrimp()</a></code>,
+and is as fast as <code><a href='stomp.html'>stomp()</a></code>, and have the Anytime property. This algorithm is implemented in
 this package, but still waiting for an article publication.</p>
-<p>Further, there is the <code>mstomp()</code> that computes a multidimensional Matrix Profile that allows to
-meaningful MOTIF discovery in Multivariate Time Series. And <code>simple_fast()</code> that also handles
+<p>Further, there is the <code><a href='mstomp.html'>mstomp()</a></code> that computes a multidimensional Matrix Profile that allows to
+meaningful MOTIF discovery in Multivariate Time Series. And <code><a href='simple_fast.html'>simple_fast()</a></code> that also handles
 Multivariate Time Series, but focused in Music Analysis and Exploration.</p>
+<p>The <code><a href='valmod.html'>valmod()</a></code> uses a new pruning algorithm allowing a similarity search with a range of sliding
+window sizes.</p>
 <p>Some parameters are global across the algorithms:</p><dl class='dl-horizontal'>
-<dt>...</dt><dd><p>One or two time series (except for <code>mstomp()</code>). The second time series can be smaller than the first.</p></dd>
+<dt>...</dt><dd><p>One or two time series (except for <code><a href='mstomp.html'>mstomp()</a></code>). The second time series can be smaller than the first.</p></dd>
 <dt>window_size</dt><dd><p>The sliding window.</p></dd>
 <dt>exclusion_zone</dt><dd><p>Is used to avoid trivial matches; if a query data is provided
 (join similarity), this parameter is ignored.</p></dd>
 <dt>verbose</dt><dd><p>Changes how much information is printed by this function; <code>0</code> means nothing,
 <code>1</code> means text, <code>2</code> adds the progress bar, <code>3</code> adds the finish sound.</p></dd>
-<dt>n_workers</dt><dd><p>number of threads for parallel computing (except <code>simple_fast</code> and <code>scrimp</code>).
+<dt>n_workers</dt><dd><p>number of threads for parallel computing (except <code>simple_fast</code>, <code>scrimp</code> and <code>valmod</code>).
 If the value is 2 or more, the '_par' version of the algorithm will be used.</p></dd>
 </dl>
-    <p><code>s_size</code> is used only in Anytime algorithms: <code>stamp()</code> and <code>scrimp()</code>.
-<code>must_dim</code> and <code>exc_dim</code> are used only in <code>mstomp()</code>.
-<code>mode</code> can be any of the following: <code>stomp</code>, <code>stamp</code>, <code>simple</code>, <code>mstomp</code>, <code>scrimp</code>.</p>
+    <p><code>s_size</code> is used only in Anytime algorithms: <code><a href='stamp.html'>stamp()</a></code> and <code><a href='scrimp.html'>scrimp()</a></code>.
+<code>must_dim</code> and <code>exc_dim</code> are used only in <code><a href='mstomp.html'>mstomp()</a></code>.
+<code>heap_size</code> is used only for <code><a href='valmod.html'>valmod()</a></code>
+<code>mode</code> can be any of the following: <code>stomp</code>, <code>stamp</code>, <code>simple</code>, <code>mstomp</code>, <code>scrimp</code>, <code>valmod</code>.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -262,9 +269,9 @@ Joins. Icdm. 2016 Jan 22;54(1):739–48.</p></li>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other matrix profile computations: <code>mstomp_par</code>,
-  <code>scrimp</code>, <code>stamp_par</code>,
-  <code>stomp_par</code></p></div>
+    <div class='dont-index'><p>Other matrix profile computations: <code><a href='mstomp.html'>mstomp_par</a></code>,
+  <code><a href='scrimp.html'>scrimp</a></code>, <code><a href='stamp.html'>stamp_par</a></code>,
+  <code><a href='stomp.html'>stomp_par</a></code>, <code><a href='valmod.html'>valmod</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

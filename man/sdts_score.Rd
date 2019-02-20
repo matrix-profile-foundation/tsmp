@@ -24,7 +24,7 @@ Computes the F-Score of a SDTS prediction.
 }
 \examples{
 # This is a fast toy example and results are useless. For a complete result, run the code inside
-#'Not run' section below.
+#' Not run' section below.
 w <- c(110, 220)
 subs <- 11000:20000
 tr_data <- mp_test_data$train$data[subs]
@@ -34,7 +34,6 @@ te_label <- mp_test_data$test$label[subs]
 model <- sdts_train(tr_data, tr_label, w, verbose = 0)
 predict <- sdts_predict(model, te_data, round(mean(w)))
 sdts_score(predict, te_label, 1)
-
 \dontrun{
 windows <- c(110, 220, 330)
 model <- sdts_train(mp_test_data$train$data, mp_test_data$train$label, windows)

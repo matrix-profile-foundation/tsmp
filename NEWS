@@ -5,6 +5,7 @@ tsmp 0.3.4
 -   Added `find_discord()` and its `print()` and `plot()` functions.
 -   Changed `plot()` for motifs to show where are the neighbors. Same
     for discord.
+-   Added `valmod()` for Variable Length Motif Discovery
 
 tsmp 0.3.3
 ==========

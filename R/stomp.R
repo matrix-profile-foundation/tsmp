@@ -35,10 +35,9 @@
 #'
 #' @examples
 #' mp <- stomp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
-#'
+#' 
 #' # using threads
 #' mp <- stomp_par(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
-#'
 #' \dontrun{
 #' ref_data <- mp_toy_data$data[, 1]
 #' query_data <- mp_toy_data$data[, 2]

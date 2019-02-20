@@ -10,8 +10,7 @@
 #' @export
 #'
 #' @examples
-#' data_sd <- fast_movsd(mp_toy_data$data[,1], mp_toy_data$sub_len)
-
+#' data_sd <- fast_movsd(mp_toy_data$data[, 1], mp_toy_data$sub_len)
 fast_movsd <- function(data, window_size) {
 
   # length of the time series
@@ -56,8 +55,7 @@ fast_movsd <- function(data, window_size) {
 #' @export
 #'
 #' @examples
-#' data_avg <- fast_movavg(mp_toy_data$data[,1], mp_toy_data$sub_len)
-
+#' data_avg <- fast_movavg(mp_toy_data$data[, 1], mp_toy_data$sub_len)
 fast_movavg <- function(data, window_size) {
   data_mean <- stats::filter(data, rep(1 / window_size, window_size), sides = 2)
   return(data_mean[!is.na(data_mean)])
@@ -190,18 +188,17 @@ diff2 <- function(x, y) {
 #' @noRd
 
 bubble_up <- function(data, len) {
+  pos <- len
 
-    pos <- len
-
-    while (pos > 0 && data[pos / 2] < data[pos]) {
-      # &&
-       #    heap->heap_[pos / 2].distance >= 0 &&
-        #   heap->heap_[pos].distance >= 0) {
-      t <- data[pos]
-      data[pos] <- data[pos / 2]
-      data[pos / 2] <- t
-      pos <- pos / 2
-    }
+  while (pos > 0 && data[pos / 2] < data[pos]) {
+    # &&
+    #    heap->heap_[pos / 2].distance >= 0 &&
+    #   heap->heap_[pos].distance >= 0) {
+    t <- data[pos]
+    data[pos] <- data[pos / 2]
+    data[pos / 2] <- t
+    pos <- pos / 2
+  }
 }
 
 # SDTS Aux functions -----------------------------------------------------------------------------
@@ -796,20 +793,18 @@ update_class <- function(classes, new_class) {
 #' @describeIn as.matrixprofile Cast an object changed by another function back to `MatrixProfile`.
 #' @export
 #' @examples
-#'
+#' 
 #' w <- 50
 #' data <- mp_gait_data
-#' mp <- tsmp(data, window_size = w, exclusion_zone = 1/4, verbose = 0)
+#' mp <- tsmp(data, window_size = w, exclusion_zone = 1 / 4, verbose = 0)
 #' mp <- find_motif(mp)
 #' class(mp) # first class will be "Motif"
-#'
+#' 
 #' plot(mp) # plots a motif plot
-#'
+#' 
 #' plot(as.matrixprofile(mp)) # plots a matrix profile plot
-#'
-
 as.matrixprofile <- function(.mp) {
-  if (!any(class(.mp) %in% "MatrixProfile")) {
+  if (!("MatrixProfile" %in% class(.mp))) {
     stop("Error: This object cannot be a `MatrixProfile`.")
   }
 
@@ -823,11 +818,25 @@ as.matrixprofile <- function(.mp) {
 #'
 
 as.multimatrixprofile <- function(.mp) {
-  if (!any(class(.mp) %in% "MultiMatrixProfile")) {
+  if (!("MultiMatrixProfile" %in% class(.mp))) {
     stop("Error: This object cannot be a `MultiMatrixProfile`.")
   }
 
   class(.mp) <- update_class(class(.mp), "MultiMatrixProfile")
+
+  return(.mp)
+}
+
+#' @describeIn as.matrixprofile Cast an object changed by another function back to `MultiMatrixProfile`.
+#' @export
+#'
+
+as.valmod <- function(.mp) {
+  if (!("Valmod" %in% class(.mp))) {
+    stop("Error: This object cannot be a `Valmod`.")
+  }
+
+  class(.mp) <- update_class(class(.mp), "Valmod")
 
   return(.mp)
 }
@@ -837,7 +846,7 @@ as.multimatrixprofile <- function(.mp) {
 #' @export
 
 as.fluss <- function(.mp) {
-  if (!any(class(.mp) %in% "Fluss")) {
+  if (!("Fluss" %in% class(.mp))) {
     stop("Error: This object cannot be a `Fluss`.")
   }
 
@@ -851,7 +860,7 @@ as.fluss <- function(.mp) {
 #' @export
 
 as.chain <- function(.mp) {
-  if (!any(class(.mp) %in% "Chain")) {
+  if (!("Chain" %in% class(.mp))) {
     stop("Error: This object cannot be a `Chain`.")
   }
 
@@ -864,7 +873,7 @@ as.chain <- function(.mp) {
 #' @export
 
 as.discord <- function(.mp) {
-  if (!any(class(.mp) %in% "Discord")) {
+  if (!("Discord" %in% class(.mp))) {
     stop("Error: This object cannot be a `Discord`.")
   }
 
@@ -877,7 +886,7 @@ as.discord <- function(.mp) {
 #' @export
 
 as.motif <- function(.mp) {
-  if (!any(class(.mp) %in% "Motif")) {
+  if (!("Motif" %in% class(.mp))) {
     stop("Error: This object cannot be a `Motif`.")
   }
 
@@ -891,7 +900,7 @@ as.motif <- function(.mp) {
 #' @export
 
 as.multimotif <- function(.mp) {
-  if (!any(class(.mp) %in% "MultiMotif")) {
+  if (!("MultiMotif" %in% class(.mp))) {
     stop("Error: This object cannot be a `MultiMotif`.")
   }
 
@@ -905,7 +914,7 @@ as.multimotif <- function(.mp) {
 #' @export
 
 as.arccount <- function(.mp) {
-  if (!any(class(.mp) %in% "ArcCount")) {
+  if (!("ArcCount" %in% class(.mp))) {
     stop("Error: This object cannot be a `ArcCount`.")
   }
 
@@ -918,7 +927,7 @@ as.arccount <- function(.mp) {
 #' @export
 
 as.salient <- function(.mp) {
-  if (!any(class(.mp) %in% "Salient")) {
+  if (!("Salient" %in% class(.mp))) {
     stop("Error: This object cannot be a `Salient`.")
   }
 

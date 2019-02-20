@@ -29,6 +29,9 @@
 #'   meaningful MOTIF discovery in Multivariate Time Series. And [simple_fast()] that also handles
 #'   Multivariate Time Series, but focused in Music Analysis and Exploration.
 #'
+#'   The [valmod()] uses a new pruning algorithm allowing a similarity search with a range of sliding
+#'   window sizes.
+#'
 #'   Some parameters are global across the algorithms:
 #'   \describe{
 #'     \item{...}{One or two time series (except for [mstomp()]). The second time series can be smaller than the first.}
@@ -37,29 +40,31 @@
 #'       (join similarity), this parameter is ignored.}
 #'     \item{verbose}{Changes how much information is printed by this function; `0` means nothing,
 #'     `1` means text, `2` adds the progress bar, `3` adds the finish sound.}
-#'     \item{n_workers}{number of threads for parallel computing (except `simple_fast` and `scrimp`).
+#'     \item{n_workers}{number of threads for parallel computing (except `simple_fast`, `scrimp` and `valmod`).
 #'     If the value is 2 or more, the '_par' version of the algorithm will be used.}
 #'   }
 #'
 #'   `s_size` is used only in Anytime algorithms: [stamp()] and [scrimp()].
 #'   `must_dim` and `exc_dim` are used only in [mstomp()].
-#'   `mode` can be any of the following: `stomp`, `stamp`, `simple`, `mstomp`, `scrimp`.
+#'   `heap_size` is used only for [valmod()]
+#'   `mode` can be any of the following: `stomp`, `stamp`, `simple`, `mstomp`, `scrimp`, `valmod`.
 #'
 #' @param ... a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix
 #'   profile (except for [mstomp()]).
-#' @param window_size an `int` with the size of the sliding window.
+#' @param window_size an `int` with the size of the sliding window. Use a vector for Valmod.
 #' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is
 #'   `1/2`). See details.
+#' @param verbose an `int`. (Default is `2`). See details.
+#' @param n_workers an `int`. Number of workers for parallel. (Default is `1`).
 #' @param mode the algorithm that will be used to compute the matrix profile. (Default is `stomp`).
 #'   See details.
-#' @param verbose an `int`. (Default is `2`). See details.
 #' @param s_size a `numeric`. for anytime algorithm, represents the size (in observations) the
 #'   random calculation will occur (default is `Inf`). See details.
 #' @param must_dim an `int` or `vector` of which dimensions to forcibly include (default is `NULL`).
 #'   See details.
 #' @param exc_dim an `int` or `vector` of which dimensions to exclude (default is `NULL`). See
 #'   details.
-#' @param n_workers an `int`. Number of workers for parallel. (Default is `1`).
+#' @param heap_size an `int`. (Default is `50`). Size of the distance profile heap buffer.
 #' @param .keep_data a `logical`. (Default is `TRUE`). Keeps the data embedded to resultant object.
 #'
 #' @return Returns the matrix profile `mp` and profile index `pi`. It also returns the left and
@@ -87,21 +92,20 @@
 #' @examples
 #' # default with [stomp()]
 #' mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
-#'
+#' 
 #' # parallel with [stomp_par()]
 #' mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, n_workers = 2, verbose = 0)
-#'
+#' 
 #' # Anytime STAMP
 #' mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, mode = "stamp", s_size = 50, verbose = 0)
-#'
+#' 
 #' # [mstomp()]
 #' mp <- tsmp(mp_toy_data$data[1:200, ], window_size = 30, mode = "mstomp", verbose = 0)
-#'
+#' 
 #' # [simple_fast()]
 #' mp <- tsmp(mp_toy_data$data[1:200, ], window_size = 30, mode = "simple", verbose = 0)
-
-tsmp <- function(..., window_size, exclusion_zone = 1 / 2, mode = c("stomp", "stamp", "simple", "mstomp", "scrimp"),
-                 verbose = 2, s_size = Inf, must_dim = NULL, exc_dim = NULL, n_workers = 1, .keep_data = TRUE) {
+tsmp <- function(..., window_size, exclusion_zone = 1 / 2, mode = c("stomp", "stamp", "simple", "mstomp", "scrimp", "valmod"),
+                 verbose = 2, n_workers = 1, s_size = Inf, must_dim = NULL, exc_dim = NULL, heap_size = 50, .keep_data = TRUE) {
   algo <- match.arg(mode)
 
   if (length(list(...)) == 0) {
@@ -115,12 +119,12 @@ tsmp <- function(..., window_size, exclusion_zone = 1 / 2, mode = c("stomp", "st
       }
       if (n_workers > 1) {
         stomp_par(...,
-          window_size = window_size, exclusion_zone = exclusion_zone,
+          window_size = min(window_size), exclusion_zone = exclusion_zone,
           verbose = verbose, n_workers = n_workers
         )
       } else {
         stomp(...,
-          window_size = window_size, exclusion_zone = exclusion_zone,
+          window_size = min(window_size), exclusion_zone = exclusion_zone,
           verbose = verbose
         )
       }
@@ -132,12 +136,12 @@ tsmp <- function(..., window_size, exclusion_zone = 1 / 2, mode = c("stomp", "st
 
       if (n_workers > 1) {
         stamp_par(...,
-          window_size = window_size, exclusion_zone = exclusion_zone,
+          window_size = min(window_size), exclusion_zone = exclusion_zone,
           verbose = verbose, s_size = s_size, n_workers = n_workers
         )
       } else {
         stamp(...,
-          window_size = window_size, exclusion_zone = exclusion_zone,
+          window_size = min(window_size), exclusion_zone = exclusion_zone,
           verbose = verbose, s_size = s_size
         )
       }
@@ -147,7 +151,7 @@ tsmp <- function(..., window_size, exclusion_zone = 1 / 2, mode = c("stomp", "st
         warning("Warning: Only the first two time series will be used.")
       }
       simple_fast(...,
-        window_size = window_size, exclusion_zone = exclusion_zone,
+        window_size = min(window_size), exclusion_zone = exclusion_zone,
         verbose = verbose
       )
     },
@@ -158,12 +162,12 @@ tsmp <- function(..., window_size, exclusion_zone = 1 / 2, mode = c("stomp", "st
 
       if (n_workers > 1) {
         mstomp_par(list(...)[[1]],
-          window_size = window_size, exclusion_zone = exclusion_zone,
+          window_size = min(window_size), exclusion_zone = exclusion_zone,
           verbose = verbose, must_dim = must_dim, exc_dim = exc_dim, n_workers = n_workers
         )
       } else {
         mstomp(list(...)[[1]],
-          window_size = window_size, exclusion_zone = exclusion_zone,
+          window_size = min(window_size), exclusion_zone = exclusion_zone,
           verbose = verbose, must_dim = must_dim, exc_dim = exc_dim
         )
       }
@@ -174,8 +178,18 @@ tsmp <- function(..., window_size, exclusion_zone = 1 / 2, mode = c("stomp", "st
       }
 
       scrimp(...,
-        window_size = window_size, exclusion_zone = exclusion_zone,
+        window_size = min(window_size), exclusion_zone = exclusion_zone,
         verbose = verbose, s_size = s_size
+      )
+    },
+    "valmod" = {
+      if (length(list(...)) > 2) {
+        warning("Warning: Only the first two time series will be used.")
+      }
+
+      valmod(...,
+        window_min = min(window_size), window_max = max(window_size), heap_size = heap_size, exclusion_zone = exclusion_zone,
+        verbose = verbose
       )
     },
     stop("Error: `mode` must be ", mode)

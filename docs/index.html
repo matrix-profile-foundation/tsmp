@@ -126,7 +126,7 @@
 <p>This package allows you to use the Matrix Profile concept as a toolkit.</p>
 <p>This package provides:</p>
 <ul>
-<li>Algorithms to build a Matrix Profile: STAMP, STOMP, SCRIMP++, SIMPLE and MSTOMP.</li>
+<li>Algorithms to build a Matrix Profile: STAMP, STOMP, SCRIMP++, SIMPLE, MSTOMP and VALMOD.</li>
 <li>Algorithms for MOTIF search for Unidimensional and Multidimensional Matrix Profiles.</li>
 <li>Algorithm for Chains search for Unidimensional Matrix Profile.</li>
 <li>Algorithms for Semantic Segmentation (FLUSS) and Weakly Labeled data (SDTS).</li>
@@ -135,11 +135,11 @@
 <li>Sequencial workflow, see below.</li>
 </ul>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># Basic workflow:</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">matrix &lt;-<span class="st"> </span><span class="kw">tsmp</span>(data, <span class="dt">window_size =</span> <span class="dv">30</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">find_motif</span>(<span class="dt">n_motifs =</span> <span class="dv">3</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>()</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">matrix &lt;-<span class="st"> </span><span class="kw"><a href="reference/tsmp.html">tsmp</a></span>(data, <span class="dt">window_size =</span> <span class="dv">30</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="reference/find_motif.html">find_motif</a></span>(<span class="dt">n_motifs =</span> <span class="dv">3</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="reference/plot.html">plot</a></span>()</a>
 <a class="sourceLine" id="cb1-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co"># SDTS still have a unique way to work:</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">model &lt;-<span class="st"> </span><span class="kw">sdts_train</span>(data, labels, windows)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">result &lt;-<span class="st"> </span><span class="kw">sdts_predict</span>(model, data, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(windows)))</a></code></pre></div>
+<a class="sourceLine" id="cb1-5" data-line-number="5">model &lt;-<span class="st"> </span><span class="kw"><a href="reference/sdts_train.html">sdts_train</a></span>(data, labels, windows)</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">result &lt;-<span class="st"> </span><span class="kw"><a href="reference/sdts_predict.html">sdts_predict</a></span>(model, data, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(windows)))</a></code></pre></div>
 <p>Please refer to the <a href="https://franzbischoff.github.io/tsmp/reference/">User Manual</a> for more details.</p>
 <p>Please be welcome to suggest improvements.</p>
 <div id="performance-on-an-intelr-coretm-i7-7700-cpu-3-60ghz-using-a-random-walk-dataset" class="section level3">
@@ -157,35 +157,35 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td><code>stomp_par()</code></td>
+<td><code><a href="reference/stomp.html">stomp_par()</a></code></td>
 <td align="center">52.72s</td>
 <td align="center">40000</td>
 <td align="center">1000</td>
 <td align="center">8</td>
 </tr>
 <tr class="even">
-<td><code>scrimp()</code></td>
+<td><code><a href="reference/scrimp.html">scrimp()</a></code></td>
 <td align="center">92.44s</td>
 <td align="center">40000</td>
 <td align="center">1000</td>
 <td align="center">1</td>
 </tr>
 <tr class="odd">
-<td><code>stomp()</code></td>
+<td><code><a href="reference/stomp.html">stomp()</a></code></td>
 <td align="center">136.01s</td>
 <td align="center">40000</td>
 <td align="center">1000</td>
 <td align="center">1</td>
 </tr>
 <tr class="even">
-<td><code>stamp_par()</code></td>
+<td><code><a href="reference/stamp.html">stamp_par()</a></code></td>
 <td align="center">140.25s</td>
 <td align="center">40000</td>
 <td align="center">1000</td>
 <td align="center">8</td>
 </tr>
 <tr class="odd">
-<td><code>stamp()</code></td>
+<td><code><a href="reference/stamp.html">stamp()</a></code></td>
 <td align="center">262.03s</td>
 <td align="center">40000</td>
 <td align="center">1000</td>
@@ -221,6 +221,7 @@
 <li>SiMPle-Fast (Fast Similarity Matrix Profile for Music Analysis and Exploration)</li>
 <li>Annotation vectors (e.g., Stop-word MOTIF bias, Actionability bias)</li>
 <li>FLUSS Arc Plot and SiMPle Arc Plot</li>
+<li>Exact Detection of Variable Length Motifs</li>
 <li>Misc:
 <ul>
 <li>MASS v2.0</li>
@@ -234,7 +235,6 @@
 <h2 class="hasAnchor">
 <a href="#roadmap" class="anchor"></a>Roadmap</h2>
 <ul>
-<li>Exact Detection of Variable Length Motifs</li>
 <li>Profile-Based Shapelet Discovery</li>
 <li>GPU-STOMP</li>
 <li>Real-time version of previous algorithms (STAMPI, FLOSS, etc.)</li>

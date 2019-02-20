@@ -191,12 +191,12 @@ Conference on Data Mining. IEEE; 2011. p. 1086–91.</p></li>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># toy example</span>
 <span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_toy_data</span>$<span class='no'>data</span>[, <span class='fl'>1</span>]
-<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>tsmp</span>(<span class='no'>data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span>(<span class='no'>data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 <span class='no'>mps</span> <span class='kw'>&lt;-</span> <span class='fu'>salient_subsequences</span>(<span class='no'>mp</span>, <span class='no'>data</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><span class='co'># NOT RUN {</span>
 <span class='co'># full example</span>
 <span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_meat_data</span>$<span class='no'>sub</span>$<span class='no'>data</span>
 <span class='no'>w</span> <span class='kw'>&lt;-</span> <span class='no'>mp_meat_data</span>$<span class='no'>sub</span>$<span class='no'>sub_len</span>
-<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>tsmp</span>(<span class='no'>data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='no'>w</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>n_workers</span> <span class='kw'>=</span> <span class='fl'>6</span>)
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span>(<span class='no'>data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='no'>w</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>n_workers</span> <span class='kw'>=</span> <span class='fl'>6</span>)
 <span class='no'>mps</span> <span class='kw'>&lt;-</span> <span class='fu'>salient_subsequences</span>(<span class='no'>mp</span>, <span class='no'>data</span>, <span class='kw'>n_bits</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>4</span>, <span class='fl'>6</span>, <span class='fl'>8</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 <span class='co'># }</span><div class='input'>
 </div></pre>

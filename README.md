@@ -1,7 +1,7 @@
 README
 ================
 Francisco Bischoff
-\- 20 Jan 2019
+\- 20 Feb 2019
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -32,8 +32,8 @@ This package allows you to use the Matrix Profile concept as a toolkit.
 
 This package provides:
 
-  - Algorithms to build a Matrix Profile: STAMP, STOMP, SCRIMP++, SIMPLE
-    and MSTOMP.
+  - Algorithms to build a Matrix Profile: STAMP, STOMP, SCRIMP++,
+    SIMPLE, MSTOMP and VALMOD.
   - Algorithms for MOTIF search for Unidimensional and Multidimensional
     Matrix Profiles.
   - Algorithm for Chains search for Unidimensional Matrix Profile.
@@ -102,6 +102,7 @@ devtools::install_github("franzbischoff/tsmp")
     Exploration)
   - Annotation vectors (e.g., Stop-word MOTIF bias, Actionability bias)
   - FLUSS Arc Plot and SiMPle Arc Plot
+  - Exact Detection of Variable Length Motifs
   - Misc:
       - MASS v2.0
       - Fast moving average
@@ -109,7 +110,6 @@ devtools::install_github("franzbischoff/tsmp")
 
 ## Roadmap
 
-  - Exact Detection of Variable Length Motifs
   - Profile-Based Shapelet Discovery
   - GPU-STOMP
   - Real-time version of previous algorithms (STAMPI, FLOSS, etc.)
