@@ -114,6 +114,11 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
     )
 
     distance_profile <- Re(distance_profile$distance_profile)
+
+    if(valmod) {
+      distance_profile <- distance_profile * sqrt(1.0 / window)
+    }
+
     distance_profile[distance_profile > (motif_distance * radius)^2] <- Inf
     motif_zone_start <- pmax(1, motif_idx - e_zone)
     motif_zone_end <- pmin(matrix_profile_size, motif_idx + e_zone)

@@ -45,7 +45,7 @@
 #' # join similarity
 #' mp <- valmod(ref_data, query_data, window_min = 30, window_max = 40)
 #' }
-#' 
+#'
 valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone = 1 / 2, lb = TRUE, verbose = 2) {
   args <- list(...)
   data <- args[[1]]
@@ -257,6 +257,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
         }
 
         lb_profile <- new_lb_profile
+        lb_profile[is.na(lb_profile)] <- Inf
         lb_idx <- (lb_profile > 0)
         lb_profile[lb_idx] <- window_size * (1 - (lb_profile[lb_idx]^2))
         lb_profile[!lb_idx] <- window_size
@@ -393,10 +394,10 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
 
       new_index_data_v <- list_motifs_profile[i_v, "indexes_data", j_v] + window_size - 1
 
-      # --- Compute true distance entry heapentry ----
-      list_motifs_profile[i_v, "dps", j_v] <- list_motifs_profile[i_v, "dps", j_v] + matrix(query[new_index_query_v] * data[new_index_data_v], ncol = ncol(new_index_data_v))
-      list_motifs_profile[i_v, "sum_data", j_v] <- list_motifs_profile[i_v, "sum_data", j_v] + data[new_index_data_v]
-      list_motifs_profile[i_v, "sqrsum_data", j_v] <- list_motifs_profile[i_v, "sqrsum_data", j_v] + (data[new_index_data_v] * data[new_index_data_v])
+      # --- Compute true distance entry heapentry ---- TODO: check NA from data
+      list_motifs_profile[i_v, "dps", j_v][ez_v] <- (list_motifs_profile[i_v, "dps", j_v] + matrix(query[new_index_query_v] * data[new_index_data_v], ncol = ncol(new_index_data_v)))[ez_v]
+      list_motifs_profile[i_v, "sum_data", j_v][ez_v] <- (list_motifs_profile[i_v, "sum_data", j_v] + data[new_index_data_v])[ez_v]
+      list_motifs_profile[i_v, "sqrsum_data", j_v][ez_v] <- (list_motifs_profile[i_v, "sqrsum_data", j_v] + (data[new_index_data_v] * data[new_index_data_v]))[ez_v]
 
       data_mean_v <- list_motifs_profile[i_v, "sum_data", ] / window_size
       data_sd_v <- (list_motifs_profile[i_v, "sqrsum_data", ] / window_size) - (data_mean_v * data_mean_v)
@@ -481,7 +482,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
           indexes <- list_motifs_profile[entries, "indexes_data", , drop = FALSE][cbind(seq_along(j[n]), 1, j[n])]
 
           valmp$matrix_profile[entries] <- normalized_distance[n]
-          valmp$profile_index[entries] <- indexes[n]
+          valmp$profile_index[entries] <- indexes
           valmp$length_profile[entries] <- window_size
         }
 
@@ -492,7 +493,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
           indexes <- list_motifs_profile[entries, "indexes_data", , drop = FALSE][cbind(seq_along(j[r]), 1, j[r])]
 
           valmp$matrix_profile_non_length_normalized[entries] <- real_distance[r]
-          valmp$profile_index_non_length_normalized[entries] <- indexes[r]
+          valmp$profile_index_non_length_normalized[entries] <- indexes
           valmp$length_profile_non_length_normalized[entries] <- window_size
         }
 
@@ -611,7 +612,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
             indexes <- list_motifs_profile[entries, "indexes_data", , drop = FALSE][cbind(seq_along(j[n]), 1, j[n])]
 
             valmp$matrix_profile[entries] <- normalized_distance[n]
-            valmp$profile_index[entries] <- indexes[n]
+            valmp$profile_index[entries] <- indexes
             valmp$length_profile[entries] <- window_size
           }
 
@@ -622,7 +623,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
             indexes <- list_motifs_profile[entries, "indexes_data", , drop = FALSE][cbind(seq_along(j[r]), 1, j[r])]
 
             valmp$matrix_profile_non_length_normalized[entries] <- real_distance[r]
-            valmp$profile_index_non_length_normalized[entries] <- indexes[r]
+            valmp$profile_index_non_length_normalized[entries] <- indexes
             valmp$length_profile_non_length_normalized[entries] <- window_size
           }
 
