@@ -45,7 +45,7 @@
 #' # join similarity
 #' mp <- valmod(ref_data, query_data, window_min = 30, window_max = 40)
 #' }
-#'
+#' 
 valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone = 1 / 2, lb = TRUE, verbose = 2) {
   args <- list(...)
   data <- args[[1]]
@@ -346,7 +346,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
       #### LB Pruning ####
 
       if (verbose > 1) {
-        pbp$tick(0, tokens = list(what = "Pruning"))
+        pbp$tick(0, tokens = list(what = "Pruning "))
       }
 
       if (offset == 0) {
@@ -383,7 +383,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
       query_sd_v <- matrix(rep(curr_query_sd, heap_size), ncol = heap_size)
 
       # --- First Inner Loop ----
-      j_v <- seq(heap_size, 2, by = -1)
+      j_v <- seq(heap_size, , by = -1)
 
       # apply exclusion zone
       # !ezx_v contains all trival matches to recompute the DP
@@ -513,7 +513,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
           indexes_to_update <- sort(index_lb_min_non_valid[non_valid_idxs])
 
           if (verbose > 1) {
-            pbp$tick(0, tokens = list(what = sprintf("DPs %s ", length(indexes_to_update))))
+            pbp$tick(0, tokens = list(what = sprintf("DPs  %s  ", length(indexes_to_update))))
           }
 
           # check for sequences where we can use STOMP instead of MASS
@@ -545,7 +545,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
 
               if (i == 1) {
                 if (verbose > 1) {
-                  pbp$tick(0, tokens = list(what = sprintf("MASS   ")))
+                  pbp$tick(0, tokens = list(what = sprintf("MASS    ")))
                 }
 
                 nn <- mass(
@@ -637,7 +637,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
         }
 
         if (verbose > 1) {
-          pbp$tick(0, tokens = list(what = "ReCheck"))
+          pbp$tick(0, tokens = list(what = "Re Check "))
         }
 
         # Re-check
@@ -693,7 +693,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
       }
 
       if (verbose > 1) {
-        pbp$tick(tokens = list(what = "Pruning"))
+        pbp$tick(tokens = list(what = "Pruning "))
       }
     }
   }
@@ -726,40 +726,4 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
     class(obj) <- c("Valmod", "MatrixProfile")
     obj
   })
-}
-
-#' @export
-
-bubble_up <- function(data, heap_size) {
-
-  idx <- seq_along(data)
-  len <- length(data)
-  end <- 2
-
-  while (end <= len) {
-
-    if (end > heap_size) {
-      if (data[end] < data[1]) {
-        data[1] <- data[end]
-        idx[1] <- idx[end]
-      }
-    }
-
-    pos <- min(end, heap_size)
-
-    while (pos > 1 && data[floor(pos / 2)] > data[pos]) {
-      swp <- floor(pos / 2)
-      y <- data[pos]
-      id <- idx[pos]
-      data[pos] <- data[swp]
-      idx[pos] <- idx[swp]
-      data[swp] <- y
-      idx[swp] <- id
-      pos <- swp
-    }
-
-    end <- end + 1
-  }
-
-  return(list(ix = idx[heap_size:1], x = data[heap_size:1]))
 }

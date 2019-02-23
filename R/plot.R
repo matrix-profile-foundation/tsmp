@@ -98,6 +98,7 @@ plot_arcs <- function(pairs, alpha = NULL, quality = 30, lwd = 15, col = c("blue
 #' @param main a `string`. Main title.
 #' @param xlab a `string`. X label.
 #' @param ylab a `string`. Y label.
+#' @param ncol an `int`. Number of columns to plot Motifs.
 #' @param ... further arguments to be passed to [plot()]. See [par()].
 #'
 #' @return None
@@ -107,7 +108,7 @@ plot_arcs <- function(pairs, alpha = NULL, quality = 30, lwd = 15, col = c("blue
 #' @name plot
 #'
 #' @examples
-#' 
+#'
 #' mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
 #' plot(mp)
 plot.ArcCount <- function(x, data, type = c("data", "matrix"), exclusion_zone = NULL, edge_limit = NULL,
@@ -445,8 +446,6 @@ plot.Chain <- function(x, data, type = c("data", "matrix"), main = "Chain Discov
   graphics::par(def_par)
 }
 
-#' @param ncol an `int`. Number of columns to plot Motifs.
-#'
 #' @export
 #' @keywords hplot
 #' @name plot
@@ -510,8 +509,6 @@ plot.Discord <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "
   graphics::par(def_par)
 }
 
-#' @param ncol an `int`. Number of columns to plot Motifs.
-#'
 #' @export
 #' @keywords hplot
 #' @name plot

@@ -115,7 +115,7 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
 
     distance_profile <- Re(distance_profile$distance_profile)
 
-    if(valmod) {
+    if (valmod) {
       distance_profile <- distance_profile * sqrt(1.0 / window)
     }
 

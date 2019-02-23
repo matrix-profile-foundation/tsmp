@@ -22,7 +22,7 @@
 
 ## Known Issues (a.k.a NOTES)
 
-* Installed size is 5.5Mb. 
+* Installed size is 5.6Mb. 
   * This is due to datasets in this package. I believe they are essential to learning all the features
     of this package.
 

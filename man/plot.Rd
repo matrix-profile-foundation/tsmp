@@ -74,8 +74,6 @@
 \item{...}{further arguments to be passed to \code{\link[=plot]{plot()}}. See \code{\link[=par]{par()}}.}
 
 \item{ncol}{an \code{int}. Number of columns to plot Motifs.}
-
-\item{ncol}{an \code{int}. Number of columns to plot Motifs.}
 }
 \value{
 None

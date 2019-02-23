@@ -1,7 +1,7 @@
 README
 ================
 Francisco Bischoff
-\- 20 Feb 2019
+\- 23 Feb 2019
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -102,7 +102,7 @@ devtools::install_github("franzbischoff/tsmp")
     Exploration)
   - Annotation vectors (e.g., Stop-word MOTIF bias, Actionability bias)
   - FLUSS Arc Plot and SiMPle Arc Plot
-  - Exact Detection of Variable Length Motifs
+  - Exact Detection of Variable Length Motifs (VALMOD)
   - Misc:
       - MASS v2.0
       - Fast moving average

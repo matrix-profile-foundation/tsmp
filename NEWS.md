@@ -1,7 +1,7 @@
 NEWS
 ================
 Francisco Bischoff
-\- 20 Feb 2019
+\- 23 Feb 2019
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
@@ -10,7 +10,8 @@ Francisco Bischoff
   - Added `find_discord()` and its `print()` and `plot()` functions.
   - Changed `plot()` for motifs to show where are the neighbors. Same
     for discord.
-  - Added `valmod()` for Variable Length Motif Discovery
+  - Added `valmod()` for Variable Length Motif Discovery.
+  - Changed `find_motif()` for compatibility with `valmod()`.
 
 # tsmp 0.3.3
 
