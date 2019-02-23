@@ -510,72 +510,120 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
         non_valid_idxs <- (list_lb_min_non_valid <= min_abs_true_dist)
 
         if (any(non_valid_idxs)) {
-          indexes_to_update <- index_lb_min_non_valid[non_valid_idxs]
+          indexes_to_update <- sort(index_lb_min_non_valid[non_valid_idxs])
 
-          pre <- mass_pre(data, data_size, query, query_size, window_size = window_size)
           if (verbose > 1) {
-            pbp$tick(0, tokens = list(what = "MASS   "))
+            pbp$tick(0, tokens = list(what = sprintf("DPs %s ", length(indexes_to_update))))
           }
 
-          for (i in indexes_to_update) {
-            nn <- mass(
-              pre$data_fft, query[i:(i + window_size - 1)], data_size,
-              window_size, pre$data_mean, pre$data_sd, pre$query_mean[i],
-              pre$query_sd[i]
-            )
+          # check for sequences where we can use STOMP instead of MASS
+          idif <- c(1, diff(indexes_to_update))
+          idxs <- c(1, which(idif > 1), length(indexes_to_update) + 1)
 
-            distance_profile <- Re(nn$distance_profile)
-            distance_profile[distance_profile < 0] <- 0
+          sequences <- list()
 
-            new_lb_profile <- Re(((nn$last_product / window_size) - (pre$query_mean[i] *
-              pre$data_mean)) / (pre$query_sd[i] * pre$data_sd))
-            new_lb_profile[new_lb_profile < 0] <- 0
-            new_lb_profile_len <- length(new_lb_profile)
+          for (i in seq_len(length(idxs) - 1)) {
+            seq <- indexes_to_update[idxs[i]:(idxs[i + 1] - 1)]
+            sequences[[i]] <- seq
+          }
 
-            if (new_lb_profile_len != matrix_profile_size) {
-              stop("new_lb_profile_len != matrix_profile_size")
+          pre <- mass_pre(data, data_size, query, query_size, window_size = window_size)
+          rpre <- mass_pre(query, query_size, data, data_size, window_size = window_size)
+
+          rnn <- mass(
+            rpre$data_fft, data[1:window_size], query_size, window_size, rpre$data_mean,
+            rpre$data_sd, rpre$query_mean[1], rpre$query_sd[1]
+          )
+
+          first_product <- rnn$last_product
+
+          for (j in seq_along(sequences)) {
+            seq <- sequences[[j]]
+
+            for (i in seq_along(seq)) {
+              query_window <- query[seq[i]:(seq[i] + window_size - 1)]
+
+              if (i == 1) {
+                if (verbose > 1) {
+                  pbp$tick(0, tokens = list(what = sprintf("MASS   ")))
+                }
+
+                nn <- mass(
+                  pre$data_fft, query_window, data_size, window_size, pre$data_mean, pre$data_sd,
+                  pre$query_mean[seq[i]], pre$query_sd[seq[i]]
+                )
+
+                distance_profile <- nn$distance_profile
+                last_product <- nn$last_product
+              } else {
+                if (verbose > 1) {
+                  pbp$tick(0, tokens = list(what = sprintf("STOMP %s ", i)))
+                }
+
+                last_product[2:(data_size - window_size + 1)] <- last_product[1:(data_size - window_size)] -
+                  data[1:(data_size - window_size)] * drop_value +
+                  data[(window_size + 1):data_size] * query_window[window_size]
+
+                last_product[1] <- first_product[seq[i]]
+                distance_profile <- 2 * (window_size - (last_product - window_size * pre$data_mean * pre$query_mean[seq[i]]) /
+                  (pre$data_sd * pre$query_sd[seq[i]]))
+              }
+
+              drop_value <- query_window[1]
+
+              distance_profile <- Re(distance_profile)
+              distance_profile[distance_profile < 0] <- 0
+
+              new_lb_profile <- Re(((last_product / window_size) - (pre$query_mean[seq[i]] *
+                pre$data_mean)) / (pre$query_sd[seq[i]] * pre$data_sd))
+              new_lb_profile[new_lb_profile < 0] <- 0
+              new_lb_profile_len <- length(new_lb_profile)
+
+              if (new_lb_profile_len != matrix_profile_size) {
+                stop("new_lb_profile_len != matrix_profile_size")
+              }
+
+              lb_profile <- new_lb_profile
+              lb_idx <- (lb_profile > 0)
+              lb_profile[lb_idx] <- window_size * (1 - (lb_profile[lb_idx]^2))
+              lb_profile[!lb_idx] <- window_size
+
+              # apply exclusion zone
+              if (exclusion_zone > 0) {
+                exc_st <- max(1, seq[i] - exclusion_zone)
+                exc_ed <- min(matrix_profile_size, seq[i] + exclusion_zone)
+
+                distance_profile[exc_st:exc_ed] <- Inf
+                lb_profile[exc_st:exc_ed] <- Inf
+              }
+
+              distance_profile[pre$data_sd < vars()$eps] <- Inf
+              lb_profile[pre$data_sd < vars()$eps] <- Inf
+              if (skip_location[seq[i]] || any(pre$query_sd[seq[i]] < vars()$eps)) {
+                distance_profile[] <- Inf
+                lb_profile[] <- Inf
+              }
+
+              distance_profile[skip_location] <- Inf
+              lb_profile[skip_location] <- Inf
+
+              lb_idxs <- sort.int(lb_profile, index.return = TRUE)$ix[1:heap_size]
+
+              if (any(lb_idxs > matrix_profile_size)) {
+                stop("lb_idxs > matrix_profile_size")
+              }
+
+              list_motifs_profile[seq[i], "distances", ] <- distance_profile[lb_idxs]
+              list_motifs_profile[seq[i], "query_sd", ] <- query_sd_v[seq[i], ]
+              list_motifs_profile[seq[i], "sum_query", ] <- query_stats[[offset + 1]]$sum[seq[i]]
+              list_motifs_profile[seq[i], "sum_data", ] <- data_stats[[offset + 1]]$sum[lb_idxs]
+              list_motifs_profile[seq[i], "sqrsum_query", ] <- query_stats[[offset + 1]]$sqrsum[seq[i]]
+              list_motifs_profile[seq[i], "sqrsum_data", ] <- data_stats[[offset + 1]]$sqrsum[lb_idxs]
+              list_motifs_profile[seq[i], "lb_distances", ] <- lb_profile[lb_idxs]
+              list_motifs_profile[seq[i], "index_query", ] <- seq[i]
+              list_motifs_profile[seq[i], "indexes_data", ] <- lb_idxs
+              list_motifs_profile[seq[i], "dps", ] <- Re(last_product[lb_idxs])
             }
-
-            lb_profile <- new_lb_profile
-            lb_idx <- (lb_profile > 0)
-            lb_profile[lb_idx] <- window_size * (1 - (lb_profile[lb_idx]^2))
-            lb_profile[!lb_idx] <- window_size
-
-            # apply exclusion zone
-            if (exclusion_zone > 0) {
-              exc_st <- max(1, i - exclusion_zone)
-              exc_ed <- min(matrix_profile_size, i + exclusion_zone)
-
-              distance_profile[exc_st:exc_ed] <- Inf
-              lb_profile[exc_st:exc_ed] <- Inf
-            }
-
-            distance_profile[pre$data_sd < vars()$eps] <- Inf
-            lb_profile[pre$data_sd < vars()$eps] <- Inf
-            if (skip_location[i] || any(pre$query_sd[i] < vars()$eps)) {
-              distance_profile[] <- Inf
-              lb_profile[] <- Inf
-            }
-
-            distance_profile[skip_location] <- Inf
-            lb_profile[skip_location] <- Inf
-
-            lb_idxs <- sort(lb_profile, index.return = TRUE)$ix[1:heap_size]
-
-            if (any(lb_idxs > matrix_profile_size)) {
-              stop("lb_idxs > matrix_profile_size")
-            }
-
-            list_motifs_profile[i, "distances", ] <- distance_profile[lb_idxs]
-            list_motifs_profile[i, "query_sd", ] <- query_sd_v[i, ]
-            list_motifs_profile[i, "sum_query", ] <- query_stats[[offset + 1]]$sum[i]
-            list_motifs_profile[i, "sum_data", ] <- data_stats[[offset + 1]]$sum[lb_idxs]
-            list_motifs_profile[i, "sqrsum_query", ] <- query_stats[[offset + 1]]$sqrsum[i]
-            list_motifs_profile[i, "sqrsum_data", ] <- data_stats[[offset + 1]]$sqrsum[lb_idxs]
-            list_motifs_profile[i, "lb_distances", ] <- lb_profile[lb_idxs]
-            list_motifs_profile[i, "index_query", ] <- i
-            list_motifs_profile[i, "indexes_data", ] <- lb_idxs
-            list_motifs_profile[i, "dps", ] <- Re(nn$last_product[lb_idxs])
           }
 
           list_valid_entries <- c(list_valid_entries, indexes_to_update)
@@ -678,4 +726,40 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
     class(obj) <- c("Valmod", "MatrixProfile")
     obj
   })
+}
+
+#' @export
+
+bubble_up <- function(data, heap_size) {
+
+  idx <- seq_along(data)
+  len <- length(data)
+  end <- 2
+
+  while (end <= len) {
+
+    if (end > heap_size) {
+      if (data[end] < data[1]) {
+        data[1] <- data[end]
+        idx[1] <- idx[end]
+      }
+    }
+
+    pos <- min(end, heap_size)
+
+    while (pos > 1 && data[floor(pos / 2)] > data[pos]) {
+      swp <- floor(pos / 2)
+      y <- data[pos]
+      id <- idx[pos]
+      data[pos] <- data[swp]
+      idx[pos] <- idx[swp]
+      data[swp] <- y
+      idx[swp] <- id
+      pos <- swp
+    }
+
+    end <- end + 1
+  }
+
+  return(list(ix = idx[heap_size:1], x = data[heap_size:1]))
 }
