@@ -37,7 +37,6 @@ data <- mp_test_data$train$data[1:1000]
 w <- 50
 mp <- tsmp(data, window_size = w, verbose = 0)
 av <- av_stop_word(mp, stop_word_loc = 150, apply = TRUE)
-
 }
 \references{
 \itemize{

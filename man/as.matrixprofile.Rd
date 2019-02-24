@@ -3,8 +3,10 @@
 \name{as.matrixprofile}
 \alias{as.matrixprofile}
 \alias{as.multimatrixprofile}
+\alias{as.valmod}
 \alias{as.fluss}
 \alias{as.chain}
+\alias{as.discord}
 \alias{as.motif}
 \alias{as.multimotif}
 \alias{as.arccount}
@@ -15,9 +17,13 @@ as.matrixprofile(.mp)
 
 as.multimatrixprofile(.mp)
 
+as.valmod(.mp)
+
 as.fluss(.mp)
 
 as.chain(.mp)
+
+as.discord(.mp)
 
 as.motif(.mp)
 
@@ -45,9 +51,13 @@ to cast it back.
 
 \item \code{as.multimatrixprofile}: Cast an object changed by another function back to \code{MultiMatrixProfile}.
 
+\item \code{as.valmod}: Cast an object changed by another function back to \code{MultiMatrixProfile}.
+
 \item \code{as.fluss}: Cast an object changed by another function back to \code{Fluss}.
 
 \item \code{as.chain}: Cast an object changed by another function back to \code{Chain}.
+
+\item \code{as.discord}: Cast an object changed by another function back to \code{Discord}.
 
 \item \code{as.motif}: Cast an object changed by another function back to \code{Motif}.
 
@@ -62,12 +72,11 @@ to cast it back.
 
 w <- 50
 data <- mp_gait_data
-mp <- tsmp(data, window_size = w, exclusion_zone = 1/4, verbose = 0)
+mp <- tsmp(data, window_size = w, exclusion_zone = 1 / 4, verbose = 0)
 mp <- find_motif(mp)
 class(mp) # first class will be "Motif"
 
 plot(mp) # plots a motif plot
 
 plot(as.matrixprofile(mp)) # plots a matrix profile plot
-
 }

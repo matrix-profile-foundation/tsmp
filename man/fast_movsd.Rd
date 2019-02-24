@@ -18,5 +18,5 @@ Returns a \code{vector} with the moving standard deviation
 Fast implementation of moving standard deviation using filter
 }
 \examples{
-data_sd <- fast_movsd(mp_toy_data$data[,1], mp_toy_data$sub_len)
+data_sd <- fast_movsd(mp_toy_data$data[, 1], mp_toy_data$sub_len)
 }

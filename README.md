@@ -1,7 +1,7 @@
 README
 ================
 Francisco Bischoff
-\- 23 Oct 2018
+\- 23 Feb 2019
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -32,8 +32,8 @@ This package allows you to use the Matrix Profile concept as a toolkit.
 
 This package provides:
 
-  - Algorithms to build a Matrix Profile: STAMP, STOMP, SCRIMP++, SIMPLE
-    and MSTOMP.
+  - Algorithms to build a Matrix Profile: STAMP, STOMP, SCRIMP++,
+    SIMPLE, MSTOMP and VALMOD.
   - Algorithms for MOTIF search for Unidimensional and Multidimensional
     Matrix Profiles.
   - Algorithm for Chains search for Unidimensional Matrix Profile.
@@ -72,7 +72,7 @@ data <- cumsum(sample(c(-1, 1), 40000, TRUE))
 | ------------- | :----------: | :-------: | :---------: | :-----: |
 | `stomp_par()` |    52.72s    |   40000   |    1000     |    8    |
 | `scrimp()`    |    92.44s    |   40000   |    1000     |    1    |
-| `stomp()`     |   133.16s    |   40000   |    1000     |    1    |
+| `stomp()`     |   136.01s    |   40000   |    1000     |    1    |
 | `stamp_par()` |   140.25s    |   40000   |    1000     |    8    |
 | `stamp()`     |   262.03s    |   40000   |    1000     |    1    |
 
@@ -102,6 +102,7 @@ devtools::install_github("franzbischoff/tsmp")
     Exploration)
   - Annotation vectors (e.g., Stop-word MOTIF bias, Actionability bias)
   - FLUSS Arc Plot and SiMPle Arc Plot
+  - Exact Detection of Variable Length Motifs (VALMOD)
   - Misc:
       - MASS v2.0
       - Fast moving average
@@ -109,7 +110,6 @@ devtools::install_github("franzbischoff/tsmp")
 
 ## Roadmap
 
-  - Exact Detection of Variable Length Motifs
   - Profile-Based Shapelet Discovery
   - GPU-STOMP
   - Real-time version of previous algorithms (STAMPI, FLOSS, etc.)
@@ -117,15 +117,26 @@ devtools::install_github("franzbischoff/tsmp")
 
 ## Other projects with Matrix Profile
 
+  - Python: <https://github.com/target/matrixprofile-ts>
   - Python: <https://github.com/ZiyaoWei/pyMatrixProfile>
   - Python: <https://github.com/jbeleno/owlpy>
   - Python: <https://github.com/javidlakha/matrix-profile>
+<<<<<<< HEAD
   - C++ (CUDA and OPENCL): <https://github.com/shapelets/khiva>
   - R: <https://github.com/shapelets/khiva-r>
   - Matlab: <https://github.com/shapelets/khiva-matlab>
   - Python: <https://github.com/shapelets/khiva-python>
   - Java: <https://github.com/shapelets/khiva-java>
   - Kotlin: <https://github.com/shapelets/khiva-kotlin>
+=======
+  - Python: <https://github.com/shapelets/khiva-python>
+  - R: <https://github.com/shapelets/khiva-r>
+  - Matlab: <https://github.com/shapelets/khiva-matlab>
+  - Java: <https://github.com/shapelets/khiva-java>
+  - Java: <https://github.com/ensozos/Matrix-Profile>
+  - Kotlin: <https://github.com/shapelets/khiva-kotlin>
+  - C++ (CUDA and OPENCL): <https://github.com/shapelets/khiva>
+>>>>>>> release/v0.3.4
   - CUDA: <https://github.com/zpzim/STOMPSelfJoin>
   - CUDA: <https://github.com/zpzim/SCAMP>
 

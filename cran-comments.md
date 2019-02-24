@@ -1,9 +1,5 @@
 ## Comments
 
-* New Note: `installed size is 5.5Mb`. 
-  * This is due to datasets in this package. I believe they are essential to learning all the features
-  of this package.
-* Added import to package `progress`. It allows better information to the user.
 
 ## Test environments
 * Rhub
@@ -25,6 +21,10 @@
 * No reverse dependencies yet
 
 ## Known Issues (a.k.a NOTES)
+
+* Installed size is 5.6Mb. 
+  * This is due to datasets in this package. I believe they are essential to learning all the features
+    of this package.
 
 * Uses the superseded package: `doSNOW`
   * `doSNOW` has a property that allows to use progress bar that `parallel` does not.

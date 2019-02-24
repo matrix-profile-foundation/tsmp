@@ -19,7 +19,7 @@
 #' @references Website: <https://sites.google.com/view/weaklylabeled>
 #' @examples
 #' # This is a fast toy example and results are useless. For a complete result, run the code inside
-#' #'Not run' section below.
+#' #' Not run' section below.
 #' w <- c(110, 220)
 #' subs <- 11000:20000
 #' tr_data <- mp_test_data$train$data[subs]
@@ -29,14 +29,13 @@
 #' model <- sdts_train(tr_data, tr_label, w, verbose = 0)
 #' predict <- sdts_predict(model, te_data, round(mean(w)))
 #' sdts_score(predict, te_label, 1)
-#'
 #' \dontrun{
 #' windows <- c(110, 220, 330)
 #' model <- sdts_train(mp_test_data$train$data, mp_test_data$train$label, windows, verbose = 0)
 #' predict <- sdts_predict(model, mp_test_data$test$data, round(mean(windows)))
 #' sdts_score(predict, mp_test_data$test$label, 1)
 #' }
-
+#' 
 sdts_predict <- function(model, data, window_size) {
   n_pat <- length(model$thold)
   anno_st <- list()
@@ -86,6 +85,8 @@ sdts_predict <- function(model, data, window_size) {
     pred[anno_st[i]:anno_ed[i]] <- TRUE
   }
 
+  pred <- pred[seq_len(data_size - window_size + 1)]
+
   return(pred)
 }
 
@@ -109,7 +110,7 @@ sdts_predict <- function(model, data, window_size) {
 #' @references Website: <https://sites.google.com/view/weaklylabeled>
 #' @examples
 #' # This is a fast toy example and results are useless. For a complete result, run the code inside
-#' #'Not run' section below.
+#' #' Not run' section below.
 #' w <- c(110, 220)
 #' subs <- 11000:20000
 #' tr_data <- mp_test_data$train$data[subs]
@@ -119,14 +120,13 @@ sdts_predict <- function(model, data, window_size) {
 #' model <- sdts_train(tr_data, tr_label, w, verbose = 0)
 #' predict <- sdts_predict(model, te_data, round(mean(w)))
 #' sdts_score(predict, te_label, 1)
-#'
 #' \dontrun{
 #' windows <- c(110, 220, 330)
 #' model <- sdts_train(mp_test_data$train$data, mp_test_data$train$label, windows)
 #' predict <- sdts_predict(model, mp_test_data$test$data, round(mean(windows)))
 #' sdts_score(predict, mp_test_data$test$label, 1)
 #' }
-#'
+#' 
 sdts_score <- function(pred, gtruth, beta = 1) {
   if (length(pred) > length(gtruth)) {
     pred <- pred[seq_len(length(gtruth))]
@@ -134,6 +134,14 @@ sdts_score <- function(pred, gtruth, beta = 1) {
     pred_tmp <- rep(FALSE, length(gtruth))
     pred_tmp[seq_len(length(pred))] <- pred
     pred <- pred_tmp
+  }
+
+  if (anyNA(gtruth)) {
+    stop("Error: `gtruth` contains NA values.", call. = FALSE)
+  }
+
+  if (anyNA(pred)) {
+    stop("Error: `pred` contains NA values.", call. = FALSE)
   }
 
   pred_pad <- c(0, pred, 0)

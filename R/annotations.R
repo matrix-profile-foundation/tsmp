@@ -17,8 +17,11 @@
 #' w <- 50
 #' mp <- tsmp(data, window_size = w, verbose = 0)
 #' av <- av_zerocrossing(mp, apply = TRUE)
-#'
 av_zerocrossing <- function(.mp, data, apply = FALSE) {
+  if ("Valmod" %in% class(.mp)) {
+    stop("Error: Function not implemented for objects of class `Valmod`.")
+  }
+
   if (missing(data) && !is.null(.mp$data)) {
     data <- .mp$data[[1]]
   }
@@ -62,8 +65,11 @@ av_zerocrossing <- function(.mp, data, apply = FALSE) {
 #' w <- 50
 #' mp <- tsmp(data, window_size = w, verbose = 0)
 #' av <- av_complexity(mp, apply = TRUE)
-#'
 av_complexity <- function(.mp, data, dilution_factor = 0, apply = FALSE) {
+  if ("Valmod" %in% class(.mp)) {
+    stop("Error: Function not implemented for objects of class `Valmod`.")
+  }
+
   if (missing(data) && !is.null(.mp$data)) {
     data <- .mp$data[[1]]
   }
@@ -113,8 +119,11 @@ av_complexity <- function(.mp, data, dilution_factor = 0, apply = FALSE) {
 #' w <- 50
 #' mp <- tsmp(data, window_size = w, verbose = 0)
 #' av <- av_motion_artifact(mp, apply = TRUE)
-#'
 av_motion_artifact <- function(.mp, data, apply = FALSE) {
+  if ("Valmod" %in% class(.mp)) {
+    stop("Error: Function not implemented for objects of class `Valmod`.")
+  }
+
   if (missing(data) && !is.null(.mp$data)) {
     data <- .mp$data[[1]]
   }
@@ -171,8 +180,11 @@ av_motion_artifact <- function(.mp, data, apply = FALSE) {
 #' w <- 50
 #' mp <- tsmp(data, window_size = w, verbose = 0)
 #' av <- av_stop_word(mp, stop_word_loc = 150, apply = TRUE)
-#'
 av_stop_word <- function(.mp, data, stop_word_loc, exclusion_zone = NULL, threshold = 0.1, apply = FALSE) {
+  if ("Valmod" %in% class(.mp)) {
+    stop("Error: Function not implemented for objects of class `Valmod`.")
+  }
+
   if (missing(data) && !is.null(.mp$data)) {
     data <- .mp$data[[1]]
   }
@@ -234,8 +246,11 @@ av_stop_word <- function(.mp, data, stop_word_loc, exclusion_zone = NULL, thresh
 #' w <- 50
 #' mp <- tsmp(data, window_size = w, verbose = 0)
 #' av <- av_hardlimit_artifact(mp, apply = TRUE)
-#'
 av_hardlimit_artifact <- function(.mp, data, apply = FALSE) {
+  if ("Valmod" %in% class(.mp)) {
+    stop("Error: Function not implemented for objects of class `Valmod`.")
+  }
+
   if (missing(data) && !is.null(.mp$data)) {
     data <- .mp$data[[1]]
   }
@@ -287,13 +302,12 @@ av_hardlimit_artifact <- function(.mp, data, apply = FALSE) {
 #' mp <- tsmp(data, window_size = w, verbose = 0)
 #' mp <- av_complexity(mp)
 #' av <- av_apply(mp)
-
 av_apply <- function(.mp) {
-  if (!any(class(.mp) %in% "MatrixProfile")) {
+  if (!("MatrixProfile" %in% class(.mp))) {
     stop("Error: First argument must be an object of class `MatrixProfile`.")
   }
 
-  if (!any(class(.mp) %in% "AnnotationVector")) {
+  if (!("AnnotationVector" %in% class(.mp))) {
     stop("Error: First argument must be an object of class `AnnotationVector`.")
   }
 

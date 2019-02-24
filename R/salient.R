@@ -33,7 +33,6 @@
 #' data <- mp_toy_data$data[, 1]
 #' mp <- tsmp(data, window_size = 30, verbose = 0)
 #' mps <- salient_subsequences(mp, data, verbose = 0)
-#'
 #' \dontrun{
 #' # full example
 #' data <- mp_meat_data$sub$data
@@ -41,10 +40,14 @@
 #' mp <- tsmp(data, window_size = w, verbose = 2, n_workers = 6)
 #' mps <- salient_subsequences(mp, data, n_bits = c(4, 6, 8), verbose = 2)
 #' }
-#'
+#' 
 salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_zone = NULL, verbose = 2) {
-  if (!any(class(.mp) %in% "MatrixProfile")) {
+  if (!("MatrixProfile" %in% class(.mp))) {
     stop("Error: First argument must be an object of class `MatrixProfile`.")
+  }
+
+  if ("Valmod" %in% class(.mp)) {
+    stop("Error: Function not implemented for objects of class `Valmod`.")
   }
 
   if (missing(data) && !is.null(.mp$data)) {
@@ -352,9 +355,8 @@ salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_z
 #' mps <- salient_subsequences(mp, verbose = 0)
 #' mds_data <- salient_mds(mps)
 #' plot(mds_data, main = "Multi dimensional scale")
-
 salient_mds <- function(.mp, data, bit_idx = 1) {
-  if (!any(class(.mp) %in% "Salient")) {
+  if (!("Salient" %in% class(.mp))) {
     stop("Error: First argument must be an object of class `Salient`.")
   }
 
@@ -399,14 +401,13 @@ salient_mds <- function(.mp, data, bit_idx = 1) {
 #'
 #' @examples
 #' # toy example
-#'   data <- mp_toy_data$data[, 1]
-#'   mp <- tsmp(data, window_size = 30, verbose = 0)
-#'   mps <- salient_subsequences(mp, n_bits = c(4, 6, 8), verbose = 0)
-#'   label_idx <- seq(2, 500, by = 110) # fake data
-#'   salient_score(mps, label_idx)
-
+#' data <- mp_toy_data$data[, 1]
+#' mp <- tsmp(data, window_size = 30, verbose = 0)
+#' mps <- salient_subsequences(mp, n_bits = c(4, 6, 8), verbose = 0)
+#' label_idx <- seq(2, 500, by = 110) # fake data
+#' salient_score(mps, label_idx)
 salient_score <- function(.mp, gtruth) {
-  if (!any(class(.mp) %in% "Salient")) {
+  if (!("Salient" %in% class(.mp))) {
     stop("Error: First argument must be an object of class `Salient`.")
   }
 

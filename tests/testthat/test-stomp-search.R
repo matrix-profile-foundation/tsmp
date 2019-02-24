@@ -9,9 +9,10 @@ if (skip_on_cran()) {
 
   test_that("Motifs are correct", {
     expect_equal(motifs$motif$motif_idx[[1]], c(33, 102))
-    expect_equal(motifs$motif$motif_idx[[2]], c(41, 57))
-    expect_equal(length(motifs$motif$motif_neighbor[[1]]), 0)
-    expect_equal(motifs$motif$motif_neighbor[[2]], 104)
+    expect_equal(motifs$motif$motif_idx[[2]], c(9, 127))
+    expect_equal(length(motifs$motif$motif_neighbor[[1]]), 1)
+    expect_equal(motifs$motif$motif_neighbor[[2]], c(148, 77))
+    expect_equal(motifs$motif$motif_window[[1]], 30)
   })
 
   test_that("Errors", {

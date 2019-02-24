@@ -3,11 +3,13 @@
 \name{plot}
 \alias{plot}
 \alias{plot.ArcCount}
+\alias{plot.Valmod}
 \alias{plot.MatrixProfile}
 \alias{plot.MultiMatrixProfile}
 \alias{plot.SimpleMatrixProfile}
 \alias{plot.Fluss}
 \alias{plot.Chain}
+\alias{plot.Discord}
 \alias{plot.Motif}
 \alias{plot.MultiMotif}
 \alias{plot.Salient}
@@ -17,6 +19,9 @@
   exclusion_zone = NULL, edge_limit = NULL,
   threshold = stats::quantile(x$cac, 0.1), main = "Arcs Discover",
   xlab = "index", ylab = "", ...)
+
+\method{plot}{Valmod}(x, ylab = "distance", xlab = "index",
+  main = "Valmod Matrix Profile", ...)
 
 \method{plot}{MatrixProfile}(x, ylab = "distance", xlab = "index",
   main = "Unidimensional Matrix Profile", ...)
@@ -33,6 +38,9 @@
 
 \method{plot}{Chain}(x, data, type = c("data", "matrix"),
   main = "Chain Discover", xlab = "index", ylab = "", ...)
+
+\method{plot}{Discord}(x, data, type = c("data", "matrix"), ncol = 3,
+  main = "Discord Discover", xlab = "index", ylab = "", ...)
 
 \method{plot}{Motif}(x, data, type = c("data", "matrix"), ncol = 3,
   main = "MOTIF Discover", xlab = "index", ylab = "", ...)
@@ -77,6 +85,5 @@ Plot a TSMP object
 
 mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
 plot(mp)
-
 }
 \keyword{hplot}

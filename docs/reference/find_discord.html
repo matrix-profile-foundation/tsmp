@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Original data used in the FLUSS paper — mp_fluss_data • tsmp</title>
+<title>Search for Discord — find_discord • tsmp</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,9 @@
 
 
 
-<meta property="og:title" content="Original data used in the FLUSS paper — mp_fluss_data" />
+<meta property="og:title" content="Search for Discord — find_discord" />
 
-<meta property="og:description" content="Contains two datasets used in FLUSS paper (1), first is TiltABP from (2), and second is
-WalkJogRun from PAMAP's dataset (3)" />
+<meta property="og:description" content="Search for Discord" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -117,63 +116,79 @@ WalkJogRun from PAMAP's dataset (3)" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Original data used in the FLUSS paper</h1>
-    <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/mp-fluss-data.R'><code>R/mp-fluss-data.R</code></a></small>
-    <div class="hidden name"><code>mp_fluss_data.Rd</code></div>
+    <h1>Search for Discord</h1>
+    <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/find-discord.R'><code>R/find-discord.R</code></a></small>
+    <div class="hidden name"><code>find_discord.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Contains two datasets used in FLUSS paper (1), first is TiltABP from (2), and second is
-WalkJogRun from PAMAP's dataset (3)</p>
+    <p>Search for Discord</p>
     
     </div>
 
-    <pre class="usage"><span class='no'>mp_fluss_data</span></pre>
-        
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+    <pre class="usage"><span class='fu'>find_discord</span>(<span class='no'>.mp</span>, <span class='no'>...</span>)
 
-    <p>A list containing:</p><dl class='dl-horizontal'>
-<dt>data</dt><dd><p>one column matrix with the dataset's data</p></dd>
-<dt>gtruth</dt><dd><p>a vector with the ground truth of semantic change according to provided dataset</p></dd>
-<dt>window</dt><dd><p>window size used in original paper</p></dd>
-</dl>
+<span class='co'># S3 method for MatrixProfile</span>
+<span class='fu'>find_discord</span>(<span class='no'>.mp</span>, <span class='no'>data</span>, <span class='kw'>n_discords</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>n_neighbors</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>radius</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>exclusion_zone</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
-
-    <p><a href='https://sites.google.com/site/onlinesemanticsegmentation/'>https://sites.google.com/site/onlinesemanticsegmentation/</a></p>
-<p><a href='http://www.cs.ucr.edu/~eamonn/time_series_data/'>http://www.cs.ucr.edu/~eamonn/time_series_data/</a></p>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>.mp</th>
+      <td><p>a TSMP object of class <code>MatrixProfile</code></p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>further arguments to be passed to class specific function.</p></td>
+    </tr>
+    <tr>
+      <th>data</th>
+      <td><p>the data used to build the Matrix Profile, if not embedded.</p></td>
+    </tr>
+    <tr>
+      <th>n_discords</th>
+      <td><p>an <code>int</code>. Number of discords to find. (Default is <code>1</code>).</p></td>
+    </tr>
+    <tr>
+      <th>n_neighbors</th>
+      <td><p>an <code>int</code>. Number of neighbors to find. (Default is <code>3</code>).</p></td>
+    </tr>
+    <tr>
+      <th>radius</th>
+      <td><p>an <code>int</code>. Set a threshold to exclude matching neighbors with distance &gt; current
+discord distance * <code>radius</code>. (Default is <code>3</code>).</p></td>
+    </tr>
+    <tr>
+      <th>exclusion_zone</th>
+      <td><p>if a <code>number</code> will be used instead of embedded value. (Default is <code>NULL</code>).</p></td>
+    </tr>
+    </table>
     
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <ul>
-<li><p>Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII:
-Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE
-International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.</p></li>
-</ul>
-    <ul>
-<li><p>Heldt, T., Oefinger, M.B., Hoshiyama, M. and Mark, R.G., 2003, September.
-Circulatory response to passive and active changes in posture. In IEEE Computers in Cardiology,
-2003 (pp. 263-266).</p></li>
-</ul>
-    <ul>
-<li><p>Reiss, A. and Stricker, D., 2012. Introducing a new benchmarked dataset for
-activity monitoring. In 16th International Symposium on Wearable Computers (ISWC), 2012, pages
-108–109. IEEE, 2012.</p></li>
-</ul>
+    <p>For class <code>MatrixProfile</code>, returns the input <code>.mp</code> object with a new name <code>discord</code>. It contains: <code>discord_idx</code>, a <code>vector</code>
+of discords founded.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># Single dimension data</span>
+<span class='no'>w</span> <span class='kw'>&lt;-</span> <span class='fl'>50</span>
+<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_gait_data</span>
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span>(<span class='no'>data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='no'>w</span>, <span class='kw'>exclusion_zone</span> <span class='kw'>=</span> <span class='fl'>1</span> / <span class='fl'>4</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>find_discord</span>(<span class='no'>mp</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#format">Format</a></li>
-
-      <li><a href="#source">Source</a></li>
-
-      <li><a href="#references">References</a></li>
-          </ul>
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

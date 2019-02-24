@@ -1,11 +1,23 @@
 NEWS
 ================
 Francisco Bischoff
-\- 23 Oct 2018
+\- 23 Feb 2019
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
-# tsmp 0.3.1.9000
+# tsmp 0.3.4
+
+  - Added `find_discord()` and its `print()` and `plot()` functions.
+  - Changed `plot()` for motifs to show where are the neighbors. Same
+    for discord.
+  - Added `valmod()` for Variable Length Motif Discovery.
+  - Changed `find_motif()` for compatibility with `valmod()`.
+
+# tsmp 0.3.3
+
+  - Fixed `find_chains()` not returning the longest chain. Issue \#33
+
+# tsmp 0.3.2
 
   - Fixed Matrix Profile print, dimensions are now reported correctly.
   - Fixed pipe imports. Issue \#22

@@ -32,7 +32,6 @@ text, \code{2} adds the progress bar, \code{3} adds the finish sound.
 w <- 30
 data <- mp_toy_data$data # 3 dimensions matrix
 result <- simple_fast(data, window_size = w, verbose = 0)
-
 }
 \references{
 \itemize{

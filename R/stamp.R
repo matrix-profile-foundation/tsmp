@@ -41,10 +41,9 @@
 #'
 #' @examples
 #' mp <- stamp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
-#'
+#' 
 #' # using threads
 #' mp <- stamp_par(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
-#'
 #' \dontrun{
 #' ref_data <- mp_toy_data$data[, 1]
 #' query_data <- mp_toy_data$data[, 2]
@@ -53,7 +52,7 @@
 #' # join similarity
 #' mp <- stamp(ref_data, query_data, window_size = 30, s_size = round(nrow(query_data) * 0.1))
 #' }
-
+#' 
 stamp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size = Inf) {
   args <- list(...)
   data <- args[[1]]
