@@ -45,7 +45,7 @@
 #' # join similarity
 #' mp <- valmod(ref_data, query_data, window_min = 30, window_max = 40)
 #' }
-#' 
+#'
 valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone = 1 / 2, lb = TRUE, verbose = 2) {
   args <- list(...)
   data <- args[[1]]
@@ -59,8 +59,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
   # transform data into matrix
   if (is.vector(data)) {
     data <- as.matrix(data)
-  }
-  else if (is.matrix(data)) {
+  } else if (is.matrix(data)) {
     if (ncol(data) > nrow(data)) {
       data <- t(data)
     }

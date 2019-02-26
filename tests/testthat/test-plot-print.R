@@ -13,7 +13,10 @@ if (skip_on_cran()) {
   segments <- fluss_extract(cac, nseg)
   chain <- find_chains(mp)
   motif <- find_motif(mp)
+  discord <- find_discord(mp)
   mps <- salient_subsequences(mp, n_bits = c(4, 6, 8), verbose = 0)
+  val <- tsmp(data, window_size = c(30, 40), verbose = 0, mode = "valmod")
+  val_motif <- find_motif(val)
 
   plot_arcs_test <- function() plot_arcs(pairs = matrix(c(5, 10, 1, 10, 20, 5), ncol = 2, byrow = TRUE))
   plot_arccount_test <- function() plot.ArcCount(cac)
@@ -22,6 +25,7 @@ if (skip_on_cran()) {
   plot_chain_test <- function() plot.Chain(chain)
   plot_motif_test <- function() plot.Motif(motif)
   plot_salient_test <- function() plot.Salient(mps)
+  plot_valmod_test <- function() plot.Valmod(val)
 
   mdata <- mp_toy_data$data[1:200, ]
   mw <- mp_toy_data$sub_len
@@ -44,6 +48,7 @@ if (skip_on_cran()) {
     expect_doppelganger("plot multimotif", plot_multimotif_test)
     expect_doppelganger("plot simple matrix profile", plot_simplematrixprofile_test)
     expect_doppelganger("plot salient", plot_salient_test)
+    expect_doppelganger("plot valmod", plot_valmod_test)
   })
 
   context("Testing Print")
@@ -62,7 +67,10 @@ if (skip_on_cran()) {
     expect_known_output(smp, file = paste0(path, "smp-print"), print = TRUE, update = upd)
     expect_known_output(chain, file = paste0(path, "chain-print"), print = TRUE, update = upd)
     expect_known_output(motif, file = paste0(path, "motif-print"), print = TRUE, update = upd)
+    expect_known_output(discord, file = paste0(path, "discord-print"), print = TRUE, update = upd)
     expect_known_output(mmotif, file = paste0(path, "mmotif-print"), print = TRUE, update = upd)
     expect_known_output(mps, file = paste0(path, "salient-print"), print = TRUE, update = upd)
+    expect_known_output(val, file = paste0(path, "valmod-print"), print = TRUE, update = upd)
+    expect_known_output(val_motif, file = paste0(path, "motif_valmod-print"), print = TRUE, update = TRUE)
   })
 }
