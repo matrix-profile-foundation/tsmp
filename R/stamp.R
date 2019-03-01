@@ -41,7 +41,7 @@
 #'
 #' @examples
 #' mp <- stamp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
-#' 
+#'
 #' # using threads
 #' mp <- stamp_par(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
 #' \dontrun{
@@ -52,7 +52,7 @@
 #' # join similarity
 #' mp <- stamp(ref_data, query_data, window_size = 30, s_size = round(nrow(query_data) * 0.1))
 #' }
-#' 
+#'
 stamp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size = Inf) {
   args <- list(...)
   data <- args[[1]]
@@ -164,10 +164,8 @@ stamp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size 
   for (i in order) {
     j <- j + 1
 
-    nn <- mass(
-      pre$data_fft, query[i:(i + window_size - 1)], data_size, window_size, pre$data_mean,
-      pre$data_sd, pre$query_mean[i], pre$query_sd[i]
-    )
+    nn <- mass3(data, query[i:(i + window_size - 1)], data_size, window_size, pre$data_mean,
+      pre$data_sd, pre$query_mean[i], pre$query_sd[i])
 
     distance_profile <- Re(sqrt(nn$distance_profile))
 

@@ -1,4 +1,4 @@
-#' Calculates the distance profile using MASS algorithm
+#' Calculates the distance profile using MASS_V2 algorithm
 #'
 #' Mueen's Algorithm for Similarity Search is The Fastest Similarity Search Algorithm for Time
 #' Series Subsequences under Euclidean Distance and Correlation Coefficient.
@@ -29,9 +29,9 @@
 #' query_data <- mp_toy_data$data[, 1]
 #' d_size <- length(ref_data)
 #' q_size <- length(query_data)
-#' 
+#'
 #' pre <- mass_pre(ref_data, d_size, query_data, q_size, w)
-#' 
+#'
 #' dp <- list()
 #' for (i in 1:(d_size - w + 1)) {
 #'   dp[[i]] <- mass(
