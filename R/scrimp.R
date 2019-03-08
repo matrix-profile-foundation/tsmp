@@ -162,7 +162,7 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
     obj
   }), TRUE)
 
-  pre <- mass_pre(data, data_size, query, query_size, window_size)
+  nn <- dist_profile(data, data, window_size = window_size)
 
   tictac <- Sys.time()
 
@@ -176,9 +176,8 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
     j <- 1
     for (i in pre_scrimp_idxs) {
       # compute the distance profile
-      query_window <- data[i:(i + window_size - 1)]
-      distance_profile <- mass(pre$data_fft, query_window, data_size, window_size, pre$data_mean, pre$data_sd, pre$query_mean[i], pre$query_sd[i])$distance_profile
-      distance_profile <- abs(sqrt(distance_profile))
+      nn <- dist_profile(data, data, nn, window_size = window_size, index = i)
+      distance_profile <- abs(sqrt(nn$distance_profile))
 
       # apply exclusion zone
       exc_st <- max(1, (i - exclusion_zone))
@@ -204,8 +203,8 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
 
       idx_nn <- profile_index[i]
       idx_diff <- idx_nn - i
-      dotproduct[i] <- (window_size - matrix_profile[i]^2 / 2) * pre$data_sd[i] * pre$data_sd[idx_nn] +
-        window_size * pre$data_mean[i] * pre$data_mean[idx_nn]
+      dotproduct[i] <- (window_size - matrix_profile[i]^2 / 2) * nn$par$data_sd[i] * nn$par$data_sd[idx_nn] +
+        window_size * nn$par$data_mean[i] * nn$par$data_mean[idx_nn]
 
       endidx <- min(matrix_profile_size, (i + current_step - 1), (matrix_profile_size - idx_diff))
 
@@ -215,9 +214,9 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
           data[i:(endidx - 1)] * data[idx_nn:(endidx - 1 + idx_diff)])
 
       refine_distance[(i + 1):endidx] <-
-        sqrt(abs(2 * (window_size - (dotproduct[(i + 1):endidx] - window_size * pre$data_mean[(i + 1):endidx] *
-          pre$data_mean[(idx_nn + 1):(endidx + idx_diff)]) /
-          (pre$data_sd[(i + 1):endidx] * pre$data_sd[(idx_nn + 1):(endidx + idx_diff)]))))
+        sqrt(abs(2 * (window_size - (dotproduct[(i + 1):endidx] - window_size * nn$par$data_mean[(i + 1):endidx] *
+          nn$par$data_mean[(idx_nn + 1):(endidx + idx_diff)]) /
+          (nn$par$data_sd[(i + 1):endidx] * nn$par$data_sd[(idx_nn + 1):(endidx + idx_diff)]))))
 
       beginidx <- max(1, (i - current_step + 1), (1 - idx_diff))
 
@@ -227,9 +226,9 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
             data[(idx_nn - 1 + window_size):(beginidx + idx_diff + window_size)])
 
       refine_distance[beginidx:(i - 1)] <-
-        sqrt(abs(2 * (window_size - (dotproduct[beginidx:(i - 1)] - window_size * pre$data_mean[beginidx:(i - 1)] *
-          pre$data_mean[(beginidx + idx_diff):(idx_nn - 1)]) /
-          (pre$data_sd[beginidx:(i - 1)] * pre$data_sd[(beginidx + idx_diff):(idx_nn - 1)]))))
+        sqrt(abs(2 * (window_size - (dotproduct[beginidx:(i - 1)] - window_size * nn$par$data_mean[beginidx:(i - 1)] *
+          nn$par$data_mean[(beginidx + idx_diff):(idx_nn - 1)]) /
+          (nn$par$data_sd[beginidx:(i - 1)] * nn$par$data_sd[(beginidx + idx_diff):(idx_nn - 1)]))))
 
       update_pos1 <- which(refine_distance[beginidx:endidx] < matrix_profile[beginidx:endidx])
       matrix_profile[(update_pos1 + beginidx - 1)] <- refine_distance[(update_pos1 + beginidx - 1)]
@@ -270,15 +269,15 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
     curdistance[i:num_queries] <-
       sqrt(abs(2 * (window_size -
         (curlastz[i:num_queries] - # x_term
-          window_size * pre$query_mean[i:num_queries] * pre$data_mean[1:(num_queries - i + 1)]) /
-          (pre$query_sd[i:num_queries] * pre$data_sd[1:(num_queries - i + 1)])
+          window_size * nn$par$query_mean[i:num_queries] * nn$par$data_mean[1:(num_queries - i + 1)]) /
+          (nn$par$query_sd[i:num_queries] * nn$par$data_sd[1:(num_queries - i + 1)])
       )))
 
     # Skip positions
     curdistance[is.na(curdistance)] <- Inf
     skipped_curdistance <- curdistance
-    skipped_curdistance[pre$data_sd[i:num_queries] < vars()$eps] <- Inf
-    if (skip_location[i] || any(pre$query_sd[i] < vars()$eps)) {
+    skipped_curdistance[nn$par$data_sd[i:num_queries] < vars()$eps] <- Inf
+    if (skip_location[i] || any(nn$par$query_sd[i] < vars()$eps)) {
       skipped_curdistance[] <- Inf
     }
     skipped_curdistance[skip_location[i:num_queries]] <- Inf

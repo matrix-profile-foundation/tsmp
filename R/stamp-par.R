@@ -6,7 +6,7 @@
 #'
 #' @describeIn stamp Parallel version.
 
-stamp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size = Inf, n_workers = 2) {
+stamp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size = Inf, n_workers = 2, weight = NULL) {
   args <- list(...)
   data <- args[[1]]
   if (length(args) > 1) {
@@ -135,7 +135,11 @@ stamp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_s
     obj
   }), TRUE)
 
-  pre <- mass_pre(data, data_size, query, query_size, window_size = window_size)
+  if (is.null(weight)) {
+    pre <- dist_profile(data, query, window_size = window_size)
+  } else {
+    pre <- dist_profile(data, query, window_size = window_size, method = "weighted", weight = weight)
+  }
 
   j <- NULL # CRAN NOTE fix
   `%dopar%` <- foreach::`%dopar%` # CRAN NOTE fix
@@ -148,14 +152,18 @@ stamp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_s
       .multicombine = TRUE,
       .options.snow = opts,
       # .errorhandling = 'remove',
-      .export = c("mass", "vars")
+      .export = c("dist_profile", "vars")
     ) %dopar% {
       res <- NULL
 
       index <- k * cols + j
       if (index <= ssize) {
         i <- order[index]
-        nn <- mass(pre$data_fft, query[i:(i + window_size - 1)], data_size, window_size, pre$data_mean, pre$data_sd, pre$query_mean[i], pre$query_sd[i])
+        if (is.null(weight)) {
+          nn <- dist_profile(data, query, pre, index = i)
+        } else {
+          nn <- dist_profile(data, query, pre, index = i, method = "weighted")
+        }
         distance_profile <- Re(sqrt(nn$distance_profile))
 
         # apply exclusion zone

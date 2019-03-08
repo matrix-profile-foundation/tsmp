@@ -21,6 +21,8 @@
 #' @param verbose an `int`. See details. (Default is `2`).
 #' @param s_size a `numeric`. for anytime algorithm, represents the size (in observations) the
 #'   random calculation will occur (default is `Inf`).
+#' @param weight a `vector` of `numeric` or `NULL` with the same length of the `window_size`. This is
+#' a MASS extension to weight the query.
 #'
 #' @return Returns a `MatrixProfile` object, a `list` with the matrix profile `mp`, profile index `pi`
 #'   left and right matrix profile `lmp`, `rmp` and profile index `lpi`, `rpi`, window size `w` and
@@ -41,7 +43,7 @@
 #'
 #' @examples
 #' mp <- stamp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
-#'
+#' 
 #' # using threads
 #' mp <- stamp_par(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
 #' \dontrun{
@@ -52,8 +54,8 @@
 #' # join similarity
 #' mp <- stamp(ref_data, query_data, window_size = 30, s_size = round(nrow(query_data) * 0.1))
 #' }
-#'
-stamp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size = Inf) {
+#' 
+stamp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size = Inf, weight = NULL) {
   args <- list(...)
   data <- args[[1]]
   if (length(args) > 1) {
@@ -159,13 +161,16 @@ stamp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size 
     obj
   }), TRUE)
 
-  pre <- mass_pre(data, data_size, query, query_size, window_size = window_size)
+  nn <- NULL
 
   for (i in order) {
     j <- j + 1
 
-    nn <- mass3(data, query[i:(i + window_size - 1)], data_size, window_size, pre$data_mean,
-      pre$data_sd, pre$query_mean[i], pre$query_sd[i])
+    if (is.null(weight)) {
+      nn <- dist_profile(data, query, nn, window_size = window_size, index = i)
+    } else {
+      nn <- dist_profile(data, query, nn, window_size = window_size, index = i, method = "weighted", weight = weight)
+    }
 
     distance_profile <- Re(sqrt(nn$distance_profile))
 
@@ -176,8 +181,8 @@ stamp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size 
       distance_profile[exc_st:exc_ed] <- Inf
     }
 
-    distance_profile[pre$data_sd < vars()$eps] <- Inf
-    if (skip_location[i] || any(pre$query_sd[i] < vars()$eps)) {
+    distance_profile[nn$var$data_sd < vars()$eps] <- Inf
+    if (skip_location[i] || any(nn$var$query_sd[i] < vars()$eps)) {
       distance_profile[] <- Inf
     }
     distance_profile[skip_location] <- Inf

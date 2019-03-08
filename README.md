@@ -1,7 +1,7 @@
 README
 ================
 Francisco Bischoff
-\- 23 Feb 2019
+\- 12 Mar 2019
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -105,6 +105,8 @@ devtools::install_github("franzbischoff/tsmp")
   - Exact Detection of Variable Length Motifs (VALMOD)
   - Misc:
       - MASS v2.0
+      - MASS v3.0
+      - MASS extensions: WQ
       - Fast moving average
       - Fast moving SD
 
@@ -113,7 +115,7 @@ devtools::install_github("franzbischoff/tsmp")
   - Profile-Based Shapelet Discovery
   - GPU-STOMP
   - Real-time version of previous algorithms (STAMPI, FLOSS, etc.)
-  - MASS Extensions (ADP, WQ, QwG)
+  - MASS Extensions (ADP, QwG)
 
 ## Other projects with Matrix Profile
 

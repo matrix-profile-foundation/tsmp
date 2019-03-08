@@ -1,3 +1,4 @@
+^\.covrignore$
 ^API$
 ^CRAN-RELEASE$
 ^API.*$

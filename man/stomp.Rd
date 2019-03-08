@@ -51,14 +51,14 @@ matches; if a query data is provided (join similarity), this parameter is ignore
 mp <- stomp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
 
 # using threads
-mp <- stomp_par(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+mp <- stomp_par(mp_toy_data$data[1:400, 1], window_size = 30, verbose = 0)
 \dontrun{
 ref_data <- mp_toy_data$data[, 1]
 query_data <- mp_toy_data$data[, 2]
 # self similarity
 mp <- stomp(ref_data, window_size = 30)
 # join similarity
-mp <- stomp(ref_data, query_data, window_size = 30)
+mp2 <- stomp(ref_data, query_data, window_size = 30)
 }
 }
 \references{

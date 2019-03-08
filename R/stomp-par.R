@@ -70,31 +70,13 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
   query[is.na(query)] <- 0
   query[is.infinite(query)] <- 0
 
-  data_fft <- matrix(0, (window_size + data_size), 1)
-  data_mean <- matrix(0, matrix_profile_size, 1)
-  data_sd <- matrix(0, matrix_profile_size, 1)
   first_product <- matrix(0, num_queries, 1)
 
   # forward
-  nnpre <- mass_pre(data, data_size, query, query_size, window_size = window_size)
-  data_fft <- nnpre$data_fft
-  data_mean <- nnpre$data_mean
-  data_sd <- nnpre$data_sd
-  query_mean <- nnpre$query_mean
-  query_sd <- nnpre$query_sd
-
+  nn <- dist_profile(data, query, window_size = window_size)
   # reverse
   # This is needed to handle with the join similarity.
-  rnnpre <- mass_pre(query, query_size, data, data_size, window_size = window_size)
-  rdata_fft <- rnnpre$data_fft
-  rdata_mean <- rnnpre$data_mean
-  rdata_sd <- rnnpre$data_sd
-  rquery_mean <- rnnpre$query_mean
-  rquery_sd <- rnnpre$query_sd
-  rnn <- mass(
-    rdata_fft, data[1:window_size], query_size, window_size, rdata_mean,
-    rdata_sd, rquery_mean[1], rquery_sd[1]
-  )
+  rnn <- dist_profile(query, data, window_size = window_size)
 
   first_product[, 1] <- rnn$last_product
 
@@ -113,7 +95,10 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
   }
 
   # seperate index into different job
-  per_work <- max(10, min(250, ceiling(num_queries / 100)))
+  min_per_work <- 200
+  max_per_work <- 10000
+  plateaux_n_works <- 400
+  per_work <- max(min_per_work, min(max_per_work, ceiling(num_queries / plateaux_n_works)))
   n_work <- floor(num_queries / per_work)
   idx_work <- list()
 
@@ -139,6 +124,7 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
     prog <- function(n) {
       if (!pb$finished) {
         pb$tick(per_work)
+        gc()
       }
     }
   }
@@ -160,7 +146,7 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
     .multicombine = TRUE,
     .options.snow = opts,
     # .errorhandling = 'remove',
-    .export = c("mass", "vars")
+    .export = c("dist_profile", "vars")
   ) %dopar% {
     work_len <- length(idx_work[[i]])
     pro_muls <- matrix(Inf, matrix_profile_size, 1)
@@ -186,19 +172,16 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
       query_window <- as.matrix(query[idx:(idx + window_size - 1), 1])
 
       if (j == 1) {
-        nn <- mass(
-          data_fft, query_window, data_size, window_size, data_mean, data_sd,
-          query_mean[idx], query_sd[idx]
-        )
-        dist_pro[, 1] <- nn$distance_profile
-        last_product[, 1] <- nn$last_product
+        nni <- dist_profile(data, query, nn, index = idx)
+        dist_pro[, 1] <- nni$distance_profile
+        last_product[, 1] <- nni$last_product
       } else {
         last_product[2:(data_size - window_size + 1), 1] <- last_product[1:(data_size - window_size), 1] -
           data[1:(data_size - window_size), 1] * drop_value +
           data[(window_size + 1):data_size, 1] * query_window[window_size, 1]
         last_product[1, 1] <- first_product[idx, 1]
-        dist_pro <- 2 * (window_size - (last_product - window_size * data_mean * query_mean[idx]) /
-          (data_sd * query_sd[idx]))
+        dist_pro <- 2 * (window_size - (last_product - window_size * nni$par$data_mean * nni$par$query_mean[idx]) /
+          (nni$par$data_sd * nni$par$query_sd[idx]))
       }
 
       dist_pro <- Re(sqrt(dist_pro))
@@ -211,8 +194,8 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
         dist_pro[exc_st:exc_ed, 1] <- Inf
       }
 
-      dist_pro[data_sd < vars()$eps] <- Inf
-      if (skip_location[idx] || any(query_sd[idx] < vars()$eps)) {
+      dist_pro[nni$par$data_sd < vars()$eps] <- Inf
+      if (skip_location[idx] || any(nni$par$query_sd[idx] < vars()$eps)) {
         dist_pro[] <- Inf
       }
       dist_pro[skip_location] <- Inf

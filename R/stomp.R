@@ -37,14 +37,14 @@
 #' mp <- stomp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
 #' 
 #' # using threads
-#' mp <- stomp_par(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+#' mp <- stomp_par(mp_toy_data$data[1:400, 1], window_size = 30, verbose = 0)
 #' \dontrun{
 #' ref_data <- mp_toy_data$data[, 1]
 #' query_data <- mp_toy_data$data[, 2]
 #' # self similarity
 #' mp <- stomp(ref_data, window_size = 30)
 #' # join similarity
-#' mp <- stomp(ref_data, query_data, window_size = 30)
+#' mp2 <- stomp(ref_data, query_data, window_size = 30)
 #' }
 stomp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
   args <- list(...)
@@ -118,32 +118,13 @@ stomp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
     on.exit(beep(sounds[[1]]), TRUE)
   }
 
-  data_fft <- matrix(0, (window_size + data_size), 1)
-  data_mean <- matrix(0, matrix_profile_size, 1)
-  data_sd <- matrix(0, matrix_profile_size, 1)
   first_product <- matrix(0, num_queries, 1)
 
   # forward
-  nnpre <- mass_pre(data, data_size, query, query_size, window_size = window_size)
-  data_fft <- nnpre$data_fft
-  data_mean <- nnpre$data_mean
-  data_sd <- nnpre$data_sd
-  query_mean <- nnpre$query_mean
-  query_sd <- nnpre$query_sd
-
+  nn <- dist_profile(data, query, window_size = window_size)
   # reverse
   # This is needed to handle with the join similarity.
-  rnnpre <- mass_pre(query, query_size, data, data_size, window_size = window_size)
-  rdata_fft <- rnnpre$data_fft
-  rdata_mean <- rnnpre$data_mean
-  rdata_sd <- rnnpre$data_sd
-  rquery_mean <- rnnpre$query_mean
-  rquery_sd <- rnnpre$query_sd
-
-  rnn <- mass(
-    rdata_fft, data[1:window_size], query_size, window_size, rdata_mean,
-    rdata_sd, rquery_mean[1], rquery_sd[1]
-  )
+  rnn <- dist_profile(query, data, window_size = window_size)
 
   first_product[, 1] <- rnn$last_product
 
@@ -168,10 +149,6 @@ stomp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
     query_window <- as.matrix(query[i:(i + window_size - 1), 1])
 
     if (i == 1) {
-      nn <- mass(
-        data_fft, query_window, data_size, window_size, data_mean, data_sd,
-        query_mean[i], query_sd[i]
-      )
       distance_profile[, 1] <- nn$distance_profile
       last_product[, 1] <- nn$last_product
     } else {
@@ -180,8 +157,8 @@ stomp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
         data[(window_size + 1):data_size, 1] * query_window[window_size, 1]
 
       last_product[1, 1] <- first_product[i, 1]
-      distance_profile <- 2 * (window_size - (last_product - window_size * data_mean * query_mean[i]) /
-        (data_sd * query_sd[i]))
+      distance_profile <- 2 * (window_size - (last_product - window_size * nn$par$data_mean * nn$par$query_mean[i]) /
+        (nn$par$data_sd * nn$par$query_sd[i]))
     }
 
     distance_profile <- Re(sqrt(distance_profile))
@@ -194,8 +171,8 @@ stomp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
       distance_profile[exc_st:exc_ed, 1] <- Inf
     }
 
-    distance_profile[data_sd < vars()$eps] <- Inf
-    if (skip_location[i] || any(query_sd[i] < vars()$eps)) {
+    distance_profile[nn$par$data_sd < vars()$eps] <- Inf
+    if (skip_location[i] || any(nn$par$query_sd[i] < vars()$eps)) {
       distance_profile[] <- Inf
     }
     distance_profile[skip_location] <- Inf

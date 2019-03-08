@@ -2,6 +2,7 @@
 #'
 #' @param .mp a TSMP object of class `MatrixProfile` or `MultiMatrixProfile`.
 #' @param ... further arguments to be passed to class specific function.
+#'
 #' @name find_motif
 #' @export
 
@@ -15,6 +16,7 @@ find_motif <- function(.mp, ...) {
 #' @param radius an `int`. Set a threshold to exclude matching neighbors with distance > current
 #' motif distance * `radius`. (Default is `3`).
 #' @param exclusion_zone if a `number` will be used instead of embedded value. (Default is `NULL`).
+#'
 #' @name find_motif
 #' @export
 #' @return For class `MatrixProfile`, returns the input `.mp` object with a new name `motif`. It contains: `motif_idx`, a `list`
@@ -75,7 +77,6 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
 
   matrix_profile <- .mp$mp # keep mp intact
   matrix_profile_size <- length(matrix_profile)
-  data_size <- nrow(data)
   motif_idxs <- list(motifs = list(NULL), neighbors = list(NULL), windows = list(NULL))
 
   if (is.null(exclusion_zone)) {
@@ -84,10 +85,7 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
 
   exclusion_zone <- round(.mp$w * exclusion_zone + vars()$eps)
 
-  if (!valmod) {
-    # precompute here for classic matrix profile
-    nn_pre <- mass_pre(data, data_size, window_size = .mp$w)
-  }
+  nn <- NULL
 
   for (i in seq_len(n_motifs)) {
     min_idx <- which.min(matrix_profile)
@@ -97,7 +95,7 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
 
     if (valmod) {
       # precompute for each window size in valmod
-      nn_pre <- mass_pre(data, data_size, window_size = .mp$w[min_idx])
+      nn <- NULL
       window <- .mp$w[min_idx]
       e_zone <- exclusion_zone[min_idx]
     } else {
@@ -106,14 +104,9 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
     }
 
     # query using the motif to find its neighbors
-    query <- data[motif_idx:(motif_idx + window - 1)]
+    nn <- dist_profile(data, data, nn, window_size = .mp$w, index = min_idx)
 
-    distance_profile <- mass(
-      nn_pre$data_fft, query, data_size, window, nn_pre$data_mean, nn_pre$data_sd,
-      nn_pre$data_mean[motif_idx], nn_pre$data_sd[motif_idx]
-    )
-
-    distance_profile <- Re(distance_profile$distance_profile)
+    distance_profile <- Re(nn$distance_profile)
 
     if (valmod) {
       distance_profile <- distance_profile * sqrt(1.0 / window)
@@ -172,7 +165,7 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
 #' @name find_motif
 #' @export
 #' @examples
-#'
+#' 
 #' # Multidimension data
 #' w <- mp_toy_data$sub_len
 #' data <- mp_toy_data$data[1:300, ]

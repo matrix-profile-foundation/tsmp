@@ -4,21 +4,17 @@
 \alias{mass_pre}
 \title{Precomputes several values used on MASS}
 \usage{
-mass_pre(data, data_size, query = NULL, query_size = NULL, window_size)
+mass_pre(data, query = NULL, window_size)
 }
 \arguments{
 \item{data}{a \code{vector} or a \code{matrix} of \code{numeric}. Reference Time Series.}
 
-\item{data_size}{an \code{int}. Reference Time Series size.}
-
 \item{query}{a \code{vector} or a \code{matrix} of \code{numeric}. Query Time Series (default is \code{NULL}).}
-
-\item{query_size}{an \code{int}. Query Time Series size (default is \code{NULL}).}
 
 \item{window_size}{an \code{int}. Sliding window size.}
 }
 \value{
-Returns \code{data_fft}, \code{data_mean}, \code{data_sd}, \code{query_mean} and \code{query_sd}.
+Returns \code{window_size}, \code{data_fft}, \code{data_size}, \code{data_mean}, \code{data_sd}, \code{query_mean} and \code{query_sd}.
 }
 \description{
 Precomputes several values used on MASS
@@ -27,16 +23,14 @@ Precomputes several values used on MASS
 w <- mp_toy_data$sub_len
 ref_data <- mp_toy_data$data[, 1]
 query_data <- mp_toy_data$data[, 1]
-d_size <- length(ref_data)
-q_size <- length(query_data)
 
-pre <- mass_pre(ref_data, d_size, query_data, q_size, w)
+pre <- tsmp:::mass_pre(ref_data, query_data, w)
 
 dp <- list()
-for (i in 1:(d_size - w + 1)) {
-  dp[[i]] <- mass(
-    pre$data_fft, query_data[i:(i - 1 + w)], d_size, w, pre$data_mean, pre$data_sd,
-    pre$query_mean[i], pre$query_sd[i]
+for (i in 1:(pre$data_size - w + 1)) {
+  dp[[i]] <- tsmp:::mass_v2(
+    query_data[i:(i - 1 + w)], pre$window_size, pre$data_fft, pre$data_size,
+    pre$data_mean, pre$data_sd, pre$query_mean[i], pre$query_sd[i]
   )
 }
 }
@@ -50,5 +44,6 @@ Series Subsequences under Euclidean Distance.
 Website: \url{https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html}
 }
 \seealso{
-\code{\link[=mass]{mass()}} for using precomputed values.
+\code{\link[=mass_v2]{mass_v2()}}, \code{\link[=mass_v3]{mass_v3()}} for using precomputed values.
 }
+\keyword{internal}

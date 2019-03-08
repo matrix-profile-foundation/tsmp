@@ -35,20 +35,15 @@
 #' predict <- sdts_predict(model, mp_test_data$test$data, round(mean(windows)))
 #' sdts_score(predict, mp_test_data$test$label, 1)
 #' }
-#' 
+#'
 sdts_predict <- function(model, data, window_size) {
   n_pat <- length(model$thold)
   anno_st <- list()
   data_size <- length(data)
 
   for (i in 1:n_pat) {
-    pat_len <- length(model$pattern[[i]])
-    pre <- mass_pre(data, data_size, window_size = pat_len)
-    dist_pro <- mass(
-      pre$data_fft, model$pattern[[i]], data_size, pat_len, pre$data_mean,
-      pre$data_sd, mean(model$pattern[[i]]), std(model$pattern[[i]])
-    )
-    dist_pro <- Re(sqrt(dist_pro$distance_profile))
+    nn <- dist_profile(data, model$pattern[[i]])
+    dist_pro <- Re(sqrt(nn$distance_profile))
     anno <- dist_pro - model$thold[i]
     anno[anno >= 0] <- 0
     anno[anno < 0] <- -1
@@ -56,8 +51,7 @@ sdts_predict <- function(model, data, window_size) {
     anno <- c(anno, rep(window_size, 0))
     anno_pad <- c(0, anno, 0)
 
-    anno_st[[i]] <- which((anno_pad[1:(length(anno_pad) - 1)] - anno_pad[2:length(anno_pad)]) == -1) + 1
-    anno_st[[i]] <- anno_st[[i]] - 1 # TODO: why this?
+    anno_st[[i]] <- which((anno_pad[1:(length(anno_pad) - 1)] - anno_pad[2:length(anno_pad)]) == -1)
   }
 
   anno_st <- unlist(anno_st)
@@ -126,7 +120,7 @@ sdts_predict <- function(model, data, window_size) {
 #' predict <- sdts_predict(model, mp_test_data$test$data, round(mean(windows)))
 #' sdts_score(predict, mp_test_data$test$label, 1)
 #' }
-#' 
+#'
 sdts_score <- function(pred, gtruth, beta = 1) {
   if (length(pred) > length(gtruth)) {
     pred <- pred[seq_len(length(gtruth))]

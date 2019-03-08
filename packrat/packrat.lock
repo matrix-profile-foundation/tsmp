@@ -48,8 +48,8 @@ Hash: c0d56cd15034f395874c870141870c25
 
 Package: RCurl
 Source: CRAN
-Version: 1.95-4.11
-Hash: 98b1b04db217dc56baca68aa34079fdd
+Version: 1.95-4.12
+Hash: 261163f9c66d2a2c7ef8028765ed2838
 Requires: bitops
 
 Package: RJSONIO
@@ -129,8 +129,8 @@ Hash: 931f9972deae0f205e1c78a51f33149b
 
 Package: caTools
 Source: CRAN
-Version: 1.17.1.1
-Hash: 1764f9cb70825aa7a1c461e7514ffb73
+Version: 1.17.1.2
+Hash: 4e16b54f85b1a69e05021a81fda1aef1
 Requires: bitops
 
 Package: callr
@@ -269,19 +269,19 @@ GithubSha1: 7c12d369c202018dfc3dfa3f975f03c8b6c18437
 Package: devtools
 Source: github
 Version: 2.0.1.9000
-Hash: 1f2b20276e0f3afa2c172c80d2f3f231
+Hash: c13f5ac3f289e87d122676f6135dee09
 Requires: callr, cli, digest, git2r, httr, jsonlite, memoise, pkgbuild,
     pkgload, rcmdcheck, remotes, rstudioapi, sessioninfo, usethis,
     withr
 GithubRepo: devtools
 GithubUsername: r-lib
 GithubRef: master
-GithubSha1: 188a6136bce35abc4763887767d687aab0fc57bc
+GithubSha1: 8297926e7b34f6bb5fc48ad969cca95d4476b465
 RemoteHost: api.github.com
 RemoteRepo: devtools
 RemoteUsername: r-lib
 RemoteRef: master
-RemoteSha: 188a6136bce35abc4763887767d687aab0fc57bc
+RemoteSha: 8297926e7b34f6bb5fc48ad969cca95d4476b465
 
 Package: diffobj
 Source: CRAN
@@ -498,8 +498,8 @@ Hash: 5f969e213e966135393e3e304abf3f49
 
 Package: knitr
 Source: CRAN
-Version: 1.21
-Hash: 05d92a30fe7f149fef5e82428cbbe0d7
+Version: 1.22
+Hash: d7581079d36fa69f84ff721384355734
 Requires: evaluate, highr, markdown, stringr, xfun, yaml
 
 Package: labeling
@@ -603,8 +603,8 @@ Hash: b5153a9aa3d422ae8da5caded75f80a9
 
 Package: openssl
 Source: CRAN
-Version: 1.2.1
-Hash: c3c2751a977ed402ec7a2a32698fb533
+Version: 1.2.2
+Hash: 539a2d62e62212923ceabe379f20502a
 Requires: askpass
 
 Package: packrat
@@ -717,8 +717,8 @@ Requires: assertthat, magrittr
 
 Package: processx
 Source: CRAN
-Version: 3.2.1
-Hash: fdc6a66626b75f96ee28ffc770d9ebd7
+Version: 3.3.0
+Hash: 89c6047da2d7dfad11bedd624252d78a
 Requires: R6, ps
 
 Package: profvis
@@ -755,8 +755,8 @@ Hash: 1d4cae95887ffe5b1a22bea5994476cd
 
 Package: purrr
 Source: CRAN
-Version: 0.3.0
-Hash: 39be04d964bc2b860f09147ce4b8e2ef
+Version: 0.3.1
+Hash: b38aa54611eb7c5829c63ba298eeed43
 Requires: magrittr, rlang
 
 Package: quantmod
@@ -846,8 +846,8 @@ Requires: lazyeval, magrittr
 
 Package: rgl
 Source: CRAN
-Version: 0.99.16
-Hash: d0f4057d993eb221e344184559d3623b
+Version: 0.100.18
+Hash: cdc4078051828117e34adbd83924436f
 Requires: crosstalk, htmltools, htmlwidgets, jsonlite, knitr, magrittr,
     manipulateWidget, shiny
 
@@ -942,10 +942,19 @@ Version: 0.1.7
 Hash: d093478ac90064e670cd4bf1a99b47b6
 
 Package: spelling
-Source: CRAN
-Version: 2.0
-Hash: 53090bb7fcd7fe36b630cf29b7572dfa
+Source: github
+Version: 2.1
+Hash: 6c3fa20ec7a283f6b40daadd5720d205
 Requires: commonmark, hunspell, knitr, xml2
+GithubRepo: spelling
+GithubUsername: ropensci
+GithubRef: master
+GithubSha1: f6011042f43922d6ca2f097d4cbd8e7c80409b1a
+RemoteHost: api.github.com
+RemoteRepo: spelling
+RemoteUsername: ropensci
+RemoteRef: master
+RemoteSha: f6011042f43922d6ca2f097d4cbd8e7c80409b1a
 
 Package: stringdist
 Source: CRAN
@@ -984,8 +993,8 @@ Requires: BH, Rcpp, gdtools
 
 Package: sys
 Source: CRAN
-Version: 2.1
-Hash: 5ce312d2f816b21f602cb81fe4659a0b
+Version: 3.1
+Hash: dc2a997b1b9a2d3f9c234491153cb951
 
 Package: testthat
 Source: CRAN
@@ -1008,18 +1017,18 @@ Requires: xfun
 Package: usethis
 Source: github
 Version: 1.4.0.9000
-Hash: b55376fd4c1c417641888b30be5b21e2
+Hash: 77458bc65de712054556810a96eee6dc
 Requires: clipr, clisymbols, crayon, curl, desc, fs, gh, git2r, glue,
     purrr, rlang, rprojroot, rstudioapi, whisker, withr, yaml
 GithubRepo: usethis
 GithubUsername: r-lib
 GithubRef: master
-GithubSha1: 0adfb5d902cc20bba3e324e52e234695f3a81a28
+GithubSha1: 21f09f8292798509ec53ffe433af3235dd958101
 RemoteHost: api.github.com
 RemoteRepo: usethis
 RemoteUsername: r-lib
 RemoteRef: master
-RemoteSha: 0adfb5d902cc20bba3e324e52e234695f3a81a28
+RemoteSha: 21f09f8292798509ec53ffe433af3235dd958101
 
 Package: utf8
 Source: CRAN
@@ -1084,8 +1093,8 @@ Hash: d534108bcd5f34ec73e9eb523751ba20
 
 Package: xfun
 Source: CRAN
-Version: 0.4
-Hash: 76004125b45195c0330ec71904849995
+Version: 0.5
+Hash: 384622a18a85624029dec83d26e588a6
 
 Package: xml2
 Source: CRAN

@@ -48,7 +48,7 @@
 #' mp <- mstomp(mp_toy_data$data[1:200, ], 30, verbose = 0)
 #' 
 #' # using threads
-#' mp <- mstomp_par(mp_toy_data$data[1:200, ], 30, verbose = 0)
+#' mp <- mstomp_par(mp_toy_data$data[1:400, ], 30, verbose = 0)
 #' \dontrun{
 #' # force using dimensions 1 and 2
 #' mp <- mstomp(mp_toy_data$data[1:200, ], 30, must_dim = c(1, 2))
@@ -139,18 +139,17 @@ mstomp <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, must_
   }
 
   # initialization
-  data_fft <- matrix(0, (window_size + data_size), n_dim)
+  nn <- vector(mode = "list", length = 3)
   data_mean <- matrix(0, matrix_profile_size, n_dim)
   data_sd <- matrix(0, matrix_profile_size, n_dim)
   first_product <- matrix(0, matrix_profile_size, n_dim)
 
+
   for (i in 1:n_dim) {
-    nnpre <- mass_pre(data[, i], data_size, window_size = window_size)
-    data_fft[, i] <- nnpre$data_fft
-    data_mean[, i] <- nnpre$data_mean
-    data_sd[, i] <- nnpre$data_sd
-    mstomp <- mass(data_fft[, i], data[1:window_size, i], data_size, window_size, data_mean[, i], data_sd[, i], data_mean[1, i], data_sd[1, i])
-    first_product[, i] <- mstomp$last_product
+    nn[[i]] <- dist_profile(data[, i], data[, i], window_size = window_size)
+    first_product[, i] <- nn[[i]]$last_product
+    data_mean[, i] <- nn[[i]]$par$data_mean
+    data_sd[, i] <- nn[[i]]$par$data_sd
   }
 
   tictac <- Sys.time()
@@ -171,17 +170,16 @@ mstomp <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, must_
       pb$tick()
     }
 
-    query <- as.matrix(data[i:(i + window_size - 1), ])
+    query_window <- as.matrix(data[i:(i + window_size - 1), ])
 
     if (i == 1) {
       for (j in 1:n_dim) {
-        mstomp <- mass(data_fft[, j], query[, j], data_size, window_size, data_mean[, j], data_sd[, j], data_mean[i, j], data_sd[i, j])
-        distance_profile[, j] <- mstomp$distance_profile
-        last_product[, j] <- mstomp$last_product
+        distance_profile[, j] <- nn[[j]]$distance_profile
+        last_product[, j] <- nn[[j]]$last_product
       }
     } else {
       rep_drop_value <- kronecker(matrix(1, matrix_profile_size - 1, 1), t(drop_value))
-      rep_query <- kronecker(matrix(1, matrix_profile_size - 1, 1), t(query[window_size, ]))
+      rep_query <- kronecker(matrix(1, matrix_profile_size - 1, 1), t(query_window[window_size, ]))
 
       last_product[2:(data_size - window_size + 1), ] <- last_product[1:(data_size - window_size), ] -
         data[1:(data_size - window_size), ] * rep_drop_value +
@@ -195,7 +193,7 @@ mstomp <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, must_
     }
 
     distance_profile <- Re(distance_profile)
-    drop_value <- query[1, ]
+    drop_value <- query_window[1, ]
 
     # apply exclusion zone
     exc_st <- max(1, i - exclusion_zone)

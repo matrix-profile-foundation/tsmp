@@ -80,19 +80,16 @@ mstomp_par <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, m
   data[is.infinite(data)] <- 0
 
   # initialization
-  data_fft <- matrix(0, (window_size + data_size), n_dim)
+  nn <- vector(mode = "list", length = 3)
   data_mean <- matrix(0, matrix_profile_size, n_dim)
   data_sd <- matrix(0, matrix_profile_size, n_dim)
   first_product <- matrix(0, matrix_profile_size, n_dim)
 
   for (i in 1:n_dim) {
-    nnpre <- mass_pre(data[, i], data_size, window_size = window_size)
-    data_fft[, i] <- nnpre$data_fft
-    data_mean[, i] <- nnpre$data_mean
-    data_sd[, i] <- nnpre$data_sd
-
-    mstomp <- mass(data_fft[, i], data[1:window_size, i], data_size, window_size, data_mean[, i], data_sd[, i], data_mean[1, i], data_sd[1, i])
-    first_product[, i] <- mstomp$last_product
+    nn[[i]] <- dist_profile(data[, i], data[, i], window_size = window_size)
+    first_product[, i] <- nn[[i]]$last_product
+    data_mean[, i] <- nn[[i]]$par$data_mean
+    data_sd[, i] <- nn[[i]]$par$data_sd
   }
 
   cores <- min(max(2, n_workers), parallel::detectCores())
@@ -108,8 +105,11 @@ mstomp_par <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, m
     on.exit(beep(sounds[[1]]), TRUE)
   }
 
-  # initialize variable
-  per_work <- max(10, min(250, ceiling(matrix_profile_size / 100)))
+  # seperate index into different job
+  min_per_work <- 10
+  max_per_work <- 10000
+  plateaux_n_works <- 400
+  per_work <- max(min_per_work, min(max_per_work, ceiling(matrix_profile_size / plateaux_n_works)))
   n_work <- floor(matrix_profile_size / per_work)
   idx_work <- list()
 
@@ -157,7 +157,7 @@ mstomp_par <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, m
     .options.snow = opts,
     # .combine = combiner,
     # .errorhandling = 'remove',
-    .export = c("mass", "vars")
+    .export = c("dist_profile", "vars")
   ) %dopar% {
     pro_muls <- matrix(0, length(idx_work[[i]]), n_dim)
     pro_idxs <- matrix(0, length(idx_work[[i]]), n_dim)
@@ -172,17 +172,17 @@ mstomp_par <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, m
     for (j in seq_len(length(idx_work[[i]]))) {
       idx <- idx_work[[i]][j]
 
-      query <- as.matrix(data[idx:(idx + window_size - 1), ])
+      query_window <- as.matrix(data[idx:(idx + window_size - 1), ])
 
       if (j == 1) {
         for (k in 1:n_dim) {
-          mstomp <- mass(data_fft[, k], query[, k], data_size, window_size, data_mean[, k], data_sd[, k], data_mean[idx, k], data_sd[idx, k])
-          dist_pro[, k] <- mstomp$distance_profile
-          last_product[, k] <- mstomp$last_product
+          nni <- dist_profile(data[, k], data[, k], nn[[k]], index = idx)
+          dist_pro[, k] <- nni$distance_profile
+          last_product[, k] <- nni$last_product
         }
       } else {
         rep_drop_value <- kronecker(matrix(1, matrix_profile_size - 1, 1), t(drop_value))
-        rep_query <- kronecker(matrix(1, matrix_profile_size - 1, 1), t(query[window_size, ]))
+        rep_query <- kronecker(matrix(1, matrix_profile_size - 1, 1), t(query_window[window_size, ]))
 
         last_product[2:(data_size - window_size + 1), ] <- last_product[1:(data_size - window_size), ] -
           data[1:(data_size - window_size), ] * rep_drop_value +
@@ -196,7 +196,7 @@ mstomp_par <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, m
       }
 
       dist_pro <- Re(dist_pro)
-      drop_value <- query[1, ]
+      drop_value <- query_window[1, ]
 
       # apply exclusion zone
       exc_zone_st <- max(1, idx - exclusion_zone)

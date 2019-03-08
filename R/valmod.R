@@ -45,7 +45,7 @@
 #' # join similarity
 #' mp <- valmod(ref_data, query_data, window_min = 30, window_max = 40)
 #' }
-#'
+#' 
 valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone = 1 / 2, lb = TRUE, verbose = 2) {
   args <- list(...)
   data <- args[[1]]
@@ -180,32 +180,14 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
         on.exit(beep(sounds[[1]]), TRUE)
       }
 
-      data_fft <- matrix(0, (window_size + data_size), 1)
-      data_mean <- matrix(0, matrix_profile_size, 1)
-      data_sd <- matrix(0, matrix_profile_size, 1)
       first_product <- matrix(0, num_queries, 1)
 
       # forward
-      nnpre <- mass_pre(data, data_size, query, query_size, window_size = window_size)
-      data_fft <- nnpre$data_fft
-      data_mean <- nnpre$data_mean
-      data_sd <- nnpre$data_sd
-      query_mean <- nnpre$query_mean
-      query_sd <- nnpre$query_sd
+      nn <- dist_profile(data, query, window_size = window_size)
 
       # reverse
       # This is needed to handle with the join similarity.
-      rnnpre <- mass_pre(query, query_size, data, data_size, window_size = window_size)
-      rdata_fft <- rnnpre$data_fft
-      rdata_mean <- rnnpre$data_mean
-      rdata_sd <- rnnpre$data_sd
-      rquery_mean <- rnnpre$query_mean
-      rquery_sd <- rnnpre$query_sd
-
-      rnn <- mass(
-        rdata_fft, data[1:window_size], query_size, window_size, rdata_mean,
-        rdata_sd, rquery_mean[1], rquery_sd[1]
-      )
+      rnn <- dist_profile(query, data, window_size = window_size)
 
       first_product[, 1] <- rnn$last_product
 
@@ -228,10 +210,6 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
         query_window <- as.matrix(query[i:(i + window_size - 1), 1])
 
         if (i == 1) {
-          nn <- mass(
-            data_fft, query_window, data_size, window_size, data_mean, data_sd,
-            query_mean[i], query_sd[i]
-          )
           distance_profile[, 1] <- nn$distance_profile
           last_product[, 1] <- nn$last_product
         } else {
@@ -240,14 +218,14 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
             data[(window_size + 1):data_size, 1] * query_window[window_size, 1]
 
           last_product[1, 1] <- first_product[i, 1]
-          distance_profile <- 2 * (window_size - (last_product - window_size * data_mean * query_mean[i]) /
-            (data_sd * query_sd[i]))
+          distance_profile <- 2 * (window_size - (last_product - window_size * nn$par$data_mean * nn$par$query_mean[i]) /
+            (nn$par$data_sd * nn$par$query_sd[i]))
         }
 
         distance_profile <- Re(distance_profile)
         distance_profile[distance_profile < 0] <- 0
 
-        new_lb_profile <- Re(((last_product / window_size) - (query_mean[i] * data_mean)) / (query_sd[i] * data_sd))
+        new_lb_profile <- Re(((last_product / window_size) - (nn$par$query_mean[i] * nn$par$data_mean)) / (nn$par$query_sd[i] * nn$par$data_sd))
         new_lb_profile[new_lb_profile < 0] <- 0
         new_lb_profile_len <- length(new_lb_profile)
 
@@ -272,9 +250,9 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
           lb_profile[exc_st:exc_ed] <- Inf
         }
 
-        distance_profile[data_sd < vars()$eps] <- Inf
-        lb_profile[data_sd < vars()$eps] <- Inf
-        if (skip_location[i] || any(query_sd[i] < vars()$eps)) {
+        distance_profile[nn$par$data_sd < vars()$eps] <- Inf
+        lb_profile[nn$par$data_sd < vars()$eps] <- Inf
+        if (skip_location[i] || any(nn$par$query_sd[i] < vars()$eps)) {
           distance_profile[] <- Inf
           lb_profile[] <- Inf
         }
@@ -291,7 +269,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
         }
 
         list_motifs_profile[i, "distances", ] <- distance_profile[lb_idxs]
-        list_motifs_profile[i, "query_sd", ] <- query_sd[i]
+        list_motifs_profile[i, "query_sd", ] <- nn$par$query_sd[i]
         list_motifs_profile[i, "sum_query", ] <- query_stats[[offset + 1]]$sum[i]
         list_motifs_profile[i, "sum_data", ] <- data_stats[[offset + 1]]$sum[lb_idxs]
         list_motifs_profile[i, "sqrsum_query", ] <- query_stats[[offset + 1]]$sqrsum[i]
@@ -382,7 +360,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
       query_sd_v <- matrix(rep(curr_query_sd, heap_size), ncol = heap_size)
 
       # --- First Inner Loop ----
-      j_v <- seq(heap_size, , by = -1)
+      j_v <- seq(heap_size, by = -1)
 
       # apply exclusion zone
       # !ezx_v contains all trival matches to recompute the DP
@@ -526,13 +504,8 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
             sequences[[i]] <- seq
           }
 
-          pre <- mass_pre(data, data_size, query, query_size, window_size = window_size)
-          rpre <- mass_pre(query, query_size, data, data_size, window_size = window_size)
-
-          rnn <- mass(
-            rpre$data_fft, data[1:window_size], query_size, window_size, rpre$data_mean,
-            rpre$data_sd, rpre$query_mean[1], rpre$query_sd[1]
-          )
+          nn <- dist_profile(data, query, window_size = window_size)
+          rnn <- dist_profile(query, data, window_size = window_size)
 
           first_product <- rnn$last_product
 
@@ -547,13 +520,9 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
                   pbp$tick(0, tokens = list(what = sprintf("MASS    ")))
                 }
 
-                nn <- mass(
-                  pre$data_fft, query_window, data_size, window_size, pre$data_mean, pre$data_sd,
-                  pre$query_mean[seq[i]], pre$query_sd[seq[i]]
-                )
-
-                distance_profile <- nn$distance_profile
-                last_product <- nn$last_product
+                nni <- dist_profile(data, query, nn, index = seq[i])
+                distance_profile <- nni$distance_profile
+                last_product <- nni$last_product
               } else {
                 if (verbose > 1) {
                   pbp$tick(0, tokens = list(what = sprintf("STOMP %s ", i)))
@@ -564,8 +533,8 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
                   data[(window_size + 1):data_size] * query_window[window_size]
 
                 last_product[1] <- first_product[seq[i]]
-                distance_profile <- 2 * (window_size - (last_product - window_size * pre$data_mean * pre$query_mean[seq[i]]) /
-                  (pre$data_sd * pre$query_sd[seq[i]]))
+                distance_profile <- 2 * (window_size - (last_product - window_size * nn$par$data_mean * nn$par$query_mean[seq[i]]) /
+                  (nn$par$data_sd * nn$par$query_sd[seq[i]]))
               }
 
               drop_value <- query_window[1]
@@ -573,8 +542,8 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
               distance_profile <- Re(distance_profile)
               distance_profile[distance_profile < 0] <- 0
 
-              new_lb_profile <- Re(((last_product / window_size) - (pre$query_mean[seq[i]] *
-                pre$data_mean)) / (pre$query_sd[seq[i]] * pre$data_sd))
+              new_lb_profile <- Re(((last_product / window_size) - (nn$par$query_mean[seq[i]] *
+                nn$par$data_mean)) / (nn$par$query_sd[seq[i]] * nn$par$data_sd))
               new_lb_profile[new_lb_profile < 0] <- 0
               new_lb_profile_len <- length(new_lb_profile)
 
@@ -596,9 +565,9 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
                 lb_profile[exc_st:exc_ed] <- Inf
               }
 
-              distance_profile[pre$data_sd < vars()$eps] <- Inf
-              lb_profile[pre$data_sd < vars()$eps] <- Inf
-              if (skip_location[seq[i]] || any(pre$query_sd[seq[i]] < vars()$eps)) {
+              distance_profile[nn$par$data_sd < vars()$eps] <- Inf
+              lb_profile[nn$par$data_sd < vars()$eps] <- Inf
+              if (skip_location[seq[i]] || any(nn$par$query_sd[seq[i]] < vars()$eps)) {
                 distance_profile[] <- Inf
                 lb_profile[] <- Inf
               }

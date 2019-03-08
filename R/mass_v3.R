@@ -3,7 +3,7 @@
 #' Mueen's Algorithm for Similarity Search is The Fastest Similarity Search Algorithm for Time
 #' Series Subsequences under Euclidean Distance and Correlation Coefficient.
 #'
-#' This  is a piecewise version of MASS that performs better when the size of the pieces are well
+#' This is a piecewise version of MASS that performs better when the size of the pieces are well
 #' aligned with the hardware.
 #'
 #' @param data a `matrix` or a `vector`.
@@ -15,10 +15,12 @@
 #' @param query_mean precomputed query average.
 #' @param query_sd precomputed query standard deviation.
 #' @param k an `int` or `NULL`. Default is `NULL`. Defines the size of batch. Prefer to use a power of 2.
+#' @param ... just a placeholder to catch unused parameters.
 #'
 #' @return Returns the `distance_profile` for the given query and the `last_product` for STOMP
 #'   algorithm.
-#' @export
+#'
+#' @keywords internal
 #'
 #' @seealso [mass_pre()] to precomputation of input values.
 #'
@@ -34,16 +36,17 @@
 #' d_size <- length(ref_data)
 #' q_size <- length(query_data)
 #'
-#' pre <- mass_pre(ref_data, d_size, query_data, q_size, w)
+#' pre <- tsmp:::mass_pre(ref_data, query_data, w)
 #'
 #' dp <- list()
 #' for (i in 1:(d_size - w + 1)) {
-#'   dp[[i]] <- mass3(
-#'     ref_data, query_data[i:(i - 1 + w)], d_size, w, pre$data_mean, pre$data_sd,
+#'   dp[[i]] <- tsmp:::mass_v3(
+#'     query_data[i:(i - 1 + w)], ref_data,
+#'     pre$window_size, pre$data_size, pre$data_mean, pre$data_sd,
 #'     pre$query_mean[i], pre$query_sd[i]
 #'   )
 #' }
-mass3 <- function(data, query_window, data_size, window_size, data_mean, data_sd, query_mean, query_sd, k = NULL) {
+mass_v3 <- function(query_window, data, window_size, data_size, data_mean, data_sd, query_mean, query_sd, k = NULL, ...) {
   distance_profile <- vector(mode = "complex", data_size - window_size + 1)
   last_product <- vector(mode = "complex", data_size - window_size + 1)
 

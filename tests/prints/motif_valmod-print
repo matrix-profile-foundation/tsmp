@@ -9,5 +9,5 @@ Valmod Motif
 ------------
 Motif pairs founded = 3 
 Motif pairs indexes = [388, 589] [385, 789] [414, 818]  
-Motif pairs neighbors = [] [586] []  
+Motif pairs neighbors = [] [] [615]  
 Motif pairs windows = [30] [38] [39]  

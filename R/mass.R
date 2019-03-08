@@ -14,35 +14,30 @@
 #'
 #' @return Returns the `distance_profile` for the given query and the `last_product` for STOMP
 #'   algorithm.
-#' @export
-#'
 #' @seealso [mass_pre()] to precomputation of input values.
 #'
 #' @references * Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan,
 #'   Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time
 #'   Series Subsequences under Euclidean Distance
 #' @references Website: <https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html>
+
+#' @name mass-deprecated
+#' @usage mass(data_fft, query_window, data_size, window_size, data_mean, data_sd, query_mean, query_sd)
+#' @seealso \code{\link{tsmp-deprecated}}
+#' @keywords internal
+NULL
+
+#' @rdname tsmp-deprecated
+#' @section \code{mass}:
+#' For \code{mass}, use \code{\link{dist_profile}}. Original documentation at \code{\link{mass-deprecated}}.
 #'
-#' @examples
-#' w <- mp_toy_data$sub_len
-#' ref_data <- mp_toy_data$data[, 1]
-#' query_data <- mp_toy_data$data[, 1]
-#' d_size <- length(ref_data)
-#' q_size <- length(query_data)
-#'
-#' pre <- mass_pre(ref_data, d_size, query_data, q_size, w)
-#'
-#' dp <- list()
-#' for (i in 1:(d_size - w + 1)) {
-#'   dp[[i]] <- mass(
-#'     pre$data_fft, query_data[i:(i - 1 + w)], d_size, w, pre$data_mean, pre$data_sd,
-#'     pre$query_mean[i], pre$query_sd[i]
-#'   )
-#' }
+#' @export
+
 mass <- function(data_fft, query_window, data_size, window_size, data_mean, data_sd, query_mean, query_sd) {
+  .Deprecated("dist_profile")
   # pre-process query for fft
   query_window <- rev(query_window)
-  query_window[(window_size + 1):(window_size + data_size)] <- 0
+  query_window[(window_size + 1):data_size] <- 0
   # compute the product
   prod <- data_fft * stats::fft(query_window)
   z <- stats::fft(prod, inverse = TRUE) / length(prod)

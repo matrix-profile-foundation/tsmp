@@ -9,32 +9,32 @@ if (skip_on_cran()) {
 
   test_that("Errors", {
     # big window size
-    expect_error(mstomp(mp_toy_data$data[1:200, ], window_size = 500), "too short relative")
-    expect_error(mstomp_par(mp_toy_data$data[1:200, ], window_size = 500), "too short relative")
-    expect_error(stomp(mp_toy_data$data[1:200, ], window_size = 500), "too short relative")
-    expect_error(stomp_par(mp_toy_data$data[1:200, ], window_size = 500), "too short relative")
-    expect_error(stamp(mp_toy_data$data[1:200, ], window_size = 500), "too short relative")
-    expect_error(stamp_par(mp_toy_data$data[1:200, ], window_size = 500), "too short relative")
-    expect_error(scrimp(mp_toy_data$data[1:200, ], window_size = 500), "too short relative")
+    expect_error(mstomp(mp_toy_data$data[1:400, ], window_size = 500), "too short relative")
+    expect_error(mstomp_par(mp_toy_data$data[1:400, ], window_size = 500), "too short relative")
+    expect_error(stomp(mp_toy_data$data[1:400, ], window_size = 500), "too short relative")
+    expect_error(stomp_par(mp_toy_data$data[1:400, ], window_size = 500), "too short relative")
+    expect_error(stamp(mp_toy_data$data[1:400, ], window_size = 500), "too short relative")
+    expect_error(stamp_par(mp_toy_data$data[1:400, ], window_size = 500), "too short relative")
+    expect_error(scrimp(mp_toy_data$data[1:400, ], window_size = 500), "too short relative")
 
     # intersect
-    expect_error(mstomp(mp_toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2), exc_dim = c(2, 3)), "presented in both")
-    expect_error(mstomp_par(mp_toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2), exc_dim = c(2, 3)), "presented in both")
+    expect_error(mstomp(mp_toy_data$data[1:400, ], window_size = 30, must_dim = c(1, 2), exc_dim = c(2, 3)), "presented in both")
+    expect_error(mstomp_par(mp_toy_data$data[1:400, ], window_size = 30, must_dim = c(1, 2), exc_dim = c(2, 3)), "presented in both")
     # too many must_dim
-    expect_error(mstomp(mp_toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2, 3, 4)), "must_dim")
-    expect_error(mstomp_par(mp_toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2, 3, 4)), "must_dim")
+    expect_error(mstomp(mp_toy_data$data[1:400, ], window_size = 30, must_dim = c(1, 2, 3, 4)), "must_dim")
+    expect_error(mstomp_par(mp_toy_data$data[1:400, ], window_size = 30, must_dim = c(1, 2, 3, 4)), "must_dim")
     # too many exc_dim
-    expect_error(mstomp(mp_toy_data$data[1:200, ], window_size = 30, exc_dim = c(1, 2, 3, 4)), "exc_dim")
-    expect_error(mstomp_par(mp_toy_data$data[1:200, ], window_size = 30, exc_dim = c(1, 2, 3, 4)), "exc_dim")
+    expect_error(mstomp(mp_toy_data$data[1:400, ], window_size = 30, exc_dim = c(1, 2, 3, 4)), "exc_dim")
+    expect_error(mstomp_par(mp_toy_data$data[1:400, ], window_size = 30, exc_dim = c(1, 2, 3, 4)), "exc_dim")
 
     # small window size
-    expect_error(stamp(mp_toy_data$data[1:200, ], window_size = 2), "window_size")
-    expect_error(stamp_par(mp_toy_data$data[1:200, ], window_size = 2), "window_size")
-    expect_error(mstomp(mp_toy_data$data[1:200, ], window_size = 2), "window_size")
-    expect_error(mstomp_par(mp_toy_data$data[1:200, ], window_size = 2), "window_size")
-    expect_error(stomp(mp_toy_data$data[1:200, ], window_size = 2), "window_size")
-    expect_error(stomp_par(mp_toy_data$data[1:200, ], window_size = 2), "window_size")
-    expect_error(scrimp(mp_toy_data$data[1:200, ], window_size = 2), "window_size")
+    expect_error(stamp(mp_toy_data$data[1:400, ], window_size = 2), "window_size")
+    expect_error(stamp_par(mp_toy_data$data[1:400, ], window_size = 2), "window_size")
+    expect_error(mstomp(mp_toy_data$data[1:400, ], window_size = 2), "window_size")
+    expect_error(mstomp_par(mp_toy_data$data[1:400, ], window_size = 2), "window_size")
+    expect_error(stomp(mp_toy_data$data[1:400, ], window_size = 2), "window_size")
+    expect_error(stomp_par(mp_toy_data$data[1:400, ], window_size = 2), "window_size")
+    expect_error(scrimp(mp_toy_data$data[1:400, ], window_size = 2), "window_size")
 
     # unknown data type
     expect_error(stamp(table(rpois(100, 5)), window_size = 30), "Unknown type")
@@ -49,54 +49,54 @@ if (skip_on_cran()) {
   ## Test finish ----
 
   test_that("Finish", {
-    expect_message(tsmp(mp_toy_data$data[1:200, 1], mode = "stamp", window_size = 30), "Finished")
-    expect_message(tsmp(mp_toy_data$data[1:200, 1], mode = "stamp", window_size = 30, n_workers = 2), "Finished")
-    expect_message(tsmp(mp_toy_data$data[1:200, 1], mode = "stomp", window_size = 30), "Finished")
-    expect_message(tsmp(mp_toy_data$data[1:200, 1], mode = "stomp", window_size = 30, n_workers = 2), "Finished")
-    expect_message(tsmp(mp_toy_data$data[1:200, 1], mode = "mstomp", window_size = 30), "Finished")
-    expect_message(tsmp(mp_toy_data$data[1:200, 1], mode = "mstomp", window_size = 30, n_workers = 2), "Finished")
-    expect_message(tsmp(mp_toy_data$data[1:200, 1], mode = "scrimp", window_size = 30), "Finished")
-    expect_message(tsmp(mp_toy_data$data[1:200, 1], mp_toy_data$data[1:200, 1], mode = "scrimp", window_size = 30), "not implemented")
+    expect_message(tsmp(mp_toy_data$data[1:400, 1], mode = "stamp", window_size = 30), "Finished")
+    expect_message(tsmp(mp_toy_data$data[1:400, 1], mode = "stamp", window_size = 30, n_workers = 2), "Finished")
+    expect_message(tsmp(mp_toy_data$data[1:400, 1], mode = "stomp", window_size = 30), "Finished")
+    expect_message(tsmp(mp_toy_data$data[1:400, 1], mode = "stomp", window_size = 30, n_workers = 2), "Finished")
+    expect_message(tsmp(mp_toy_data$data[1:400, 1], mode = "mstomp", window_size = 30), "Finished")
+    expect_message(tsmp(mp_toy_data$data[1:400, 1], mode = "mstomp", window_size = 30, n_workers = 2), "Finished")
+    expect_message(tsmp(mp_toy_data$data[1:400, 1], mode = "scrimp", window_size = 30), "Finished")
+    expect_message(tsmp(mp_toy_data$data[1:400, 1], mp_toy_data$data[1:400, 1], mode = "scrimp", window_size = 30), "not implemented")
   })
 
   ## Create MP's ----
 
   # STAMP
-  stamp_test <- stamp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
-  stamp_join_test <- stamp(mp_toy_data$data[1:200, 1], mp_toy_data$data[1:100, 2], window_size = 30, verbose = 0)
-  stamp_par_test <- stamp_par(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
-  stamp_par_join_test <- stamp_par(mp_toy_data$data[1:200, 1], mp_toy_data$data[1:100, 2], window_size = 30, verbose = 0)
+  stamp_test <- stamp(mp_toy_data$data[1:400, 1], window_size = 30, verbose = 0)
+  stamp_join_test <- stamp(mp_toy_data$data[1:400, 1], mp_toy_data$data[1:100, 2], window_size = 30, verbose = 0)
+  stamp_par_test <- stamp_par(mp_toy_data$data[1:400, 1], window_size = 30, verbose = 0)
+  stamp_par_join_test <- stamp_par(mp_toy_data$data[1:400, 1], mp_toy_data$data[1:100, 2], window_size = 30, verbose = 0)
 
   # STOMP
-  stomp_test <- stomp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
-  stomp_join_test <- stomp(mp_toy_data$data[1:200, 1], mp_toy_data$data[1:100, 2], window_size = 30, verbose = 0)
-  stomp_par_test <- stomp_par(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
-  stomp_par_join_test <- stomp_par(mp_toy_data$data[1:200, 1], mp_toy_data$data[1:100, 2], window_size = 30, verbose = 0)
+  stomp_test <- stomp(mp_toy_data$data[1:400, 1], window_size = 30, verbose = 0)
+  stomp_join_test <- stomp(mp_toy_data$data[, 1], mp_toy_data$data[1:400, 2], window_size = 30, verbose = 0)
+  stomp_par_test <- stomp_par(mp_toy_data$data[1:400, 1], window_size = 30, verbose = 0)
+  stomp_par_join_test <- stomp_par(mp_toy_data$data[, 1], mp_toy_data$data[1:400, 2], window_size = 30, verbose = 0)
 
   # MSTOMP Uni
-  mstomp_test1 <- mstomp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
-  mstomp_par_test1 <- mstomp_par(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+  mstomp_test1 <- mstomp(mp_toy_data$data[1:400, 1], window_size = 30, verbose = 0)
+  mstomp_par_test1 <- mstomp_par(mp_toy_data$data[1:400, 1], window_size = 30, verbose = 0)
   # MSTOMP Multi
-  mstomp_test <- mstomp(mp_toy_data$data[1:200, ], window_size = 30, verbose = 0)
-  mstomp_test_must <- mstomp(mp_toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2), verbose = 0)
-  mstomp_test_exc <- mstomp(mp_toy_data$data[1:200, ], window_size = 30, exc_dim = c(1, 2), verbose = 0)
-  mstomp_par_test <- mstomp_par(mp_toy_data$data[1:200, ], window_size = 30, verbose = 0)
-  mstomp_par_test_must <- mstomp_par(mp_toy_data$data[1:200, ], window_size = 30, must_dim = c(1, 2), verbose = 0)
-  mstomp_par_test_exc <- mstomp_par(mp_toy_data$data[1:200, ], window_size = 30, exc_dim = c(1, 2), verbose = 0)
+  mstomp_test <- mstomp(mp_toy_data$data[1:400, ], window_size = 30, verbose = 0)
+  mstomp_test_must <- mstomp(mp_toy_data$data[1:400, ], window_size = 30, must_dim = c(1, 2), verbose = 0)
+  mstomp_test_exc <- mstomp(mp_toy_data$data[1:400, ], window_size = 30, exc_dim = c(1, 2), verbose = 0)
+  mstomp_par_test <- mstomp_par(mp_toy_data$data[1:400, ], window_size = 30, verbose = 0)
+  mstomp_par_test_must <- mstomp_par(mp_toy_data$data[1:400, ], window_size = 30, must_dim = c(1, 2), verbose = 0)
+  mstomp_par_test_exc <- mstomp_par(mp_toy_data$data[1:400, ], window_size = 30, exc_dim = c(1, 2), verbose = 0)
 
-  scrimp_test <- scrimp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+  scrimp_test <- scrimp(mp_toy_data$data[1:400, 1], window_size = 30, verbose = 0)
 
   ## Check consistency ----
 
   test_that("Basic Results", {
-    expect_equal(round(sum(stamp_test$mp) / sd(stamp_test$mp), 3), 461.894)
-    expect_equal(sum(which(is.infinite(stamp_test$rmp))), 2616)
-    expect_equal(round(sum(stamp_test$rmp[1:155]) / sd(stamp_test$rmp[1:155]), 3), 370.885)
+    expect_equal(round(sum(stamp_test$mp) / sd(stamp_test$mp), 3), 1117.483)
+    expect_equal(sum(which(is.infinite(stamp_test$rmp))), 5816)
+    expect_equal(round(sum(stamp_test$rmp[1:155]) / sd(stamp_test$rmp[1:155]), 3), 451.847)
     expect_equal(sum(which(is.infinite(stamp_test$lmp))), 136)
     expect_equal(round(sum(stamp_test$lmp[17:171]) / sd(stamp_test$lmp[17:171]), 3), 345.977)
-    expect_equal(round(sum(stamp_test$pi) / sd(stamp_test$pi), 3), 302.063)
-    expect_equal(round(sum(stamp_test$rpi) / sd(stamp_test$rpi), 3), 437.43)
-    expect_equal(round(sum(stamp_test$lpi) / sd(stamp_test$lpi), 3), 174.392)
+    expect_equal(round(sum(stamp_test$pi) / sd(stamp_test$pi), 3), 567.591)
+    expect_equal(round(sum(stamp_test$rpi) / sd(stamp_test$rpi), 3), 1083.069)
+    expect_equal(round(sum(stamp_test$lpi) / sd(stamp_test$lpi), 3), 341.391)
     expect_equal(stamp_test$w, 30)
     expect_equal(stamp_test$ez, 0.5)
     expect_equal(class(stamp_test), "MatrixProfile")
@@ -108,8 +108,8 @@ if (skip_on_cran()) {
 
   test_that("Scrimp Results", {
     expect_equal(class(scrimp_test), "MatrixProfile")
-    expect_equal(round(sum(scrimp_test$mp) / sd(scrimp_test$mp), 2), 461.89)
-    expect_equal(round(sum(scrimp_test$pi) / sd(scrimp_test$pi), 3), 302.063)
+    expect_equal(round(sum(scrimp_test$mp) / sd(scrimp_test$mp), 2), 1117.48)
+    expect_equal(round(sum(scrimp_test$pi) / sd(scrimp_test$pi), 3), 567.591)
     expect_equal(scrimp_test$w, 30)
     expect_equal(scrimp_test$ez, 0.5)
   })

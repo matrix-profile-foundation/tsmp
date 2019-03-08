@@ -1,9 +1,17 @@
 NEWS
 ================
 Francisco Bischoff
-\- 23 Feb 2019
+\- 12 Mar 2019
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
+
+# tsmp 0.3.5
+
+  - Changed `mass()` to `dist_profile()`, including options to different
+    algoritms.
+  - Added MASS\_V3 and MASS\_Weighted to `dist_profile()` algorithms.
+  - Fixed long runtime of FFT for some data sizes, using MASS\_V3. Issue
+    \#36.
 
 # tsmp 0.3.4
 

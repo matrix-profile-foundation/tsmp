@@ -6,10 +6,10 @@
 \title{Anytime univariate STAMP algorithm Parallel version}
 \usage{
 stamp_par(..., window_size, exclusion_zone = 1/2, verbose = 2,
-  s_size = Inf, n_workers = 2)
+  s_size = Inf, n_workers = 2, weight = NULL)
 
 stamp(..., window_size, exclusion_zone = 1/2, verbose = 2,
-  s_size = Inf)
+  s_size = Inf, weight = NULL)
 }
 \arguments{
 \item{...}{a \code{matrix} or a \code{vector}. If a second time series is supplied it will be a join matrix
@@ -26,6 +26,9 @@ profile.}
 random calculation will occur (default is \code{Inf}).}
 
 \item{n_workers}{an \code{int}. Number of workers for parallel. (Default is \code{2}).}
+
+\item{weight}{a \code{vector} of \code{numeric} or \code{NULL} with the same length of the \code{window_size}. This is
+a MASS extension to weight the query.}
 }
 \value{
 Returns a \code{MatrixProfile} object, a \code{list} with the matrix profile \code{mp}, profile index \code{pi}

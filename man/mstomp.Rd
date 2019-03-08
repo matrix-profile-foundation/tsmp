@@ -63,7 +63,7 @@ means nothing, \code{1} means text, \code{2} adds the progress bar, \code{3} add
 mp <- mstomp(mp_toy_data$data[1:200, ], 30, verbose = 0)
 
 # using threads
-mp <- mstomp_par(mp_toy_data$data[1:200, ], 30, verbose = 0)
+mp <- mstomp_par(mp_toy_data$data[1:400, ], 30, verbose = 0)
 \dontrun{
 # force using dimensions 1 and 2
 mp <- mstomp(mp_toy_data$data[1:200, ], 30, must_dim = c(1, 2))
