@@ -44,16 +44,19 @@
 #' # join similarity
 #' mp <- scrimp(ref_data, query_data, window_size = 30, s_size = round(nrow(query_data) * 0.1))
 #' }
-#' 
+#'
 scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size = Inf, pre_scrimp = 1 / 4) {
-  args <- list(...)
-  data <- args[[1]]
-  if (length(args) > 1) {
+  argv <- list(...)
+  argc <- length(argv)
+  data <- argv[[1]]
+  if (argc > 1 && !is.null(argv[[2]])) {
     message("Join similarity not implemented yet.")
-    query <- args[[2]]
+    query <- argv[[2]]
     exclusion_zone <- 0 # don't use exclusion zone for joins
+    join <- TRUE
   } else {
     query <- data
+    join <- FALSE
   }
 
   # transform data into matrix
@@ -65,7 +68,7 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
       data <- t(data)
     }
   } else {
-    stop("Error: Unknown type of data. Must be: a column matrix or a vector.")
+    stop("Unknown type of data. Must be: a column matrix or a vector.")
   }
 
   if (is.vector(query)) {
@@ -75,7 +78,7 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
       query <- t(query)
     }
   } else {
-    stop("Error: Unknown type of query. Must be: a column matrix or a vector.")
+    stop("Unknown type of query. Must be: a column matrix or a vector.")
   }
 
   ez <- exclusion_zone # store original
@@ -84,13 +87,13 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
   query_size <- nrow(query)
 
   if (query_size > data_size) {
-    stop("Error: Query must be smaller or the same size as reference data.")
+    stop("Query must be smaller or the same size as reference data.")
   }
   if (window_size > query_size / 2) {
-    stop("Error: Time series is too short relative to desired window size.")
+    stop("Time series is too short relative to desired window size.")
   }
   if (window_size < 4) {
-    stop("Error: `window_size` must be at least 4.")
+    stop("`window_size` must be at least 4.")
   }
 
   matrix_profile_size <- data_size - window_size + 1
@@ -114,7 +117,7 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
   matrix_profile <- matrix(Inf, matrix_profile_size, 1)
   profile_index <- matrix(-1, matrix_profile_size, 1)
 
-  if (length(args) > 1) {
+  if (join) {
     # no RMP and LMP for joins
     left_matrix_profile <- right_matrix_profile <- NULL
     left_profile_index <- right_profile_index <- NULL
@@ -295,7 +298,7 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
     matrix_profile[loc2] <- dist2[loc2]
     profile_index[loc2] <- orig_index[loc2] + i - 1
 
-    if (length(args) == 1) {
+    if (!join) {
       # left matrix_profile
       loc1 <- (dist1 < left_matrix_profile)
       left_matrix_profile[loc1] <- dist1[loc1]

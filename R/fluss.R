@@ -24,7 +24,7 @@
 #' mp <- fluss(mp, 2)
 fluss <- function(.mp, num_segments, exclusion_zone = NULL) {
   if ("Valmod" %in% class(.mp)) {
-    stop("Error: Function not implemented for objects of class `Valmod`.")
+    stop("Function not implemented for objects of class `Valmod`.")
   }
 
   fluss_extract(fluss_cac(.mp, exclusion_zone), num_segments = num_segments, exclusion_zone = exclusion_zone)
@@ -54,7 +54,7 @@ fluss <- function(.mp, num_segments, exclusion_zone = NULL) {
 #' mp <- fluss_extract(mp, 2)
 fluss_extract <- function(.mpac, num_segments, exclusion_zone = NULL) {
   if (!any(class(.mpac) %in% "ArcCount")) {
-    stop("Error: First argument must be an object of class `ArcCount`.")
+    stop("First argument must be an object of class `ArcCount`.")
   }
 
   if (is.null(exclusion_zone)) {
@@ -107,11 +107,11 @@ fluss_extract <- function(.mpac, num_segments, exclusion_zone = NULL) {
 #' mp <- fluss_cac(mp)
 fluss_cac <- function(.mp, exclusion_zone = NULL) {
   if (!("MatrixProfile" %in% class(.mp))) {
-    stop("Error: First argument must be an object of class `MatrixProfile`.")
+    stop("First argument must be an object of class `MatrixProfile`.")
   }
 
   if ("Valmod" %in% class(.mp)) {
-    stop("Error: Function not implemented for objects of class `Valmod`.")
+    stop("Function not implemented for objects of class `Valmod`.")
   }
 
   if (is.null(exclusion_zone)) {

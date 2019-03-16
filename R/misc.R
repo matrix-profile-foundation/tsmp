@@ -17,11 +17,11 @@ fast_movsd <- function(data, window_size) {
   data_size <- length(data)
 
   if (window_size < 2) {
-    stop("Error: 'window_size' must be at least 2.")
+    stop("'window_size' must be at least 2.")
   }
 
   if (data_size < window_size) {
-    stop("Error: 'window_size' is too large for this series.")
+    stop("'window_size' is too large for this series.")
   }
 
   # Improve the numerical analysis by subtracting off the series mean
@@ -157,7 +157,7 @@ znorm <- function(data) {
 
 diff2 <- function(x, y) {
   if (!is.numeric(x) || !is.numeric(y)) {
-    stop("Error: `x` and `y` must be numeric vectors or matrices.")
+    stop("`x` and `y` must be numeric vectors or matrices.")
   }
   if (is.vector(x)) {
     dim(x) <- c(1, length(x))
@@ -166,7 +166,7 @@ diff2 <- function(x, y) {
     dim(y) <- c(1, length(y))
   }
   if (ncol(x) != ncol(y)) {
-    stop("Error: `x` and `y` must have the same number of columns.")
+    stop("`x` and `y` must have the same number of columns.")
   }
   m <- nrow(x)
   n <- nrow(y)
@@ -198,6 +198,75 @@ bubble_up <- function(data, len) {
     data[pos] <- data[pos / 2]
     data[pos / 2] <- t
     pos <- pos / 2
+  }
+}
+
+#' Piecewise Aggregate Approximation of time series
+#'
+#' @param data time series
+#' @param p factor of PAA reduction (2 == half of size)
+#'
+#' @return PAA result
+#' @keywords internal
+#' @noRd
+
+paa <- function(data, p) {
+  paa_data <- as.vector(data)
+  len <- length(paa_data)
+
+  p <- round(abs(p))
+  paa_size <- len / p
+
+  if (len == paa_size) {
+    return(data)
+  } else {
+    if (len %% paa_size == 0) {
+      res <- colMeans(matrix(paa_data, nrow = len %/% paa_size, byrow = FALSE))
+    } else {
+      stop("Invalid paa_size")
+    }
+  }
+
+  if (is.matrix(data)) {
+    return(as.matrix(res))
+  } else {
+    return(res)
+  }
+}
+
+#' Resample data to the original size, with interpolation
+#'
+#' @param data time series
+#' @param p factor of PAA reduction (2 == half of size)
+#'
+#' @keywords internal
+#' @noRd
+
+ipaa <- function(data, p) {
+  if (is.null(data)) {
+    return(NULL)
+  }
+
+  paa_data <- as.vector(data)
+  paa_size <- length(paa_data)
+  size <- paa_size * p
+
+  res <- rep.int(NA, size)
+
+  j <- 1
+  for (i in seq_len(size)) {
+    if (((i - 1) %% p) == 0) {
+      res[i] <- data[j]
+      j <- j + 1
+    } else {
+      res[i] <- res[i - 1]
+    }
+  }
+
+  if (is.matrix(data)) {
+    return(as.matrix(res))
+  } else {
+    return(res)
   }
 }
 
@@ -556,11 +625,11 @@ zero_crossings <- function(data) {
 
   # error checks
   if (length(data) == 1) {
-    stop("Error: Input signal must have more than one element.")
+    stop("Input signal must have more than one element.")
   }
 
   if ((ncol(data) != 1) && (nrow(data) != 1)) {
-    stop("Error: Input must be one-dimensional.")
+    stop("Input must be one-dimensional.")
   }
 
   # force signal to be a vector oriented in the same direction
@@ -734,7 +803,7 @@ set_data <- function(.mp, data) {
 
     for (i in seq_len(length(data))) {
       if (nrow(data[[i]]) != data_size) {
-        warning("WARNING: data size is ", nrow(data[[i]]), ", but should be ", data_size, " for this matrix profile.")
+        warning("Warning: data size is ", nrow(data[[i]]), ", but should be ", data_size, " for this matrix profile.")
       }
     }
   }
@@ -793,19 +862,19 @@ update_class <- function(classes, new_class) {
 #' @describeIn as.matrixprofile Cast an object changed by another function back to `MatrixProfile`.
 #' @export
 #' @examples
-#' 
+#'
 #' w <- 50
 #' data <- mp_gait_data
 #' mp <- tsmp(data, window_size = w, exclusion_zone = 1 / 4, verbose = 0)
 #' mp <- find_motif(mp)
 #' class(mp) # first class will be "Motif"
-#' 
+#'
 #' plot(mp) # plots a motif plot
-#' 
+#'
 #' plot(as.matrixprofile(mp)) # plots a matrix profile plot
 as.matrixprofile <- function(.mp) {
   if (!("MatrixProfile" %in% class(.mp))) {
-    stop("Error: This object cannot be a `MatrixProfile`.")
+    stop("This object cannot be a `MatrixProfile`.")
   }
 
   class(.mp) <- update_class(class(.mp), "MatrixProfile")
@@ -819,7 +888,7 @@ as.matrixprofile <- function(.mp) {
 
 as.multimatrixprofile <- function(.mp) {
   if (!("MultiMatrixProfile" %in% class(.mp))) {
-    stop("Error: This object cannot be a `MultiMatrixProfile`.")
+    stop("This object cannot be a `MultiMatrixProfile`.")
   }
 
   class(.mp) <- update_class(class(.mp), "MultiMatrixProfile")
@@ -833,7 +902,7 @@ as.multimatrixprofile <- function(.mp) {
 
 as.valmod <- function(.mp) {
   if (!("Valmod" %in% class(.mp))) {
-    stop("Error: This object cannot be a `Valmod`.")
+    stop("This object cannot be a `Valmod`.")
   }
 
   class(.mp) <- update_class(class(.mp), "Valmod")
@@ -847,7 +916,7 @@ as.valmod <- function(.mp) {
 
 as.fluss <- function(.mp) {
   if (!("Fluss" %in% class(.mp))) {
-    stop("Error: This object cannot be a `Fluss`.")
+    stop("This object cannot be a `Fluss`.")
   }
 
   class(.mp) <- update_class(class(.mp), "Fluss")
@@ -861,7 +930,7 @@ as.fluss <- function(.mp) {
 
 as.chain <- function(.mp) {
   if (!("Chain" %in% class(.mp))) {
-    stop("Error: This object cannot be a `Chain`.")
+    stop("This object cannot be a `Chain`.")
   }
 
   class(.mp) <- update_class(class(.mp), "Chain")
@@ -874,7 +943,7 @@ as.chain <- function(.mp) {
 
 as.discord <- function(.mp) {
   if (!("Discord" %in% class(.mp))) {
-    stop("Error: This object cannot be a `Discord`.")
+    stop("This object cannot be a `Discord`.")
   }
 
   class(.mp) <- update_class(class(.mp), "Discord")
@@ -887,7 +956,7 @@ as.discord <- function(.mp) {
 
 as.motif <- function(.mp) {
   if (!("Motif" %in% class(.mp))) {
-    stop("Error: This object cannot be a `Motif`.")
+    stop("This object cannot be a `Motif`.")
   }
 
   class(.mp) <- update_class(class(.mp), "Motif")
@@ -901,7 +970,7 @@ as.motif <- function(.mp) {
 
 as.multimotif <- function(.mp) {
   if (!("MultiMotif" %in% class(.mp))) {
-    stop("Error: This object cannot be a `MultiMotif`.")
+    stop("This object cannot be a `MultiMotif`.")
   }
 
   class(.mp) <- update_class(class(.mp), "MultiMotif")
@@ -915,7 +984,7 @@ as.multimotif <- function(.mp) {
 
 as.arccount <- function(.mp) {
   if (!("ArcCount" %in% class(.mp))) {
-    stop("Error: This object cannot be a `ArcCount`.")
+    stop("This object cannot be a `ArcCount`.")
   }
 
   class(.mp) <- update_class(class(.mp), "ArcCount")
@@ -928,7 +997,7 @@ as.arccount <- function(.mp) {
 
 as.salient <- function(.mp) {
   if (!("Salient" %in% class(.mp))) {
-    stop("Error: This object cannot be a `Salient`.")
+    stop("This object cannot be a `Salient`.")
   }
 
   class(.mp) <- update_class(class(.mp), "Salient")

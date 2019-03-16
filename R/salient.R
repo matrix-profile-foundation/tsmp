@@ -40,14 +40,14 @@
 #' mp <- tsmp(data, window_size = w, verbose = 2, n_workers = 6)
 #' mps <- salient_subsequences(mp, data, n_bits = c(4, 6, 8), verbose = 2)
 #' }
-#' 
+#'
 salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_zone = NULL, verbose = 2) {
   if (!("MatrixProfile" %in% class(.mp))) {
-    stop("Error: First argument must be an object of class `MatrixProfile`.")
+    stop("First argument must be an object of class `MatrixProfile`.")
   }
 
   if ("Valmod" %in% class(.mp)) {
-    stop("Error: Function not implemented for objects of class `Valmod`.")
+    stop("Function not implemented for objects of class `Valmod`.")
   }
 
   if (missing(data) && !is.null(.mp$data)) {
@@ -83,7 +83,7 @@ salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_z
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list.")
+    stop("Unknown type of data. Must be: matrix, data.frame, vector or list.")
   }
 
   if (n_dim > 1) {
@@ -357,7 +357,7 @@ salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_z
 #' plot(mds_data, main = "Multi dimensional scale")
 salient_mds <- function(.mp, data, bit_idx = 1) {
   if (!("Salient" %in% class(.mp))) {
-    stop("Error: First argument must be an object of class `Salient`.")
+    stop("First argument must be an object of class `Salient`.")
   }
 
   if (missing(data) && !is.null(.mp$data)) {
@@ -408,7 +408,7 @@ salient_mds <- function(.mp, data, bit_idx = 1) {
 #' salient_score(mps, label_idx)
 salient_score <- function(.mp, gtruth) {
   if (!("Salient" %in% class(.mp))) {
-    stop("Error: First argument must be an object of class `Salient`.")
+    stop("First argument must be an object of class `Salient`.")
   }
 
   f_score <- 0

@@ -26,6 +26,8 @@
 #' use a power of 2. If `NULL`, it will be set automatically.
 #' @param weight a `vector` of `numeric` or `NULL` with the same length of the `window_size`. This is
 #' a MASS extension to weight the query.
+#' @param paa a `numeric`. Default is `1`. Factor of PAA reduction (2 == half of size). This is a
+#' MASS extension.
 #'
 #' @return Returns the `distance_profile` for the given query and the `last_product` for STOMP
 #'   algorithm and the parameters for recursive call. See details.
@@ -38,30 +40,30 @@
 #' @references Website: <https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html>
 #'
 #' @examples
-#' 
+#'
 #' w <- mp_toy_data$sub_len
 #' ref_data <- mp_toy_data$data[, 1]
 #' # minimum example, data and query
 #' nn <- dist_profile(ref_data, ref_data[1:w])
 #' distance_profile <- Re(sqrt(nn$distance_profile))
-#' 
+#'
 #' # data and indexed query
 #' nn <- dist_profile(ref_data, ref_data, window_size = w, index = 10)
 #' distance_profile <- Re(sqrt(nn$distance_profile))
-#' 
+#'
 #' # recursive
 #' nn <- NULL
-#' 
+#'
 #' for (i in seq_len(10)) {
 #'   nn <- dist_profile(ref_data, ref_data, nn, window_size = w, index = i)
 #' }
-#' 
+#'
 #' # weighted
 #' weight <- c(rep(1, w / 3), rep(0.5, w / 3), rep(0.8, w / 3)) # just an example
-#' 
+#'
 #' nn <- dist_profile(ref_data, ref_data, window_size = w, index = 1, method = "weighted", weight = weight)
 #' distance_profile <- Re(sqrt(nn$distance_profile))
-dist_profile <- function(data, query, ..., window_size = NULL, method = "v3", index = 1, k = NULL, weight = NULL) {
+dist_profile <- function(data, query, ..., window_size = NULL, method = "v3", index = 1, k = NULL, weight = NULL, paa = 1) {
 
   ## ---- Verify if method exists ----
   # set as v3 if no method is entered
@@ -92,33 +94,82 @@ dist_profile <- function(data, query, ..., window_size = NULL, method = "v3", in
   data <- as.vector(data)
   query <- as.vector(query)
 
-  # set window_size
-  window_size <- ifelse(is.null(window_size), length(query), window_size)
+  if (anyNA(query)) {
+    ## ---- Query with Gap ----
+    q1 <- NULL
+    q2 <- NULL
 
-  ## ---- First iteration with MASS ----
-  if (is.null(params)) {
-    params <- switch(method,
-      mass_v2 = mass_pre(data, query, window_size),
-      mass_v3 = c(mass_pre(data, query, window_size), list(data = data, k = k)),
-      mass_weighted = mass_pre_w(data, query, window_size, weight)
-    )
+    min_idx <- min(which(is.na(query))) - 1
+    max_idx <- max(which(is.na(query))) + 1
 
-    pars <- params
-    pars$query_mean <- pars$query_mean[index]
-    pars$query_sd <- pars$query_sd[index]
+    if (min_idx >= 4) {
+      q1 <- query[1:min_idx]
+    }
 
-    result <- do.call(method, c(list(query[index:(window_size + index - 1)]), pars))
+    if (max_idx <= (window_size - 4)) {
+      q2 <- query[max_idx:window_size]
+    }
+
+    if (anyNA(q1) || anyNA(q2)) {
+      stop("Querying with gap only supports one gap.")
+    }
+
+    q1_len <- length(q1)
+    q2_len <- length(q2)
+
+    if (q1_len != q2_len) {
+      warning("Warning: Result may be inconsistent if the size of the queries are different.")
+    }
+
+    pre1 <- mass_pre(data, window_size = q1_len)
+    pre2 <- mass_pre(data, window_size = q2_len)
+
+    result1 <- mass_v3(q1, data, pre1$window_size, pre1$data_size, pre1$data_mean, pre1$data_sd, mean(q1), std(q1))
+    result2 <- mass_v3(q2, data, pre2$window_size, pre2$data_size, pre2$data_mean, pre2$data_sd, mean(q2), std(q2))
+    result1 <- abs(sqrt(result1$distance_profile))
+    result2 <- abs(sqrt(result2$distance_profile))
+
+    pad <- rep(Inf, max_idx - 1)
+    result2 <- c(pad, result2)
+    result1 <- c(result1, rep(Inf, length(result2) - length(result1)))
+
+    result <- list(distance_profile = (result1 + result2)^2)
   } else {
-    if (!is.null(params$par)) {
-      params <- params$par
+    ## ---- Non-GAP ----
+    # set window_size
+    window_size <- ifelse(is.null(window_size), length(query), window_size)
+
+    if (paa > 1) {
+      data <- paa(data, paa)
+      query <- paa(query, paa)
+      window_size <- floor(window_size / paa)
+    }
+
+    ## ---- First iteration with MASS ----
+    if (is.null(params)) {
+      params <- switch(method,
+        mass_v2 = mass_pre(data, query, window_size),
+        mass_v3 = c(mass_pre(data, query, window_size), list(data = data, k = k)),
+        mass_weighted = mass_pre_w(data, query, window_size, weight)
+      )
+    } else {
+      if (!is.null(params$par)) {
+        params <- params$par
+      }
+      window_size <- params$window_size
     }
 
     pars <- params
     pars$query_mean <- pars$query_mean[index]
     pars$query_sd <- pars$query_sd[index]
-    window_size <- pars$window_size
+    q_w <- query[index:(window_size + index - 1)]
 
-    result <- do.call(method, c(list(query[index:(window_size + index - 1)]), pars))
+    result <- do.call(method, c(list(q_w), pars))
+
+    if (paa > 1) {
+      result$distance_profile <- result$distance_profile * paa
+      result$last_product <- result$last_product * paa
+    }
   }
 
   return(c(result, list(par = params)))

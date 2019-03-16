@@ -7,7 +7,7 @@
 tsmp(..., window_size, exclusion_zone = 1/2, mode = c("stomp", "stamp",
   "simple", "mstomp", "scrimp", "valmod"), verbose = 2, n_workers = 1,
   s_size = Inf, must_dim = NULL, exc_dim = NULL, heap_size = 50,
-  .keep_data = TRUE)
+  paa = 1, .keep_data = TRUE)
 }
 \arguments{
 \item{...}{a \code{matrix} or a \code{vector}. If a second time series is supplied it will be a join matrix

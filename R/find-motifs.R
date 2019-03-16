@@ -29,7 +29,7 @@ find_motif <- function(.mp, ...) {
 #' mp <- find_motif(mp)
 find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, radius = 3, exclusion_zone = NULL, ...) {
   if (!("MatrixProfile" %in% class(.mp))) {
-    stop("Error: First argument must be an object of class `MatrixProfile`.")
+    stop("First argument must be an object of class `MatrixProfile`.")
   }
 
   if ("Valmod" %in% class(.mp)) {
@@ -71,7 +71,7 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: `data` must be `matrix`, `data.frame`, `vector` or `list`.")
+    stop("`data` must be `matrix`, `data.frame`, `vector` or `list`.")
   }
 
 
@@ -165,7 +165,7 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
 #' @name find_motif
 #' @export
 #' @examples
-#' 
+#'
 #' # Multidimension data
 #' w <- mp_toy_data$sub_len
 #' data <- mp_toy_data$data[1:300, ]
@@ -174,7 +174,7 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
 find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("guided", "unconstrained"),
                                           n_bit = 4, exclusion_zone = NULL, n_dim = NULL, ...) {
   if (!("MultiMatrixProfile" %in% class(.mp))) {
-    stop("Error: First argument must be an object of class `MultiMatrixProfile`.")
+    stop("First argument must be an object of class `MultiMatrixProfile`.")
   }
 
   if (missing(data) && !is.null(.mp$data)) {
@@ -212,7 +212,7 @@ find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("gui
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: `data` must be `matrix`, `data.frame`, `vector` or `list`.")
+    stop("`data` must be `matrix`, `data.frame`, `vector` or `list`.")
   }
 
   # Guided Search ------------------------------------------------------------------------
@@ -242,7 +242,7 @@ find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("gui
   } else {
     # Unguided Search -------------------------------------------------------------------
     if (n_bit < 2) {
-      stop("Error: `nbit` must be at least `2`.")
+      stop("`nbit` must be at least `2`.")
     }
 
     if (is.null(exclusion_zone)) {

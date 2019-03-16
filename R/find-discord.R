@@ -29,11 +29,11 @@ find_discord <- function(.mp, ...) {
 #' mp <- find_discord(mp)
 find_discord.MatrixProfile <- function(.mp, data, n_discords = 1, n_neighbors = 3, radius = 3, exclusion_zone = NULL, ...) {
   if (!("MatrixProfile" %in% class(.mp))) {
-    stop("Error: First argument must be an object of class `MatrixProfile`.")
+    stop("First argument must be an object of class `MatrixProfile`.")
   }
 
   if ("Valmod" %in% class(.mp)) {
-    stop("Error: Function not implemented for objects of class `Valmod`.")
+    stop("Function not implemented for objects of class `Valmod`.")
   }
 
   if (missing(data) && !is.null(.mp$data)) {
@@ -69,7 +69,7 @@ find_discord.MatrixProfile <- function(.mp, data, n_discords = 1, n_neighbors = 
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: `data` must be `matrix`, `data.frame`, `vector` or `list`.")
+    stop("`data` must be `matrix`, `data.frame`, `vector` or `list`.")
   }
 
   if (is.null(exclusion_zone)) {

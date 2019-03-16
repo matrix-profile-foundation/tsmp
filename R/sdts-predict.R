@@ -131,11 +131,11 @@ sdts_score <- function(pred, gtruth, beta = 1) {
   }
 
   if (anyNA(gtruth)) {
-    stop("Error: `gtruth` contains NA values.", call. = FALSE)
+    stop("`gtruth` contains NA values.", call. = FALSE)
   }
 
   if (anyNA(pred)) {
-    stop("Error: `pred` contains NA values.", call. = FALSE)
+    stop("`pred` contains NA values.", call. = FALSE)
   }
 
   pred_pad <- c(0, pred, 0)

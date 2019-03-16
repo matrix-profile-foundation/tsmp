@@ -5,7 +5,7 @@
 \title{Calculates the distance profile using MASS algorithms}
 \usage{
 dist_profile(data, query, ..., window_size = NULL, method = "v3",
-  index = 1, k = NULL, weight = NULL)
+  index = 1, k = NULL, weight = NULL, paa = 1)
 }
 \arguments{
 \item{data}{a \code{matrix} or a \code{vector}.}
@@ -25,6 +25,9 @@ use a power of 2. If \code{NULL}, it will be set automatically.}
 
 \item{weight}{a \code{vector} of \code{numeric} or \code{NULL} with the same length of the \code{window_size}. This is
 a MASS extension to weight the query.}
+
+\item{paa}{a \code{numeric}. Default is \code{1}. Factor of PAA reduction (2 == half of size). This is a
+MASS extension.}
 }
 \value{
 Returns the \code{distance_profile} for the given query and the \code{last_product} for STOMP

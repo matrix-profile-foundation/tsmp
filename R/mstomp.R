@@ -46,7 +46,7 @@
 #' @examples
 #' # using all dimensions
 #' mp <- mstomp(mp_toy_data$data[1:200, ], 30, verbose = 0)
-#' 
+#'
 #' # using threads
 #' mp <- mstomp_par(mp_toy_data$data[1:400, ], 30, verbose = 0)
 #' \dontrun{
@@ -55,7 +55,7 @@
 #' # exclude dimensions 2 and 3
 #' mp <- mstomp(mp_toy_data$data[1:200, ], 30, exc_dim = c(2, 3))
 #' }
-#' 
+#'
 mstomp <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, must_dim = NULL, exc_dim = NULL) {
   # get various length
   ez <- exclusion_zone # store original
@@ -90,26 +90,26 @@ mstomp <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, must_
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list.")
+    stop("Unknown type of data. Must be: matrix, data.frame, vector or list.")
   }
 
   matrix_profile_size <- data_size - window_size + 1
 
   # check input
   if (window_size > data_size / 2) {
-    stop("Error: Time series is too short relative to desired window size.")
+    stop("Time series is too short relative to desired window size.")
   }
   if (window_size < 4) {
-    stop("Error: `window_size` must be at least 4.")
+    stop("`window_size` must be at least 4.")
   }
   if (any(must_dim > n_dim)) {
-    stop("Error: `must_dim` must be less then the total dimension.")
+    stop("`must_dim` must be less then the total dimension.")
   }
   if (any(exc_dim > n_dim)) {
-    stop("Error: `exc_dim` must be less then the total dimension.")
+    stop("`exc_dim` must be less then the total dimension.")
   }
   if (length(intersect(must_dim, exc_dim)) > 0) {
-    stop("Error: The same dimension is presented in both the exclusion dimension and must have dimension.")
+    stop("The same dimension is presented in both the exclusion dimension and must have dimension.")
   }
 
   # check skip position

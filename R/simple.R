@@ -28,15 +28,17 @@
 #' result <- simple_fast(data, window_size = w, verbose = 0)
 simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
   if (!is.numeric(window_size) || length(window_size) > 1) {
-    stop("Error: Unknown type of `window_size`. Must be an `int` or `numeric`")
+    stop("Unknown type of `window_size`. Must be an `int` or `numeric`")
   }
-
-  args <- list(...)
-  data <- args[[1]]
-  if (length(args) > 1) {
-    query <- args[[2]]
+  argv <- list(...)
+  argc <- length(argv)
+  data <- argv[[1]]
+  join <- FALSE
+  if (argc > 1 && !is.null(argv[[2]])) {
+    query <- argv[[2]]
     if (!isTRUE(all.equal(data, query))) {
       exclusion_zone <- 0
+      join <- TRUE
     } # don't use exclusion zone for joins
   } else {
     query <- data
@@ -71,7 +73,7 @@ simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list.")
+    stop("Unknown type of data. Must be: matrix, data.frame, vector or list.")
   }
 
   # transform query list into matrix
@@ -103,21 +105,21 @@ simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
     # transform query into 1-col matrix
     query <- as.matrix(query) # just to be uniform
   } else {
-    stop("Error: Unknown type of query. Must be: matrix, data.frame, vector or list.")
+    stop("Unknown type of query. Must be: matrix, data.frame, vector or list.")
   }
 
   # check input
   if (q_dim != n_dim) {
-    stop("Error: Data and query dimensions must be the same.")
+    stop("Data and query dimensions must be the same.")
   }
   if (window_size > data_size / 2) {
-    stop("Error: Reference Time series is too short relative to desired window size.")
+    stop("Reference Time series is too short relative to desired window size.")
   }
   if (window_size > query_size / 2) {
-    stop("Error: Query Time series is too short relative to desired window size.")
+    stop("Query Time series is too short relative to desired window size.")
   }
   if (window_size < 4) {
-    stop("Error: `window_size` must be at least 4.")
+    stop("`window_size` must be at least 4.")
   }
 
   ez <- exclusion_zone # store original

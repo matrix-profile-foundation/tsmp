@@ -7,13 +7,16 @@
 #' @describeIn stomp Parallel version.
 
 stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_workers = 2) {
-  args <- list(...)
-  data <- args[[1]]
-  if (length(args) > 1) {
-    query <- args[[2]]
+  argv <- list(...)
+  argc <- length(argv)
+  data <- argv[[1]]
+  if (argc > 1 && !is.null(argv[[2]])) {
+    query <- argv[[2]]
     exclusion_zone <- 0 # don't use exclusion zone for joins
+    join <- TRUE
   } else {
     query <- data
+    join <- FALSE
   }
 
   # transform data into matrix
@@ -25,7 +28,7 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
       data <- t(data)
     }
   } else {
-    stop("Error: Unknown type of data. Must be: a column matrix or a vector.", call. = FALSE)
+    stop("Unknown type of data. Must be: a column matrix or a vector.", call. = FALSE)
   }
 
   if (is.vector(query)) {
@@ -35,7 +38,7 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
       query <- t(query)
     }
   } else {
-    stop("Error: Unknown type of query. Must be: a column matrix or a vector.")
+    stop("Unknown type of query. Must be: a column matrix or a vector.")
   }
 
   ez <- exclusion_zone # store original
@@ -46,13 +49,13 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
   num_queries <- query_size - window_size + 1
 
   if (query_size > data_size) {
-    stop("Error: Query must be smaller or the same size as reference data.")
+    stop("Query must be smaller or the same size as reference data.")
   }
   if (window_size > query_size / 2) {
-    stop("Error: Time series is too short relative to desired window size.")
+    stop("Time series is too short relative to desired window size.")
   }
   if (window_size < 4) {
-    stop("Error: `window_size` must be at least 4.")
+    stop("`window_size` must be at least 4.")
   }
 
   # check skip position
@@ -151,7 +154,7 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
     work_len <- length(idx_work[[i]])
     pro_muls <- matrix(Inf, matrix_profile_size, 1)
     pro_idxs <- matrix(-1, matrix_profile_size, 1)
-    if (length(args) > 1) {
+    if (join) {
       # no RMP and LMP for joins
       pro_muls_right <- pro_muls_left <- NULL
       pro_idxs_right <- pro_idxs_left <- NULL
@@ -200,7 +203,7 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
       }
       dist_pro[skip_location] <- Inf
 
-      if (length(args) == 1) {
+      if (!join) {
         # no RMP and LMP for joins
         # left matrix_profile
         ind <- (dist_pro[idx:matrix_profile_size] < pro_muls_left[idx:matrix_profile_size])
@@ -232,7 +235,7 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
 
   matrix_profile <- matrix(Inf, matrix_profile_size, 1)
   profile_index <- matrix(-1, matrix_profile_size, 1)
-  if (length(args) > 1) {
+  if (join) {
     # no RMP and LMP for joins
     left_matrix_profile <- right_matrix_profile <- NULL
     left_profile_index <- right_profile_index <- NULL
@@ -246,7 +249,7 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
     matrix_profile[ind] <- batch[[i]]$pro_muls[ind]
     profile_index[ind] <- batch[[i]]$pro_idxs[ind]
 
-    if (length(args) == 1) {
+    if (!join) {
       # no RMP and LMP for joins
       ind <- (batch[[i]]$pro_muls_left < left_matrix_profile)
       left_matrix_profile[ind] <- batch[[i]]$pro_muls_left[ind]

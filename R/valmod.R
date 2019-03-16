@@ -45,15 +45,18 @@
 #' # join similarity
 #' mp <- valmod(ref_data, query_data, window_min = 30, window_max = 40)
 #' }
-#' 
+#'
 valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone = 1 / 2, lb = TRUE, verbose = 2) {
-  args <- list(...)
-  data <- args[[1]]
-  if (length(args) > 1) {
-    query <- args[[2]]
+  argv <- list(...)
+  argc <- length(argv)
+  data <- argv[[1]]
+  if (argc > 1 && !is.null(argv[[2]])) {
+    query <- argv[[2]]
     exclusion_zone <- 0 # don't use exclusion zone for joins
+    join <- TRUE
   } else {
     query <- data
+    join <- FALSE
   }
 
   # transform data into matrix
@@ -64,7 +67,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
       data <- t(data)
     }
   } else {
-    stop("Error: Unknown type of data. Must be: a column matrix or a vector.", call. = FALSE)
+    stop("Unknown type of data. Must be: a column matrix or a vector.", call. = FALSE)
   }
 
   if (is.vector(query)) {
@@ -74,7 +77,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
       query <- t(query)
     }
   } else {
-    stop("Error: Unknown type of query. Must be: a column matrix or a vector.", call. = FALSE)
+    stop("Unknown type of query. Must be: a column matrix or a vector.", call. = FALSE)
   }
 
   ez <- exclusion_zone # store original
@@ -89,10 +92,10 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
   max_profile_size <- data_size - window_min + 1
 
   if (window_min > query_size / 2) {
-    stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
+    stop("Time series is too short relative to desired window size.", call. = FALSE)
   }
   if (window_min < 4) {
-    stop("Error: `window_size` must be at least 4.", call. = FALSE)
+    stop("`window_size` must be at least 4.", call. = FALSE)
   }
 
   # check skip position
@@ -193,7 +196,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
 
       matrix_profile <- matrix(Inf, matrix_profile_size, 1)
       profile_index <- matrix(-1, matrix_profile_size, 1)
-      if (length(args) > 1) {
+      if (join) {
         # no RMP and LMP for joins
         left_matrix_profile <- right_matrix_profile <- NULL
         left_profile_index <- right_profile_index <- NULL
@@ -430,7 +433,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
 
       if (length(all_trivial) > 0) {
         if (length(i_v[!(i_v[all_trivial] %in% i_v[!valid_entries])]) > 0) {
-          warning("Some trivial matches might not have been recomputed")
+          warning("Warning: Some trivial matches might not have been recomputed")
         }
       }
 

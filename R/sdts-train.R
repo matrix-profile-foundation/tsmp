@@ -61,7 +61,7 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Error: Unknown type of data. Must be: matrix, data.frame, vector or list.")
+    stop("Unknown type of data. Must be: matrix, data.frame, vector or list.")
   }
 
   n_window_size <- length(window_size)
@@ -69,10 +69,10 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
   # check input ----
   for (i in 1:n_window_size) {
     if (window_size[i] > (data_size / 2)) {
-      stop("Error: Time series is too short relative to desired window size.")
+      stop("Time series is too short relative to desired window size.")
     }
     if (window_size[i] < 4) {
-      stop("Error: `window_size` must be at least 4.")
+      stop("`window_size` must be at least 4.")
     }
   }
 

@@ -35,7 +35,7 @@
 #'
 #' @examples
 #' mp <- stomp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
-#' 
+#'
 #' # using threads
 #' mp <- stomp_par(mp_toy_data$data[1:400, 1], window_size = 30, verbose = 0)
 #' \dontrun{
@@ -47,13 +47,16 @@
 #' mp2 <- stomp(ref_data, query_data, window_size = 30)
 #' }
 stomp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
-  args <- list(...)
-  data <- args[[1]]
-  if (length(args) > 1) {
-    query <- args[[2]]
+  argv <- list(...)
+  argc <- length(argv)
+  data <- argv[[1]]
+  if (argc > 1 && !is.null(argv[[2]])) {
+    query <- argv[[2]]
     exclusion_zone <- 0 # don't use exclusion zone for joins
+    join <- TRUE
   } else {
     query <- data
+    join <- FALSE
   }
 
   # transform data into matrix
@@ -65,7 +68,7 @@ stomp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
       data <- t(data)
     }
   } else {
-    stop("Error: Unknown type of data. Must be: a column matrix or a vector.", call. = FALSE)
+    stop("Unknown type of data. Must be: a column matrix or a vector.", call. = FALSE)
   }
 
   if (is.vector(query)) {
@@ -75,7 +78,7 @@ stomp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
       query <- t(query)
     }
   } else {
-    stop("Error: Unknown type of query. Must be: a column matrix or a vector.", call. = FALSE)
+    stop("Unknown type of query. Must be: a column matrix or a vector.", call. = FALSE)
   }
 
   ez <- exclusion_zone # store original
@@ -86,10 +89,10 @@ stomp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
   num_queries <- query_size - window_size + 1
 
   if (window_size > query_size / 2) {
-    stop("Error: Time series is too short relative to desired window size.", call. = FALSE)
+    stop("Time series is too short relative to desired window size.", call. = FALSE)
   }
   if (window_size < 4) {
-    stop("Error: `window_size` must be at least 4.", call. = FALSE)
+    stop("`window_size` must be at least 4.", call. = FALSE)
   }
 
   # check skip position
@@ -132,7 +135,7 @@ stomp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
 
   matrix_profile <- matrix(Inf, matrix_profile_size, 1)
   profile_index <- matrix(-1, matrix_profile_size, 1)
-  if (length(args) > 1) {
+  if (join) {
     # no RMP and LMP for joins
     left_matrix_profile <- right_matrix_profile <- NULL
     left_profile_index <- right_profile_index <- NULL
@@ -177,7 +180,7 @@ stomp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
     }
     distance_profile[skip_location] <- Inf
 
-    if (length(args) == 1) {
+    if (!join) {
       # no RMP and LMP for joins
       # left matrix_profile
       ind <- (distance_profile[i:matrix_profile_size] < left_matrix_profile[i:matrix_profile_size])

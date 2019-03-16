@@ -108,7 +108,7 @@ plot_arcs <- function(pairs, alpha = NULL, quality = 30, lwd = 15, col = c("blue
 #' @name plot
 #'
 #' @examples
-#' 
+#'
 #' mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
 #' plot(mp)
 plot.ArcCount <- function(x, data, type = c("data", "matrix"), exclusion_zone = NULL, edge_limit = NULL,
@@ -154,7 +154,7 @@ plot.ArcCount <- function(x, data, type = c("data", "matrix"), exclusion_zone = 
   pairs[, 2] <- x$pi
 
   if (threshold < min(cac)) {
-    stop(paste0("Error: `threshold` is too small for this Arc Count. Min: ", round(min(cac), 2), ", Max: ", round(max(cac), 2)))
+    stop(paste0("`threshold` is too small for this Arc Count. Min: ", round(min(cac), 2), ", Max: ", round(max(cac), 2)))
   }
 
   # remove excess of arcs

@@ -92,28 +92,63 @@
 #' @examples
 #' # default with [stomp()]
 #' mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
-#' 
+#'
 #' # parallel with [stomp_par()]
 #' mp <- tsmp(mp_test_data$train$data[1:1000, 1], window_size = 30, n_workers = 2, verbose = 0)
-#' 
+#'
 #' # Anytime STAMP
 #' mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, mode = "stamp", s_size = 50, verbose = 0)
-#' 
+#'
 #' # [mstomp()]
 #' mp <- tsmp(mp_toy_data$data[1:200, ], window_size = 30, mode = "mstomp", verbose = 0)
-#' 
+#'
 #' # [simple_fast()]
 #' mp <- tsmp(mp_toy_data$data[1:200, ], window_size = 30, mode = "simple", verbose = 0)
 tsmp <- function(..., window_size, exclusion_zone = 1 / 2, mode = c("stomp", "stamp", "simple", "mstomp", "scrimp", "valmod"),
-                 verbose = 2, n_workers = 1, s_size = Inf, must_dim = NULL, exc_dim = NULL, heap_size = 50, .keep_data = TRUE) {
+                 verbose = 2, n_workers = 1, s_size = Inf, must_dim = NULL, exc_dim = NULL, heap_size = 50, paa = 1, .keep_data = TRUE) {
   algo <- match.arg(mode)
 
-  if (length(list(...)) == 0) {
-    stop("Error: You must supply at least one time series.")
+  argv <- list(...)
+  argc <- length(argv)
+
+  if (argc == 0) {
+    stop("You must supply at least one time series.")
+  }
+
+  if (argc == 1) {
+    data <- argv[[1]]
+    query <- NULL
+  } else {
+    if (argc > 2) {
+      warning("Warning: Only the first two time series will be used.")
+    }
+
+    data <- argv[[1]]
+    query <- argv[[2]]
+  }
+
+  paa <- round(paa)
+
+  if (paa > 1) {
+    if (is.matrix(data)) {
+      data <- apply(data, 2, paa, paa)
+    } else {
+      data <- paa(data, paa)
+    }
+
+    if (!is.null(query)) {
+      if (is.matrix(query)) {
+        query <- apply(query, 2, paa, paa)
+      } else {
+        query <- paa(query, paa)
+      }
+    }
+
+    window_size <- window_size / paa
   }
 
   if (n_workers > 1) {
-    min_size <- length(list(...)[[1]])
+    min_size <- length(data)
 
     if (min_size < 1000) {
       message("Notice: data is smaller than 1000. Single-thread mode will be used.")
@@ -123,90 +158,101 @@ tsmp <- function(..., window_size, exclusion_zone = 1 / 2, mode = c("stomp", "st
 
   result <- switch(algo,
     "stomp" = {
-      if (length(list(...)) > 2) {
-        warning("Warning: Only the first two time series will be used.")
-      }
       if (n_workers > 1) {
-        stomp_par(...,
+        stomp_par(data, query,
           window_size = min(window_size), exclusion_zone = exclusion_zone,
           verbose = verbose, n_workers = n_workers
         )
       } else {
-        stomp(...,
+        stomp(data, query,
           window_size = min(window_size), exclusion_zone = exclusion_zone,
           verbose = verbose
         )
       }
     },
     "stamp" = {
-      if (length(list(...)) > 2) {
-        warning("Warning: Only the first two time series will be used.")
-      }
-
       if (n_workers > 1) {
-        stamp_par(...,
+        stamp_par(data, query,
           window_size = min(window_size), exclusion_zone = exclusion_zone,
           verbose = verbose, s_size = s_size, n_workers = n_workers
         )
       } else {
-        stamp(...,
+        stamp(data, query,
           window_size = min(window_size), exclusion_zone = exclusion_zone,
           verbose = verbose, s_size = s_size
         )
       }
     },
     "simple" = {
-      if (length(list(...)) > 2) {
-        warning("Warning: Only the first two time series will be used.")
-      }
-      simple_fast(...,
+      simple_fast(data, query,
         window_size = min(window_size), exclusion_zone = exclusion_zone,
         verbose = verbose
       )
     },
     "mstomp" = {
-      if (length(list(...)) > 1) {
+      if (argc > 1) {
         warning("Warning: Only the first time series will be used in `mstomp`.")
       }
 
       if (n_workers > 1) {
-        mstomp_par(list(...)[[1]],
+        mstomp_par(data,
           window_size = min(window_size), exclusion_zone = exclusion_zone,
           verbose = verbose, must_dim = must_dim, exc_dim = exc_dim, n_workers = n_workers
         )
       } else {
-        mstomp(list(...)[[1]],
+        mstomp(data,
           window_size = min(window_size), exclusion_zone = exclusion_zone,
           verbose = verbose, must_dim = must_dim, exc_dim = exc_dim
         )
       }
     },
     "scrimp" = {
-      if (length(list(...)) > 2) {
-        warning("Warning: Only the first two time series will be used.")
-      }
-
-      scrimp(...,
+      scrimp(data, query,
         window_size = min(window_size), exclusion_zone = exclusion_zone,
         verbose = verbose, s_size = s_size
       )
     },
     "valmod" = {
-      if (length(list(...)) > 2) {
-        warning("Warning: Only the first two time series will be used.")
-      }
-
-      valmod(...,
+      valmod(data, query,
         window_min = min(window_size), window_max = max(window_size), heap_size = heap_size, exclusion_zone = exclusion_zone,
         verbose = verbose
       )
     },
-    stop("Error: `mode` must be ", mode)
+    stop("`mode` must be ", mode)
   )
 
+  # if (paa > 1) {
+  #   result$mp <- ipaa(result$mp * sqrt(paa), paa)
+  #   result$rmp <- ipaa(result$rmp * sqrt(paa), paa)
+  #   result$lmp <- ipaa(result$lmp * sqrt(paa), paa)
+  #   result$pi <- ipaa(result$pi, paa) * paa
+  #   result$rpi <- ipaa(result$rpi, paa) * paa
+  #   result$lpi <- ipaa(result$lpi, paa) * paa
+  #   result$w <- result$w * paa
+  #   result$paa <- paa
+  #
+  #   if (is.matrix(data)) {
+  #     data <- apply(data, 2, ipaa, paa)
+  #   } else {
+  #     data <- ipaa(data, paa)
+  #   }
+  #
+  #   if (!is.null(query)) {
+  #     if (is.matrix(query)) {
+  #       query <- apply(query, 2, ipaa, paa)
+  #     } else {
+  #       query <- ipaa(query, paa)
+  #     }
+  #   }
+  # }
+
   if (.keep_data) {
-    args <- list(...)
-    result$data <- lapply(args, as.matrix)
+    if (!is.null(query)) {
+      result$data <- list(data, query)
+    } else {
+      result$data <- list(data)
+    }
+    result$data <- lapply(result$data, as.matrix)
   }
 
   return(result)
