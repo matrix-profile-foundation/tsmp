@@ -14,7 +14,7 @@ Authors@R: c(
     person("Hoang", "Dau", email = "hdau001@ucr.edu", role = c("res", "ccp", "ctb"),
     comment = c(ORCID = "https://orcid.org/0000-0003-2439-5185")),
     person("Michele", "Linardi", email = "michele.linardi@orange.fr", role = c("res", "ccp", "ctb"),
-    comment = c(ORCID = "https://orcid.org/0000-0003-2439-5185"))
+    comment = c(ORCID = "https://orcid.org/0000-0002-3249-2068"))
   )
 Maintainer: Francisco Bischoff <fbischoff@med.up.pt>
 Description: A toolkit implementing the Matrix Profile concept that was created by CS-UCR <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>.

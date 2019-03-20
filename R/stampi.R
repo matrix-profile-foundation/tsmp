@@ -54,15 +54,21 @@ stampi_update <- function(.mp, new_data) {
 #' @export
 #'
 #' @examples
-stompi_update <- function(.mp, new_data) {
+stompi_update <- function(.mp, new_data, history_size = FALSE) {
   new_data_size <- length(new_data)
   data_upd <- c(as.vector(.mp$data[[1]]), new_data)
   data_upd_size <- length(data_upd)
 
-  q1_idx <- (data_upd_size - .mp$w + 1 - new_data_size + 1)
-
   mp_new <- c(.mp$mp, rep(Inf, new_data_size))
   pi_new <- c(.mp$pi, rep(-1, new_data_size))
+  lmp_new <- c(.mp$lmp, rep(Inf, new_data_size))
+  lpi_new <- c(.mp$lpi, rep(-1, new_data_size))
+  rmp_new <- c(.mp$rmp, rep(Inf, new_data_size))
+  rpi_new <- c(.mp$rpi, rep(-1, new_data_size))
+
+  q1_idx <- (data_upd_size - .mp$w + 1 - new_data_size + 1)
+
+  mp_new_size <- length(mp_new)
 
   exclusion_zone <- (.mp$ez * .mp$w)
 
@@ -95,19 +101,53 @@ stompi_update <- function(.mp, new_data) {
     drop_value <- query[1]
 
     exc_st <- max(1, start_idx - exclusion_zone)
-    exc_ed <- min(length(distance_profile), start_idx + exclusion_zone)
-    distance_profile[exc_st:exc_ed] <- Inf
+    distance_profile[exc_st:mp_new_size] <- Inf
 
     upd_idxs <- distance_profile < mp_new
-
     pi_new[upd_idxs] <- start_idx
     mp_new[upd_idxs] <- distance_profile[upd_idxs]
     pi_new[start_idx] <- which.min(distance_profile)
     mp_new[start_idx] <- distance_profile[pi_new[start_idx]]
+
+    # left matrix_profile
+    upd_idxs <- (distance_profile[start_idx:mp_new_size] < lmp_new[start_idx:mp_new_size])
+    upd_idxs <- c(rep(FALSE, (start_idx - 1)), upd_idxs) # pad left
+    lmp_new[upd_idxs] <- distance_profile[upd_idxs]
+    lpi_new[upd_idxs] <- start_idx
+    lpi_new[start_idx] <- which.min(distance_profile)
+    lmp_new[start_idx] <- distance_profile[lpi_new[start_idx]]
+
+    # right matrix_profile
+    upd_idxs <- (distance_profile[1:start_idx] < rmp_new[1:start_idx])
+    upd_idxs <- c(upd_idxs, rep(FALSE, mp_new_size - start_idx)) # pad right
+    rmp_new[upd_idxs] <- distance_profile[upd_idxs]
+    rpi_new[upd_idxs] <- start_idx
+  }
+
+  if (history_size) {
+    if (data_upd_size > history_size) {
+      data_upd <- tail(data_upd, history_size)
+      mp_new_size <- history_size - .mp$w + 1
+      offset <- data_upd_size - history_size
+
+      mp_new <- tail(mp_new, mp_new_size)
+      pi_new <- tail(pi_new - offset, mp_new_size)
+      pi_new[pi_new < 0] <- -1
+      lmp_new <- tail(lmp_new, mp_new_size)
+      lpi_new <- tail(lpi_new - offset, mp_new_size)
+      lpi_new[lpi_new < 0] <- -1
+      rmp_new <- tail(rmp_new, mp_new_size)
+      rpi_new <- tail(rpi_new - offset, mp_new_size)
+      rpi_new[rpi_new < 0] <- -1
+    }
   }
 
   .mp$mp <- as.matrix(mp_new)
   .mp$pi <- as.matrix(pi_new)
+  .mp$lmp <- as.matrix(lmp_new)
+  .mp$lpi <- as.matrix(lpi_new)
+  .mp$rmp <- as.matrix(rmp_new)
+  .mp$rpi <- as.matrix(rpi_new)
   .mp$data[[1]] <- as.matrix(data_upd)
 
   return(.mp)

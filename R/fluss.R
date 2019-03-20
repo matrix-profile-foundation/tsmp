@@ -30,6 +30,24 @@ fluss <- function(.mp, num_segments, exclusion_zone = NULL) {
   fluss_extract(fluss_cac(.mp, exclusion_zone), num_segments = num_segments, exclusion_zone = exclusion_zone)
 }
 
+#' FLOSS
+#'
+#' @param .mp .mp a TSMP object of class `MatrixProfile`.
+#' @param data_window if a `number` will be used instead of embedded value. (Default is `NULL`).
+#' @param exclusion_zone if a `number` will be used instead of embedded value. (Default is `NULL`).
+#'
+#' @return
+#' @export
+#'
+#' @examples
+floss <- function(.mp, data_window = NULL, exclusion_zone = NULL) {
+  if ("Valmod" %in% class(.mp)) {
+    stop("Function not implemented for objects of class `Valmod`.")
+  }
+
+  fluss_cac(.mp, exclusion_zone, data_window)
+}
+
 #' FLUSS - Extract Segments
 #'
 #' Extract candidate points of semantic changes.
@@ -105,7 +123,7 @@ fluss_extract <- function(.mpac, num_segments, exclusion_zone = NULL) {
 #' w <- 10
 #' mp <- tsmp(data, window_size = w, verbose = 0)
 #' mp <- fluss_cac(mp)
-fluss_cac <- function(.mp, exclusion_zone = NULL) {
+fluss_cac <- function(.mp, exclusion_zone = NULL, data_window = NULL) {
   if (!("MatrixProfile" %in% class(.mp))) {
     stop("First argument must be an object of class `MatrixProfile`.")
   }
@@ -114,28 +132,75 @@ fluss_cac <- function(.mp, exclusion_zone = NULL) {
     stop("Function not implemented for objects of class `Valmod`.")
   }
 
-  if (is.null(exclusion_zone)) {
-    exclusion_zone <- .mp$ez * 10 # normally ez is 0.5, so ez here is 5
+  if (!is.null(data_window)) { # realtime 1d FLOSS
+    data_size <- length(.mp$data[[1]])
+
+    if (data_size >= data_window) {
+      profile_size <- data_window - .mp$w + 1
+      exclusion_zone <- floor(.mp$ez * .mp$w)
+      t_size <- data_window - .mp$w + 1
+      start_idx <- profile_size - t_size + 1
+      end_idx <- profile_size - exclusion_zone - 1
+      pi <- .mp$pi[start_idx:end_idx]
+      offset <- data_size - data_window
+      pi <- pi - offset
+
+      nnmark <- matrix(0, t_size, 1)
+
+      for (i in seq_along(pi)) {
+        j <- pi[i]
+        if (j < 0) {
+          next
+        }
+
+        nnmark[min(i, j)] <- nnmark[min(i, j)] + 1
+        nnmark[max(i, j)] <- nnmark[max(i, j)] - 1
+      }
+
+      arc_counts <- cumsum(nnmark)
+
+      a <- 1.93
+      b <- 1.69
+      x <- seq(0, 1, length.out = t_size)
+      ideal_arc_counts <- a * b * x^(a - 1) * (1 - x^a)^(b - 1) * t_size / 3 # kumaraswamy distribution
+
+      corrected_arc_counts <- pmin(arc_counts / ideal_arc_counts, 1)
+      corrected_arc_counts[1:min(exclusion_zone, t_size)] <- 1
+      corrected_arc_counts[is.na(corrected_arc_counts) | is.infinite(corrected_arc_counts)] <- 1
+    } else {
+      corrected_arc_counts <- rep(1, length(.mp$pi))
+    }
+  } else {
+    # normal offline FLUSS
+    if (is.null(exclusion_zone)) {
+      exclusion_zone <- floor(.mp$ez * 10) # normally ez is 0.5, so ez here is 5
+    }
+    profile_size <- length(.mp$pi)
+
+    nnmark <- matrix(0, profile_size, 1)
+
+    for (i in 1:profile_size) {
+      j <- .mp$pi[i]
+      if (j < 0) {
+        next
+      }
+
+      nnmark[min(i, j)] <- nnmark[min(i, j)] + 1
+      nnmark[max(i, j)] <- nnmark[max(i, j)] - 1
+    }
+
+    arc_counts <- cumsum(nnmark)
+
+    x <- seq(0, 1, length.out = profile_size)
+    ideal_arc_counts <- stats::dbeta(x, 2, 2) * profile_size / 3 #  ideal_arc_counts <- 2 * (seq_len(profile_size))*(profile_size - seq_len(profile_size)) / profile_size;
+
+    corrected_arc_counts <- pmin(arc_counts / ideal_arc_counts, 1)
+    exclusion_zone <- round(.mp$w * exclusion_zone + vars()$eps)
+    corrected_arc_counts[1:min(exclusion_zone, profile_size)] <- 1
+    corrected_arc_counts[max((profile_size - exclusion_zone + 1), 1):profile_size] <- 1
+    corrected_arc_counts[is.na(corrected_arc_counts) | is.infinite(corrected_arc_counts)] <- 1
   }
 
-  arc_counts <- vector(mode = "numeric")
-  profile_index_size <- length(.mp$pi)
-
-  nnmark <- matrix(0, profile_index_size, 1)
-
-  for (i in 1:profile_index_size) {
-    j <- .mp$pi[i]
-    nnmark[min(i, j)] <- nnmark[min(i, j)] + 1
-    nnmark[max(i, j)] <- nnmark[max(i, j)] - 1
-  }
-
-  arc_counts <- cumsum(nnmark)
-
-  ideal_arc_counts <- stats::dbeta(seq(0, 1, length.out = profile_index_size), 2, 2) * profile_index_size / 3
-  corrected_arc_counts <- pmin(arc_counts / ideal_arc_counts, 1)
-  exclusion_zone <- round(.mp$w * exclusion_zone + vars()$eps)
-  corrected_arc_counts[1:min(exclusion_zone, profile_index_size)] <- 1
-  corrected_arc_counts[max((profile_index_size - exclusion_zone + 1), 1):profile_index_size] <- 1
 
   .mp$cac <- corrected_arc_counts
 

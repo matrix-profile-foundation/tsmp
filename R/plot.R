@@ -147,11 +147,18 @@ plot.ArcCount <- function(x, data, type = c("data", "matrix"), exclusion_zone = 
   }
 
   cac <- x$cac # keep cac intact
-
   cac_size <- length(cac)
+  profile_index <- x$pi
+
+  if (cac_size < length(profile_index)) {
+    offset <- length(profile_index) - cac_size
+    plot_data <- tail(plot_data, cac_size)
+    profile_index <- tail(profile_index, cac_size) - offset
+  }
+
   pairs <- matrix(0, cac_size, 2)
   pairs[, 1] <- seq_len(cac_size)
-  pairs[, 2] <- x$pi
+  pairs[, 2] <- profile_index
 
   if (threshold < min(cac)) {
     stop(paste0("`threshold` is too small for this Arc Count. Min: ", round(min(cac), 2), ", Max: ", round(max(cac), 2)))
@@ -177,12 +184,14 @@ plot.ArcCount <- function(x, data, type = c("data", "matrix"), exclusion_zone = 
   xmin <- min(pairs)
   xmax <- max(pairs)
   xlim <- c(xmin, xmax)
+  cac <- cac[xmin:xmax]
+  plot_data <- plot_data[xmin:xmax]
 
   graphics::layout(matrix(c(1, 2, 3), ncol = 1, byrow = TRUE))
   graphics::par(oma = c(1, 1, 3, 0), cex.lab = 1.5)
   plot_arcs(pairs, xlab = xlab, ...)
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
-  graphics::plot(x$cac, main = "Arc count", type = "l", xlab = xlab, ylab = "normalized count", xlim = xlim, ...)
+  graphics::plot(cac, main = "Arc count", type = "l", xlab = xlab, ylab = "normalized count", xlim = xlim, ...)
   graphics::plot(plot_data, main = data_main, type = "l", xlab = xlab, ylab = data_lab, xlim = xlim, ...)
 
   graphics::par(def_par)
