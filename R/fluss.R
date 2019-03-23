@@ -40,12 +40,12 @@ fluss <- function(.mp, num_segments, exclusion_zone = NULL) {
 #' @export
 #'
 #' @examples
-floss <- function(.mp, data_window = NULL, exclusion_zone = NULL) {
+floss <- function(.mp, new_data, data_window = FALSE, exclusion_zone = NULL) {
   if ("Valmod" %in% class(.mp)) {
     stop("Function not implemented for objects of class `Valmod`.")
   }
 
-  fluss_cac(.mp, exclusion_zone, data_window)
+  fluss_cac(stompi_update(.mp, new_data, data_window), exclusion_zone, data_window)
 }
 
 #' FLUSS - Extract Segments
@@ -123,7 +123,7 @@ fluss_extract <- function(.mpac, num_segments, exclusion_zone = NULL) {
 #' w <- 10
 #' mp <- tsmp(data, window_size = w, verbose = 0)
 #' mp <- fluss_cac(mp)
-fluss_cac <- function(.mp, exclusion_zone = NULL, data_window = NULL) {
+fluss_cac <- function(.mp, exclusion_zone = NULL, data_window = FALSE) {
   if (!("MatrixProfile" %in% class(.mp))) {
     stop("First argument must be an object of class `MatrixProfile`.")
   }
@@ -132,44 +132,51 @@ fluss_cac <- function(.mp, exclusion_zone = NULL, data_window = NULL) {
     stop("Function not implemented for objects of class `Valmod`.")
   }
 
-  if (!is.null(data_window)) { # realtime 1d FLOSS
+  if (!is.null(attr(.mp, "buffered"))) { # realtime 1d FLOSS
     data_size <- length(.mp$data[[1]])
 
-    if (data_size >= data_window) {
-      profile_size <- data_window - .mp$w + 1
-      exclusion_zone <- floor(.mp$ez * .mp$w)
-      t_size <- data_window - .mp$w + 1
-      start_idx <- profile_size - t_size + 1
-      end_idx <- profile_size - exclusion_zone - 1
-      pi <- .mp$pi[start_idx:end_idx]
-      offset <- data_size - data_window
-      pi <- pi - offset
+    if (!data_window) {
+      data_window <- data_size
+    }
 
-      nnmark <- matrix(0, t_size, 1)
+    profile_size <- data_window - .mp$w + 1
+    exclusion_zone <- floor(.mp$ez * .mp$w)
+    t_size <- data_window - .mp$w + 1
+    start_idx <- profile_size - t_size + 1
+    end_idx <- profile_size - exclusion_zone - 1
+    pi <- .mp$pi[start_idx:end_idx]
+    offset <- data_size - data_window
+    pi <- pi - offset
 
-      for (i in seq_along(pi)) {
-        j <- pi[i]
-        if (j < 0) {
-          next
-        }
+    nnmark <- matrix(0, t_size, 1)
 
-        nnmark[min(i, j)] <- nnmark[min(i, j)] + 1
-        nnmark[max(i, j)] <- nnmark[max(i, j)] - 1
+    for (i in seq_along(pi)) {
+      j <- pi[i]
+      if (j < 0) {
+        next
       }
 
-      arc_counts <- cumsum(nnmark)
-
-      a <- 1.93
-      b <- 1.69
-      x <- seq(0, 1, length.out = t_size)
-      ideal_arc_counts <- a * b * x^(a - 1) * (1 - x^a)^(b - 1) * t_size / 3 # kumaraswamy distribution
-
-      corrected_arc_counts <- pmin(arc_counts / ideal_arc_counts, 1)
-      corrected_arc_counts[1:min(exclusion_zone, t_size)] <- 1
-      corrected_arc_counts[is.na(corrected_arc_counts) | is.infinite(corrected_arc_counts)] <- 1
-    } else {
-      corrected_arc_counts <- rep(1, length(.mp$pi))
+      nnmark[min(i, j)] <- nnmark[min(i, j)] + 1
+      nnmark[max(i, j)] <- nnmark[max(i, j)] - 1
     }
+
+    arc_counts <- cumsum(nnmark)
+
+    a <- 1.93
+    b <- 1.69
+    x <- seq(0, 1, length.out = t_size)
+    ideal_arc_counts <- a * b * x^(a - 1) * (1 - x^a)^(b - 1) * t_size / 3 # kumaraswamy distribution
+
+    corrected_arc_counts <- pmin(arc_counts / ideal_arc_counts, 1)
+    corrected_arc_counts[1:min(exclusion_zone, t_size)] <- 1
+    corrected_arc_counts[is.na(corrected_arc_counts)] <- Inf
+    mid_idx <- round(data_window / 2) - attr(.mp, "new_data")
+
+    if (is.null(.mp$cac_final)) {
+      .mp$cac_final <- rep(Inf, round(profile_size / 2) + .mp$w)
+    }
+
+    .mp$cac_final <- c(.mp$cac_final, corrected_arc_counts[mid_idx:(mid_idx + attr(.mp, "new_data") - 1)])
   } else {
     # normal offline FLUSS
     if (is.null(exclusion_zone)) {
@@ -198,7 +205,7 @@ fluss_cac <- function(.mp, exclusion_zone = NULL, data_window = NULL) {
     exclusion_zone <- round(.mp$w * exclusion_zone + vars()$eps)
     corrected_arc_counts[1:min(exclusion_zone, profile_size)] <- 1
     corrected_arc_counts[max((profile_size - exclusion_zone + 1), 1):profile_size] <- 1
-    corrected_arc_counts[is.na(corrected_arc_counts) | is.infinite(corrected_arc_counts)] <- 1
+    corrected_arc_counts[is.na(corrected_arc_counts)] <- Inf
   }
 
 

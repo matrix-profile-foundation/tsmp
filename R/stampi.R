@@ -41,6 +41,7 @@ stampi_update <- function(.mp, new_data) {
   .mp$mp <- as.matrix(mp_new)
   .mp$pi <- as.matrix(pi_new)
   .mp$data[[1]] <- as.matrix(data_upd)
+  attr(.mp, "realtime") <- TRUE
 
   return(.mp)
 }
@@ -139,6 +140,12 @@ stompi_update <- function(.mp, new_data, history_size = FALSE) {
       rmp_new <- tail(rmp_new, mp_new_size)
       rpi_new <- tail(rpi_new - offset, mp_new_size)
       rpi_new[rpi_new < 0] <- -1
+
+      if (is.null(attr(.mp, "buffered"))) {
+        attr(.mp, "buffered") <- offset
+      } else {
+        attr(.mp, "buffered") <- attr(.mp, "buffered") + offset
+      }
     }
   }
 
@@ -149,6 +156,7 @@ stompi_update <- function(.mp, new_data, history_size = FALSE) {
   .mp$rmp <- as.matrix(rmp_new)
   .mp$rpi <- as.matrix(rpi_new)
   .mp$data[[1]] <- as.matrix(data_upd)
+  attr(.mp, "new_data") <- new_data_size
 
   return(.mp)
 }
