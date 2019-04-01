@@ -135,6 +135,7 @@ stamp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_s
       ez = ez
     )
     class(obj) <- "MatrixProfile"
+    attr(obj, "join") <- join
     obj
   }), TRUE)
 

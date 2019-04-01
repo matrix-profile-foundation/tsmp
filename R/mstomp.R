@@ -53,7 +53,7 @@
 #' # force using dimensions 1 and 2
 #' mp <- mstomp(mp_toy_data$data[1:200, ], 30, must_dim = c(1, 2))
 #' # exclude dimensions 2 and 3
-#' mp <- mstomp(mp_toy_data$data[1:200, ], 30, exc_dim = c(2, 3))
+#' mp2 <- mstomp(mp_toy_data$data[1:200, ], 30, exc_dim = c(2, 3))
 #' }
 #'
 mstomp <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, must_dim = NULL, exc_dim = NULL) {
@@ -154,12 +154,12 @@ mstomp <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, must_
 
   tictac <- Sys.time()
   # compute the matrix profile
-  matrix_profile <- matrix(0, matrix_profile_size, n_dim)
-  profile_index <- matrix(0, matrix_profile_size, n_dim)
+  matrix_profile <- matrix(Inf, matrix_profile_size, n_dim)
+  profile_index <- matrix(-Inf, matrix_profile_size, n_dim)
   left_matrix_profile <- matrix(Inf, matrix_profile_size, n_dim)
-  left_profile_index <- matrix(-1, matrix_profile_size, n_dim)
+  left_profile_index <- matrix(-Inf, matrix_profile_size, n_dim)
   right_matrix_profile <- matrix(Inf, matrix_profile_size, n_dim)
-  right_profile_index <- matrix(-1, matrix_profile_size, n_dim)
+  right_profile_index <- matrix(-Inf, matrix_profile_size, n_dim)
   distance_profile <- matrix(0, matrix_profile_size, n_dim)
   last_product <- matrix(0, matrix_profile_size, n_dim)
   drop_value <- matrix(0, 1, n_dim)
@@ -302,6 +302,7 @@ mstomp <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, must_
       exc = exc_dim
     )
     class(obj) <- "MultiMatrixProfile"
+    attr(obj, "join") <- FALSE
   } else {
     obj <- list(
       mp = matrix_profile, pi = profile_index,
@@ -311,6 +312,7 @@ mstomp <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, must_
       ez = ez
     )
     class(obj) <- "MatrixProfile"
+    attr(obj, "join") <- FALSE
   }
 
   return(obj)

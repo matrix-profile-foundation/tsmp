@@ -695,6 +695,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
       wnn = valmp$length_profile_non_length_normalized
     )
     class(obj) <- c("Valmod", "MatrixProfile")
+    attr(obj, "join") <- join
     obj
   })
 }

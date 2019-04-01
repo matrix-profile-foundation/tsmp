@@ -270,6 +270,55 @@ ipaa <- function(data, p) {
   }
 }
 
+#' Title
+#'
+#' @param mp
+#' @param pi
+#' @param non_negative
+#'
+#' @return
+#' @export
+#'
+#' @examples
+min_mp_idx <- function(mp, pi, positive = TRUE) {
+  min <- which.min(mp)
+
+  if (min == 1 && is.infinite(mp[min])) {
+    return(NA)
+  }
+
+  nn_min <- pi[min]
+
+  if (positive) {
+    if (nn_min > 0) {
+      return(c(min, nn_min))
+    }
+
+    mp[min] <- Inf
+
+    stop <- FALSE
+    while (!stop) {
+      min <- which.min(mp)
+
+      if (min == 1 && is.infinite(mp[min])) {
+        stop <- TRUE
+      } else {
+        nn_min <- pi[min]
+
+        if (nn_min > 0) {
+          return(c(min, nn_min))
+        } else {
+          mp[min] <- Inf
+        }
+      }
+    }
+
+    return(NA)
+  } else {
+    return(c(min, nn_min))
+  }
+}
+
 # SDTS Aux functions -----------------------------------------------------------------------------
 
 
@@ -776,7 +825,6 @@ vars <- function() {
 }
 
 # Misc -------------------------------------------------------------------------------------------
-
 #' Set/changes the data included in TSMP object.
 #'
 #' This may be useful if you want to include the data lately or remove the included data (set as `NULL`).

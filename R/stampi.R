@@ -56,16 +56,21 @@ stampi_update <- function(.mp, new_data) {
 #'
 #' @examples
 stompi_update <- function(.mp, new_data, history_size = FALSE) {
+
+  if (!is.null(attr(.mp, "join")) && attr(.mp, "join")) {
+    stop("Update not implemented in Join similarity")
+  }
+
   new_data_size <- length(new_data)
   data_upd <- c(as.vector(.mp$data[[1]]), new_data)
   data_upd_size <- length(data_upd)
 
   mp_new <- c(.mp$mp, rep(Inf, new_data_size))
-  pi_new <- c(.mp$pi, rep(-1, new_data_size))
+  pi_new <- c(.mp$pi, rep(-Inf, new_data_size))
   lmp_new <- c(.mp$lmp, rep(Inf, new_data_size))
-  lpi_new <- c(.mp$lpi, rep(-1, new_data_size))
+  lpi_new <- c(.mp$lpi, rep(-Inf, new_data_size))
   rmp_new <- c(.mp$rmp, rep(Inf, new_data_size))
-  rpi_new <- c(.mp$rpi, rep(-1, new_data_size))
+  rpi_new <- c(.mp$rpi, rep(-Inf, new_data_size))
 
   q1_idx <- (data_upd_size - .mp$w + 1 - new_data_size + 1)
 
@@ -125,27 +130,22 @@ stompi_update <- function(.mp, new_data, history_size = FALSE) {
     rpi_new[upd_idxs] <- start_idx
   }
 
-  if (history_size) {
-    if (data_upd_size > history_size) {
-      data_upd <- tail(data_upd, history_size)
-      mp_new_size <- history_size - .mp$w + 1
-      offset <- data_upd_size - history_size
+  if (history_size && (data_upd_size > history_size)) {
+    data_upd <- tail(data_upd, history_size)
+    mp_new_size <- history_size - .mp$w + 1
+    offset <- data_upd_size - history_size
 
-      mp_new <- tail(mp_new, mp_new_size)
-      pi_new <- tail(pi_new - offset, mp_new_size)
-      pi_new[pi_new < 0] <- -1
-      lmp_new <- tail(lmp_new, mp_new_size)
-      lpi_new <- tail(lpi_new - offset, mp_new_size)
-      lpi_new[lpi_new < 0] <- -1
-      rmp_new <- tail(rmp_new, mp_new_size)
-      rpi_new <- tail(rpi_new - offset, mp_new_size)
-      rpi_new[rpi_new < 0] <- -1
+    mp_new <- tail(mp_new, mp_new_size)
+    pi_new <- tail(pi_new - offset, mp_new_size)
+    lmp_new <- tail(lmp_new, mp_new_size)
+    lpi_new <- tail(lpi_new - offset, mp_new_size)
+    rmp_new <- tail(rmp_new, mp_new_size)
+    rpi_new <- tail(rpi_new - offset, mp_new_size)
 
-      if (is.null(attr(.mp, "buffered"))) {
-        attr(.mp, "buffered") <- offset
-      } else {
-        attr(.mp, "buffered") <- attr(.mp, "buffered") + offset
-      }
+    if (is.null(attr(.mp, "offset"))) {
+      attr(.mp, "offset") <- offset
+    } else {
+      attr(.mp, "offset") <- attr(.mp, "offset") + offset
     }
   }
 

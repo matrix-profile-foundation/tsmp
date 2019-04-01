@@ -32,7 +32,7 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
     stop("First argument must be an object of class `MatrixProfile`.")
   }
 
-  if ("Valmod" %in% class(.mp)) {
+  if (inherits(.mp, "Valmod")) {
     valmod <- TRUE
   } else {
     valmod <- FALSE
@@ -88,9 +88,15 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
   nn <- NULL
 
   for (i in seq_len(n_motifs)) {
-    min_idx <- which.min(matrix_profile)
+    idxs <- min_mp_idx(matrix_profile, .mp$pi)
+
+    if (is.na(idxs[1])) {
+      break
+    }
+
+    min_idx <- idxs[1]
     motif_distance <- matrix_profile[min_idx]
-    motif_idxs[[1]][[i]] <- sort(c(min_idx, .mp$pi[min_idx]))
+    motif_idxs[[1]][[i]] <- sort(idxs)
     motif_idx <- motif_idxs[[1]][[i]][1]
 
     if (valmod) {

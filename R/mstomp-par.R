@@ -159,12 +159,12 @@ mstomp_par <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, m
     # .errorhandling = 'remove',
     .export = c("dist_profile", "vars")
   ) %dopar% {
-    pro_muls <- matrix(0, length(idx_work[[i]]), n_dim)
-    pro_idxs <- matrix(0, length(idx_work[[i]]), n_dim)
+    pro_muls <- matrix(Inf, length(idx_work[[i]]), n_dim)
+    pro_idxs <- matrix(-Inf, length(idx_work[[i]]), n_dim)
     pro_muls_right <- matrix(Inf, length(idx_work[[i]]), n_dim)
-    pro_idxs_right <- matrix(-1, length(idx_work[[i]]), n_dim)
+    pro_idxs_right <- matrix(-Inf, length(idx_work[[i]]), n_dim)
     pro_muls_left <- matrix(Inf, length(idx_work[[i]]), n_dim)
-    pro_idxs_left <- matrix(-1, length(idx_work[[i]]), n_dim)
+    pro_idxs_left <- matrix(-Inf, length(idx_work[[i]]), n_dim)
     dist_pro <- matrix(0, matrix_profile_size, n_dim)
     last_product <- matrix(0, matrix_profile_size, n_dim)
     drop_value <- matrix(0, 1, n_dim)
@@ -268,12 +268,12 @@ mstomp_par <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, m
     res
   }
 
-  matrix_profile <- matrix(0, matrix_profile_size, n_dim)
-  profile_index <- matrix(0, matrix_profile_size, n_dim)
+  matrix_profile <- matrix(Inf, matrix_profile_size, n_dim)
+  profile_index <- matrix(-Inf, matrix_profile_size, n_dim)
   left_matrix_profile <- matrix(Inf, matrix_profile_size, n_dim)
-  left_profile_index <- matrix(-1, matrix_profile_size, n_dim)
+  left_profile_index <- matrix(-Inf, matrix_profile_size, n_dim)
   right_matrix_profile <- matrix(Inf, matrix_profile_size, n_dim)
-  right_profile_index <- matrix(-1, matrix_profile_size, n_dim)
+  right_profile_index <- matrix(-Inf, matrix_profile_size, n_dim)
 
   for (i in seq_len(length(batch))) {
     left_profile_index[idx_work[[batch[[i]]$idx]], ] <- batch[[i]]$pro_idxs_left
@@ -324,6 +324,7 @@ mstomp_par <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, m
       exc = exc_dim
     )
     class(obj) <- "MultiMatrixProfile"
+    attr(obj, "join") <- FALSE
   } else {
     obj <- list(
       mp = matrix_profile, pi = profile_index,
@@ -333,6 +334,7 @@ mstomp_par <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, m
       ez = ez
     )
     class(obj) <- "MatrixProfile"
+    attr(obj, "join") <- FALSE
   }
 
   return(obj)

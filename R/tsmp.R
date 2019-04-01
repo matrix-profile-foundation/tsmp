@@ -156,6 +156,9 @@ tsmp <- function(..., window_size, exclusion_zone = 1 / 2, mode = c("stomp", "st
     }
   }
 
+  data <- as.matrix(data)
+  query <- if (is.null(query)) NULL else as.matrix(query)
+
   result <- switch(algo,
     "stomp" = {
       if (n_workers > 1) {
@@ -245,6 +248,17 @@ tsmp <- function(..., window_size, exclusion_zone = 1 / 2, mode = c("stomp", "st
   #     }
   #   }
   # }
+
+  attr(result, "origin") <- list(
+    data_size = nrow(data),
+    query_size = nrow(query),
+    window_size = window_size,
+    exclusion_zone = result$ez,
+    mp_size = nrow(result$mp),
+    algorithm = algo,
+    class = class(result),
+    version = 1.1
+  )
 
   if (.keep_data) {
     if (!is.null(query)) {

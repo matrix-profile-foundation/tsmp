@@ -201,27 +201,45 @@ plot.ArcCount <- function(x, data, type = c("data", "matrix"), exclusion_zone = 
 #' @keywords hplot
 #' @name plot
 #'
-plot.Valmod <- function(x, ylab = "distance", xlab = "index", main = "Valmod Matrix Profile", ...) {
+plot.Valmod <- function(x, ylab = "distance", xlab = "index", main = "Valmod Matrix Profile", data = FALSE, ...) {
   def_par <- graphics::par(no.readonly = TRUE)
   allmatrix <- FALSE
+  num_charts <- 1
 
-  if (!is.null(x$lmp) && !all(x$lpi == -1)) {
-    allmatrix <- TRUE
+  xnum <- seq_len(nrow(x$mp) + min(x$w) - 1)
+
+  if (!is.null(attr(x, "offset"))) {
+    xnum <- xnum + attr(x, "offset")
   }
 
-  if (allmatrix == TRUE) {
-    graphics::layout(matrix(c(1, 2, 3), ncol = 1, byrow = TRUE))
+  # if (!is.null(attr(x, "join")) && !attr(x, "join")) {
+  #   allmatrix <- TRUE
+  #   num_charts <- 3
+  # }
+
+  if (data) {
+    num_charts <- num_charts + 1
+  }
+
+  if (num_charts > 1) {
+    graphics::layout(matrix(seq_len(num_charts), ncol = 1, byrow = TRUE))
   }
   graphics::par(
     mar = c(4.1, 4.1, 2.1, 2.1),
     oma = c(1, 1, 3, 0), cex.lab = 1.5
   )
-  graphics::plot(x$mp, type = "l", main = paste0("Matrix Profile (w = ", min(x$w), "-", max(x$w), "; ez = ", x$ez, ")"), ylab = ylab, xlab = xlab, ...)
+
+  if (data) {
+    graphics::plot(xnum, x$data[[1]], type = "l", main = paste0("Data"), ylab = ylab, xlab = xlab, ...)
+    graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
+  }
+
+  graphics::plot(xnum, c(x$mp, rep(NA, min(x$w) - 1)), type = "l", main = paste0("Matrix Profile (w = ", min(x$w), "-", max(x$w), "; ez = ", x$ez, ")"), ylab = ylab, xlab = xlab, ...)
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
 
   if (allmatrix == TRUE) {
-    graphics::plot(x$rmp, type = "l", main = "Right Matrix Profile", ylab = ylab, xlab = xlab, ...)
-    graphics::plot(x$lmp, type = "l", main = "Left Matrix Profile", ylab = ylab, xlab = xlab, ...)
+    graphics::plot(xnum, c(x$rmp, rep(NA, min(x$w) - 1)), type = "l", main = "Right Matrix Profile", ylab = ylab, xlab = xlab, ...)
+    graphics::plot(xnum, c(x$lmp, rep(NA, min(x$w) - 1)), type = "l", main = "Left Matrix Profile", ylab = ylab, xlab = xlab, ...)
   }
 
   graphics::par(def_par)
@@ -231,27 +249,45 @@ plot.Valmod <- function(x, ylab = "distance", xlab = "index", main = "Valmod Mat
 #' @keywords hplot
 #' @name plot
 #'
-plot.MatrixProfile <- function(x, ylab = "distance", xlab = "index", main = "Unidimensional Matrix Profile", ...) {
+plot.MatrixProfile <- function(x, ylab = "distance", xlab = "index", main = "Unidimensional Matrix Profile", data = FALSE, ...) {
   def_par <- graphics::par(no.readonly = TRUE)
   allmatrix <- FALSE
+  num_charts <- 1
 
-  if (!is.null(x$lmp) && !all(x$lpi == -1)) {
-    allmatrix <- TRUE
+  xnum <- seq_len(nrow(x$mp) + x$w - 1)
+
+  if (!is.null(attr(x, "offset"))) {
+    xnum <- xnum + attr(x, "offset")
   }
 
-  if (allmatrix == TRUE) {
-    graphics::layout(matrix(c(1, 2, 3), ncol = 1, byrow = TRUE))
+  if (!is.null(attr(x, "join")) && !attr(x, "join")) {
+    allmatrix <- TRUE
+    num_charts <- 3
+  }
+
+  if (data) {
+    num_charts <- num_charts + 1
+  }
+
+  if (num_charts > 1) {
+    graphics::layout(matrix(seq_len(num_charts), ncol = 1, byrow = TRUE))
   }
   graphics::par(
     mar = c(4.1, 4.1, 2.1, 2.1),
     oma = c(1, 1, 3, 0), cex.lab = 1.5
   )
-  graphics::plot(x$mp, type = "l", main = paste0("Matrix Profile (w = ", x$w, "; ez = ", x$ez, ")"), ylab = ylab, xlab = xlab, ...)
+
+  if (data) {
+    graphics::plot(xnum, x$data[[1]], type = "l", main = paste0("Data"), ylab = "", xlab = xlab, ...)
+    graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
+  }
+
+  graphics::plot(xnum, c(x$mp, rep(NA, x$w - 1)), type = "l", main = paste0("Matrix Profile (w = ", x$w, "; ez = ", x$ez, ")"), ylab = ylab, xlab = xlab, ...)
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
 
   if (allmatrix == TRUE) {
-    graphics::plot(x$rmp, type = "l", main = "Right Matrix Profile", ylab = ylab, xlab = xlab, ...)
-    graphics::plot(x$lmp, type = "l", main = "Left Matrix Profile", ylab = ylab, xlab = xlab, ...)
+    graphics::plot(xnum, c(x$rmp, rep(NA, x$w - 1)), type = "l", main = "Right Matrix Profile", ylab = ylab, xlab = xlab, ...)
+    graphics::plot(xnum, c(x$lmp, rep(NA, x$w - 1)), type = "l", main = "Left Matrix Profile", ylab = ylab, xlab = xlab, ...)
   }
 
   graphics::par(def_par)
@@ -264,30 +300,41 @@ plot.MatrixProfile <- function(x, ylab = "distance", xlab = "index", main = "Uni
 plot.MultiMatrixProfile <- function(x, ylab = "distance", xlab = "index", main = "Multidimensional Matrix Profile", ...) {
   def_par <- graphics::par(no.readonly = TRUE)
   allmatrix <- FALSE
+  num_charts <- 1
+  mask <- !is.na(x$mp[1, ])
+  x$mp <- x$mp[, mask, drop = FALSE]
   n_dim <- ncol(x$mp)
 
-  if (!is.null(x$lmp) && !all(x$lpi == -1)) {
+  xnum <- seq_len(nrow(x$mp) + x$w - 1)
+
+  if (!is.null(attr(x, "offset"))) {
+    xnum <- xnum + attr(x, "offset")
+  }
+
+  if (!is.null(attr(x, "join")) && !attr(x, "join")) {
     allmatrix <- TRUE
+    num_charts <- 3
   }
 
   if (allmatrix == TRUE) {
-    graphics::layout(matrix(seq_len(3 * n_dim), ncol = 3, byrow = TRUE))
+    graphics::layout(matrix(seq_len(num_charts * n_dim), ncol = n_dim, byrow = TRUE))
   }
+
   graphics::par(
     mar = c(4.1, 4.1, 2.1, 2.1),
     oma = c(1, 1, 3, 0), cex.lab = 1.5
   )
   for (i in seq_len(n_dim)) {
-    graphics::plot(x$mp[, i], type = "l", main = paste0("Matrix Profile (w = ", x$w, "; ez = ", x$ez, ")"), ylab = ylab, xlab = xlab, ...)
+    graphics::plot(xnum, c(x$mp[, i], rep(NA, min(x$w) - 1)), type = "l", main = paste0("Matrix Profile (w = ", x$w, "; ez = ", x$ez, ")"), ylab = ylab, xlab = xlab, ...)
   }
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
 
   if (allmatrix == TRUE) {
     for (i in seq_len(n_dim)) {
-      graphics::plot(x$rmp[, i], type = "l", main = "Right Matrix Profile", ylab = ylab, xlab = xlab, ...)
+      graphics::plot(xnum, c(x$rmp[, i], rep(NA, min(x$w) - 1)), type = "l", main = "Right Matrix Profile", ylab = ylab, xlab = xlab, ...)
     }
     for (i in seq_len(n_dim)) {
-      graphics::plot(x$lmp[, i], type = "l", main = "Left Matrix Profile", ylab = ylab, xlab = xlab, ...)
+      graphics::plot(xnum, c(x$lmp[, i], rep(NA, min(x$w) - 1)), type = "l", main = "Left Matrix Profile", ylab = ylab, xlab = xlab, ...)
     }
   }
 
@@ -298,36 +345,58 @@ plot.MultiMatrixProfile <- function(x, ylab = "distance", xlab = "index", main =
 #' @keywords hplot
 #' @name plot
 #'
-plot.SimpleMatrixProfile <- function(x, ylab = "distance", xlab = "index", main = "SiMPle Matrix Profile", ...) {
+plot.SimpleMatrixProfile <- function(x, ylab = "distance", xlab = "index", main = "SiMPle Matrix Profile", data = FALSE, ...) {
   def_par <- graphics::par(no.readonly = TRUE)
-  allmatrix <- FALSE
-  n_dim <- ncol(x$mp)
+  num_charts <- 1
 
-  if (!is.null(x$lmp) && !all(x$lpi == -1)) {
-    allmatrix <- TRUE
+  xnum <- seq_len(nrow(x$mp) + x$w - 1)
+
+  if (!is.null(attr(x, "offset"))) {
+    xnum <- xnum + attr(x, "offset")
   }
 
-  if (allmatrix == TRUE) {
-    graphics::layout(matrix(seq_len(3 * n_dim), ncol = 3, byrow = TRUE))
+  if (data) {
+    num_charts <- num_charts + length(x$data)
   }
+
+  if (num_charts > 1) {
+    graphics::layout(matrix(seq_len(num_charts), ncol = 1, byrow = TRUE))
+  }
+
   graphics::par(
     mar = c(4.1, 4.1, 2.1, 2.1),
     oma = c(1, 1, 3, 0), cex.lab = 1.5
   )
-  for (i in seq_len(n_dim)) {
-    graphics::plot(x$mp[, i], type = "l", main = paste0("Matrix Profile (w = ", x$w, "; ez = ", x$ez, ")"), ylab = ylab, xlab = xlab, ...)
+
+  if (data) {
+    n_dim <- ncol(x$data[[1]])
+
+    graphics::plot(xnum, x$data[[1]][, 1], type = "l", main = paste0("Data"), ylab = "", xlab = xlab, ...)
+    graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
+
+    if (n_dim > 1) {
+      for(i in 2:n_dim) {
+        lines(xnum, x$data[[1]][, i], main = paste0("Data"), ylab = "", xlab = xlab, col = i, ...)
+      }
+    }
+
+    if(length(x$data) > 1) {
+      n_dim <- ncol(x$data[[2]])
+
+      graphics::plot(xnum, x$data[[2]][, 1], type = "l", main = paste0("Query"), ylab = "", xlab = xlab, ...)
+      graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
+
+      if (n_dim > 1) {
+        for(i in 2:n_dim) {
+          lines(xnum, x$data[[2]][, i], main = paste0("Data"), ylab = "", xlab = xlab, col = i, ...)
+        }
+      }
+    }
   }
+
+  graphics::plot(xnum, c(x$mp, rep(NA, min(x$w) - 1)), type = "l", main = paste0("Matrix Profile (w = ", x$w, "; ez = ", x$ez, ")"), ylab = ylab, xlab = xlab, ...)
+
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
-
-  if (allmatrix == TRUE) {
-    for (i in seq_len(n_dim)) {
-      graphics::plot(x$rmp[, i], type = "l", main = "Right Matrix Profile", ylab = ylab, xlab = xlab, ...)
-    }
-    for (i in seq_len(n_dim)) {
-      graphics::plot(x$lmp[, i], type = "l", main = "Left Matrix Profile", ylab = ylab, xlab = xlab, ...)
-    }
-  }
-
   graphics::par(def_par)
 }
 
@@ -525,6 +594,14 @@ plot.Discord <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "
 plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "MOTIF Discover", xlab = "index", ylab = "", ...) {
   def_par <- graphics::par(no.readonly = TRUE)
 
+  motifs <- x$motif$motif_idx
+  n_motifs <- length(x$motif$motif_idx)
+
+  if (n_motifs == 0) {
+    graphics::par(def_par)
+    stop("No Motifs found to plot.")
+  }
+
   if ("Valmod" %in% class(x)) {
     valmod <- TRUE
 
@@ -547,7 +624,7 @@ plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "MO
     plot_data <- data
     plot_subtitle <- "Data"
   } else {
-    plot_data <- x$mp
+    plot_data <- c(x$mp, rep(NA, min(x$w) - 1))
     ylab <- "distance"
     if (valmod) {
       plot_subtitle <- paste0("Matrix Profile (w = ", min(x$w), "-", max(x$w), "; ez = ", x$ez, ")")
@@ -556,8 +633,6 @@ plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "MO
     }
   }
 
-  motifs <- x$motif$motif_idx
-  n_motifs <- length(x$motif$motif_idx)
   neighbors <- x$motif$motif_neighbor
   windows <- unlist(x$motif$motif_window)
   matrix_profile_size <- nrow(x$mp)
@@ -570,11 +645,19 @@ plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "MO
     byrow = TRUE
   ))
   # plot matrix profile
+  xnum <- seq_len(nrow(x$mp) + min(x$w) - 1)
+
+  offset <- attr(x, "offset")
+  offset <- ifelse(is.null(offset), 0, offset)
+
+  if (!is.null(offset)) {
+    xnum <- xnum + offset
+  }
   graphics::par(oma = c(1, 1, 3, 0), cex.lab = 1.5)
-  graphics::plot(plot_data, type = "l", main = plot_subtitle, xlab = xlab, ylab = ylab)
+  graphics::plot(xnum, plot_data, type = "l", main = plot_subtitle, xlab = xlab, ylab = ylab)
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
-  graphics::abline(v = unlist(motifs), col = rep(1:n_motifs, each = 2), lwd = 3)
-  graphics::abline(v = unlist(neighbors), col = rep(1:n_motifs, sapply(neighbors, length)), lwd = 1, lty = 2)
+  graphics::abline(v = unlist(motifs) + offset, col = rep(1:n_motifs, each = 2), lwd = 3)
+  graphics::abline(v = unlist(neighbors) + offset, col = rep(1:n_motifs, sapply(neighbors, length)), lwd = 1, lty = 2)
 
   # plot motifs
   if (valmod) {
@@ -584,7 +667,7 @@ plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "MO
 
       # blank plot
       graphics::plot(0.5, 0.5,
-        type = "n", main = paste("Motif", i), sub = paste("w = ", windows[i]), xlab = "length", ylab = "normalized data",
+        type = "n", main = paste0("Motif ", i, " (w = ", windows[i], ")"), xlab = "length", ylab = "normalized data",
         xlim = c(0, length(motif1)), ylim = c(min(motif1), max(motif1))
       )
 
@@ -627,6 +710,14 @@ plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "MO
 plot.MultiMotif <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "Multidimensional MOTIF Discover", xlab = "index", ylab = "", ...) {
   def_par <- graphics::par(no.readonly = TRUE)
 
+  motifs <- x$motif$motif_idx
+  n_motifs <- length(x$motif$motif_idx)
+
+  if (n_motifs == 0) {
+    graphics::par(def_par)
+    stop("No Motifs found to plot.")
+  }
+
   if (missing(data) && !is.null(x$data)) {
     data <- x$data[[1]]
   } else {
@@ -639,15 +730,13 @@ plot.MultiMotif <- function(x, data, type = c("data", "matrix"), ncol = 3, main 
     plot_data <- data
     plot_subtitle <- "Data"
   } else {
-    plot_data <- x$mp
+    plot_data <- apply(x$mp, 2, function(y) c(y, rep(NA, min(x$w) - 1)))
     ylab <- "distance"
     plot_subtitle <- paste0("Matrix Profile ", i, " (w = ", x$w, "; ez = ", x$ez, ")")
   }
 
   n_dim <- x$n_dim
-  motifs <- x$motif$motif_idx
   motifs_dim <- x$motif$motif_dim
-  n_motifs <- length(x$motif$motif_idx)
   matrix_profile_size <- nrow(x$mp)
 
   dim_idx <- list()
@@ -669,15 +758,24 @@ plot.MultiMotif <- function(x, data, type = c("data", "matrix"), ncol = 3, main 
     byrow = TRUE
   ))
   # plot matrix profile
+  xnum <- seq_len(nrow(x$mp) + min(x$w) - 1)
+
+  offset <- attr(x, "offset")
+  offset <- ifelse(is.null(offset), 0, offset)
+
+  if (!is.null(offset)) {
+    xnum <- xnum + offset
+  }
+
   graphics::par(
     mar = c(4.1, 4.1, 2.1, 2.1),
     oma = c(1, 1, 3, 0), cex.lab = 1.5
   )
   for (i in seq_len(length(dim_idx))) {
-    graphics::plot(plot_data[, i],
-      type = "l",
-      main = plot_subtitle,
-      xlab = xlab, ylab = ylab
+    graphics::plot(xnum, plot_data[, i],
+                   type = "l",
+                   main = plot_subtitle,
+                   xlab = xlab, ylab = ylab
     )
 
     midx <- dim_idx[[i]]
@@ -698,8 +796,8 @@ plot.MultiMotif <- function(x, data, type = c("data", "matrix"), ncol = 3, main 
 
     # blank plot
     graphics::plot(0.5, 0.5,
-      type = "n", main = paste("Motif", i), xlab = "length", ylab = "normalized data",
-      xlim = c(0, length(motif_data[[1]])), ylim = c(min(unlist(motif_data)), max(unlist(motif_data)))
+                   type = "n", main = paste("Motif", i), xlab = "length", ylab = "normalized data",
+                   xlim = c(0, length(motif_data[[1]])), ylim = c(min(unlist(motif_data)), max(unlist(motif_data)))
     )
 
     if (length(motif_data) > 1) {
@@ -713,6 +811,7 @@ plot.MultiMotif <- function(x, data, type = c("data", "matrix"), ncol = 3, main 
 
   graphics::par(def_par)
 }
+
 
 #' @export
 #' @keywords hplot

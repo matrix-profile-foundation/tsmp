@@ -128,7 +128,7 @@ simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
   # initialization
   matrix_profile_size <- data_size - window_size + 1
   matrix_profile <- rep(Inf, matrix_profile_size)
-  profile_index <- rep(0, matrix_profile_size)
+  profile_index <- rep(-Inf, matrix_profile_size)
 
   if (verbose > 1) {
     pb <- progress::progress_bar$new(
@@ -226,6 +226,7 @@ simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
     ez = ez
   )
   class(obj) <- "SimpleMatrixProfile"
+  attr(obj, "join") <- join
   return(obj)
 }
 

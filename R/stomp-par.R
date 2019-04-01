@@ -153,7 +153,7 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
   ) %dopar% {
     work_len <- length(idx_work[[i]])
     pro_muls <- matrix(Inf, matrix_profile_size, 1)
-    pro_idxs <- matrix(-1, matrix_profile_size, 1)
+    pro_idxs <- matrix(-Inf, matrix_profile_size, 1)
     if (join) {
       # no RMP and LMP for joins
       pro_muls_right <- pro_muls_left <- NULL
@@ -234,7 +234,7 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
   }
 
   matrix_profile <- matrix(Inf, matrix_profile_size, 1)
-  profile_index <- matrix(-1, matrix_profile_size, 1)
+  profile_index <- matrix(-Inf, matrix_profile_size, 1)
   if (join) {
     # no RMP and LMP for joins
     left_matrix_profile <- right_matrix_profile <- NULL
@@ -276,6 +276,7 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
       ez = ez
     )
     class(obj) <- "MatrixProfile"
+    attr(obj, "join") <- join
     obj
   })
 }
