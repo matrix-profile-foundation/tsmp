@@ -25,6 +25,12 @@ knitr::opts_chunk$set(
 * Changed `mass()` to `dist_profile()`, including options to different algoritms.
 * Added MASS_V3 and MASS_Weighted to `dist_profile()` algorithms.
 * Fixed long runtime of FFT for some data sizes, using MASS_V3. Issue #36.
+* Added `stompi_update()` that updates the matrix profile allowing real-time computation.
+++ floss()
+* Added subset operator `[` for `tsmp` objects.
+++ Added `tail()` and `head()` for `tsmp` objects.
+* Changed `find_motif()` for `MultiMatrixProfile` to report Motifs correctly.
+
 
 # tsmp 0.3.4
 * Added `find_discord()` and its `print()` and `plot()` functions.

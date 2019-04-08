@@ -276,15 +276,20 @@ print.MultiMotif <- function(x, ...) {
   cat("\nMultidimensional Motif\n")
   cat("----------------------\n")
 
-  motifs_len <- length(x$motif$motif_idx)
+  pairs_len <- length(x$motif$motif_idx)
+  cat("Motif pairs founded =", pairs_len, "\n")
+
+  indexes <- NULL
+  for (i in seq_len(pairs_len)) {
+    indexes <- paste0(indexes, "[", paste(x$motif$motif_idx[[i]], collapse = ", "), "] ")
+  }
+  cat("Motif pairs indexes =", indexes, "\n")
 
   dims <- NULL
-  for (i in seq_len(motifs_len)) {
+  for (i in seq_len(pairs_len)) {
     dims <- paste0(dims, "[", paste(x$motif$motif_dim[[i]], collapse = ", "), "] ")
   }
-  cat("Motifs founded =", motifs_len, "\n")
-  cat("Motifs indexes =", x$motif$motif_idx, "\n")
-  cat("Motifs dimensions =", dims, "\n")
+  cat("Motifs pairs dimensions =", dims, "\n")
 }
 
 #' Prints Salient subsequences summary

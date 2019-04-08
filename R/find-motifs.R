@@ -230,19 +230,22 @@ find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("gui
       n_dim <- .mp$n_dim
     }
 
-    matrix_profile <- .mp$mp[, n_dim] # keep mp intact
-    profile_index <- .mp$pi[, n_dim] # keep pi intact
-    motif_idx <- which.min(matrix_profile)
-    motif_idx <- sort(c(motif_idx, profile_index[motif_idx]))
+    motif_idx <- sort(min_mp_idx(.mp$mp[, n_dim, drop = FALSE], .mp$pi[, n_dim, drop = FALSE]))
 
-    motif_1 <- as.matrix(data[motif_idx[1]:(motif_idx[1] + .mp$w - 1), ]) # as.matrix(): hack for vectors
-    motif_2 <- as.matrix(data[motif_idx[2]:(motif_idx[2] + .mp$w - 1), ]) # as.matrix(): hack for vectors
+    if (!is.na(motif_idx[1])) {
+      motif_1 <- as.matrix(data[motif_idx[1]:(motif_idx[1] + .mp$w - 1), ]) # as.matrix(): hack for vectors
+      motif_2 <- as.matrix(data[motif_idx[2]:(motif_idx[2] + .mp$w - 1), ]) # as.matrix(): hack for vectors
 
-    motif_dim <- sort(apply(abs(motif_1 - motif_2), 2, sum), index.return = TRUE)$ix
-    motif_dim <- sort(motif_dim[1:n_dim])
-    motif_dim <- list(motif_dim, motif_dim)
+      motif_dim <- sort(apply(abs(motif_1 - motif_2), 2, sum), index.return = TRUE)$ix
+      motif_dim <- sort(motif_dim[1:n_dim])
+      motif_dim <- list(motif_dim)
+      motif_idx <- list(motif_idx)
+    } else {
+      motif_idx <- NULL
+      motif_dim <- NULL
+    }
 
-    .mp$motif <- list(motif_idx = motif_idx, motif_dim = motif_dim)
+    .mp$motif <- list(motif_idx = motif_idx, motif_neighbor = NULL, motif_dim = motif_dim)
     class(.mp) <- update_class(class(.mp), "MultiMotif")
     return(.mp)
   } else {
@@ -267,7 +270,7 @@ find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("gui
       n_motifs <- dim(matrix_profile)[1]
     }
 
-    motif_idx <- rep(0, n_motifs)
+    motif_idx <- list()
     motif_dim <- list()
 
     base_bit <- n_bit * tot_dim * .mp$w * 2
@@ -275,24 +278,25 @@ find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("gui
     for (i in seq_len(n_motifs)) {
       message(sprintf("Searching for motif (%d).", i))
 
-      idx_1 <- apply(matrix_profile, 2, which.min) # sort by column
-      val <- matrix_profile[cbind(idx_1, seq_len(ncol(matrix_profile)))]
-
-      if (any(is.infinite(val))) {
-        motif_idx <- motif_idx[1:(n_motifs - 1)]
-        motif_dim <- motif_dim[1:(n_motifs - 1)]
+      idxs <- min_mp_idx(matrix_profile, .mp$pi)
+      if (is.na(idxs[1])) {
+        motif_dim <- motif_dim[seq_len(i - 1)]
         break
       }
 
-      bit_sz <- rep(0, tot_dim)
-      idx_2 <- rep(0, tot_dim)
+      val <- matrix_profile[cbind(idxs[, 1], seq_len(ncol(matrix_profile)))]
 
+      if (any(is.infinite(val))) {
+        motif_dim <- motif_dim[seq_len(i - 1)]
+        break
+      }
+
+      bit_sz <- rep(Inf, tot_dim)
       dim <- list()
 
       for (j in seq_len(tot_dim)) {
-        idx_2[j] <- .mp$pi[idx_1[j], j]
-        motif_1 <- data[idx_1[j]:(idx_1[j] + .mp$w - 1), ]
-        motif_2 <- data[idx_2[j]:(idx_2[j] + .mp$w - 1), ]
+        motif_1 <- data[idxs[j, 1]:(idxs[j, 1] + .mp$w - 1), ]
+        motif_2 <- data[idxs[j, 2]:(idxs[j, 2] + .mp$w - 1), ]
 
         bits <- get_bit_save(motif_1, motif_2, j, n_bit)
 
@@ -307,32 +311,34 @@ find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("gui
         if (i == 1) {
           message("No motifs found.")
         }
-
-        motif_idx <- motif_idx[1:(n_motifs - 1)]
-        motif_dim <- motif_dim[1:(n_motifs - 1)]
+        motif_idx <- motif_idx[seq_len(i - 1)]
+        motif_dim <- motif_dim[seq_len(i - 1)]
         break
       } else {
         found <- found + 1
       }
 
-      motif_idx[i] <- idx_1[min_idx]
-      motif_dim[[i]] <- dim[[min_idx]]
+      motif_idx[[found]] <- sort(c(idxs[min_idx, 1], idxs[min_idx, 2]))
+      motif_dim[[i]] <- sort(dim[[min_idx]])
 
-      st_idx <- max(1, motif_idx[i] - exclusion_zone)
+      st_idx <- max(1, idxs[min_idx, 1] - exclusion_zone)
+      ed_idx <- min((dim(matrix_profile)[1]), idxs[min_idx, 1] + exclusion_zone)
 
-      ed_idx <- min((dim(matrix_profile)[1]), motif_idx[i] + exclusion_zone)
+      matrix_profile[st_idx:ed_idx, ] <- Inf
+
+      st_idx <- max(1, idxs[min_idx, 2] - exclusion_zone)
+      ed_idx <- min((dim(matrix_profile)[1]), idxs[min_idx, 2] + exclusion_zone)
 
       matrix_profile[st_idx:ed_idx, ] <- Inf
     }
 
-    if (i != 1) {
+    motif_dim # <- motif_dim[motif_idx != 0]
+
+    if (length(motif_idx) > 0) {
       message(sprintf("Found %d motifs.", found))
     }
 
-    motif_dim <- motif_dim[motif_idx != 0]
-    motif_idx <- motif_idx[motif_idx != 0]
-
-    .mp$motif <- list(motif_idx = motif_idx, motif_dim = motif_dim)
+    .mp$motif <- list(motif_idx = motif_idx, motif_neighbor = NULL, motif_dim = motif_dim)
     class(.mp) <- update_class(class(.mp), "MultiMotif")
     return(.mp)
   }

@@ -260,3 +260,45 @@
     getElement(x, args)
   }
 }
+
+tail.MatrixProfile <- function(x, n = 2 * max(x$w), ...) {
+  data_size <- nrow(x$mp) + min(x$w) - 1
+
+  if (n > 0) {
+    st_idx <- data_size - n + 1
+  } else {
+    st_idx <- abs(n) + 1
+  }
+
+  message(paste0(st_idx, ":", data_size))
+  return(x[st_idx:data_size])
+}
+
+tail.MultiMatrixProfile <- function(x, n = 2 * max(x$w), ...) {
+  return(tail.MatrixProfile(x, n, ...))
+}
+
+tail.SimpleMatrixProfile <- function(x, n = 2 * max(x$w), ...) {
+  return(tail.MatrixProfile(x, n, ...))
+}
+
+head.MatrixProfile <- function(x, n = 2 * max(x$w), ...) {
+  data_size <- nrow(x$mp) + min(x$w) - 1
+
+  if (n > 0) {
+    ed_idx <- n
+  } else {
+    ed_idx <- data_size - abs(n)
+  }
+
+  message(paste0("1:", ed_idx))
+  return(x[1:ed_idx])
+}
+
+head.MultiMatrixProfile <- function(x, n = 2 * max(x$w), ...) {
+  return(head.MatrixProfile(x, n, ...))
+}
+
+head.SimpleMatrixProfile <- function(x, n = 2 * max(x$w), ...) {
+  return(head.MatrixProfile(x, n, ...))
+}

@@ -1,7 +1,7 @@
 NEWS
 ================
 Francisco Bischoff
-\- 14 Mar 2019
+\- 08 Apr 2019
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
@@ -12,6 +12,12 @@ Francisco Bischoff
   - Added MASS\_V3 and MASS\_Weighted to `dist_profile()` algorithms.
   - Fixed long runtime of FFT for some data sizes, using MASS\_V3. Issue
     \#36.
+  - Added `stompi_update()` that updates the matrix profile allowing
+    real-time computation. ++ floss()
+  - Added subset operator `[` for `tsmp` objects. ++ Added `tail()` and
+    `head()` for `tsmp` objects.
+  - Changed `find_motif()` for `MultiMatrixProfile` to report Motifs
+    correctly.
 
 # tsmp 0.3.4
 
