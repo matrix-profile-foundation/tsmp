@@ -68,7 +68,7 @@ mp <- mstomp_par(mp_toy_data$data[1:400, ], 30, verbose = 0)
 # force using dimensions 1 and 2
 mp <- mstomp(mp_toy_data$data[1:200, ], 30, must_dim = c(1, 2))
 # exclude dimensions 2 and 3
-mp <- mstomp(mp_toy_data$data[1:200, ], 30, exc_dim = c(2, 3))
+mp2 <- mstomp(mp_toy_data$data[1:200, ], 30, exc_dim = c(2, 3))
 }
 
 }

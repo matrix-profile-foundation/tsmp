@@ -6,6 +6,7 @@
   mp_size <- nrow(x$mp)
   offset <- attr(x, "offset")
 
+  # adjust offset
   if (!is.null(offset) && offset > 0) {
     x$motif$motif_idx <- lapply(x$motif$motif_idx, function(y) {
       y - offset
@@ -16,6 +17,7 @@
     })
   }
 
+  # remove from list
   x$motif$motif_idx <- lapply(x$motif$motif_idx, function(y) {
     y <- y[y <= mp_size & y > 0]
 
@@ -31,6 +33,7 @@
   x$motif$motif_idx[nulls] <- NULL
   x$motif$motif_neighbor[nulls] <- NULL
   x$motif$motif_window[nulls] <- NULL
+  x$motif$motif_dim[nulls] <- NULL
   x$motif$motif_neighbor <- lapply(x$motif$motif_neighbor, function(y) {
     y[y <= mp_size & y > 0]
   })

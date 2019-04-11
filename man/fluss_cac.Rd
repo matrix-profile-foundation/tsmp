@@ -4,7 +4,7 @@
 \alias{fluss_cac}
 \title{FLUSS - Corrected Arc Counts}
 \usage{
-fluss_cac(.mp, exclusion_zone = NULL)
+fluss_cac(.mp, exclusion_zone = NULL, data_window = FALSE)
 }
 \arguments{
 \item{.mp}{a TSMP object of class \code{MatrixProfile}.}

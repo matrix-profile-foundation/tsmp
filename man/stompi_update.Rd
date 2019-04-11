@@ -4,7 +4,7 @@
 \alias{stompi_update}
 \title{Real-time STOMP algorithm}
 \usage{
-stompi_update(.mp, new_data)
+stompi_update(.mp, new_data, history_size = FALSE)
 }
 \arguments{
 \item{.mp}{a TSMP object of class \code{MatrixProfile}.}

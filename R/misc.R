@@ -272,55 +272,61 @@ ipaa <- function(data, p) {
 
 #' Title
 #'
-#' @param mp
-#' @param pi
-#' @param positive
+#' @param .mp
+#' @param valid
 #'
 #' @return
 #' @export
 #'
 #' @examples
-min_mp_idx <- function(mp, pi, positive = TRUE) {
-  n_dim <- ncol(mp)
-  min <- apply(mp, 2, which.min) # support for multidimensional matrix profile
+min_mp_idx <- function(.mp, n_dim = NULL, valid = TRUE) {
 
-  if (any(min == 1) && any(is.infinite(mp[1, (min == 1)]))) {
+  if (!is.null(n_dim)) {
+    .mp$mp <- .mp$mp[, n_dim, drop = FALSE]
+    .mp$pi <- .mp$pi[, n_dim, drop = FALSE]
+  }
+
+  n_dim <- ncol(.mp$mp)
+  mp_size <- nrow(.mp$mp)
+  min <- apply(.mp$mp, 2, which.min) # support for multidimensional matrix profile
+
+  if (any(min == 1) && any(is.infinite(.mp$mp[1, (min == 1)]))) {
       return(NA)
   }
 
   nn_min <- NULL
 
   for (i in seq_len(n_dim)) {
-    nn_min <- c(nn_min, pi[min[i], i])
+    nn_min <- c(nn_min, .mp$pi[min[i], i])
   }
 
-  if (positive) {
-    if (all(nn_min > 0)) {
+  if (valid) {
+    if (all(nn_min > 0 & nn_min <= mp_size)) {
       return(cbind(min, nn_min, deparse.level = 0))
     }
 
     for (i in seq_len(n_dim)) {
-      mp[min[i], i] <- Inf
+      .mp$mp[min[i], i] <- Inf
     }
 
     stop <- FALSE
     while (!stop) {
-      min <- apply(mp, 2, which.min)
+      min <- apply(.mp$mp, 2, which.min)
 
-      if (any(min == 1) && any(is.infinite(mp[1, (min == 1)]))) {
+      if (any(min == 1) && any(is.infinite(.mp$mp[1, (min == 1)]))) {
         stop <- TRUE
       } else {
         nn_min <- NULL
 
         for (i in seq_len(n_dim)) {
-          nn_min <- c(nn_min, pi[min[i], i])
+          nn_min <- c(nn_min, .mp$pi[min[i], i])
         }
 
-        if (all(nn_min > 0)) {
+        if (all(nn_min > 0 & nn_min <= mp_size)) {
           return(cbind(min, nn_min, deparse.level = 0))
         } else {
           for (i in seq_len(n_dim)) {
-            mp[min[i], i] <- Inf
+            .mp$mp[min[i], i] <- Inf
           }
         }
       }

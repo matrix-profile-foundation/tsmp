@@ -635,7 +635,7 @@ plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "MO
 
   neighbors <- x$motif$motif_neighbor
   windows <- unlist(x$motif$motif_window)
-  matrix_profile_size <- nrow(x$mp)
+  data_size <- nrow(data)
 
   # layout: matrix profile on top, motifs below.
   graphics::layout(matrix(
@@ -662,8 +662,8 @@ plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "MO
   # plot motifs
   if (valmod) {
     for (i in 1:n_motifs) {
-      motif1 <- znorm(data[motifs[[i]][1]:min((motifs[[i]][1] + windows[i] - 1), matrix_profile_size)])
-      motif2 <- znorm(data[motifs[[i]][2]:min((motifs[[i]][2] + windows[i] - 1), matrix_profile_size)])
+      motif1 <- znorm(data[motifs[[i]][1]:min((motifs[[i]][1] + windows[i] - 1), nrow(data))])
+      motif2 <- znorm(data[motifs[[i]][2]:min((motifs[[i]][2] + windows[i] - 1), nrow(data))])
 
       # blank plot
       graphics::plot(0.5, 0.5,
@@ -672,7 +672,7 @@ plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "MO
       )
 
       for (j in seq_len(length(neighbors[[i]]))) {
-        neigh <- znorm(data[neighbors[[i]][j]:min((neighbors[[i]][j] + windows[i] - 1), matrix_profile_size)])
+        neigh <- znorm(data[neighbors[[i]][j]:min((neighbors[[i]][j] + windows[i] - 1), nrow(data))])
         graphics::lines(neigh, col = "gray70", lty = 2)
       }
 
@@ -681,8 +681,8 @@ plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "MO
     }
   } else {
     for (i in 1:n_motifs) {
-      motif1 <- znorm(data[motifs[[i]][1]:min((motifs[[i]][1] + x$w - 1), matrix_profile_size)])
-      motif2 <- znorm(data[motifs[[i]][2]:min((motifs[[i]][2] + x$w - 1), matrix_profile_size)])
+      motif1 <- znorm(data[motifs[[i]][1]:min((motifs[[i]][1] + x$w - 1), nrow(data))])
+      motif2 <- znorm(data[motifs[[i]][2]:min((motifs[[i]][2] + x$w - 1), nrow(data))])
 
       # blank plot
       graphics::plot(0.5, 0.5,
@@ -691,7 +691,7 @@ plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "MO
       )
 
       for (j in seq_len(length(neighbors[[i]]))) {
-        neigh <- znorm(data[neighbors[[i]][j]:min((neighbors[[i]][j] + x$w - 1), matrix_profile_size)])
+        neigh <- znorm(data[neighbors[[i]][j]:min((neighbors[[i]][j] + x$w - 1), nrow(data))])
         graphics::lines(neigh, col = "gray70", lty = 2)
       }
 
@@ -780,7 +780,7 @@ plot.MultiMotif <- function(x, data, type = c("data", "matrix"), ncol = 3, main 
 
     midx <- dim_idx[[i]]
     if (!is.null(midx)) {
-      graphics::abline(v = motifs[midx], col = midx, lwd = 2)
+      graphics::abline(v = unlist(motifs[midx]) + offset, col = rep(midx, each = 2), lwd = c(2,1))
     }
   }
 
@@ -788,25 +788,49 @@ plot.MultiMotif <- function(x, data, type = c("data", "matrix"), ncol = 3, main 
 
   # plot motifs
   for (i in 1:n_motifs) {
-    motif_data <- list()
+    # motif_data <- list()
     dim_len <- length(motifs_dim[[i]])
+
+    motif1 <- list()
+    motif2 <- list()
+
     for (j in seq_len(dim_len)) {
-      motif_data[[j]] <- znorm(data[motifs[i]:min((motifs[i] + x$w - 1), matrix_profile_size), motifs_dim[[i]][j]])
+
+      motif1[[j]] <- znorm(data[motifs[[i]][1]:min((motifs[[i]][1] + x$w - 1), nrow(data)), motifs_dim[[i]][j]])
+      motif2[[j]] <- znorm(data[motifs[[i]][2]:min((motifs[[i]][2] + x$w - 1), nrow(data)), motifs_dim[[i]][j]])
     }
+
 
     # blank plot
     graphics::plot(0.5, 0.5,
                    type = "n", main = paste("Motif", i), xlab = "length", ylab = "normalized data",
-                   xlim = c(0, length(motif_data[[1]])), ylim = c(min(unlist(motif_data)), max(unlist(motif_data)))
+                   xlim = c(0, length(motif1[[1]])), ylim = c(min(unlist(motif1), unlist(motif2)), max(unlist(motif1), unlist(motif2)))
     )
 
-    if (length(motif_data) > 1) {
+    # for (j in seq_len(length(neighbors[[i]]))) {
+    #   neigh <- znorm(data[neighbors[[i]][j]:min((neighbors[[i]][j] + x$w - 1), matrix_profile_size)])
+    #   graphics::lines(neigh, col = "gray70", lty = 2)
+    # }
+
+    # graphics::lines(motif2, col = "black")
+    # graphics::lines(motif1, col = i, lwd = 2)
+
+
+    # blank plot
+    # graphics::plot(0.5, 0.5,
+    #                type = "n", main = paste("Motif", i), xlab = "length", ylab = "normalized data",
+    #                xlim = c(0, length(motif_data[[1]])), ylim = c(min(unlist(motif_data)), max(unlist(motif_data)))
+    # )
+
+    if (length(motif2) > 1) {
       for (j in (seq_len(dim_len - 1) + 1)) {
-        graphics::lines(motif_data[[j]], col = "gray30", lwd = 1)
+        graphics::lines(motif2[[j]], col = i, lwd = 1)
+        graphics::lines(motif1[[j]], col = i, lwd = 2)
       }
     }
 
-    graphics::lines(motif_data[[1]], col = i, lwd = 2)
+    graphics::lines(motif2[[1]], col = i, lwd = 1)
+    graphics::lines(motif1[[1]], col = i, lwd = 2)
   }
 
   graphics::par(def_par)

@@ -75,8 +75,8 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
   }
 
 
-  matrix_profile <- .mp$mp # keep mp intact
-  matrix_profile_size <- length(matrix_profile)
+  matrix_profile <- .mp # keep mp intact
+  matrix_profile_size <- length(matrix_profile$mp)
   motif_idxs <- list(motifs = list(NULL), neighbors = list(NULL), windows = list(NULL))
 
   if (is.null(exclusion_zone)) {
@@ -88,14 +88,14 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
   nn <- NULL
 
   for (i in seq_len(n_motifs)) {
-    idxs <- min_mp_idx(matrix_profile, .mp$pi)
+    idxs <- min_mp_idx(matrix_profile)
 
     if (is.na(idxs[1])) {
       break
     }
 
     min_idx <- idxs[1]
-    motif_distance <- matrix_profile[min_idx]
+    motif_distance <- matrix_profile$mp[min_idx]
     motif_idxs[[1]][[i]] <- sort(idxs)
     motif_idx <- motif_idxs[[1]][[i]][1]
 
@@ -152,8 +152,13 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
     for (j in seq_len(length(remove_idx))) {
       remove_zone_start <- max(1, remove_idx[j] - e_zone)
       remove_zone_end <- min(matrix_profile_size, remove_idx[j] + e_zone)
-      matrix_profile[remove_zone_start:remove_zone_end] <- Inf
+      matrix_profile$mp[remove_zone_start:remove_zone_end] <- Inf
     }
+  }
+
+  if(is.null(motif_idxs[[1]][[1]])) {
+    message("No valid motif found.")
+    return(.mp)
   }
 
   .mp$motif <- list(motif_idx = motif_idxs[[1]], motif_neighbor = motif_idxs[[2]], motif_window = motif_idxs[[3]])
@@ -230,7 +235,7 @@ find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("gui
       n_dim <- .mp$n_dim
     }
 
-    motif_idx <- sort(min_mp_idx(.mp$mp[, n_dim, drop = FALSE], .mp$pi[, n_dim, drop = FALSE]))
+    motif_idx <- sort(min_mp_idx(.mp, n_dim))
 
     if (!is.na(motif_idx[1])) {
       motif_1 <- as.matrix(data[motif_idx[1]:(motif_idx[1] + .mp$w - 1), ]) # as.matrix(): hack for vectors
@@ -258,7 +263,7 @@ find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("gui
       exclusion_zone <- .mp$ez
     }
     exclusion_zone <- round(exclusion_zone * .mp$w + vars()$eps)
-    matrix_profile <- .mp$mp # keep mp intact
+    matrix_profile <- .mp # keep mp intact
 
     if (.mp$n_dim != data_dim) {
       warning("Warning: `data` dimensions are different from matrix profile.")
@@ -267,7 +272,7 @@ find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("gui
     tot_dim <- .mp$n_dim
 
     if (is.infinite(n_motifs)) {
-      n_motifs <- dim(matrix_profile)[1]
+      n_motifs <- dim(matrix_profile$mp)[1]
     }
 
     motif_idx <- list()
@@ -278,13 +283,13 @@ find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("gui
     for (i in seq_len(n_motifs)) {
       message(sprintf("Searching for motif (%d).", i))
 
-      idxs <- min_mp_idx(matrix_profile, .mp$pi)
+      idxs <- min_mp_idx(matrix_profile)
       if (is.na(idxs[1])) {
         motif_dim <- motif_dim[seq_len(i - 1)]
         break
       }
 
-      val <- matrix_profile[cbind(idxs[, 1], seq_len(ncol(matrix_profile)))]
+      val <- matrix_profile$mp[cbind(idxs[, 1], seq_len(ncol(matrix_profile$mp)))]
 
       if (any(is.infinite(val))) {
         motif_dim <- motif_dim[seq_len(i - 1)]
@@ -322,14 +327,14 @@ find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("gui
       motif_dim[[i]] <- sort(dim[[min_idx]])
 
       st_idx <- max(1, idxs[min_idx, 1] - exclusion_zone)
-      ed_idx <- min((dim(matrix_profile)[1]), idxs[min_idx, 1] + exclusion_zone)
+      ed_idx <- min((dim(matrix_profile$mp)[1]), idxs[min_idx, 1] + exclusion_zone)
 
-      matrix_profile[st_idx:ed_idx, ] <- Inf
+      matrix_profile$mp[st_idx:ed_idx, ] <- Inf
 
       st_idx <- max(1, idxs[min_idx, 2] - exclusion_zone)
-      ed_idx <- min((dim(matrix_profile)[1]), idxs[min_idx, 2] + exclusion_zone)
+      ed_idx <- min((dim(matrix_profile$mp)[1]), idxs[min_idx, 2] + exclusion_zone)
 
-      matrix_profile[st_idx:ed_idx, ] <- Inf
+      matrix_profile$mp[st_idx:ed_idx, ] <- Inf
     }
 
     motif_dim # <- motif_dim[motif_idx != 0]
