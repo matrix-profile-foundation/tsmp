@@ -148,6 +148,7 @@ stompi_update <- function(.mp, new_data, history_size = FALSE) {
 
     if (is.null(attr(.mp, "offset"))) {
       attr(.mp, "offset") <- offset
+      new_data_size <- 0
     } else {
       attr(.mp, "offset") <- attr(.mp, "offset") + offset
     }

@@ -253,11 +253,11 @@ fluss_cac <- function(.mp, exclusion_zone = NULL, data_window = FALSE) {
 
     x <- seq(0, 1, length.out = cac_size)
 
-    if (is.null(attr(.mp, "subsetting"))) {
-      ideal_arc_counts <- stats::dbeta(x, 2, 2) * cac_size / 3
-    } else {
-      ideal_arc_counts <- stats::dbeta(x, 2.1, 2.1) * cac_size / 3
-    }
+	if (is.null(attr(.mp, "subsetting"))) {
+	  ideal_arc_counts <- stats::dbeta(x, 2, 2) * cac_size / 3
+	} else {
+	 ideal_arc_counts <- stats::dbeta(x, 2.1, 2.1) * cac_size / 3
+	}
 
 
     corrected_arc_counts <- pmin(arc_counts / ideal_arc_counts, 1)
