@@ -110,7 +110,7 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
     }
 
     # query using the motif to find its neighbors
-    nn <- dist_profile(data, data, nn, window_size = .mp$w, index = min_idx)
+    nn <- dist_profile(data, data, nn, window_size = window, index = min_idx)
 
     distance_profile <- Re(nn$distance_profile)
 
@@ -156,8 +156,9 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
     }
   }
 
-  if(is.null(motif_idxs[[1]][[1]])) {
+  if (is.null(motif_idxs[[1]][[1]])) {
     message("No valid motif found.")
+    .mp <- remove_class(.mp, "Motif")
     return(.mp)
   }
 
@@ -176,7 +177,7 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
 #' @name find_motif
 #' @export
 #' @examples
-#'
+#' 
 #' # Multidimension data
 #' w <- mp_toy_data$sub_len
 #' data <- mp_toy_data$data[1:300, ]
@@ -314,7 +315,9 @@ find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("gui
 
       if (best_bit > (base_bit)) {
         if (i == 1) {
-          message("No motifs found.")
+          message("No valid motif found.")
+          .mp <- remove_class(.mp, "MultiMotif")
+          return(.mp)
         }
         motif_idx <- motif_idx[seq_len(i - 1)]
         motif_dim <- motif_dim[seq_len(i - 1)]

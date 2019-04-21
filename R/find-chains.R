@@ -24,18 +24,17 @@ find_chains <- function(.mp) {
     stop("Function not implemented for objects of class `Valmod`.")
   }
 
-  size <- length(.mp$rpi)
-  chain_length <- rep(1, size)
+  mp_size <- nrow(.mp$rpi)
+  chain_length <- rep(1, mp_size)
   chain_set <- list()
 
   k <- 1
 
-  for (i in 1:size) {
+  for (i in seq_len(mp_size)) {
     if (chain_length[i] == 1) {
-      j <- i
-      chain <- j
+      chain <- j <- i
 
-      while (.mp$rpi[j] > 0 && .mp$lpi[.mp$rpi[j]] == j) {
+      while (.mp$rpi[j] > 0 && .mp$rpi[j] <= mp_size && .mp$lpi[.mp$rpi[j]] == j) {
         j <- .mp$rpi[j]
         chain_length[j] <- -1
         chain_length[i] <- chain_length[i] + 1
@@ -50,6 +49,12 @@ find_chains <- function(.mp) {
   }
 
   l <- max(chain_length)
+
+  if (length(chain_set) == 0) {
+    message("No valid chain found.")
+    .mp <- remove_class(.mp, "Chain")
+    return(.mp)
+  }
 
   best_chain <- NULL
   mean <- Inf

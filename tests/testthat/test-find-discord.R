@@ -11,7 +11,7 @@ if (skip_on_cran()) {
   })
 
   test_that("Discords", {
-    expect_equal(mp$discord$discord_idx, 48)
+    expect_equal(mp$discord$discord_idx, list((48)))
     expect_equal(mp$discord$discord_neighbor, list(c(483, 184, 584)))
   })
 }

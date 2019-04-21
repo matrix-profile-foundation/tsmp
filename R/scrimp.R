@@ -44,7 +44,7 @@
 #' # join similarity
 #' mp <- scrimp(ref_data, query_data, window_size = 30, s_size = round(nrow(query_data) * 0.1))
 #' }
-#'
+#' 
 scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size = Inf, pre_scrimp = 1 / 4) {
   argv <- list(...)
   argc <- length(argv)
@@ -115,7 +115,7 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
   query[is.infinite(query)] <- 0
 
   matrix_profile <- matrix(Inf, matrix_profile_size, 1)
-  profile_index <- matrix(-1, matrix_profile_size, 1)
+  profile_index <- matrix(-Inf, matrix_profile_size, 1)
 
   if (join) {
     # no RMP and LMP for joins

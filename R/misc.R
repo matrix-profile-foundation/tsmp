@@ -280,7 +280,6 @@ ipaa <- function(data, p) {
 #'
 #' @examples
 min_mp_idx <- function(.mp, n_dim = NULL, valid = TRUE) {
-
   if (!is.null(n_dim)) {
     .mp$mp <- .mp$mp[, n_dim, drop = FALSE]
     .mp$pi <- .mp$pi[, n_dim, drop = FALSE]
@@ -291,7 +290,7 @@ min_mp_idx <- function(.mp, n_dim = NULL, valid = TRUE) {
   min <- apply(.mp$mp, 2, which.min) # support for multidimensional matrix profile
 
   if (any(min == 1) && any(is.infinite(.mp$mp[1, (min == 1)]))) {
-      return(NA)
+    return(NA)
   }
 
   nn_min <- NULL
@@ -301,7 +300,8 @@ min_mp_idx <- function(.mp, n_dim = NULL, valid = TRUE) {
   }
 
   if (valid) {
-    if (all(nn_min > 0 & nn_min <= mp_size)) {
+    if (all(nn_min > 0 & nn_min <= mp_size) &&
+      all(!is.infinite(diag(.mp$mp[nn_min, ], names = FALSE)))) {
       return(cbind(min, nn_min, deparse.level = 0))
     }
 
@@ -322,7 +322,8 @@ min_mp_idx <- function(.mp, n_dim = NULL, valid = TRUE) {
           nn_min <- c(nn_min, .mp$pi[min[i], i])
         }
 
-        if (all(nn_min > 0 & nn_min <= mp_size)) {
+        if (all(nn_min > 0 & nn_min <= mp_size) &&
+          all(!is.infinite(diag(.mp$mp[nn_min, ], names = FALSE)))) {
           return(cbind(min, nn_min, deparse.level = 0))
         } else {
           for (i in seq_len(n_dim)) {
@@ -915,6 +916,39 @@ update_class <- function(classes, new_class) {
   return(classes)
 }
 
+remove_class <- function(x, class) {
+  switch(class,
+    "Chain" = {
+      x$chain <- NULL
+    },
+    "Discord" = {
+      x$discord <- NULL
+    },
+    "Motif" = {
+      x$motif <- NULL
+    },
+    "MultiMotif" = {
+      x$motif <- NULL
+    },
+    "AnnotationVector" = {
+      x$av <- NULL
+    },
+    "ArcCount" = {
+      x$cac <- NULL
+    },
+    "Fluss" = {
+      x$fluss <- NULL
+    },
+    "Salient" = {
+      x$salient <- NULL
+    }
+  )
+
+  class(x) <- class(x)[class(x) != class]
+
+  return(x)
+}
+
 #' Convert a TSMP object into another if possible
 #'
 #' The base Classes are `MatrixProfile` and `MultiMatrixProfile`, but as other functions are used,
@@ -929,15 +963,15 @@ update_class <- function(classes, new_class) {
 #' @describeIn as.matrixprofile Cast an object changed by another function back to `MatrixProfile`.
 #' @export
 #' @examples
-#'
+#' 
 #' w <- 50
 #' data <- mp_gait_data
 #' mp <- tsmp(data, window_size = w, exclusion_zone = 1 / 4, verbose = 0)
 #' mp <- find_motif(mp)
 #' class(mp) # first class will be "Motif"
-#'
+#' 
 #' plot(mp) # plots a motif plot
-#'
+#' 
 #' plot(as.matrixprofile(mp)) # plots a matrix profile plot
 as.matrixprofile <- function(.mp) {
   if (!("MatrixProfile" %in% class(.mp))) {

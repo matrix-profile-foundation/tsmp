@@ -311,7 +311,7 @@ av_apply <- function(.mp) {
     stop("First argument must be an object of class `AnnotationVector`.")
   }
 
-  if (!is.null(attr(.mp, "comment")) && attr(.mp, "comment") == "Annotated") {
+  if (!is.null(attr(.mp, "annotated"))) {
     stop("This Matrix Profile has already been annotated.")
   }
 
@@ -321,7 +321,7 @@ av_apply <- function(.mp) {
 
   .mp$mp <- .mp$mp + (1 - .mp$av) * max(.mp$mp)
 
-  attr(.mp, "comment") <- "Annotated"
+  attr(.mp, "annotated") <- TRUE
 
   return(.mp)
 }

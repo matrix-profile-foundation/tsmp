@@ -1,7 +1,165 @@
+#---- Subset Chains ----
+
+`[.Chain` <- function(x, ..., drop = FALSE) {
+  x <- NextMethod(object = x)
+  message("DEBUG: subChains")
+  attr(x, "subsetting") <- "Chains"
+
+  mp_size <- nrow(x$mp)
+  offset <- attr(x, "offset")
+
+  if (is.null(offset)) {
+    offset <- 0
+  }
+
+  if (offset > 0) {
+    x$chain$chains <- lapply(x$chain$chains, function(y) {
+      y - offset
+    })
+
+    x$chain$best <- x$chain$best - offset
+  }
+
+  x$chain$chains <- lapply(x$chain$chains, function(y) {
+    y <- y[y <= mp_size & y > 0]
+
+    if (length(y) < 3) {
+      return(NULL)
+    }
+    y
+  })
+
+  x$chain$best <- x$chain$best[x$chain$best <= mp_size & x$chain$best > 0]
+
+  # remove NULL's
+  nulls <- sapply(x$chain$chains, is.null)
+  x$chain$chains[nulls] <- NULL
+
+  attr(x, "subsetting") <- NULL
+
+  x
+}
+
+#---- Subset Salient ----
+
+`[.Salient` <- function(x, ..., drop = FALSE) {
+  x <- NextMethod(object = x)
+  message("DEBUG: subSalient")
+  attr(x, "subsetting") <- "Salient"
+
+  offset <- attr(x, "offset")
+
+  if (is.null(offset)) {
+    offset <- 0
+  }
+
+  x$salient$indexes <- x$salient$indexes - offset
+  idxs <- (x$salient$indexes > 0 & x$salient$indexes <= nrow(x$mp))
+  x$salient$indexes <- as.matrix(x$salient$indexes[idxs])
+  x$salient$idx_bit_size <- as.matrix(x$salient$idx_bit_size[idxs])
+
+  attr(x, "subsetting") <- NULL
+
+  x
+}
+
+#---- Subset Annotations ----
+
+`[.AnnotationVector` <- function(x, ..., drop = FALSE) {
+  x <- NextMethod(object = x)
+  message("DEBUG: subAnnotationVector")
+  attr(x, "subsetting") <- "AnnotationVector"
+
+  offset <- attr(x, "offset")
+
+  if (is.null(offset)) {
+    offset <- 0
+  }
+
+  st_idx <- 1 + offset
+  ed_idx <- st_idx + nrow(x$mp) - 1
+  x$av <- x$av[st_idx:ed_idx]
+
+  attr(x, "subsetting") <- NULL
+
+  x
+}
+
+#---- Subset Fluss ----
+`[.Fluss` <- function(x, ..., drop = FALSE) {
+  x <- NextMethod(object = x)
+  message("DEBUG: subFluss")
+  attr(x, "subsetting") <- "Fluss"
+
+  x <- fluss_extract(x, length(x$fluss))
+
+  attr(x, "subsetting") <- NULL
+
+  x
+}
+#
+`[.ArcCount` <- function(x, ..., drop = FALSE) {
+  x <- NextMethod(object = x)
+  message("DEBUG: subArcCount")
+  attr(x, "subsetting") <- "ArcCount"
+
+  x <- fluss_cac(x)
+
+  attr(x, "subsetting") <- NULL
+
+  x
+}
+
+#---- Subset Discord ----
+
+`[.Discord` <- function(x, ..., drop = FALSE) {
+  x <- NextMethod(object = x)
+  message("DEBUG: subDiscord")
+  attr(x, "subsetting") <- "Discord"
+
+  mp_size <- nrow(x$mp)
+  offset <- attr(x, "offset")
+
+  if (!is.null(offset) && offset > 0) {
+    x$discord$discord_idx <- lapply(x$discord$discord_idx, function(y) {
+      y - offset
+    })
+
+    x$discord$discord_neighbor <- lapply(x$discord$discord_neighbor, function(y) {
+      y - offset
+    })
+  }
+
+  x$discord$discord_idx <- lapply(x$discord$discord_idx, function(y) {
+    y <- y[y <= mp_size & y > 0]
+
+    if (length(y) < 1) {
+      return(NULL)
+    }
+    y
+  })
+
+  # remove NULL's
+  nulls <- sapply(x$discord$discord_idx, is.null)
+
+  x$discord$discord_idx[nulls] <- NULL
+  x$discord$discord_neighbor[nulls] <- NULL
+  x$discord$discord_window[nulls] <- NULL
+  x$discord$discord_neighbor <- lapply(x$discord$discord_neighbor, function(y) {
+    y[y <= mp_size & y > 0]
+  })
+
+  attr(x, "subsetting") <- NULL
+
+  x
+}
+
+#---- Subset Motifs ----
 
 `[.MultiMotif` <- function(x, ..., drop = FALSE) {
   x <- NextMethod(object = x)
-  message("subMultiMotif")
+  message("DEBUG: subMultiMotif")
+  attr(x, "subsetting") <- "MultiMotif"
 
   mp_size <- nrow(x$mp)
   offset <- attr(x, "offset")
@@ -38,12 +196,14 @@
     y[y <= mp_size & y > 0]
   })
 
+  attr(x, "subsetting") <- NULL
   x
 }
 
 `[.Motif` <- function(x, ..., drop = FALSE) {
   x <- NextMethod(object = x)
-  message("subMotif")
+  message("DEBUG: subMotif")
+  attr(x, "subsetting") <- "Motif"
 
   mp_size <- nrow(x$mp)
   offset <- attr(x, "offset")
@@ -77,11 +237,15 @@
     y[y <= mp_size & y > 0]
   })
 
+  attr(x, "subsetting") <- NULL
+
   x
 }
 
+#---- Subset Matrices ----
+
 `[.MatrixProfile` <- function(x, ..., drop = FALSE) {
-  message("subMatrixProfile")
+  message("DEBUG: subMatrixProfile")
   # str(...)
   # y <- NextMethod("[")
   # y
@@ -89,6 +253,8 @@
   sub_size <- length(subset)
 
   if (is.numeric(subset)) {
+    attr(x, "subsetting") <- "MatrixProfile"
+
     if (!all(diff(subset) == 1)) {
       stop("Indexes must be continuous and ascending.")
     }
@@ -107,6 +273,17 @@
       stop("Index is larger than data size.")
     } else if (max(subset) < max_valid_idx) {
       attr(x, "subset") <- TRUE
+      new_data <- attr(x, "new_data")
+
+      if (!is.null(new_data)) {
+        removed <- nrow(x$mp) - max(mp_set)
+
+        if (new_data <= removed) {
+          attr(x, "new_data") <- 0
+        } else {
+          attr(x, "new_data") <- new_data - removed
+        }
+      }
     }
 
     if (!is.null(x$data)) {
@@ -144,6 +321,7 @@
       attr(x, "offset") <- attr(x, "offset") + offset
     }
 
+    attr(x, "subsetting") <- NULL
     return(x)
   } else {
     getElement(x, args)
@@ -151,12 +329,14 @@
 }
 
 `[.MultiMatrixProfile` <- function(x, ..., drop = FALSE) {
-  message("subMultiMatrixProfile")
+  message("DEBUG: subMultiMatrixProfile")
 
   subset <- c(...)
   sub_size <- length(subset)
 
   if (is.numeric(subset)) {
+    attr(x, "subsetting") <- "MultiMatrixProfile"
+
     if (!all(diff(subset) == 1)) {
       stop("Indexes must be continuous and ascending.")
     }
@@ -205,6 +385,8 @@
       attr(x, "offset") <- attr(x, "offset") + offset
     }
 
+    attr(x, "subsetting") <- NULL
+
     return(x)
   } else {
     getElement(x, args)
@@ -212,12 +394,14 @@
 }
 
 `[.SimpleMatrixProfile` <- function(x, ..., drop = FALSE) {
-  message("subSimpleMatrixProfile")
+  message("DEBUG: subSimpleMatrixProfile")
 
   subset <- c(...)
   sub_size <- length(subset)
 
   if (is.numeric(subset)) {
+    attr(x, "subsetting") <- "SimpleMatrixProfile"
+
     if (!all(diff(subset) == 1)) {
       stop("Indexes must be continuous and ascending.")
     }
@@ -258,11 +442,15 @@
       attr(x, "offset") <- attr(x, "offset") + offset
     }
 
+    attr(x, "subsetting") <- NULL
+
     return(x)
   } else {
     getElement(x, args)
   }
 }
+
+#---- Tails ----
 
 tail.MatrixProfile <- function(x, n = 2 * max(x$w), ...) {
   data_size <- nrow(x$mp) + min(x$w) - 1
@@ -273,7 +461,7 @@ tail.MatrixProfile <- function(x, n = 2 * max(x$w), ...) {
     st_idx <- abs(n) + 1
   }
 
-  message(paste0(st_idx, ":", data_size))
+  message(paste0("DEBUG: ", st_idx, ":", data_size))
   return(x[st_idx:data_size])
 }
 
@@ -285,6 +473,8 @@ tail.SimpleMatrixProfile <- function(x, n = 2 * max(x$w), ...) {
   return(tail.MatrixProfile(x, n, ...))
 }
 
+#---- Heads ----
+
 head.MatrixProfile <- function(x, n = 2 * max(x$w), ...) {
   data_size <- nrow(x$mp) + min(x$w) - 1
 
@@ -294,7 +484,7 @@ head.MatrixProfile <- function(x, n = 2 * max(x$w), ...) {
     ed_idx <- data_size - abs(n)
   }
 
-  message(paste0("1:", ed_idx))
+  message(paste0("DEBUG: 1:", ed_idx))
   return(x[1:ed_idx])
 }
 

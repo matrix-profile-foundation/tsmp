@@ -56,12 +56,16 @@ stampi_update <- function(.mp, new_data) {
 #'
 #' @examples
 stompi_update <- function(.mp, new_data, history_size = FALSE) {
-
   if (!is.null(attr(.mp, "join")) && attr(.mp, "join")) {
     stop("Update not implemented in Join similarity")
   }
 
   new_data_size <- length(new_data)
+
+  if (new_data_size == 0) {
+    stop("No new data")
+  }
+
   data_upd <- c(as.vector(.mp$data[[1]]), new_data)
   data_upd_size <- length(data_upd)
 
@@ -118,8 +122,8 @@ stompi_update <- function(.mp, new_data, history_size = FALSE) {
     # left matrix_profile
     upd_idxs <- (distance_profile[start_idx:mp_new_size] < lmp_new[start_idx:mp_new_size])
     upd_idxs <- c(rep(FALSE, (start_idx - 1)), upd_idxs) # pad left
-    lmp_new[upd_idxs] <- distance_profile[upd_idxs]
     lpi_new[upd_idxs] <- start_idx
+    lmp_new[upd_idxs] <- distance_profile[upd_idxs]
     lpi_new[start_idx] <- which.min(distance_profile)
     lmp_new[start_idx] <- distance_profile[lpi_new[start_idx]]
 
@@ -147,6 +151,8 @@ stompi_update <- function(.mp, new_data, history_size = FALSE) {
     } else {
       attr(.mp, "offset") <- attr(.mp, "offset") + offset
     }
+
+    #pi_new <- tail(pi_new - attr(.mp, "offset"), mp_new_size)
   }
 
   .mp$mp <- as.matrix(mp_new)
@@ -158,5 +164,10 @@ stompi_update <- function(.mp, new_data, history_size = FALSE) {
   .mp$data[[1]] <- as.matrix(data_upd)
   attr(.mp, "new_data") <- new_data_size
 
-  return(.mp)
+  # TODO: with tail or not (tail will recompute some things)
+#  if (history_size && (data_upd_size > history_size)) {
+#    return(tail(.mp, history_size))
+#  } else {
+    return(.mp)
+#  }
 }

@@ -10,6 +10,6 @@ Contains 1 set of data with 200 observations and 3 dimensions
 
 Multidimensional Motif
 ----------------------
-Motifs founded = 2 
-Motifs indexes = 45 108 
-Motifs dimensions = [1, 2, 3] [1, 2, 3]  
+Motif pairs founded = 1 
+Motif pairs indexes = [45, 108]  
+Motifs pairs dimensions = [1, 2, 3]  

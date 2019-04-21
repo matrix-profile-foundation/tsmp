@@ -95,8 +95,8 @@ if (skip_on_cran()) {
     expect_equal(sum(which(is.infinite(stamp_test$lmp))), 136)
     expect_equal(round(sum(stamp_test$lmp[17:171]) / sd(stamp_test$lmp[17:171]), 3), 345.977)
     expect_equal(round(sum(stamp_test$pi) / sd(stamp_test$pi), 3), 567.591)
-    expect_equal(round(sum(stamp_test$rpi) / sd(stamp_test$rpi), 3), 1083.069)
-    expect_equal(round(sum(stamp_test$lpi) / sd(stamp_test$lpi), 3), 341.391)
+    expect_equal(round(sum(stamp_test$rpi[1:355]) / sd(stamp_test$rpi[1:355]), 3), 1354.43)
+    expect_equal(round(sum(stamp_test$lpi[17:371]) / sd(stamp_test$lpi[17:371]), 3), 340.923)
     expect_equal(stamp_test$w, 30)
     expect_equal(stamp_test$ez, 0.5)
     expect_equal(class(stamp_test), "MatrixProfile")
@@ -127,12 +127,12 @@ if (skip_on_cran()) {
   })
 
   # stamp_test and stomp_test
-  test_that("Stamp equals to Stomp_par", {
+  test_that("Stamp equals to Stomp", {
     expect_equal(stamp_test, stomp_test)
   })
 
   # scrimp_test and stomp_test
-  test_that("Scrimp equals to Stomp_par", {
+  test_that("Scrimp equals to Stomp", {
     expect_equal(scrimp_test, stomp_test)
   })
 

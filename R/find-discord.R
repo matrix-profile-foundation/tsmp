@@ -72,21 +72,22 @@ find_discord.MatrixProfile <- function(.mp, data, n_discords = 1, n_neighbors = 
     stop("`data` must be `matrix`, `data.frame`, `vector` or `list`.")
   }
 
+  matrix_profile <- .mp$mp # keep mp intact
+  matrix_profile_size <- length(matrix_profile)
+  discord_idxs <- list(discords = list(NULL), neighbors = list(NULL))
+
   if (is.null(exclusion_zone)) {
     exclusion_zone <- .mp$ez
   }
 
-  matrix_profile <- .mp$mp # keep mp intact
   exclusion_zone <- round(.mp$w * exclusion_zone + vars()$eps)
-  matrix_profile_size <- length(matrix_profile)
-  discord_idxs <- list(discords = vector(mode = "numeric"), neighbors = list(NULL))
 
   nn <- NULL
 
   for (i in seq_len(n_discords)) {
     discord_idx <- which.max(matrix_profile)
     discord_distance <- matrix_profile[discord_idx]
-    discord_idxs[[1]][i] <- discord_idx
+    discord_idxs[[1]][[i]] <- discord_idx
 
     # query using the discord to find its neighbors
     nn <- dist_profile(data, data, nn, window_size = .mp$w, index = discord_idx)
@@ -116,7 +117,7 @@ find_discord.MatrixProfile <- function(.mp, data, n_discords = 1, n_neighbors = 
     discord_neighbor <- discord_neighbor[discord_neighbor != 0]
     discord_idxs[[2]][[i]] <- discord_neighbor
 
-    remove_idx <- c(discord_idxs[[1]][i], discord_idxs[[2]][[i]])
+    remove_idx <- c(discord_idxs[[1]][[i]], discord_idxs[[2]][[i]])
 
     for (j in seq_len(length(remove_idx))) {
       remove_zone_start <- max(1, remove_idx[j] - exclusion_zone)

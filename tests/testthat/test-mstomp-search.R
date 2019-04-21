@@ -9,12 +9,12 @@ if (skip_on_cran()) {
   umotifs <- find_motif(mp, n_motifs = 2, mode = "u")
 
   test_that("mMotifs are correct", {
-    expect_equal(motifs$motif$motif_idx, c(45, 108))
-    expect_equal(motifs$motif$motif_dim[[1]], c(1, 2, 3))
-    expect_equal(motifs$motif$motif_dim[[2]], c(1, 2, 3))
-    expect_equal(umotifs$motif$motif_idx, c(33, 102))
-    expect_equal(umotifs$motif$motif_dim[[1]], 1)
-    expect_equal(umotifs$motif$motif_dim[[2]], 1)
+    expect_equal(motifs$motif$motif_idx, list(c(45, 108)))
+    expect_equal(motifs$motif$motif_dim, list(c(1, 2, 3)))
+    expect_null(motifs$motif$motif_neighbor)
+    expect_equal(umotifs$motif$motif_idx, list(c(33, 102)))
+    expect_equal(umotifs$motif$motif_dim, list(1))
+    expect_null(umotifs$motif$motif_neighbor)
   })
 
   test_that("Errors", {

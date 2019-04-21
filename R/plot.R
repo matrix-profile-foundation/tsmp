@@ -37,9 +37,20 @@
 #' @examples
 #' plot_arcs(pairs = matrix(c(5, 10, 1, 10, 20, 5), ncol = 2, byrow = TRUE))
 plot_arcs <- function(pairs, alpha = NULL, quality = 30, lwd = 15, col = c("blue", "orange"),
-                      main = "Arc Plot", ylab = "", xlab = "Profile Index", ...) {
-  xmin <- min(pairs)
-  xmax <- max(pairs)
+                      main = "Arc Plot", ylab = "", xlab = "Profile Index", xmin = NULL, xmax = NULL, ...) {
+  if (length(pairs) == 0) {
+    warning("No arc to plot.")
+    return(NULL)
+  }
+
+  if (is.null(xmin)) {
+    xmin <- min(pairs)
+  }
+
+  if (is.null(xmax)) {
+    xmax <- max(pairs)
+  }
+
   max_arc <- max(abs(pairs[, 2] - pairs[, 1]))
   ymax <- (max_arc / 2 + (lwd * lwd) / 8)
   z_seq <- seq(0, base::pi, length.out = quality)
@@ -108,7 +119,7 @@ plot_arcs <- function(pairs, alpha = NULL, quality = 30, lwd = 15, col = c("blue
 #' @name plot
 #'
 #' @examples
-#'
+#' 
 #' mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
 #' plot(mp)
 plot.ArcCount <- function(x, data, type = c("data", "matrix"), exclusion_zone = NULL, edge_limit = NULL,
@@ -141,7 +152,7 @@ plot.ArcCount <- function(x, data, type = c("data", "matrix"), exclusion_zone = 
     data_lab <- ylab
     data_main <- "Data"
   } else {
-    plot_data <- x$mp
+    plot_data <- c(x$mp, rep(NA, x$w - 1))
     data_lab <- "distance"
     data_main <- "Matrix Profile"
   }
@@ -150,22 +161,32 @@ plot.ArcCount <- function(x, data, type = c("data", "matrix"), exclusion_zone = 
   cac_size <- length(cac)
   profile_index <- x$pi
 
-  if (cac_size < length(profile_index)) {
-    offset <- length(profile_index) - cac_size
-    plot_data <- tail(plot_data, cac_size)
-    profile_index <- tail(profile_index, cac_size) - offset
+  if (cac_size < nrow(profile_index)) {
+    warning("cac_size < profile_index")
+    cac_offset <- nrow(profile_index) - cac_size
+    plot_data <- as.matrix(tail(plot_data, cac_size))
+    profile_index <- as.matrix(tail(profile_index, cac_size) - cac_offset)
+  }
+
+  xnum <- seq_len(nrow(x$mp) + min(x$w) - 1)
+
+  offset <- attr(x, "offset")
+  offset <- ifelse(is.null(offset), 0, offset)
+
+  if (!is.null(offset)) {
+    xnum <- xnum + offset
   }
 
   pairs <- matrix(0, cac_size, 2)
-  pairs[, 1] <- seq_len(cac_size)
-  pairs[, 2] <- profile_index
+  pairs[, 1] <- seq_len(cac_size) + offset
+  pairs[, 2] <- profile_index + offset
 
   if (threshold < min(cac)) {
     stop(paste0("`threshold` is too small for this Arc Count. Min: ", round(min(cac), 2), ", Max: ", round(max(cac), 2)))
   }
 
   # remove excess of arcs
-  if (floor(x$w * exclusion_zone) < length(x$mp) / 3) {
+  if (floor(x$w * exclusion_zone) < nrow(x$mp) / 3) {
     exclusion_zone <- floor(x$w * exclusion_zone)
   }
   if (floor(x$w * edge_limit) < length(x$mp) / 3) {
@@ -175,24 +196,22 @@ plot.ArcCount <- function(x, data, type = c("data", "matrix"), exclusion_zone = 
   cac[(cac_size - edge_limit + 1):cac_size] <- Inf
 
   ind <- which(cac <= threshold)
-  pairs <- pairs[ind, ]
+  pairs <- pairs[ind, , drop = FALSE]
 
   pairdiff <- pairs[, 1] - pairs[, 2]
   ind <- which(abs(pairdiff) > exclusion_zone)
-  pairs <- pairs[ind, ]
+  pairs <- pairs[ind, , drop = FALSE]
 
-  xmin <- min(pairs)
-  xmax <- max(pairs)
+  xmin <- min(xnum)
+  xmax <- max(xnum)
   xlim <- c(xmin, xmax)
-  cac <- cac[xmin:xmax]
-  plot_data <- plot_data[xmin:xmax]
 
   graphics::layout(matrix(c(1, 2, 3), ncol = 1, byrow = TRUE))
   graphics::par(oma = c(1, 1, 3, 0), cex.lab = 1.5)
-  plot_arcs(pairs, xlab = xlab, ...)
+  plot_arcs(pairs, xlab = xlab, xmin = xmin, xmax = xmax, ...)
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
-  graphics::plot(cac, main = "Arc count", type = "l", xlab = xlab, ylab = "normalized count", xlim = xlim, ...)
-  graphics::plot(plot_data, main = data_main, type = "l", xlab = xlab, ylab = data_lab, xlim = xlim, ...)
+  graphics::plot(xnum, c(cac, rep(NA, x$w - 1)), main = "Arc count", type = "l", xlab = xlab, ylab = "normalized count", xlim = xlim, ...)
+  graphics::plot(xnum, plot_data, main = data_main, type = "l", xlab = xlab, ylab = data_lab, xlim = xlim, ...)
 
   graphics::par(def_par)
 }
@@ -375,19 +394,19 @@ plot.SimpleMatrixProfile <- function(x, ylab = "distance", xlab = "index", main 
     graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
 
     if (n_dim > 1) {
-      for(i in 2:n_dim) {
+      for (i in 2:n_dim) {
         lines(xnum, x$data[[1]][, i], main = paste0("Data"), ylab = "", xlab = xlab, col = i, ...)
       }
     }
 
-    if(length(x$data) > 1) {
+    if (length(x$data) > 1) {
       n_dim <- ncol(x$data[[2]])
 
       graphics::plot(xnum, x$data[[2]][, 1], type = "l", main = paste0("Query"), ylab = "", xlab = xlab, ...)
       graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
 
       if (n_dim > 1) {
-        for(i in 2:n_dim) {
+        for (i in 2:n_dim) {
           lines(xnum, x$data[[2]][, i], main = paste0("Data"), ylab = "", xlab = xlab, col = i, ...)
         }
       }
@@ -422,7 +441,7 @@ plot.Fluss <- function(x, data, type = c("data", "matrix"),
     data_lab <- ylab
     data_main <- "Data"
   } else {
-    plot_data <- x$mp
+    plot_data <- c(x$mp, rep(NA, min(x$w) - 1))
     data_lab <- "distance"
     data_main <- "Matrix Profile"
   }
@@ -432,30 +451,34 @@ plot.Fluss <- function(x, data, type = c("data", "matrix"),
   fluss_size <- length(fluss_idx) + 1
   pairs <- matrix(0, fluss_size, 2)
 
+  offset <- attr(x, "offset")
+  offset <- ifelse(is.null(offset), 0, offset)
+
   for (i in seq_len(fluss_size)) {
     if (i == 1) {
-      pairs[i, 1] <- 0
+      pairs[i, 1] <- offset
     } else {
-      pairs[i, 1] <- fluss_idx[i - 1]
+      pairs[i, 1] <- fluss_idx[i - 1] + offset
     }
 
     if (i == fluss_size) {
-      pairs[i, 2] <- length(x$mp)
+      pairs[i, 2] <- nrow(x$mp) + offset
     } else {
-      pairs[i, 2] <- fluss_idx[i]
+      pairs[i, 2] <- fluss_idx[i] + offset
     }
   }
 
-  xmin <- min(pairs)
-  xmax <- max(pairs)
+  xnum <- seq_len(nrow(x$mp) + min(x$w) - 1) + offset
+  xmin <- min(xnum)
+  xmax <- max(xnum)
   xlim <- c(xmin, xmax)
 
   graphics::layout(matrix(c(1, 2, 3), ncol = 1, byrow = TRUE))
   graphics::par(oma = c(1, 1, 3, 0), cex.lab = 1.5)
-  plot_arcs(pairs, xlab = xlab, ...)
+  plot_arcs(pairs, xlab = xlab, xmin = xmin, xmax = xmax, ...)
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
-  graphics::plot(plot_data, main = data_main, type = "l", xlab = xlab, ylab = data_lab, xlim = xlim, ...)
-  graphics::plot(x$cac, main = "Arc count", type = "l", xlab = xlab, ylab = "normalized count", xlim = xlim, ...)
+  graphics::plot(xnum, plot_data, main = data_main, type = "l", xlab = xlab, ylab = data_lab, xlim = xlim, ...)
+  graphics::plot(xnum, c(x$cac, rep(NA, min(x$w) - 1)), main = "Arc count", type = "l", xlab = xlab, ylab = "normalized count", xlim = xlim, ...)
 
   graphics::par(def_par)
 }
@@ -479,44 +502,47 @@ plot.Chain <- function(x, data, type = c("data", "matrix"), main = "Chain Discov
     plot_data <- data
     plot_subtitle <- "Data"
   } else {
-    plot_data <- x$mp
+    plot_data <- c(x$mp, rep(NA, min(x$w) - 1))
     ylab <- "distance"
     plot_subtitle <- paste0("Matrix Profile (w = ", x$w, "; ez = ", x$ez, ")")
   }
 
   chain_size <- length(x$chain$best)
-  pairs <- matrix(Inf, chain_size - 1, 2)
-  matrix_profile_size <- nrow(x$mp)
+  pairs <- matrix(0, chain_size - 1, 2)
+
+  offset <- attr(x, "offset")
+  offset <- ifelse(is.null(offset), 0, offset)
 
   for (i in seq_len(chain_size - 1)) {
-    pairs[i, 1] <- x$chain$best[i]
-    pairs[i, 2] <- x$chain$best[i + 1]
+    pairs[i, 1] <- x$chain$best[i] + offset
+    pairs[i, 2] <- x$chain$best[i + 1] + offset
   }
 
-  xmin <- min(pairs)
-  xmax <- max(pairs)
+  xnum <- seq_len(nrow(x$mp) + min(x$w) - 1) + offset
+  xmin <- min(xnum)
+  xmax <- max(xnum)
   xlim <- c(xmin, xmax)
 
   # plot matrix profile
   graphics::layout(matrix(c(1, 2, 3), ncol = 1, byrow = TRUE))
   graphics::par(oma = c(1, 1, 3, 0), cex.lab = 1.5)
-  plot_arcs(pairs, xlab = xlab, ...)
+  plot_arcs(pairs, xlab = xlab, xmin = xmin, xmax = xmax, ...)
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
-  graphics::plot(plot_data,
+  graphics::plot(xnum, plot_data,
     type = "l", main = plot_subtitle,
     xlim = xlim, xlab = xlab, ylab = ylab, ...
   )
-  graphics::abline(v = x$chain$best, col = 1:chain_size, lwd = 2)
+  graphics::abline(v = x$chain$best + offset, col = 1:chain_size, lwd = 2)
 
   # blank plot
-  motif <- znorm(data[x$chain$best[1]:min((x$chain$best[1] + x$w - 1), matrix_profile_size)])
+  motif <- znorm(data[x$chain$best[1]:min((x$chain$best[1] + x$w - 1), nrow(data))])
   graphics::plot(motif,
     type = "l", main = "Motifs", xlab = "length", ylab = "normalized data",
     xlim = c(0, length(motif)), ylim = c(min(motif) - chain_size / 2, max(motif)), ...
   )
 
   for (i in 2:chain_size) {
-    motif <- znorm(data[x$chain$best[i]:min((x$chain$best[i] + x$w - 1), matrix_profile_size)])
+    motif <- znorm(data[x$chain$best[i]:min((x$chain$best[i] + x$w - 1), nrow(data))])
 
     graphics::lines(motif - i / 2, col = i, ...)
   }
@@ -561,14 +587,23 @@ plot.Discord <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "
     byrow = TRUE
   ))
   # plot matrix profile
+  xnum <- seq_len(nrow(x$mp) + min(x$w) - 1)
+
+  offset <- attr(x, "offset")
+  offset <- ifelse(is.null(offset), 0, offset)
+
+  if (!is.null(offset)) {
+    xnum <- xnum + offset
+  }
+
   graphics::par(oma = c(1, 1, 3, 0), cex.lab = 1.5)
-  graphics::plot(plot_data, type = "l", main = plot_subtitle, xlab = xlab, ylab = ylab)
+  graphics::plot(xnum, plot_data, type = "l", main = plot_subtitle, xlab = xlab, ylab = ylab)
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
-  graphics::abline(v = discords, col = seq_len(n_discords), lwd = 3)
-  graphics::abline(v = unlist(neighbors), col = rep(seq_len(n_discords), sapply(neighbors, length)), lwd = 1, lty = 2)
+  graphics::abline(v = unlist(discords) + offset, col = seq_len(n_discords), lwd = 3)
+  graphics::abline(v = unlist(neighbors) + offset, col = rep(seq_len(n_discords), sapply(neighbors, length)), lwd = 1, lty = 2)
   # plot discords
   for (i in 1:n_discords) {
-    discord1 <- znorm(data[discords[i]:min((discords[i] + x$w - 1), matrix_profile_size)])
+    discord1 <- znorm(data[discords[[i]]:min((discords[[i]] + x$w - 1), matrix_profile_size)])
 
     # blank plot
     graphics::plot(0.5, 0.5,
@@ -635,7 +670,6 @@ plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "MO
 
   neighbors <- x$motif$motif_neighbor
   windows <- unlist(x$motif$motif_window)
-  data_size <- nrow(data)
 
   # layout: matrix profile on top, motifs below.
   graphics::layout(matrix(
@@ -656,7 +690,7 @@ plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "MO
   graphics::par(oma = c(1, 1, 3, 0), cex.lab = 1.5)
   graphics::plot(xnum, plot_data, type = "l", main = plot_subtitle, xlab = xlab, ylab = ylab)
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
-  graphics::abline(v = unlist(motifs) + offset, col = rep(1:n_motifs, each = 2), lwd = 3)
+  graphics::abline(v = unlist(motifs) + offset, col = rep(1:n_motifs, each = 2), lwd = c(3, 1))
   graphics::abline(v = unlist(neighbors) + offset, col = rep(1:n_motifs, sapply(neighbors, length)), lwd = 1, lty = 2)
 
   # plot motifs
@@ -732,12 +766,10 @@ plot.MultiMotif <- function(x, data, type = c("data", "matrix"), ncol = 3, main 
   } else {
     plot_data <- apply(x$mp, 2, function(y) c(y, rep(NA, min(x$w) - 1)))
     ylab <- "distance"
-    plot_subtitle <- paste0("Matrix Profile ", i, " (w = ", x$w, "; ez = ", x$ez, ")")
   }
 
   n_dim <- x$n_dim
   motifs_dim <- x$motif$motif_dim
-  matrix_profile_size <- nrow(x$mp)
 
   dim_idx <- list()
   for (i in seq_len(n_dim)) {
@@ -772,15 +804,19 @@ plot.MultiMotif <- function(x, data, type = c("data", "matrix"), ncol = 3, main 
     oma = c(1, 1, 3, 0), cex.lab = 1.5
   )
   for (i in seq_len(length(dim_idx))) {
+    if (type == "matrix") {
+      plot_subtitle <- paste0("Matrix Profile ", i, "d (w = ", x$w, "; ez = ", x$ez, ")")
+    }
+
     graphics::plot(xnum, plot_data[, i],
-                   type = "l",
-                   main = plot_subtitle,
-                   xlab = xlab, ylab = ylab
+      type = "l",
+      main = plot_subtitle,
+      xlab = xlab, ylab = ylab
     )
 
     midx <- dim_idx[[i]]
     if (!is.null(midx)) {
-      graphics::abline(v = unlist(motifs[midx]) + offset, col = rep(midx, each = 2), lwd = c(2,1))
+      graphics::abline(v = unlist(motifs[midx]) + offset, col = rep(midx, each = 2), lwd = c(2, 1))
     }
   }
 
@@ -788,14 +824,12 @@ plot.MultiMotif <- function(x, data, type = c("data", "matrix"), ncol = 3, main 
 
   # plot motifs
   for (i in 1:n_motifs) {
-    # motif_data <- list()
     dim_len <- length(motifs_dim[[i]])
 
     motif1 <- list()
     motif2 <- list()
 
     for (j in seq_len(dim_len)) {
-
       motif1[[j]] <- znorm(data[motifs[[i]][1]:min((motifs[[i]][1] + x$w - 1), nrow(data)), motifs_dim[[i]][j]])
       motif2[[j]] <- znorm(data[motifs[[i]][2]:min((motifs[[i]][2] + x$w - 1), nrow(data)), motifs_dim[[i]][j]])
     }
@@ -803,24 +837,9 @@ plot.MultiMotif <- function(x, data, type = c("data", "matrix"), ncol = 3, main 
 
     # blank plot
     graphics::plot(0.5, 0.5,
-                   type = "n", main = paste("Motif", i), xlab = "length", ylab = "normalized data",
-                   xlim = c(0, length(motif1[[1]])), ylim = c(min(unlist(motif1), unlist(motif2)), max(unlist(motif1), unlist(motif2)))
+      type = "n", main = paste("Motif", i), xlab = "length", ylab = "normalized data",
+      xlim = c(0, length(motif1[[1]])), ylim = c(min(unlist(motif1), unlist(motif2)), max(unlist(motif1), unlist(motif2)))
     )
-
-    # for (j in seq_len(length(neighbors[[i]]))) {
-    #   neigh <- znorm(data[neighbors[[i]][j]:min((neighbors[[i]][j] + x$w - 1), matrix_profile_size)])
-    #   graphics::lines(neigh, col = "gray70", lty = 2)
-    # }
-
-    # graphics::lines(motif2, col = "black")
-    # graphics::lines(motif1, col = i, lwd = 2)
-
-
-    # blank plot
-    # graphics::plot(0.5, 0.5,
-    #                type = "n", main = paste("Motif", i), xlab = "length", ylab = "normalized data",
-    #                xlim = c(0, length(motif_data[[1]])), ylim = c(min(unlist(motif_data)), max(unlist(motif_data)))
-    # )
 
     if (length(motif2) > 1) {
       for (j in (seq_len(dim_len - 1) + 1)) {
@@ -856,14 +875,23 @@ plot.Salient <- function(x, data, main = "Salient Subsections", xlab = "index", 
   y_min <- min(data)
   y_max <- max(data)
 
+
+  offset <- attr(x, "offset")
+  offset <- ifelse(is.null(offset), 0, offset)
+
   mds <- salient_mds(x, data)
-  idxs <- sort(x$salient$indexes[, 1])
+  idxs <- sort(x$salient$indexes[, 1]) + offset
 
   # layout: matrix profile on top, motifs below.
   graphics::layout(matrix(c(1, 1, 1, 0, 2, 0), ncol = 3, byrow = TRUE))
   # plot matrix profile
+  xnum <- seq_len(nrow(x$mp) + min(x$w) - 1)
+
+  if (!is.null(offset)) {
+    xnum <- xnum + offset
+  }
   graphics::par(oma = c(1, 1, 3, 0), cex.lab = 1.5)
-  graphics::plot(plot_data, type = "l", main = plot_subtitle, xlab = xlab, ylab = ylab)
+  graphics::plot(xnum, plot_data, type = "l", main = plot_subtitle, xlab = xlab, ylab = ylab)
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
 
   graphics::rect(idxs, y_min,

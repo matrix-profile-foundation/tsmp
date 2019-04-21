@@ -45,7 +45,7 @@
 #' # join similarity
 #' mp <- valmod(ref_data, query_data, window_min = 30, window_max = 40)
 #' }
-#'
+#' 
 valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone = 1 / 2, lb = TRUE, verbose = 2) {
   argv <- list(...)
   argc <- length(argv)
@@ -195,7 +195,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
       first_product[, 1] <- rnn$last_product
 
       matrix_profile <- matrix(Inf, matrix_profile_size, 1)
-      profile_index <- matrix(-1, matrix_profile_size, 1)
+      profile_index <- matrix(-Inf, matrix_profile_size, 1)
       if (join) {
         # no RMP and LMP for joins
         left_matrix_profile <- right_matrix_profile <- NULL

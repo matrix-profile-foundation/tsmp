@@ -40,7 +40,7 @@
 #' mp <- tsmp(data, window_size = w, verbose = 2, n_workers = 6)
 #' mps <- salient_subsequences(mp, data, n_bits = c(4, 6, 8), verbose = 2)
 #' }
-#'
+#' 
 salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_zone = NULL, verbose = 2) {
   if (!("MatrixProfile" %in% class(.mp))) {
     stop("First argument must be an object of class `MatrixProfile`.")
