@@ -4,6 +4,7 @@ if (skip_on_cran()) {
   w <- 30
   ref_data <- mp_toy_data$data[, 1]
   query_data <- mp_toy_data$data[, 1]
+  query_gap <- c(10:1, rep(NA, 10), 10:20)
   d_size <- length(ref_data)
   q_size <- length(query_data)
 
@@ -14,6 +15,12 @@ if (skip_on_cran()) {
     expect_error(expect_message(beep(audio::close.audioInstance(99)), "Failed"))
     expect_error(tsmp:::diff2(data.frame(1:10), as.matrix(10:1)), "matrices")
     expect_error(tsmp:::diff2(as.matrix(1:10), matrix(10:1, ncol = 2)), "columns")
+  })
+
+  gap <- dist_profile(ref_data, query_gap, window_size = w)
+
+  test_that("Query with Gap", {
+    expect_equal(sum(round(Re(gap$distance_profile[21:541]), 2)), 38257.03)
   })
 
   pre <- mass_pre(ref_data, query_data, w)

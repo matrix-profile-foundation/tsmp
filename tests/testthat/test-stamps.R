@@ -69,6 +69,8 @@ if (skip_on_cran()) {
 
   # STOMP
   stomp_test <- stomp(mp_toy_data$data[1:400, 1], window_size = 30, verbose = 0)
+  stompi_test <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+  stompi_test <- stompi_update(stompi_test, mp_toy_data$data[201:400, 1])
   stomp_join_test <- stomp(mp_toy_data$data[, 1], mp_toy_data$data[1:400, 2], window_size = 30, verbose = 0)
   stomp_par_test <- stomp_par(mp_toy_data$data[1:400, 1], window_size = 30, verbose = 0)
   stomp_par_join_test <- stomp_par(mp_toy_data$data[, 1], mp_toy_data$data[1:400, 2], window_size = 30, verbose = 0)
@@ -102,6 +104,17 @@ if (skip_on_cran()) {
     expect_equal(class(stamp_test), "MatrixProfile")
     expect_equal(class(stomp_test), "MatrixProfile")
     expect_equal(class(mstomp_test), "MultiMatrixProfile")
+  })
+
+  ## Check STOMP and STOMPI ----
+
+  test_that("Stompi Results", {
+    expect_equal(stomp_test$mp, stompi_test$mp)
+    expect_equal(stomp_test$pi, stompi_test$pi)
+    expect_equal(stomp_test$rmp, stompi_test$rmp)
+    expect_equal(stomp_test$rpi, stompi_test$rpi)
+    expect_equal(stomp_test$lmp, stompi_test$lmp)
+    expect_equal(stomp_test$lpi, stompi_test$lpi)
   })
 
   ## Check consistency for SCRIMP ----

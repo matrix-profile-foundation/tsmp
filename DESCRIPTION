@@ -1,7 +1,7 @@
 Package: tsmp
 Type: Package
 Title: Time Series with Matrix Profile
-Version: 0.3.4.9005
+Version: 0.3.4.9009
 Authors@R: c(
     person("Francisco", "Bischoff", email = "fbischoff@med.up.pt", role = c("aut", "cre"),
     comment = c(ORCID = "https://orcid.org/0000-0002-5301-8672")),

@@ -87,7 +87,7 @@ floss <- function(.mp, new_data, num_segments, data_window, exclusion_zone = NUL
 
     .mp$cac_final <- c(
       rep(NA, chunk_size + mp_offset - chunk_size),
-      head(.mp$cac, - (round(data_window * (1 - vars()$kmode) - (1 - vars()$kmode) * .mp$w) - 0.5 * chunk_size + ifelse(mp_offset > 0, 1, 2)))
+      head(.mp$cac, -(round(data_window * (1 - vars()$kmode) - (1 - vars()$kmode) * .mp$w) - 0.5 * chunk_size + ifelse(mp_offset > 0, 1, 2)))
     )
     na_head <- round(vars()$kmode * data_window + (0.5 * chunk_size - vars()$kmode * .mp$w)) + mp_offset
 
@@ -212,6 +212,11 @@ fluss_cac <- function(.mp, exclusion_zone = NULL) {
 
   for (i in 1:profile_index_size) {
     j <- .mp$pi[i]
+
+    if (j < 0 || j > profile_index_size) {
+      next
+    }
+
     nnmark[min(i, j)] <- nnmark[min(i, j)] + 1
     nnmark[max(i, j)] <- nnmark[max(i, j)] - 1
   }

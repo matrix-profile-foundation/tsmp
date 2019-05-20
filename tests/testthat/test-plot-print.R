@@ -24,6 +24,7 @@ if (skip_on_cran()) {
   plot_fluss_test <- function() plot.Fluss(segments)
   plot_chain_test <- function() plot.Chain(chain)
   plot_motif_test <- function() plot.Motif(motif)
+  plot_discord_test <- function() plot.Discord(discord)
   plot_salient_test <- function() plot.Salient(mps)
   plot_valmod_test <- function() plot.Valmod(val)
 
@@ -44,6 +45,7 @@ if (skip_on_cran()) {
     expect_doppelganger("plot fluss", plot_fluss_test)
     expect_doppelganger("plot chain", plot_chain_test)
     expect_doppelganger("plot motif", plot_motif_test)
+    expect_doppelganger("plot discord", plot_discord_test)
     expect_doppelganger("plot multi matrix profile", plot_multimatrixprofile_test)
     expect_doppelganger("plot multimotif", plot_multimotif_test)
     expect_doppelganger("plot simple matrix profile", plot_simplematrixprofile_test)
