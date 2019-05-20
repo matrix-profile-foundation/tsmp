@@ -19,9 +19,9 @@
 #' w <- mp_toy_data$sub_len
 #' ref_data <- mp_toy_data$data[, 1]
 #' query_data <- mp_toy_data$data[, 1]
-#' 
+#'
 #' pre <- tsmp:::mass_pre(ref_data, query_data, w)
-#' 
+#'
 #' dp <- list()
 #' for (i in 1:(pre$data_size - w + 1)) {
 #'   dp[[i]] <- tsmp:::mass_v2(

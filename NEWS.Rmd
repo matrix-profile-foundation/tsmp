@@ -24,11 +24,12 @@ knitr::opts_chunk$set(
 # tsmp 0.3.5
 * Changed `mass()` to `dist_profile()`, including options to different algoritms.
 * Added MASS_V3 and MASS_Weighted to `dist_profile()` algorithms.
+* Function `dist_profile()` allows Query with Gap (QwG) and Approximate Distance Profile (ADP, with PAA)
 * Fixed long runtime of FFT for some data sizes, using MASS_V3. Issue #36.
 * Added `stompi_update()` that updates the matrix profile allowing real-time computation.
-++ floss()
+* Added floss() which can do real-time FLUSS computation.
 * Added subset operator `[` for `tsmp` objects.
-++ Added `tail()` and `head()` for `tsmp` objects.
+* Added `tail()` and `head()` for `tsmp` objects.
 * Changed `find_motif()` for `MultiMatrixProfile` to report Motifs correctly.
 
 

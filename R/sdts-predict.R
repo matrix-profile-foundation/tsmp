@@ -35,7 +35,7 @@
 #' predict <- sdts_predict(model, mp_test_data$test$data, round(mean(windows)))
 #' sdts_score(predict, mp_test_data$test$label, 1)
 #' }
-#' 
+#'
 sdts_predict <- function(model, data, window_size) {
   n_pat <- length(model$thold)
   anno_st <- list()
@@ -120,7 +120,7 @@ sdts_predict <- function(model, data, window_size) {
 #' predict <- sdts_predict(model, mp_test_data$test$data, round(mean(windows)))
 #' sdts_score(predict, mp_test_data$test$label, 1)
 #' }
-#' 
+#'
 sdts_score <- function(pred, gtruth, beta = 1) {
   if (length(pred) > length(gtruth)) {
     pred <- pred[seq_len(length(gtruth))]

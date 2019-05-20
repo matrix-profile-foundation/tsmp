@@ -2,10 +2,6 @@ if (skip_on_cran()) {
   context("Testing Subset functions")
   library(tsmp)
 
-  # data <- mp_fluss_data$tilt_abp$data
-  # w <- mp_fluss_data$tilt_abp$window
-  # nseg <- 3
-  # test_mp <- tsmp(data, window_size = w, n_workers = 4)
   cac <- fluss_cac(test_mp)
   segments <- fluss_extract(cac, nseg)
 

@@ -177,7 +177,7 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
 #' @name find_motif
 #' @export
 #' @examples
-#' 
+#'
 #' # Multidimension data
 #' w <- mp_toy_data$sub_len
 #' data <- mp_toy_data$data[1:300, ]

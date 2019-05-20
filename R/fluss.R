@@ -40,44 +40,82 @@ fluss <- function(.mp, num_segments, exclusion_zone = NULL) {
 #' @export
 #'
 #' @examples
-floss <- function(.mp, new_data, num_segments, data_window = FALSE, exclusion_zone = NULL, chunk_size = NULL) {
+floss <- function(.mp, new_data, num_segments, data_window, exclusion_zone = NULL, chunk_size = NULL) {
+  if (missing(data_window)) {
+    stop("argument 'data_window' is missing, looking for fluss() instead?")
+  }
+
+  # TODO: floss_extract
+
+
   if ("Valmod" %in% class(.mp)) {
     stop("Function not implemented for objects of class `Valmod`.")
   }
 
-  # TODO: handle when initial mp has less then data_window
-  # TODO: handle when initial mp has more then data_window
-  #### TODO: handle when want to keep MP intact
+  mp_offset <- ifelse(!is.null(attr(.mp, "offset")), attr(.mp, "offset"), 0)
+  data_size <- nrow(.mp$data[[1]])
+  new_data_size <- length(new_data)
 
-  if (!data_window) {
-    .mp <- fluss_cac(stompi_update(.mp, new_data), exclusion_zone)
-  } else {
-    if (is.null(chunk_size)) {
-      chunk_size <- min(floor(nrow(.mp$data[[1]]) / 2), 50)
-      chunk_size <- min(chunk_size, floor(data_window / 2))
-
-      message("chunk_size ", chunk_size)
-    }
-
-    num_chunks <- floor(length(new_data) / chunk_size)
-    last_chunk <- length(new_data) - num_chunks * chunk_size
-
-    end_idx <- 0
-    for (i in seq_len(num_chunks)) {
-      st_idx <- chunk_size * i - chunk_size + 1
-      end_idx <- st_idx + chunk_size - 1
-      .mp <- fluss_cac(stompi_update(.mp, new_data[st_idx:end_idx], data_window), exclusion_zone, data_window)
-    }
-
-    if (last_chunk > 0) {
-      s_idx <- end_idx + 1
-      e_idx <- s_idx + last_chunk - 1
-      .mp <- fluss_cac(stompi_update(.mp, new_data[s_idx:e_idx], data_window), exclusion_zone, data_window)
+  if (data_size < data_window) {
+    message("data_size < data_window ")
+    if ((data_size + new_data_size) <= data_window) {
+      .mp <- stompi_update(.mp, new_data)
+      .mp$cac_final <- NULL
+      return(.mp)
+    } else {
+      message("new_data")
+      .mp <- stompi_update(.mp, head(new_data, data_window - data_size))
+      new_data <- new_data[(data_window - data_size + 1):new_data_size]
     }
   }
 
-  fluss_extract(.mp, num_segments, exclusion_zone)
+  if (is.null(chunk_size)) {
+    chunk_size <- min(floor(nrow(.mp$data[[1]]) / 2), 50)
+    chunk_size <- min(chunk_size, floor(data_window / 2))
+  }
+
+  if (data_size > data_window) {
+    message("data_size > data_window ", data_window)
+
+    if (mp_offset > 0) {
+      attr(.mp, "new_data") <- 0
+      .mp <- floss_cac(.mp, 0, data_size)
+    }
+    else {
+      .mp <- fluss_cac(.mp, 0)
+    }
+
+    .mp$cac_final <- c(
+      rep(NA, chunk_size + mp_offset - chunk_size),
+      head(.mp$cac, - (round(data_window * (1 - vars()$kmode) - (1 - vars()$kmode) * .mp$w) - 0.5 * chunk_size + ifelse(mp_offset > 0, 1, 2)))
+    )
+    na_head <- round(vars()$kmode * data_window + (0.5 * chunk_size - vars()$kmode * .mp$w)) + mp_offset
+
+    .mp$cac_final[1:na_head] <- NA
+  }
+
+  num_chunks <- floor(length(new_data) / chunk_size)
+  last_chunk <- length(new_data) - num_chunks * chunk_size
+
+  end_idx <- 0
+  for (i in seq_len(num_chunks)) {
+    st_idx <- chunk_size * i - chunk_size + 1
+    end_idx <- st_idx + chunk_size - 1
+    .mp <- floss_cac(stompi_update(.mp, new_data[st_idx:end_idx], data_window), exclusion_zone, data_window)
+  }
+
+  if (last_chunk > 0) {
+    s_idx <- end_idx + 1
+    e_idx <- s_idx + last_chunk - 1
+    .mp <- floss_cac(stompi_update(.mp, new_data[s_idx:e_idx], data_window), exclusion_zone, data_window)
+  }
+
+  .mp
+
+  # fluss_extract(.mp, num_segments, exclusion_zone)
 }
+
+
 
 #' FLUSS - Extract Segments
 #'
@@ -154,7 +192,7 @@ fluss_extract <- function(.mpac, num_segments, exclusion_zone = NULL) {
 #' w <- 10
 #' mp <- tsmp(data, window_size = w, verbose = 0)
 #' mp <- fluss_cac(mp)
-fluss_cac <- function(.mp, exclusion_zone = NULL, data_window = FALSE) {
+fluss_cac <- function(.mp, exclusion_zone = NULL) {
   if (!("MatrixProfile" %in% class(.mp))) {
     stop("First argument must be an object of class `MatrixProfile`.")
   }
@@ -163,10 +201,50 @@ fluss_cac <- function(.mp, exclusion_zone = NULL, data_window = FALSE) {
     stop("Function not implemented for objects of class `Valmod`.")
   }
 
-  data_size <- nrow(.mp$mp) + .mp$w - 1
+  if (is.null(exclusion_zone)) {
+    exclusion_zone <- .mp$ez * 10 # normally ez is 0.5, so ez here is 5
+  }
 
-  if (!data_window || (data_window > data_size)) {
-    data_window <- data_size
+  arc_counts <- vector(mode = "numeric")
+  profile_index_size <- length(.mp$pi)
+
+  nnmark <- matrix(0, profile_index_size, 1)
+
+  for (i in 1:profile_index_size) {
+    j <- .mp$pi[i]
+    nnmark[min(i, j)] <- nnmark[min(i, j)] + 1
+    nnmark[max(i, j)] <- nnmark[max(i, j)] - 1
+  }
+
+  arc_counts <- cumsum(nnmark)
+
+  x <- seq(0, 1, length.out = profile_index_size)
+
+  if (is.null(attr(.mp, "subsetting"))) {
+    ideal_arc_counts <- stats::dbeta(x, 2, 2) * profile_index_size / 3
+  } else {
+    ideal_arc_counts <- stats::dbeta(x, 2.1, 2.1) * profile_index_size / 3
+  }
+
+  corrected_arc_counts <- pmin(arc_counts / ideal_arc_counts, 1)
+  exclusion_zone <- round(.mp$w * exclusion_zone + vars()$eps)
+  corrected_arc_counts[1:min(exclusion_zone, profile_index_size)] <- 1
+  corrected_arc_counts[max((profile_index_size - exclusion_zone + 1), 1):profile_index_size] <- 1
+
+  .mp$cac <- corrected_arc_counts
+
+  class(.mp) <- update_class(class(.mp), "ArcCount")
+
+  return(.mp)
+}
+
+floss_cac <- function(.mp, exclusion_zone = NULL, data_window) {
+  if (!("MatrixProfile" %in% class(.mp))) {
+    stop("First argument must be an object of class `MatrixProfile`.")
+  }
+
+  if ("Valmod" %in% class(.mp)) {
+    stop("Function not implemented for objects of class `Valmod`.")
   }
 
   if (data_window <= .mp$w) {
@@ -174,7 +252,6 @@ fluss_cac <- function(.mp, exclusion_zone = NULL, data_window = FALSE) {
   }
 
   profile_size <- nrow(.mp$mp)
-  offset <- data_size - data_window
   cac_size <- data_window - .mp$w + 1
   start_idx <- profile_size - cac_size + 1
   new_data_size <- attr(.mp, "new_data")
@@ -182,91 +259,49 @@ fluss_cac <- function(.mp, exclusion_zone = NULL, data_window = FALSE) {
   mp_offset <- attr(.mp, "offset")
   mp_offset <- ifelse(is.null(mp_offset), 0, mp_offset)
 
-  if (new_data_size > 0 && mp_offset > 0 && is.null(attr(.mp, "subsetting"))) { # realtime 1d FLOSS
-    exclusion_zone <- round(.mp$w * .mp$ez + vars()$eps)
-    end_idx <- profile_size - exclusion_zone - 1
-    pi <- .mp$pi[start_idx:end_idx]
-    message("fluss_cac() realtime 1D FLOSS")
+  exclusion_zone <- round(.mp$w * .mp$ez + vars()$eps)
+  end_idx <- profile_size - exclusion_zone - 1
+  pi <- .mp$pi[start_idx:end_idx]
 
-    nnmark <- matrix(0, cac_size, 1)
+  nnmark <- matrix(0, cac_size, 1)
 
-    for (i in seq_along(pi)) {
-      j <- pi[i]
-      if (j < 0 || j > cac_size) {
-        next
-      }
-
-      nnmark[min(i, j)] <- nnmark[min(i, j)] + 1
-      nnmark[max(i, j)] <- nnmark[max(i, j)] - 1
+  for (i in seq_along(pi)) {
+    j <- pi[i]
+    if (j < 0 || j > cac_size) {
+      next
     }
 
-    arc_counts <- cumsum(nnmark)
-
-    a <- 1.93 # - 0.5
-    b <- 1.69 # + 0.5
-    x <- seq(0, 1, length.out = cac_size)
-    ideal_arc_counts <- a * b * x^(a - 1) * (1 - x^a)^(b - 1) * cac_size / 3 # kumaraswamy distribution
-
-    corrected_arc_counts <- pmin(arc_counts / ideal_arc_counts, 1)
-    corrected_arc_counts[1:min(exclusion_zone, cac_size)] <- 1
-    corrected_arc_counts[is.na(corrected_arc_counts)] <- Inf
-    # mode is ((a-1) / (a*b-1))^(1/a) ==> 0.630993440901
-    mid_idx <- round(cac_size * 0.630993440901) - floor(new_data_size / 2) # which.max(ideal_arc_counts)
-
-    if (is.null(.mp$cac_final)) {
-      # TODO: get a more reliable value than attr(.mp, "origin")$data_size
-      .mp$cac_final <- rep(NA, round(data_window * -0.3690066 + new_data_size/2 +
-                                       max(nrow(.mp$data[[1]]), attr(.mp, "origin")$data_size) -
-                                       (.mp$w * 0.630993440901))) # 80-0; 160-20; 240-30; 320-40
-    }
-
-    .mp$cac_final <- c(.mp$cac_final, corrected_arc_counts[mid_idx:(mid_idx + new_data_size - 1)])
-  } else {
-    message("fluss_cac() Normal")
-    # normal offline FLUSS
-    if (is.null(exclusion_zone)) {
-      exclusion_zone <- floor(cac_size / 1000) # floor(.mp$ez * 100) # normally ez is 0.5, so ez here is 50
-    }
-    end_idx <- profile_size - exclusion_zone
-
-    if (end_idx < start_idx) {
-      stop("data_window is too short for current exclusion_zone.")
-    }
-
-    pi <- .mp$pi[start_idx:end_idx]
-    pi <- pi - offset
-
-    nnmark <- matrix(0, cac_size, 1)
-
-    for (i in seq_along(pi)) {
-      j <- pi[i]
-
-      if (j <= 0 || j > cac_size) {
-        next
-      }
-
-      nnmark[min(i, j)] <- nnmark[min(i, j)] + 1
-      nnmark[max(i, j)] <- nnmark[max(i, j)] - 1
-    }
-
-    arc_counts <- cumsum(nnmark)
-
-    x <- seq(0, 1, length.out = cac_size)
-
-	if (is.null(attr(.mp, "subsetting"))) {
-	  ideal_arc_counts <- stats::dbeta(x, 2, 2) * cac_size / 3
-	} else {
-	 ideal_arc_counts <- stats::dbeta(x, 2.1, 2.1) * cac_size / 3
-	}
-
-
-    corrected_arc_counts <- pmin(arc_counts / ideal_arc_counts, 1)
-    exclusion_zone <- round(.mp$w * exclusion_zone + vars()$eps)
-    corrected_arc_counts[1:min(exclusion_zone, cac_size)] <- 1
-    corrected_arc_counts[max((cac_size - exclusion_zone), 1):cac_size] <- 1
-    corrected_arc_counts[is.na(corrected_arc_counts)] <- Inf
+    nnmark[min(i, j)] <- nnmark[min(i, j)] + 1
+    nnmark[max(i, j)] <- nnmark[max(i, j)] - 1
   }
 
+  arc_counts <- cumsum(nnmark)
+  x <- seq(0, 1, length.out = cac_size)
+
+  if (mp_offset > 0) {
+    mode <- vars()$kmode
+    a <- 1.93 # If you change this, change vars()$kmode
+    b <- 1.69 # If you change this, change vars()$kmode
+    ideal_arc_counts <- a * b * x^(a - 1) * (1 - x^a)^(b - 1) * cac_size / 3 # kumaraswamy distribution
+  } else {
+    message("beta")
+    mode <- 0.5
+    ideal_arc_counts <- stats::dbeta(x, 2, 2) * cac_size / 3
+  }
+
+  corrected_arc_counts <- pmin(arc_counts / ideal_arc_counts, 1)
+  corrected_arc_counts[1:min(exclusion_zone, cac_size)] <- 1
+  corrected_arc_counts[is.na(corrected_arc_counts)] <- Inf
+  mid_idx <- round(cac_size * mode) - floor(new_data_size / 2) # same as which.max(ideal_arc_counts)
+
+  if (is.null(.mp$cac_final)) {
+    # TODO: get a more reliable value than attr(.mp, "origin")$data_size
+    .mp$cac_final <- rep(NA, round(data_window * (mode - 1) - new_data_size / 2 +
+      max(nrow(.mp$data[[1]]), attr(.mp, "origin")$data_size) -
+      (.mp$w * mode)) + mp_offset)
+  }
+
+  .mp$cac_final <- c(.mp$cac_final, corrected_arc_counts[mid_idx:(mid_idx + new_data_size - 1)])
   .mp$cac <- corrected_arc_counts
 
   class(.mp) <- update_class(class(.mp), "ArcCount")

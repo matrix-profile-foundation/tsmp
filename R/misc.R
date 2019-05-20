@@ -840,8 +840,9 @@ get_desc_split_pt <- function(n_bit) {
 #'
 vars <- function() {
   eps <- .Machine$double.eps^0.5
+  kmode <- 0.630993440901 # mode is ((a-1) / (a*b-1))^(1/a) ==> 0.630993440901
 
-  return(list(eps = eps))
+  return(list(eps = eps, kmode = kmode))
 }
 
 # Misc -------------------------------------------------------------------------------------------
@@ -963,15 +964,15 @@ remove_class <- function(x, class) {
 #' @describeIn as.matrixprofile Cast an object changed by another function back to `MatrixProfile`.
 #' @export
 #' @examples
-#' 
+#'
 #' w <- 50
 #' data <- mp_gait_data
 #' mp <- tsmp(data, window_size = w, exclusion_zone = 1 / 4, verbose = 0)
 #' mp <- find_motif(mp)
 #' class(mp) # first class will be "Motif"
-#' 
+#'
 #' plot(mp) # plots a motif plot
-#' 
+#'
 #' plot(as.matrixprofile(mp)) # plots a matrix profile plot
 as.matrixprofile <- function(.mp) {
   if (!("MatrixProfile" %in% class(.mp))) {

@@ -1,7 +1,7 @@
 NEWS
 ================
 Francisco Bischoff
-\- 26 Apr 2019
+\- 20 May 2019
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
@@ -10,12 +10,15 @@ Francisco Bischoff
   - Changed `mass()` to `dist_profile()`, including options to different
     algoritms.
   - Added MASS\_V3 and MASS\_Weighted to `dist_profile()` algorithms.
+  - Function `dist_profile()` allows Query with Gap (QwG) and
+    Approximate Distance Profile (ADP, with PAA)
   - Fixed long runtime of FFT for some data sizes, using MASS\_V3. Issue
     \#36.
   - Added `stompi_update()` that updates the matrix profile allowing
-    real-time computation. ++ floss()
-  - Added subset operator `[` for `tsmp` objects. ++ Added `tail()` and
-    `head()` for `tsmp` objects.
+    real-time computation.
+  - Added floss() which can do real-time FLUSS computation.
+  - Added subset operator `[` for `tsmp` objects.
+  - Added `tail()` and `head()` for `tsmp` objects.
   - Changed `find_motif()` for `MultiMatrixProfile` to report Motifs
     correctly.
 
@@ -58,7 +61,7 @@ Francisco Bischoff
   - Outputs have a prettier print format.
   - Outputs have a plot function. Try to plot a `tsmp()` output for
     example.
-  - Now functions can work in `%>%` (pipe), e.g. `tsmp() %>%
+  - Now functions can work in `%>%` (pipe), e.g. `tsmp() %>%
     find_motif()`. Except for SDTS that has a proper way to work.
   - Added a wrapper function called `tsmp()` that handles the several
     algorithms available.

@@ -148,12 +148,11 @@ stompi_update <- function(.mp, new_data, history_size = FALSE) {
 
     if (is.null(attr(.mp, "offset"))) {
       attr(.mp, "offset") <- offset
-      new_data_size <- 0
     } else {
       attr(.mp, "offset") <- attr(.mp, "offset") + offset
     }
 
-    #pi_new <- tail(pi_new - attr(.mp, "offset"), mp_new_size)
+    # pi_new <- tail(pi_new - attr(.mp, "offset"), mp_new_size)
   }
 
   .mp$mp <- as.matrix(mp_new)
@@ -166,9 +165,9 @@ stompi_update <- function(.mp, new_data, history_size = FALSE) {
   attr(.mp, "new_data") <- new_data_size
 
   # TODO: with tail or not (tail will recompute some things)
-#  if (history_size && (data_upd_size > history_size)) {
-#    return(tail(.mp, history_size))
-#  } else {
-    return(.mp)
-#  }
+  #  if (history_size && (data_upd_size > history_size)) {
+  #    return(tail(.mp, history_size))
+  #  } else {
+  return(.mp)
+  #  }
 }

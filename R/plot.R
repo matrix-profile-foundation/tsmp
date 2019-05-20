@@ -119,7 +119,7 @@ plot_arcs <- function(pairs, alpha = NULL, quality = 30, lwd = 15, col = c("blue
 #' @name plot
 #'
 #' @examples
-#' 
+#'
 #' mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
 #' plot(mp)
 plot.ArcCount <- function(x, data, type = c("data", "matrix"), exclusion_zone = NULL, edge_limit = NULL,
@@ -230,11 +230,6 @@ plot.Valmod <- function(x, ylab = "distance", xlab = "index", main = "Valmod Mat
   if (!is.null(attr(x, "offset"))) {
     xnum <- xnum + attr(x, "offset")
   }
-
-  # if (!is.null(attr(x, "join")) && !attr(x, "join")) {
-  #   allmatrix <- TRUE
-  #   num_charts <- 3
-  # }
 
   if (data) {
     num_charts <- num_charts + 1

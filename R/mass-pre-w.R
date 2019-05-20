@@ -21,9 +21,9 @@
 #' ref_data <- mp_toy_data$data[, 1]
 #' query_data <- mp_toy_data$data[, 1]
 #' weight <- c(rep(1, mp_toy_data$sub_len / 3), rep(0.5, mp_toy_data$sub_len / 3), rep(1, mp_toy_data$sub_len / 3))
-#' 
+#'
 #' pre <- tsmp:::mass_pre_w(ref_data, query_data, w, weight)
-#' 
+#'
 #' dp <- list()
 #' for (i in 1:(pre$data_size - w + 1)) {
 #'   dp[[i]] <- tsmp:::mass_weighted(

@@ -35,7 +35,7 @@
 #'
 #' @examples
 #' mp <- stomp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
-#' 
+#'
 #' # using threads
 #' mp <- stomp_par(mp_toy_data$data[1:400, 1], window_size = 30, verbose = 0)
 #' \dontrun{

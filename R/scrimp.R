@@ -44,7 +44,7 @@
 #' # join similarity
 #' mp <- scrimp(ref_data, query_data, window_size = 30, s_size = round(nrow(query_data) * 0.1))
 #' }
-#' 
+#'
 scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size = Inf, pre_scrimp = 1 / 4) {
   argv <- list(...)
   argc <- length(argv)
@@ -267,7 +267,7 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
       curlastz[i] +
       cumsum(
         query[(i + window_size):data_size] * data[(window_size + 1):(query_size - i + 1)] # a_term
-        - data[1:(num_queries - i)] * query[i:(num_queries - 1)] # m_term
+          - data[1:(num_queries - i)] * query[i:(num_queries - 1)] # m_term
       )
 
     curdistance[i:num_queries] <-
