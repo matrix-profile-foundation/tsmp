@@ -8,7 +8,7 @@ Francisco Bischoff
 # tsmp 0.3.5
 
   - Changed `mass()` to `dist_profile()`, including options to different
-    algoritms.
+    algorithms.
   - Added MASS\_V3 and MASS\_Weighted to `dist_profile()` algorithms.
   - Function `dist_profile()` allows Query with Gap (QwG) and
     Approximate Distance Profile (ADP, with PAA)

@@ -57,13 +57,13 @@ floss <- function(.mp, new_data, num_segments, data_window, exclusion_zone = NUL
   new_data_size <- length(new_data)
 
   if (data_size < data_window) {
-    message("data_size < data_window ")
+    message("DEBUG: data_size < data_window ")
     if ((data_size + new_data_size) <= data_window) {
       .mp <- stompi_update(.mp, new_data)
       .mp$cac_final <- NULL
       return(.mp)
     } else {
-      message("new_data")
+      message("DEBUG: new_data")
       .mp <- stompi_update(.mp, head(new_data, data_window - data_size))
       new_data <- new_data[(data_window - data_size + 1):new_data_size]
     }
@@ -75,7 +75,7 @@ floss <- function(.mp, new_data, num_segments, data_window, exclusion_zone = NUL
   }
 
   if (data_size > data_window) {
-    message("data_size > data_window ", data_window)
+    message("DEBUG: data_size > data_window ", data_window)
 
     if (mp_offset > 0) {
       attr(.mp, "new_data") <- 0
@@ -112,7 +112,7 @@ floss <- function(.mp, new_data, num_segments, data_window, exclusion_zone = NUL
 
   .mp
 
-  # fluss_extract(.mp, num_segments, exclusion_zone)
+  # floss_extract(.mp, num_segments, exclusion_zone)
 }
 
 
@@ -289,7 +289,7 @@ floss_cac <- function(.mp, exclusion_zone = NULL, data_window) {
     b <- 1.69 # If you change this, change vars()$kmode
     ideal_arc_counts <- a * b * x^(a - 1) * (1 - x^a)^(b - 1) * cac_size / 3 # kumaraswamy distribution
   } else {
-    message("beta")
+    message("DEBUG: beta")
     mode <- 0.5
     ideal_arc_counts <- stats::dbeta(x, 2, 2) * cac_size / 3
   }

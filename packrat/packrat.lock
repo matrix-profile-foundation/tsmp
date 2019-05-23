@@ -260,30 +260,30 @@ GithubSha1: 7c12d369c202018dfc3dfa3f975f03c8b6c18437
 Package: devtools
 Source: github
 Version: 2.0.2.9000
-Hash: ec55e7e968b09c377895e2115e15dd20
+Hash: 50a0d557ec9ed1dd040e66da2d98e962
 Requires: callr, cli, digest, git2r, httr, jsonlite, memoise, pkgbuild,
     pkgload, rcmdcheck, remotes, rstudioapi, sessioninfo, usethis,
     withr
 GithubRepo: devtools
 GithubUsername: r-lib
 GithubRef: master
-GithubSha1: 92d32cb654dbc7d891e5426732977d6772609158
+GithubSha1: 945c8d278d8d08a5e1cca09a5b136f1531941d19
 RemoteHost: api.github.com
 RemoteRepo: devtools
 RemoteUsername: r-lib
 RemoteRef: master
-RemoteSha: 92d32cb654dbc7d891e5426732977d6772609158
+RemoteSha: 945c8d278d8d08a5e1cca09a5b136f1531941d19
 
 Package: diffobj
 Source: CRAN
-Version: 0.2.2
-Hash: dc59d24bdb355ada743f6ed0ad9199d6
+Version: 0.2.3
+Hash: cb1807c2d9a9b8f3def92fe2886c11e4
 Requires: crayon
 
 Package: digest
 Source: CRAN
-Version: 0.6.18
-Hash: 65f62365ec69ddd17230d2ffe891a6ab
+Version: 0.6.19
+Hash: 99a5cdd9144b03b7a2ddbbef862fb07f
 
 Package: doParallel
 Source: CRAN
@@ -495,8 +495,8 @@ Hash: 5f969e213e966135393e3e304abf3f49
 
 Package: knitr
 Source: CRAN
-Version: 1.22
-Hash: d7581079d36fa69f84ff721384355734
+Version: 1.23
+Hash: 97e380b89b7561ff23821e60296b394c
 Requires: evaluate, highr, markdown, stringr, xfun, yaml
 
 Package: labeling
@@ -631,9 +631,9 @@ Hash: 0ec7207b2d094811f4e1383c417e0c1e
 
 Package: pillar
 Source: CRAN
-Version: 1.3.1
-Hash: 9ed4c2a5d3047bfba3e852ad5e806d91
-Requires: cli, crayon, fansi, rlang, utf8
+Version: 1.4.0
+Hash: 1bca62875e57d03cd7b8d15bd1613fc9
+Requires: cli, crayon, fansi, rlang, utf8, vctrs
 
 Package: pixmap
 Source: CRAN
@@ -721,24 +721,24 @@ Requires: R6, ps
 
 Package: profvis
 Source: CRAN
-Version: 0.3.5
-Hash: 68abff8877b3d436602a124262b83efe
+Version: 0.3.6
+Hash: 84220302ced453f674aa84c404da03bd
 Requires: htmlwidgets, stringr
 
 Package: progress
 Source: github
-Version: 1.2.0.9000
-Hash: aa0dbd1e7997d671e5d08fbe721db311
+Version: 1.2.2.9000
+Hash: 4f789e5d0c7645be56a11891cf2f17fe
 Requires: R6, crayon, hms, prettyunits
 GithubRepo: progress
 GithubUsername: r-lib
 GithubRef: master
-GithubSha1: c0e492e688afec01f9927f5b5c95dbb945ebbb57
+GithubSha1: f5665d8f821d76e9fa83a3a3a36766b178028434
 RemoteHost: api.github.com
 RemoteRepo: progress
 RemoteUsername: r-lib
 RemoteRef: master
-RemoteSha: c0e492e688afec01f9927f5b5c95dbb945ebbb57
+RemoteSha: f5665d8f821d76e9fa83a3a3a36766b178028434
 
 Package: promises
 Source: CRAN
@@ -804,21 +804,21 @@ Requires: tibble
 Package: remotes
 Source: github
 Version: 2.0.4.9000
-Hash: 2e813ed34b2c52e69be7419b7e7cc4bf
+Hash: f91ec23063376b8fb67bf3a01accdbb0
 GithubRepo: remotes
 GithubUsername: r-lib
 GithubRef: master
-GithubSha1: ba2f0343e5e9f7fe4f9a30eee7f0d483f4bdb7af
+GithubSha1: 769daec6b501d3cd4f6d8492bf241352f93ec639
 RemoteHost: api.github.com
 RemoteRepo: remotes
 RemoteUsername: r-lib
 RemoteRef: master
-RemoteSha: ba2f0343e5e9f7fe4f9a30eee7f0d483f4bdb7af
+RemoteSha: 769daec6b501d3cd4f6d8492bf241352f93ec639
 
 Package: reprex
 Source: CRAN
-Version: 0.2.1
-Hash: b30c7fbcb528a71d7ffcd07c9982589d
+Version: 0.3.0
+Hash: 2029355cb70894267c2c7557c79307fd
 Requires: callr, clipr, fs, rlang, rmarkdown, whisker, withr
 
 Package: reshape2
@@ -913,8 +913,8 @@ Hash: 63f43c6ff14d92e1d65ca6c21d45a1eb
 
 Package: rversions
 Source: CRAN
-Version: 1.1.0
-Hash: 3467c6cc8729fcecff2c842215b2b64d
+Version: 2.0.0
+Hash: 930d53521fb534f441c83bf1d5e17395
 Requires: curl, xml2
 
 Package: scales
@@ -1003,8 +1003,8 @@ Requires: Matrix
 
 Package: svglite
 Source: CRAN
-Version: 1.2.1
-Hash: 6249765a42a728c10b2b4afa62ef4594
+Version: 1.2.2
+Hash: fc956d34d7bd6526f2bc398125b289d3
 Requires: BH, Rcpp, gdtools
 
 Package: sys
@@ -1026,8 +1026,8 @@ Requires: cli, crayon, fansi, pillar, pkgconfig, rlang
 
 Package: tinytex
 Source: CRAN
-Version: 0.12
-Hash: 138dfd8584f3941b21f74044e2aeb8e7
+Version: 0.13
+Hash: 02daeb43f4d59934cf66533c3e2993f6
 Requires: xfun
 
 Package: usethis
@@ -1056,27 +1056,33 @@ Source: CRAN
 Version: 0.1-2
 Hash: 69acbbcf4dcff3a258f94de540214001
 
+Package: vctrs
+Source: CRAN
+Version: 0.1.0
+Hash: a03152baad7a9b92950b29f528dae6a7
+Requires: backports, digest, glue, rlang, zeallot
+
 Package: vdiffr
 Source: github
 Version: 0.3.0.9000
-Hash: 84fdb5bf7f64d12a6accadcb43839a2d
+Hash: c499baf0c7832107b0ad49e931bb16da
 Requires: BH, R6, Rcpp, devtools, diffobj, fontquiver,
     freetypeharfbuzz, gdtools, glue, htmltools, htmlwidgets, purrr,
     rlang, shiny, testthat, usethis, xml2
 GithubRepo: vdiffr
 GithubUsername: r-lib
 GithubRef: master
-GithubSha1: 4561787efdb7fe6f2c3d0f6ff4f751d148dcecf3
+GithubSha1: 0d3e04506095d5710606eb8e9a427094b49fb87e
 RemoteHost: api.github.com
 RemoteRepo: vdiffr
 RemoteUsername: r-lib
 RemoteRef: master
-RemoteSha: 4561787efdb7fe6f2c3d0f6ff4f751d148dcecf3
+RemoteSha: 0d3e04506095d5710606eb8e9a427094b49fb87e
 
 Package: vegan
 Source: CRAN
-Version: 2.5-4
-Hash: 4c6a32991727b17449cd164f5545bce2
+Version: 2.5-5
+Hash: 2aae3c064fb83fff37f2c9b1774a0b43
 Requires: MASS, lattice, mgcv, permute
 
 Package: viridisLite
@@ -1114,8 +1120,8 @@ Hash: d534108bcd5f34ec73e9eb523751ba20
 
 Package: xfun
 Source: CRAN
-Version: 0.6
-Hash: 73da552325e6d8a92cf3f85a1463f6ff
+Version: 0.7
+Hash: f615e6607b290cfbc05bbda2a9e201b7
 
 Package: xml2
 Source: CRAN
@@ -1153,6 +1159,11 @@ Package: yaml
 Source: CRAN
 Version: 2.2.0
 Hash: a5ad5616d83d89f8d84cbf3cf4034e13
+
+Package: zeallot
+Source: CRAN
+Version: 0.1.0
+Hash: 10b2ed48e202b4db421ae864041dc4b2
 
 Package: zoo
 Source: CRAN

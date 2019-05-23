@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 ```
 
 # tsmp 0.3.5
-* Changed `mass()` to `dist_profile()`, including options to different algoritms.
+* Changed `mass()` to `dist_profile()`, including options to different algorithms.
 * Added MASS_V3 and MASS_Weighted to `dist_profile()` algorithms.
 * Function `dist_profile()` allows Query with Gap (QwG) and Approximate Distance Profile (ADP, with PAA)
 * Fixed long runtime of FFT for some data sizes, using MASS_V3. Issue #36.
