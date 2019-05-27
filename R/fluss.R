@@ -40,13 +40,10 @@ fluss <- function(.mp, num_segments, exclusion_zone = NULL) {
 #' @export
 #'
 #' @examples
-floss <- function(.mp, new_data, num_segments, data_window, exclusion_zone = NULL, chunk_size = NULL) {
+floss <- function(.mp, new_data, threshold, data_window, exclusion_zone = NULL, chunk_size = NULL) {
   if (missing(data_window)) {
     stop("argument 'data_window' is missing, looking for fluss() instead?")
   }
-
-  # TODO: floss_extract
-
 
   if ("Valmod" %in% class(.mp)) {
     stop("Function not implemented for objects of class `Valmod`.")
@@ -110,12 +107,94 @@ floss <- function(.mp, new_data, num_segments, data_window, exclusion_zone = NUL
     .mp <- floss_cac(stompi_update(.mp, new_data[s_idx:e_idx], data_window), exclusion_zone, data_window)
   }
 
-  .mp
-
-  # floss_extract(.mp, num_segments, exclusion_zone)
+  floss_extract(.mp, threshold)
 }
 
+#' FLOSS - Extract Segments
+#'
+#' Extract candidate points of semantic changes.
+#'
+#' @param .mpac a TSMP object of class `ArcCount`.
+#' @param num_segments an `int`. Number of segments to extract. Based on domain knowledge.
+#' @param exclusion_zone if a `number` will be used instead of embedded value. (Default is `NULL`).
+#'
+#' @return Returns the input `.mp` object a new name `fluss` with the location of semantic changes.
+#' @export
+#' @family Semantic Segmentations
+#' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII:
+#'   Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE
+#'   International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
+#' @references Website: <https://sites.google.com/site/onlinesemanticsegmentation/>
+#' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
+#' @examples
+#' data <- mp_fluss_data$tilt_abp$data[1:1000]
+#' w <- 10
+#' mp <- tsmp(data, window_size = w, verbose = 0)
+#' mp <- fluss_cac(mp)
+#' mp <- fluss_extract(mp, 2)
+floss_extract <- function(.mpac, threshold = 1, exclusion_zone = NULL) {
+  if (!any(class(.mpac) %in% "ArcCount")) {
+    stop("First argument must be an object of class `ArcCount`.")
+  }
 
+  if (is.null(.mpac$cac_final)) {
+    stop("There is no real-time information to extract. Looking for fluss_extract() instead?")
+  }
+
+  if (is.null(exclusion_zone)) {
+    exclusion_zone <- .mpac$ez * 10 # normally ez is 0.5, so ez here is 5
+  }
+
+  offset <- ifelse(is.null(attr(.mpac, "offset")), 0, attr(.mpac, "offset"))
+  cac <- tail(.mpac$cac_final, -offset)
+  cac[cac > threshold] <- NA
+
+  # # .mpac$cac holds the last cac from real-time window
+  # .mpac$cac <- c(cac, rep(NA, nrow(.mpac$mp) - arc_counts_size))
+
+  segments <- .mpac$floss
+  seg_vals <- .mpac$floss_vals
+  exclusion_zone <- round(.mpac$w * exclusion_zone + vars()$eps)
+
+  idx <- which.min(cac)
+
+  if (length(idx) > 0) {
+    val <- cac[idx]
+    real_idx <- idx + offset
+    seg_len <- length(segments)
+
+    if (seg_len > 0) {
+      seg_len <- length(segments)
+      last_idx <- segments[seg_len]
+      last_val <- seg_vals[seg_len]
+
+      if (real_idx > last_idx) {
+        if (real_idx < (last_idx + exclusion_zone)) {
+          # update split
+          if (val < last_val) {
+            segments[seg_len] <- real_idx
+            seg_vals[seg_len] <- val
+            message("DEBUG: update split at ", real_idx, " value ", val)
+          }
+        } else {
+          # new split
+          segments <- c(segments, real_idx)
+          seg_vals <- c(seg_vals, val)
+        }
+      }
+    } else {
+      segments <- real_idx
+      seg_vals <- val
+    }
+  }
+
+  .mpac$floss <- segments
+  .mpac$floss_vals <- seg_vals
+
+  class(.mpac) <- update_class(class(.mpac), "Floss")
+
+  return(.mpac)
+}
 
 #' FLUSS - Extract Segments
 #'
@@ -285,9 +364,9 @@ floss_cac <- function(.mp, exclusion_zone = NULL, data_window) {
 
   if (mp_offset > 0) {
     mode <- vars()$kmode
-    a <- 1.93 # If you change this, change vars()$kmode
-    b <- 1.69 # If you change this, change vars()$kmode
-    ideal_arc_counts <- a * b * x^(a - 1) * (1 - x^a)^(b - 1) * cac_size / 3 # kumaraswamy distribution
+    a <- 1.939274 # If you change this, change vars()$kmode
+    b <- 1.698150 # If you change this, change vars()$kmode
+    ideal_arc_counts <- a * b * x^(a - 1) * (1 - x^a)^(b - 1) * cac_size / 4.035477 # kumaraswamy distribution
   } else {
     message("DEBUG: beta")
     mode <- 0.5

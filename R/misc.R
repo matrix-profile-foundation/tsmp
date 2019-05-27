@@ -840,7 +840,7 @@ get_desc_split_pt <- function(n_bit) {
 #'
 vars <- function() {
   eps <- .Machine$double.eps^0.5
-  kmode <- 0.630993440901 # mode is ((a-1) / (a*b-1))^(1/a) ==> 0.630993440901
+  kmode <- 0.6311142 # mode is ((a-1) / (a*b-1))^(1/a) ==> 0.6311142
 
   return(list(eps = eps, kmode = kmode))
 }
