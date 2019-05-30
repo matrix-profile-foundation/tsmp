@@ -4,7 +4,7 @@
 \alias{fluss}
 \title{Fast Low-cost Unipotent Semantic Segmentation (FLUSS)}
 \usage{
-fluss(.mp, num_segments, exclusion_zone = NULL)
+fluss(.mp, num_segments = 1, exclusion_zone = NULL)
 }
 \arguments{
 \item{.mp}{a TSMP object of class \code{MatrixProfile}.}

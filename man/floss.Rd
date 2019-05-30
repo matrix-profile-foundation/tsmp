@@ -4,7 +4,7 @@
 \alias{floss}
 \title{FLOSS}
 \usage{
-floss(.mp, new_data, threshold, data_window, exclusion_zone = NULL,
+floss(.mp, new_data, data_window, threshold = 1, exclusion_zone = NULL,
   chunk_size = NULL, keep_cac = TRUE)
 }
 \arguments{

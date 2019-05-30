@@ -27,7 +27,8 @@ if (skip_on_cran()) {
       maxmin <- tsmp:::discrete_norm_pre(as.vector(data), 100)
       expect_equal(round(maxmin$max, 4), 3.3845)
       expect_equal(round(maxmin$min, 4), -3.4308)
-      expect_equal(tsmp:::get_sorted_idx(res$mp, 10), c(36, 408, 37, 407, 35, 200, 9, 199, 10, 406))
+      # sort gives slightly different results in windows and linux:
+      expect_equal(sum(tsmp:::get_sorted_idx(res$mp, 10) %in% c(36, 408, 37, 407, 35, 200, 9, 199, 10, 406)), 10)
       expect_equal(round(sd(salient_mds(res)), 2), 3.69)
       scr <- salient_score(res, label_idx)
       expect_equal(round(scr$precision, 4), 0.5)

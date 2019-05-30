@@ -50,9 +50,9 @@ if (skip_on_cran()) {
   })
 
   test_that("MASS Pre is ok", {
-    expect_known_hash(lapply(pre, round, 3), "1ac5ece94f")
-    expect_known_hash(lapply(pre3, round, 3), "3fbcbbbc6f")
-    expect_known_hash(lapply(prew, round, 3), "7199ea592a")
+    expect_equal(sum(Re(unlist(lapply(pre, round, 3)))), 1305.817)
+    expect_equal(sum(Re(unlist(lapply(pre3, round, 3)))), 1599.839)
+    expect_equal(sum(Re(unlist(lapply(prew, round, 2)))), 13147.42)
   })
 
   test_that("MASS is ok", {

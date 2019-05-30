@@ -4,7 +4,7 @@
 \alias{fluss_extract}
 \title{FLUSS - Extract Segments}
 \usage{
-fluss_extract(.mpac, num_segments, exclusion_zone = NULL)
+fluss_extract(.mpac, num_segments = 1, exclusion_zone = NULL)
 }
 \arguments{
 \item{.mpac}{a TSMP object of class \code{ArcCount}.}

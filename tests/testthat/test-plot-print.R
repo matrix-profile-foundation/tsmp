@@ -73,6 +73,6 @@ if (skip_on_cran()) {
     expect_known_output(mmotif, file = paste0(path, "mmotif-print"), print = TRUE, update = upd)
     expect_known_output(mps, file = paste0(path, "salient-print"), print = TRUE, update = upd)
     expect_known_output(val, file = paste0(path, "valmod-print"), print = TRUE, update = upd)
-    expect_known_output(val_motif, file = paste0(path, "motif_valmod-print"), print = TRUE, update = TRUE)
+    expect_known_output(val_motif, file = paste0(path, "motif_valmod-print"), print = TRUE, update = upd)
   })
 }
