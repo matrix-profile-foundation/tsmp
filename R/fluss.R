@@ -22,7 +22,7 @@
 #' w <- 10
 #' mp <- tsmp(data, window_size = w, verbose = 0)
 #' mp <- fluss(mp, 2)
-fluss <- function(.mp, num_segments, exclusion_zone = NULL) {
+fluss <- function(.mp, num_segments = 1, exclusion_zone = NULL) {
   if ("Valmod" %in% class(.mp)) {
     stop("Function not implemented for objects of class `Valmod`.")
   }
@@ -40,7 +40,7 @@ fluss <- function(.mp, num_segments, exclusion_zone = NULL) {
 #' @export
 #'
 #' @examples
-floss <- function(.mp, new_data, threshold, data_window, exclusion_zone = NULL, chunk_size = NULL) {
+floss <- function(.mp, new_data, data_window, threshold = 1, exclusion_zone = NULL, chunk_size = NULL, keep_cac = TRUE) {
   if (missing(data_window)) {
     stop("argument 'data_window' is missing, looking for fluss() instead?")
   }
@@ -76,7 +76,7 @@ floss <- function(.mp, new_data, threshold, data_window, exclusion_zone = NULL, 
 
     if (mp_offset > 0) {
       attr(.mp, "new_data") <- 0
-      .mp <- floss_cac(.mp, 0, data_size)
+      .mp <- floss_cac(.mp, data_size, 0)
     }
     else {
       .mp <- fluss_cac(.mp, 0)
@@ -86,6 +86,7 @@ floss <- function(.mp, new_data, threshold, data_window, exclusion_zone = NULL, 
       rep(NA, chunk_size + mp_offset - chunk_size),
       head(.mp$cac, -(round(data_window * (1 - vars()$kmode) - (1 - vars()$kmode) * .mp$w) - 0.5 * chunk_size + ifelse(mp_offset > 0, 1, 2)))
     )
+
     na_head <- round(vars()$kmode * data_window + (0.5 * chunk_size - vars()$kmode * .mp$w)) + mp_offset
 
     .mp$cac_final[1:na_head] <- NA
@@ -98,16 +99,22 @@ floss <- function(.mp, new_data, threshold, data_window, exclusion_zone = NULL, 
   for (i in seq_len(num_chunks)) {
     st_idx <- chunk_size * i - chunk_size + 1
     end_idx <- st_idx + chunk_size - 1
-    .mp <- floss_cac(stompi_update(.mp, new_data[st_idx:end_idx], data_window), exclusion_zone, data_window)
+    .mp <- floss_cac(stompi_update(.mp, new_data[st_idx:end_idx], data_window), data_window, exclusion_zone)
   }
 
   if (last_chunk > 0) {
     s_idx <- end_idx + 1
     e_idx <- s_idx + last_chunk - 1
-    .mp <- floss_cac(stompi_update(.mp, new_data[s_idx:e_idx], data_window), exclusion_zone, data_window)
+    .mp <- floss_cac(stompi_update(.mp, new_data[s_idx:e_idx], data_window), data_window, exclusion_zone)
   }
 
-  floss_extract(.mp, threshold)
+  res <- floss_extract(.mp, threshold)
+
+  if (!keep_cac) {
+    res$cac_final <- tail(res$cac_final, -length(new_data))
+  }
+
+  return(res)
 }
 
 #' FLOSS - Extract Segments
@@ -149,9 +156,6 @@ floss_extract <- function(.mpac, threshold = 1, exclusion_zone = NULL) {
   cac <- tail(.mpac$cac_final, -offset)
   cac[cac > threshold] <- NA
 
-  # # .mpac$cac holds the last cac from real-time window
-  # .mpac$cac <- c(cac, rep(NA, nrow(.mpac$mp) - arc_counts_size))
-
   segments <- .mpac$floss
   seg_vals <- .mpac$floss_vals
   exclusion_zone <- round(.mpac$w * exclusion_zone + vars()$eps)
@@ -164,7 +168,6 @@ floss_extract <- function(.mpac, threshold = 1, exclusion_zone = NULL) {
     seg_len <- length(segments)
 
     if (seg_len > 0) {
-      seg_len <- length(segments)
       last_idx <- segments[seg_len]
       last_val <- seg_vals[seg_len]
 
@@ -218,7 +221,7 @@ floss_extract <- function(.mpac, threshold = 1, exclusion_zone = NULL) {
 #' mp <- tsmp(data, window_size = w, verbose = 0)
 #' mp <- fluss_cac(mp)
 #' mp <- fluss_extract(mp, 2)
-fluss_extract <- function(.mpac, num_segments, exclusion_zone = NULL) {
+fluss_extract <- function(.mpac, num_segments = 1, exclusion_zone = NULL) {
   if (!any(class(.mpac) %in% "ArcCount")) {
     stop("First argument must be an object of class `ArcCount`.")
   }
@@ -322,7 +325,7 @@ fluss_cac <- function(.mp, exclusion_zone = NULL) {
   return(.mp)
 }
 
-floss_cac <- function(.mp, exclusion_zone = NULL, data_window) {
+floss_cac <- function(.mp, data_window, exclusion_zone = NULL) {
   if (!("MatrixProfile" %in% class(.mp))) {
     stop("First argument must be an object of class `MatrixProfile`.")
   }

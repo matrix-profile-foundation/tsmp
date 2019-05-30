@@ -4,8 +4,8 @@
 \alias{floss}
 \title{FLOSS}
 \usage{
-floss(.mp, new_data, num_segments, data_window, exclusion_zone = NULL,
-  chunk_size = NULL)
+floss(.mp, new_data, threshold, data_window, exclusion_zone = NULL,
+  chunk_size = NULL, keep_cac = TRUE)
 }
 \arguments{
 \item{.mp}{.mp a TSMP object of class \code{MatrixProfile}.}

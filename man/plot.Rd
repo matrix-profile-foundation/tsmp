@@ -8,6 +8,7 @@
 \alias{plot.MultiMatrixProfile}
 \alias{plot.SimpleMatrixProfile}
 \alias{plot.Fluss}
+\alias{plot.Floss}
 \alias{plot.Chain}
 \alias{plot.Discord}
 \alias{plot.Motif}
@@ -35,6 +36,10 @@
 \method{plot}{Fluss}(x, data, type = c("data", "matrix"),
   main = "Fast Low-cost Unipotent Semantic Segmentation",
   xlab = "index", ylab = "", ...)
+
+\method{plot}{Floss}(x, data, type = c("data", "matrix"),
+  main = "Fast Low-cost Online Semantic Segmentation", xlab = "index",
+  ylab = "", ...)
 
 \method{plot}{Chain}(x, data, type = c("data", "matrix"),
   main = "Chain Discover", xlab = "index", ylab = "", ...)

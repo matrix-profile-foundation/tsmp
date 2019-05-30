@@ -473,7 +473,84 @@ plot.Fluss <- function(x, data, type = c("data", "matrix"),
   plot_arcs(pairs, xlab = xlab, xmin = xmin, xmax = xmax, ...)
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
   graphics::plot(xnum, plot_data, main = data_main, type = "l", xlab = xlab, ylab = data_lab, xlim = xlim, ...)
-  graphics::plot(xnum, c(x$cac, rep(NA, min(x$w) - 1)), main = "Arc count", type = "l", xlab = xlab, ylab = "normalized count", xlim = xlim, ...)
+  graphics::plot(xnum, c(x$cac, rep(NA, min(x$w) - 1)), main = "Arc count", type = "l", xlab = xlab, ylab = "normalized count", xlim = xlim, ylim = c(0, 1), ...)
+
+  graphics::par(def_par)
+}
+
+#' @export
+#' @keywords hplot
+#' @name plot
+#'
+plot.Floss <- function(x, data, type = c("data", "matrix"),
+                       main = "Fast Low-cost Online Semantic Segmentation", xlab = "index",
+                       ylab = "", ...) {
+  def_par <- graphics::par(no.readonly = TRUE)
+
+  if (missing(data) && !is.null(x$data)) {
+    data <- x$data[[1]]
+  } else {
+    is.null(data) # check data presence before plotting anything
+  }
+
+  type <- match.arg(type)
+
+  if (type == "data") {
+    plot_data <- data
+    data_lab <- ylab
+    data_main <- "Data"
+  } else {
+    plot_data <- c(x$mp, rep(NA, min(x$w) - 1))
+    data_lab <- "distance"
+    data_main <- "Matrix Profile"
+  }
+
+  offset <- attr(x, "offset")
+  offset <- ifelse(is.null(offset), 0, offset)
+
+  floss_idx <- sort(x$floss)
+  floss_idx <- floss_idx - offset
+
+  floss_size <- length(floss_idx) + 1
+  pairs <- matrix(0, floss_size, 2)
+
+  for (i in seq_len(floss_size)) {
+    if (i == 1) {
+      pairs[i, 1] <- 0 #offset
+    } else {
+      pairs[i, 1] <- floss_idx[i - 1] + offset
+    }
+
+    if (i == floss_size) {
+      pairs[i, 2] <- nrow(x$mp) + offset
+    } else {
+      pairs[i, 2] <- floss_idx[i] + offset
+    }
+  }
+
+  xnum <- seq_len(nrow(x$mp) + min(x$w) - 1) + offset
+  xmin <- min(xnum)
+  xmax <- max(xnum)
+  xlim <- c(xmin, xmax)
+
+  cac_fin_len <- length(x$cac_final)
+  mp_len <- nrow(x$mp)
+  new_data <- attr(x, "new_data")
+
+  if (cac_fin_len == floor((mp_len * vars()$kmode + new_data / 2))) {
+    cac <- x$cac_final
+  } else {
+    cac <- tail(x$cac_final, -offset)
+  }
+  cac_size <- length(cac)
+  cac <- c(cac, rep(NA, nrow(x$mp) + min(x$w) - 1 - cac_size))
+
+  graphics::layout(matrix(c(1, 2, 3), ncol = 1, byrow = TRUE))
+  graphics::par(oma = c(1, 1, 3, 0), cex.lab = 1.5)
+  plot_arcs(pairs, xlab = xlab, xmin = xmin, xmax = xmax, ...)
+  graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
+  graphics::plot(xnum, plot_data, main = data_main, type = "l", xlab = xlab, ylab = data_lab, xlim = xlim, ...)
+  graphics::plot(xnum, cac, main = "Arc count", type = "l", xlab = xlab, ylab = "normalized count", xlim = xlim, ylim = c(0, 1), ...)
 
   graphics::par(def_par)
 }
