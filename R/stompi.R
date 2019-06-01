@@ -2,11 +2,19 @@
 #'
 #' @param .mp a TSMP object of class `MatrixProfile`.
 #' @param new_data new data to append to original data.
+#' @param history_size an `int` or `FALSE`. (Default is `FALSE`). Keep only this amount of data in
+#' the object. The value is for the data, not the matrix profile. Notice that the `lmp`and `lpi` will
+#' be inconsistent when repeatedly updating limiting the history size and thus will affect
+#' the `mp` and `pi`.
 #'
 #' @return Returns the input `.mp` updated with the new information.
 #' @export
 #'
 #' @examples
+#' mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+#' mpi <- stompi_update(mp, mp_toy_data$data[201:300, 1])
+#' mp <- tsmp(mp_toy_data$data[1:300, 1], window_size = 30, verbose = 0)
+#' all.equal(mp, mpi, check.attributes = FALSE)
 stompi_update <- function(.mp, new_data, history_size = FALSE) {
   if (!is.null(attr(.mp, "join")) && attr(.mp, "join")) {
     stop("Update not implemented in Join similarity")

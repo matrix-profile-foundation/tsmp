@@ -124,6 +124,8 @@ devtools::install_github("franzbischoff/tsmp")
 ## Roadmap
 
 * Profile-Based Shapelet Discovery
+* MPdist: Matrix Profile Distance
+* Time Series Snippets
 * GPU-STOMP
 
 ## Other projects with Matrix Profile

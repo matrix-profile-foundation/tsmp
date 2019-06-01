@@ -516,7 +516,7 @@ plot.Floss <- function(x, data, type = c("data", "matrix"),
 
   for (i in seq_len(floss_size)) {
     if (i == 1) {
-      pairs[i, 1] <- 0 #offset
+      pairs[i, 1] <- 0 # offset
     } else {
       pairs[i, 1] <- floss_idx[i - 1] + offset
     }

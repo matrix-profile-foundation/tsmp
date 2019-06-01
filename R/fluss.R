@@ -30,16 +30,39 @@ fluss <- function(.mp, num_segments = 1, exclusion_zone = NULL) {
   fluss_extract(fluss_cac(.mp, exclusion_zone), num_segments = num_segments, exclusion_zone = exclusion_zone)
 }
 
-#' FLOSS
+#' Fast Low-cost Online Semantic Segmentation (FLOSS)
 #'
 #' @param .mp .mp a TSMP object of class `MatrixProfile`.
-#' @param data_window if a `number` will be used instead of embedded value. (Default is `NULL`).
+#' @param new_data a `matrix`or `vector` of new observations.
+#' @param data_window an `int`. Sets the size of the buffer used to keep track of semantic changes.
+#' @param threshold a `number`. (Default is `1`). Set the maximum value for evaluating semantic changes.
+#' This is data specific. It is advised to check what is 'normal' for your data.
 #' @param exclusion_zone if a `number` will be used instead of embedded value. (Default is `NULL`).
+#' @param chunk_size an `int` . (Default is `NULL`). Set the size of new data that will be added to
+#' Floss in each iteration if `new_data` is large. If `NULL`, the size will be 50. This is not needed
+#' if `new_data` is small, like 1 observation.
+#' @param keep_cac a `logical`. (Default is `TRUE`). If set to `FALSE`, the `cac_final` will contain
+#' only values within `data_window`
 #'
-#' @return
+#' @return Returns the input `.mp` object new names: `cac` the corrected arc count, `cac_final`the
+#' combination of `cac` after repeated calls of `floss()`, `floss` with the location of semantic
+#' changes and `floss_vals` with the normalized arc count value of the semantic change positions.
 #' @export
-#'
+#' @family Semantic Segmentations
+#' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII:
+#'   Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE
+#'   International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
+#' @references Website: <https://sites.google.com/site/onlinesemanticsegmentation/>
+#' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #' @examples
+#' data <- mp_fluss_data$tilt_abp$data[1:1000]
+#' new_data <- mp_fluss_data$tilt_abp$data[1001:1010]
+#' new_data2 <- mp_fluss_data$tilt_abp$data[1011:1020]
+#' w <- 80
+#' mp <- tsmp(data, window_size = w, verbose = 0)
+#' data_window <- 1000
+#' mp <- floss(mp, new_data, data_window)
+#' mp <- floss(mp, new_data2, data_window)
 floss <- function(.mp, new_data, data_window, threshold = 1, exclusion_zone = NULL, chunk_size = NULL, keep_cac = TRUE) {
   if (missing(data_window)) {
     stop("argument 'data_window' is missing, looking for fluss() instead?")
@@ -54,13 +77,11 @@ floss <- function(.mp, new_data, data_window, threshold = 1, exclusion_zone = NU
   new_data_size <- length(new_data)
 
   if (data_size < data_window) {
-    message("DEBUG: data_size < data_window ")
     if ((data_size + new_data_size) <= data_window) {
       .mp <- stompi_update(.mp, new_data)
       .mp$cac_final <- NULL
       return(.mp)
     } else {
-      message("DEBUG: new_data")
       .mp <- stompi_update(.mp, head(new_data, data_window - data_size))
       new_data <- new_data[(data_window - data_size + 1):new_data_size]
     }
@@ -72,8 +93,6 @@ floss <- function(.mp, new_data, data_window, threshold = 1, exclusion_zone = NU
   }
 
   if (data_size > data_window) {
-    message("DEBUG: data_size > data_window ", data_window)
-
     if (mp_offset > 0) {
       attr(.mp, "new_data") <- 0
       .mp <- floss_cac(.mp, data_size, 0)
@@ -122,10 +141,12 @@ floss <- function(.mp, new_data, data_window, threshold = 1, exclusion_zone = NU
 #' Extract candidate points of semantic changes.
 #'
 #' @param .mpac a TSMP object of class `ArcCount`.
-#' @param num_segments an `int`. Number of segments to extract. Based on domain knowledge.
 #' @param exclusion_zone if a `number` will be used instead of embedded value. (Default is `NULL`).
+#' @param threshold a `number`. (Default is `1`). Set the maximum value for evaluating semantic changes.
+#' This is data specific. It is advised to check what is 'normal' for your data.
 #'
-#' @return Returns the input `.mp` object a new name `fluss` with the location of semantic changes.
+#' @return Returns the input `.mp` object a new name `floss` with the location of semantic
+#' changes and `floss_vals` with the normalized arc count value of the semantic change positions.
 #' @export
 #' @family Semantic Segmentations
 #' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII:
@@ -153,7 +174,16 @@ floss_extract <- function(.mpac, threshold = 1, exclusion_zone = NULL) {
   }
 
   offset <- ifelse(is.null(attr(.mpac, "offset")), 0, attr(.mpac, "offset"))
-  cac <- tail(.mpac$cac_final, -offset)
+  cac_fin_len <- length(.mpac$cac_final)
+  mp_len <- nrow(.mpac$mp)
+  new_data <- ifelse(is.null(attr(.mpac, "new_data")), 0, attr(.mpac, "new_data"))
+
+  if (offset == 0 || cac_fin_len == floor((mp_len * vars()$kmode + new_data * 1.5))) {
+    cac <- tail(.mpac$cac_final, -new_data)
+  } else {
+    cac <- tail(.mpac$cac_final, -offset)
+  }
+
   cac[cac > threshold] <- NA
 
   segments <- .mpac$floss
@@ -164,6 +194,7 @@ floss_extract <- function(.mpac, threshold = 1, exclusion_zone = NULL) {
 
   if (length(idx) > 0) {
     val <- cac[idx]
+
     real_idx <- idx + offset
     seg_len <- length(segments)
 
@@ -177,7 +208,6 @@ floss_extract <- function(.mpac, threshold = 1, exclusion_zone = NULL) {
           if (val < last_val) {
             segments[seg_len] <- real_idx
             seg_vals[seg_len] <- val
-            message("DEBUG: update split at ", real_idx, " value ", val)
           }
         } else {
           # new split
@@ -325,6 +355,33 @@ fluss_cac <- function(.mp, exclusion_zone = NULL) {
   return(.mp)
 }
 
+#' FLOSS - Corrected Arc Counts
+#'
+#' Computes the arc count with edge and 'online' correction (CAC).
+#'
+#' Original paper suggest using the classic statistical-process-control heuristic to set a threshold
+#' where a semantic change may occur in CAC. This may be useful in real-time implementation as we don't
+#' know in advance the number of domain changes to look for. Please check original paper (1).
+#'
+#' @param .mp a TSMP object of class `MatrixProfile`.
+#' @param data_window an `int`. Sets the size of the buffer used to keep track of semantic changes.
+#' @param exclusion_zone if a `number` will be used instead of embedded value. (Default is `NULL`).
+#'
+#' @return Returns the input `.mp` object a new name `cac` with the corrected arc count and `cac_final`
+#' the combination of `cac` after repeated calls of `floss()`.
+#' @export
+#' @family Semantic Segmentations
+#' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
+#' @references Website: <https://sites.google.com/site/onlinesemanticsegmentation/>
+#' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
+#' @examples
+#' data <- mp_fluss_data$tilt_abp$data[1:1000]
+#' new_data <- mp_fluss_data$tilt_abp$data[1001:1010]
+#' w <- 10
+#' mp <- tsmp(data, window_size = w, verbose = 0)
+#' data_window <- 1000
+#' mp <- stompi_update(mp, new_data, data_window)
+#' mp <- floss_cac(mp, data_window)
 floss_cac <- function(.mp, data_window, exclusion_zone = NULL) {
   if (!("MatrixProfile" %in% class(.mp))) {
     stop("First argument must be an object of class `MatrixProfile`.")
@@ -371,14 +428,13 @@ floss_cac <- function(.mp, data_window, exclusion_zone = NULL) {
     b <- 1.698150 # If you change this, change vars()$kmode
     ideal_arc_counts <- a * b * x^(a - 1) * (1 - x^a)^(b - 1) * cac_size / 4.035477 # kumaraswamy distribution
   } else {
-    message("DEBUG: beta")
     mode <- 0.5
     ideal_arc_counts <- stats::dbeta(x, 2, 2) * cac_size / 3
   }
 
   corrected_arc_counts <- pmin(arc_counts / ideal_arc_counts, 1)
   corrected_arc_counts[1:min(exclusion_zone, cac_size)] <- 1
-  corrected_arc_counts[is.na(corrected_arc_counts)] <- Inf
+  corrected_arc_counts[corrected_arc_counts < 0 | is.na(corrected_arc_counts)] <- 1
   mid_idx <- round(cac_size * mode) - floor(new_data_size / 2) # same as which.max(ideal_arc_counts)
 
   if (is.null(.mp$cac_final)) {

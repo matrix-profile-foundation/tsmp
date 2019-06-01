@@ -180,8 +180,8 @@ diff2 <- function(x, y) {
 #'
 #' Computes the Euclidean distance between rows of two matrices.
 #'
-#' @param x a `matrix`.
-#' @param y a `matrix`.
+#' @param data a vector of values
+#' @param len size of data
 #'
 #' @return Returns a `matrix` of size m x n if x is of size m x k and y is of size n x k.
 #' @keywords internal
@@ -270,15 +270,20 @@ ipaa <- function(data, p) {
   }
 }
 
-#' Title
+#' Get index of the minimum value from a matrix profile and its nearest neighbor
 #'
-#' @param .mp
-#' @param valid
+#' @param .mp a TSMP object of class `MatrixProfile`.
+#' @param n_dim number of dimensions of the matrix profile
+#' @param valid check for valid numbers
 #'
-#' @return
+#' @return returns the minimum and the nearest neighbor
 #' @export
 #'
 #' @examples
+#' w <- 50
+#' data <- mp_gait_data
+#' mp <- tsmp(data, window_size = w, exclusion_zone = 1 / 4, verbose = 0)
+#' min_val <- min_mp_idx(mp)
 min_mp_idx <- function(.mp, n_dim = NULL, valid = TRUE) {
   if (!is.null(n_dim)) {
     .mp$mp <- .mp$mp[, n_dim, drop = FALSE]
@@ -917,6 +922,21 @@ update_class <- function(classes, new_class) {
   return(classes)
 }
 
+#' Remove a `TSMP` class from an object
+#'
+#' @param x a `TSMP` object
+#' @param class `character` string with the class name
+#'
+#' @return the object without the class
+#' @export
+#'
+#' @examples
+#' w <- 50
+#' data <- mp_gait_data
+#' mp <- tsmp(data, window_size = w, exclusion_zone = 1 / 4, verbose = 0)
+#' mp <- find_chains(mp)
+#' # Remove the "Chain" class information
+#' mp <- remove_class(mp, "Chain")
 remove_class <- function(x, class) {
   switch(class,
     "Chain" = {

@@ -10,10 +10,21 @@ stompi_update(.mp, new_data, history_size = FALSE)
 \item{.mp}{a TSMP object of class \code{MatrixProfile}.}
 
 \item{new_data}{new data to append to original data.}
+
+\item{history_size}{an \code{int} or \code{FALSE}. (Default is \code{FALSE}). Keep only this amount of data in
+the object. The value is for the data, not the matrix profile. Notice that the \code{lmp}and \code{lpi} will
+be inconsistent when repeatedly updating limiting the history size and thus will affect
+the \code{mp} and \code{pi}.}
 }
 \value{
 Returns the input \code{.mp} updated with the new information.
 }
 \description{
 Real-time STOMP algorithm
+}
+\examples{
+mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+mpi <- stompi_update(mp, mp_toy_data$data[201:300, 1])
+mp <- tsmp(mp_toy_data$data[1:300, 1], window_size = 30, verbose = 0)
+all.equal(mp, mpi, check.attributes = FALSE)
 }

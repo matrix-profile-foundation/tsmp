@@ -1,7 +1,7 @@
 README
 ================
 Francisco Bischoff
-\- 30 May 2019
+\- 01 Jun 2019
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -120,6 +120,8 @@ devtools::install_github("franzbischoff/tsmp")
 ## Roadmap
 
   - Profile-Based Shapelet Discovery
+  - MPdist: Matrix Profile Distance
+  - Time Series Snippets
   - GPU-STOMP
 
 ## Other projects with Matrix Profile

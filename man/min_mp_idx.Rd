@@ -2,13 +2,26 @@
 % Please edit documentation in R/misc.R
 \name{min_mp_idx}
 \alias{min_mp_idx}
-\title{Title}
+\title{Get index of the minimum value from a matrix profile and its nearest neighbor}
 \usage{
 min_mp_idx(.mp, n_dim = NULL, valid = TRUE)
 }
 \arguments{
-\item{valid}{}
+\item{.mp}{a TSMP object of class \code{MatrixProfile}.}
+
+\item{n_dim}{number of dimensions of the matrix profile}
+
+\item{valid}{check for valid numbers}
+}
+\value{
+returns the minimum and the nearest neighbor
 }
 \description{
-Title
+Get index of the minimum value from a matrix profile and its nearest neighbor
+}
+\examples{
+w <- 50
+data <- mp_gait_data
+mp <- tsmp(data, window_size = w, exclusion_zone = 1 / 4, verbose = 0)
+min_val <- min_mp_idx(mp)
 }

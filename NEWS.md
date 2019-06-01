@@ -1,7 +1,7 @@
 NEWS
 ================
 Francisco Bischoff
-\- 30 May 2019
+\- 01 Jun 2019
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
@@ -16,7 +16,7 @@ Francisco Bischoff
     \#36.
   - Added `stompi_update()` that updates the matrix profile allowing
     real-time computation.
-  - Added floss() which can do real-time FLUSS computation.
+  - Added `floss()` which can do real-time FLUSS computation.
   - Added subset operator `[` for `tsmp` objects.
   - Added `tail()` and `head()` for `tsmp` objects.
   - Changed `find_motif()` for `MultiMatrixProfile` to report Motifs
@@ -61,7 +61,7 @@ Francisco Bischoff
   - Outputs have a prettier print format.
   - Outputs have a plot function. Try to plot a `tsmp()` output for
     example.
-  - Now functions can work in `%>%` (pipe), e.g. `tsmp() %>%
+  - Now functions can work in `%>%` (pipe), e.g. `tsmp() %>%
     find_motif()`. Except for SDTS that has a proper way to work.
   - Added a wrapper function called `tsmp()` that handles the several
     algorithms available.

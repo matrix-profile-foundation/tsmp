@@ -9,12 +9,14 @@ floss_extract(.mpac, threshold = 1, exclusion_zone = NULL)
 \arguments{
 \item{.mpac}{a TSMP object of class \code{ArcCount}.}
 
-\item{exclusion_zone}{if a \code{number} will be used instead of embedded value. (Default is \code{NULL}).}
+\item{threshold}{a \code{number}. (Default is \code{1}). Set the maximum value for evaluating semantic changes.
+This is data specific. It is advised to check what is 'normal' for your data.}
 
-\item{num_segments}{an \code{int}. Number of segments to extract. Based on domain knowledge.}
+\item{exclusion_zone}{if a \code{number} will be used instead of embedded value. (Default is \code{NULL}).}
 }
 \value{
-Returns the input \code{.mp} object a new name \code{fluss} with the location of semantic changes.
+Returns the input \code{.mp} object a new name \code{floss} with the location of semantic
+changes and \code{floss_vals} with the normalized arc count value of the semantic change positions.
 }
 \description{
 Extract candidate points of semantic changes.
@@ -38,7 +40,8 @@ Website: \url{https://sites.google.com/site/onlinesemanticsegmentation/}
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other Semantic Segmentations: \code{\link{fluss_cac}},
+Other Semantic Segmentations: \code{\link{floss_cac}},
+  \code{\link{floss}}, \code{\link{fluss_cac}},
   \code{\link{fluss_extract}}, \code{\link{fluss_score}},
   \code{\link{fluss}}
 }

@@ -125,11 +125,36 @@ print.ArcCount <- function(x, ...) {
     print.MultiMatrixProfile(x, ...)
   }
 
-  cat("\nArc Count\n")
-  cat("---------\n")
+  if (!is.null(x$cac_final)) {
+    cat("\nArc Count - Online\n")
+    cat("------------------\n")
+  } else {
+    cat("\nArc Count\n")
+    cat("---------\n")
+  }
 
   cat("Profile size =", length(x$cac), "\n")
   cat("Minimum normalized count =", signif(min(x$cac), 2), "at index", which.min(x$cac), "\n")
+}
+
+#' Prints a FLOSS
+#'
+#' @param x a TSMP object of class `Floss`.
+#' @param ... additional arguments ignored.
+#' @export
+#' @keywords internal
+#' @noRd
+print.Floss <- function(x, ...) {
+  if (any(class(x) %in% "ArcCount")) {
+    print.ArcCount(x, ...)
+  }
+
+  cat("\nFloss\n")
+  cat("-----\n")
+
+  cat("Segments =", length(x$floss), "\n")
+  cat("Segmentation indexes =", x$floss, "\n")
+  cat("Segmentation thld values =", x$floss_vals, "\n")
 }
 
 #' Prints a FLUSS
