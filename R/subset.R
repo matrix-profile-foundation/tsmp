@@ -1,5 +1,10 @@
 #---- Subset Chains ----
 
+#' @export
+#' @keywords internal
+#' @noRd
+#'
+
 `[.Chain` <- function(x, ..., drop = FALSE) {
   x <- NextMethod(object = x)
   attr(x, "subsetting") <- "Chains"
@@ -41,6 +46,11 @@
 
 #---- Subset Salient ----
 
+#' @export
+#' @keywords internal
+#' @noRd
+#'
+
 `[.Salient` <- function(x, ..., drop = FALSE) {
   x <- NextMethod(object = x)
   attr(x, "subsetting") <- "Salient"
@@ -63,6 +73,11 @@
 
 #---- Subset Annotations ----
 
+#' @export
+#' @keywords internal
+#' @noRd
+#'
+
 `[.AnnotationVector` <- function(x, ..., drop = FALSE) {
   x <- NextMethod(object = x)
   attr(x, "subsetting") <- "AnnotationVector"
@@ -83,6 +98,12 @@
 }
 
 #---- Subset Fluss ----
+
+#' @export
+#' @keywords internal
+#' @noRd
+#'
+
 `[.Fluss` <- function(x, ..., drop = FALSE) {
   x <- NextMethod(object = x)
   attr(x, "subsetting") <- "Fluss"
@@ -93,7 +114,12 @@
 
   x
 }
-#
+
+#' @export
+#' @keywords internal
+#' @noRd
+#'
+
 `[.Floss` <- function(x, ..., drop = FALSE) {
   x <- NextMethod(object = x)
   attr(x, "subsetting") <- "Floss"
@@ -104,7 +130,12 @@
 
   x
 }
-#
+
+#' @export
+#' @keywords internal
+#' @noRd
+#'
+
 `[.ArcCount` <- function(x, ..., drop = FALSE) {
   x <- NextMethod(object = x)
   attr(x, "subsetting") <- "ArcCount"
@@ -117,6 +148,11 @@
 }
 
 #---- Subset Discord ----
+
+#' @export
+#' @keywords internal
+#' @noRd
+#'
 
 `[.Discord` <- function(x, ..., drop = FALSE) {
   x <- NextMethod(object = x)
@@ -161,6 +197,11 @@
 
 #---- Subset Motifs ----
 
+#' @export
+#' @keywords internal
+#' @noRd
+#'
+
 `[.MultiMotif` <- function(x, ..., drop = FALSE) {
   x <- NextMethod(object = x)
   attr(x, "subsetting") <- "MultiMotif"
@@ -204,6 +245,11 @@
   x
 }
 
+#' @export
+#' @keywords internal
+#' @noRd
+#'
+
 `[.Motif` <- function(x, ..., drop = FALSE) {
   x <- NextMethod(object = x)
   attr(x, "subsetting") <- "Motif"
@@ -246,6 +292,11 @@
 }
 
 #---- Subset Matrices ----
+
+#' @export
+#' @keywords internal
+#' @noRd
+#'
 
 `[.MatrixProfile` <- function(x, ..., drop = FALSE) {
   # str(...)
@@ -330,6 +381,11 @@
   }
 }
 
+#' @export
+#' @keywords internal
+#' @noRd
+#'
+
 `[.MultiMatrixProfile` <- function(x, ..., drop = FALSE) {
   subset <- c(...)
   sub_size <- length(subset)
@@ -392,6 +448,11 @@
     getElement(x, args)
   }
 }
+
+#' @export
+#' @keywords internal
+#' @noRd
+#'
 
 `[.SimpleMatrixProfile` <- function(x, ..., drop = FALSE) {
   subset <- c(...)
@@ -482,9 +543,11 @@ head.MatrixProfile <- function(x, n = 2 * max(x$w), ...) {
   return(x[1:ed_idx])
 }
 
+
 head.MultiMatrixProfile <- function(x, n = 2 * max(x$w), ...) {
   return(head.MatrixProfile(x, n, ...))
 }
+
 
 head.SimpleMatrixProfile <- function(x, n = 2 * max(x$w), ...) {
   return(head.MatrixProfile(x, n, ...))

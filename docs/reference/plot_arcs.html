@@ -68,7 +68,7 @@ use this function." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tsmp</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.5.9016</span>
       </span>
     </div>
 
@@ -135,7 +135,7 @@ use this function.</p>
 
     <pre class="usage"><span class='fu'>plot_arcs</span>(<span class='no'>pairs</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quality</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>15</span>,
   <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"blue"</span>, <span class='st'>"orange"</span>), <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Arc Plot"</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Profile Index"</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Profile Index"</span>, <span class='kw'>xmin</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xmax</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -173,6 +173,14 @@ arc, respectively. Accepts one color.</p></td>
     <tr>
       <th>xlab</th>
       <td><p>a <code>string</code>. (Default is <code>"Profile Index"</code>). X label.</p></td>
+    </tr>
+    <tr>
+      <th>xmin</th>
+      <td><p>an <code>int</code>. (Default is <code>NULL</code>). Set the minimum value of x axis.</p></td>
+    </tr>
+    <tr>
+      <th>xmax</th>
+      <td><p>an <code>int</code>. (Default is <code>NULL</code>). Set the maximum value of x axis.</p></td>
     </tr>
     <tr>
       <th>...</th>

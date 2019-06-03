@@ -22,7 +22,8 @@
 #' @references Website: <https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html>
 
 #' @name mass-deprecated
-#' @usage mass(data_fft, query_window, data_size, window_size, data_mean, data_sd, query_mean, query_sd)
+#' @usage mass(data_fft, query_window, data_size, window_size, data_mean, data_sd,
+#'  query_mean, query_sd)
 #' @seealso \code{\link{tsmp-deprecated}}
 #' @keywords internal
 NULL
@@ -33,7 +34,8 @@ NULL
 #'
 #' @export
 
-mass <- function(data_fft, query_window, data_size, window_size, data_mean, data_sd, query_mean, query_sd) {
+mass <- function(data_fft, query_window, data_size, window_size, data_mean, data_sd,
+                 query_mean, query_sd) {
   .Deprecated("dist_profile")
   # pre-process query for fft
   query_window <- rev(query_window)

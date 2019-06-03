@@ -82,7 +82,7 @@ floss <- function(.mp, new_data, data_window, threshold = 1, exclusion_zone = NU
       .mp$cac_final <- NULL
       return(.mp)
     } else {
-      .mp <- stompi_update(.mp, head(new_data, data_window - data_size))
+      .mp <- stompi_update(.mp, utils::head(new_data, data_window - data_size))
       new_data <- new_data[(data_window - data_size + 1):new_data_size]
     }
   }
@@ -103,7 +103,7 @@ floss <- function(.mp, new_data, data_window, threshold = 1, exclusion_zone = NU
 
     .mp$cac_final <- c(
       rep(NA, chunk_size + mp_offset - chunk_size),
-      head(.mp$cac, -(round(data_window * (1 - vars()$kmode) - (1 - vars()$kmode) * .mp$w) - 0.5 * chunk_size + ifelse(mp_offset > 0, 1, 2)))
+      utils::head(.mp$cac, -(round(data_window * (1 - vars()$kmode) - (1 - vars()$kmode) * .mp$w) - 0.5 * chunk_size + ifelse(mp_offset > 0, 1, 2)))
     )
 
     na_head <- round(vars()$kmode * data_window + (0.5 * chunk_size - vars()$kmode * .mp$w)) + mp_offset
@@ -130,7 +130,7 @@ floss <- function(.mp, new_data, data_window, threshold = 1, exclusion_zone = NU
   res <- floss_extract(.mp, threshold)
 
   if (!keep_cac) {
-    res$cac_final <- tail(res$cac_final, -length(new_data))
+    res$cac_final <- utils::tail(res$cac_final, -length(new_data))
   }
 
   return(res)
@@ -179,9 +179,9 @@ floss_extract <- function(.mpac, threshold = 1, exclusion_zone = NULL) {
   new_data <- ifelse(is.null(attr(.mpac, "new_data")), 0, attr(.mpac, "new_data"))
 
   if (offset == 0 || cac_fin_len == floor((mp_len * vars()$kmode + new_data * 1.5))) {
-    cac <- tail(.mpac$cac_final, -new_data)
+    cac <- utils::tail(.mpac$cac_final, -new_data)
   } else {
-    cac <- tail(.mpac$cac_final, -offset)
+    cac <- utils::tail(.mpac$cac_final, -offset)
   }
 
   cac[cac > threshold] <- NA

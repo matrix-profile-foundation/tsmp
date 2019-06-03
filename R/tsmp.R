@@ -65,6 +65,7 @@
 #' @param exc_dim an `int` or `vector` of which dimensions to exclude (default is `NULL`). See
 #'   details.
 #' @param heap_size an `int`. (Default is `50`). Size of the distance profile heap buffer.
+#' @param paa an `int`. (Default is `1`). Factor of PAA reduction (2 == half of size)
 #' @param .keep_data a `logical`. (Default is `TRUE`). Keeps the data embedded to resultant object.
 #'
 #' @return Returns the matrix profile `mp` and profile index `pi`. It also returns the left and

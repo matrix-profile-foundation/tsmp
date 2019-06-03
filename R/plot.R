@@ -29,6 +29,8 @@
 #' @param ylab a `string`. (Default is `""`). Y label.
 #' @param xlab a `string`. (Default is `"Profile Index"`). X label.
 #' @param ... further arguments to be passed to [plot()]. See [par()].
+#' @param xmin an `int`. (Default is `NULL`). Set the minimum value of x axis.
+#' @param xmax an `int`. (Default is `NULL`). Set the maximum value of x axis.
 #'
 #' @return None
 #' @keywords hplot
@@ -164,8 +166,8 @@ plot.ArcCount <- function(x, data, type = c("data", "matrix"), exclusion_zone = 
   if (cac_size < nrow(profile_index)) {
     warning("cac_size < profile_index")
     cac_offset <- nrow(profile_index) - cac_size
-    plot_data <- as.matrix(tail(plot_data, cac_size))
-    profile_index <- as.matrix(tail(profile_index, cac_size) - cac_offset)
+    plot_data <- as.matrix(utils::tail(plot_data, cac_size))
+    profile_index <- as.matrix(utils::tail(profile_index, cac_size) - cac_offset)
   }
 
   xnum <- seq_len(nrow(x$mp) + min(x$w) - 1)
@@ -390,7 +392,7 @@ plot.SimpleMatrixProfile <- function(x, ylab = "distance", xlab = "index", main 
 
     if (n_dim > 1) {
       for (i in 2:n_dim) {
-        lines(xnum, x$data[[1]][, i], main = paste0("Data"), ylab = "", xlab = xlab, col = i, ...)
+        graphics::lines(xnum, x$data[[1]][, i], main = paste0("Data"), ylab = "", xlab = xlab, col = i, ...)
       }
     }
 
@@ -402,7 +404,7 @@ plot.SimpleMatrixProfile <- function(x, ylab = "distance", xlab = "index", main 
 
       if (n_dim > 1) {
         for (i in 2:n_dim) {
-          lines(xnum, x$data[[2]][, i], main = paste0("Data"), ylab = "", xlab = xlab, col = i, ...)
+          graphics::lines(xnum, x$data[[2]][, i], main = paste0("Data"), ylab = "", xlab = xlab, col = i, ...)
         }
       }
     }
@@ -540,7 +542,7 @@ plot.Floss <- function(x, data, type = c("data", "matrix"),
   if (cac_fin_len == floor((mp_len * vars()$kmode + new_data / 2))) {
     cac <- x$cac_final
   } else {
-    cac <- tail(x$cac_final, -offset)
+    cac <- utils::tail(x$cac_final, -offset)
   }
   cac_size <- length(cac)
   cac <- c(cac, rep(NA, nrow(x$mp) + min(x$w) - 1 - cac_size))

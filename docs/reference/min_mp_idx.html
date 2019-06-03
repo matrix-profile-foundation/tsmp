@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Original data used in the STDS demo — mp_test_data • tsmp</title>
+<title>Get index of the minimum value from a matrix profile and its nearest neighbor — min_mp_idx • tsmp</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,9 @@
 
 
 
-<meta property="og:title" content="Original data used in the STDS demo — mp_test_data" />
+<meta property="og:title" content="Get index of the minimum value from a matrix profile and its nearest neighbor — min_mp_idx" />
 
-<meta property="og:description" content="A synthetic dataset base on TRACE dataset and used as Stress Test to STDS algorithm. The TRACE
-dataset used here is originally from (1), and the version distributed here is from (2)" />
+<meta property="og:description" content="Get index of the minimum value from a matrix profile and its nearest neighbor" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -117,58 +116,56 @@ dataset used here is originally from (1), and the version distributed here is fr
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Original data used in the STDS demo</h1>
-    <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/mp-test-data.R'><code>R/mp-test-data.R</code></a></small>
-    <div class="hidden name"><code>mp_test_data.Rd</code></div>
+    <h1>Get index of the minimum value from a matrix profile and its nearest neighbor</h1>
+    <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/misc.R'><code>R/misc.R</code></a></small>
+    <div class="hidden name"><code>min_mp_idx.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>A synthetic dataset base on TRACE dataset and used as Stress Test to STDS algorithm. The TRACE
-dataset used here is originally from (1), and the version distributed here is from (2)</p>
+    <p>Get index of the minimum value from a matrix profile and its nearest neighbor</p>
     
     </div>
 
-    <pre class="usage"><span class='no'>mp_test_data</span></pre>
-        
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p>A list of matrices with 215010 rows and 1 dimension:</p><dl class='dl-horizontal'>
-<dt>train$data</dt><dd><p>training data</p></dd>
-<dt>train$label</dt><dd><p>label for training data</p></dd>
-<dt>test$data</dt><dd><p>test data</p></dd>
-<dt>test$label</dt><dd><p>label for test data</p></dd>
-</dl>
+    <pre class="usage"><span class='fu'>min_mp_idx</span>(<span class='no'>.mp</span>, <span class='kw'>n_dim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>valid</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
-    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
-
-    <p><a href='https://sites.google.com/view/weaklylabeled'>https://sites.google.com/view/weaklylabeled</a></p>
-<p><a href='http://www.cs.ucr.edu/~eamonn/time_series_data/'>http://www.cs.ucr.edu/~eamonn/time_series_data/</a></p>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>.mp</th>
+      <td><p>a TSMP object of class <code>MatrixProfile</code>.</p></td>
+    </tr>
+    <tr>
+      <th>n_dim</th>
+      <td><p>number of dimensions of the matrix profile</p></td>
+    </tr>
+    <tr>
+      <th>valid</th>
+      <td><p>check for valid numbers</p></td>
+    </tr>
+    </table>
     
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <ul>
-<li><p>Roverso, D., Multivariate temporal classification by windowed wavelet decomposition
-and recurrent neural networks, in 3rd ANS Int’l Topical Meeting on Nuclear Plant
-Instrumentation, Control and Human-Machine Interface, vol. 20, Washington, DC, USA, 2000.</p></li>
-</ul>
-    <ul>
-<li><p>Yeh C-CM, Kavantzas N, Keogh E. Matrix profile IV: Using Weakly Labeled Time Series
-to Predict Outcomes. Proc VLDB Endow. 2017 Aug 1;10(12):1802–12.</p></li>
-</ul>
+    <p>returns the minimum and the nearest neighbor</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>w</span> <span class='kw'>&lt;-</span> <span class='fl'>50</span>
+<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_gait_data</span>
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span>(<span class='no'>data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='no'>w</span>, <span class='kw'>exclusion_zone</span> <span class='kw'>=</span> <span class='fl'>1</span> / <span class='fl'>4</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+<span class='no'>min_val</span> <span class='kw'>&lt;-</span> <span class='fu'>min_mp_idx</span>(<span class='no'>mp</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#format">Format</a></li>
-
-      <li><a href="#source">Source</a></li>
-
-      <li><a href="#references">References</a></li>
-          </ul>
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

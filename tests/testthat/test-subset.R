@@ -6,7 +6,7 @@ if (skip_on_cran()) {
   w <- mp_fluss_data$tilt_abp$window
   nseg <- 1
   offset <- 4000
-  test_mp <- tsmp(data, window_size = w, n_workers = 6)
+  test_mp <- tsmp(data, window_size = w, n_workers = 2)
 
   cac <- fluss_cac(test_mp)
   segments <- fluss_extract(cac, nseg)
@@ -27,13 +27,13 @@ if (skip_on_cran()) {
   })
 
   test_that("Head Chain", {
-    h_chain <- head(chain, 8000)
+    h_chain <- utils::head(chain, 8000)
     expect_equal(sum(h_chain$chain$best), 39574)
     expect_equal(length(h_chain$chain$best), 6)
   })
 
   test_that("Tail Chain", {
-    t_chain <- tail(chain, 4000)
+    t_chain <- utils::tail(chain, 4000)
     expect_equal(sum(t_chain$chain$best), 14625)
     expect_equal(length(t_chain$chain$best), 9)
   })
@@ -46,7 +46,7 @@ if (skip_on_cran()) {
   })
 
   test_that("Head Arc Count", {
-    h_cac <- head(cac, offset)
+    h_cac <- utils::head(cac, offset)
     expect_equal(round(mean(h_cac$cac), 4), 0.7198)
     expect_equal(round(sd(h_cac$cac), 3), 0.316)
     expect_equal(round(min(h_cac$cac), 3), 0.209)
@@ -54,7 +54,7 @@ if (skip_on_cran()) {
   })
 
   test_that("Tail Arc Count", {
-    t_cac <- tail(cac, offset)
+    t_cac <- utils::tail(cac, offset)
     expect_equal(round(mean(t_cac$cac), 4), 0.7654)
     expect_equal(round(sd(t_cac$cac), 3), 0.273)
     expect_equal(round(min(t_cac$cac), 3), 0.255)
@@ -66,12 +66,12 @@ if (skip_on_cran()) {
   })
 
   test_that("Head Segments found", {
-    h_segment <- head(segments, offset)
+    h_segment <- utils::head(segments, offset)
     expect_equal(h_segment$fluss, 1228)
   })
 
   test_that("Tail Segments found", {
-    t_segment <- tail(segments, offset)
+    t_segment <- utils::tail(segments, offset)
     expect_equal(t_segment$fluss, 1643)
   })
 }

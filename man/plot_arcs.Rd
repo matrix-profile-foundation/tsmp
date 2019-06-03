@@ -27,6 +27,10 @@ arc, respectively. Accepts one color.}
 
 \item{xlab}{a \code{string}. (Default is \code{"Profile Index"}). X label.}
 
+\item{xmin}{an \code{int}. (Default is \code{NULL}). Set the minimum value of x axis.}
+
+\item{xmax}{an \code{int}. (Default is \code{NULL}). Set the maximum value of x axis.}
+
 \item{...}{further arguments to be passed to \code{\link[=plot]{plot()}}. See \code{\link[=par]{par()}}.}
 }
 \value{

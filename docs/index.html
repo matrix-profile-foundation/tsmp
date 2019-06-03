@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">tsmp</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.5.9016</span>
       </span>
     </div>
 
@@ -134,19 +134,21 @@
 <li>Basic plotting for all outputs generated here.</li>
 <li>Sequencial workflow, see below.</li>
 </ul>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># Basic workflow:</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">matrix &lt;-<span class="st"> </span><span class="kw"><a href="reference/tsmp.html">tsmp</a></span>(data, <span class="dt">window_size =</span> <span class="dv">30</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="reference/find_motif.html">find_motif</a></span>(<span class="dt">n_motifs =</span> <span class="dv">3</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="reference/plot.html">plot</a></span>()</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co"># SDTS still have a unique way to work:</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">model &lt;-<span class="st"> </span><span class="kw"><a href="reference/sdts_train.html">sdts_train</a></span>(data, labels, windows)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">result &lt;-<span class="st"> </span><span class="kw"><a href="reference/sdts_predict.html">sdts_predict</a></span>(model, data, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(windows)))</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># Basic workflow:</span></a>
+<a class="sourceLine" id="cb1-2" title="2">matrix &lt;-<span class="st"> </span><span class="kw"><a href="reference/tsmp.html">tsmp</a></span>(data, <span class="dt">window_size =</span> <span class="dv">30</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="st">  </span><span class="kw"><a href="reference/find_motif.html">find_motif</a></span>(<span class="dt">n_motifs =</span> <span class="dv">3</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="st">  </span><span class="kw"><a href="reference/plot.html">plot</a></span>()</a>
+<a class="sourceLine" id="cb1-5" title="5"></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="co"># SDTS still have a unique way to work:</span></a>
+<a class="sourceLine" id="cb1-7" title="7">model &lt;-<span class="st"> </span><span class="kw"><a href="reference/sdts_train.html">sdts_train</a></span>(data, labels, windows)</a>
+<a class="sourceLine" id="cb1-8" title="8">result &lt;-<span class="st"> </span><span class="kw"><a href="reference/sdts_predict.html">sdts_predict</a></span>(model, data, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(windows)))</a></code></pre></div>
 <p>Please refer to the <a href="https://franzbischoff.github.io/tsmp/reference/">User Manual</a> for more details.</p>
 <p>Please be welcome to suggest improvements.</p>
 <div id="performance-on-an-intelr-coretm-i7-7700-cpu-3-60ghz-using-a-random-walk-dataset" class="section level3">
 <h3 class="hasAnchor">
 <a href="#performance-on-an-intelr-coretm-i7-7700-cpu-3-60ghz-using-a-random-walk-dataset" class="anchor"></a>Performance on an Intel(R) Core(TM) i7-7700 CPU @ 3.60GHz using a random walk dataset</h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">2018</span>)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">data &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cumsum">cumsum</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="dv">40000</span>, <span class="ot">TRUE</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">2018</span>)</a>
+<a class="sourceLine" id="cb2-2" title="2">data &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cumsum">cumsum</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="dv">40000</span>, <span class="ot">TRUE</span>))</a></code></pre></div>
 <table class="table table">
 <thead><tr class="header">
 <th></th>
@@ -198,12 +200,12 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Install the released version from CRAN</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"tsmp"</span>)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co"># Or the development version from GitHub:</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co"># install.packages("devtools")</span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"franzbischoff/tsmp"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="co"># Install the released version from CRAN</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"tsmp"</span>)</a>
+<a class="sourceLine" id="cb3-3" title="3"></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="co"># Or the development version from GitHub:</span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="co"># install.packages("devtools")</span></a>
+<a class="sourceLine" id="cb3-6" title="6">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"franzbischoff/tsmp"</span>)</a></code></pre></div>
 </div>
 <div id="currently-available-features" class="section level2">
 <h2 class="hasAnchor">
@@ -211,6 +213,7 @@
 <ul>
 <li>STAMP (single and multi-thread versions)</li>
 <li>STOMP (single and multi-thread versions)</li>
+<li>STOMPi (On-line version)</li>
 <li>SCRIMP (single-thread, not for AB-joins yet)</li>
 <li>Time Series Chains</li>
 <li>Multivariate STOMP (mSTOMP)</li>
@@ -218,15 +221,19 @@
 <li>Salient Subsequences search for Multidimensional Space</li>
 <li>Scalable Dictionary learning for Time Series (SDTS) prediction</li>
 <li>FLUSS (Fast Low-cost Unipotent Semantic Segmentation)</li>
+<li>FLOSS (Fast Low-cost On-line Unipotent Semantic Segmentation)</li>
 <li>SiMPle-Fast (Fast Similarity Matrix Profile for Music Analysis and Exploration)</li>
 <li>Annotation vectors (e.g., Stop-word MOTIF bias, Actionability bias)</li>
 <li>FLUSS Arc Plot and SiMPle Arc Plot</li>
 <li>Exact Detection of Variable Length Motifs (VALMOD)</li>
+<li>Subsetting Matrix Profiles (<code><a href="https://www.rdocumentation.org/packages/utils/topics/head">head()</a></code>, <code><a href="https://www.rdocumentation.org/packages/utils/topics/head">tail()</a></code>, <code>[</code>, etc.)</li>
 <li>Misc:
 <ul>
 <li>MASS v2.0</li>
 <li>MASS v3.0</li>
-<li>MASS extensions: WQ</li>
+<li>MASS extensions: ADP (Approximate Distance Profile, with PAA)</li>
+<li>MASS extensions: WQ (Weighted Query)</li>
+<li>MASS extensions: QwG (Query with Gap)</li>
 <li>Fast moving average</li>
 <li>Fast moving SD</li>
 </ul>
@@ -238,9 +245,9 @@
 <a href="#roadmap" class="anchor"></a>Roadmap</h2>
 <ul>
 <li>Profile-Based Shapelet Discovery</li>
+<li>MPdist: Matrix Profile Distance</li>
+<li>Time Series Snippets</li>
 <li>GPU-STOMP</li>
-<li>Real-time version of previous algorithms (STAMPI, FLOSS, etc.)</li>
-<li>MASS Extensions (ADP, QwG)</li>
 </ul>
 </div>
 <div id="other-projects-with-matrix-profile" class="section level2">

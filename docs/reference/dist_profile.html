@@ -66,7 +66,7 @@ Series Subsequences under Euclidean Distance and Correlation Coefficient." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tsmp</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.5.9016</span>
       </span>
     </div>
 
@@ -130,7 +130,7 @@ Series Subsequences under Euclidean Distance and Correlation Coefficient.</p>
     </div>
 
     <pre class="usage"><span class='fu'>dist_profile</span>(<span class='no'>data</span>, <span class='no'>query</span>, <span class='no'>...</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"v3"</span>,
-  <span class='kw'>index</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>weight</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+  <span class='kw'>index</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>weight</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>paa</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -168,6 +168,11 @@ use a power of 2. If <code>NULL</code>, it will be set automatically.</p></td>
       <th>weight</th>
       <td><p>a <code>vector</code> of <code>numeric</code> or <code>NULL</code> with the same length of the <code>window_size</code>. This is
 a MASS extension to weight the query.</p></td>
+    </tr>
+    <tr>
+      <th>paa</th>
+      <td><p>a <code>numeric</code>. Default is <code>1</code>. Factor of PAA reduction (2 == half of size). This is a
+MASS extension.</p></td>
     </tr>
     </table>
     
@@ -219,7 +224,8 @@ Series Subsequences under Euclidean Distance</p></li>
 <span class='co'># weighted</span>
 <span class='no'>weight</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>1</span>, <span class='no'>w</span> / <span class='fl'>3</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>0.5</span>, <span class='no'>w</span> / <span class='fl'>3</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>0.8</span>, <span class='no'>w</span> / <span class='fl'>3</span>)) <span class='co'># just an example</span>
 
-<span class='no'>nn</span> <span class='kw'>&lt;-</span> <span class='fu'>dist_profile</span>(<span class='no'>ref_data</span>, <span class='no'>ref_data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='no'>w</span>, <span class='kw'>index</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"weighted"</span>, <span class='kw'>weight</span> <span class='kw'>=</span> <span class='no'>weight</span>)
+<span class='no'>nn</span> <span class='kw'>&lt;-</span> <span class='fu'>dist_profile</span>(<span class='no'>ref_data</span>, <span class='no'>ref_data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='no'>w</span>, <span class='kw'>index</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"weighted"</span>,
+ <span class='kw'>weight</span> <span class='kw'>=</span> <span class='no'>weight</span>)
 <span class='no'>distance_profile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/complex'>Re</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/MathFun'>sqrt</a></span>(<span class='no'>nn</span>$<span class='no'>distance_profile</span>))</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

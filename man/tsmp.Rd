@@ -36,6 +36,8 @@ details.}
 
 \item{heap_size}{an \code{int}. (Default is \code{50}). Size of the distance profile heap buffer.}
 
+\item{paa}{an \code{int}. (Default is \code{1}). Factor of PAA reduction (2 == half of size)}
+
 \item{.keep_data}{a \code{logical}. (Default is \code{TRUE}). Keeps the data embedded to resultant object.}
 }
 \value{

@@ -4,7 +4,8 @@
 \alias{mass-deprecated}
 \title{Calculates the distance profile using MASS_V2 algorithm}
 \usage{
-mass(data_fft, query_window, data_size, window_size, data_mean, data_sd, query_mean, query_sd)
+mass(data_fft, query_window, data_size, window_size, data_mean, data_sd,
+ query_mean, query_sd)
 }
 \arguments{
 \item{data_fft}{precomputed data product.}

@@ -7,6 +7,7 @@
 ^cran-comments\.md$
 ^packrat/
 ^docs/
+^dev/
 ^\.Rprofile$
 ^\.travis\.yml$
 ^.*\.Rproj$
