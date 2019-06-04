@@ -3,6 +3,10 @@ warnings_are_errors: false
 os:
   - linux
   - osx
+packages:
+  - libmagick++-dev
+dist:
+  - xenial
 branches:
   only:
   - master

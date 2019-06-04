@@ -180,7 +180,7 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
 #'
 #' # Multidimension data
 #' w <- mp_toy_data$sub_len
-#' data <- mp_toy_data$data[1:300, ]
+#' data <- mp_toy_data$data[1:200, ]
 #' mp <- tsmp(data, window_size = w, mode = "mstomp", verbose = 0)
 #' mp <- find_motif(mp)
 find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("guided", "unconstrained"),

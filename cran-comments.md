@@ -1,5 +1,5 @@
 ## Comments
-Added one suggestion package: annimation
+Added one suggestion package: animation
 
 ## Test environments
 * Rhub
