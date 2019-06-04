@@ -3,8 +3,12 @@ warnings_are_errors: false
 os:
   - linux
   - osx
-packages:
-  - libmagick++-dev
+addons:
+  apt:
+    sources:
+      - ppa:opencpu/imagemagick
+    packages:
+      - libmagick++-dev
 dist:
   - xenial
 branches:
