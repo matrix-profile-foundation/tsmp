@@ -1,5 +1,8 @@
 ## Comments
-Added one suggestion package: animation
+Fixed:
+Found the following (possibly) invalid file URI:
+     URI: CODE_OF_CONDUCT.md
+       From: README.md
 
 ## Test environments
 * Rhub

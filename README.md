@@ -1,7 +1,7 @@
 README
 ================
 Francisco Bischoff
-\- 03 Jun 2019
+\- 08 Jun 2019
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -143,5 +143,5 @@ devtools::install_github("franzbischoff/tsmp")
 ## Code of Conduct
 
 Please note that this project is released with a [Contributor Code of
-Conduct](CODE_OF_CONDUCT.md). By participating in this project, you
-agree to abide by its terms.
+Conduct](https://github.com/franzbischoff/tsmp/blob/master/CODE_OF_CONDUCT.md).
+By participating in this project, you agree to abide by its terms.

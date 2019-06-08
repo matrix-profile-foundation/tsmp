@@ -88,7 +88,7 @@ stomp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
   matrix_profile_size <- data_size - window_size + 1
   num_queries <- query_size - window_size + 1
 
-  if (window_size > query_size / 2) {
+  if (window_size > ceiling(query_size / 2)) {
     stop("Time series is too short relative to desired window size.", call. = FALSE)
   }
   if (window_size < 4) {
