@@ -56,7 +56,7 @@ mp <- find_motif(mp)
 
 # Multidimension data
 w <- mp_toy_data$sub_len
-data <- mp_toy_data$data[1:300, ]
+data <- mp_toy_data$data[1:200, ]
 mp <- tsmp(data, window_size = w, mode = "mstomp", verbose = 0)
 mp <- find_motif(mp)
 }
