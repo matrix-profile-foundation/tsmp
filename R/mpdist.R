@@ -62,7 +62,7 @@ mpdist_vect <- function(data, query, window_size) {
   for (i in seq_len(nrow(mat))) {
     mass_dist_slid_min <- rbind(
       mass_dist_slid_min,
-      caTools::runmin(mat[i, ], nrow(mat))
+      caTools::runmin(mat[i, ], nrow(mat)) # this differs slightly from MATLAB's movmin() result
     )
   }
 
