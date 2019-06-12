@@ -30,7 +30,7 @@
 #' @examples
 snippetfinder <- function(data, N, sub, per) {
 
-  # currently is about 11x slower than MATLAB, but is working
+  # currently is about 5.1x slower than MATLAB, but is working
 
   ## check input
   if (length(data) < 2 * sub) {

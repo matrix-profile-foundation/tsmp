@@ -49,21 +49,20 @@ mpdist_vect <- function(data, query, window_size) {
   nn <- NULL
 
   num_subseqs <- length(query) - window_size + 1
+  dist_profile_size <- length(data) - window_size + 1
+  mat <- matrix(nrow = num_subseqs, ncol = dist_profile_size)
 
   for (i in seq_len(num_subseqs)) {
     nn <- dist_profile(data, query, nn, window_size = window_size, index = i, method = "v2")
-    mat <- rbind(mat, Re(sqrt(nn$distance_profile)))
+    mat[i, ] <- Re(sqrt(nn$distance_profile))
   }
 
   all_right_histogram <- do.call(pmin, as.data.frame(t(mat))) # col min
 
-  mass_dist_slid_min <- NULL
+  mass_dist_slid_min <- matrix(nrow = nrow(mat), ncol = ncol(mat))
 
   for (i in seq_len(nrow(mat))) {
-    mass_dist_slid_min <- rbind(
-      mass_dist_slid_min,
-      caTools::runmin(mat[i, ], nrow(mat)) # this differs slightly from MATLAB's movmin() result
-    )
+    mass_dist_slid_min[i, ] <- caTools::runmin(mat[i, ], nrow(mat))
   }
 
   mp_dist_length <- length(data) - length(query) + 1
@@ -72,11 +71,12 @@ mpdist_vect <- function(data, query, window_size) {
   left_hist <- NULL # rightHistLength
 
 
+  mpdist_array <- vector(mode = "numeric", length = mp_dist_length)
   for (i in seq_len(mp_dist_length)) {
     right_hist <- all_right_histogram[i:(right_hist_length + i - 1)]
     left_hist <- mass_dist_slid_min[, (i + floor(nrow(mat) / 2))]
     recreated_mp <- c(left_hist, right_hist)
-    mpdist_array <- c(mpdist_array, cal_mp_dist(recreated_mp, thr, 2 * length(query)))
+    mpdist_array[i] <- cal_mp_dist(recreated_mp, thr, 2 * length(query))
   }
 
   return(mpdist_array)
@@ -91,15 +91,22 @@ mpdist_vect <- function(data, query, window_size) {
 #' @return Returns the distance
 #'
 #' @examples
-cal_mp_dist <- function(mp, thr, data_size) {
-  mp_sorted <- sort(mp)
+cal_mp_dist <- function(mp, thr, data_size, partial = TRUE) {
   k <- ceiling(thr * data_size)
 
-  if (k <= length(mp_sorted)) {
-    dist <- mp_sorted[k]
-  } else {
-    dist <- utils::tail(mp_sorted, 1)
+  if (k > length(mp)) {
+    # last element of a sorted list is the max()
+    return(max(mp))
   }
+
+  # keep classic sorting for debug reasons
+  if (partial) {
+    mp_sorted <- sort.int(mp, partial = k)
+  } else {
+    mp_sorted <- sort.int(mp)
+  }
+
+  dist <- mp_sorted[k]
 
   return(dist)
 }
