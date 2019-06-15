@@ -1,36 +1,34 @@
-## Anonymous-Author information blinded for review
-## This is the source code for the ICDM paper "Time Series Snippets: A New Primitive
-## for Time Series Data Mining". For more details, please refer to the
-## supporting website: https://sites[['google']][['com']]/site/snippetfinder
-
-## input:
-## data : Time Series
-## N : number of snippets the user wishes to find
-## sub : the length of snippet
-## per : the MPdist subsequence length percentage.
-## For example, if per is 100 then the MPdist subsequence is the same as sub.
-
-## output:
-## snippet : a list of N snippets
-## fraction : fraction of each snippet
-## snippetidx : the location of each
-## snippet within time sereis
-
-
-#' Title
+#' Time Series Snippets: A New Primitive for Time Series Data Mining
 #'
-#' @param data
-#' @param N
-#' @param sub
-#' @param per
+#' MPdist is a recently introduced distance measure which considers two time series to be similar
 #'
-#' @return
+#' @details MPdist
+#'
+#' @param data Time Series
+#' @param N number of snippets the user wishes to find
+#' @param sub the length of snippet
+#' @param per the MPdist subsequence length percentage. For example, if per is 100 then the MPdist subsequence is the same as sub.
+#'
+#' @return Returns the snippet : a list of N snippets
+#' fraction : fraction of each snippet
+#' snippetidx : the location of each
+#' snippet within time sereis
+#'
 #' @export
 #'
+#' @references * Imani S, Madrid F, Ding W, Crouter S, Keogh E. Matrix Profile XIII:
+#' Time Series Snippets: A New Primitive for Time Series Data Mining. In: 2018 IEEE International
+#' Conference on Data Mining (ICDM). 2018.
+#' @references * Gharghabi S, Imani S, Bagnall A, Darvishzadeh A, Keogh E. Matrix Profile XII:
+#' MPdist: A Novel Time Series Distance Measure to Allow Data Mining in More Challenging Scenarios.
+#' In: 2018 IEEE International Conference on Data Mining (ICDM). 2018.
+#' @references Website: <https://sites.google.com/site/snippetfinder/>
+#'
 #' @examples
+#'
 snippetfinder <- function(data, N, sub, per) {
 
-  # currently is about 5.1x slower than MATLAB, but is working
+  # currently is about 5x slower than MATLAB. Not bad for R.
 
   ## check input
   if (length(data) < 2 * sub) {
@@ -73,11 +71,15 @@ snippetfinder <- function(data, N, sub, per) {
     distance <- mpdist(data, data[indexes[index]:(indexes[index] + sub)], round(sub * per / 100))
     distancesSnipp <- rbind(distancesSnipp, distance)
 
-    graphics::plot(distance, type = "l", ylab = "distance",
-                   main = paste0('MPdist-', n, ' location-', indexes[index]))
+    graphics::plot(distance,
+      type = "l", ylab = "distance",
+      main = paste0("MPdist-", n, " location-", indexes[index])
+    )
 
-    graphics::plot(data[indexes[index]:(indexes[index] + sub)], type = "l", ylab = "data",
-                   main = paste0('snippet-', n, ' location-', indexes[index]))
+    graphics::plot(data[indexes[index]:(indexes[index] + sub)],
+      type = "l", ylab = "data",
+      main = paste0("snippet-", n, " location-", indexes[index])
+    )
 
 
     # box off;xlim([0 length(data(indexes(index):indexes(index)+sub))])
@@ -126,7 +128,8 @@ snippetfinder <- function(data, N, sub, per) {
     }
     c <- c[1:j, , drop = FALSE]
 
-    graphics::plot(0.5, 0.5, ylab = "", xlab = "Index",
+    graphics::plot(0.5, 0.5,
+      ylab = "", xlab = "Index",
       type = "n", main = "Horizontal regime bar", xlim = c(min(c[, 1]), max(c[, 2])), ylim = c(0, 2)
     )
 

@@ -1,55 +1,128 @@
-#' MP Distance
+#' MPdist - Distance between Time Series using Matrix Profile
 #'
-#' @param ref_data
-#' @param query_data
-#' @param window_size
+#' MPdist is a recently introduced distance measure which considers two time series to be similar
+#' if they share many similar subsequences, regardless of the order of matching subsequences.
+#' It was demonstrated in that MPdist is robust to spikes, warping, linear trends, dropouts,
+#' wandering baseline and missing values, issues that are common outside of benchmark datasets.
 #'
-#' @return
+#' @details MPdist returns the distance of two time series or a vector containing the distance
+#' between all sliding windows. If argument `type` is set to `vector`, the vector is returned.
+#'
+#' @param ref_data a `matrix` or a `vector`. The reference data
+#' @param query_data a `matrix` or a `vector`. The query data
+#' @param window_size an int. Size of the sliding window.
+#' @param type the type of result. (Default is `simple`). See details.
+#' @param thr threshold for MPdist. (Default is `0.05`). Don't change this unless you know what you are doing.
+#'
+#' @return Returns the distance of two time series or a vector containing the distance
+#' between all sliding windows.
 #' @export
 #'
+#' @references * Gharghabi S, Imani S, Bagnall A, Darvishzadeh A, Keogh E. Matrix Profile XII:
+#' MPdist: A Novel Time Series Distance Measure to Allow Data Mining in More Challenging Scenarios.
+#' In: 2018 IEEE International Conference on Data Mining (ICDM). 2018.
+#'
+#' @references Website: <https://sites.google.com/site/mpdistinfo/>
+#'
+#' @family distance measure
+#'
 #' @examples
-mpdist <- function(ref_data, query_data, window_size) {
+#' ref_data <- mp_toy_data$data[, 1]
+#' qe_data <- mp_toy_data$data[, 2]
+#' qd_data <- mp_toy_data$data[150:200, 1]
+#' w <- mp_toy_data$sub_len
+#'
+#' # distance between data of same size
+#' deq <- mpdist(ref_data, qe_data, w)
+#'
+#' # distance between data of different sizes
+#' ddiff <- mpdist(ref_data, qd_data, w)
+#'
+#' # distance vector between data of different sizes
+#' ddvect <- mpdist(ref_data, qd_data, w, type = "vector")
+mpdist <- function(ref_data, query_data, window_size, type = c("simple", "vector"), thr = 0.05) {
   # TODO: check bugs in mass_v3 for large window_sizes
-  if (length(ref_data) == length(query_data)) {
-    return(mpdist_simple(ref_data, query_data, window_size))
+
+  type <- match.arg(type)
+
+  # transform data into matrix
+  if (is.vector(ref_data)) {
+    ref_data <- as.matrix(ref_data)
+  }
+  else if (is.matrix(ref_data)) {
+    if (ncol(ref_data) > nrow(ref_data)) {
+      ref_data <- t(ref_data)
+    }
   } else {
-    return(mpdist_vect(ref_data, query_data, window_size))
+    stop("Unknown type of data. Must be: a column matrix or a vector.", call. = FALSE)
+  }
+
+  if (is.vector(query_data)) {
+    query_data <- as.matrix(query_data)
+  } else if (is.matrix(query_data)) {
+    if (ncol(query_data) > nrow(query_data)) {
+      query_data <- t(query_data)
+    }
+  } else {
+    stop("Unknown type of query. Must be: a column matrix or a vector.", call. = FALSE)
+  }
+
+  if (window_size < 4) {
+    stop("`window_size` must be at least 4.", call. = FALSE)
+  }
+
+  if (nrow(ref_data) < nrow(query_data)) {
+    temp <- ref_data
+    ref_data <- query_data
+    query_data <- temp
+  }
+
+  # TODO: handle window_size == nrow(query_data)
+  if (nrow(query_data) == window_size) {
+    stop("Not implemented yet: window_size equals to query_data length.")
+  } else if (type == "simple" || nrow(ref_data) == nrow(query_data)) {
+    return(mpdist_simple(ref_data, query_data, window_size, thr))
+  } else {
+    return(mpdist_vect(ref_data, query_data, window_size, thr))
   }
 }
 
-#' MP Distance for data of equal sizes
+#' MP Distance
 #'
-#' @param ref_data reference data
-#' @param query_data query data
+#' @param data reference data
+#' @param query query data
 #' @param window_size window size
+#' @param thr threshold for mpdist
 #'
-#' @return Returns the distance
-#' @examples
-#' dist <- mpdist(mp_toy_data$data[, 1], mp_toy_data$data[, 2], mp_toy_data$sub_len)
-mpdist_simple <- function(ref_data, query_data, window_size) {
-  thr <- 0.05
+#' @return Returns the distance vector
+#'
+#' @keywords internal
+#' @noRd
+mpdist_simple <- function(ref_data, query_data, window_size, thr = 0.05) {
   mp <- mpx_abba_stomp(ref_data, query_data, window_size = window_size)
 
-  dist <- cal_mp_dist(c(mp$mpa, mp$mpb), thr, length(ref_data) + length(query_data))
+  dist <- cal_mp_dist(c(mp$mpa, mp$mpb), thr, nrow(ref_data) + nrow(query_data))
 
   return(dist)
 }
 
-#' MP Distance for data of different sizes
+#' MP Distance vector
 #'
-#' @param data long data
-#' @param query Short data
+#' @param data reference data
+#' @param query query data
 #' @param window_size window size
+#' @param thr threshold for mpdist
 #'
-#' @return Returns the distances for all data
-#' @examples
-mpdist_vect <- function(data, query, window_size) {
-  thr <- 0.05
+#' @return Returns the distance vector
+#'
+#' @keywords internal
+#' @noRd
+mpdist_vect <- function(data, query, window_size, thr = 0.05) {
   mat <- NULL
   nn <- NULL
 
-  num_subseqs <- length(query) - window_size + 1
-  dist_profile_size <- length(data) - window_size + 1
+  num_subseqs <- nrow(query) - window_size + 1
+  dist_profile_size <- nrow(data) - window_size + 1
   mat <- matrix(nrow = num_subseqs, ncol = dist_profile_size)
 
   for (i in seq_len(num_subseqs)) {
@@ -65,8 +138,8 @@ mpdist_vect <- function(data, query, window_size) {
     mass_dist_slid_min[i, ] <- caTools::runmin(mat[i, ], nrow(mat))
   }
 
-  mp_dist_length <- length(data) - length(query) + 1
-  right_hist_length <- length(query) - window_size + 1
+  mp_dist_length <- nrow(data) - nrow(query) + 1
+  right_hist_length <- nrow(query) - window_size + 1
   mpdist_array <- NULL # mp_dist_length - 1
   left_hist <- NULL # rightHistLength
 
@@ -76,7 +149,7 @@ mpdist_vect <- function(data, query, window_size) {
     right_hist <- all_right_histogram[i:(right_hist_length + i - 1)]
     left_hist <- mass_dist_slid_min[, (i + floor(nrow(mat) / 2))]
     recreated_mp <- c(left_hist, right_hist)
-    mpdist_array[i] <- cal_mp_dist(recreated_mp, thr, 2 * length(query))
+    mpdist_array[i] <- cal_mp_dist(recreated_mp, thr, 2 * nrow(query))
   }
 
   return(mpdist_array)
@@ -85,12 +158,13 @@ mpdist_vect <- function(data, query, window_size) {
 #' Calculates the distance
 #'
 #' @param mp a matrix profile
-#' @param thr threshold
+#' @param thr threshold for mpdist
 #' @param data_size size of the data
 #'
 #' @return Returns the distance
 #'
-#' @examples
+#' @keywords internal
+#' @noRd
 cal_mp_dist <- function(mp, thr, data_size, partial = TRUE) {
   k <- ceiling(thr * data_size)
 
@@ -113,13 +187,14 @@ cal_mp_dist <- function(mp, thr, data_size, partial = TRUE) {
 
 #' ABBA Stomp
 #'
-#' @param data
-#' @param query
-#' @param window_size
+#' @param data reference data
+#' @param query query data
+#' @param window_size window size
 #'
-#' @return
+#' @return join matrix profile AB and BA
 #'
-#' @examples
+#' @keywords internal
+#' @noRd
 mpx_abba_stomp <- function(data, query, window_size) {
   # forward
   nn <- dist_profile(data, query, window_size = window_size, method = "v2")
@@ -127,8 +202,8 @@ mpx_abba_stomp <- function(data, query, window_size) {
   # This is needed to handle with the join similarity.
   rnn <- dist_profile(query, data, window_size = window_size, method = "v2")
 
-  data_size <- length(data)
-  query_size <- length(query)
+  data_size <- nrow(data)
+  query_size <- nrow(query)
   matrix_profile_size <- data_size - window_size + 1
   matrix_profile2_size <- query_size - window_size + 1
   matrix_profile <- rep(Inf, matrix_profile_size)

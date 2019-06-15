@@ -2,16 +2,59 @@
 % Please edit documentation in R/mpdist.R
 \name{mpdist}
 \alias{mpdist}
-\title{Title}
+\title{MPdist - Distance between Time Series using Matrix Profile}
 \usage{
-mpdist(data, query, window_size)
+mpdist(ref_data, query_data, window_size, type = c("simple", "vector"),
+  thr = 0.05)
 }
 \arguments{
-\item{window_size}{}
+\item{ref_data}{a \code{matrix} or a \code{vector}. The reference data}
+
+\item{query_data}{a \code{matrix} or a \code{vector}. The query data}
+
+\item{window_size}{an int. Size of the sliding window.}
+
+\item{type}{the type of result. (Default is \code{simple}). See details.}
+
+\item{thr}{threshold for MPdist. (Default is \code{0.05}). Don't change this unless you know what you are doing.}
+}
+\value{
+Returns the distance of two time series or a vector containing the distance
+between all sliding windows.
 }
 \description{
-Title
+MPdist is a recently introduced distance measure which considers two time series to be similar
+if they share many similar subsequences, regardless of the order of matching subsequences.
+It was demonstrated in that MPdist is robust to spikes, warping, linear trends, dropouts,
+wandering baseline and missing values, issues that are common outside of benchmark datasets.
+}
+\details{
+MPdist returns the distance of two time series or a vector containing the distance
+between all sliding windows. If argument \code{type} is set to \code{vector}, the vector is returned.
 }
 \examples{
+ref_data <- mp_toy_data$data[, 1]
+qe_data <- mp_toy_data$data[, 2]
+qd_data <- mp_toy_data$data[150:200, 1]
+w <- mp_toy_data$sub_len
+
+# distance between data of same size
+deq <- mpdist(ref_data, qe_data, w)
+
+# distance between data of different sizes
+ddiff <- mpdist(ref_data, qd_data, w)
+
+# distance vector between data of different sizes
+ddvect <- mpdist(ref_data, qd_data, w, type = "vector")
 
 }
+\references{
+\itemize{
+\item Gharghabi S, Imani S, Bagnall A, Darvishzadeh A, Keogh E. Matrix Profile XII:
+MPdist: A Novel Time Series Distance Measure to Allow Data Mining in More Challenging Scenarios.
+In: 2018 IEEE International Conference on Data Mining (ICDM). 2018.
+}
+
+Website: \url{https://sites.google.com/site/mpdistinfo/}
+}
+\concept{distance measure}
