@@ -46,7 +46,6 @@ ddiff <- mpdist(ref_data, qd_data, w)
 
 # distance vector between data of different sizes
 ddvect <- mpdist(ref_data, qd_data, w, type = "vector")
-
 }
 \references{
 \itemize{

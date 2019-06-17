@@ -81,10 +81,21 @@ mpdist <- function(ref_data, query_data, window_size, type = c("simple", "vector
   if (nrow(query_data) == window_size) {
     stop("Not implemented yet: window_size equals to query_data length.")
   } else if (type == "simple" || nrow(ref_data) == nrow(query_data)) {
-    return(mpdist_simple(ref_data, query_data, window_size, thr))
+    dist <- mpdist_simple(ref_data, query_data, window_size, thr)
   } else {
-    return(mpdist_vect(ref_data, query_data, window_size, thr))
+    dist <- mpdist_vect(ref_data, query_data, window_size, thr)
   }
+
+  return({
+    obj <- list(
+      mpdist = dist,
+      w = window_size,
+      ez = ez
+    )
+    class(obj) <- "MPDist"
+    attr(obj, "thr") <- thr
+    obj
+  })
 }
 
 #' MP Distance

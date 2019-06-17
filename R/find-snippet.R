@@ -4,12 +4,13 @@
 #'
 #' @details MPdist
 #'
-#' @param data Time Series
-#' @param N number of snippets the user wishes to find
-#' @param sub the length of snippet
-#' @param per the MPdist subsequence length percentage. For example, if per is 100 then the MPdist subsequence is the same as sub.
+#' @param data a `matrix` or a `vector`.
+#' @param s_size an int. Size of snippet.
+#' @param n_snippets an `int`. Number of snippets to find. (Default is `2`).
+#' @param window_size an `int`. The size of the sliding window used to compare the data. Must be smaller
+#' than `s_size`. (Default is `s_size / 2`).
 #'
-#' @return Returns the snippet : a list of N snippets
+#' @return Returns the snippet : a list of n_snippets snippets
 #' fraction : fraction of each snippet
 #' snippetidx : the location of each
 #' snippet within time sereis
@@ -26,13 +27,35 @@
 #'
 #' @examples
 #'
-snippetfinder <- function(data, N, sub, per) {
+find_snippet <- function(data, s_size, n_snippets = 2, window_size = s_size / 2) {
 
-  # currently is about 5x slower than MATLAB. Not bad for R.
+  # currently is about 3x slower than MATLAB. Not bad for R.
+
+  # transform data into matrix
+  if (is.vector(data)) {
+    data <- as.matrix(data)
+  }
+  else if (is.matrix(data)) {
+    if (ncol(data) > nrow(data)) {
+      data <- t(data)
+    }
+  } else {
+    stop("Unknown type of data. Must be: a column matrix or a vector.", call. = FALSE)
+  }
+
+  if (s_size < 4) {
+    stop("`s_size` must be at least 4.", call. = FALSE)
+  }
 
   ## check input
-  if (length(data) < 2 * sub) {
-    stop("Error: Time series is too short relative to desired snippet Length")
+  if (nrow(data) < (2 * s_size)) {
+    stop("Error: Time series is too short relative to desired snippet Length", call. = FALSE)
+  }
+
+  window_size <- floor(window_size)
+
+  if (window_size >= s_size) {
+    stop("Error: `window_size` must be smaller than `s_size`.", call. = FALSE)
   }
 
   ## initialization
@@ -42,21 +65,21 @@ snippetfinder <- function(data, N, sub, per) {
   minis <- Inf
   fraction <- NULL
   snippetidx <- NULL
-  distancesSnipp <- NULL
+  distances_snippet <- NULL
 
-  len <- sub * ceiling(length(data) / sub) - length(data)
+  len <- s_size * ceiling(nrow(data) / s_size) - nrow(data)
   ## padding zeros to the end of the time series.
-  data <- c(data, rep(len, 0))
+  data <- rbind(data, matrix(0, nrow = len))
 
   ## compute all the profiles
-  for (i in seq.int(1, length(data) - sub, sub)) {
+  for (i in seq.int(1, nrow(data) - s_size, s_size)) {
     indexes <- c(indexes, i)
-    distance <- mpdist(data, data[i:(i + sub)], round(sub * per / 100))
-    distances <- rbind(distances, distance)
+    distance <- mpdist(data, data[i:(i + s_size - 1), , drop = FALSE], window_size, type = "vector")
+    distances <- rbind(distances, distance$mpdist)
   }
 
   ## calculating the Nth snippets
-  for (n in 1:N) {
+  for (n in 1:n_snippets) {
     minims <- Inf
     for (i in seq_len(nrow(distances))) {
       if (minims > sum(pmin(distances[i, ], minis))) {
@@ -65,46 +88,43 @@ snippetfinder <- function(data, N, sub, per) {
       }
     }
     minis <- pmin(distances[index, ], minis)
-    snippet <- c(snippet, data[indexes[index]:(indexes[index] + sub)])
+    snippet <- c(snippet, data[indexes[index]:(indexes[index] + s_size - 1)])
     snippetidx <- c(snippetidx, indexes[index])
 
-    distance <- mpdist(data, data[indexes[index]:(indexes[index] + sub)], round(sub * per / 100))
-    distancesSnipp <- rbind(distancesSnipp, distance)
+    distance <- mpdist(data, data[indexes[index]:(indexes[index] + s_size - 1), , drop = FALSE], window_size, type = "vector")
+    distances_snippet <- rbind(distances_snippet, distance$mpdist)
 
-    graphics::plot(distance,
+    graphics::plot(distance$mpdist,
       type = "l", ylab = "distance",
       main = paste0("MPdist-", n, " location-", indexes[index])
     )
 
-    graphics::plot(data[indexes[index]:(indexes[index] + sub)],
+    graphics::plot(data[indexes[index]:(indexes[index] + s_size - 1)],
       type = "l", ylab = "data",
       main = paste0("snippet-", n, " location-", indexes[index])
     )
-
-
-    # box off;xlim([0 length(data(indexes(index):indexes(index)+sub))])
   }
   ## Calculating the fraction of each snippet
-  totalmin <- do.call(pmin, as.data.frame(t(distancesSnipp)))
+  totalmin <- do.call(pmin, as.data.frame(t(distances_snippet)))
 
-  for (i in 1:N) {
-    a <- (distancesSnipp[i, ] <= totalmin)
-    fraction <- c(fraction, sum(a) / (length(data) - sub))
+  for (i in 1:n_snippets) {
+    a <- (distances_snippet[i, ] <= totalmin)
+    fraction <- c(fraction, sum(a) / (nrow(data) - s_size))
     # # # #     just in case we have the same value for both
     totalmin[a] <- totalmin[a] - 1
   }
 
-  ## Calculating the horizantal regime bar for 2 snippets
-  if (N == 2) {
-    totalmin <- do.call(pmin, as.data.frame(t(distancesSnipp)))
+  ## Calculating the horizontal regime bar for 2 snippets
+  if (n_snippets == 2) {
+    totalmin <- do.call(pmin, as.data.frame(t(distances_snippet)))
 
-    a <- (distancesSnipp[1, ] <= totalmin)
+    a <- (distances_snippet[1, ] <= totalmin)
 
-    for (i in seq.int(1, length(a) - sub, sub)) {
-      if (sum(a[i:(i + sub - 1)]) > (1 / 2 * sub)) {
-        a[i:(i + sub - 1)] <- TRUE
+    for (i in seq.int(1, length(a) - s_size, s_size)) {
+      if (sum(a[i:(i + s_size - 1)]) > (1 / 2 * s_size)) {
+        a[i:(i + s_size - 1)] <- TRUE
       } else {
-        a[i:(i + sub - 1)] <- FALSE
+        a[i:(i + s_size - 1)] <- FALSE
       }
     }
 
@@ -143,5 +163,5 @@ snippetfinder <- function(data, N, sub, per) {
     }
   }
 
-  return(list(fraction = fraction, snippet = snippet, snippetidx = snippetidx))
+  return(list(snippets = snippet, snippetsidx = snippetidx, fractions = fraction))
 }
