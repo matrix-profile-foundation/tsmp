@@ -696,6 +696,79 @@ plot.Discord <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "
   graphics::par(def_par)
 }
 
+
+#' @export
+#' @keywords hplot
+#' @name plot
+#'
+
+plot.Snippet <- function(x, data, ncol = 3, main = "Snippet Finder", xlab = "index", ylab = "", ...) {
+  def_par <- graphics::par(no.readonly = TRUE)
+
+  snippets <- x$snippet_idx
+  n_snippets <- length(x$snippet_idx)
+
+  if (n_snippets == 0) {
+    graphics::par(def_par)
+    stop("No Snippets found to plot.")
+  }
+
+  if (missing(data) && !is.null(x$data)) {
+    data <- x$data[[1]]
+  } else {
+    is.null(data) # check data presence before plotting anything
+  }
+
+  plot_data <- data
+  plot_subtitle <- "Data"
+
+  # layout: matrix profile on top, motifs below.
+  graphics::layout(matrix(
+    c(rep(1, ncol), rep(2, ncol), (seq_len(ceiling(n_snippets / ncol) * ncol) + 2)),
+    ceiling(n_snippets / ncol) + 2,
+    ncol,
+    byrow = TRUE
+  ))
+
+  # plot data
+  xnum <- seq_len(nrow(data))
+
+  offset <- attr(x, "offset")
+  offset <- ifelse(is.null(offset), 0, offset)
+
+  if (!is.null(offset)) {
+    xnum <- xnum + offset
+  }
+
+  graphics::par(oma = c(1, 1, 3, 0), cex.lab = 1.5)
+  graphics::plot(xnum, plot_data, type = "l", main = plot_subtitle, xlab = xlab, ylab = ylab)
+  graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
+
+  graphics::plot(xnum, rep(1, length(xnum)),
+    ylab = "", xlab = "Index",
+    type = "p", main = "Horizontal regime bar", pch = 15, cex = 0.5,
+    col = x$regime + 1
+  )
+
+  for (i in 1:n_snippets) {
+    snip <- znorm(data[snippets[i]:min((snippets[i] + x$snippet_size - 1), nrow(data))])
+
+    # blank plot
+    graphics::plot(0.5, 0.5,
+      type = "n", main = paste("Snippet", i), xlab = "length", ylab = "normalized data",
+      xlim = c(0, length(snip)), ylim = c(min(snip), max(snip))
+    )
+
+    graphics::lines(snip, col = i + 1, lwd = 2)
+  }
+
+  # obj <- list(snippet_idx = snippetidx, snippet_frac = fraction, snippet_size = s_size, regime = horizontal, data = list(data))
+
+
+  graphics::par(def_par)
+}
+
+
 #' @export
 #' @keywords hplot
 #' @name plot
@@ -977,3 +1050,10 @@ plot.Salient <- function(x, data, main = "Salient Subsections", xlab = "index", 
 
   graphics::par(def_par)
 }
+
+
+
+# if (plot) {
+
+# }
+#

@@ -39,10 +39,10 @@ motif distance * \code{radius}. (Default is \code{3}).}
 }
 \value{
 For class \code{MatrixProfile}, returns the input \code{.mp} object with a new name \code{motif}. It contains: \code{motif_idx}, a \code{list}
-of motif pairs founded and \code{motif_neighbor} a \code{list} with respective motif's neighbors.
+of motif pairs found and \code{motif_neighbor} a \code{list} with respective motif's neighbors.
 
 For class \code{MultiMatrixProfile}, returns the input \code{.mp} object with a new name \code{motif}. It contains: \code{motif_idx}, a \code{vector}
-of motifs founded and \code{motif_dim} a \code{list} the dimensions where the motifs were founded.
+of motifs found and \code{motif_dim} a \code{list} the dimensions where the motifs were found
 }
 \description{
 Search for Motifs

@@ -5,7 +5,7 @@
 #' @param .mp a TSMP object of class `MatrixProfile`.
 #'
 #' @return Returns the input `.mp` object with a new name `chain`. It contains: `chains`, a `list`
-#' of chains founded with more than 2 patterns and `best` with the best one.
+#' of chains found with more than 2 patterns and `best` with the best one.
 #' @export
 #' @references * Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A
 #'   New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.

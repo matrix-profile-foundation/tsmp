@@ -27,7 +27,7 @@
 #'
 #' @examples
 #'
-find_snippet <- function(data, s_size, n_snippets = 2, window_size = s_size / 2, plot = TRUE) {
+find_snippet <- function(data, s_size, n_snippets = 2, window_size = s_size / 2) {
 
   # currently is about 3x slower than MATLAB. Not bad for R.
 
@@ -120,13 +120,8 @@ find_snippet <- function(data, s_size, n_snippets = 2, window_size = s_size / 2,
     horizontal[a] <- i
   }
 
-  if (plot) {
-    graphics::plot(rep(1, length(totalmin)),
-      ylab = "", xlab = "Index",
-      type = "p", main = "Horizontal regime bar", pch = 15, cex = 0.5,
-      col = horizontal + 1
-    )
-  }
+  obj <- list(snippet_idx = snippetidx, snippet_frac = fraction, snippet_size = s_size, regime = horizontal, data = list(data))
+  class(obj) <- update_class(class(obj), "Snippet")
 
-  return(list(snippet_idx = snippetidx, snippet_frac = fraction, snippet_size = s_size, regime = horizontal))
+  return(obj)
 }

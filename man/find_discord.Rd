@@ -28,7 +28,7 @@ discord distance * \code{radius}. (Default is \code{3}).}
 }
 \value{
 For class \code{MatrixProfile}, returns the input \code{.mp} object with a new name \code{discord}. It contains: \code{discord_idx}, a \code{vector}
-of discords founded.
+of discords found
 }
 \description{
 Search for Discord

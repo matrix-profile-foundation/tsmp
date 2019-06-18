@@ -193,7 +193,7 @@ print.Chain <- function(x, ...) {
   cat("\nChain\n")
   cat("-----\n")
 
-  cat("Chains founded =", length(x$chain$chains), "\n")
+  cat("Chains found =", length(x$chain$chains), "\n")
   cat("Best Chain size =", length(x$chain$best), "\n")
   cat("Best Chain indexes =", x$chain$best, "\n")
 }
@@ -216,7 +216,7 @@ print.Discord <- function(x, ...) {
   cat("-------\n")
 
   dis_len <- length(x$discord$discord_idx)
-  cat("Discords founded =", dis_len, "\n")
+  cat("Discords found =", dis_len, "\n")
 
   indexes <- NULL
   for (i in seq_len(dis_len)) {
@@ -230,6 +230,24 @@ print.Discord <- function(x, ...) {
 
   cat("Discords indexes =", indexes, "\n")
   cat("Discords neighbors =", neighbors, "\n")
+}
+
+#' Prints Snippets
+#'
+#' @param x a TSMP object of class `Snippet`.
+#' @param ... additional arguments ignored.
+#' @export
+#' @keywords internal
+#' @noRd
+print.Snippet <- function(x, ...) {
+  cat("\nSnippet\n")
+  cat("-------\n")
+
+  snip_len <- length(x$snippet_idx)
+  cat("Snippets found =", snip_len, "\n")
+  cat("Snippets indexes =", x$snippet_idx, "\n")
+  cat("Snippets fractions =", sprintf("%1.2f%%", 100 * x$snippet_frac), "\n")
+  cat("Snippet size =", x$snippet_size, "\n")
 }
 
 #' Prints Motifs
@@ -260,7 +278,7 @@ print.Motif <- function(x, ...) {
   }
 
   pairs_len <- length(x$motif$motif_idx)
-  cat("Motif pairs founded =", pairs_len, "\n")
+  cat("Motif pairs found =", pairs_len, "\n")
 
   indexes <- NULL
   for (i in seq_len(pairs_len)) {
@@ -302,7 +320,7 @@ print.MultiMotif <- function(x, ...) {
   cat("----------------------\n")
 
   pairs_len <- length(x$motif$motif_idx)
-  cat("Motif pairs founded =", pairs_len, "\n")
+  cat("Motif pairs found =", pairs_len, "\n")
 
   indexes <- NULL
   for (i in seq_len(pairs_len)) {
@@ -336,6 +354,6 @@ print.Salient <- function(x, ...) {
 
   salient_len <- nrow(x$salient$indexes)
 
-  cat("Subsequences founded =", salient_len, "\n")
+  cat("Subsequences found =", salient_len, "\n")
   cat("Bitsizes tested =", x$salient$bits, "\n")
 }

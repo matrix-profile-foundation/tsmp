@@ -11,6 +11,7 @@
 \alias{plot.Floss}
 \alias{plot.Chain}
 \alias{plot.Discord}
+\alias{plot.Snippet}
 \alias{plot.Motif}
 \alias{plot.MultiMotif}
 \alias{plot.Salient}
@@ -46,6 +47,9 @@
 
 \method{plot}{Discord}(x, data, type = c("data", "matrix"), ncol = 3,
   main = "Discord Discover", xlab = "index", ylab = "", ...)
+
+\method{plot}{Snippet}(x, data, ncol = 3, main = "Snippet Finder",
+  xlab = "index", ylab = "", ...)
 
 \method{plot}{Motif}(x, data, type = c("data", "matrix"), ncol = 3,
   main = "MOTIF Discover", xlab = "index", ylab = "", ...)

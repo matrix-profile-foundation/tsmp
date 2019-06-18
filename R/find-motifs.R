@@ -20,7 +20,7 @@ find_motif <- function(.mp, ...) {
 #' @name find_motif
 #' @export
 #' @return For class `MatrixProfile`, returns the input `.mp` object with a new name `motif`. It contains: `motif_idx`, a `list`
-#' of motif pairs founded and `motif_neighbor` a `list` with respective motif's neighbors.
+#' of motif pairs found and `motif_neighbor` a `list` with respective motif's neighbors.
 #' @examples
 #' # Single dimension data
 #' w <- 50
@@ -172,7 +172,7 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
 #' @param n_dim an `int`. Number of dimensions to use on Guided search instead of embedded value. (Default is `NULL`).
 #'
 #' @return For class `MultiMatrixProfile`, returns the input `.mp` object with a new name `motif`. It contains: `motif_idx`, a `vector`
-#' of motifs founded and `motif_dim` a `list` the dimensions where the motifs were founded.
+#' of motifs found and `motif_dim` a `list` the dimensions where the motifs were found
 #'
 #' @name find_motif
 #' @export

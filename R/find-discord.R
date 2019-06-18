@@ -20,7 +20,7 @@ find_discord <- function(.mp, ...) {
 #' @name find_discord
 #' @export
 #' @return For class `MatrixProfile`, returns the input `.mp` object with a new name `discord`. It contains: `discord_idx`, a `vector`
-#' of discords founded.
+#' of discords found
 #' @examples
 #' # Single dimension data
 #' w <- 50
