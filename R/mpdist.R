@@ -86,16 +86,7 @@ mpdist <- function(ref_data, query_data, window_size, type = c("simple", "vector
     dist <- mpdist_vect(ref_data, query_data, window_size, thr)
   }
 
-  return({
-    obj <- list(
-      mpdist = dist,
-      w = window_size,
-      ez = ez
-    )
-    class(obj) <- "MPDist"
-    attr(obj, "thr") <- thr
-    obj
-  })
+  dist
 }
 
 #' MP Distance
@@ -163,7 +154,9 @@ mpdist_vect <- function(data, query, window_size, thr = 0.05) {
     mpdist_array[i] <- cal_mp_dist(recreated_mp, thr, 2 * nrow(query))
   }
 
-  return(mpdist_array)
+  obj <- list(mpdist = mpdist_array, w = window_size)
+
+  return(obj)
 }
 
 #' Calculates the distance

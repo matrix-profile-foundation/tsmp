@@ -27,7 +27,7 @@
 #'
 #' @examples
 #'
-find_snippet <- function(data, s_size, n_snippets = 2, window_size = s_size / 2) {
+find_snippet <- function(data, s_size, n_snippets = 2, window_size = s_size / 2, plot = TRUE) {
 
   # currently is about 3x slower than MATLAB. Not bad for R.
 
@@ -60,27 +60,31 @@ find_snippet <- function(data, s_size, n_snippets = 2, window_size = s_size / 2)
 
   ## initialization
   distances <- NULL
-  indexes <- NULL
-  snippet <- NULL
   minis <- Inf
   fraction <- NULL
   snippetidx <- NULL
   distances_snippet <- NULL
 
-  len <- s_size * ceiling(nrow(data) / s_size) - nrow(data)
+  pad <- s_size * ceiling(nrow(data) / s_size) - nrow(data)
   ## padding zeros to the end of the time series.
-  data <- rbind(data, matrix(0, nrow = len))
+  data <- rbind(data, matrix(0, nrow = pad))
 
   ## compute all the profiles
-  for (i in seq.int(1, nrow(data) - s_size, s_size)) {
-    indexes <- c(indexes, i)
+  indexes <- seq.int(1, nrow(data) - s_size, s_size)
+  distances <- matrix(nrow = length(indexes), ncol = (nrow(data) - s_size + 1))
+  distances_snippet <- matrix(nrow = n_snippets, ncol = (nrow(data) - s_size + 1))
+
+  for (j in seq_along(indexes)) {
+    i <- indexes[j]
     distance <- mpdist(data, data[i:(i + s_size - 1), , drop = FALSE], window_size, type = "vector")
-    distances <- rbind(distances, distance$mpdist)
+    distances[j, ] <- distance$mpdist
   }
+
 
   ## calculating the Nth snippets
   for (n in 1:n_snippets) {
     minims <- Inf
+    index <- NULL
     for (i in seq_len(nrow(distances))) {
       if (minims > sum(pmin(distances[i, ], minis))) {
         minims <- sum(pmin(distances[i, ], minis))
@@ -88,80 +92,41 @@ find_snippet <- function(data, s_size, n_snippets = 2, window_size = s_size / 2)
       }
     }
     minis <- pmin(distances[index, ], minis)
-    snippet <- c(snippet, data[indexes[index]:(indexes[index] + s_size - 1)])
     snippetidx <- c(snippetidx, indexes[index])
 
     distance <- mpdist(data, data[indexes[index]:(indexes[index] + s_size - 1), , drop = FALSE], window_size, type = "vector")
-    distances_snippet <- rbind(distances_snippet, distance$mpdist)
-
-    graphics::plot(distance$mpdist,
-      type = "l", ylab = "distance",
-      main = paste0("MPdist-", n, " location-", indexes[index])
-    )
-
-    graphics::plot(data[indexes[index]:(indexes[index] + s_size - 1)],
-      type = "l", ylab = "data",
-      main = paste0("snippet-", n, " location-", indexes[index])
-    )
+    distances_snippet[n, ] <- distance$mpdist
   }
   ## Calculating the fraction of each snippet
-  totalmin <- do.call(pmin, as.data.frame(t(distances_snippet)))
+  totalmin <- do.call(pmin, as.data.frame(t(distances_snippet))) # col wise
+
+  horizontal <- rep(0, length(totalmin))
 
   for (i in 1:n_snippets) {
     a <- (distances_snippet[i, ] <= totalmin)
     fraction <- c(fraction, sum(a) / (nrow(data) - s_size))
+
     # # # #     just in case we have the same value for both
     totalmin[a] <- totalmin[a] - 1
+
+    for (j in indexes) {
+      if (sum(a[j:(j + s_size - 1)]) > (1 / 2 * s_size)) {
+        a[j:(j + s_size - 1)] <- TRUE
+      } else {
+        a[j:(j + s_size - 1)] <- FALSE
+      }
+    }
+
+    horizontal[a] <- i
   }
 
-  ## Calculating the horizontal regime bar for 2 snippets
-  if (n_snippets == 2) {
-    totalmin <- do.call(pmin, as.data.frame(t(distances_snippet)))
-
-    a <- (distances_snippet[1, ] <= totalmin)
-
-    for (i in seq.int(1, length(a) - s_size, s_size)) {
-      if (sum(a[i:(i + s_size - 1)]) > (1 / 2 * s_size)) {
-        a[i:(i + s_size - 1)] <- TRUE
-      } else {
-        a[i:(i + s_size - 1)] <- FALSE
-      }
-    }
-
-    # # # # # # # # # # # # # # # # #
-    c <- matrix(0, nrow = length(a), ncol = 3)
-    j <- 1
-    i <- 1
-
-    while (i <= length(a)) {
-      b <- which(a[(i + 1):length(a)] != a[i])[1]
-      if (is.na(b)) {
-        break
-      } else {
-        c[j, ] <- c(i, i + b - 1, a[i])
-        j <- j + 1
-        i <- i + b
-      }
-    }
-    if (i <= length(a)) {
-      c[j, ] <- c(i, length(a), a[i])
-    }
-    c <- c[1:j, , drop = FALSE]
-
-    graphics::plot(0.5, 0.5,
+  if (plot) {
+    graphics::plot(rep(1, length(totalmin)),
       ylab = "", xlab = "Index",
-      type = "n", main = "Horizontal regime bar", xlim = c(min(c[, 1]), max(c[, 2])), ylim = c(0, 2)
+      type = "p", main = "Horizontal regime bar", pch = 15, cex = 0.5,
+      col = horizontal + 1
     )
-
-    for (i in 1:nrow(c)) {
-      d <- (c[i, 1]:c[i, 2])
-      if (c[i, 3] == 0) {
-        graphics::lines(d, rep(1, length(d)), col = "blue")
-      } else {
-        graphics::lines(d, rep(1, length(d)), col = "red")
-      }
-    }
   }
 
-  return(list(snippets = snippet, snippetsidx = snippetidx, fractions = fraction))
+  return(list(snippet_idx = snippetidx, snippet_frac = fraction, snippet_size = s_size, regime = horizontal))
 }
