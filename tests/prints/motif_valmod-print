@@ -7,7 +7,7 @@ Contains 1 set of data with 1000 observations and 1 dimension
 
 Valmod Motif
 ------------
-Motif pairs founded = 3 
+Motif pairs found = 3 
 Motif pairs indexes = [388, 589] [414, 818] [2, 210]  
 Motif pairs neighbors = [] [] []  
 Motif pairs windows = [30] [39] [30]  

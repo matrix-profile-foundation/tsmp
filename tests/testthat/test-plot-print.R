@@ -17,6 +17,7 @@ if (skip_on_cran()) {
   mps <- salient_subsequences(mp, n_bits = c(4, 6, 8), verbose = 0)
   val <- tsmp(data, window_size = c(30, 40), verbose = 0, mode = "valmod")
   val_motif <- find_motif(val)
+  snippet <- find_snippet(mp_gait_data[1:500, ], 80)
 
   plot_arcs_test <- function() plot_arcs(pairs = matrix(c(5, 10, 1, 10, 20, 5), ncol = 2, byrow = TRUE))
   plot_arccount_test <- function() plot.ArcCount(cac)
@@ -27,6 +28,7 @@ if (skip_on_cran()) {
   plot_discord_test <- function() plot.Discord(discord)
   plot_salient_test <- function() plot.Salient(mps)
   plot_valmod_test <- function() plot.Valmod(val)
+  plot_snippet_test <- function() plot.Snippet(snippet)
 
   mdata <- mp_toy_data$data[1:200, ]
   mw <- mp_toy_data$sub_len
@@ -51,6 +53,7 @@ if (skip_on_cran()) {
     expect_doppelganger("plot simple matrix profile", plot_simplematrixprofile_test)
     expect_doppelganger("plot salient", plot_salient_test)
     expect_doppelganger("plot valmod", plot_valmod_test)
+    expect_doppelganger("plot Snippet", plot_snippet_test)
   })
 
   context("Testing Print")
@@ -74,5 +77,6 @@ if (skip_on_cran()) {
     expect_known_output(mps, file = paste0(path, "salient-print"), print = TRUE, update = upd)
     expect_known_output(val, file = paste0(path, "valmod-print"), print = TRUE, update = upd)
     expect_known_output(val_motif, file = paste0(path, "motif_valmod-print"), print = TRUE, update = upd)
+    expect_known_output(snippet, file = paste0(path, "snippet-print"), print = TRUE, update = upd)
   })
 }

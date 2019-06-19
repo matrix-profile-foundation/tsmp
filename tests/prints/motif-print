@@ -7,6 +7,6 @@ Contains 1 set of data with 1000 observations and 1 dimension
 
 Motif
 -----
-Motif pairs founded = 3 
+Motif pairs found = 3 
 Motif pairs indexes = [400, 804] [5, 417] [202, 407]  
 Motif pairs neighbors = [601, 196] [213, 619] [608, 811]  

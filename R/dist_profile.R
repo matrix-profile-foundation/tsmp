@@ -61,8 +61,10 @@
 #' # weighted
 #' weight <- c(rep(1, w / 3), rep(0.5, w / 3), rep(0.8, w / 3)) # just an example
 #'
-#' nn <- dist_profile(ref_data, ref_data, window_size = w, index = 1, method = "weighted",
-#'  weight = weight)
+#' nn <- dist_profile(ref_data, ref_data,
+#'   window_size = w, index = 1, method = "weighted",
+#'   weight = weight
+#' )
 #' distance_profile <- Re(sqrt(nn$distance_profile))
 dist_profile <- function(data, query, ..., window_size = NULL, method = "v3", index = 1, k = NULL,
                          weight = NULL, paa = 1) {
