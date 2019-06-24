@@ -129,7 +129,7 @@ mpdist_vect <- function(data, query, window_size, thr = 0.05) {
 
   for (i in seq_len(num_subseqs)) {
     nn <- dist_profile(data, query, nn, window_size = window_size, index = i, method = "v2")
-    mat[i, ] <- Re(sqrt(nn$distance_profile))
+    mat[i, ] <- Re(nn$distance_profile)
   }
 
   all_right_histogram <- do.call(pmin, as.data.frame(t(mat))) # col min
@@ -142,9 +142,6 @@ mpdist_vect <- function(data, query, window_size, thr = 0.05) {
 
   mp_dist_length <- nrow(data) - nrow(query) + 1
   right_hist_length <- nrow(query) - window_size + 1
-  mpdist_array <- NULL # mp_dist_length - 1
-  left_hist <- NULL # rightHistLength
-
 
   mpdist_array <- vector(mode = "numeric", length = mp_dist_length)
   for (i in seq_len(mp_dist_length)) {
@@ -153,6 +150,9 @@ mpdist_vect <- function(data, query, window_size, thr = 0.05) {
     recreated_mp <- c(left_hist, right_hist)
     mpdist_array[i] <- cal_mp_dist(recreated_mp, thr, 2 * nrow(query))
   }
+
+  mpdist_array[mpdist_array < vars()$eps] <- 0
+  mpdist_array <- sqrt(mpdist_array)
 
   obj <- list(mpdist = mpdist_array, w = window_size)
 

@@ -1,8 +1,19 @@
 #' Time Series Snippets: A New Primitive for Time Series Data Mining
 #'
-#' MPdist is a recently introduced distance measure which considers two time series to be similar
+#' Time Series Snippets tries to solve mainly the common problem of summarization "Show me some
+#' representative/typical data". As stated by the original paper, potential uses of snippets are:
+#' integrating summarizations of files directly into an operating, production of automatically
+#' generated reports, for example, summarize a sleep study and also can be used to support a
+#' host of higher-level tasks, including the comparison of massive data collections.
 #'
-#' @details MPdist
+#' Motifs vs. snippets: While motifs reward fidelity of conservation, snippets also rewards coverage.
+#' Informally, coverage is some measure of how much of the data is explained or represented by
+#' a given snippet.
+#'
+#' Shapelets vs. snippets: shapelets are defined as subsequences that are maximally representative
+#' of a class. Shapelets are supervised, snippets are unsupervised. Shapelets are generally biased
+#' to be as short as possible. In contrast, we want snippets to be longer, to intuitively capture
+#' the "flavor" of the time series.
 #'
 #' @param data a `matrix` or a `vector`.
 #' @param s_size an int. Size of snippet.
@@ -13,7 +24,7 @@
 #' @return Returns the snippet : a list of n_snippets snippets
 #' fraction : fraction of each snippet
 #' snippetidx : the location of each
-#' snippet within time sereis
+#' snippet within time series
 #'
 #' @export
 #'
@@ -27,10 +38,15 @@
 #'
 #' @examples
 #'
+#' snippets <- find_snippet(mp_fluss_data$walkjogrun$data[1:300], 40, n_snippets = 2)
+#' \dontrun{
+#' snippets <- find_snippet(mp_fluss_data$walkjogrun$data, 120, n_snippets = 3)
+#' plot(snippets)
+#' }
+#'
 find_snippet <- function(data, s_size, n_snippets = 2, window_size = s_size / 2) {
 
   # currently is about 3x slower than MATLAB. Not bad for R.
-
   # transform data into matrix
   if (is.vector(data)) {
     data <- as.matrix(data)
@@ -58,18 +74,11 @@ find_snippet <- function(data, s_size, n_snippets = 2, window_size = s_size / 2)
     stop("Error: `window_size` must be smaller than `s_size`.", call. = FALSE)
   }
 
-  ## initialization
-  distances <- NULL
-  minis <- Inf
-  fraction <- NULL
-  snippetidx <- NULL
-  distances_snippet <- NULL
-
+  #### padding zeros to the end of the time series. ####
   pad <- s_size * ceiling(nrow(data) / s_size) - nrow(data)
-  ## padding zeros to the end of the time series.
   data <- rbind(data, matrix(0, nrow = pad))
 
-  ## compute all the profiles
+  #### compute all the profiles ####
   indexes <- seq.int(1, nrow(data) - s_size, s_size)
   distances <- matrix(nrow = length(indexes), ncol = (nrow(data) - s_size + 1))
   distances_snippet <- matrix(nrow = n_snippets, ncol = (nrow(data) - s_size + 1))
@@ -80,33 +89,34 @@ find_snippet <- function(data, s_size, n_snippets = 2, window_size = s_size / 2)
     distances[j, ] <- distance$mpdist
   }
 
-
-  ## calculating the Nth snippets
+  #### calculating the Nth snippets ####
+  minis <- Inf
+  snippetidx <- NULL
   for (n in 1:n_snippets) {
     minims <- Inf
     index <- NULL
     for (i in seq_len(nrow(distances))) {
-      if (minims > sum(pmin(distances[i, ], minis))) {
-        minims <- sum(pmin(distances[i, ], minis))
+      s <- sum(pmin(distances[i, ], minis)) # area under the profile (maximize coverage)
+      if (minims > s) {
+        minims <- s
         index <- i
       }
     }
     minis <- pmin(distances[index, ], minis)
     snippetidx <- c(snippetidx, indexes[index])
-
-    distance <- mpdist(data, data[indexes[index]:(indexes[index] + s_size - 1), , drop = FALSE], window_size, type = "vector")
-    distances_snippet[n, ] <- distance$mpdist
+    distances_snippet[n, ] <- distances[index, ]
   }
-  ## Calculating the fraction of each snippet
-  totalmin <- do.call(pmin, as.data.frame(t(distances_snippet))) # col wise
 
+  #### Calculating the fraction of each snippet ####
+  totalmin <- do.call(pmin, as.data.frame(t(distances_snippet))) # col wise
   horizontal <- rep(0, length(totalmin))
+  fraction <- NULL
 
   for (i in 1:n_snippets) {
     a <- (distances_snippet[i, ] <= totalmin)
-    fraction <- c(fraction, sum(a) / (nrow(data) - s_size))
+    fraction <- c(fraction, sum(a) / (nrow(data) - s_size + 1))
 
-    # # # #     just in case we have the same value for both
+    # just in case we have the same value for both
     totalmin[a] <- totalmin[a] - 1
 
     for (j in indexes) {
@@ -118,6 +128,11 @@ find_snippet <- function(data, s_size, n_snippets = 2, window_size = s_size / 2)
     }
 
     horizontal[a] <- i
+  }
+
+  ## assert percentages
+  if (round(sum(fraction), 3) != 1) {
+    message("DEBUG: ", round(sum(fraction), 3))
   }
 
   obj <- list(snippet_idx = snippetidx, snippet_frac = fraction, snippet_size = s_size, regime = horizontal, data = list(data))
