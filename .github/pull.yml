@@ -4,5 +4,9 @@ rules:
     upstream: franzbischoff:master
     mergeMethod: hardreset
   - base: develop
+<<<<<<< HEAD
     upstream: franzbischoff:develop
+=======
+    upstream: franzbischoff:develop    # change `wei` to the owner of upstream repo
+>>>>>>> test2
     mergeMethod: hardreset
