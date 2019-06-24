@@ -1,8 +1,5 @@
 version: "1"
 rules:
-  - base: master
-    upstream: franzbischoff:master
-    mergeMethod: hardreset
   - base: develop
-    upstream: franzbischoff:develop
+    upstream: franzbischoff:develop    # change `wei` to the owner of upstream repo
     mergeMethod: hardreset
