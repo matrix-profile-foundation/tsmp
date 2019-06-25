@@ -29,4 +29,4 @@
 ^CONTRIBUTING\.Rmd$
 ^\.github/
 ^LOCAL_APPDATA_FONTCONFIG_CACHE/
-^.whitesource
+^.whitesource$
