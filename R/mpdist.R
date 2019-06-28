@@ -86,7 +86,7 @@ mpdist <- function(ref_data, query_data, window_size, type = c("simple", "vector
     dist <- mpdist_vect(ref_data, query_data, window_size, thr)
   }
 
-  dist
+  return(dist)
 }
 
 #' MP Distance
@@ -120,11 +120,12 @@ mpdist_simple <- function(ref_data, query_data, window_size, thr = 0.05) {
 #' @keywords internal
 #' @noRd
 mpdist_vect <- function(data, query, window_size, thr = 0.05) {
-  mat <- NULL
-  nn <- NULL
 
-  num_subseqs <- nrow(query) - window_size + 1
-  dist_profile_size <- nrow(data) - window_size + 1
+  nn <- NULL
+  query_size <- nrow(query)
+  data_size <- nrow(data)
+  num_subseqs <- query_size - window_size + 1
+  dist_profile_size <- data_size - window_size + 1
   mat <- matrix(nrow = num_subseqs, ncol = dist_profile_size)
 
   for (i in seq_len(num_subseqs)) {
@@ -134,21 +135,22 @@ mpdist_vect <- function(data, query, window_size, thr = 0.05) {
 
   all_right_histogram <- do.call(pmin, as.data.frame(t(mat))) # col min
 
-  mass_dist_slid_min <- matrix(nrow = nrow(mat), ncol = ncol(mat))
+  mass_dist_slid_min <- matrix(nrow = num_subseqs, ncol = dist_profile_size)
 
-  for (i in seq_len(nrow(mat))) {
-    mass_dist_slid_min[i, ] <- caTools::runmin(mat[i, ], nrow(mat))
+  for (i in seq_len(num_subseqs)) {
+    mass_dist_slid_min[i, ] <- caTools::runmin(mat[i, ], num_subseqs)
   }
 
-  mp_dist_length <- nrow(data) - nrow(query) + 1
-  right_hist_length <- nrow(query) - window_size + 1
-
+  mp_dist_length <- data_size - query_size + 1
+  right_hist_length <- query_size - window_size + 1 # num_subseqs
   mpdist_array <- vector(mode = "numeric", length = mp_dist_length)
+  half_subseq <- floor(num_subseqs / 2)
+
   for (i in seq_len(mp_dist_length)) {
     right_hist <- all_right_histogram[i:(right_hist_length + i - 1)]
-    left_hist <- mass_dist_slid_min[, (i + floor(nrow(mat) / 2))]
+    left_hist <- mass_dist_slid_min[, (half_subseq + i)]
     recreated_mp <- c(left_hist, right_hist)
-    mpdist_array[i] <- cal_mp_dist(recreated_mp, thr, 2 * nrow(query))
+    mpdist_array[i] <- cal_mp_dist(recreated_mp, thr, 2 * query_size)
   }
 
   mpdist_array[mpdist_array < vars()$eps] <- 0

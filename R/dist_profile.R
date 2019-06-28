@@ -69,6 +69,8 @@
 dist_profile <- function(data, query, ..., window_size = NULL, method = "v3", index = 1, k = NULL,
                          weight = NULL, paa = 1) {
 
+  # TODO: Check Reals in MASS to avoid repetition
+  #
   ## ---- Verify if method exists ----
   # set as v3 if no method is entered
   if (!is.na(pmatch(method, "v3"))) {
