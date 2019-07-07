@@ -509,6 +509,84 @@
   }
 }
 
+#---- Subset MPdist ----
+
+`[.MPdistProfile` <- function(x, ..., drop = FALSE) {
+
+  subset <- c(...)
+  sub_size <- length(subset)
+
+  if (is.numeric(subset)) {
+    attr(x, "subsetting") <- "MPdistProfile"
+
+    if (!all(diff(subset) == 1)) {
+      stop("Indexes must be continuous and ascending.")
+    }
+
+    attr <- attr(x, "origin")
+
+    if (sub_size < attr$query_size) {
+      stop("Subset must be at least the size of query data", attr$query_size)
+    }
+
+    if (!is.null(x$data)) {
+      max_valid_idx <- nrow(x$data[[1]])
+    } else {
+      max_valid_idx <- nrow(x$mpdist) - attr$query_size + 1
+    }
+
+    if (max(subset) > max_valid_idx) {
+      stop("Index is larger than data size.")
+    } else if (max(subset) < max_valid_idx) {
+      attr(x, "subset") <- TRUE
+
+      # TODO: Handle new data
+      # new_data <- attr(x, "new_data")
+      #
+      # if (!is.null(new_data)) {
+      #   removed <- nrow(x$mp) - max(subset)
+      #
+      #   if (new_data <= removed) {
+      #     attr(x, "new_data") <- 0
+      #   } else {
+      #     attr(x, "new_data") <- new_data - removed
+      #   }
+      # }
+    }
+
+    if (!is.null(x$data)) {
+        x$data[[1]] <- x$data[[1]][subset, , drop = drop]
+    }
+
+    mp_size <- sub_size - attr$query_size + 1
+    mp_set <- subset[seq_len(mp_size)]
+    offset <- subset[1] - 1
+
+    x$mpdist <- x$mpdist[mp_set, , drop = drop]
+
+    if (is.null(attr(x, "offset"))) {
+      attr(x, "offset") <- offset
+    } else {
+      attr(x, "offset") <- attr(x, "offset") + offset
+    }
+
+    attr(x, "subsetting") <- NULL
+    return(x)
+  } else {
+    getElement(x, args)
+  }
+}
+
+`[.Snippet` <- function(x, ..., drop = FALSE) {
+  attr(x, "subsetting") <- "Snippet"
+
+  message("Not implemented yet.")
+
+  attr(x, "subsetting") <- NULL
+
+  x
+}
+
 #---- Tails ----
 
 tail.MatrixProfile <- function(x, n = 2 * max(x$w), ...) {

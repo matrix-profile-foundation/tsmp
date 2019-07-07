@@ -83,7 +83,23 @@ mpdist <- function(ref_data, query_data, window_size, type = c("simple", "vector
   } else if (type == "simple" || nrow(ref_data) == nrow(query_data)) {
     dist <- mpdist_simple(ref_data, query_data, window_size, thr)
   } else {
-    dist <- mpdist_vect(ref_data, query_data, window_size, thr)
+    obj <- list()
+    obj$mpdist <- mpdist_vect(ref_data, query_data, window_size, thr)
+    obj$w <- window_size
+    obj$data <- list(ref_data, query_data)
+    class(obj) <- "MPdistProfile"
+
+    attr(obj, "origin") <- list(
+      data_size = nrow(ref_data),
+      query_size = nrow(query_data),
+      window_size = window_size,
+      mp_size = nrow(obj$mpdist),
+      algorithm = "MPdist",
+      class = class(obj),
+      version = 1.1
+    )
+
+    return(obj)
   }
 
   return(dist)
@@ -156,7 +172,7 @@ mpdist_vect <- function(data, query, window_size, thr = 0.05) {
   mpdist_array[mpdist_array < vars()$eps] <- 0
   mpdist_array <- sqrt(mpdist_array)
 
-  obj <- list(mpdist = mpdist_array, w = window_size)
+  obj <- as.matrix(mpdist_array)
 
   return(obj)
 }

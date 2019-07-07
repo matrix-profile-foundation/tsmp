@@ -1,9 +1,14 @@
 NEWS
 ================
 Francisco Bischoff
-\- 19 Jun 2019
+\- 07 Jul 2019
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
+
+# tsmp 0.4.0
+
+  - Added MPdist algorithm to compare two time series.
+  - Added `find_snippet()` that uses MPdist to show representative data.
 
 # tsmp 0.3.5
 
@@ -61,7 +66,7 @@ Francisco Bischoff
   - Outputs have a prettier print format.
   - Outputs have a plot function. Try to plot a `tsmp()` output for
     example.
-  - Now functions can work in `%>%` (pipe), e.g. `tsmp() %>%
+  - Now functions can work in `%>%` (pipe), e.g. `tsmp() %>%
     find_motif()`. Except for SDTS that has a proper way to work.
   - Added a wrapper function called `tsmp()` that handles the several
     algorithms available.

@@ -374,7 +374,8 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
 
       new_index_data_v <- list_motifs_profile[i_v, "indexes_data", j_v] + window_size - 1
 
-      # --- Compute true distance entry heapentry ---- TODO: check NA from data
+      # --- Compute true distance entry heapentry ----
+      # TODO: check NA from data
       list_motifs_profile[i_v, "dps", j_v][ez_v] <- (list_motifs_profile[i_v, "dps", j_v] + matrix(query[new_index_query_v] * data[new_index_data_v], ncol = ncol(new_index_data_v)))[ez_v]
       list_motifs_profile[i_v, "sum_data", j_v][ez_v] <- (list_motifs_profile[i_v, "sum_data", j_v] + data[new_index_data_v])[ez_v]
       list_motifs_profile[i_v, "sqrsum_data", j_v][ez_v] <- (list_motifs_profile[i_v, "sqrsum_data", j_v] + (data[new_index_data_v] * data[new_index_data_v]))[ez_v]

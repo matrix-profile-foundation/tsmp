@@ -1,7 +1,7 @@
 CONTRIBUTING
 ================
 Francisco Bischoff
-\- 19 Jun 2019
+\- 07 Jul 2019
 
 <!-- CONTRIBUTING.md is generated from CONTRIBUTING.Rmd Please edit that file -->
 
@@ -67,7 +67,7 @@ make your example reproducible: required packages, data, code.
     Learn a little
     [markdown](https://help.github.com/articles/basic-writing-and-formatting-syntax/)
     so you can correctly format your issue. The most important thing is
-    to surround your code with ` ``` R` and ` ``` ` so it’s syntax
+    to surround your code with ` ``` R ` and ` ``` ` so it’s syntax
     highlighted (which makes it easier to read).
 
 4.  Check that you’ve actually made a reproducible example by using the

@@ -21,6 +21,10 @@ knitr::opts_chunk$set(
 )
 ```
 
+# tsmp 0.4.0
+* Added MPdist algorithm to compare two time series.
+* Added `find_snippet()` that uses MPdist to show representative data.
+
 # tsmp 0.3.5
 * Changed `mass()` to `dist_profile()`, including options to different algorithms.
 * Added MASS_V3 and MASS_Weighted to `dist_profile()` algorithms.

@@ -1,7 +1,7 @@
 README
 ================
 Francisco Bischoff
-\- 19 Jun 2019
+\- 07 Jul 2019
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -107,6 +107,8 @@ devtools::install_github("franzbischoff/tsmp")
   - Annotation vectors (e.g., Stop-word MOTIF bias, Actionability bias)
   - FLUSS Arc Plot and SiMPle Arc Plot
   - Exact Detection of Variable Length Motifs (VALMOD)
+  - MPdist: Matrix Profile Distance
+  - Time Series Snippets
   - Subsetting Matrix Profiles (`head()`, `tail()`, `[`, etc.)
   - Misc:
       - MASS v2.0
@@ -120,8 +122,6 @@ devtools::install_github("franzbischoff/tsmp")
 ## Roadmap
 
   - Profile-Based Shapelet Discovery
-  - MPdist: Matrix Profile Distance
-  - Time Series Snippets
   - GPU-STOMP
 
 ## Other projects with Matrix Profile
@@ -139,6 +139,13 @@ devtools::install_github("franzbischoff/tsmp")
   - C++ (CUDA and OPENCL): <https://github.com/shapelets/khiva>
   - CUDA: <https://github.com/zpzim/STOMPSelfJoin>
   - CUDA: <https://github.com/zpzim/SCAMP>
+
+## Matrix Profile Foundation
+
+Our next step unifying the Matrix Profile implementation in several
+programming languages.
+
+Visit: [Matrix Profile Foundation](https://matrixprofile.org)
 
 ## Code of Conduct
 

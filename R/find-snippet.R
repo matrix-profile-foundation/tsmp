@@ -136,7 +136,7 @@ find_snippet <- function(data, s_size, n_snippets = 2, window_size = s_size / 2)
   }
 
   obj <- list(snippet_idx = snippetidx, snippet_frac = fraction, snippet_size = s_size, regime = horizontal, data = list(data))
-  class(obj) <- update_class(class(obj), "Snippet")
+  class(obj) <- "Snippet"
 
   return(obj)
 }

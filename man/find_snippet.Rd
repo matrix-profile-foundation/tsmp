@@ -20,15 +20,32 @@ than \code{s_size}. (Default is \code{s_size / 2}).}
 Returns the snippet : a list of n_snippets snippets
 fraction : fraction of each snippet
 snippetidx : the location of each
-snippet within time sereis
+snippet within time series
 }
 \description{
-MPdist is a recently introduced distance measure which considers two time series to be similar
+Time Series Snippets tries to solve mainly the common problem of summarization "Show me some
+representative/typical data". As stated by the original paper, potential uses of snippets are:
+integrating summarizations of files directly into an operating, production of automatically
+generated reports, for example, summarize a sleep study and also can be used to support a
+host of higher-level tasks, including the comparison of massive data collections.
 }
 \details{
-MPdist
+Motifs vs. snippets: While motifs reward fidelity of conservation, snippets also rewards coverage.
+Informally, coverage is some measure of how much of the data is explained or represented by
+a given snippet.
+
+Shapelets vs. snippets: shapelets are defined as subsequences that are maximally representative
+of a class. Shapelets are supervised, snippets are unsupervised. Shapelets are generally biased
+to be as short as possible. In contrast, we want snippets to be longer, to intuitively capture
+the "flavor" of the time series.
 }
 \examples{
+
+snippets <- find_snippet(mp_fluss_data$walkjogrun$data[1:300], 40, n_snippets = 2)
+\dontrun{
+snippets <- find_snippet(mp_fluss_data$walkjogrun$data, 120, n_snippets = 3)
+plot(snippets)
+}
 
 }
 \references{
