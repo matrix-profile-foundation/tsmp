@@ -43,6 +43,8 @@ mass_pre <- function(data, query = NULL, window_size) {
   data_avgsd <- fast_avg_sd(data, window_size) # precompute moving average and SD
   data_mean <- data_avgsd$avg
   data_sd <- data_avgsd$sd
+  pad_size <- 2^ceiling(log2(data_size))
+  data[(data_size + 1):pad_size] <- 0
   data_fft <- stats::fft(data) # precompute fft of data
 
 

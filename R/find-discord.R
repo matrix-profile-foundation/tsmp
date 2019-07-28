@@ -92,7 +92,7 @@ find_discord.MatrixProfile <- function(.mp, data, n_discords = 1, n_neighbors = 
     # query using the discord to find its neighbors
     nn <- dist_profile(data, data, nn, window_size = .mp$w, index = discord_idx)
 
-    distance_profile <- Re(nn$distance_profile)
+    distance_profile <- nn$distance_profile
     distance_profile[distance_profile > (discord_distance * radius)^2] <- Inf
     discord_zone_start <- max(1, discord_idx - exclusion_zone)
     discord_zone_end <- min(matrix_profile_size, discord_idx + exclusion_zone)

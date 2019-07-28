@@ -168,7 +168,8 @@ stamp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_s
         } else {
           nn <- dist_profile(data, query, pre, index = i, method = "weighted")
         }
-        distance_profile <- Re(sqrt(nn$distance_profile))
+
+        distance_profile <- sqrt(nn$distance_profile)
 
         # apply exclusion zone
         if (exclusion_zone > 0) {

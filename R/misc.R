@@ -11,7 +11,66 @@
 #'
 #' @examples
 #' data_sd <- fast_movsd(mp_toy_data$data[, 1], mp_toy_data$sub_len)
+
+# DO NOT Handles NA's
 fast_movsd <- function(data, window_size) {
+
+  if (window_size < 2) {
+    stop("'window_size' must be at least 2.")
+  }
+
+  data_sum <- cumsum(c(sum(data[1:window_size]), diff(data, window_size)))
+  data_mean <- data_sum / window_size
+  data2 <- data^2
+  data2_sum <- cumsum(c(sum(data2[1:window_size]), diff(data2, window_size)))
+  data_sd2 <- (data2_sum / window_size) - (data_mean^2)
+  data_sd <- sqrt(data_sd2)
+
+  return(data_sd)
+}
+
+# DO NOT Handles NA's
+fast_muinvn <- function(data, window_size) {
+
+  if (window_size < 2) {
+    stop("'window_size' must be at least 2.")
+  }
+
+  tictac <- Sys.time()
+
+  data_sum <- cumsum(c(sum(data[1:window_size]), diff(data, window_size)))
+  data_mean <- data_sum / window_size
+  data2 <- data^2
+  data2_sum <- cumsum(c(sum(data2[1:window_size]), diff(data2, window_size)))
+  data_dp2 <- sqrt(data2_sum - data_mean^2 * window_size)
+  data_dp <- 1/data_dp2
+
+  tictac <- Sys.time() - tictac
+
+  message(sprintf("muinvn finished in %.2f %s", tictac, units(tictac)))
+  return(list(mu = data_mean, sig = data_dp))
+}
+
+# DO NOT Handles NA's
+muinvn <- function(a, w) {
+  # Functions here are based on the work in
+  # Ogita et al, Accurate Sum and Dot Product
+  # results here are a moving average and stable inverse centered norm based
+  # on Accurate Sum and Dot Product, Ogita et al
+
+  mu <- sum2s_v3(a, w) / w
+  sig <- rep(0, length(a) - w + 1)
+
+  for (i in 1:length(mu)) {
+    sig[i] <- sum((a[i:(i + w - 1)] - mu[i])^2)
+  }
+
+  sig <- 1 / sqrt(sig)
+  return(list(mu = mu, sig = sig))
+}
+
+# Handles NA's
+old_fast_movsd <- function(data, window_size) {
 
   # length of the time series
   data_size <- length(data)
@@ -26,11 +85,11 @@ fast_movsd <- function(data, window_size) {
 
   # Improve the numerical analysis by subtracting off the series mean
   # this has no effect on the standard deviation.
-  data <- data - mean(data)
+  data <- data - mean(data, na.rm = TRUE)
 
   # scale the data to have unit variance too. will put that
   # scale factor back into the result at the end
-  data_sd <- std(data)
+  data_sd <- std(data, na.rm = TRUE)
   data <- data / data_sd
 
   # we will need the squared elements
@@ -56,7 +115,21 @@ fast_movsd <- function(data, window_size) {
 #'
 #' @examples
 #' data_avg <- fast_movavg(mp_toy_data$data[, 1], mp_toy_data$sub_len)
+# DO NOT Handles NA's
 fast_movavg <- function(data, window_size) {
+  if (window_size < 2) {
+    stop("'window_size' must be at least 2.")
+  }
+
+  return(cumsum(c(sum(data[1:window_size]), diff(data, window_size))) / window_size)
+}
+
+# Handles NA's
+old_fast_movavg <- function(data, window_size) {
+  if (window_size < 2) {
+    stop("'window_size' must be at least 2.")
+  }
+
   data_mean <- stats::filter(data, rep(1 / window_size, window_size), sides = 2)
   return(data_mean[!is.na(data_mean)])
 }
@@ -69,7 +142,28 @@ fast_movavg <- function(data, window_size) {
 #' @keywords internal
 #' @noRd
 
+# DO NOT Handles NA's
 fast_avg_sd <- function(data, window_size) {
+  if (window_size < 2) {
+    stop("'window_size' must be at least 2.")
+  }
+
+  data_sum <- cumsum(c(sum(data[1:window_size]), diff(data, window_size)))
+  data_mean <- data_sum / window_size
+  data2 <- data^2
+  data2_sum <- cumsum(c(sum(data2[1:window_size]), diff(data2, window_size)))
+  data_sd2 <- (data2_sum / window_size) - (data_mean^2)
+  data_sd <- sqrt(data_sd2)
+
+  return(list(avg = data_mean, sd = data_sd, sum = data_sum, sqrsum = data2_sum))
+}
+
+# DO NOT Handles NA's
+old_fast_avg_sd <- function(data, window_size) {
+  if (window_size < 2) {
+    stop("'window_size' must be at least 2.")
+  }
+
   data_len <- length(data)
 
   data[(data_len + 1):(window_size + data_len)] <- 0
@@ -82,7 +176,6 @@ fast_avg_sd <- function(data, window_size) {
   data_mean <- data_sum / window_size
 
   data_sd2 <- (data2_sum / window_size) - (data_mean^2)
-  data_sd2 <- Re(data_sd2)
   data_sd2 <- pmax(data_sd2, 0)
   data_sd <- sqrt(data_sd2)
 
@@ -97,8 +190,8 @@ fast_avg_sd <- function(data, window_size) {
 #' @keywords internal
 #' @noRd
 #'
-std <- function(data) {
-  sdx <- stats::sd(data)
+std <- function(data, na.rm = FALSE) {
+  sdx <- stats::sd(data, na.rm)
 
   if (is.na(sdx)) {
     return(1.0)

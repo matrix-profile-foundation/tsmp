@@ -67,7 +67,8 @@ stompi_update <- function(.mp, new_data, history_size = FALSE) {
         (nn$par$data_sd * query_stats$sd[i]))
     }
 
-    distance_profile <- abs(sqrt(distance_profile))
+    distance_profile[distance_profile < 0] <- 0
+    distance_profile <- sqrt(distance_profile)
     drop_value <- query[1]
 
     exc_st <- max(1, start_idx - exclusion_zone)

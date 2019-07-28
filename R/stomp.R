@@ -164,7 +164,8 @@ stomp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
         (nn$par$data_sd * nn$par$query_sd[i]))
     }
 
-    distance_profile <- Re(sqrt(distance_profile))
+    distance_profile[distance_profile < 0] <- 0
+    distance_profile <- sqrt(distance_profile)
     drop_value <- query_window[1, 1]
 
     # apply exclusion zone

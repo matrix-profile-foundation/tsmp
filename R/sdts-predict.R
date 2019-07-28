@@ -43,7 +43,7 @@ sdts_predict <- function(model, data, window_size) {
 
   for (i in 1:n_pat) {
     nn <- dist_profile(data, model$pattern[[i]])
-    dist_pro <- Re(sqrt(nn$distance_profile))
+    dist_pro <- sqrt(nn$distance_profile)
     anno <- dist_pro - model$thold[i]
     anno[anno >= 0] <- 0
     anno[anno < 0] <- -1

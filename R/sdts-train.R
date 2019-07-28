@@ -176,7 +176,7 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
 
     for (j in 1:n_pos) {
       nn <- dist_profile(data, candi[[i]][[j]], window_size = window_size[i])
-      dist_pro <- Re(sqrt(nn$distance_profile))
+      dist_pro <- sqrt(nn$distance_profile)
       candi_pro[[i]][[j]] <- dist_pro
       exc_st <- max(1, candi_idx[[i]][j] - window_size[i])
       exc_ed <- min(length(dist_pro), candi_idx[[i]][j] + window_size[i])

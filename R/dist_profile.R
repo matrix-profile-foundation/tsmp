@@ -45,11 +45,11 @@
 #' ref_data <- mp_toy_data$data[, 1]
 #' # minimum example, data and query
 #' nn <- dist_profile(ref_data, ref_data[1:w])
-#' distance_profile <- Re(sqrt(nn$distance_profile))
+#' distance_profile <- sqrt(nn$distance_profile)
 #'
 #' # data and indexed query
 #' nn <- dist_profile(ref_data, ref_data, window_size = w, index = 10)
-#' distance_profile <- Re(sqrt(nn$distance_profile))
+#' distance_profile <- sqrt(nn$distance_profile)
 #'
 #' # recursive
 #' nn <- NULL
@@ -65,12 +65,10 @@
 #'   window_size = w, index = 1, method = "weighted",
 #'   weight = weight
 #' )
-#' distance_profile <- Re(sqrt(nn$distance_profile))
+#' distance_profile <- sqrt(nn$distance_profile)
 dist_profile <- function(data, query, ..., window_size = NULL, method = "v3", index = 1, k = NULL,
                          weight = NULL, paa = 1) {
 
-  # TODO: Check Reals in MASS to avoid repetition
-  #
   ## ---- Verify if method exists ----
   # set as v3 if no method is entered
   if (!is.na(pmatch(method, "v3"))) {
@@ -132,8 +130,8 @@ dist_profile <- function(data, query, ..., window_size = NULL, method = "v3", in
 
     result1 <- mass_v3(q1, data, pre1$window_size, pre1$data_size, pre1$data_mean, pre1$data_sd, mean(q1), std(q1))
     result2 <- mass_v3(q2, data, pre2$window_size, pre2$data_size, pre2$data_mean, pre2$data_sd, mean(q2), std(q2))
-    result1 <- abs(sqrt(result1$distance_profile))
-    result2 <- abs(sqrt(result2$distance_profile))
+    result1 <- sqrt(result1$distance_profile)
+    result2 <- sqrt(result2$distance_profile)
 
     pad <- rep(Inf, max_idx - 1)
     result2 <- c(pad, result2)

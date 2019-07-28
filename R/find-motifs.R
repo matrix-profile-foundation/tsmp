@@ -112,7 +112,7 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
     # query using the motif to find its neighbors
     nn <- dist_profile(data, data, nn, window_size = window, index = min_idx)
 
-    distance_profile <- Re(nn$distance_profile)
+    distance_profile <- nn$distance_profile
 
     if (valmod) {
       distance_profile <- distance_profile * sqrt(1.0 / window)

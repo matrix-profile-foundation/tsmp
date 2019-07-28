@@ -9,6 +9,9 @@
 #' `3` adds the finish sound. `exclusion_zone` is used to avoid  trivial matches; if a query data
 #' is provided (join similarity), this parameter is ignored.
 #'
+#' Paper that implements `skimp()` suggests that window_max / window_min > than 1.24 begins to
+#' weakening pruning in `valmod()`.
+#'
 #' @param ... a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix
 #'   profile.
 #' @param window_min an `int`. Minimum size of the sliding window.
@@ -225,10 +228,9 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
             (nn$par$data_sd * nn$par$query_sd[i]))
         }
 
-        distance_profile <- Re(distance_profile)
         distance_profile[distance_profile < 0] <- 0
 
-        new_lb_profile <- Re(((last_product / window_size) - (nn$par$query_mean[i] * nn$par$data_mean)) / (nn$par$query_sd[i] * nn$par$data_sd))
+        new_lb_profile <- ((last_product / window_size) - (nn$par$query_mean[i] * nn$par$data_mean)) / (nn$par$query_sd[i] * nn$par$data_sd)
         new_lb_profile[new_lb_profile < 0] <- 0
         new_lb_profile_len <- length(new_lb_profile)
 
@@ -280,7 +282,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
         list_motifs_profile[i, "lb_distances", ] <- lb_profile[lb_idxs]
         list_motifs_profile[i, "index_query", ] <- i
         list_motifs_profile[i, "indexes_data", ] <- lb_idxs
-        list_motifs_profile[i, "dps", ] <- Re(last_product[lb_idxs])
+        list_motifs_profile[i, "dps", ] <- last_product[lb_idxs]
 
         distance_profile <- sqrt(distance_profile)
 
@@ -394,7 +396,6 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
         list_motifs_profile[i_v, "distances", j_v]
       )
 
-      dist_v <- Re(dist_v)
       dist_v[dist_v < 0] <- 0
 
       list_motifs_profile[i_v, "distances", j_v] <- dist_v
@@ -543,11 +544,10 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
 
               drop_value <- query_window[1]
 
-              distance_profile <- Re(distance_profile)
               distance_profile[distance_profile < 0] <- 0
 
-              new_lb_profile <- Re(((last_product / window_size) - (nn$par$query_mean[seq[i]] *
-                nn$par$data_mean)) / (nn$par$query_sd[seq[i]] * nn$par$data_sd))
+              new_lb_profile <- ((last_product / window_size) - (nn$par$query_mean[seq[i]] *
+                nn$par$data_mean)) / (nn$par$query_sd[seq[i]] * nn$par$data_sd)
               new_lb_profile[new_lb_profile < 0] <- 0
               new_lb_profile_len <- length(new_lb_profile)
 
@@ -594,7 +594,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
               list_motifs_profile[seq[i], "lb_distances", ] <- lb_profile[lb_idxs]
               list_motifs_profile[seq[i], "index_query", ] <- seq[i]
               list_motifs_profile[seq[i], "indexes_data", ] <- lb_idxs
-              list_motifs_profile[seq[i], "dps", ] <- Re(last_product[lb_idxs])
+              list_motifs_profile[seq[i], "dps", ] <- last_product[lb_idxs]
             }
           }
 

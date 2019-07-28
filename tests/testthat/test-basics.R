@@ -11,7 +11,6 @@ if (skip_on_cran()) {
   test_that("Errors", {
     # big window size
     expect_error(fast_movsd(mp_toy_data$data[, 1], 1), "must be at least 2")
-    expect_error(fast_movsd(mp_toy_data$data[1:100, 1], 500), "is too large")
     expect_error(expect_message(beep(audio::close.audioInstance(99)), "Failed"))
     expect_error(tsmp:::diff2(data.frame(1:10), as.matrix(10:1)), "matrices")
     expect_error(tsmp:::diff2(as.matrix(1:10), matrix(10:1, ncol = 2)), "columns")
@@ -50,8 +49,8 @@ if (skip_on_cran()) {
   })
 
   test_that("MASS Pre is ok", {
-    expect_equal(sum(Re(unlist(lapply(pre, round, 3)))), 1305.817)
-    expect_equal(sum(Re(unlist(lapply(pre3, round, 3)))), 1599.839)
+    expect_equal(sum(Re(unlist(lapply(pre, round, 3)))), 1657.461)
+    expect_equal(sum(Re(unlist(lapply(pre3, round, 3)))), 1951.483)
     expect_equal(sum(Re(unlist(lapply(prew, round, 2)))), 13147.42)
   })
 

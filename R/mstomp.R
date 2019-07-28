@@ -192,7 +192,6 @@ mstomp <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, must_
         (data_sd * kronecker(matrix(1, matrix_profile_size, 1), t(data_sd[i, ]))))
     }
 
-    distance_profile <- Re(distance_profile)
     drop_value <- query_window[1, ]
 
     # apply exclusion zone

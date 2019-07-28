@@ -176,7 +176,7 @@ stamp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size 
       nn <- dist_profile(data, query, nn, window_size = window_size, index = i, method = "weighted", weight = weight)
     }
 
-    distance_profile <- Re(sqrt(nn$distance_profile))
+    distance_profile <- sqrt(nn$distance_profile)
 
     # apply exclusion zone
     if (exclusion_zone > 0) {
