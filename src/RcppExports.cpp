@@ -18,7 +18,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // mode_rcpp
-int mode_rcpp(NumericVector x);
+int32_t mode_rcpp(NumericVector x);
 RcppExport SEXP _tsmp_mode_rcpp(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;

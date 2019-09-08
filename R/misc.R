@@ -255,7 +255,7 @@ mode <- function(x, rcpp = FALSE) {
 znorm <- function(data, rcpp = TRUE) {
   # Rcpp is faster
   if (rcpp) {
-    return(znorm_rcpp(data))
+    return(as.matrix(znorm_rcpp(data)))
   }
 
   data_mean <- mean(data)
