@@ -12,7 +12,7 @@
 #' Paper that implements `skimp()` suggests that window_max / window_min > than 1.24 begins to
 #' weakening pruning in `valmod()`.
 #'
-#' @param ... a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix
+#' @param \dots a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix
 #'   profile.
 #' @param window_min an `int`. Minimum size of the sliding window.
 #' @param window_max an `int`. Maximum size of the sliding window.
@@ -34,7 +34,7 @@
 #'
 #' @references * Linardi M, Zhu Y, Palpanas T, Keogh E. VALMOD: A Suite for Easy and Exact Detection
 #'  of Variable Length Motifs in Data Series. In: Proceedings of the 2018 International Conference
-#'   on Management of Data - SIGMOD ’18. New York, New York, USA: ACM Press; 2018. p. 1757–60.
+#'   on Management of Data - SIGMOD '18. New York, New York, USA: ACM Press; 2018. p. 1757-60.
 #'
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #'

@@ -24,7 +24,7 @@ mass_v2(query_window, window_size, data_fft, data_size, data_mean, data_sd,
 
 \item{query_sd}{precomputed query standard deviation.}
 
-\item{...}{just a placeholder to catch unused parameters.}
+\item{\dots}{just a placeholder to catch unused parameters.}
 }
 \value{
 Returns the \code{distance_profile} for the given query and the \code{last_product} for STOMP

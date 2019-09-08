@@ -28,7 +28,7 @@
 #' @param main a `string`. (Default is `"Arc Plot"`). Main title.
 #' @param ylab a `string`. (Default is `""`). Y label.
 #' @param xlab a `string`. (Default is `"Profile Index"`). X label.
-#' @param ... further arguments to be passed to [plot()]. See [par()].
+#' @param \dots further arguments to be passed to [plot()]. See [par()].
 #' @param xmin an `int`. (Default is `NULL`). Set the minimum value of x axis.
 #' @param xmax an `int`. (Default is `NULL`). Set the maximum value of x axis.
 #'
@@ -112,7 +112,7 @@ plot_arcs <- function(pairs, alpha = NULL, quality = 30, lwd = 15, col = c("blue
 #' @param xlab a `string`. X label.
 #' @param ylab a `string`. Y label.
 #' @param ncol an `int`. Number of columns to plot Motifs.
-#' @param ... further arguments to be passed to [plot()]. See [par()].
+#' @param \dots further arguments to be passed to [plot()]. See [par()].
 #'
 #' @return None
 #'

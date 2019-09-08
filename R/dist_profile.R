@@ -18,7 +18,7 @@
 #'
 #' @param data a `matrix` or a `vector`.
 #' @param query a `matrix` or a `vector`. See details.
-#' @param ... Precomputed values from the first iteration. If not supplied, these values will be computed.
+#' @param \dots Precomputed values from the first iteration. If not supplied, these values will be computed.
 #' @param window_size an `int` or `NULL`. Sliding window size. See details.
 #' @param method method that will be used to calculate the distance profile. See details.
 #' @param index an `int`. Index of query window. See details.
@@ -66,7 +66,7 @@
 #'   weight = weight
 #' )
 #' distance_profile <- sqrt(nn$distance_profile)
-dist_profile <- function(data, query, ..., window_size = NULL, method = "v3", index = 1, k = NULL,
+dist_profile <- function(data, query, ..., window_size = NULL, method = "v2", index = 1, k = NULL,
                          weight = NULL, paa = 1) {
 
   ## ---- Verify if method exists ----

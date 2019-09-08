@@ -11,7 +11,7 @@
 #' @param data_sd precomputed data moving standard deviation.
 #' @param query_mean precomputed query average.
 #' @param query_sd precomputed query standard deviation.
-#' @param ... just a placeholder to catch unused parameters.
+#' @param \dots just a placeholder to catch unused parameters.
 #'
 #' @return Returns the `distance_profile` for the given query and the `last_product` for STOMP
 #'   algorithm.

@@ -1,7 +1,7 @@
 Package: tsmp
 Type: Package
 Title: Time Series with Matrix Profile
-Version: 0.4.0.9000
+Version: 0.4.0.9001
 Authors@R: c(
     person("Francisco", "Bischoff", email = "fbischoff@med.up.pt", role = c("aut", "cre"),
     comment = c(ORCID = "https://orcid.org/0000-0002-5301-8672")),
@@ -22,7 +22,7 @@ License: GPL-3
 URL: https://github.com/franzbischoff/tsmp
 BugReports: https://github.com/franzbischoff/tsmp/issues
 Depends: R (>= 2.10)
-Imports: 
+Imports:
     audio,
     doSNOW,
     parallel,

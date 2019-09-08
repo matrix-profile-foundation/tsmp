@@ -13,7 +13,7 @@ find_discord(.mp, ...)
 \arguments{
 \item{.mp}{a TSMP object of class \code{MatrixProfile}}
 
-\item{...}{further arguments to be passed to class specific function.}
+\item{\dots}{further arguments to be passed to class specific function.}
 
 \item{data}{the data used to build the Matrix Profile, if not embedded.}
 

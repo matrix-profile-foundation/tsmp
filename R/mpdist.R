@@ -155,9 +155,9 @@ mpdist_vect <- function(data, query, window_size, thr = 0.05) {
   }
 
   all_right_histogram <- do.call(pmin, as.data.frame(t(mat))) # col min
-  #all_right_histogram <- Rfast::colMins(mat) # col min
+  # all_right_histogram <- Rfast::colMins(mat) # col min
 
-  mass_dist_slid_min <- matrix(nrow = num_subseqs, ncol = dist_profile_size)
+  mass_dist_slid_min <- matrix(nrow = num_subseqs, ncol = dist_profile_size - num_subseqs + 1)
   # apply is not faster
   for (i in seq_len(num_subseqs)) {
     mass_dist_slid_min[i, ] <- movmin(mat[i, ], num_subseqs)
@@ -166,11 +166,10 @@ mpdist_vect <- function(data, query, window_size, thr = 0.05) {
   mp_dist_length <- data_size - query_size + 1
   right_hist_length <- query_size - window_size + 1 # num_subseqs
   mpdist_array <- vector(mode = "numeric", length = mp_dist_length)
-  half_subseq <- floor(num_subseqs / 2)
 
   for (i in seq_len(mp_dist_length)) {
     right_hist <- all_right_histogram[i:(right_hist_length + i - 1)]
-    left_hist <- mass_dist_slid_min[, (half_subseq + i)]
+    left_hist <- mass_dist_slid_min[, i]
     recreated_mp <- c(left_hist, right_hist)
     mpdist_array[i] <- cal_mp_dist(recreated_mp, thr, 2 * query_size)
   }

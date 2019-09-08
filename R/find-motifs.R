@@ -1,7 +1,7 @@
 #' Search for Motifs
 #'
 #' @param .mp a TSMP object of class `MatrixProfile` or `MultiMatrixProfile`.
-#' @param ... further arguments to be passed to class specific function.
+#' @param \dots further arguments to be passed to class specific function.
 #'
 #' @name find_motif
 #' @export
@@ -168,7 +168,7 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
 }
 
 #' @param mode a `string`. Guided or Unconstrained search. Allow partial match. (Default is `guided`).
-#' @param n_bit an `ìnt`. Bit size for discretization. Ignored on Guided search. (Default is `4`).
+#' @param n_bit an `int`. Bit size for discretization. Ignored on Guided search. (Default is `4`).
 #' @param n_dim an `int`. Number of dimensions to use on Guided search instead of embedded value. (Default is `NULL`).
 #'
 #' @return For class `MultiMatrixProfile`, returns the input `.mp` object with a new name `motif`. It contains: `motif_idx`, a `vector`

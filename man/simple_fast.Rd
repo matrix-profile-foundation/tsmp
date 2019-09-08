@@ -7,7 +7,7 @@
 simple_fast(..., window_size, exclusion_zone = 1/2, verbose = 2)
 }
 \arguments{
-\item{...}{a \code{matrix} of \code{numeric}, where each column is a time series. Accepts \code{list} and
+\item{\dots}{a \code{matrix} of \code{numeric}, where each column is a time series. Accepts \code{list} and
 \code{data.frame} too. If a second time series is supplied it will be a join matrix profile.}
 
 \item{window_size}{an \code{int} with the size of the sliding window.}
@@ -36,12 +36,12 @@ result <- simple_fast(data, window_size = w, verbose = 0)
 \references{
 \itemize{
 \item Silva D, Yeh C, Batista G, Keogh E. Simple: Assessing Music Similarity Using
-Subsequences Joins. Proc 17th ISMIR Conf. 2016;23–30.
+Subsequences Joins. Proc 17th ISMIR Conf. 2016;23-30.
 }
 
 \itemize{
 \item Silva DF, Yeh C-CM, Zhu Y, Batista G, Keogh E. Fast Similarity Matrix Profile for
-Music Analysis and Exploration. IEEE Trans Multimed. 2018;14(8):1–1.
+Music Analysis and Exploration. IEEE Trans Multimed. 2018;14(8):1-1.
 }
 
 Website: \url{https://sites.google.com/view/simple-fast}

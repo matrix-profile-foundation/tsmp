@@ -26,7 +26,7 @@ mass_v3(query_window, data, window_size, data_size, data_mean, data_sd,
 
 \item{k}{an \code{int} or \code{NULL}. Default is \code{NULL}. Defines the size of batch. Prefer to use a power of 2.}
 
-\item{...}{just a placeholder to catch unused parameters.}
+\item{\dots}{just a placeholder to catch unused parameters.}
 }
 \value{
 Returns the \code{distance_profile} for the given query and the \code{last_product} for STOMP

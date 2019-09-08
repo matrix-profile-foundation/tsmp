@@ -31,7 +31,7 @@ arc, respectively. Accepts one color.}
 
 \item{xmax}{an \code{int}. (Default is \code{NULL}). Set the maximum value of x axis.}
 
-\item{...}{further arguments to be passed to \code{\link[=plot]{plot()}}. See \code{\link[=par]{par()}}.}
+\item{\dots}{further arguments to be passed to \code{\link[=plot]{plot()}}. See \code{\link[=par]{par()}}.}
 }
 \value{
 None

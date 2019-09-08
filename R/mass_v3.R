@@ -15,7 +15,7 @@
 #' @param query_mean precomputed query average.
 #' @param query_sd precomputed query standard deviation.
 #' @param k an `int` or `NULL`. Default is `NULL`. Defines the size of batch. Prefer to use a power of 2.
-#' @param ... just a placeholder to catch unused parameters.
+#' @param \dots just a placeholder to catch unused parameters.
 #'
 #' @return Returns the `distance_profile` for the given query and the `last_product` for STOMP
 #'   algorithm.
@@ -58,8 +58,8 @@ mass_v3 <- function(query_window, data, window_size, data_size, data_mean, data_
     k <- 2^ceiling(log2(sqrt(data_size)))
   }
 
-  if (k < window_size) {
-    k <- 2^ceiling(log2(window_size))
+  if (k <= window_size) {
+    k <- 2^(ceiling(log2(window_size)) + 1)
     if (k > data_size) {
       k <- data_size
     }

@@ -13,7 +13,7 @@
 #' `1` means text, `2` adds the progress bar, `3` adds the finish sound. `exclusion_zone` is used to
 #' avoid  trivial matches; if a query data is provided (join similarity), this parameter is ignored.
 #'
-#' @param ... a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix
+#' @param \dots a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix
 #'   profile.
 #' @param window_size an `int`. Size of the sliding window.
 #' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is
@@ -36,9 +36,9 @@
 #'
 #' @references * Yeh CCM, Zhu Y, Ulanova L, Begum N, Ding Y, Dau HA, et al. Matrix profile I: All
 #'   pairs similarity joins for time series: A unifying view that includes motifs, discords and
-#'   shapelets. Proc - IEEE Int Conf Data Mining, ICDM. 2017;1317–22.
+#'   shapelets. Proc - IEEE Int Conf Data Mining, ICDM. 2017;1317-22.
 #' @references * Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A
-#'   New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
+#'   New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1-27.
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #'
 #' @examples

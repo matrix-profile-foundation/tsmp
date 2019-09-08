@@ -18,7 +18,7 @@ find_motif(.mp, ...)
 \arguments{
 \item{.mp}{a TSMP object of class \code{MatrixProfile} or \code{MultiMatrixProfile}.}
 
-\item{...}{further arguments to be passed to class specific function.}
+\item{\dots}{further arguments to be passed to class specific function.}
 
 \item{data}{the data used to build the Matrix Profile, if not embedded.}
 
@@ -33,7 +33,7 @@ motif distance * \code{radius}. (Default is \code{3}).}
 
 \item{mode}{a \code{string}. Guided or Unconstrained search. Allow partial match. (Default is \code{guided}).}
 
-\item{n_bit}{an \code{ìnt}. Bit size for discretization. Ignored on Guided search. (Default is \code{4}).}
+\item{n_bit}{an \code{int}. Bit size for discretization. Ignored on Guided search. (Default is \code{4}).}
 
 \item{n_dim}{an \code{int}. Number of dimensions to use on Guided search instead of embedded value. (Default is \code{NULL}).}
 }

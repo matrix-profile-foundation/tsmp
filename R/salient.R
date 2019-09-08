@@ -21,10 +21,10 @@
 #'
 #' @references * Yeh CCM, Van Herle H, Keogh E. Matrix profile III: The matrix profile allows
 #'   visualization of salient subsequences in massive time series. Proc - IEEE Int Conf Data Mining,
-#'   ICDM. 2017;579–88.
+#'   ICDM. 2017;579-88.
 #' @references * Hu B, Rakthanmanon T, Hao Y, Evans S, Lonardi S, Keogh E. Discovering the Intrinsic
 #'   Cardinality and Dimensionality of Time Series Using MDL. In: 2011 IEEE 11th International
-#'   Conference on Data Mining. IEEE; 2011. p. 1086–91.
+#'   Conference on Data Mining. IEEE; 2011. p. 1086-91.
 #' @references Website: <https://sites.google.com/site/salientsubs/>
 #' @export
 #'
@@ -340,10 +340,10 @@ salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_z
 #'
 #' @references * Yeh CCM, Van Herle H, Keogh E. Matrix profile III: The matrix profile allows
 #'   visualization of salient subsequences in massive time series. Proc - IEEE Int Conf Data Mining,
-#'   ICDM. 2017;579–88.
+#'   ICDM. 2017;579-88.
 #' @references * Hu B, Rakthanmanon T, Hao Y, Evans S, Lonardi S, Keogh E. Discovering the Intrinsic
 #'   Cardinality and Dimensionality of Time Series Using MDL. In: 2011 IEEE 11th International
-#'   Conference on Data Mining. IEEE; 2011. p. 1086–91.
+#'   Conference on Data Mining. IEEE; 2011. p. 1086-91.
 #' @references Website: <https://sites.google.com/site/salientsubs/>
 #'
 #' @export
@@ -391,10 +391,10 @@ salient_mds <- function(.mp, data, bit_idx = 1) {
 #'
 #' @references * Yeh CCM, Van Herle H, Keogh E. Matrix profile III: The matrix profile allows
 #'   visualization of salient subsequences in massive time series. Proc - IEEE Int Conf Data Mining,
-#'   ICDM. 2017;579–88.
+#'   ICDM. 2017;579-88.
 #' @references * Hu B, Rakthanmanon T, Hao Y, Evans S, Lonardi S, Keogh E. Discovering the Intrinsic
 #'   Cardinality and Dimensionality of Time Series Using MDL. In: 2011 IEEE 11th International
-#'   Conference on Data Mining. IEEE; 2011. p. 1086–91.
+#'   Conference on Data Mining. IEEE; 2011. p. 1086-91.
 #' @references Website: <https://sites.google.com/site/salientsubs/>
 #'
 #' @export

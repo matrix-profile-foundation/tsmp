@@ -11,7 +11,7 @@ stomp_par(..., window_size, exclusion_zone = 1/2, verbose = 2,
 stomp(..., window_size, exclusion_zone = 1/2, verbose = 2)
 }
 \arguments{
-\item{...}{a \code{matrix} or a \code{vector}. If a second time series is supplied it will be a join matrix
+\item{\dots}{a \code{matrix} or a \code{vector}. If a second time series is supplied it will be a join matrix
 profile.}
 
 \item{window_size}{an \code{int}. Size of the sliding window.}
@@ -65,7 +65,7 @@ mp2 <- stomp(ref_data, query_data, window_size = 30)
 \itemize{
 \item Zhu Y, Zimmerman Z, Senobari NS, Yeh CM, Funning G. Matrix Profile II : Exploiting
 a Novel Algorithm and GPUs to Break the One Hundred Million Barrier for Time Series Motifs and
-Joins. Icdm. 2016 Jan 22;54(1):739–48.
+Joins. Icdm. 2016 Jan 22;54(1):739-48.
 }
 
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}

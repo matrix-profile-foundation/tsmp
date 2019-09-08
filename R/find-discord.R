@@ -1,7 +1,7 @@
 #' Search for Discord
 #'
 #' @param .mp a TSMP object of class `MatrixProfile`
-#' @param ... further arguments to be passed to class specific function.
+#' @param \dots further arguments to be passed to class specific function.
 #'
 #' @name find_discord
 #' @export

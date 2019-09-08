@@ -42,8 +42,8 @@ av <- av_stop_word(mp, stop_word_loc = 150, apply = TRUE)
 \itemize{
 \item Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
 Knowledge into Motif Discovery. In: Proceedings of the 23rd ACM SIGKDD International Conference
-on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
-125–34.
+on Knowledge Discovery and Data Mining - KDD '17. New York, New York, USA: ACM Press; 2017. p.
+125-34.
 }
 }
 \seealso{

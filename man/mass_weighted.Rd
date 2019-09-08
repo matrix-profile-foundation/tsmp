@@ -24,7 +24,7 @@ mass_weighted(query_window, window_size, data_fft, data_size, data_mean,
 
 \item{weight}{a \code{vector} of \code{numeric} with the same length of the \code{window_size}.}
 
-\item{...}{just a placeholder to catch unused parameters.}
+\item{\dots}{just a placeholder to catch unused parameters.}
 }
 \value{
 Returns the \code{distance_profile} for the given query and the \code{last_product} for STOMP

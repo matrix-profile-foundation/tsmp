@@ -10,8 +10,8 @@
 #' @family Annotation vectors
 #' @references * Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
 #'   Knowledge into Motif Discovery. In: Proceedings of the 23rd ACM SIGKDD International Conference
-#'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
-#'   125–34.
+#'   on Knowledge Discovery and Data Mining - KDD '17. New York, New York, USA: ACM Press; 2017. p.
+#'   125-34.
 #' @examples
 #' data <- mp_test_data$train$data[1:1000]
 #' w <- 50
@@ -58,8 +58,8 @@ av_zerocrossing <- function(.mp, data, apply = FALSE) {
 #' @family Annotation vectors
 #' @references * Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
 #'   Knowledge into Motif Discovery. In: Proceedings of the 23rd ACM SIGKDD International Conference
-#'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
-#'   125–34.
+#'   on Knowledge Discovery and Data Mining - KDD '17. New York, New York, USA: ACM Press; 2017. p.
+#'   125-34.
 #' @examples
 #' data <- mp_test_data$train$data[1:1000]
 #' w <- 50
@@ -112,8 +112,8 @@ av_complexity <- function(.mp, data, dilution_factor = 0, apply = FALSE) {
 #' @family Annotation vectors
 #' @references * Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
 #'   Knowledge into Motif Discovery. In: Proceedings of the 23rd ACM SIGKDD International Conference
-#'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
-#'   125–34.
+#'   on Knowledge Discovery and Data Mining - KDD '17. New York, New York, USA: ACM Press; 2017. p.
+#'   125-34.
 #' @examples
 #' data <- mp_test_data$train$data[1:1000]
 #' w <- 50
@@ -173,8 +173,8 @@ av_motion_artifact <- function(.mp, data, apply = FALSE) {
 #' @family Annotation vectors
 #' @references * Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
 #'   Knowledge into Motif Discovery. In: Proceedings of the 23rd ACM SIGKDD International Conference
-#'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
-#'   125–34.
+#'   on Knowledge Discovery and Data Mining - KDD '17. New York, New York, USA: ACM Press; 2017. p.
+#'   125-34.
 #' @examples
 #' data <- mp_test_data$train$data[1:1000]
 #' w <- 50
@@ -239,8 +239,8 @@ av_stop_word <- function(.mp, data, stop_word_loc, exclusion_zone = NULL, thresh
 #' @family Annotation vectors
 #' @references * Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
 #'   Knowledge into Motif Discovery. In: Proceedings of the 23rd ACM SIGKDD International Conference
-#'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
-#'   125–34.
+#'   on Knowledge Discovery and Data Mining - KDD '17. New York, New York, USA: ACM Press; 2017. p.
+#'   125-34.
 #' @examples
 #' data <- mp_test_data$train$data[1:1000]
 #' w <- 50
@@ -294,8 +294,8 @@ av_hardlimit_artifact <- function(.mp, data, apply = FALSE) {
 #' @family Annotation vectors
 #' @references * Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
 #'   Knowledge into Motif Discovery. In: Proceedings of the 23rd ACM SIGKDD International Conference
-#'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
-#'   125–34.
+#'   on Knowledge Discovery and Data Mining - KDD '17. New York, New York, USA: ACM Press; 2017. p.
+#'   125-34.
 #' @examples
 #' data <- mp_test_data$train$data[1:1000]
 #' w <- 50

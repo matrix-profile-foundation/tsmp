@@ -11,7 +11,7 @@
 #' adds the progress bar, `3` adds the finish sound. `exclusion_zone` is used to avoid  trivial
 #' matches; if a query data is provided (join similarity), this parameter is ignored.
 #'
-#' @param ... a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix
+#' @param \dots a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix
 #'   profile.
 #' @param window_size an `int`. Size of the sliding window.
 #' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is
@@ -30,7 +30,7 @@
 #'
 #' @references * Zhu Y, Zimmerman Z, Senobari NS, Yeh CM, Funning G. Matrix Profile II : Exploiting
 #'   a Novel Algorithm and GPUs to Break the One Hundred Million Barrier for Time Series Motifs and
-#'   Joins. Icdm. 2016 Jan 22;54(1):739–48.
+#'   Joins. Icdm. 2016 Jan 22;54(1):739-48.
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #'
 #' @examples
@@ -88,6 +88,9 @@ stomp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
   matrix_profile_size <- data_size - window_size + 1
   num_queries <- query_size - window_size + 1
 
+  if (query_size > data_size) {
+    stop("Query must be smaller or the same size as reference data.")
+  }
   if (window_size > ceiling(query_size / 2)) {
     stop("Time series is too short relative to desired window size.", call. = FALSE)
   }

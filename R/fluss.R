@@ -14,7 +14,7 @@
 #' @family Semantic Segmentations
 #' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII:
 #'   Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE
-#'   International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
+#'   International Conference on Data Mining (ICDM). IEEE; 2017. p. 117-26.
 #' @references Website: <https://sites.google.com/site/onlinesemanticsegmentation/>
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #' @examples
@@ -51,7 +51,7 @@ fluss <- function(.mp, num_segments = 1, exclusion_zone = NULL) {
 #' @family Semantic Segmentations
 #' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII:
 #'   Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE
-#'   International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
+#'   International Conference on Data Mining (ICDM). IEEE; 2017. p. 117-26.
 #' @references Website: <https://sites.google.com/site/onlinesemanticsegmentation/>
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #' @examples
@@ -151,7 +151,7 @@ floss <- function(.mp, new_data, data_window, threshold = 1, exclusion_zone = NU
 #' @family Semantic Segmentations
 #' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII:
 #'   Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE
-#'   International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
+#'   International Conference on Data Mining (ICDM). IEEE; 2017. p. 117-26.
 #' @references Website: <https://sites.google.com/site/onlinesemanticsegmentation/>
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #' @examples
@@ -242,7 +242,7 @@ floss_extract <- function(.mpac, threshold = 1, exclusion_zone = NULL) {
 #' @family Semantic Segmentations
 #' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII:
 #'   Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE
-#'   International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
+#'   International Conference on Data Mining (ICDM). IEEE; 2017. p. 117-26.
 #' @references Website: <https://sites.google.com/site/onlinesemanticsegmentation/>
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #' @examples
@@ -296,7 +296,7 @@ fluss_extract <- function(.mpac, num_segments = 1, exclusion_zone = NULL) {
 #'
 #' @export
 #' @family Semantic Segmentations
-#' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
+#' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International Conference on Data Mining (ICDM). IEEE; 2017. p. 117-26.
 #' @references Website: <https://sites.google.com/site/onlinesemanticsegmentation/>
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #' @examples
@@ -371,7 +371,7 @@ fluss_cac <- function(.mp, exclusion_zone = NULL) {
 #' the combination of `cac` after repeated calls of `floss()`.
 #' @export
 #' @family Semantic Segmentations
-#' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
+#' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International Conference on Data Mining (ICDM). IEEE; 2017. p. 117-26.
 #' @references Website: <https://sites.google.com/site/onlinesemanticsegmentation/>
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #' @examples
@@ -462,7 +462,7 @@ floss_cac <- function(.mp, data_window, exclusion_zone = NULL) {
 #' Zero is the best, One is the worst.
 #' @export
 #' @family Semantic Segmentations
-#' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
+#' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International Conference on Data Mining (ICDM). IEEE; 2017. p. 117-26.
 #' @references Website: <https://sites.google.com/site/onlinesemanticsegmentation/>
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #' @examples

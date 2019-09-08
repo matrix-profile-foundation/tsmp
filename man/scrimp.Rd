@@ -5,10 +5,10 @@
 \title{Anytime univariate SCRIMP++ algorithm}
 \usage{
 scrimp(..., window_size, exclusion_zone = 1/2, verbose = 2,
-  s_size = Inf, pre_scrimp = 1/4)
+  s_size = Inf, pre_scrimp = 1/4, pre_only = FALSE)
 }
 \arguments{
-\item{...}{a \code{matrix} or a \code{vector}.}
+\item{\dots}{a \code{matrix} or a \code{vector}.}
 
 \item{window_size}{an \code{int}. Size of the sliding window.}
 

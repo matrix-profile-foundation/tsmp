@@ -15,7 +15,7 @@
 #' `1` means text, `2` adds the progress bar, `3` adds the finish sound. `exclusion_zone` is used to
 #' avoid  trivial matches.
 #'
-#' @param ... a `matrix` or a `vector`.
+#' @param \dots a `matrix` or a `vector`.
 #' @param window_size an `int`. Size of the sliding window.
 #' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is
 #'   `1/2`). See details.

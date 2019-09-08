@@ -8,7 +8,7 @@ valmod(..., window_min, window_max, heap_size = 50,
   exclusion_zone = 1/2, lb = TRUE, verbose = 2)
 }
 \arguments{
-\item{...}{a \code{matrix} or a \code{vector}. If a second time series is supplied it will be a join matrix
+\item{\dots}{a \code{matrix} or a \code{vector}. If a second time series is supplied it will be a join matrix
 profile.}
 
 \item{window_min}{an \code{int}. Minimum size of the sliding window.}
@@ -40,6 +40,9 @@ specifically designed for the motif discovery problem. \code{verbose} changes ho
 is printed by this function; \code{0} means nothing, \code{1} means text, \code{2} adds the progress bar,
 \code{3} adds the finish sound. \code{exclusion_zone} is used to avoid  trivial matches; if a query data
 is provided (join similarity), this parameter is ignored.
+
+Paper that implements \code{skimp()} suggests that window_max / window_min > than 1.24 begins to
+weakening pruning in \code{valmod()}.
 }
 \examples{
 mp <- valmod(mp_toy_data$data[1:200, 1], window_min = 30, window_max = 40)
@@ -57,7 +60,7 @@ mp <- valmod(ref_data, query_data, window_min = 30, window_max = 40)
 \itemize{
 \item Linardi M, Zhu Y, Palpanas T, Keogh E. VALMOD: A Suite for Easy and Exact Detection
 of Variable Length Motifs in Data Series. In: Proceedings of the 2018 International Conference
-on Management of Data - SIGMOD ’18. New York, New York, USA: ACM Press; 2018. p. 1757–60.
+on Management of Data - SIGMOD '18. New York, New York, USA: ACM Press; 2018. p. 1757-60.
 }
 
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}

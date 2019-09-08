@@ -12,7 +12,7 @@ stamp(..., window_size, exclusion_zone = 1/2, verbose = 2,
   s_size = Inf, weight = NULL)
 }
 \arguments{
-\item{...}{a \code{matrix} or a \code{vector}. If a second time series is supplied it will be a join matrix
+\item{\dots}{a \code{matrix} or a \code{vector}. If a second time series is supplied it will be a join matrix
 profile.}
 
 \item{window_size}{an \code{int}. Size of the sliding window.}
@@ -75,12 +75,12 @@ mp <- stamp(ref_data, query_data, window_size = 30, s_size = round(nrow(query_da
 \itemize{
 \item Yeh CCM, Zhu Y, Ulanova L, Begum N, Ding Y, Dau HA, et al. Matrix profile I: All
 pairs similarity joins for time series: A unifying view that includes motifs, discords and
-shapelets. Proc - IEEE Int Conf Data Mining, ICDM. 2017;1317–22.
+shapelets. Proc - IEEE Int Conf Data Mining, ICDM. 2017;1317-22.
 }
 
 \itemize{
 \item Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A
-New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
+New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1-27.
 }
 
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}

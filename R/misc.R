@@ -1,5 +1,12 @@
+# Window functions ----------------------------------------------------------------------------
 
-# Math functions ------------------------------------------------------------------------------
+# Supports:
+#               NA/NaN  -Inf/Inf  Edge  Rcpp
+# movmin          Unk     Unk      No   Yes
+# movmax          Unk     Unk      No   Yes
+# fast_movsd      No      Unk      No   No
+# fast_movavg     No      Unk      No   No
+# fast_avg_sd     No      Unk      No   No
 
 #' Fast implementation of moving standard deviation using filter
 #'
@@ -29,14 +36,55 @@ fast_movsd <- function(data, window_size) {
   return(data_sd)
 }
 
+#' Fast implementation of moving average and
+#'
+#' @inheritParams fast_movsd
+#'
+#' @return Returns a `vector` with the moving average
+#' @export
+#'
+#' @examples
+#' data_avg <- fast_movavg(mp_toy_data$data[, 1], mp_toy_data$sub_len)
+# DO NOT Handles NA's
+fast_movavg <- function(data, window_size) {
+  if (window_size < 2) {
+    stop("'window_size' must be at least 2.")
+  }
+
+  return(cumsum(c(sum(data[1:window_size]), diff(data, window_size))) / window_size)
+}
+
+
+#' Fast implementation of moving average and moving standard deviation using cumsum
+#'
+#' @inheritParams fast_movsd
+#'
+#' @return Returns a `list` with `avg` and `sd` `vector`s
+#' @keywords internal
+#' @noRd
+
+# DO NOT Handles NA's
+fast_avg_sd <- function(data, window_size) {
+  if (window_size < 2) {
+    stop("'window_size' must be at least 2.")
+  }
+
+  data_sum <- cumsum(c(sum(data[1:window_size]), diff(data, window_size)))
+  data_mean <- data_sum / window_size
+  data2 <- data^2
+  data2_sum <- cumsum(c(sum(data2[1:window_size]), diff(data2, window_size)))
+  data_sd2 <- (data2_sum / window_size) - (data_mean^2)
+  data_sd <- sqrt(data_sd2)
+
+  return(list(avg = data_mean, sd = data_sd, sum = data_sum, sqrsum = data2_sum))
+}
+
 # DO NOT Handles NA's
 fast_muinvn <- function(data, window_size) {
 
   if (window_size < 2) {
     stop("'window_size' must be at least 2.")
   }
-
-  tictac <- Sys.time()
 
   data_sum <- cumsum(c(sum(data[1:window_size]), diff(data, window_size)))
   data_mean <- data_sum / window_size
@@ -45,9 +93,6 @@ fast_muinvn <- function(data, window_size) {
   data_dp2 <- sqrt(data2_sum - data_mean^2 * window_size)
   data_dp <- 1/data_dp2
 
-  tictac <- Sys.time() - tictac
-
-  message(sprintf("muinvn finished in %.2f %s", tictac, units(tictac)))
   return(list(mu = data_mean, sig = data_dp))
 }
 
@@ -103,25 +148,7 @@ old_fast_movsd <- function(data, window_size) {
   s <- Re(s)
   s <- s * sqrt((window_size - 1) / window_size)
 
-  return(s[!is.na(s)])
-}
-
-#' Fast implementation of moving average and
-#'
-#' @inheritParams fast_movsd
-#'
-#' @return Returns a `vector` with the moving average
-#' @export
-#'
-#' @examples
-#' data_avg <- fast_movavg(mp_toy_data$data[, 1], mp_toy_data$sub_len)
-# DO NOT Handles NA's
-fast_movavg <- function(data, window_size) {
-  if (window_size < 2) {
-    stop("'window_size' must be at least 2.")
-  }
-
-  return(cumsum(c(sum(data[1:window_size]), diff(data, window_size))) / window_size)
+  return(s[window_size:data_size])
 }
 
 # Handles NA's
@@ -132,30 +159,6 @@ old_fast_movavg <- function(data, window_size) {
 
   data_mean <- stats::filter(data, rep(1 / window_size, window_size), sides = 2)
   return(data_mean[!is.na(data_mean)])
-}
-
-#' Fast implementation of moving average and moving standard deviation using cumsum
-#'
-#' @inheritParams fast_movsd
-#'
-#' @return Returns a `list` with `avg` and `sd` `vector`s
-#' @keywords internal
-#' @noRd
-
-# DO NOT Handles NA's
-fast_avg_sd <- function(data, window_size) {
-  if (window_size < 2) {
-    stop("'window_size' must be at least 2.")
-  }
-
-  data_sum <- cumsum(c(sum(data[1:window_size]), diff(data, window_size)))
-  data_mean <- data_sum / window_size
-  data2 <- data^2
-  data2_sum <- cumsum(c(sum(data2[1:window_size]), diff(data2, window_size)))
-  data_sd2 <- (data2_sum / window_size) - (data_mean^2)
-  data_sd <- sqrt(data_sd2)
-
-  return(list(avg = data_mean, sd = data_sd, sum = data_sum, sqrsum = data2_sum))
 }
 
 # DO NOT Handles NA's
@@ -182,6 +185,21 @@ old_fast_avg_sd <- function(data, window_size) {
   return(list(avg = data_mean, sd = data_sd, sum = data_sum, sqrsum = data2_sum))
 }
 
+
+# Math functions ------------------------------------------------------------------------------
+#
+# Supports:
+#               NA/NaN  -Inf/Inf
+# std             Unk      Unk
+# mode            Unk      Unk
+# znorm           Unk      Unk
+# diff2           Unk      Unk
+# bubble_up       Unk      Unk
+# paa             Unk      Unk
+# ipaa            Unk      Unk
+# min_mp_idx      Unk      Unk
+
+
 #' Population SD, as R always calculate with n-1 (sample), here we fix it
 #'
 #' @inheritParams fast_movsd
@@ -190,15 +208,18 @@ old_fast_avg_sd <- function(data, window_size) {
 #' @keywords internal
 #' @noRd
 #'
-std <- function(data, na.rm = FALSE) {
+#'
+std <- function(data, na.rm = FALSE, rcpp = TRUE) {
+
+  # Rcpp is faster
+  if (rcpp) {
+    return(std_rcpp(data, na.rm))
+  }
+
   sdx <- stats::sd(data, na.rm)
 
   if (is.na(sdx)) {
-    return(1.0)
-  }
-
-  if (sdx == 0) {
-    return(sdx)
+    return(NA)
   }
 
   return(sqrt((length(data) - 1) / length(data)) * sdx)
@@ -212,7 +233,13 @@ std <- function(data, na.rm = FALSE) {
 #' @keywords internal
 #' @noRd
 
-mode <- function(x) {
+mode <- function(x, rcpp = FALSE) {
+
+  # Rcpp is not faster
+  if (rcpp) {
+    return(mode_rcpp(x))
+  }
+
   ux <- unique(x)
   ux[which.max(tabulate(match(x, ux)))]
 }
@@ -225,11 +252,16 @@ mode <- function(x) {
 #' @keywords internal
 #' @noRd
 #'
-znorm <- function(data) {
+znorm <- function(data, rcpp = TRUE) {
+  # Rcpp is faster
+  if (rcpp) {
+    return(znorm_rcpp(data))
+  }
+
   data_mean <- mean(data)
   data_dev <- std(data)
 
-  if (is.nan(data_dev) || data_dev <= 0.01) {
+  if (is.na(data_dev) || data_dev <= 0.01) {
     return(data - data_mean)
   }
   else {
@@ -249,6 +281,7 @@ znorm <- function(data) {
 #' @noRd
 
 diff2 <- function(x, y) {
+  # Rcpp ?
   if (!is.numeric(x) || !is.numeric(y)) {
     stop("`x` and `y` must be numeric vectors or matrices.")
   }
@@ -269,18 +302,19 @@ diff2 <- function(x, y) {
   sqrt(pmax(xx + yy - 2 * xy, 0))
 }
 
-#' Distance between two matrices
+#' Bubble up algorithm
 #'
-#' Computes the Euclidean distance between rows of two matrices.
+#' Bubble up algorithm.
 #'
 #' @param data a vector of values
 #' @param len size of data
 #'
-#' @return Returns a `matrix` of size m x n if x is of size m x k and y is of size n x k.
+#' @return
 #' @keywords internal
 #' @noRd
 
 bubble_up <- function(data, len) {
+  # Rcpp ?
   pos <- len
 
   while (pos > 0 && data[pos / 2] < data[pos]) {
@@ -304,6 +338,7 @@ bubble_up <- function(data, len) {
 #' @noRd
 
 paa <- function(data, p) {
+  # Rcpp ?
   paa_data <- as.vector(data)
   len <- length(paa_data)
 
@@ -336,6 +371,7 @@ paa <- function(data, p) {
 #' @noRd
 
 ipaa <- function(data, p) {
+  # Rcpp ?
   if (is.null(data)) {
     return(NULL)
   }
@@ -455,6 +491,7 @@ min_mp_idx <- function(.mp, n_dim = NULL, valid = TRUE) {
 #' @noRd
 #'
 golden_section <- function(dist_pro, label, pos_st, pos_ed, beta, window_size) {
+  # Rcpp ?
   golden_ratio <- (1 + sqrt(5)) / 2
   a_thold <- min(dist_pro)
   b_thold <- max(dist_pro[!is.infinite(dist_pro)])
@@ -503,6 +540,7 @@ golden_section <- function(dist_pro, label, pos_st, pos_ed, beta, window_size) {
 #' @noRd
 
 golden_section_2 <- function(dist_pro, thold, label, pos_st, pos_ed, beta, window_size, fit_idx) {
+  # Rcpp ?
   golden_ratio <- (1 + sqrt(5)) / 2
   a_thold <- min(dist_pro[[fit_idx]])
   b_thold <- max(dist_pro[[fit_idx]][!is.infinite(dist_pro[[fit_idx]])])
@@ -556,6 +594,7 @@ golden_section_2 <- function(dist_pro, thold, label, pos_st, pos_ed, beta, windo
 #' @noRd
 
 compute_f_meas <- function(label, pos_st, pos_ed, dist_pro, thold, window_size, beta) {
+  # Rcpp ?
   # generate annotation curve for each pattern
   if (is.list(dist_pro)) {
     anno_st <- list()
@@ -652,6 +691,7 @@ compute_f_meas <- function(label, pos_st, pos_ed, dist_pro, thold, window_size, 
 #' @noRd
 #'
 get_sorted_idx <- function(matrix_profile, n_cand, exclusion_zone = 0) {
+  # Rcpp ?
   idx <- sort(matrix_profile, index.return = TRUE)$ix
 
   if (exclusion_zone > 0) {

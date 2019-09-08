@@ -49,7 +49,7 @@
 #'   `heap_size` is used only for [valmod()]
 #'   `mode` can be any of the following: `stomp`, `stamp`, `simple`, `mstomp`, `scrimp`, `valmod`.
 #'
-#' @param ... a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix
+#' @param \dots a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix
 #'   profile (except for [mstomp()]).
 #' @param window_size an `int` with the size of the sliding window. Use a vector for Valmod.
 #' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is
@@ -73,19 +73,19 @@
 #'   Time Series Chains. [mstomp()] returns a multidimensional Matrix Profile.
 #' @export
 #' @references * Silva D, Yeh C, Batista G, Keogh E. Simple: Assessing Music Similarity Using
-#'   Subsequences Joins. Proc 17th ISMIR Conf. 2016;23–30.
+#'   Subsequences Joins. Proc 17th ISMIR Conf. 2016;23-30.
 #' @references * Silva DF, Yeh C-CM, Zhu Y, Batista G, Keogh E. Fast Similarity Matrix Profile for
-#'   Music Analysis and Exploration. IEEE Trans Multimed. 2018;14(8):1–1.
+#'   Music Analysis and Exploration. IEEE Trans Multimed. 2018;14(8):1-1.
 #' @references * Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif
 #'   Discovery.
 #' @references * Yeh CCM, Zhu Y, Ulanova L, Begum N, Ding Y, Dau HA, et al. Matrix profile I: All
 #'   pairs similarity joins for time series: A unifying view that includes motifs, discords and
-#'   shapelets. Proc - IEEE Int Conf Data Mining, ICDM. 2017;1317–22.
+#'   shapelets. Proc - IEEE Int Conf Data Mining, ICDM. 2017;1317-22.
 #' @references * Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A
-#'   New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
+#'   New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1-27.
 #' @references * Zhu Y, Zimmerman Z, Senobari NS, Yeh CM, Funning G. Matrix Profile II : Exploiting
 #'   a Novel Algorithm and GPUs to Break the One Hundred Million Barrier for Time Series Motifs and
-#'   Joins. Icdm. 2016 Jan 22;54(1):739–48.
+#'   Joins. Icdm. 2016 Jan 22;54(1):739-48.
 #' @references Website: <https://sites.google.com/view/simple-fast>
 #' @references Website: <https://sites.google.com/site/ismir2016simple/home>
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>

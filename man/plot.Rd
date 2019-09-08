@@ -80,7 +80,7 @@
 
 \item{ylab}{a \code{string}. Y label.}
 
-\item{...}{further arguments to be passed to \code{\link[=plot]{plot()}}. See \code{\link[=par]{par()}}.}
+\item{\dots}{further arguments to be passed to \code{\link[=plot]{plot()}}. See \code{\link[=par]{par()}}.}
 
 \item{ncol}{an \code{int}. Number of columns to plot Motifs.}
 }
