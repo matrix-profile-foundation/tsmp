@@ -4,7 +4,7 @@
 \alias{dist_profile}
 \title{Calculates the distance profile using MASS algorithms}
 \usage{
-dist_profile(data, query, ..., window_size = NULL, method = "v2",
+dist_profile(data, query, ..., window_size = NULL, method = "v3",
   index = 1, k = NULL, weight = NULL, paa = 1)
 }
 \arguments{

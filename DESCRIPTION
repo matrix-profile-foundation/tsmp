@@ -46,4 +46,4 @@ Suggests:
     animation
 VignetteBuilder: knitr
 LinkingTo: 
-    Rcpp
+    Rcpp, BH, RcppBlaze

@@ -5,12 +5,68 @@ std_rcpp <- function(data, na_rm = FALSE) {
     .Call(`_tsmp_std_rcpp`, data, na_rm)
 }
 
+diff_lag <- function(x, lag = 1L) {
+    .Call(`_tsmp_diff_lag`, x, lag)
+}
+
+diff2_lag <- function(x, lag = 1L, v = 0.0) {
+    .Call(`_tsmp_diff2_lag`, x, lag, v)
+}
+
+fast_movsd_rcpp <- function(data, window_size) {
+    .Call(`_tsmp_fast_movsd_rcpp`, data, window_size)
+}
+
+fast2_movsd_rcpp <- function(data, window_size) {
+    .Call(`_tsmp_fast2_movsd_rcpp`, data, window_size)
+}
+
+fast_avg_sd_rcpp <- function(data, window_size) {
+    .Call(`_tsmp_fast_avg_sd_rcpp`, data, window_size)
+}
+
+vecmin <- function(x) {
+    .Call(`_tsmp_vecmin`, x)
+}
+
+vecmax <- function(x) {
+    .Call(`_tsmp_vecmax`, x)
+}
+
 mode_rcpp <- function(x) {
     .Call(`_tsmp_mode_rcpp`, x)
 }
 
 znorm_rcpp <- function(data) {
     .Call(`_tsmp_znorm_rcpp`, data)
+}
+
+binary_split_rcpp <- function(n) {
+    .Call(`_tsmp_binary_split_rcpp`, n)
+}
+
+sq2s_rcpp <- function(a) {
+    .Call(`_tsmp_sq2s_rcpp`, a)
+}
+
+sum2s_rcpp <- function(a, w) {
+    .Call(`_tsmp_sum2s_rcpp`, a, w)
+}
+
+muinvn_rcpp <- function(a, w) {
+    .Call(`_tsmp_muinvn_rcpp`, a, w)
+}
+
+sum2s2_rcpp <- function(a, w) {
+    .Call(`_tsmp_sum2s2_rcpp`, a, w)
+}
+
+muinvn2_rcpp <- function(a, w) {
+    .Call(`_tsmp_muinvn2_rcpp`, a, w)
+}
+
+mpx_rcpp <- function(a, w, minlag) {
+    .Call(`_tsmp_mpx_rcpp`, a, w, minlag)
 }
 
 movmin <- function(data, window_size) {

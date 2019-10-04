@@ -20,17 +20,27 @@
 #' data_sd <- fast_movsd(mp_toy_data$data[, 1], mp_toy_data$sub_len)
 
 # DO NOT Handles NA's
-fast_movsd <- function(data, window_size) {
+fast_movsd <- function(data, window_size, rcpp = FALSE) {
 
   if (window_size < 2) {
     stop("'window_size' must be at least 2.")
   }
 
+  # Rcpp is slower
+  if (rcpp) {
+    return(fast_movsd_rcpp(data, window_size))
+  }
+
+  # Improve the numerical analysis by subtracting off the series mean
+  # this has no effect on the standard deviation.
+  data <- data - mean(data)
+
   data_sum <- cumsum(c(sum(data[1:window_size]), diff(data, window_size)))
   data_mean <- data_sum / window_size
+
   data2 <- data^2
   data2_sum <- cumsum(c(sum(data2[1:window_size]), diff(data2, window_size)))
-  data_sd2 <- (data2_sum / window_size) - (data_mean^2)
+  data_sd2 <- (data2_sum / window_size) - (data_mean^2) # variance
   data_sd <- sqrt(data_sd2)
 
   return(data_sd)
@@ -60,23 +70,40 @@ fast_movavg <- function(data, window_size) {
 #' @inheritParams fast_movsd
 #'
 #' @return Returns a `list` with `avg` and `sd` `vector`s
-#' @keywords internal
+#' @export
 #' @noRd
 
 # DO NOT Handles NA's
-fast_avg_sd <- function(data, window_size) {
+fast_avg_sd <- function(data, window_size, rcpp = FALSE) {
   if (window_size < 2) {
     stop("'window_size' must be at least 2.")
   }
+
+  # Rcpp is slower
+  if (rcpp) {
+    return(fast_avg_sd_rcpp(data, window_size))
+  }
+
+  mov_sum <- cumsum(c(sum(data[1:window_size]), diff(data, window_size)))
+  data2 <- data^2
+  mov2_sum <- cumsum(c(sum(data2[1:window_size]), diff(data2, window_size)))
+  mov_mean <- mov_sum / window_size
+
+
+  # Improve the numerical analysis by subtracting off the series mean
+  # this has no effect on the standard deviation.
+  dmean <- mean(data)
+  data <- data - dmean
 
   data_sum <- cumsum(c(sum(data[1:window_size]), diff(data, window_size)))
   data_mean <- data_sum / window_size
   data2 <- data^2
   data2_sum <- cumsum(c(sum(data2[1:window_size]), diff(data2, window_size)))
-  data_sd2 <- (data2_sum / window_size) - (data_mean^2)
-  data_sd <- sqrt(data_sd2)
+  data_sd2 <- (data2_sum / window_size) - (data_mean^2) # variance
+  data_sd <- sqrt(data_sd2) # std deviation
+  data_sig <- sqrt(1/(data_sd2 * window_size))
 
-  return(list(avg = data_mean, sd = data_sd, sum = data_sum, sqrsum = data2_sum))
+  return(list(avg = mov_mean, sd = data_sd, sig = data_sig, sum = mov_sum, sqrsum = mov2_sum))
 }
 
 # DO NOT Handles NA's
@@ -90,28 +117,9 @@ fast_muinvn <- function(data, window_size) {
   data_mean <- data_sum / window_size
   data2 <- data^2
   data2_sum <- cumsum(c(sum(data2[1:window_size]), diff(data2, window_size)))
-  data_dp2 <- sqrt(data2_sum - data_mean^2 * window_size)
-  data_dp <- 1/data_dp2
+  data_dp <- 1/sqrt(data2_sum - data_mean^2 * window_size)
 
-  return(list(mu = data_mean, sig = data_dp))
-}
-
-# DO NOT Handles NA's
-muinvn <- function(a, w) {
-  # Functions here are based on the work in
-  # Ogita et al, Accurate Sum and Dot Product
-  # results here are a moving average and stable inverse centered norm based
-  # on Accurate Sum and Dot Product, Ogita et al
-
-  mu <- sum2s_v3(a, w) / w
-  sig <- rep(0, length(a) - w + 1)
-
-  for (i in 1:length(mu)) {
-    sig[i] <- sum((a[i:(i + w - 1)] - mu[i])^2)
-  }
-
-  sig <- 1 / sqrt(sig)
-  return(list(mu = mu, sig = sig))
+  return(list(avg = data_mean, isd = data_dp))
 }
 
 # Handles NA's
@@ -162,6 +170,7 @@ old_fast_movavg <- function(data, window_size) {
 }
 
 # DO NOT Handles NA's
+# catastrophic cancellation
 old_fast_avg_sd <- function(data, window_size) {
   if (window_size < 2) {
     stop("'window_size' must be at least 2.")

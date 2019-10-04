@@ -66,7 +66,7 @@
 #'   weight = weight
 #' )
 #' distance_profile <- sqrt(nn$distance_profile)
-dist_profile <- function(data, query, ..., window_size = NULL, method = "v2", index = 1, k = NULL,
+dist_profile <- function(data, query, ..., window_size = NULL, method = "v3", index = 1, k = NULL,
                          weight = NULL, paa = 1) {
 
   ## ---- Verify if method exists ----

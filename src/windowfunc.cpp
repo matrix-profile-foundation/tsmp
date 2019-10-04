@@ -17,8 +17,6 @@ using namespace Rcpp;
 #define MIN(y,x) ((x)<(y) && (x)==(x) ? (x) : (y))
 #define MAX(y,x) ((x)>(y) && (x)==(x) ? (x) : (y))
 
-// [[Rcpp::plugins(cpp11)]]
-
 //[[Rcpp::export]]
 NumericVector movmin(NumericVector data, uint32_t window_size) {
   uint32_t data_size = data.length();

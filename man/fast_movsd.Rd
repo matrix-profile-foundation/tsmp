@@ -4,7 +4,7 @@
 \alias{fast_movsd}
 \title{Fast implementation of moving standard deviation using filter}
 \usage{
-fast_movsd(data, window_size)
+fast_movsd(data, window_size, rcpp = FALSE)
 }
 \arguments{
 \item{data}{a \code{vector} or a column \code{matrix} of \code{numeric}.}
