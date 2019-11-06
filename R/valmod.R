@@ -49,7 +49,7 @@
 #' mp <- valmod(ref_data, query_data, window_min = 30, window_max = 40)
 #' }
 #'
-valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone = 1 / 2, lb = TRUE, verbose = 2) {
+valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone = getOption("tsmp.verbose", 1 / 2), lb = TRUE, verbose = getOption("tsmp.verbose", 2)) {
   argv <- list(...)
   argc <- length(argv)
   data <- argv[[1]]

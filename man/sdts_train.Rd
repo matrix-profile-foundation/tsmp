@@ -5,7 +5,7 @@
 \title{Framework for Scalable Dictionary learning for Time Series (SDTS) training function}
 \usage{
 sdts_train(data, label, window_size, beta = 1, pat_max = Inf,
-  parallel = TRUE, verbose = 2)
+  parallel = TRUE, verbose = getOption("tsmp.verbose", 2))
 }
 \arguments{
 \item{data}{a \code{vector} of \code{numeric}. Time series.}

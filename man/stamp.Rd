@@ -5,11 +5,13 @@
 \alias{stamp}
 \title{Anytime univariate STAMP algorithm Parallel version}
 \usage{
-stamp_par(..., window_size, exclusion_zone = 1/2, verbose = 2,
-  s_size = Inf, n_workers = 2, weight = NULL)
+stamp_par(..., window_size, exclusion_zone = getOption("tsmp.verbose",
+  1/2), verbose = getOption("tsmp.verbose", 2), s_size = Inf,
+  n_workers = 2, weight = NULL)
 
-stamp(..., window_size, exclusion_zone = 1/2, verbose = 2,
-  s_size = Inf, weight = NULL)
+stamp(..., window_size, exclusion_zone = getOption("tsmp.verbose", 1/2),
+  verbose = getOption("tsmp.verbose", 2), s_size = Inf,
+  weight = NULL)
 }
 \arguments{
 \item{\dots}{a \code{matrix} or a \code{vector}. If a second time series is supplied it will be a join matrix

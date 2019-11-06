@@ -64,6 +64,8 @@ fast_movavg <- function(data, window_size) {
   return(cumsum(c(sum(data[1:window_size]), diff(data, window_size))) / window_size)
 }
 
+ed_corr <- function(x, w) {(2 * w - x^2) / (2 * w)}
+corr_ed <- function(x, w) {sqrt(2 * w * (1 - ifelse(x > 1, 1, x)))}
 
 #' Fast implementation of moving average and moving standard deviation using cumsum
 #'
@@ -311,6 +313,71 @@ diff2 <- function(x, y) {
   sqrt(pmax(xx + yy - 2 * xy, 0))
 }
 
+#' Binary Split algorithm
+#'
+#' Creates a vector with the indexes of binary split.
+#'
+#' @param n size of the vector
+#'
+#' @return Returns a `vector` with the binary split indexes
+#' @keywords internal
+#' @noRd
+
+binary_split <- function(n, rcpp = TRUE) {
+  if (rcpp) {
+    return(binary_split_rcpp(as.integer(n)))
+  }
+
+  if(n < 2) {
+    return(1)
+  }
+
+  split <- function(lb, ub, m) {
+    if (lb == m) {
+      l <- NULL
+      r <- c(m + 1, ub)
+    } else if (ub == m) {
+      l <- c(lb, m - 1)
+      r <- NULL
+    } else {
+      l <- c(lb, m - 1)
+      r <- c(m + 1, ub)
+    }
+
+    return(list(l = l, r = r))
+  }
+
+  idxs <- vector(mode = "numeric", length = n)
+  intervals <- list()
+
+  idxs[1] <- 1 # We always begin by explore the first integer
+  intervals[[1]] <- c(2, n) # After exploring the first integer, we begin splitting the interval 2:n
+  i <- 2
+
+  while (length(intervals) > 0) {
+    lb <- intervals[[1]][1]
+    ub <- intervals[[1]][2]
+    mid <- floor((lb + ub) / 2)
+    intervals[[1]] <- NULL
+
+    idxs[i] <- mid
+    i <- i + 1
+
+    if (lb == ub) {
+      next
+    } else {
+      lr <- split(lb, ub, mid)
+      if (!is.null(lr$l)) {
+        intervals[[length(intervals) + 1]] <- lr$l
+      }
+      if (!is.null(lr$r)) {
+        intervals[[length(intervals) + 1]] <- lr$r
+      }
+    }
+  }
+  return(idxs)
+}
+
 #' Bubble up algorithm
 #'
 #' Bubble up algorithm.
@@ -318,7 +385,7 @@ diff2 <- function(x, y) {
 #' @param data a vector of values
 #' @param len size of data
 #'
-#' @return
+#' @return Doesnt return. Not used for now
 #' @keywords internal
 #' @noRd
 

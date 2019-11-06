@@ -55,7 +55,9 @@
 #' mp <- stamp(ref_data, query_data, window_size = 30, s_size = round(nrow(query_data) * 0.1))
 #' }
 #'
-stamp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size = Inf, weight = NULL) {
+stamp <- function(..., window_size, exclusion_zone = getOption("tsmp.verbose", 1 / 2),
+                  verbose = getOption("tsmp.verbose", 2),
+                  s_size = Inf, weight = NULL) {
   argv <- list(...)
   argc <- length(argv)
   data <- argv[[1]]

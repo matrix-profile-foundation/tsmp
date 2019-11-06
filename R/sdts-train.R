@@ -45,7 +45,7 @@
 #' predict <- sdts_predict(model, mp_test_data$test$data, round(mean(windows)))
 #' sdts_score(predict, mp_test_data$test$label, 1)
 #' }
-sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parallel = TRUE, verbose = 2) {
+sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parallel = TRUE, verbose = getOption("tsmp.verbose", 2)) {
 
   # transform data list into matrix ----
   if (is.matrix(data) || is.data.frame(data)) {

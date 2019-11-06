@@ -5,7 +5,8 @@
 \title{Variable Length Motif Discovery}
 \usage{
 valmod(..., window_min, window_max, heap_size = 50,
-  exclusion_zone = 1/2, lb = TRUE, verbose = 2)
+  exclusion_zone = getOption("tsmp.verbose", 1/2), lb = TRUE,
+  verbose = getOption("tsmp.verbose", 2))
 }
 \arguments{
 \item{\dots}{a \code{matrix} or a \code{vector}. If a second time series is supplied it will be a join matrix

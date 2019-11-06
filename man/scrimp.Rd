@@ -4,8 +4,9 @@
 \alias{scrimp}
 \title{Anytime univariate SCRIMP++ algorithm}
 \usage{
-scrimp(..., window_size, exclusion_zone = 1/2, verbose = 2,
-  s_size = Inf, pre_scrimp = 1/4, pre_only = FALSE)
+scrimp(..., window_size, exclusion_zone = getOption("tsmp.verbose", 1/2),
+  verbose = getOption("tsmp.verbose", 2), s_size = Inf,
+  pre_scrimp = 1/4, pre_only = FALSE)
 }
 \arguments{
 \item{\dots}{a \code{matrix} or a \code{vector}.}

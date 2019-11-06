@@ -56,7 +56,9 @@
 #' mp2 <- mstomp(mp_toy_data$data[1:200, ], 30, exc_dim = c(2, 3))
 #' }
 #'
-mstomp <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, must_dim = NULL, exc_dim = NULL) {
+mstomp <- function(data, window_size, exclusion_zone = getOption("tsmp.verbose", 1 / 2),
+                   verbose = getOption("tsmp.verbose", 2),
+                   must_dim = NULL, exc_dim = NULL) {
   # get various length
   ez <- exclusion_zone # store original
   exclusion_zone <- round(window_size * exclusion_zone + vars()$eps)

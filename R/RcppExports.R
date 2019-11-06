@@ -5,6 +5,10 @@ std_rcpp <- function(data, na_rm = FALSE) {
     .Call(`_tsmp_std_rcpp`, data, na_rm)
 }
 
+list_to_matrix <- function(x) {
+    .Call(`_tsmp_list_to_matrix`, x)
+}
+
 diff_lag <- function(x, lag = 1L) {
     .Call(`_tsmp_diff_lag`, x, lag)
 }
@@ -49,24 +53,12 @@ sq2s_rcpp <- function(a) {
     .Call(`_tsmp_sq2s_rcpp`, a)
 }
 
-sum2s_rcpp <- function(a, w) {
-    .Call(`_tsmp_sum2s_rcpp`, a, w)
+mpx_rcpp <- function(a, w, minlag, idxs = FALSE, euclidean = TRUE) {
+    .Call(`_tsmp_mpx_rcpp`, a, w, minlag, idxs, euclidean)
 }
 
-muinvn_rcpp <- function(a, w) {
-    .Call(`_tsmp_muinvn_rcpp`, a, w)
-}
-
-sum2s2_rcpp <- function(a, w) {
-    .Call(`_tsmp_sum2s2_rcpp`, a, w)
-}
-
-muinvn2_rcpp <- function(a, w) {
-    .Call(`_tsmp_muinvn2_rcpp`, a, w)
-}
-
-mpx_rcpp <- function(a, w, minlag) {
-    .Call(`_tsmp_mpx_rcpp`, a, w, minlag)
+mpxab_rcpp <- function(a, b, w, idxs = FALSE) {
+    .Call(`_tsmp_mpxab_rcpp`, a, b, w, idxs)
 }
 
 movmin <- function(data, window_size) {

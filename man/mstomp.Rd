@@ -5,11 +5,13 @@
 \alias{mstomp}
 \title{Multivariate STOMP algorithm Parallel version}
 \usage{
-mstomp_par(data, window_size, exclusion_zone = 1/2, verbose = 2,
-  must_dim = NULL, exc_dim = NULL, n_workers = 2)
+mstomp_par(data, window_size, exclusion_zone = getOption("tsmp.verbose",
+  1/2), verbose = getOption("tsmp.verbose", 2), must_dim = NULL,
+  exc_dim = NULL, n_workers = 2)
 
-mstomp(data, window_size, exclusion_zone = 1/2, verbose = 2,
-  must_dim = NULL, exc_dim = NULL)
+mstomp(data, window_size, exclusion_zone = getOption("tsmp.verbose",
+  1/2), verbose = getOption("tsmp.verbose", 2), must_dim = NULL,
+  exc_dim = NULL)
 }
 \arguments{
 \item{data}{a \code{matrix} of \code{numeric}, where each column is a time series. Accepts \code{vector} (see

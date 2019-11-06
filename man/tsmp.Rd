@@ -4,8 +4,9 @@
 \alias{tsmp}
 \title{Computes the Matrix Profile and Profile Index}
 \usage{
-tsmp(..., window_size, exclusion_zone = 1/2, mode = c("stomp", "stamp",
-  "simple", "mstomp", "scrimp", "valmod"), verbose = 2, n_workers = 1,
+tsmp(..., window_size, exclusion_zone = getOption("tsmp.verbose", 1/2),
+  mode = c("stomp", "stamp", "simple", "mstomp", "scrimp", "valmod"),
+  verbose = getOption("tsmp.verbose", 2), n_workers = 1,
   s_size = Inf, must_dim = NULL, exc_dim = NULL, heap_size = 50,
   paa = 1, .keep_data = TRUE)
 }

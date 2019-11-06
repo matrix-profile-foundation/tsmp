@@ -5,10 +5,11 @@
 \alias{stomp}
 \title{Univariate STOMP algorithm}
 \usage{
-stomp_par(..., window_size, exclusion_zone = 1/2, verbose = 2,
-  n_workers = 2)
+stomp_par(..., window_size, exclusion_zone = getOption("tsmp.verbose",
+  1/2), verbose = getOption("tsmp.verbose", 2), n_workers = 2)
 
-stomp(..., window_size, exclusion_zone = 1/2, verbose = 2)
+stomp(..., window_size, exclusion_zone = getOption("tsmp.verbose", 1/2),
+  verbose = getOption("tsmp.verbose", 2))
 }
 \arguments{
 \item{\dots}{a \code{matrix} or a \code{vector}. If a second time series is supplied it will be a join matrix

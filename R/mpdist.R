@@ -123,7 +123,7 @@ mpdist <- function(ref_data, query_data, window_size, type = c("simple", "vector
 #' @keywords internal
 #' @noRd
 mpdist_simple <- function(ref_data, query_data, window_size, thr = 0.05) {
-  mp <- mpx_abba_stomp(ref_data, query_data, window_size = window_size)
+  mp <- mpxab_rcpp(ref_data, query_data, window_size)
 
   dist <- cal_mp_dist(c(mp$mpa, mp$mpb), thr, nrow(ref_data) + nrow(query_data))
 
@@ -229,8 +229,8 @@ mpx_abba_stomp <- function(data, query, window_size) {
   # This is needed to handle with the join similarity.
   rnn <- dist_profile(query, data, window_size = window_size)
 
-  data_size <- nrow(data)
-  query_size <- nrow(query)
+  data_size <- length(data)
+  query_size <- length(query)
   matrix_profile_size <- data_size - window_size + 1
   matrix_profile2_size <- query_size - window_size + 1
   matrix_profile <- rep(Inf, matrix_profile_size)

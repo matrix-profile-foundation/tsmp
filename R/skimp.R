@@ -1,7 +1,7 @@
 #' Title
 #'
-#' @param data
-#' @param window_sizes
+#' @param data dataframe
+#' @param window_sizes window sizes
 #'
 #'   The work closest in spirit to ours is VALMOD. The idea of VALMOD is to compute the MP for
 #'   the shortest length of interest, then use the information gleaned from it to guide a search
@@ -15,259 +15,251 @@
 #'   that apart from the shortest length, VALMOD only gives some information for the other lengths,
 #'   unlike pmp, which contains exact distances for all subsequences of all lengths.
 #'
+#' @param plot plot each interaction
+#' @param pmp_res
 #'
-#' @return
+#' @return Returns the Pan Matrix Profile
 #' @export
 #'
 #' @examples
-skimp <- function(data, window_sizes = seq.int(1, seq_end, jump), plot = TRUE) {
-  #   skimp generates the Pan Matrix Profile (pmp), a data structure which contains the Matrix
-  #   Profile information for all subsequence lengths in a range. If not ran to completion, the
-  #   instruction pmp(idx) yields the approximation as a matrix
-  #
-  #   INPUTS data - A nonempty, row or column vector, consisting of real values. window_sizes   - A
-  #   positive and increasing sequence of integers which enumerate the subsequence lengths used to
-  #   create the Pan Matrix Profile
-  #
-  #   OUTPUTS pmp - Pan Matrix Profile approximation. Each row contains a single run of the Matrix
-  #   Profile for some subsequence length. If ran to completion this variable stores the exact Pan
-  #   Matrix Profile; otherwise, pmp(idx) yields the approximation idx - The permutation of the rows
-  #   in the pmp which correspond to the pmp approximation
-  #
+skimp <- function(data,
+                  window_sizes = seq.int(from = 10, to = length(data) / 2, length.out = 20),
+                  plot = FALSE,
+                  pmp_obj = NULL) {
+  window_sizes <- floor(window_sizes)
+  data_size <- length(data)
 
-  # assert(max(INPUTS[['window_sizes']]) < length(data) / 2, '[skimp] Error: The maximum subsequence
-  # length explored must be less than half the size of the dataset.')
-  #
-  # INITIALIZE
+  if (is.list(pmp_obj)) {
+    window_sizes <- window_sizes[!(window_sizes %in% pmp_obj$windows)]
+  } else {
+    pmp_obj <- list(pmp = list(), pmpi = list(), windows = 0)
+  }
+
+  window_sizes <- sort(window_sizes)
+  min_window <- min(window_sizes)
+  max_window <- max(window_sizes)
 
   # Determine the order in which we will explore the subsequence lengths used to run the matrix profile
   split_idx <- binary_split(length(window_sizes))
+  #split_idx <- seq_along(window_sizes)
 
-  # Stores the intermediate values of each Matrix Profile where pmp(i,:) = MatrixProfile with
-  # subsequence length INPUTS[['window_sizes']](split_idx(i))
-  pmp <- matrix(Inf, nrow = length(window_sizes), ncol = length(data))
-
-  # Stores row indices for image (Image is not a copy of the pmp but rather a permutation (with
-  # repetition) of its rows
-  idx <- rep(-1, length(window_sizes))
 
   ## BEGIN PROCESSING
 
   # Runs matrix profile on each subsequence length in INPUTS[['window_sizes']](split_idx), stores the
   # results in pmp, and generates a frame for the animation
+
+  plot(c(1, data_size), c(min_window, max_window + diff(window_sizes[1:2])),
+    main = "Pan Matrix Profile",
+    type = "n", xlab = "", ylab = "window"
+  )
+
   for (i in 1:length(split_idx)) {
 
     # Get the current subsequence length to run the Matrix Profile on
-    window_size <- window_sizes[split_idx[i]]
+    w <- window_sizes[split_idx[i]]
+
+    if (w == 0) {
+      next
+    }
 
     # Run Matrix Profile
-    mp <- mpx(data, window_size)$mp
-    # to do ed
-    pmp[split_idx[i], 1:length(mp)] <- mp
+    result <- mpx(data, w, idx = TRUE, dist = "euclidean")
 
-    # Propogate changes to idx
-    # TO-DO: Use a binary search to find last index, update all values in range. This MAY result in a time save
-    j <- split_idx[i]
-    while (j <= length(split_idx) && idx[j] != j) {
-      idx[j] <- split_idx[i]
-      j <- j + 1
+    message(
+      "w: ", w, " i: ", i, "/", length(split_idx), " idx: ", split_idx[i]
+    )
+
+    pmp_obj$pmp[[as.character(w)]] <- result$mp
+    pmp_obj$pmpi[[as.character(w)]] <- result$pi
+
+    test <- c(result$mp, rep(0, w - min_window))
+    test[test > 1] <- 1
+    test[test < 0] <- 0
+
+    heigth <- window_sizes[split_idx[1:i]]
+    heigth <- sort(heigth[heigth > w])[1]
+    if (is.na(heigth)) {
+      heigth <- max_window + diff(window_sizes[1:2])
     }
 
-    if (plot) {
-      test <- pmp[rev(idx), ]
-      depth <- 256
-      test <- ceiling(test * depth) / depth
-      test[test > 1] <- 1
-      grid::grid.raster(test, height = 0.3, width = 1, interpolate = FALSE)
-    }
+    message("from: ", w, " to: ", heigth)
 
-    message("i: ", i, "/", length(split_idx))
+    graphics::rasterImage(matrix(test, nrow = 1),
+      xleft = 1, xright = length(test),
+      ybottom = w - 0.2, ytop = heigth,
+      interpolate = FALSE
+    )
+    dev.flush()
   }
 
-  pmp <- pmp[rev(idx), ]
+  sorted <- sort(as.numeric(names(pmp_obj$pmp)), index.return = TRUE)
+  sort_idxs <- sorted$ix
+  window_sizes <- sorted$x
 
-  return(list(pmp = pmp, idx = idx))
+  pmp_obj$pmp <- pmp_obj$pmp[sort_idxs]
+  pmp_obj$pmpi <- pmp_obj$pmpi[sort_idxs]
+  pmp_obj$windows <- window_sizes
+
+  return(pmp_obj)
+  #   A dict with the following:
+  #   {
+  #     'pmp': the pan matrix profile as a 2D array,
+  #     'pmpi': the pmp indices,
+  #     'data': {
+  #       'ts': time series used,
+  #     },
+  #     'windows': the windows used to compute the pmp,
+  #     'sample_pct': the sample percent used,
+  #     'metric':The distance metric computed for the pmp,
+  #     'algorithm': the algorithm used,
+  #     'class': PMP
+  #   }
 } # function skimp
 
 #' Title
 #'
-#' @param n
+#' @param pmp
+#' @param inv
 #'
 #' @return
 #' @export
 #'
 #' @examples
-binary_split <- function(n, rcpp = TRUE) {
-  if (rcpp) {
-    return(binary_split_rcpp(as.integer(n)))
+plot_skimp <- function(pmp, cr = 0, inv = FALSE) {
+  test <- list_to_matrix(pmp$pmp)
+  xmax <- ncol(test)
+  ymin <- min(pmp$windows)
+  ymax <- max(pmp$windows)
+  sizes <- diff(pmp$windows)
+  sizes <- c(sizes, tail(sizes, 1))
+  data_size <- xmax + ymin - 1
+
+  # depth <- 256
+  # test <- ceiling(test * depth) / depth
+  #
+  # m <- max(test[!is.infinite(test)])
+  # n <- min(test)
+  # test <- (test - n) / (m - n)
+
+  test[test > 1] <- 1
+  test[test < 0] <- 0
+
+  if (inv) {
+    test <- 1 - test
   }
 
-  # binary_split(Length)
-  # Preallocate memory to store the traversed indices and the remaining intervals
-  #
-  #
-  idxs <- vector(mode = "numeric", length = n)
-  intervals <- list()
+  plot(c(1, data_size), c(ymin, ymax + diff(pmp$windows[1:2])),
+    main = "Pan Matrix Profile",
+    type = "n", xlab = "", ylab = "window"
+  )
 
-  idxs[1] <- 1 # We always begin by explore the first integer
-  intervals[[1]] <- c(2, n) # After exploring the first integer, we begin splitting the interval 2:n
-  i <- 2
-
-  while (length(intervals) > 0) {
-    lb <- intervals[[1]][1]
-    ub <- intervals[[1]][2]
-    mid <- floor((lb + ub) / 2)
-    intervals[[1]] <- NULL
-
-    idxs[i] <- mid
-    i <- i + 1
-
-    if (lb == ub) {
-      next
-    } else {
-      lr <- split(lb, ub, mid)
-      if (!is.null(lr$l)) {
-        intervals[[length(intervals) + 1]] <- lr$l
-      }
-      if (!is.null(lr$r)) {
-        intervals[[length(intervals) + 1]] <- lr$r
-      }
-    }
+  for (i in seq_along(pmp$windows)) {
+    graphics::rasterImage(test[i, , drop = FALSE],
+      xleft = 1, xright = xmax,
+      ybottom = pmp$windows[i], ytop = pmp$windows[i] + sizes[i],
+      interpolate = FALSE
+    )
   }
-  return(idxs)
+
+  dev.flush()
 }
+# plot_skimp <- function(pmp, inv = FALSE) {
+#   test <- pmp$pmp[rev(seq_along(pmp$windows)), ]
+#
+#   depth <- 256
+#   test <- ceiling(test * depth) / depth
+#
+#   # m <- max(test[!is.infinite(test)])
+#   # n <- min(test)
+#   # test <- (test - n) / (m - n)
+#
+#   test[test > 1] <- 1
+#   test[test < 0] <- 0
+#
+#   if (inv) {
+#     test <- 1 - test
+#   }
+#
+#   plot.new()
+#   grid::grid.raster(test, height = 0.5, width = 0.8, interpolate = FALSE)
+# }
 
-#' Title
+#' Pan Matrix Profile maximum subsequence
 #'
-#' @param lb
-#' @param ub
-#' @param m
+#' Finds the upper bound
+#'
+#' @param data
+#' @param threshold
+#' @param refine_stepsize
+#' @param return_pmp
 #'
 #' @return
 #' @export
 #'
 #' @examples
-split <- function(lb, ub, m) {
-  if (lb == m) {
-    l <- NULL
-    r <- c(m + 1, ub)
-  } else if (ub == m) {
-    l <- c(lb, m - 1)
-    r <- NULL
-  } else {
-    l <- c(lb, m - 1)
-    r <- c(m + 1, ub)
-  }
-
-  return(list(l = l, r = r))
-}
-
-#' Title
 #'
-#' @param a
-#' @param minlag
-#' @param w
-#'
-#' @return
-#' @export
-#'
-#' @examples
-mpx <- function(a, w, rcpp = TRUE) {
-  minlag <- floor(w / 4)
-
-  if (rcpp) {
-    return(mpx_rcpp(as.numeric(a), as.integer(w), as.integer(minlag)))
-  }
-
-  # matrix profile using cross correlation,
-  n <- length(a)
-
-  msd <- fast_avg_sd(a, w)
-  mu <- msd$avg
-  sig <- msd$sig
-
-  # differentials have 0 as their first entry. This simplifies index
-  # calculations slightly and allows us to avoid special "first line"
-  # handling.
-  df <- c(0, (1 / 2) * (a[(1 + w):n] - a[1:(n - w)]))
-  dg <- c(0, (a[(1 + w):n] - mu[2:(n - w + 1)]) + (a[1:(n - w)] - mu[1:(n - w)]))
-  diagmax <- length(a) - w + 1
-  mp <- rep(-1, n - w + 1)
-  mpi <- rep(NA, n - w + 1)
-
-  seq_diag <- (minlag + 1):diagmax
-  seq_diag <- sample(seq_diag, size = length(seq_diag))
-
-  # anytime must return the result always
-  on.exit(return({
-    # to do ed
-    mp[mp > 1] <- 1.0
-    mp <- sqrt(2 * w * (1 - mp))
-    list(mp = mp, mpi = mpi)
-  }), TRUE)
-
-  for (diag in seq_diag) {
-    c <- sum((a[diag:(diag + w - 1)] - mu[diag]) * (a[1:w] - mu[1]))
-
-    offset <- 1:(n - w - diag + 2)
-    off_diag <- (offset + diag - 1)
-    d <- df[offset] * dg[off_diag] + df[off_diag] * dg[offset]
-
-    d <- tail(diffinv(d, xi = c), -1)
-
-    d_cmp <- d * sig[offset] * sig[off_diag]
-
-    mask <- d_cmp > mp[offset]
-    mp[c(mask, rep(FALSE, diag - 1))] <- d_cmp[mask]
-    mpi[c(mask, rep(FALSE, diag - 1))] <- off_diag[mask]
-
-    mask <- d_cmp > mp[off_diag]
-    mp[c(rep(FALSE, diag - 1), mask)] <- d_cmp[mask]
-    mpi[c(rep(FALSE, diag - 1), mask)] <- offset[mask]
-  }
-}
-
-maximum_subsequence <- function(ts, threshold) {
-  # """
-  #   Finds the maximum subsequence length based on the threshold provided. Note
-  #   that this threshold is domain specific requiring some knowledge about the
-  #   underyling time series in question.
-  #
-  #   The subsequence length starts at 8 and iteratively doubles until the
-  #   maximum correlation coefficient is no longer met.
-  #
-  #   Parameters
-  #   ----------
-  #   ts : array_like
-  #       The time series to analyze.
-  #   threshold : float
-  #       The correlation coefficient used as the threshold. It should be between
-  #       0 and 1.
-  #
-  #   Returns
-  #   -------
-  #   int :
-  #       The maximum subsequence length based on the threshold provided.
-  #   """
-  #
-
+maximum_subsequence <- function(data,
+                                threshold = getOption("tsmp.pmp_ub", 0.95),
+                                refine_stepsize = getOption("tsmp.pmp_refine", 0.5),
+                                return_pmp = TRUE) {
   correlation_max <- Inf
-  window_size <- 650
-  max_window <- floor(length(ts) / 2)
 
+  if (return_pmp) {
+    pmp <- list()
+    pmpi <- list()
+    do_idxs <- TRUE
+  }
+  correlation_max <- Inf
+  window_size <- 8
+  windows <- NULL
+  max_window <- floor(length(data) / 2)
+
+  # first perform a wide search by increasing window by 2 in each iteration
   while (window_size <= max_window) {
-    pmp <- mpx(ts, window_size)$mp
-    mask <- !is.infinite(pmp)
-    correlation_max <- max(pmp[mask])
+    message("window: ", window_size)
 
-    message("correlation_max: ", correlation_max, " window_size: ", window_size)
+    windows <- c(windows, window_size)
+
+    result <- mpx(data, window_size, idx = do_idxs, dist = "pearson")
+    correlation_max <- max(result$mp[!is.infinite(result$mp)], na.rm = TRUE)
+
+    if (return_pmp) {
+      pmp[[as.character(window_size)]] <- corr_ed(result$mp, window_size)
+      pmpi[[as.character(window_size)]] <- result$pi
+    }
 
     if (correlation_max < threshold) {
       break
     }
 
-    window_size <- window_size + 1
+    window_size <- window_size * 2
   }
 
-  return(window_size)
+  # refine the upper bound by increase by + X% increments
+  test_windows <- 2 * round(((seq(refine_stepsize, 1 - refine_stepsize, refine_stepsize) + 1) * window_size / 2) / 2)
+
+  for (window_size in test_windows) {
+    message("window: ", window_size)
+
+    windows <- c(windows, window_size)
+
+    result <- mpx(data, window_size, idx = do_idxs, dist = "pearson")
+    correlation_max <- max(result$mp[!is.infinite(result$mp)], na.rm = TRUE)
+
+    if (return_pmp) {
+      pmp[[as.character(window_size)]] <- corr_ed(result$mp, window_size)
+      pmpi[[as.character(window_size)]] <- result$pi
+    }
+
+    if (correlation_max < threshold) {
+      break
+    }
+  }
+
+  if (return_pmp) {
+    return(list(upper_window = window_size, pmp = pmp, pmpi = pmpi, windows = windows))
+  } else {
+    return(window_size)
+  }
 }

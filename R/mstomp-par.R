@@ -7,7 +7,9 @@
 #' @describeIn mstomp Parallel version.
 
 
-mstomp_par <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, must_dim = NULL, exc_dim = NULL, n_workers = 2) {
+mstomp_par <- function(data, window_size, exclusion_zone = getOption("tsmp.verbose", 1 / 2),
+                       verbose = getOption("tsmp.verbose", 2),
+                       must_dim = NULL, exc_dim = NULL, n_workers = 2) {
   # get various length
   ez <- exclusion_zone # store original
   exclusion_zone <- round(window_size * exclusion_zone + vars()$eps)

@@ -1,5 +1,5 @@
 #include <Rcpp.h>
-#include <RcppBlaze.h>
+//#include <emmintrin.h>
 using namespace Rcpp;
 
 //[[Rcpp::export]]
@@ -17,6 +17,34 @@ double std_rcpp(NumericVector data, bool na_rm = false) {
   double result = sqrt(sum(pow((data - mean(data)), 2)) / data.length());
 
   return(result);
+}
+
+//[[Rcpp::export]]
+NumericMatrix list_to_matrix(List x){
+  int32_t nlines = x.size();
+  uint32_t colmax = 0;
+
+  for(int32_t i = 0; i < nlines; i++) {
+    uint32_t currsize = as<NumericVector>(x[i]).size();
+    if(colmax < currsize) {
+      colmax = currsize;
+    }
+  }
+
+  NumericMatrix m(nlines, colmax);
+
+  for(int32_t i = 0; i < nlines; i++) {
+    int32_t line = nlines - i - 1;
+    uint32_t currsize = as<NumericVector>(x[i]).size();
+    NumericMatrix::Row row = m(i, _);
+    row = as<NumericVector>(x[i]);
+
+    for(uint32_t j = currsize; j < colmax; j++) {
+      row[j] = 0;
+    }
+  }
+
+  return(m);
 }
 
 //[[Rcpp::export]]
@@ -170,7 +198,7 @@ NumericVector binary_split_rcpp(uint32_t n) {
   NumericVector idxs(n);
 
   idxs[0] = 1;// We always begin by explore the first integer
-   // After exploring the first integer, we begin splitting the interval 2:n
+  // After exploring the first integer, we begin splitting the interval 2:n
 
   std::deque<uint32_t> lb_list;
   std::deque<uint32_t> ub_list;
@@ -230,215 +258,4 @@ double sq2s_rcpp(NumericVector a) {
   double res = p + s;
 
   return(res);
-}
-
-//[[Rcpp::export]]
-NumericVector sum2s_rcpp(NumericVector a, uint32_t w) {
-  NumericVector res(a.length() - w + 1, 0);
-  double accum = a[0];
-  double resid = 0.0;
-
-  for (uint32_t i = 1; i < w; i++) {
-    double m = a[i];
-    double p = accum;
-    accum = accum + m;
-    double q = accum - p;
-    resid = resid + ((p - (accum - q)) + (m - q));
-  }
-
-  res[0] = accum + resid;
-
-  for (uint32_t i = w; i < a.length(); i++) {
-    double m = a[i - w];
-    double n = a[i];
-    double p = accum - m;
-    double q = p - accum;
-    double r = resid + ((accum - (p - q)) - (m + q));
-    accum = p + n;
-    double t = accum - p;
-    resid = r + ((p - (accum - t)) + (n - t));
-    res[i - w + 1] = accum + resid;
-  }
-
-  return(res);
-}
-// [[Rcpp::export]]
-List muinvn_rcpp(NumericVector a, uint32_t w) {
-  // Functions here are based on the work in
-  // Ogita et al, Accurate Sum and Dot Product
-  // results here are a moving average and stable inverse centered norm based
-  // on Accurate Sum and Dot Product, Ogita et al
-
-  NumericVector sig(a.length() - w + 1, 0);
-  NumericVector mu = sum2s_rcpp(a, w) / w;
-
-  for (uint32_t i = 0; i < mu.length(); i++) {
-    sig[i] = sq2s_rcpp(a[Range(i, i + w - 1)] - mu[i]);
-  }
-
-  sig = 1 / sqrt(sig);
-
-  return (List::create(
-      Rcpp::Named("avg") = mu,
-      Rcpp::Named("sig") = sig
-  ));
-}
-
-//[[Rcpp::export]]
-NumericVector sum2s2_rcpp(NumericVector a, uint32_t w) {
-  NumericVector res(a.length() - w + 1, 0);
-  double accum = a[0];
-  double resid = 0.0;
-
-  for (uint32_t i = 1; i < w; i++) {
-    double m = a[i];
-    double p = accum;
-    accum = accum + m;
-    double q = accum - p;
-    resid = resid + ((p - (accum - q)) + (m - q));
-  }
-
-  res[0] = accum + resid;
-
-  for (uint32_t i = w; i < a.length(); i++) {
-    double m = a[i - w];
-    double n = a[i];
-    double p = accum - m;
-    double q = p - accum;
-    double r = resid + ((accum - (p - q)) - (m + q));
-    accum = p + n;
-    double t = accum - p;
-    resid = r + ((p - (accum - t)) + (n - t));
-    res[i - w + 1] = accum + resid;
-  }
-
-  return(res);
-}
-
-// [[Rcpp::export]]
-List muinvn2_rcpp(NumericVector a, uint32_t w) {
-  // Functions here are based on the work in
-  // Ogita et al, Accurate Sum and Dot Product
-  // results here are a moving average and stable inverse centered norm based
-  // on Accurate Sum and Dot Product, Ogita et al
-
-  NumericVector mu(a.length() - w + 1, 0);
-  double accum = a[0];
-  double resid = 0.0;
-
-  for (uint32_t i = 1; i < w; i++) {
-    double m = a[i];
-    double p = accum;
-    accum = accum + m;
-    double q = accum - p;
-    resid = resid + ((p - (accum - q)) + (m - q));
-  }
-
-  mu[0] = (accum + resid) / w;
-
-  for (uint32_t i = w; i < a.length(); i++) {
-    double m = a[i - w];
-    double n = a[i];
-    double p = accum - m;
-    double q = p - accum;
-    double r = resid + ((accum - (p - q)) - (m + q));
-    accum = p + n;
-    double t = accum - p;
-    resid = r + ((p - (accum - t)) + (n - t));
-    mu[i - w + 1] = (accum + resid) / w;
-  }
-
-  NumericVector sig(a.length() - w + 1, 0);
-  NumericVector aa(w);
-  NumericVector h(w);
-  NumericVector c(w);
-  NumericVector a1(w);
-  NumericVector a2(w);
-  NumericVector a3(w);
-  NumericVector r(w);
-
-  for (uint32_t i = 0; i < mu.length(); i++) {
-    for(uint32_t j = 0; j < w; j++) {
-      aa[j] = a[i+j] - mu[i];
-      h[j] = aa[j] * aa[j];
-      c[j] = (pow(2,27) + 1.0) * aa[j];
-      a1[j] = (c[j] - (c[j] - aa[j]));
-      a2[j] = aa[j] - a1[j];
-      a3[j] = a1[j] * a2[j];
-      r[j] = a2[j] * a2[j] - (((h[j] - a1[j] * a1[j]) - a3[j]) - a3[j]);
-    }
-
-    double p = h[0];
-    double s = r[0];
-
-    for (uint32_t j = 1; j < w; j++) {
-      double x = p + h[j];
-      double z = x - p;
-      s = s + (((p - (x - z)) + (h[j] - z)) + r[j]);
-      p = x;
-    }
-
-    sig[i] = p + s;
-  }
-
-  sig = 1 / sqrt(sig);
-
-  return (List::create(
-      Rcpp::Named("avg") = mu,
-      Rcpp::Named("sig") = sig
-  ));
-}
-
-// [[Rcpp::export]]
-List mpx_rcpp(NumericVector a, uint32_t w, uint32_t minlag) {
-
-  // matrix profile using cross correlation,
-  uint32_t n = a.length();
-
-  Environment pkg = Environment::namespace_env("tsmp");
-  Function fast_avg_sd = pkg["fast_avg_sd"];
-
-  List msd = fast_avg_sd(a, w);
-
-  NumericVector mu = msd["avg"];
-  NumericVector sig = msd["sig"];
-  // differentials have 0 as their first entry. This simplifies index
-  // calculations slightly and allows us to avoid special "first line"
-  // handling.
-  //
-  uint32_t diagmax = n - w + 1;
-
-  NumericVector df = 0.5 * (a[Range(w, n - 1)] - a[Range(0, n - w - 1)]);
-  df.push_front(0);
-  NumericVector dg = (a[Range(w, n - 1)] - mu[Range(1, diagmax - 1)]) + (a[Range(0, n - w - 1)] - mu[Range(0, n - w - 1)]);
-  dg.push_front(0);
-  NumericVector mp = rep(-1.0, diagmax);
-  NumericVector mpi = rep(R_NaN, diagmax);
-
-  for (uint32_t diag = minlag + 1; diag <= diagmax; diag++) {
-    double c = sum((a[Range(diag - 1, (diag - 1 + w - 1))] - mu[diag - 1]) * (a[Range(0, w - 1)] - mu[0]));
-    for (uint32_t offset = 1; offset <= (n - w - diag + 2); offset++) {
-      c = c + df[offset - 1] * dg[offset - 1 + diag - 1] + df[offset - 1 + diag - 1] * dg[offset - 1];
-      double c_cmp = c * sig[offset - 1] * sig[offset - 1 + diag - 1];
-      if (c_cmp > mp[offset - 1]) {
-        mp[offset - 1] = c_cmp;
-        // mpi[offset - 1] = offset - 1 + diag - 1;
-        mpi[offset - 1] = offset - 1 + diag;
-      }
-      if (c_cmp > mp[offset - 1 + diag - 1]) {
-        mp[offset - 1 + diag - 1] = c_cmp;
-        // mpi[offset - 1 + diag - 1] = offset - 1;
-        mpi[offset - 1 + diag - 1] = offset;
-      }
-    }
-  }
-  // to do ed
-  mp[mp > 1.0] = 1.0;
-  // mp = sqrt(2 * w * (1 - mp));
-
-
-  return (List::create(
-      Rcpp::Named("mp") = mp,
-      Rcpp::Named("mpi") = mpi
-  ));
 }
