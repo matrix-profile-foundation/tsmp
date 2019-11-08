@@ -306,7 +306,7 @@ min_mp_idx <- function(.mp, n_dim = NULL, valid = TRUE) {
 
   if (valid) {
     if (all(nn_min > 0 & nn_min <= mp_size) &&
-      all(!is.infinite(diag(.mp$mp[nn_min, ], names = FALSE)))) {
+      all(!is.infinite(diag(.mp$mp[nn_min, ])))) {
       return(cbind(min, nn_min, deparse.level = 0))
     }
 
@@ -328,7 +328,7 @@ min_mp_idx <- function(.mp, n_dim = NULL, valid = TRUE) {
         }
 
         if (all(nn_min > 0 & nn_min <= mp_size) &&
-          all(!is.infinite(diag(.mp$mp[nn_min, ], names = FALSE)))) {
+          all(!is.infinite(diag(.mp$mp[nn_min, ])))) {
           return(cbind(min, nn_min, deparse.level = 0))
         } else {
           for (i in seq_len(n_dim)) {
