@@ -22,65 +22,139 @@
 #' @export
 #'
 #' @examples
+#'
+#' 1. upper_window will be set to Inf on new objects
+#' 1.1. upper_window will also be used for plot, and for discovery, it must not remove any existing data from the object
+#' 2. window_sizes is used for plot, it must not remove any mp inside the object
+#' 2.1. window_sizes tells the function what mp are stored, it may be updated with as.numeric(names(pmp))
+#' 3. the functions must be capable to handle the data without need to sort by window_size, but sort may be useful later(?)
 
 skimp <- function(data,
                   window_sizes = seq.int(from = 10, to = length(data) / 2, length.out = 20),
                   plot = FALSE,
-                  sorted = TRUE,
+                  sorted = FALSE,
                   pmp_obj = NULL) {
-  window_sizes <- floor(window_sizes)
+
+  ## Prepare things ----
+
+  # checks if the given object is actualy a skimp object
+  if (!is.null(pmp_obj)) {
+    if (class(pmp_obj) != "skimp") {
+      stop("`pmp_obj` must be of class skimp")
+    }
+  }
+
+  # TODO: sanitize `data`
   data_size <- length(data)
 
-  if (is.list(pmp_obj)) {
+  # windows must be integers
+  window_sizes <- floor(window_sizes)
+
+  # if an object is given, remove the windows that already have been computed and are below the upper_window
+  if (!is.null(pmp_obj)) {
+    # remove already computed
     window_sizes <- window_sizes[!(window_sizes %in% pmp_obj$windows)]
+
     if (!is.null(pmp_obj$upper_window)) {
+      # remove those above the upper_window
       window_sizes <- window_sizes[window_sizes < pmp_obj$upper_window]
+    } else {
+      # else, keep them and set the upper_window to Inf, since it is NULL
+      pmp_obj$upper_window <- Inf
     }
-  } else {
-    pmp_obj <- list(pmp = list(), pmpi = list(), windows = 0)
   }
 
-  window_sizes <- sort(window_sizes)
+  # get the extreme values and sort the window_sizes for later binary_split correctly
   min_window <- min(window_sizes)
   max_window <- max(window_sizes)
+  window_sizes <- sort(window_sizes)
 
-  # Determine the order in which we will explore the subsequence lengths used to run the matrix profile
-  split_idx <- binary_split(length(window_sizes))
-  # split_idx <- seq_along(window_sizes)
+  print(str(list(min_window = min_window, max_window = max_window, window_sizes = window_sizes)))
 
-
-  ## BEGIN PROCESSING
-
-  # Runs matrix profile on each subsequence length in INPUTS[['window_sizes']](split_idx), stores the
-  # results in pmp, and generates a frame for the animation
-
+  # if we'll plot while computing, prepare the canvas
   if (plot == TRUE) {
-    xmin <- 1
-    xmax <- data_size
-    ymin <- min_window
-
-    if (length(window_sizes) > 1) {
-      ymax <- max_window + diff(window_sizes[1:2])
+    # if an object is given, plot it using existing windows
+    if (!is.null(pmp_obj)) {
+      plot(pmp_obj, pearson = T) # skimp_plot_set_canvas(pmp_obj = pmp_obj)
+      Sys.sleep(1) # needed for plot update
     } else {
-      ymax <- max_window + 10 # arbitrary
-    }
-
-    if (is.list(pmp_obj)) {
-      plot(pmp_obj, pearson = T)#skimp_plot_set_canvas(pmp_obj = pmp_obj)
-      Sys.sleep(1)
-    } else {
-      plot(c(xmin, xmax), c(ymin, ymax),
-           main = "Pan Matrix Profile",
-           type = "n", xlab = "", ylab = "window"
-      )
-      Sys.sleep(1)
+      # create a blank canvas with the proper size
+      skimp_plot_set_canvas(ymin = min_window,
+                            ymax = max_window + floor((max_window - min_window) / 24), # arbitrary
+                            xmin = 1,
+                            xmax = data_size)
+      Sys.sleep(1) # needed for plot update
     }
   }
+
+  # anytime must return the result always
+  on.exit({
+
+    if (is.null(pmp_obj)) {
+      message("on.exit NULL")
+
+      return(NULL)
+    } else {
+
+      # final arrangements to existing object
+
+      expected_profiles <- as.numeric(names(pmp_obj$pmp))
+      expected_indexes <- as.numeric(names(pmp_obj$pmpi))
+
+      # check if the windows vector contains any uncomputed matrix profile
+      if (any(!(pmp_obj$windows %in% expected_profiles))) {
+        warning("`windows` contains values not computed in `pmp`")
+      }
+
+      # check if there is any matrix profile without a profile index
+      if (any(!(expected_profiles %in% expected_indexes))) {
+        warning("`pmp` contains values without respective `pmpi")
+      }
+
+      # check if there is any profile index without a matrix profile
+      if (any(!(expected_indexes %in% expected_profiles))) {
+        warning("`pmpi` contains values without respective `pmp")
+      }
+
+
+      # if (sorted == TRUE) {
+      #   sorted <- sort(as.numeric(names(pmp_obj$pmp)), index.return = TRUE)
+      #   window_sizes <- sorted$x
+      #
+      #   pmp_obj$pmp <- pmp_obj$pmp[sorted$ix]
+      #   pmp_obj$pmpi <- pmp_obj$pmpi[sorted$ix]
+      # } else {
+      #   window_sizes <- as.numeric(names(pmp_obj$pmp))
+      # }
+
+      message("on.exit OBJ")
+
+      # pmp_obj$windows <- window_sizes
+      #
+      class(pmp_obj) <- "skimp"
+
+      return(pmp_obj)
+    }
+  }, TRUE)
+
+  # if not given, create a new object to start with
+  if (is.null(pmp_obj)) {
+    pmp_obj <- list(pmp = list(), pmpi = list())
+  }
+
+  # Determine the order in which we will explore the window_sizes
+  split_idx <- binary_split(length(window_sizes))
+
+  ## Begin the main Loop ----
 
   for (i in seq_along(split_idx)) {
 
-    # Get the current subsequence length to run the Matrix Profile on
-    w <- window_sizes[split_idx[i]]
+    # i holds the sequence from 1 to ...length(split_idx)
+    # idx holds the actual binary split index
+    idx <- split_idx[i]
+
+    # w holds the current window being explored
+    w <- window_sizes[idx]
 
     if (is.na(w) || w == 0) {
       warning("Invalid window size ", w)
@@ -91,34 +165,24 @@ skimp <- function(data,
     result <- mpx(data, w, idx = TRUE, dist = "euclidean")
 
     message(
-      "w: ", w, " i: ", i, "/", length(split_idx), " idx: ", split_idx[i]
+      "step: ", i, "/", length(split_idx), " binary idx: ", idx, " window: ", w
     )
 
+    # if pmp_obj is a new empty object, accessing windows will return NULL, so it's fine
+    pmp_obj$windows <- c(pmp_obj$windows, w)
+    # using character to create a tuple list. Numbers would create NULL's
     pmp_obj$pmp[[as.character(w)]] <- result$mp
     pmp_obj$pmpi[[as.character(w)]] <- result$pi
 
     if (plot == TRUE) {
+      # add a layer to the plot. `pmp_obj$windows` is currently used to know the heigth of
+      # the new layer. May be room to improve.
       skimp_plot_add_layer(result$mp, w, pmp_obj$windows)
-      Sys.sleep(1)
+      Sys.sleep(1) # needed for plot update
     }
-
-    pmp_obj$windows <- c(pmp_obj$windows, w)
   }
 
-  if (sorted == TRUE) {
-    sorted <- sort(as.numeric(names(pmp_obj$pmp)), index.return = TRUE)
-    window_sizes <- sorted$x
 
-    pmp_obj$pmp <- pmp_obj$pmp[sorted$ix]
-    pmp_obj$pmpi <- pmp_obj$pmpi[sorted$ix]
-  } else {
-    window_sizes <- as.numeric(names(pmp_obj$pmp))
-  }
-
-  pmp_obj$windows <- window_sizes
-  class(pmp_obj) <- "skimp"
-
-  return(pmp_obj)
   #   A dict with the following:
   #   {
   #     'pmp': the pan matrix profile as a 2D array,
@@ -135,138 +199,31 @@ skimp <- function(data,
 } # function skimp
 
 
-skimp2 <- function(data,
-                  window_sizes = seq.int(from = 10, to = length(data) / 2, length.out = 20),
-                  plot = FALSE,
-                  sorted = TRUE,
-                  pmp_obj = NULL) {
-  window_sizes <- floor(window_sizes)
-  data_size <- length(data)
-
-  if (is.list(pmp_obj)) {
-    window_sizes <- window_sizes[!(window_sizes %in% pmp_obj$windows)]
-    if (!is.null(pmp_obj$upper_window)) {
-      window_sizes <- window_sizes[window_sizes < pmp_obj$upper_window]
-    }
-  } else {
-    pmp_obj <- list(pmp = list(), pmpi = list(), windows = 0)
-  }
-
-  window_sizes <- sort(window_sizes)
-  min_window <- min(window_sizes)
-  max_window <- max(window_sizes)
-
-  # Determine the order in which we will explore the subsequence lengths used to run the matrix profile
-  split_idx <- binary_split(length(window_sizes))
-  # split_idx <- seq_along(window_sizes)
-
-
-  ## BEGIN PROCESSING
-
-  # Runs matrix profile on each subsequence length in INPUTS[['window_sizes']](split_idx), stores the
-  # results in pmp, and generates a frame for the animation
-
-  if (plot == TRUE) {
-    xmin <- 1
-    xmax <- data_size
-    ymin <- min_window
-
-    if (length(window_sizes) > 1) {
-      ymax <- max_window + diff(window_sizes[1:2])
-    } else {
-      ymax <- max_window + 10 # arbitrary
-    }
-
-    if (is.list(pmp_obj)) {
-      plot(pmp_obj)
-    } else {
-      plot(c(xmin, xmax), c(ymin, ymax),
-           main = "Pan Matrix Profile",
-           type = "n", xlab = "", ylab = "window"
-      )
-    }
-  }
-
-  for (i in seq_along(split_idx)) {
-
-    # Get the current subsequence length to run the Matrix Profile on
-    w <- window_sizes[split_idx[i]]
-
-    if (is.na(w) || w == 0) {
-      warning("Invalid window size ", w)
-      next
-    }
-
-    # Run Matrix Profile
-    result <- mpx(data, w, idx = TRUE, dist = "euclidean")
-
-    message(
-      "w: ", w, " i: ", i, "/", length(split_idx), " idx: ", split_idx[i]
-    )
-
-    pmp_obj$pmp[[as.character(w)]] <- result$mp
-    pmp_obj$pmpi[[as.character(w)]] <- result$pi
-
-    if (plot == TRUE) {
-      # pad the result, so we have a square plot
-      test <- c(result$mp, rep(0, w - min_window))
-
-      # here is where we adjust the bright and contrast
-      test[test > 1] <- 1
-      test[test < 0] <- 0
-
-      # retrieve the already computed windows and find the next higher value
-      heigth <- window_sizes[split_idx[1:i]]
-      heigth <- heigth[heigth > w]
-      if (length(heigth) > 0) {
-        heigth <- min(heigth)
-      } else {
-        heigth <- ymax
-      }
-
-      message("from: ", w, " to: ", heigth)
-
-      graphics::rasterImage(matrix(test, nrow = 1),
-                            xleft = xmin, xright = length(test),
-                            ybottom = w, ytop = heigth,
-                            interpolate = FALSE
-      )
-    }
-  }
-
-  if (sorted == TRUE) {
-    sorted <- sort(as.numeric(names(pmp_obj$pmp)), index.return = TRUE)
-    window_sizes <- sorted$x
-
-    pmp_obj$pmp <- pmp_obj$pmp[sorted$ix]
-    pmp_obj$pmpi <- pmp_obj$pmpi[sorted$ix]
-  } else {
-    window_sizes <- as.numeric(names(pmp_obj$pmp))
-  }
-
-  pmp_obj$windows <- window_sizes
-  class(pmp_obj) <- "skimp"
-
-  return(pmp_obj)
-}
-
 
 skimp_plot_set_canvas <- function(..., pmp_obj = NULL) {
-  if (is.list(pmp_obj)) {
+  if (!is.null(pmp_obj)) {
     xmin <- 1
     ymin <- min(pmp_obj$windows)
     ymax <- max(pmp_obj$windows) + floor((max(pmp_obj$windows) - ymin) / 24) # arbitrary
     mp_min <- length(pmp_obj$pmp[[as.character(ymin)]])
     xmax <- mp_min + ymin - 1
+  } else {
+    pars <- list(...)
+    xmin <- pars$xmin
+    xmax <- pars$xmax
+    ymin <- pars$ymin
+    ymax <- pars$ymax
 
     plot(c(xmin, xmax), c(ymin, ymax),
-      main = "Pan Matrix Profile", xlab = "", ylab = "window",
-      type = "n", xaxt = "n", yaxt = "n", xlim = c(xmin, xmax)
+         main = "Pan Matrix Profile", xlab = "", ylab = "window",
+         type = "n", xaxt = "n", yaxt = "n", xlim = c(xmin, xmax)
     )
 
     axis(side = 1, at = floor(c(xmin, seq(xmin, xmax, length.out = 10), xmax))) # X
-    axis(side = 2, at = floor(c(ymin, seq(ymin, ymax, length.out = 10),ymax))) # Y
+    axis(side = 2, at = floor(c(ymin, seq(ymin, ymax, length.out = 10), ymax))) # Y
   }
+
+  invisible()
 }
 
 skimp_plot_add_layer <- function(layer, window, window_set = NULL) {
@@ -308,21 +265,26 @@ skimp_plot_add_layer <- function(layer, window, window_set = NULL) {
   }
 
   layer <- c(layer, rep(0, window - 1))
-  layer <- ed_corr(layer, window)
+#  layer <- ed_corr(layer, window)
   xmax <- length(layer)
-  layer[layer > 1] <- 1
-  layer[layer < 0] <- 0
 
-  print(list(
-    coords = coords, xmin = xmin, xmax = xmax,
-    ymin = ymin, ymax = ymax, ytop = ytop, w_min = w_min
-  ))
+  layer <- normalize(layer, 0, 1)
+
+  # layer[layer > 1] <- 1
+  # layer[layer < 0] <- 0
+
+  # print(list(
+  #   coords = coords, xmin = xmin, xmax = xmax,
+  #   ymin = ymin, ymax = ymax, ytop = ytop, w_min = w_min
+  # ))
 
   graphics::rasterImage(matrix(layer, nrow = 1),
     xleft = xmin, xright = xmax,
     ybottom = ymin, ytop = ytop,
     interpolate = FALSE
   )
+
+  invisible()
 }
 
 
@@ -356,12 +318,12 @@ plot.skimp <- function(pmp, pearson = FALSE) {
   }
 
   plot(c(xmin, data_size), c(ymin, ymax),
-       main = "Pan Matrix Profile", xlab = "", ylab = "window",
-       type = "n", xaxt = "n", yaxt = "n", xlim = c(xmin, data_size)
+    main = "Pan Matrix Profile", xlab = "", ylab = "window",
+    type = "n", xaxt = "n", yaxt = "n", xlim = c(xmin, data_size)
   )
 
   axis(side = 1, at = floor(c(xmin, seq(xmin, data_size, length.out = 10), data_size))) # X
-  axis(side = 2, at = floor(c(ymin, seq(ymin, ymax, length.out = 10),ymax))) # Y
+  axis(side = 2, at = floor(c(ymin, seq(ymin, ymax, length.out = 10), ymax))) # Y
 
   for (i in seq_along(sorted$ix)) {
     test <- pmp$pmp[[sorted$ix[i]]]
@@ -369,12 +331,11 @@ plot.skimp <- function(pmp, pearson = FALSE) {
 
     test <- c(test, rep(0, w - min_window))
 
-    if (pearson == TRUE) {
-      test <- ed_corr(test, w)
-    }
+    # if (pearson == TRUE) {
+    #   test <- ed_corr(test, w)
+    # }
 
-    test[test > 1] <- 1
-    test[test < 0] <- 0
+    test <- normalize(test, 0, 1)
 
     ytop <- w + sizes[sorted$ix[i]] * 1.5
 

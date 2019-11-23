@@ -18,10 +18,9 @@
 #'
 #' @examples
 #' data_sd <- fast_movsd(mp_toy_data$data[, 1], mp_toy_data$sub_len)
-
-# DO NOT Handles NA's
+#'
+#' # DO NOT Handles NA's
 fast_movsd <- function(data, window_size, rcpp = FALSE) {
-
   if (window_size < 2) {
     stop("'window_size' must be at least 2.")
   }
@@ -55,7 +54,7 @@ fast_movsd <- function(data, window_size, rcpp = FALSE) {
 #'
 #' @examples
 #' data_avg <- fast_movavg(mp_toy_data$data[, 1], mp_toy_data$sub_len)
-# DO NOT Handles NA's
+#' # DO NOT Handles NA's
 fast_movavg <- function(data, window_size) {
   if (window_size < 2) {
     stop("'window_size' must be at least 2.")
@@ -64,8 +63,12 @@ fast_movavg <- function(data, window_size) {
   return(cumsum(c(sum(data[1:window_size]), diff(data, window_size))) / window_size)
 }
 
-ed_corr <- function(x, w) {(2 * w - x^2) / (2 * w)}
-corr_ed <- function(x, w) {sqrt(2 * w * (1 - ifelse(x > 1, 1, x)))}
+ed_corr <- function(x, w) {
+  (2 * w - x^2) / (2 * w)
+}
+corr_ed <- function(x, w) {
+  sqrt(2 * w * (1 - ifelse(x > 1, 1, x)))
+}
 
 #' Fast implementation of moving average and moving standard deviation using cumsum
 #'
@@ -103,14 +106,13 @@ fast_avg_sd <- function(data, window_size, rcpp = FALSE) {
   data2_sum <- cumsum(c(sum(data2[1:window_size]), diff(data2, window_size)))
   data_sd2 <- (data2_sum / window_size) - (data_mean^2) # variance
   data_sd <- sqrt(data_sd2) # std deviation
-  data_sig <- sqrt(1/(data_sd2 * window_size))
+  data_sig <- sqrt(1 / (data_sd2 * window_size))
 
   return(list(avg = mov_mean, sd = data_sd, sig = data_sig, sum = mov_sum, sqrsum = mov2_sum))
 }
 
 # DO NOT Handles NA's
 fast_muinvn <- function(data, window_size) {
-
   if (window_size < 2) {
     stop("'window_size' must be at least 2.")
   }
@@ -119,7 +121,7 @@ fast_muinvn <- function(data, window_size) {
   data_mean <- data_sum / window_size
   data2 <- data^2
   data2_sum <- cumsum(c(sum(data2[1:window_size]), diff(data2, window_size)))
-  data_dp <- 1/sqrt(data2_sum - data_mean^2 * window_size)
+  data_dp <- 1 / sqrt(data2_sum - data_mean^2 * window_size)
 
   return(list(avg = data_mean, isd = data_dp))
 }
@@ -280,6 +282,31 @@ znorm <- function(data, rcpp = TRUE) {
   }
 }
 
+#' Normalizes data to be between min and max
+#'
+#'
+#' @param data a `vector` or a column `matrix` of `numeric`.
+#' @param min the minimum value
+#' @param max the maximum value
+#'
+#' @return Returns the normalized data
+#' @keywords internal
+#' @noRd
+#'
+normalize <- function(data, min = 0, max = 1) {
+  min_val <- min(data, na.rm = TRUE)
+  max_val <- max(data, na.rm = TRUE)
+
+  a <- (max - min) / (max_val - min_val)
+  b <- max - a * max_val
+  data <- a * data + b
+
+  data[data < min] <- min
+  data[data > max] <- max
+
+  return(data)
+}
+
 #' Distance between two matrices
 #'
 #' Computes the Euclidean distance between rows of two matrices.
@@ -328,7 +355,7 @@ binary_split <- function(n, rcpp = TRUE) {
     return(binary_split_rcpp(as.integer(n)))
   }
 
-  if(n < 2) {
+  if (n < 2) {
     return(1)
   }
 
@@ -1345,17 +1372,18 @@ as.salient <- function(.mp) {
 #'
 beep <- function(data) {
   if (!(is.null(audio::audio.drivers()) || nrow(audio::audio.drivers()) == 0)) {
-    tryCatch({
-      audio::play(data)
-    },
-    error = function(cond) {
-      message("Warning: Failed to play audio alert")
-      message(cond)
-    },
-    warning = function(cond) {
-      message("Warning: Something went wrong playing audio alert")
-      message(cond)
-    }
+    tryCatch(
+      {
+        audio::play(data)
+      },
+      error = function(cond) {
+        message("Warning: Failed to play audio alert")
+        message(cond)
+      },
+      warning = function(cond) {
+        message("Warning: Something went wrong playing audio alert")
+        message(cond)
+      }
     )
   }
   Sys.sleep(1)
