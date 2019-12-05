@@ -1,46 +1,65 @@
-#' Title
+#' Pan Matrix Profile
 #'
-#' @param data dataframe
-#' @param window_sizes window sizes
+#' Computes the Pan Matrix Profile (PMP) for the given time series.
 #'
-#'   The work closest in spirit to ours is VALMOD. The idea of VALMOD is to compute the MP for
-#'   the shortest length of interest, then use the information gleaned from it to guide a search
-#'   through longer subsequence lengths, exploiting lower bounds to prune off some calculations.
-#'   This idea works well for the first few of the longer subsequence lengths, but the lower bounds
-#'   progressively weaken, making the pruning ineffective. Thus, in the five case studies they
-#'   presented, the mean value of U/L was just 1.24. In contrast, consider that our termite example
-#'   in Fig. 15 has a U/L ratio of 240, more than two orders of magnitude larger. Thus, VALMOD is
-#'   perhaps best seen as finding motifs with some tolerance for a slightly (~25%) too short
-#'   user-specified query length, rather than a true "motif-of-all-lengths" algorithm. Also note
-#'   that apart from the shortest length, VALMOD only gives some information for the other lengths,
-#'   unlike pmp, which contains exact distances for all subsequences of all lengths.
+#' The work closest in spirit to ours is VALMOD. The idea of VALMOD is to compute the MP for
+#' the shortest length of interest, then use the information gleaned from it to guide a search
+#' through longer subsequence lengths, exploiting lower bounds to prune off some calculations.
+#' This idea works well for the first few of the longer subsequence lengths, but the lower bounds
+#' progressively weaken, making the pruning ineffective. Thus, in the five case studies they
+#' presented, the mean value of U/L was just 1.24. In contrast, consider that our termite example
+#' in Fig. 15 has a U/L ratio of 240, more than two orders of magnitude larger. Thus, VALMOD is
+#' perhaps best seen as finding motifs with some tolerance for a slightly (~25%) too short
+#' user-specified query length, rather than a true "motif-of-all-lengths" algorithm. Also note
+#' that apart from the shortest length, VALMOD only gives some information for the other lengths,
+#' unlike pmp, which contains exact distances for all subsequences of all lengths.
 #'
-#' @param plot plot each interaction
-#' @param pmp_res
+#' @param data a `matrix` or a `vector` of `numeric`.
+#' @param window_sizes a `vector` of the window sizes that will be evaluated. They will be rounded to the lower integer
+#' and sorted. (Default is a sequence of 20 values from 10 to half data size).
+#' @param plot a `logical`. If `TRUE`, every new computation will be plotted. (Default is `FALSE`).
+#' @param pmp_obj a `PMP` object that may or not contain an upper bound value, and previous computed profiles. The function will
+#' add new profiles, not replace. (Default is `NULL`).
+#' @param verbose an `int`. See details. (Default is `2`).
 #'
-#' @return Returns the Pan Matrix Profile
+#' @details
+#' When just the `data` is provided, the exploration will be done using the default `window_sizes` that is a sequence
+#' of 20 values between 10 and the half data size and the resulting object will have an `upper_bound` equals to `Inf`.
+#' If an object is provided by the argument `pmp_obj`, this function will add more information to the resulting object,
+#' never changing the values already computed.
+#' `verbose` changes how much information is printed by this function; `0` means nothing, `1` means text, `2`
+#' adds the progress bar, `3` adds the finish sound.
+#'
+#'
+#' Talk about upper bound and window sizes
+#' # 1. upper_window will be set to Inf on new objects
+#' # 1.1. upper_window will also be used for plot, and for discovery, it must not remove any existing data from the object
+#' # 2. window_sizes is used for plot, it must not remove any mp inside the object
+#' # 2.1. window_sizes tells the function what mp are stored, it may be updated with as.numeric(names(pmp))
+#' # 3. the functions must be capable to handle the data without need to sort by window_size, but sort may be useful later(?)
+#'
+#' @return Returns a Pan Matrix Profile object.
 #' @export
 #'
 #' @examples
+#' # Just compute
+#' pan <- pmp(mp_gait_data)
 #'
-#' 1. upper_window will be set to Inf on new objects
-#' 1.1. upper_window will also be used for plot, and for discovery, it must not remove any existing data from the object
-#' 2. window_sizes is used for plot, it must not remove any mp inside the object
-#' 2.1. window_sizes tells the function what mp are stored, it may be updated with as.numeric(names(pmp))
-#' 3. the functions must be capable to handle the data without need to sort by window_size, but sort may be useful later(?)
-
-skimp <- function(data,
+#' # Compute the upper bound, than add new profiles
+#' pan <- pmp_upper_bound(mp_gait_data)
+#' pan <- pmp(mp_gait_data, pmp_obj = pan)
+pmp <- function(data,
                   window_sizes = seq.int(from = 10, to = length(data) / 2, length.out = 20),
                   plot = FALSE,
-                  sorted = FALSE,
-                  pmp_obj = NULL) {
+                  pmp_obj = NULL,
+                  verbose = getOption("tsmp.verbose", 2)) {
 
   ## Prepare things ----
 
   # checks if the given object is actualy a skimp object
   if (!is.null(pmp_obj)) {
-    if (class(pmp_obj) != "skimp") {
-      stop("`pmp_obj` must be of class skimp")
+    if (class(pmp_obj) != "PMP") {
+      stop("`pmp_obj` must be of class PMP")
     }
   }
 
@@ -75,71 +94,72 @@ skimp <- function(data,
   if (plot == TRUE) {
     # if an object is given, plot it using existing windows
     if (!is.null(pmp_obj)) {
-      plot(pmp_obj, pearson = T) # skimp_plot_set_canvas(pmp_obj = pmp_obj)
+      plot(pmp_obj) # skimp_plot_set_canvas(pmp_obj = pmp_obj)
       Sys.sleep(1) # needed for plot update
     } else {
       # create a blank canvas with the proper size
-      skimp_plot_set_canvas(ymin = min_window,
-                            ymax = max_window + floor((max_window - min_window) / 24), # arbitrary
-                            xmin = 1,
-                            xmax = data_size)
+      skimp_plot_set_canvas(
+        ymin = min_window,
+        ymax = max_window + floor((max_window - min_window) / 24), # arbitrary
+        xmin = 1,
+        xmax = data_size
+      )
       Sys.sleep(1) # needed for plot update
     }
   }
 
   # anytime must return the result always
-  on.exit({
+  on.exit(
+    {
+      if (is.null(pmp_obj)) {
+        message("on.exit NULL")
 
-    if (is.null(pmp_obj)) {
-      message("on.exit NULL")
+        return(NULL)
+      } else {
 
-      return(NULL)
-    } else {
+        # final arrangements to existing object
 
-      # final arrangements to existing object
+        expected_profiles <- as.numeric(names(pmp_obj$pmp))
+        expected_indexes <- as.numeric(names(pmp_obj$pmpi))
 
-      expected_profiles <- as.numeric(names(pmp_obj$pmp))
-      expected_indexes <- as.numeric(names(pmp_obj$pmpi))
+        # check if the windows vector contains any uncomputed matrix profile
+        if (any(!(pmp_obj$windows %in% expected_profiles))) {
+          warning("`windows` contains values not computed in `pmp`")
+        }
 
-      # check if the windows vector contains any uncomputed matrix profile
-      if (any(!(pmp_obj$windows %in% expected_profiles))) {
-        warning("`windows` contains values not computed in `pmp`")
+        # check if there is any matrix profile without a profile index
+        if (any(!(expected_profiles %in% expected_indexes))) {
+          warning("`pmp` contains values without respective `pmpi")
+        }
+
+        # check if there is any profile index without a matrix profile
+        if (any(!(expected_indexes %in% expected_profiles))) {
+          warning("`pmpi` contains values without respective `pmp")
+        }
+
+
+        # if (sorted == TRUE) {
+        #   sorted <- sort(as.numeric(names(pmp_obj$pmp)), index.return = TRUE)
+        #   window_sizes <- sorted$x
+        #
+        #   pmp_obj$pmp <- pmp_obj$pmp[sorted$ix]
+        #   pmp_obj$pmpi <- pmp_obj$pmpi[sorted$ix]
+        # } else {
+        #   window_sizes <- as.numeric(names(pmp_obj$pmp))
+        # }
+
+        message("on.exit OBJ")
+
+        return(pmp_obj)
       }
-
-      # check if there is any matrix profile without a profile index
-      if (any(!(expected_profiles %in% expected_indexes))) {
-        warning("`pmp` contains values without respective `pmpi")
-      }
-
-      # check if there is any profile index without a matrix profile
-      if (any(!(expected_indexes %in% expected_profiles))) {
-        warning("`pmpi` contains values without respective `pmp")
-      }
-
-
-      # if (sorted == TRUE) {
-      #   sorted <- sort(as.numeric(names(pmp_obj$pmp)), index.return = TRUE)
-      #   window_sizes <- sorted$x
-      #
-      #   pmp_obj$pmp <- pmp_obj$pmp[sorted$ix]
-      #   pmp_obj$pmpi <- pmp_obj$pmpi[sorted$ix]
-      # } else {
-      #   window_sizes <- as.numeric(names(pmp_obj$pmp))
-      # }
-
-      message("on.exit OBJ")
-
-      # pmp_obj$windows <- window_sizes
-      #
-      class(pmp_obj) <- "skimp"
-
-      return(pmp_obj)
-    }
-  }, TRUE)
+    },
+    TRUE
+  )
 
   # if not given, create a new object to start with
   if (is.null(pmp_obj)) {
     pmp_obj <- list(pmp = list(), pmpi = list())
+    class(pmp_obj) <- "Skimp"
   }
 
   # Determine the order in which we will explore the window_sizes
@@ -198,183 +218,51 @@ skimp <- function(data,
   #   }
 } # function skimp
 
-
-
-skimp_plot_set_canvas <- function(..., pmp_obj = NULL) {
-  if (!is.null(pmp_obj)) {
-    xmin <- 1
-    ymin <- min(pmp_obj$windows)
-    ymax <- max(pmp_obj$windows) + floor((max(pmp_obj$windows) - ymin) / 24) # arbitrary
-    mp_min <- length(pmp_obj$pmp[[as.character(ymin)]])
-    xmax <- mp_min + ymin - 1
-  } else {
-    pars <- list(...)
-    xmin <- pars$xmin
-    xmax <- pars$xmax
-    ymin <- pars$ymin
-    ymax <- pars$ymax
-
-    plot(c(xmin, xmax), c(ymin, ymax),
-         main = "Pan Matrix Profile", xlab = "", ylab = "window",
-         type = "n", xaxt = "n", yaxt = "n", xlim = c(xmin, xmax)
-    )
-
-    axis(side = 1, at = floor(c(xmin, seq(xmin, xmax, length.out = 10), xmax))) # X
-    axis(side = 2, at = floor(c(ymin, seq(ymin, ymax, length.out = 10), ymax))) # Y
-  }
-
-  invisible()
-}
-
-skimp_plot_add_layer <- function(layer, window, window_set = NULL) {
-  coords <- par("usr")
-  xmin <- 1
-  ymin <- window
-  data_size <- length(layer) + window - 1 # theoretical data size
-
-  # assert
-  if (data_size != (coords[[2]] + coords[[1]] - xmin)) {
-    stop("data_size calc is wrong")
-  }
-
-  if (is.null(window_set)) {
-    # if this is the first layer
-    w_min <- window
-  } else {
-    # else, find the position to plot
-    w_min <- min(window_set)
-    ymax <- coords[[4]] + coords[[3]] - w_min
-    # assert
-    if (ymax != (max(window_set) + floor((max(window_set) - min(window_set)) / 24))) {
-      print(list(
-        ymax = ymax,
-        max_window = max(window_set),
-        min_window = min(window_set),
-        result = (max(window_set) + floor((max(window_set) - min(window_set)) / 24))
-      ))
-      stop("ymax calc is wrong")
-    }
-
-    upper_windows <- window_set[window_set > window]
-
-    if (length(upper_windows) > 0) {
-      ytop <- min(upper_windows)
-    } else {
-      ytop <- ymax
-    }
-  }
-
-  layer <- c(layer, rep(0, window - 1))
-#  layer <- ed_corr(layer, window)
-  xmax <- length(layer)
-
-  layer <- normalize(layer, 0, 1)
-
-  # layer[layer > 1] <- 1
-  # layer[layer < 0] <- 0
-
-  # print(list(
-  #   coords = coords, xmin = xmin, xmax = xmax,
-  #   ymin = ymin, ymax = ymax, ytop = ytop, w_min = w_min
-  # ))
-
-  graphics::rasterImage(matrix(layer, nrow = 1),
-    xleft = xmin, xright = xmax,
-    ybottom = ymin, ytop = ytop,
-    interpolate = FALSE
-  )
-
-  invisible()
-}
-
-
-
-#' Title
+#' Pan Matrix Profile upper bound
 #'
-#' @param pmp
-#' @param inv
+#' Finds the upper bound for Pan Matrix Profile calculation.
 #'
-#' @return
+#' @param data a `matrix` or a `vector` of `numeric`.
+#' @param threshold a `numeric`. Correlation threshold. See details.  (Default is `0.95`).
+#' @param refine_stepsize a `numeric`. Step size for the last upper bound search. See details.  (Default is `0.25`).
+#' @param return_pmp a `logical`. If `TRUE`, returns the computed data as a `PMP` object, if `FALSE`,
+#' returns just the upper bound value. (Default is `TRUE`).
+#' @param verbose verbose an `int`. See details. (Default is `2`).
+#'
+#' @details
+#' The Pan Matrix Profile may not give any further information beyond a certain window size. This function starts
+#' computing the matrix profile for the window size of 8 and doubles it until the minimum correlation value found is
+#' less than the `threshold`. After that, it begins to refine the upper bound using the `refine_stepsize` values, until
+#' the `threshold` value is hit.
+#'
+#' `verbose` changes how much information is printed by this function; `0` means nothing, `1` means text, `2`
+#' adds the progress bar, `3` adds the finish sound.
+#'
+#' @return Returns a `PMP` object with computed data, or just the upper bound value if `return_pmp` is set to `FALSE`.
 #' @export
 #'
-#' @examples
-plot.skimp <- function(pmp, pearson = FALSE) {
-  sorted <- sort(pmp$windows, index.return = TRUE)
-
-  min_window <- min(sorted$x)
-  max_window <- max(sorted$x)
-  data_size <- length(pmp$pmp[[1]]) + min_window - 1
-  xmin <- 1
-  xmax <- data_size - min_window + 1
-  ymin <- min_window
-
-  sizes <- diff(sorted$x)
-  sizes <- c(sizes, sizes[1])
-
-  if (length(pmp$windows) > 1) {
-    ymax <- max_window + floor((max_window - min_window) / 24) # arbitrary
-  } else {
-    ymax <- max_window + floor((max_window - min_window) / 24) # arbitrary
-  }
-
-  plot(c(xmin, data_size), c(ymin, ymax),
-    main = "Pan Matrix Profile", xlab = "", ylab = "window",
-    type = "n", xaxt = "n", yaxt = "n", xlim = c(xmin, data_size)
-  )
-
-  axis(side = 1, at = floor(c(xmin, seq(xmin, data_size, length.out = 10), data_size))) # X
-  axis(side = 2, at = floor(c(ymin, seq(ymin, ymax, length.out = 10), ymax))) # Y
-
-  for (i in seq_along(sorted$ix)) {
-    test <- pmp$pmp[[sorted$ix[i]]]
-    w <- pmp$windows[sorted$ix[i]]
-
-    test <- c(test, rep(0, w - min_window))
-
-    # if (pearson == TRUE) {
-    #   test <- ed_corr(test, w)
-    # }
-
-    test <- normalize(test, 0, 1)
-
-    ytop <- w + sizes[sorted$ix[i]] * 1.5
-
-    if (ytop > ymax) {
-      ytop <- ymax
-    }
-
-    graphics::rasterImage(matrix(test, nrow = 1),
-      xleft = 1, xright = xmax,
-      ybottom = w, ytop = ytop,
-      interpolate = FALSE
-    )
-  }
-}
-
-#' Pan Matrix Profile maximum subsequence
-#'
-#' Finds the upper bound
-#'
-#' @param data
-#' @param threshold
-#' @param refine_stepsize
-#' @param return_pmp
-#'
-#' @return
-#' @export
+#' @references * Yet to be annouced
+#' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #'
 #' @examples
+#' # return the object
+#' pan_matrix <- pmp_upper_bound(mp_gait_data)
 #'
-maximum_subsequence <- function(data,
+#' # just the upper bound
+#' pan_ub <- pmp_upper_bound(mp_gait_data, return_pmp = FALSE)
+#'
+pmp_upper_bound <- function(data,
                                 threshold = getOption("tsmp.pmp_ub", 0.95),
-                                refine_stepsize = getOption("tsmp.pmp_refine", 0.5),
-                                return_pmp = TRUE) {
+                                refine_stepsize = getOption("tsmp.pmp_refine", 0.25),
+                                return_pmp = TRUE, verbose = getOption("tsmp.verbose", 2)) {
   correlation_max <- Inf
 
   if (return_pmp) {
     pmp <- list()
     pmpi <- list()
     do_idxs <- TRUE
+  } else {
+    do_idxs <- FALSE
   }
   correlation_max <- Inf
   window_size <- 8
@@ -403,7 +291,7 @@ maximum_subsequence <- function(data,
   }
 
   # refine the upper bound by increase by + X% increments
-  test_windows <- 2 * round(((seq(refine_stepsize, 1 - refine_stepsize, refine_stepsize) + 1) * window_size / 2) / 2)
+  test_windows <- 2 * round(((seq(refine_stepsize, 1 - 1e-5, refine_stepsize) + 1) * window_size / 2) / 2)
 
   for (window_size in test_windows) {
     message("window: ", window_size)
@@ -425,7 +313,7 @@ maximum_subsequence <- function(data,
 
   if (return_pmp) {
     pmp_obj <- list(upper_window = window_size, pmp = pmp, pmpi = pmpi, windows = windows)
-    class(pmp_obj) <- "skimp"
+    class(pmp_obj) <- "PMP"
     return(pmp_obj)
   } else {
     return(window_size)

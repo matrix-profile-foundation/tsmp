@@ -45,7 +45,7 @@
 #' mp <- scrimp(ref_data, query_data, window_size = 30, s_size = round(nrow(query_data) * 0.1))
 #' }
 #'
-scrimp <- function(..., window_size, exclusion_zone = getOption("tsmp.verbose", 1 / 2),
+scrimp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zone", 1 / 2),
                    verbose = getOption("tsmp.verbose", 2),
                    s_size = Inf, pre_scrimp = 1 / 4, pre_only = FALSE) {
   argv <- list(...)

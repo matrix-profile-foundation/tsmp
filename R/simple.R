@@ -26,7 +26,7 @@
 #' w <- 30
 #' data <- mp_toy_data$data # 3 dimensions matrix
 #' result <- simple_fast(data, window_size = w, verbose = 0)
-simple_fast <- function(..., window_size, exclusion_zone = getOption("tsmp.verbose", 1 / 2),
+simple_fast <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zone", 1 / 2),
                         verbose = getOption("tsmp.verbose", 2)) {
   if (!is.numeric(window_size) || length(window_size) > 1) {
     stop("Unknown type of `window_size`. Must be an `int` or `numeric`")

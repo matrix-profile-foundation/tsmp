@@ -2,13 +2,24 @@
 % Please edit documentation in R/skimp.R
 \name{maximum_subsequence}
 \alias{maximum_subsequence}
-\title{Title}
+\title{Pan Matrix Profile maximum subsequence}
 \usage{
-maximum_subsequence(ts, threshold)
+maximum_subsequence(
+  data,
+  threshold = getOption("tsmp.pmp_ub", 0.95),
+  refine_stepsize = getOption("tsmp.pmp_refine", 0.5),
+  return_pmp = TRUE
+)
 }
 \arguments{
-\item{threshold}{}
+\item{return_pmp}{}
+}
+\value{
+
 }
 \description{
-Title
+Finds the upper bound
+}
+\examples{
+
 }

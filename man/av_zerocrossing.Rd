@@ -35,10 +35,11 @@ on Knowledge Discovery and Data Mining - KDD '17. New York, New York, USA: ACM P
 }
 }
 \seealso{
-Other Annotation vectors: \code{\link{av_apply}},
-  \code{\link{av_complexity}},
-  \code{\link{av_hardlimit_artifact}},
-  \code{\link{av_motion_artifact}},
-  \code{\link{av_stop_word}}
+Other Annotation vectors: 
+\code{\link{av_apply}()},
+\code{\link{av_complexity}()},
+\code{\link{av_hardlimit_artifact}()},
+\code{\link{av_motion_artifact}()},
+\code{\link{av_stop_word}()}
 }
 \concept{Annotation vectors}

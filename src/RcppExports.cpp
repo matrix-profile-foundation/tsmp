@@ -6,151 +6,117 @@
 using namespace Rcpp;
 
 // std_rcpp
-double std_rcpp(NumericVector data, bool na_rm);
+double std_rcpp(const NumericVector data, const bool na_rm);
 RcppExport SEXP _tsmp_std_rcpp(SEXP dataSEXP, SEXP na_rmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< bool >::type na_rm(na_rmSEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< const bool >::type na_rm(na_rmSEXP);
     rcpp_result_gen = Rcpp::wrap(std_rcpp(data, na_rm));
     return rcpp_result_gen;
 END_RCPP
 }
 // list_to_matrix
-NumericMatrix list_to_matrix(List x);
+NumericMatrix list_to_matrix(const List x);
 RcppExport SEXP _tsmp_list_to_matrix(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const List >::type x(xSEXP);
     rcpp_result_gen = Rcpp::wrap(list_to_matrix(x));
     return rcpp_result_gen;
 END_RCPP
 }
 // diff_lag
-NumericVector diff_lag(NumericVector x, uint32_t lag);
+NumericVector diff_lag(const NumericVector x, const uint32_t lag);
 RcppExport SEXP _tsmp_diff_lag(SEXP xSEXP, SEXP lagSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< uint32_t >::type lag(lagSEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const uint32_t >::type lag(lagSEXP);
     rcpp_result_gen = Rcpp::wrap(diff_lag(x, lag));
     return rcpp_result_gen;
 END_RCPP
 }
 // diff2_lag
-NumericVector diff2_lag(NumericVector x, uint32_t lag, double v);
+NumericVector diff2_lag(const NumericVector x, const uint32_t lag, const double v);
 RcppExport SEXP _tsmp_diff2_lag(SEXP xSEXP, SEXP lagSEXP, SEXP vSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< uint32_t >::type lag(lagSEXP);
-    Rcpp::traits::input_parameter< double >::type v(vSEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const uint32_t >::type lag(lagSEXP);
+    Rcpp::traits::input_parameter< const double >::type v(vSEXP);
     rcpp_result_gen = Rcpp::wrap(diff2_lag(x, lag, v));
     return rcpp_result_gen;
 END_RCPP
 }
 // fast_movsd_rcpp
-NumericVector fast_movsd_rcpp(NumericVector data, uint32_t window_size);
+NumericVector fast_movsd_rcpp(const NumericVector data, const uint32_t window_size);
 RcppExport SEXP _tsmp_fast_movsd_rcpp(SEXP dataSEXP, SEXP window_sizeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< uint32_t >::type window_size(window_sizeSEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< const uint32_t >::type window_size(window_sizeSEXP);
     rcpp_result_gen = Rcpp::wrap(fast_movsd_rcpp(data, window_size));
     return rcpp_result_gen;
 END_RCPP
 }
-// fast2_movsd_rcpp
-NumericVector fast2_movsd_rcpp(NumericVector data, uint32_t window_size);
-RcppExport SEXP _tsmp_fast2_movsd_rcpp(SEXP dataSEXP, SEXP window_sizeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< uint32_t >::type window_size(window_sizeSEXP);
-    rcpp_result_gen = Rcpp::wrap(fast2_movsd_rcpp(data, window_size));
-    return rcpp_result_gen;
-END_RCPP
-}
 // fast_avg_sd_rcpp
-List fast_avg_sd_rcpp(NumericVector data, uint32_t window_size);
+List fast_avg_sd_rcpp(const NumericVector data, const uint32_t window_size);
 RcppExport SEXP _tsmp_fast_avg_sd_rcpp(SEXP dataSEXP, SEXP window_sizeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< uint32_t >::type window_size(window_sizeSEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< const uint32_t >::type window_size(window_sizeSEXP);
     rcpp_result_gen = Rcpp::wrap(fast_avg_sd_rcpp(data, window_size));
     return rcpp_result_gen;
 END_RCPP
 }
-// vecmin
-int vecmin(IntegerVector x);
-RcppExport SEXP _tsmp_vecmin(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< IntegerVector >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(vecmin(x));
-    return rcpp_result_gen;
-END_RCPP
-}
-// vecmax
-int vecmax(IntegerVector x);
-RcppExport SEXP _tsmp_vecmax(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< IntegerVector >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(vecmax(x));
-    return rcpp_result_gen;
-END_RCPP
-}
 // mode_rcpp
-int32_t mode_rcpp(NumericVector x);
+int32_t mode_rcpp(const NumericVector x);
 RcppExport SEXP _tsmp_mode_rcpp(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type x(xSEXP);
     rcpp_result_gen = Rcpp::wrap(mode_rcpp(x));
     return rcpp_result_gen;
 END_RCPP
 }
 // znorm_rcpp
-NumericVector znorm_rcpp(NumericVector data);
+NumericVector znorm_rcpp(const NumericVector data);
 RcppExport SEXP _tsmp_znorm_rcpp(SEXP dataSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type data(dataSEXP);
     rcpp_result_gen = Rcpp::wrap(znorm_rcpp(data));
     return rcpp_result_gen;
 END_RCPP
 }
 // binary_split_rcpp
-NumericVector binary_split_rcpp(uint32_t n);
+NumericVector binary_split_rcpp(const uint32_t n);
 RcppExport SEXP _tsmp_binary_split_rcpp(SEXP nSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< uint32_t >::type n(nSEXP);
+    Rcpp::traits::input_parameter< const uint32_t >::type n(nSEXP);
     rcpp_result_gen = Rcpp::wrap(binary_split_rcpp(n));
     return rcpp_result_gen;
 END_RCPP
 }
 // sq2s_rcpp
-double sq2s_rcpp(NumericVector a);
+double sq2s_rcpp(const NumericVector a);
 RcppExport SEXP _tsmp_sq2s_rcpp(SEXP aSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type a(aSEXP);
     rcpp_result_gen = Rcpp::wrap(sq2s_rcpp(a));
     return rcpp_result_gen;
 END_RCPP
@@ -215,10 +181,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_tsmp_diff_lag", (DL_FUNC) &_tsmp_diff_lag, 2},
     {"_tsmp_diff2_lag", (DL_FUNC) &_tsmp_diff2_lag, 3},
     {"_tsmp_fast_movsd_rcpp", (DL_FUNC) &_tsmp_fast_movsd_rcpp, 2},
-    {"_tsmp_fast2_movsd_rcpp", (DL_FUNC) &_tsmp_fast2_movsd_rcpp, 2},
     {"_tsmp_fast_avg_sd_rcpp", (DL_FUNC) &_tsmp_fast_avg_sd_rcpp, 2},
-    {"_tsmp_vecmin", (DL_FUNC) &_tsmp_vecmin, 1},
-    {"_tsmp_vecmax", (DL_FUNC) &_tsmp_vecmax, 1},
     {"_tsmp_mode_rcpp", (DL_FUNC) &_tsmp_mode_rcpp, 1},
     {"_tsmp_znorm_rcpp", (DL_FUNC) &_tsmp_znorm_rcpp, 1},
     {"_tsmp_binary_split_rcpp", (DL_FUNC) &_tsmp_binary_split_rcpp, 1},

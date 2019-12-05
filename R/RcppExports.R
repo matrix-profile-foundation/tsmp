@@ -21,20 +21,8 @@ fast_movsd_rcpp <- function(data, window_size) {
     .Call(`_tsmp_fast_movsd_rcpp`, data, window_size)
 }
 
-fast2_movsd_rcpp <- function(data, window_size) {
-    .Call(`_tsmp_fast2_movsd_rcpp`, data, window_size)
-}
-
 fast_avg_sd_rcpp <- function(data, window_size) {
     .Call(`_tsmp_fast_avg_sd_rcpp`, data, window_size)
-}
-
-vecmin <- function(x) {
-    .Call(`_tsmp_vecmin`, x)
-}
-
-vecmax <- function(x) {
-    .Call(`_tsmp_vecmax`, x)
 }
 
 mode_rcpp <- function(x) {

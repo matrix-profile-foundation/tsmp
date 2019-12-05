@@ -105,7 +105,7 @@
 #'
 #' # [simple_fast()]
 #' mp <- tsmp(mp_toy_data$data[1:200, ], window_size = 30, mode = "simple", verbose = 0)
-tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.verbose", 1 / 2),
+tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zone", 1 / 2),
                  mode = c("stomp", "stamp", "simple", "mstomp", "scrimp", "valmod"),
                  verbose = getOption("tsmp.verbose", 2), n_workers = 1, s_size = Inf, must_dim = NULL, exc_dim = NULL,
                  heap_size = 50, paa = 1, .keep_data = TRUE) {

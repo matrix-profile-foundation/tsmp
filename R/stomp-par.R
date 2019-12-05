@@ -6,7 +6,7 @@
 #'
 #' @describeIn stomp Parallel version.
 
-stomp_par <- function(..., window_size, exclusion_zone = getOption("tsmp.verbose", 1 / 2),
+stomp_par <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zone", 1 / 2),
                       verbose = getOption("tsmp.verbose", 2), n_workers = 2) {
   argv <- list(...)
   argc <- length(argv)

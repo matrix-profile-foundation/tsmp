@@ -8,7 +8,9 @@
 # fast_movavg     No      Unk      No   No
 # fast_avg_sd     No      Unk      No   No
 
-#' Fast implementation of moving standard deviation using filter
+#' Fast implementation of moving standard deviation
+#'
+#' This function does not handle NA values
 #'
 #' @param data a `vector` or a column `matrix` of `numeric`.
 #' @param window_size moving sd window size
@@ -19,7 +21,7 @@
 #' @examples
 #' data_sd <- fast_movsd(mp_toy_data$data[, 1], mp_toy_data$sub_len)
 #'
-#' # DO NOT Handles NA's
+
 fast_movsd <- function(data, window_size, rcpp = FALSE) {
   if (window_size < 2) {
     stop("'window_size' must be at least 2.")
@@ -45,7 +47,9 @@ fast_movsd <- function(data, window_size, rcpp = FALSE) {
   return(data_sd)
 }
 
-#' Fast implementation of moving average and
+#' Fast implementation of moving average
+#'
+#' This function does not handle NA values
 #'
 #' @inheritParams fast_movsd
 #'
@@ -54,7 +58,7 @@ fast_movsd <- function(data, window_size, rcpp = FALSE) {
 #'
 #' @examples
 #' data_avg <- fast_movavg(mp_toy_data$data[, 1], mp_toy_data$sub_len)
-#' # DO NOT Handles NA's
+#'
 fast_movavg <- function(data, window_size) {
   if (window_size < 2) {
     stop("'window_size' must be at least 2.")
@@ -63,14 +67,34 @@ fast_movavg <- function(data, window_size) {
   return(cumsum(c(sum(data[1:window_size]), diff(data, window_size))) / window_size)
 }
 
+#' Converts euclidean distances into correlation values
+#'
+#' @param x a `vector` or a column `matrix` of `numeric`.
+#' @param w the window size
+#'
+#' @return Returns the converted values
+#'
+#' @keywords internal
+#' @noRd
 ed_corr <- function(x, w) {
   (2 * w - x^2) / (2 * w)
 }
+
+#' Converts correlation values into euclidean distances
+#'
+#' @inheritParams ed_corr
+#'
+#' @return Returns the converted values
+#'
+#' @keywords internal
+#' @noRd
 corr_ed <- function(x, w) {
   sqrt(2 * w * (1 - ifelse(x > 1, 1, x)))
 }
 
-#' Fast implementation of moving average and moving standard deviation using cumsum
+#' Fast implementation of moving average and moving standard deviation
+#'
+#' This function does not handle NA values
 #'
 #' @inheritParams fast_movsd
 #'
@@ -78,7 +102,6 @@ corr_ed <- function(x, w) {
 #' @export
 #' @noRd
 
-# DO NOT Handles NA's
 fast_avg_sd <- function(data, window_size, rcpp = FALSE) {
   if (window_size < 2) {
     stop("'window_size' must be at least 2.")
@@ -220,7 +243,6 @@ old_fast_avg_sd <- function(data, window_size) {
 #' @return Returns the corrected standard deviation from sample to population
 #' @keywords internal
 #' @noRd
-#'
 #'
 std <- function(data, na.rm = FALSE, rcpp = TRUE) {
 
@@ -508,7 +530,7 @@ ipaa <- function(data, p) {
 #' @param n_dim number of dimensions of the matrix profile
 #' @param valid check for valid numbers
 #'
-#' @return returns the minimum and the nearest neighbor
+#' @return returns a `matrix` with two columns: the minimum and the nearest neighbor
 #' @export
 #'
 #' @examples

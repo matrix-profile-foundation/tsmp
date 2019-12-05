@@ -14,7 +14,7 @@ min_mp_idx(.mp, n_dim = NULL, valid = TRUE)
 \item{valid}{check for valid numbers}
 }
 \value{
-returns the minimum and the nearest neighbor
+returns a \code{matrix} with two columns: the minimum and the nearest neighbor
 }
 \description{
 Get index of the minimum value from a matrix profile and its nearest neighbor

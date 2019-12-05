@@ -2,7 +2,7 @@
 % Please edit documentation in R/misc.R
 \name{fast_movavg}
 \alias{fast_movavg}
-\title{Fast implementation of moving average and}
+\title{Fast implementation of moving average}
 \usage{
 fast_movavg(data, window_size)
 }
@@ -15,8 +15,9 @@ fast_movavg(data, window_size)
 Returns a \code{vector} with the moving average
 }
 \description{
-Fast implementation of moving average and
+This function does not handle NA values
 }
 \examples{
 data_avg <- fast_movavg(mp_toy_data$data[, 1], mp_toy_data$sub_len)
+
 }

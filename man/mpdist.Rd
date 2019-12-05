@@ -4,8 +4,13 @@
 \alias{mpdist}
 \title{MPdist - Distance between Time Series using Matrix Profile}
 \usage{
-mpdist(ref_data, query_data, window_size, type = c("simple", "vector"),
-  thr = 0.05)
+mpdist(
+  ref_data,
+  query_data,
+  window_size,
+  type = c("simple", "vector"),
+  thr = 0.05
+)
 }
 \arguments{
 \item{ref_data}{a \code{matrix} or a \code{vector}. The reference data}

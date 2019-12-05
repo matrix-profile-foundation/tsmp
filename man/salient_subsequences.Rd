@@ -4,8 +4,14 @@
 \alias{salient_subsequences}
 \title{Framework for retrieve salient subsequences from a dataset}
 \usage{
-salient_subsequences(.mp, data, n_bits = 8, n_cand = 10,
-  exclusion_zone = NULL, verbose = getOption("tsmp.verbose", 2))
+salient_subsequences(
+  .mp,
+  data,
+  n_bits = 8,
+  n_cand = 10,
+  exclusion_zone = NULL,
+  verbose = getOption("tsmp.verbose", 2)
+)
 }
 \arguments{
 \item{.mp}{a TSMP object of class \code{MatrixProfile}.}

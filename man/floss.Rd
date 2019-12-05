@@ -4,8 +4,15 @@
 \alias{floss}
 \title{Fast Low-cost Online Semantic Segmentation (FLOSS)}
 \usage{
-floss(.mp, new_data, data_window, threshold = 1, exclusion_zone = NULL,
-  chunk_size = NULL, keep_cac = TRUE)
+floss(
+  .mp,
+  new_data,
+  data_window,
+  threshold = 1,
+  exclusion_zone = NULL,
+  chunk_size = NULL,
+  keep_cac = TRUE
+)
 }
 \arguments{
 \item{.mp}{.mp a TSMP object of class \code{MatrixProfile}.}
@@ -56,9 +63,12 @@ Website: \url{https://sites.google.com/site/onlinesemanticsegmentation/}
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other Semantic Segmentations: \code{\link{floss_cac}},
-  \code{\link{floss_extract}}, \code{\link{fluss_cac}},
-  \code{\link{fluss_extract}}, \code{\link{fluss_score}},
-  \code{\link{fluss}}
+Other Semantic Segmentations: 
+\code{\link{floss_cac}()},
+\code{\link{floss_extract}()},
+\code{\link{fluss_cac}()},
+\code{\link{fluss_extract}()},
+\code{\link{fluss_score}()},
+\code{\link{fluss}()}
 }
 \concept{Semantic Segmentations}

@@ -4,8 +4,15 @@
 \alias{sdts_train}
 \title{Framework for Scalable Dictionary learning for Time Series (SDTS) training function}
 \usage{
-sdts_train(data, label, window_size, beta = 1, pat_max = Inf,
-  parallel = TRUE, verbose = getOption("tsmp.verbose", 2))
+sdts_train(
+  data,
+  label,
+  window_size,
+  beta = 1,
+  pat_max = Inf,
+  parallel = TRUE,
+  verbose = getOption("tsmp.verbose", 2)
+)
 }
 \arguments{
 \item{data}{a \code{vector} of \code{numeric}. Time series.}
@@ -34,7 +41,7 @@ that the recorded data is relevant, and releases the switch when he thinks the d
 algorithm will learn the switching points (even better) and try to predict using new data.
 }
 \details{
-\code{beta} is used to balance F-score towards recall (\code{>1}) or precision (\code{<1}). \code{verbose} changes
+\code{beta} is used to balance F-score towards recall (\verb{>1}) or precision (\verb{<1}). \code{verbose} changes
 how much information is printed by this function; \code{0} means nothing, \code{1} means text, \code{2} adds the
 progress bar, \code{3} adds the finish sound.
 }
@@ -66,7 +73,8 @@ to Predict Outcomes. Proc VLDB Endow. 2017 Aug 1;10(12):1802-12.
 Website: \url{https://sites.google.com/view/weaklylabeled}
 }
 \seealso{
-Other Scalable Dictionaries: \code{\link{sdts_predict}},
-  \code{\link{sdts_score}}
+Other Scalable Dictionaries: 
+\code{\link{sdts_predict}()},
+\code{\link{sdts_score}()}
 }
 \concept{Scalable Dictionaries}

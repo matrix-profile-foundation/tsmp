@@ -5,13 +5,24 @@
 \alias{mstomp}
 \title{Multivariate STOMP algorithm Parallel version}
 \usage{
-mstomp_par(data, window_size, exclusion_zone = getOption("tsmp.verbose",
-  1/2), verbose = getOption("tsmp.verbose", 2), must_dim = NULL,
-  exc_dim = NULL, n_workers = 2)
+mstomp_par(
+  data,
+  window_size,
+  exclusion_zone = getOption("tsmp.verbose", 1/2),
+  verbose = getOption("tsmp.verbose", 2),
+  must_dim = NULL,
+  exc_dim = NULL,
+  n_workers = 2
+)
 
-mstomp(data, window_size, exclusion_zone = getOption("tsmp.verbose",
-  1/2), verbose = getOption("tsmp.verbose", 2), must_dim = NULL,
-  exc_dim = NULL)
+mstomp(
+  data,
+  window_size,
+  exclusion_zone = getOption("tsmp.verbose", 1/2),
+  verbose = getOption("tsmp.verbose", 2),
+  must_dim = NULL,
+  exc_dim = NULL
+)
 }
 \arguments{
 \item{data}{a \code{matrix} of \code{numeric}, where each column is a time series. Accepts \code{vector} (see
@@ -90,8 +101,11 @@ Website: \url{https://sites.google.com/view/mstamp/}
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other matrix profile computations: \code{\link{scrimp}},
-  \code{\link{stamp_par}}, \code{\link{stomp_par}},
-  \code{\link{tsmp}}, \code{\link{valmod}}
+Other matrix profile computations: 
+\code{\link{scrimp}()},
+\code{\link{stamp_par}()},
+\code{\link{stomp_par}()},
+\code{\link{tsmp}()},
+\code{\link{valmod}()}
 }
 \concept{matrix profile computations}

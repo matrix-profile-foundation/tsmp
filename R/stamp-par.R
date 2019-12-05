@@ -6,7 +6,7 @@
 #'
 #' @describeIn stamp Parallel version.
 
-stamp_par <- function(..., window_size, exclusion_zone = getOption("tsmp.verbose", 1 / 2),
+stamp_par <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zone", 1 / 2),
                       verbose = getOption("tsmp.verbose", 2),
                       s_size = Inf, n_workers = 2, weight = NULL) {
   argv <- list(...)

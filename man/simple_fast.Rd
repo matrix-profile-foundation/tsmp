@@ -4,8 +4,12 @@
 \alias{simple_fast}
 \title{Compute the join similarity for Sound data}
 \usage{
-simple_fast(..., window_size, exclusion_zone = getOption("tsmp.verbose",
-  1/2), verbose = getOption("tsmp.verbose", 2))
+simple_fast(
+  ...,
+  window_size,
+  exclusion_zone = getOption("tsmp.verbose", 1/2),
+  verbose = getOption("tsmp.verbose", 2)
+)
 }
 \arguments{
 \item{\dots}{a \code{matrix} of \code{numeric}, where each column is a time series. Accepts \code{list} and

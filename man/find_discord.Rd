@@ -7,8 +7,15 @@
 \usage{
 find_discord(.mp, ...)
 
-\method{find_discord}{MatrixProfile}(.mp, data, n_discords = 1,
-  n_neighbors = 3, radius = 3, exclusion_zone = NULL, ...)
+\method{find_discord}{MatrixProfile}(
+  .mp,
+  data,
+  n_discords = 1,
+  n_neighbors = 3,
+  radius = 3,
+  exclusion_zone = NULL,
+  ...
+)
 }
 \arguments{
 \item{.mp}{a TSMP object of class \code{MatrixProfile}}

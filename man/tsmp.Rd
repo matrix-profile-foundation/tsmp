@@ -4,11 +4,20 @@
 \alias{tsmp}
 \title{Computes the Matrix Profile and Profile Index}
 \usage{
-tsmp(..., window_size, exclusion_zone = getOption("tsmp.verbose", 1/2),
+tsmp(
+  ...,
+  window_size,
+  exclusion_zone = getOption("tsmp.verbose", 1/2),
   mode = c("stomp", "stamp", "simple", "mstomp", "scrimp", "valmod"),
-  verbose = getOption("tsmp.verbose", 2), n_workers = 1,
-  s_size = Inf, must_dim = NULL, exc_dim = NULL, heap_size = 50,
-  paa = 1, .keep_data = TRUE)
+  verbose = getOption("tsmp.verbose", 2),
+  n_workers = 1,
+  s_size = Inf,
+  must_dim = NULL,
+  exc_dim = NULL,
+  heap_size = 50,
+  paa = 1,
+  .keep_data = TRUE
+)
 }
 \arguments{
 \item{\dots}{a \code{matrix} or a \code{vector}. If a second time series is supplied it will be a join matrix
@@ -67,7 +76,7 @@ dot products do not need to be recalculated from scratch for each subsequence. I
 reuse the values calculated for the first subsequence to make a faster calculation in the next
 iterations. The idea is to make use of the intersections between the required products in
 consecutive iterations. This approach reduced the time to compute the Matrix Profile to about
-3% compared to \code{\link[=stamp]{stamp()}}, but on the other hand, we lost the Anytime property.
+3\% compared to \code{\link[=stamp]{stamp()}}, but on the other hand, we lost the Anytime property.
 
 Currently there is a new algorithm that I'll not explain further here. It is called \code{\link[=scrimp]{scrimp()}},
 and is as fast as \code{\link[=stomp]{stomp()}}, and have the Anytime property. This algorithm is implemented in
@@ -153,8 +162,11 @@ Website: \url{https://sites.google.com/site/ismir2016simple/home}
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other matrix profile computations: \code{\link{mstomp_par}},
-  \code{\link{scrimp}}, \code{\link{stamp_par}},
-  \code{\link{stomp_par}}, \code{\link{valmod}}
+Other matrix profile computations: 
+\code{\link{mstomp_par}()},
+\code{\link{scrimp}()},
+\code{\link{stamp_par}()},
+\code{\link{stomp_par}()},
+\code{\link{valmod}()}
 }
 \concept{matrix profile computations}

@@ -4,9 +4,15 @@
 \alias{scrimp}
 \title{Anytime univariate SCRIMP++ algorithm}
 \usage{
-scrimp(..., window_size, exclusion_zone = getOption("tsmp.verbose", 1/2),
-  verbose = getOption("tsmp.verbose", 2), s_size = Inf,
-  pre_scrimp = 1/4, pre_only = FALSE)
+scrimp(
+  ...,
+  window_size,
+  exclusion_zone = getOption("tsmp.verbose", 1/2),
+  verbose = getOption("tsmp.verbose", 2),
+  s_size = Inf,
+  pre_scrimp = 1/4,
+  pre_only = FALSE
+)
 }
 \arguments{
 \item{\dots}{a \code{matrix} or a \code{vector}.}
@@ -61,8 +67,11 @@ mp <- scrimp(ref_data, query_data, window_size = 30, s_size = round(nrow(query_d
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other matrix profile computations: \code{\link{mstomp_par}},
-  \code{\link{stamp_par}}, \code{\link{stomp_par}},
-  \code{\link{tsmp}}, \code{\link{valmod}}
+Other matrix profile computations: 
+\code{\link{mstomp_par}()},
+\code{\link{stamp_par}()},
+\code{\link{stomp_par}()},
+\code{\link{tsmp}()},
+\code{\link{valmod}()}
 }
 \concept{matrix profile computations}
