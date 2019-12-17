@@ -8,7 +8,7 @@
 stamp_par(
   ...,
   window_size,
-  exclusion_zone = getOption("tsmp.verbose", 1/2),
+  exclusion_zone = getOption("tsmp.exclusion_zone", 1/2),
   verbose = getOption("tsmp.verbose", 2),
   s_size = Inf,
   n_workers = 2,
@@ -18,7 +18,7 @@ stamp_par(
 stamp(
   ...,
   window_size,
-  exclusion_zone = getOption("tsmp.verbose", 1/2),
+  exclusion_zone = getOption("tsmp.exclusion_zone", 1/2),
   verbose = getOption("tsmp.verbose", 2),
   s_size = Inf,
   weight = NULL

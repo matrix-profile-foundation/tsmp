@@ -1,6 +1,4 @@
-#include <Rcpp.h>
-//#include <emmintrin.h>
-using namespace Rcpp;
+#include "math.hpp"
 
 //[[Rcpp::export]]
 double std_rcpp(const NumericVector data, const bool na_rm = false) {
@@ -189,24 +187,67 @@ NumericVector binary_split_rcpp(const uint32_t n) {
 }
 
 //[[Rcpp::export]]
-double sq2s_rcpp(const NumericVector a) {
-  NumericVector h = a * a;
-  NumericVector c = (pow(2,27) + 1.0) * a; // <-- can be replaced with fma where available
-  NumericVector a1 = (c - (c - a));
-  NumericVector a2 = a - a1;
-  NumericVector a3 = a1 * a2;
-  NumericVector r = a2 * a2 - (((h - a1 * a1) - a3) - a3);
-
-  double p = h[0];
-  double s = r[0];
-
-  for (uint32_t i = 1; i < a.length(); i++) {
-    double x = p + h[i];
-    double z = x - p;
-    s = s + (((p - (x - z)) + (h[i] - z)) + r[i]);
-    p = x;
-  }
-  double res = p + s;
+double inner_product(NumericVector a, NumericVector b) {
+  double res = std::inner_product(a.begin(), a.end(), b.begin(), 0.0);
 
   return(res);
+}
+
+//[[Rcpp::export]]
+double sum_of_squares(NumericVector a) {
+  double res = std::inner_product(a.begin(), a.end(), a.begin(), 0.0);
+
+  return(res);
+}
+
+
+NumericVector sum2s_rcpp(NumericVector a, uint32_t w) {
+  NumericVector res(a.length() - w + 1, 0);
+  double accum = a[0];
+  double resid = 0.0;
+
+  for (uint32_t i = 1; i < w; i++) {
+    double m = a[i];
+    double p = accum;
+    accum = accum + m;
+    double q = accum - p;
+    resid = resid + ((p - (accum - q)) + (m - q));
+  }
+
+  res[0] = accum + resid;
+
+  for (uint32_t i = w; i < a.length(); i++) {
+    double m = a[i - w];
+    double n = a[i];
+    double p = accum - m;
+    double q = p - accum;
+    double r = resid + ((accum - (p - q)) - (m + q));
+    accum = p + n;
+    double t = accum - p;
+    resid = r + ((p - (accum - t)) + (n - t));
+    res[i - w + 1] = accum + resid;
+  }
+
+  return(res);
+}
+
+List muinvn_rcpp(NumericVector a, uint32_t w) {
+  // Functions here are based on the work in
+  // Ogita et al, Accurate Sum and Dot Product
+  // results here are a moving average and stable inverse centered norm based
+  // on Accurate Sum and Dot Product, Ogita et al
+
+  NumericVector sig(a.length() - w + 1, 0);
+  NumericVector mu = sum2s_rcpp(a, w) / w;
+
+  for (uint32_t i = 0; i < mu.length(); i++) {
+    sig[i] = sum_of_squares(a[Range(i, i + w - 1)] - mu[i]);
+  }
+
+  sig = 1 / sqrt(sig);
+
+  return (List::create(
+      Rcpp::Named("avg") = mu,
+      Rcpp::Named("sig") = sig
+  ));
 }

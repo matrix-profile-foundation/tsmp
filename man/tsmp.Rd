@@ -7,7 +7,7 @@
 tsmp(
   ...,
   window_size,
-  exclusion_zone = getOption("tsmp.verbose", 1/2),
+  exclusion_zone = getOption("tsmp.exclusion_zone", 1/2),
   mode = c("stomp", "stamp", "simple", "mstomp", "scrimp", "valmod"),
   verbose = getOption("tsmp.verbose", 2),
   n_workers = 1,

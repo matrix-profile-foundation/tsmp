@@ -7,7 +7,7 @@
 simple_fast(
   ...,
   window_size,
-  exclusion_zone = getOption("tsmp.verbose", 1/2),
+  exclusion_zone = getOption("tsmp.exclusion_zone", 1/2),
   verbose = getOption("tsmp.verbose", 2)
 )
 }

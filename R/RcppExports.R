@@ -37,16 +37,20 @@ binary_split_rcpp <- function(n) {
     .Call(`_tsmp_binary_split_rcpp`, n)
 }
 
-sq2s_rcpp <- function(a) {
-    .Call(`_tsmp_sq2s_rcpp`, a)
+inner_product <- function(a, b) {
+    .Call(`_tsmp_inner_product`, a, b)
+}
+
+sum_of_squares <- function(a) {
+    .Call(`_tsmp_sum_of_squares`, a)
 }
 
 mpx_rcpp <- function(a, w, minlag, idxs = FALSE, euclidean = TRUE) {
     .Call(`_tsmp_mpx_rcpp`, a, w, minlag, idxs, euclidean)
 }
 
-mpxab_rcpp <- function(a, b, w, idxs = FALSE) {
-    .Call(`_tsmp_mpxab_rcpp`, a, b, w, idxs)
+mpxab_rcpp <- function(a, b, w, idxs = FALSE, euclidean = TRUE) {
+    .Call(`_tsmp_mpxab_rcpp`, a, b, w, idxs, euclidean)
 }
 
 movmin <- function(data, window_size) {

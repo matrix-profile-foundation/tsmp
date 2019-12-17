@@ -1,71 +1,5 @@
-#include <Rcpp.h>
-using namespace Rcpp;
-
-#define MIN(y,x) ((x)<(y) && (x)==(x) ? (x) : (y))
-#define MAX(y,x) ((x)>(y) && (x)==(x) ? (x) : (y))
-
-double inner_product(NumericVector a, NumericVector b) {
-  double res = std::inner_product(a.begin(), a.end(), b.begin(), 0.0);
-
-  return(res);
-}
-
-double sum_of_squares(NumericVector a) {
-  double res = std::inner_product(a.begin(), a.end(), a.begin(), 0.0);
-
-  return(res);
-}
-
-NumericVector sum2s_rcpp(NumericVector a, uint32_t w) {
-  NumericVector res(a.length() - w + 1, 0);
-  double accum = a[0];
-  double resid = 0.0;
-
-  for (uint32_t i = 1; i < w; i++) {
-    double m = a[i];
-    double p = accum;
-    accum = accum + m;
-    double q = accum - p;
-    resid = resid + ((p - (accum - q)) + (m - q));
-  }
-
-  res[0] = accum + resid;
-
-  for (uint32_t i = w; i < a.length(); i++) {
-    double m = a[i - w];
-    double n = a[i];
-    double p = accum - m;
-    double q = p - accum;
-    double r = resid + ((accum - (p - q)) - (m + q));
-    accum = p + n;
-    double t = accum - p;
-    resid = r + ((p - (accum - t)) + (n - t));
-    res[i - w + 1] = accum + resid;
-  }
-
-  return(res);
-}
-
-List muinvn_rcpp(NumericVector a, uint32_t w) {
-  // Functions here are based on the work in
-  // Ogita et al, Accurate Sum and Dot Product
-  // results here are a moving average and stable inverse centered norm based
-  // on Accurate Sum and Dot Product, Ogita et al
-
-  NumericVector sig(a.length() - w + 1, 0);
-  NumericVector mu = sum2s_rcpp(a, w) / w;
-
-  for (uint32_t i = 0; i < mu.length(); i++) {
-    sig[i] = sum_of_squares(a[Range(i, i + w - 1)] - mu[i]);
-  }
-
-  sig = 1 / sqrt(sig);
-
-  return (List::create(
-      Rcpp::Named("avg") = mu,
-      Rcpp::Named("sig") = sig
-  ));
-}
+#include "mpx.hpp"
+#include "math.hpp"
 
 // [[Rcpp::export]]
 List mpx_rcpp(NumericVector a, uint16_t w, uint16_t minlag, bool idxs = false, bool euclidean = true) {
@@ -106,6 +40,11 @@ List mpx_rcpp(NumericVector a, uint16_t w, uint16_t minlag, bool idxs = false, b
   NumericVector ww = (a[Range(0, w - 1)] - mmu[0]);
 
   for (IntegerVector::iterator diag = seq_diag.begin(); diag != seq_diag.end(); ++diag) {
+
+    if(*diag % 1000) {
+      Rcpp::checkUserInterrupt();
+    }
+
     c = inner_product((a[Range(*diag, (*diag + w - 1))] - mu[*diag]), ww);
     off_max = (n - w - *diag + 1);
     for (offset = 0; offset < off_max; offset++) {
@@ -148,7 +87,7 @@ List mpx_rcpp(NumericVector a, uint16_t w, uint16_t minlag, bool idxs = false, b
 }
 
 // [[Rcpp::export]]
-List mpxab_rcpp(NumericVector a, NumericVector b, uint16_t w, bool idxs = false) {
+List mpxab_rcpp(NumericVector a, NumericVector b, uint16_t w, bool idxs = false, bool euclidean = true) {
 
   double c, c_cmp;
   uint32_t off_max, off_diag, offset;
@@ -254,9 +193,12 @@ List mpxab_rcpp(NumericVector a, NumericVector b, uint16_t w, bool idxs = false)
 
   // to do ed
   mmp_a[mmp_a > 1.0] = 1.0;
-  mmp_a = sqrt(2 * w * (1 - mmp_a));
   mmp_b[mmp_b > 1.0] = 1.0;
-  mmp_b = sqrt(2 * w * (1 - mmp_b));
+
+  if(euclidean) { // correlation to ed
+    mmp_a = sqrt(2 * w * (1 - mmp_a));
+    mmp_b = sqrt(2 * w * (1 - mmp_b));
+  }
 
   if(idxs) {
     return (List::create(
@@ -271,5 +213,4 @@ List mpxab_rcpp(NumericVector a, NumericVector b, uint16_t w, bool idxs = false)
         Rcpp::Named("mpb") = mmp_b
     ));
   }
-
 }

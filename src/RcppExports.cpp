@@ -110,14 +110,26 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// sq2s_rcpp
-double sq2s_rcpp(const NumericVector a);
-RcppExport SEXP _tsmp_sq2s_rcpp(SEXP aSEXP) {
+// inner_product
+double inner_product(NumericVector a, NumericVector b);
+RcppExport SEXP _tsmp_inner_product(SEXP aSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const NumericVector >::type a(aSEXP);
-    rcpp_result_gen = Rcpp::wrap(sq2s_rcpp(a));
+    Rcpp::traits::input_parameter< NumericVector >::type a(aSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(inner_product(a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// sum_of_squares
+double sum_of_squares(NumericVector a);
+RcppExport SEXP _tsmp_sum_of_squares(SEXP aSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type a(aSEXP);
+    rcpp_result_gen = Rcpp::wrap(sum_of_squares(a));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -137,8 +149,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // mpxab_rcpp
-List mpxab_rcpp(NumericVector a, NumericVector b, uint16_t w, bool idxs);
-RcppExport SEXP _tsmp_mpxab_rcpp(SEXP aSEXP, SEXP bSEXP, SEXP wSEXP, SEXP idxsSEXP) {
+List mpxab_rcpp(NumericVector a, NumericVector b, uint16_t w, bool idxs, bool euclidean);
+RcppExport SEXP _tsmp_mpxab_rcpp(SEXP aSEXP, SEXP bSEXP, SEXP wSEXP, SEXP idxsSEXP, SEXP euclideanSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -146,7 +158,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< NumericVector >::type b(bSEXP);
     Rcpp::traits::input_parameter< uint16_t >::type w(wSEXP);
     Rcpp::traits::input_parameter< bool >::type idxs(idxsSEXP);
-    rcpp_result_gen = Rcpp::wrap(mpxab_rcpp(a, b, w, idxs));
+    Rcpp::traits::input_parameter< bool >::type euclidean(euclideanSEXP);
+    rcpp_result_gen = Rcpp::wrap(mpxab_rcpp(a, b, w, idxs, euclidean));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -185,9 +198,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_tsmp_mode_rcpp", (DL_FUNC) &_tsmp_mode_rcpp, 1},
     {"_tsmp_znorm_rcpp", (DL_FUNC) &_tsmp_znorm_rcpp, 1},
     {"_tsmp_binary_split_rcpp", (DL_FUNC) &_tsmp_binary_split_rcpp, 1},
-    {"_tsmp_sq2s_rcpp", (DL_FUNC) &_tsmp_sq2s_rcpp, 1},
+    {"_tsmp_inner_product", (DL_FUNC) &_tsmp_inner_product, 2},
+    {"_tsmp_sum_of_squares", (DL_FUNC) &_tsmp_sum_of_squares, 1},
     {"_tsmp_mpx_rcpp", (DL_FUNC) &_tsmp_mpx_rcpp, 5},
-    {"_tsmp_mpxab_rcpp", (DL_FUNC) &_tsmp_mpxab_rcpp, 4},
+    {"_tsmp_mpxab_rcpp", (DL_FUNC) &_tsmp_mpxab_rcpp, 5},
     {"_tsmp_movmin", (DL_FUNC) &_tsmp_movmin, 2},
     {"_tsmp_movmax", (DL_FUNC) &_tsmp_movmax, 2},
     {NULL, NULL, 0}

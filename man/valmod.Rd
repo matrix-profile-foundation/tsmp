@@ -9,7 +9,7 @@ valmod(
   window_min,
   window_max,
   heap_size = 50,
-  exclusion_zone = getOption("tsmp.verbose", 1/2),
+  exclusion_zone = getOption("tsmp.exclusion_zone", 1/2),
   lb = TRUE,
   verbose = getOption("tsmp.verbose", 2)
 )

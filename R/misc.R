@@ -771,25 +771,25 @@ compute_f_meas <- function(label, pos_st, pos_ed, dist_pro, thold, window_size, 
     anno[anno_st[i]:anno_ed[i]] <- 1
   }
 
-  is.tp <- rep(FALSE, length(anno_st))
+  is_tp <- rep(FALSE, length(anno_st))
 
   for (i in seq_len(length(anno_st))) {
     if (anno_ed[i] > length(label)) {
       anno_ed[i] <- length(label)
     }
     if (sum(label[anno_st[i]:anno_ed[i]]) > (0.8 * window_size)) {
-      is.tp[i] <- TRUE
+      is_tp[i] <- TRUE
     }
   }
-  tp_pre <- sum(is.tp)
+  tp_pre <- sum(is_tp)
 
-  is.tp <- rep(FALSE, length(pos_st))
+  is_tp <- rep(FALSE, length(pos_st))
   for (i in seq_len(length(pos_st))) {
     if (sum(anno[pos_st[i]:pos_ed[i]]) > (0.8 * window_size)) {
-      is.tp[i] <- TRUE
+      is_tp[i] <- TRUE
     }
   }
-  tp_rec <- sum(is.tp)
+  tp_rec <- sum(is_tp)
 
   pre <- tp_pre / length(anno_st)
   rec <- tp_rec / length(pos_st)
