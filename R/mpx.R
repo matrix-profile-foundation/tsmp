@@ -3,7 +3,7 @@
 #'
 #' @param data data
 #' @param window_size window size
-#' @param query
+#' @param query query
 #' @param idx calc and return indexes?
 #' @param dist
 #'
@@ -11,7 +11,7 @@
 #' @keywords internal
 #' @noRd
 
-mpx <- function(data, window_size, query = NULL, idx = FALSE, dist = c("euclidean", "pearson")) {
+mpx <- function(data, window_size, query = NULL, idx = TRUE, dist = c("euclidean", "pearson")) {
 
   # Parse arguments ---------------------------------
   minlag <- floor(window_size / 4)
@@ -26,26 +26,33 @@ mpx <- function(data, window_size, query = NULL, idx = FALSE, dist = c("euclidea
     dist <- FALSE
   }
 
-  # # Register anytime exit point
-  # on.exit(return({
-  #   result
-  # }), TRUE)
+  result <- NULL
 
+  # Register anytime exit point
+  on.exit(return({
+    result
+  }), TRUE)
+
+  # Computation ------------------------------------
   if (is.null(query)) {
-    result <- mpx_rcpp(
+    tryCatch(result <- mpx_rcpp(
       data,
       window_size,
       as.integer(minlag),
       as.logical(idx),
       as.logical(dist)
+    ),
+    error = print
     )
   } else {
-    result <- mpxab_rcpp(
+    tryCatch(result <- mpxab_rcpp(
       data,
       query,
       window_size,
       as.logical(idx),
       as.logical(dist)
+    ),
+    error = print
     )
   }
 }

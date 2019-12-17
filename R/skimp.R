@@ -182,7 +182,7 @@ pmp <- function(data,
     }
 
     # Run Matrix Profile
-    result <- mpx(data, w, idx = TRUE, dist = "euclidean")
+    result <- tsmp::mpx(data = data, window_size = w, idx = TRUE, dist = "euclidean")
 
     message(
       "step: ", i, "/", length(split_idx), " binary idx: ", idx, " window: ", w
@@ -273,7 +273,7 @@ pmp_upper_bound <- function(data,
   while (window_size <= max_window) {
     message("window: ", window_size)
 
-    result <- mpx(data, window_size, idx = do_idxs, dist = "pearson")
+    result <- tsmp::mpx(data = data, window_size = window_size, idx = do_idxs, dist = "pearson")
     correlation_max <- max(result$mp[!is.infinite(result$mp)], na.rm = TRUE)
 
     if (correlation_max < threshold) {
@@ -298,7 +298,7 @@ pmp_upper_bound <- function(data,
 
     windows <- c(windows, window_size)
 
-    result <- mpx(data, window_size, idx = do_idxs, dist = "pearson")
+    result <- tsmp::mpx(data = data, window_size = window_size, idx = do_idxs, dist = "pearson")
     correlation_max <- max(result$mp[!is.infinite(result$mp)], na.rm = TRUE)
 
     if (return_pmp) {

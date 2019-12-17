@@ -15,26 +15,6 @@
 #' @param n_jobs an `int`. The number of cpu cores to use when computing the MP. (default is `1`).
 #'
 #' @return
-#' dict : profile
-#'     A dict of key data points computed.
-#' {
-#' 'mp': The matrix profile,
-#' 'pi': The matrix profile 1NN indices,
-#' 'rmp': The right matrix profile,
-#' 'rpi': The right matrix profile 1NN indices,
-#' 'lmp': The left matrix profile,
-#' 'lpi': The left matrix profile 1NN indices,
-#' 'metric': The distance metric computed for the mp,
-#' 'w': The window size used to compute the matrix profile,
-#' 'ez': The exclusion zone used,
-#' 'join': Flag indicating if a similarity join was computed,
-#' 'data': {
-#' 'ts': Time series data,
-#'     'query': Query data if supplied
-#'   }
-#'   'class': "MatrixProfile"
-#'   'algorithm': "mpx"
-#' }
 #' The profile computed.
 
 #' @export
@@ -49,6 +29,11 @@ compute <- function(ts, windows, query = NULL, sample_pct = 1, n_jobs = 1) {
   checkmate::qassert(sample_pct, "N1(0,1]")
   n_jobs <- as.integer(checkmate::qassert(n_jobs, paste0("X1[1,", parallel::detectCores(), "]")))
 
+  res <- NULL
+  algorithm <- NULL
+  join <- FALSE
+  metric <- "euclidean"
+
   # Start ---------------------------------
   if (length(windows) == 1) {
     ## Matrix Profile =========================
@@ -57,21 +42,53 @@ compute <- function(ts, windows, query = NULL, sample_pct = 1, n_jobs = 1) {
       ### Self-join #############################
 
       if (sample_pct >= 1) {
-        result <- tsmp(ts, window_size = windows, mode = "stomp", n_workers = n_jobs)
+        res <- tsmp::mpx(data = ts, window_size = windows, idx = TRUE, dist = metric) # n_jobs
+        algorithm <- "mpx"
       } else {
-        result <- tsmp(ts, window_size = windows, mode = "scrimp", s_size = floor(sample_pct * length(ts)))
+        res <- scrimp(ts, window_size = windows, s_size = floor(sample_pct * length(ts))) # n_jobs
+        algorithm <- "scrimp"
       }
 
     } else {
       ### AB join #############################
-
-      result <- tsmp(ts, query, window_size = windows, mode = "stomp", n_workers = n_jobs)
+      join <- TRUE
+      res <- tsmp::mpx(data = ts, query = query, window_size = windows, idx = TRUE, dist = metric) # n_jobs
+      algorithm <- "mpx"
+      # TODO: add scrimp AB-join
     }
   } else {
     ## Pan Matrix Profile =========================
 
-    result <- pmp(ts, window_sizes = windows)
+    res <- pmp(ts, window_sizes = windows, plot = FALSE) # n_jobs
+    algorithm <- "pmp"
   }
+
+  # Build compute object --------------------------
+
+  result <- list()
+
+  # Main fields, easily accessible by the user
+  if (length(windows) == 1) {
+    class(result) <- "MatrixProfile"
+    result$mp <- res$mp
+    result$pi <- res$pi
+    result$rmp <- list(NULL)
+    result$rpi <- list(NULL)
+    result$lmp <- list(NULL)
+    result$lpi <- list(NULL)
+  } else {
+    class(result) <- "PanMatrixProfile"
+    result$pmp <- res # TODO
+  }
+  result$w <- windows
+  result$ez <- getOption("tsmp.exclusion_zone", 1 / 2)
+  result$data <- list(ts = ts,
+                      query = query)
+
+  # Attributes
+  attr(result, "join") <- join
+  attr(result, "metric") <- metric
+  attr(result, "algorithm") <- algorithm
 
   # End ---------------------------------
 
