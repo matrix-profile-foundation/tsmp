@@ -49,10 +49,11 @@
 #' pan <- pmp_upper_bound(mp_gait_data)
 #' pan <- pmp(mp_gait_data, pmp_obj = pan)
 pmp <- function(data,
-                  window_sizes = seq.int(from = 10, to = length(data) / 2, length.out = 20),
-                  plot = FALSE,
-                  pmp_obj = NULL,
-                  verbose = getOption("tsmp.verbose", 2)) {
+                window_sizes = seq.int(from = 10, to = length(data) / 2, length.out = 20),
+                plot = FALSE,
+                pmp_obj = NULL,
+                n_workers = 1,
+                verbose = getOption("tsmp.verbose", 2)) {
 
   ## Prepare things ----
 
@@ -182,7 +183,7 @@ pmp <- function(data,
     }
 
     # Run Matrix Profile
-    result <- tsmp::mpx(data = data, window_size = w, idx = TRUE, dist = "euclidean")
+    result <- tsmp::mpx(data = data, window_size = w, idx = TRUE, dist = "euclidean", n_workers = n_workers)
 
     message(
       "step: ", i, "/", length(split_idx), " binary idx: ", idx, " window: ", w
@@ -250,11 +251,11 @@ pmp <- function(data,
 #'
 #' # just the upper bound
 #' pan_ub <- pmp_upper_bound(mp_gait_data, return_pmp = FALSE)
-#'
 pmp_upper_bound <- function(data,
-                                threshold = getOption("tsmp.pmp_ub", 0.95),
-                                refine_stepsize = getOption("tsmp.pmp_refine", 0.25),
-                                return_pmp = TRUE, verbose = getOption("tsmp.verbose", 2)) {
+                            threshold = getOption("tsmp.pmp_ub", 0.95),
+                            refine_stepsize = getOption("tsmp.pmp_refine", 0.25),
+                            return_pmp = TRUE, n_workers = 1,
+                            verbose = getOption("tsmp.verbose", 2)) {
   correlation_max <- Inf
 
   if (return_pmp) {
@@ -273,7 +274,7 @@ pmp_upper_bound <- function(data,
   while (window_size <= max_window) {
     message("window: ", window_size)
 
-    result <- tsmp::mpx(data = data, window_size = window_size, idx = do_idxs, dist = "pearson")
+    result <- tsmp::mpx(data = data, window_size = window_size, idx = do_idxs, dist = "pearson", n_workers = n_workers)
     correlation_max <- max(result$mp[!is.infinite(result$mp)], na.rm = TRUE)
 
     if (correlation_max < threshold) {
@@ -298,7 +299,7 @@ pmp_upper_bound <- function(data,
 
     windows <- c(windows, window_size)
 
-    result <- tsmp::mpx(data = data, window_size = window_size, idx = do_idxs, dist = "pearson")
+    result <- tsmp::mpx(data = data, window_size = window_size, idx = do_idxs, dist = "pearson", n_workers = n_workers)
     correlation_max <- max(result$mp[!is.infinite(result$mp)], na.rm = TRUE)
 
     if (return_pmp) {

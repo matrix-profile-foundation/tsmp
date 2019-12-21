@@ -69,12 +69,10 @@ mpx <- function(data, window_size, query = NULL, idx = TRUE, dist = c("euclidean
     tryCatch(
       {
         if (n_workers > 1) {
-          # TODO: AB multithread
-          message("AB Multi-thread not yet implemented, using 1 thread instead.")
           p <- RcppParallel::defaultNumThreads()
           n_workers <- min(n_workers, p)
           RcppParallel::setThreadOptions(numThreads = n_workers)
-          result <- mpxab_rcpp(
+          result <- mpxab_rcpp_parallel(
             data,
             query,
             window_size,

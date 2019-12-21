@@ -52,35 +52,44 @@ compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1, threshold=
     } else {
       ### AB join #############################
       join <- TRUE
-      res <- tsmp::mpx(data = ts, query = query, window_size = windows, idx = TRUE, dist = metric, n_workers = n_jobs)
-      algorithm <- "mpx"
-      # TODO: add scrimp AB-join
+      if (sample_pct >= 1) {
+        res <- tsmp::mpx(data = ts, query = query, window_size = windows, idx = TRUE, dist = metric, n_workers = n_jobs)
+        algorithm <- "mpx"
+      } else {
+        # TODO: add scrimp AB-join
+        res <- scrimp(ts, window_size = windows, s_size = floor(sample_pct * length(ts))) # n_jobs # AB
+        algorithm <- "scrimp"
+      }
     }
   } else {
     ## Pan Matrix Profile =========================
-
-    res <- pmp(ts, window_sizes = windows, plot = FALSE) # n_jobs
+    res <- pmp(ts, window_sizes = windows, plot = FALSE, n_workers = n_jobs)
     algorithm <- "pmp"
   }
 
   # Build compute object --------------------------
 
-  result <- list()
-
   # Main fields, easily accessible by the user
   if (length(windows) == 1) {
+    result <- list(
+      mp = res$mp,
+      pi = res$pi,
+      mpb = NULL,
+      mpi = NULL,
+      rmp = NULL,
+      rpi = NULL,
+      lmp = NULL,
+      lpi = NULL,
+      w = windows
+    )
     class(result) <- "MatrixProfile"
-    result$mp <- res$mp
-    result$pi <- res$pi
-    result$rmp <- list(NULL)
-    result$rpi <- list(NULL)
-    result$lmp <- list(NULL)
-    result$lpi <- list(NULL)
   } else {
+    result <- list(
+      pmp = res,
+      w = windows
+      ) # TODO
     class(result) <- "PanMatrixProfile"
-    result$pmp <- res # TODO
   }
-  result$w <- windows
   result$ez <- getOption("tsmp.exclusion_zone", 1 / 2)
   result$data <- list(ts = ts,
                       query = query)

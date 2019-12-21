@@ -178,6 +178,21 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// mpxab_rcpp_parallel
+List mpxab_rcpp_parallel(NumericVector a, NumericVector b, uint16_t w, bool idxs, bool euclidean);
+RcppExport SEXP _tsmp_mpxab_rcpp_parallel(SEXP aSEXP, SEXP bSEXP, SEXP wSEXP, SEXP idxsSEXP, SEXP euclideanSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type a(aSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type b(bSEXP);
+    Rcpp::traits::input_parameter< uint16_t >::type w(wSEXP);
+    Rcpp::traits::input_parameter< bool >::type idxs(idxsSEXP);
+    Rcpp::traits::input_parameter< bool >::type euclidean(euclideanSEXP);
+    rcpp_result_gen = Rcpp::wrap(mpxab_rcpp_parallel(a, b, w, idxs, euclidean));
+    return rcpp_result_gen;
+END_RCPP
+}
 // movmin
 NumericVector movmin(NumericVector data, uint32_t window_size);
 RcppExport SEXP _tsmp_movmin(SEXP dataSEXP, SEXP window_sizeSEXP) {
@@ -218,6 +233,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_tsmp_mpx_rcpp", (DL_FUNC) &_tsmp_mpx_rcpp, 5},
     {"_tsmp_mpxab_rcpp", (DL_FUNC) &_tsmp_mpxab_rcpp, 5},
     {"_tsmp_mpx_rcpp_parallel", (DL_FUNC) &_tsmp_mpx_rcpp_parallel, 5},
+    {"_tsmp_mpxab_rcpp_parallel", (DL_FUNC) &_tsmp_mpxab_rcpp_parallel, 5},
     {"_tsmp_movmin", (DL_FUNC) &_tsmp_movmin, 2},
     {"_tsmp_movmax", (DL_FUNC) &_tsmp_movmax, 2},
     {NULL, NULL, 0}

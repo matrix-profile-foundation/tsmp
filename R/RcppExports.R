@@ -61,6 +61,10 @@ mpx_rcpp_parallel <- function(a, w, minlag, idxs = FALSE, euclidean = TRUE) {
     .Call(`_tsmp_mpx_rcpp_parallel`, a, w, minlag, idxs, euclidean)
 }
 
+mpxab_rcpp_parallel <- function(a, b, w, idxs = FALSE, euclidean = TRUE) {
+    .Call(`_tsmp_mpxab_rcpp_parallel`, a, b, w, idxs, euclidean)
+}
+
 movmin <- function(data, window_size) {
     .Call(`_tsmp_movmin`, data, window_size)
 }
