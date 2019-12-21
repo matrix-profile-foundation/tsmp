@@ -238,6 +238,7 @@ mpx_abba_stomp <- function(data, query, window_size) {
   num_queries <- query_size - window_size + 1
 
   first_product <- rnn$last_product
+  drop_value <- 0
 
   for (i in 1:num_queries) {
     # compute the distance profile

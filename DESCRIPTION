@@ -29,7 +29,8 @@ Imports:
     foreach,
     progress,
     magrittr,
-    Rcpp
+    Rcpp,
+    RcppParallel
 Encoding: UTF-8
 Language: en-US
 LazyData: true
@@ -39,4 +40,5 @@ NeedsCompilation: no
 Suggests:
 VignetteBuilder: knitr
 LinkingTo: 
-    Rcpp
+    Rcpp, RcppParallel
+SystemRequirements: GNU make

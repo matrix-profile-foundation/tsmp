@@ -45,12 +45,20 @@ sum_of_squares <- function(a) {
     .Call(`_tsmp_sum_of_squares`, a)
 }
 
+#' MPX
+#'
+#' @param a Time Series
+#' @return a List
 mpx_rcpp <- function(a, w, minlag, idxs = FALSE, euclidean = TRUE) {
     .Call(`_tsmp_mpx_rcpp`, a, w, minlag, idxs, euclidean)
 }
 
 mpxab_rcpp <- function(a, b, w, idxs = FALSE, euclidean = TRUE) {
     .Call(`_tsmp_mpxab_rcpp`, a, b, w, idxs, euclidean)
+}
+
+mpx_rcpp_parallel <- function(a, w, minlag, idxs = FALSE, euclidean = TRUE) {
+    .Call(`_tsmp_mpx_rcpp_parallel`, a, w, minlag, idxs, euclidean)
 }
 
 movmin <- function(data, window_size) {

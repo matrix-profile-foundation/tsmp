@@ -1,8 +1,8 @@
 if (skip_on_cran()) {
   context("Testing Valmod function")
 
-  ref_data <- mp_toy_data$data[, 1]
-  query_data <- mp_toy_data$data[, 2]
+  ref_data <- tsmp::mp_toy_data$data[, 1]
+  query_data <- tsmp::mp_toy_data$data[, 2]
   # self similarity
   mp <- valmod(ref_data, window_min = 30, window_max = 40)
   # join similarity

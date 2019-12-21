@@ -20,7 +20,7 @@
 #' @export
 #'
 #' @examples
-compute <- function(ts, windows, query = NULL, sample_pct = 1, n_jobs = 1) {
+compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1, threshold=0.98, n_jobs = 1) {
 
   # Parse arguments ---------------------------------
   checkmate::qassert(ts, "N+")
@@ -42,7 +42,7 @@ compute <- function(ts, windows, query = NULL, sample_pct = 1, n_jobs = 1) {
       ### Self-join #############################
 
       if (sample_pct >= 1) {
-        res <- tsmp::mpx(data = ts, window_size = windows, idx = TRUE, dist = metric) # n_jobs
+        res <- tsmp::mpx(data = ts, window_size = windows, idx = TRUE, dist = metric, n_workers = n_jobs)
         algorithm <- "mpx"
       } else {
         res <- scrimp(ts, window_size = windows, s_size = floor(sample_pct * length(ts))) # n_jobs
@@ -52,7 +52,7 @@ compute <- function(ts, windows, query = NULL, sample_pct = 1, n_jobs = 1) {
     } else {
       ### AB join #############################
       join <- TRUE
-      res <- tsmp::mpx(data = ts, query = query, window_size = windows, idx = TRUE, dist = metric) # n_jobs
+      res <- tsmp::mpx(data = ts, query = query, window_size = windows, idx = TRUE, dist = metric, n_workers = n_jobs)
       algorithm <- "mpx"
       # TODO: add scrimp AB-join
     }

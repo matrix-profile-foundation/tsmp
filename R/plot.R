@@ -1254,7 +1254,7 @@ plot.Skimp <- function(pmp, func = NULL) {
   data_size <- mp_len + min_window - 1
   sizes <- sort(pmp$windows, index.return = TRUE)
   window_sizes <- sizes$x
-  window_idxs <- sizes$ix
+  # window_idxs <- sizes$ix
 
   skimp_plot_set_canvas(
     ymin = min_window,

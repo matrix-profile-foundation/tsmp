@@ -30,6 +30,6 @@
 #' @export
 #'
 #' @examples
-analyze <- function(ts, query = None, windows = NULL, sample_pct = 1.0, threshold = 0.98, n_jobs = -1) {
+analyze <- function(ts, query = NULL, windows = NULL, sample_pct = 1.0, threshold = 0.98, n_jobs = -1) {
 
 }
