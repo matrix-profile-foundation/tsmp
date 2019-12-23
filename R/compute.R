@@ -72,11 +72,13 @@ compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
 
     if (is.null(windows)) {
       # when no windows are passed, create an array from 10 to upper bound or half ts size
-      windows <- seq.int(from = 10, to = min(length(ts) / 2, res$pmp$upper_bound), length.out = 20)
+      windows <- seq.int(from = 10, to = min(length(ts) / 2, res$upper_window), length.out = 20)
     } else {
       # otherwise, remove windows that are above upper bound or half ts size
-      windows <- windows[windows <= min(length(ts) / 2, res$pmp$upper_bound)]
+      windows <- windows[windows <= min(length(ts) / 2, res$upper_window)]
     }
+
+    windows <- floor(windows)
 
     res <- tsmp::pmp(data = ts, window_sizes = windows, plot = FALSE, pmp_obj = res, n_workers = n_jobs)
 
@@ -88,8 +90,8 @@ compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
   # Main fields, easily accessible by the user
   if (length(windows) == 1) {
     result <- list(
-      mp = res$mp,
-      pi = res$pi,
+      mp = as.matrix(res$mp),
+      pi = as.matrix(res$pi),
       mpb = NULL,
       mpi = NULL,
       rmp = NULL,

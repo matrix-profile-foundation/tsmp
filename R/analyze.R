@@ -46,13 +46,14 @@ analyze <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
 
   # Explore --------------------------------------
   # extract top motifs
-  result <- top_k_motifs(result)
+  result <- find_motif(result, n_motifs = 5) %T>% plot()
 
   # extract top discords
-  result <- top_k_discords(result)
+  result <- find_discord(result, n_discords = 5) %T>% plot()
 
   # Visualize --------------------------------------
-  figures <- visualize(result)
+  figures <- NULL
+  #figures <- visualize(result)
 
   return(list(profile = result, figures = figures))
 }
