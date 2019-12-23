@@ -20,13 +20,14 @@
 #' @export
 #'
 #' @examples
-compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1, threshold=0.98, n_jobs = 1) {
+compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshold=0.98, n_jobs = 1L) {
 
   # Parse arguments ---------------------------------
   checkmate::qassert(ts, "N+")
-  windows <- as.integer(checkmate::qassert(windows, "X+"))
+  windows <- checkmate::qassert(windows, c("0", "X+"))
   checkmate::qassert(query, c("0", "N>=4"))
   checkmate::qassert(sample_pct, "N1(0,1]")
+  checkmate::qassert(threshold, c("0", "N1(0,1]"))
   n_jobs <- as.integer(checkmate::qassert(n_jobs, paste0("X1[1,", parallel::detectCores(), "]")))
 
   res <- NULL
@@ -63,7 +64,22 @@ compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1, threshold=
     }
   } else {
     ## Pan Matrix Profile =========================
-    res <- pmp(ts, window_sizes = windows, plot = FALSE, n_workers = n_jobs)
+
+    if (!is.null(threshold)) {
+      # when a threshold is passed, we compute the upper bound
+      res <- tsmp::pmp_upper_bound(data = ts, threshold = threshold, n_workers = n_jobs)
+    }
+
+    if (is.null(windows)) {
+      # when no windows are passed, create an array from 10 to upper bound or half ts size
+      windows <- seq.int(from = 10, to = min(length(ts) / 2, res$pmp$upper_bound), length.out = 20)
+    } else {
+      # otherwise, remove windows that are above upper bound or half ts size
+      windows <- windows[windows <= min(length(ts) / 2, res$pmp$upper_bound)]
+    }
+
+    res <- tsmp::pmp(data = ts, window_sizes = windows, plot = FALSE, pmp_obj = res, n_workers = n_jobs)
+
     algorithm <- "pmp"
   }
 
