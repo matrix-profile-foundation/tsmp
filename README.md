@@ -1,7 +1,7 @@
 README
 ================
 Francisco Bischoff
-\- 07 Jul 2019
+\- 24 Dec 2019
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -60,8 +60,7 @@ Please refer to the [User
 Manual](https://franzbischoff.github.io/tsmp/reference/) for more
 details.
 
-Please be welcome to suggest
-improvements.
+Please be welcome to suggest improvements.
 
 ### Performance on an Intel(R) Core(TM) i7-7700 CPU @ 3.60GHz using a random walk dataset
 

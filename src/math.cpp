@@ -34,7 +34,7 @@ NumericMatrix list_to_matrix(const List x){
   NumericMatrix m(nlines, colmax);
 
   for(int32_t i = 0; i < nlines; i++) {
-    int32_t line = nlines - i - 1;
+   // int32_t line = nlines - i - 1;
     uint32_t currsize = as<NumericVector>(x[i]).size();
     NumericMatrix::Row row = m(i, _);
     row = as<NumericVector>(x[i]);

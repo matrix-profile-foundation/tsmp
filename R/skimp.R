@@ -55,20 +55,28 @@ pmp <- function(data,
                 n_workers = 1,
                 verbose = getOption("tsmp.verbose", 2)) {
 
-  ## Prepare things ----
+  # Parse arguments ---------------------------------
+  window_sizes <- floor(window_sizes)
+
+  checkmate::qassert(data, "N+")
+  checkmate::qassert(window_sizes, "X+")
+  checkmate::qassert(plot, "B")
+  checkmate::qassert(pmp_obj, c("0", "l"))
+  checkmate::qassert(n_workers, paste0("X1[1,", parallel::detectCores(), "]"))
+  checkmate::qassert(verbose, "X1")
 
   # checks if the given object is actualy a skimp object
   if (!is.null(pmp_obj)) {
-    if (class(pmp_obj) != "PMP") {
-      stop("`pmp_obj` must be of class PMP")
+    if (class(pmp_obj) != "PanMatrixProfile") {
+      stop("`pmp_obj` must be of class `PanMatrixProfile`")
     }
   }
 
-  # TODO: sanitize `data`
+  ## Prepare things ----
+
   data_size <- length(data)
 
-  # windows must be integers
-  window_sizes <- floor(window_sizes)
+
 
   # if an object is given, remove the windows that already have been computed and are below the upper_window
   if (!is.null(pmp_obj)) {
@@ -160,7 +168,7 @@ pmp <- function(data,
   # if not given, create a new object to start with
   if (is.null(pmp_obj)) {
     pmp_obj <- list(pmp = list(), pmpi = list())
-    class(pmp_obj) <- "Skimp"
+    class(pmp_obj) <- "PanMatrixProfile"
   }
 
   # Determine the order in which we will explore the window_sizes
@@ -183,7 +191,7 @@ pmp <- function(data,
     }
 
     # Run Matrix Profile
-    result <- tsmp::mpx(data = data, window_size = w, idx = TRUE, dist = "euclidean", n_workers = n_workers)
+    result <- tsmp:::mpx(data = data, window_size = w, idx = TRUE, dist = "euclidean", n_workers = n_workers)
 
     message(
       "step: ", i, "/", length(split_idx), " binary idx: ", idx, " window: ", w
@@ -242,7 +250,7 @@ pmp <- function(data,
 #' @return Returns a `PMP` object with computed data, or just the upper bound value if `return_pmp` is set to `FALSE`.
 #' @export
 #'
-#' @references * Yet to be annouced
+#' @references * Yet to be announced
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #'
 #' @examples
@@ -274,7 +282,7 @@ pmp_upper_bound <- function(data,
   while (window_size <= max_window) {
     message("window: ", window_size)
 
-    result <- tsmp::mpx(data = data, window_size = window_size, idx = do_idxs, dist = "pearson", n_workers = n_workers)
+    result <- tsmp:::mpx(data = data, window_size = window_size, idx = do_idxs, dist = "pearson", n_workers = n_workers)
     correlation_max <- max(result$mp[!is.infinite(result$mp)], na.rm = TRUE)
 
     if (correlation_max < threshold) {
@@ -299,7 +307,7 @@ pmp_upper_bound <- function(data,
 
     windows <- c(windows, window_size)
 
-    result <- tsmp::mpx(data = data, window_size = window_size, idx = do_idxs, dist = "pearson", n_workers = n_workers)
+    result <- tsmp:::mpx(data = data, window_size = window_size, idx = do_idxs, dist = "pearson", n_workers = n_workers)
     correlation_max <- max(result$mp[!is.infinite(result$mp)], na.rm = TRUE)
 
     if (return_pmp) {
@@ -314,7 +322,7 @@ pmp_upper_bound <- function(data,
 
   if (return_pmp) {
     pmp_obj <- list(upper_window = window_size, pmp = pmp, pmpi = pmpi, windows = windows)
-    class(pmp_obj) <- "PMP"
+    class(pmp_obj) <- "PanMatrixProfile"
     return(pmp_obj)
   } else {
     return(window_size)

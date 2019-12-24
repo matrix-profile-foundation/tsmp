@@ -20,7 +20,7 @@
 #' @export
 #'
 #' @examples
-compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshold=0.98, n_jobs = 1L) {
+compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshold = 0.98, n_jobs = 1L) {
 
   # Parse arguments ---------------------------------
   checkmate::qassert(ts, "N+")
@@ -43,18 +43,17 @@ compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
       ### Self-join #############################
 
       if (sample_pct >= 1) {
-        res <- tsmp::mpx(data = ts, window_size = windows, idx = TRUE, dist = metric, n_workers = n_jobs)
+        res <- tsmp:::mpx(data = ts, window_size = windows, idx = TRUE, dist = metric, n_workers = n_jobs)
         algorithm <- "mpx"
       } else {
         res <- scrimp(ts, window_size = windows, s_size = floor(sample_pct * length(ts))) # n_jobs
         algorithm <- "scrimp"
       }
-
     } else {
       ### AB join #############################
       join <- TRUE
       if (sample_pct >= 1) {
-        res <- tsmp::mpx(data = ts, query = query, window_size = windows, idx = TRUE, dist = metric, n_workers = n_jobs)
+        res <- tsmp:::mpx(data = ts, query = query, window_size = windows, idx = TRUE, dist = metric, n_workers = n_jobs)
         algorithm <- "mpx"
       } else {
         # TODO: add scrimp AB-join
@@ -105,12 +104,14 @@ compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
     result <- list(
       pmp = res,
       w = windows
-      ) # TODO
+    ) # TODO
     class(result) <- "PanMatrixProfile"
   }
   result$ez <- getOption("tsmp.exclusion_zone", 1 / 2)
-  result$data <- list(ts = ts,
-                      query = query)
+  result$data <- list(
+    ts = ts,
+    query = query
+  )
 
   # Attributes
   attr(result, "join") <- join

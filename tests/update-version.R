@@ -26,14 +26,14 @@ if (identical(Sys.getenv("NOT_CRAN"), "true") &&
     current_version <- gsub("^Version\\:\\s*", "", desc[version_line])
     #|
     ## Split the version number into two; a piece to keep, a piece to increment
-    version_number <- strsplit(current_version, "\\.")[[1]]
+    version_number <- strsplit(current_version, "\\.")[[1L]]
     version_parts <- length(version_number)
-    version_number_keep <- paste(version_number[1:(version_parts - 1)], sep = "", collapse = ".")
+    version_number_keep <- paste(version_number[1L:(version_parts - 1L)], sep = "", collapse = ".")
     version_number_update <- version_number[version_parts]
 
     ## Replace old version number with new one (increment by 1)
     old_version <- as.numeric(version_number_update)
-    new_version <- old_version + 1
+    new_version <- old_version + 1L
 
     ## Build final version number
     version_final <- paste(version_number_keep, new_version, sep = ".")

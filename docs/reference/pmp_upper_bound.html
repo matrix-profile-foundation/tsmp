@@ -142,6 +142,7 @@
   <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"tsmp.pmp_ub"</span>, <span class='fl'>0.95</span>),
   <span class='kw'>refine_stepsize</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"tsmp.pmp_refine"</span>, <span class='fl'>0.25</span>),
   <span class='kw'>return_pmp</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>n_workers</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"tsmp.verbose"</span>, <span class='fl'>2</span>)
 )</pre>
 
@@ -186,17 +187,16 @@ adds the progress bar, <code>3</code> adds the finish sound.</p>
 
     
 <ul>
-<li><p>Yet to be annouced</p></li>
+<li><p>Yet to be announced</p></li>
 </ul>
 
 <p>Website: <a href='http://www.cs.ucr.edu/~eamonn/MatrixProfile.html'>http://www.cs.ucr.edu/~eamonn/MatrixProfile.html</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># return the object</span>
-<span class='no'>pan_matrix</span> <span class='kw'>&lt;-</span> <span class='fu'>pmp_upper_bound</span>(<span class='no'>mp_gait_data</span>)</div><div class='output co'>#&gt; <span class='error'>Error in pmp_upper_bound(mp_gait_data): could not find function "pmp_upper_bound"</span></div><div class='input'>
+<span class='no'>pan_matrix</span> <span class='kw'>&lt;-</span> <span class='fu'>pmp_upper_bound</span>(<span class='no'>mp_gait_data</span>)</div><div class='output co'>#&gt; <span class='message'>window: 8</span></div><div class='output co'>#&gt; <span class='message'>window: 16</span></div><div class='output co'>#&gt; <span class='message'>window: 32</span></div><div class='output co'>#&gt; <span class='message'>window: 64</span></div><div class='output co'>#&gt; <span class='message'>window: 128</span></div><div class='output co'>#&gt; <span class='message'>window: 256</span></div><div class='output co'>#&gt; <span class='message'>window: 320</span></div><div class='output co'>#&gt; <span class='message'>window: 384</span></div><div class='input'>
 <span class='co'># just the upper bound</span>
-<span class='no'>pan_ub</span> <span class='kw'>&lt;-</span> <span class='fu'>pmp_upper_bound</span>(<span class='no'>mp_gait_data</span>, <span class='kw'>return_pmp</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in pmp_upper_bound(mp_gait_data, return_pmp = FALSE): could not find function "pmp_upper_bound"</span></div><div class='input'>
-</div></pre>
+<span class='no'>pan_ub</span> <span class='kw'>&lt;-</span> <span class='fu'>pmp_upper_bound</span>(<span class='no'>mp_gait_data</span>, <span class='kw'>return_pmp</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>window: 8</span></div><div class='output co'>#&gt; <span class='message'>window: 16</span></div><div class='output co'>#&gt; <span class='message'>window: 32</span></div><div class='output co'>#&gt; <span class='message'>window: 64</span></div><div class='output co'>#&gt; <span class='message'>window: 128</span></div><div class='output co'>#&gt; <span class='message'>window: 256</span></div><div class='output co'>#&gt; <span class='message'>window: 320</span></div><div class='output co'>#&gt; <span class='message'>window: 384</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

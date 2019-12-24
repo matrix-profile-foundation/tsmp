@@ -15,6 +15,7 @@ CCM
 Chetan
 codecov
 Conf
+cpu
 Crouter
 CUDA
 Darvishzadeh
@@ -63,12 +64,14 @@ lifecycle
 LMP
 Lonardi
 matlab
+matplotlib
 matrixprofile
 MatrixProfile
 MDL
 MDS
 MOTIFs
 MPdist
+MPX
 mSTAMP
 mSTOMP
 MSTOMP
@@ -86,6 +89,7 @@ Palpanas
 PAMAP's
 parallelizable
 pmp
+PMP
 pre
 PRE
 precomputation

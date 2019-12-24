@@ -123,7 +123,7 @@ mpdist <- function(ref_data, query_data, window_size, type = c("simple", "vector
 #' @keywords internal
 #' @noRd
 mpdist_simple <- function(ref_data, query_data, window_size, thr = 0.05) {
-  mp <- tsmp::mpx(data = ref_data, query = query_data, window_size = window_size, idx = FALSE)
+  mp <- tsmp:::mpx(data = ref_data, query = query_data, window_size = window_size, idx = FALSE)
 
   dist <- cal_mp_dist(c(mp$mpa, mp$mpb), thr, nrow(ref_data) + nrow(query_data))
 
@@ -155,7 +155,6 @@ mpdist_vect <- function(data, query, window_size, thr = 0.05) {
   }
 
   all_right_histogram <- do.call(pmin, as.data.frame(t(mat))) # col min
-  # all_right_histogram <- Rfast::colMins(mat) # col min
 
   mass_dist_slid_min <- matrix(nrow = num_subseqs, ncol = dist_profile_size - num_subseqs + 1)
   # apply is not faster

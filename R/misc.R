@@ -20,8 +20,6 @@
 #'
 #' @examples
 #' data_sd <- fast_movsd(mp_toy_data$data[, 1], mp_toy_data$sub_len)
-#'
-
 fast_movsd <- function(data, window_size, rcpp = FALSE) {
   if (window_size < 2) {
     stop("'window_size' must be at least 2.")
@@ -58,7 +56,6 @@ fast_movsd <- function(data, window_size, rcpp = FALSE) {
 #'
 #' @examples
 #' data_avg <- fast_movavg(mp_toy_data$data[, 1], mp_toy_data$sub_len)
-#'
 fast_movavg <- function(data, window_size) {
   if (window_size < 2) {
     stop("'window_size' must be at least 2.")

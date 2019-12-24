@@ -1219,8 +1219,8 @@ skimp_plot_add_raster <- function(layer, window, window_set = NULL, func = NULL)
   # )
 
   ras <- raster::raster(matrix(layer, nrow = 1),
-                        xmn = xmin, xmx = xmax,
-                        ymn = ymin, ymx = ytop
+    xmn = xmin, xmx = xmax,
+    ymn = ymin, ymx = ytop
   )
 
   plot(raster::brick(ras), add = TRUE)

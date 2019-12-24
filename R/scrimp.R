@@ -185,12 +185,12 @@ scrimp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_
       nn <- dist_profile(data, data, nn, window_size = window_size, index = i)
       distance_profile <- sqrt(nn$distance_profile)
 
-            # apply exclusion zone
+      # apply exclusion zone
       exc_st <- max(1, (i - exclusion_zone))
       exc_ed <- min(matrix_profile_size, (i + exclusion_zone))
       distance_profile[exc_st:exc_ed] <- Inf
 
-            # figure out and store the neareest neighbor
+      # figure out and store the neareest neighbor
       if (j == 1) {
         matrix_profile <- as.matrix(distance_profile)
         profile_index[] <- i
@@ -212,9 +212,9 @@ scrimp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_
       dotproduct[i] <- (window_size - matrix_profile[i]^2 / 2) * nn$par$data_sd[i] * nn$par$data_sd[idx_nn] +
         window_size * nn$par$data_mean[i] * nn$par$data_mean[idx_nn]
 
-            endidx <- min(matrix_profile_size, (i + current_step - 1), (matrix_profile_size - idx_diff))
+      endidx <- min(matrix_profile_size, (i + current_step - 1), (matrix_profile_size - idx_diff))
 
-            dotproduct[(i + 1):endidx] <- dotproduct[i] +
+      dotproduct[(i + 1):endidx] <- dotproduct[i] +
         cumsum(data[(i + window_size):(endidx + window_size - 1)] *
           data[(idx_nn + window_size):(endidx + window_size - 1 + idx_diff)] -
           data[i:(endidx - 1)] * data[idx_nn:(endidx - 1 + idx_diff)])

@@ -9,6 +9,7 @@ pmp(
   window_sizes = seq.int(from = 10, to = length(data)/2, length.out = 20),
   plot = FALSE,
   pmp_obj = NULL,
+  n_workers = 1,
   verbose = getOption("tsmp.verbose", 2)
 )
 }

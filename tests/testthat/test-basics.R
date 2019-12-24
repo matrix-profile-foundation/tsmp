@@ -1,4 +1,4 @@
-if (skip_on_cran()) {
+if (!testthat:::on_cran()) {
   context("Testing if basic functions are ok")
   library(tsmp)
   w <- 30

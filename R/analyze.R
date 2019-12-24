@@ -30,7 +30,7 @@
 #' @export
 #'
 #' @examples
-analyze <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshold=0.98, n_jobs = 1L) {
+analyze <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshold = 0.98, n_jobs = 1L) {
 
   # Parse arguments ---------------------------------
   checkmate::qassert(ts, "N+")
@@ -46,14 +46,14 @@ analyze <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
 
   # Explore --------------------------------------
   # extract top motifs
-  result <- find_motif(result, n_motifs = 5) %T>% plot()
+  result <- find_motif(result, n_motifs = 3L) %T>% visualize()
 
   # extract top discords
-  result <- find_discord(result, n_discords = 5) %T>% plot()
+  result <- find_discord(result, n_discords = 3L) %T>% visualize()
 
   # Visualize --------------------------------------
   figures <- NULL
-  #figures <- visualize(result)
+  # figures <- visualize(result)
 
   return(list(profile = result, figures = figures))
 }

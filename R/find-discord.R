@@ -54,7 +54,7 @@ find_discord.MatrixProfile <- function(.mp, data, n_discords = 1, n_neighbors = 
     data_len <- length(data[[1]])
     data_dim <- length(data)
 
-    for (i in 1:data_dim) {
+    for (i in 1L:data_dim) {
       len <- length(data[[i]])
       # Fix TS size with NaN
       if (len < data_len) {
@@ -87,7 +87,7 @@ find_discord.MatrixProfile <- function(.mp, data, n_discords = 1, n_neighbors = 
   for (i in seq_len(n_discords)) {
     discord_idx <- which.max(matrix_profile)
     discord_distance <- matrix_profile[discord_idx]
-    discord_idxs[[1]][[i]] <- discord_idx
+    discord_idxs[[1L]][[i]] <- discord_idx
 
     # query using the discord to find its neighbors
     nn <- dist_profile(data, data, nn, window_size = .mp$w, index = discord_idx)
@@ -107,9 +107,9 @@ find_discord.MatrixProfile <- function(.mp, data, n_discords = 1, n_neighbors = 
       if (is.infinite(distance_order[1]) || length(distance_order) < j) {
         break
       }
-      discord_neighbor[j] <- distance_idx_order[1]
+      discord_neighbor[j] <- distance_idx_order[1L]
       distance_order <- distance_order[2:length(distance_order)]
-      distance_idx_order <- distance_idx_order[2:length(distance_idx_order)]
+      distance_idx_order <- distance_idx_order[2L:length(distance_idx_order)]
       distance_order <- distance_order[!(abs(distance_idx_order - discord_neighbor[j]) < exclusion_zone)]
       distance_idx_order <- distance_idx_order[!(abs(distance_idx_order - discord_neighbor[j]) < exclusion_zone)]
     }

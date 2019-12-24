@@ -9,6 +9,7 @@ pmp_upper_bound(
   threshold = getOption("tsmp.pmp_ub", 0.95),
   refine_stepsize = getOption("tsmp.pmp_refine", 0.25),
   return_pmp = TRUE,
+  n_workers = 1,
   verbose = getOption("tsmp.verbose", 2)
 )
 }
@@ -45,11 +46,10 @@ pan_matrix <- pmp_upper_bound(mp_gait_data)
 
 # just the upper bound
 pan_ub <- pmp_upper_bound(mp_gait_data, return_pmp = FALSE)
-
 }
 \references{
 \itemize{
-\item Yet to be annouced
+\item Yet to be announced
 }
 
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}

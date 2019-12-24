@@ -10,5 +10,9 @@
 #' @examples
 #'
 visualize <- function(obj) {
-
+  if (!is.null(obj$profile)) {
+    invisible(plot(obj$profile))
+  } else {
+    invisible(plot(obj))
+  }
 }

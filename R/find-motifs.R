@@ -97,7 +97,7 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
     min_idx <- idxs[1]
     motif_distance <- matrix_profile$mp[min_idx]
     motif_idxs[[1]][[i]] <- sort(idxs)
-    motif_idx <- motif_idxs[[1]][[i]][1]
+    motif_idx <- motif_idxs[[1L]][[i]][1]
 
     if (valmod) {
       # precompute for each window size in valmod
