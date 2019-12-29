@@ -48,11 +48,10 @@ the upper bound will be computed.
 \examples{
 
 # Matrix Profile
-result <- compute(mp_toy_data$data[ ,1], 80)
-
+result <- compute(mp_toy_data$data[, 1], 80)
 \dontrun{
 # Pan Matrix Profile
-   result <- compute(mp_toy_data$data[ ,1])
+result <- compute(mp_toy_data$data[, 1])
 }
 }
 \seealso{

@@ -59,11 +59,10 @@ the PMP is computed:
 \examples{
 
 # Matrix Profile
-result <- analyze(mp_toy_data$data[ ,1], 80)
-
+result <- analyze(mp_toy_data$data[, 1], 80)
 \dontrun{
 # Pan Matrix Profile
-   result <- analyze(mp_toy_data$data[ ,1])
+result <- analyze(mp_toy_data$data[, 1])
 }
 }
 \references{
