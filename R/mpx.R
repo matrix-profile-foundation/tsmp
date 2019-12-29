@@ -1,12 +1,12 @@
 
 #' Fast implementation of MP and MPI for internal purposes, without FFT
 #'
-#' @param data data
+#' @param data a `matrix` or a `vector`. The time series to analyze.
 #' @param window_size window size
 #' @param query query
-#' @param idx calc and return indexes?
-#' @param dist distance measure, euclidean or pearson?
-#' @param n_workers theads for multi-threading
+#' @param idx  compute the profile indexes?
+#' @param dist distance measure, Euclidean or Pearson?
+#' @param n_workers threads for multi-threading
 #'
 #' @return Returns MP and MPI
 #' @export

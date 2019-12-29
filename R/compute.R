@@ -28,16 +28,15 @@
 #'
 #' @export
 #'
-#' @family main api
+#' @family Main API
 #'
 #' @examples
 #'
 #' # Matrix Profile
-#' result <- compute(mp_toy_data$data[ ,1], 80)
-#'
+#' result <- compute(mp_toy_data$data[, 1], 80)
 #' \dontrun{
 #' # Pan Matrix Profile
-#'    result <- compute(mp_toy_data$data[ ,1])
+#' result <- compute(mp_toy_data$data[, 1])
 #' }
 compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshold = 0.98, n_jobs = 1L) {
 

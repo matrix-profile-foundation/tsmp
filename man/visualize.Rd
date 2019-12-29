@@ -7,7 +7,7 @@
 visualize(obj)
 }
 \arguments{
-\item{obj}{dict_like The object to plotddd.}
+\item{obj}{dict_like The object to plot.}
 }
 \value{
 A list of matplotlib figures
@@ -19,8 +19,8 @@ Plots an object generated from one of the algorithms. In some cases multiple plo
 
 }
 \seealso{
-Other main api: 
+Other Main API: 
 \code{\link{analyze}()},
 \code{\link{compute}()}
 }
-\concept{main api}
+\concept{Main API}

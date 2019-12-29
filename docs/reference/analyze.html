@@ -44,7 +44,7 @@
 
 <meta property="og:title" content="Runs an appropriate workflow based on the parameters passed in. — analyze" />
 <meta property="og:description" content="The goal of this function is to compute all fundamental algorithms on the provided
-time series data. For now the following is computed:" />
+time series data. See details for more information." />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -136,7 +136,7 @@ time series data. For now the following is computed:" />
 
     <div class="ref-description">
     <p>The goal of this function is to compute all fundamental algorithms on the provided
-time series data. For now the following is computed:</p>
+time series data. See details for more information.</p>
     </div>
 
     <pre class="usage"><span class='fu'>analyze</span>(
@@ -152,35 +152,73 @@ time series data. For now the following is computed:</p>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>ts</th>
+      <td><p>a <code>matrix</code> or a <code>vector</code>. The time series to analyze.</p></td>
+    </tr>
+    <tr>
+      <th>windows</th>
+      <td><p>an <code>int</code> or a <code>vector</code>. The window(s) to compute the MatrixProfile. Note that it may be an <code>int</code>
+for a single matrix profile computation or a <code>vector</code> of <code>int</code> for computing the pan matrix profile (PMP).</p></td>
+    </tr>
+    <tr>
+      <th>query</th>
+      <td><p>a <code>matrix</code> or a <code>vector</code>. Optional The query to analyze. Note that when computing the PMP the query
+is ignored!</p></td>
+    </tr>
+    <tr>
+      <th>sample_pct</th>
+      <td><p>a <code>numeric</code>. A number between 0 and 1 representing how many samples to compute for
+the MP or PMP. When it is 1, the exact algorithm is used. (default is <code>1.0</code>).</p></td>
+    </tr>
+    <tr>
+      <th>threshold</th>
+      <td><p>a <code>numeric</code>. Correlation threshold. See details.  (Default is <code>0.98</code>).</p></td>
+    </tr>
+    <tr>
       <th>n_jobs</th>
-      <td></td>
+      <td><p>an <code>int</code>. The number of cpu cores to use when computing the MP. (default is <code>1</code>).</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>tuple : (profile, figures) The appropriate PMP or MP profile object and associated figures.</p>
+    <p>The appropriate MP or PMP profile object and also plots the graphics.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    
-<ol>
-<li><p>Matrix Profile - exact or approximate based on sample_pct given that a
-window is provided. By default is the exact algorithm.</p></li>
-<li><p>Top Motifs - The top 3 motifs are found.</p></li>
-<li><p>Top Discords - The top 3 discords are found.</p></li>
-<li><p>Plot MP, Motifs and Discords</p></li>
+    <p>For now the following is computed:</p><ol>
+<li><p>Matrix Profile - exact or approximate based on <code>sample_pct</code> given that a single
+<code>windows</code> is provided. By default is the exact algorithm;</p></li>
+<li><p>Top 3 Motifs;</p></li>
+<li><p>Top 3 Discords;</p></li>
+<li><p>Plot MP, Motifs and Discords.</p></li>
 </ol>
 
-<p>When a window is not provided or more than a single window is provided,
+<p>When <code>windows</code> is not provided or more than a single window is provided,
 the PMP is computed:</p><ol>
-<li><p>Compute the upper bound when a threshold is provided</p></li>
-<li><p>Compute PMP for all windows</p></li>
-<li><p>Top Motifs</p></li>
-<li><p>Top Discords</p></li>
+<li><p>Compute the upper bound when a <code>threshold</code> is provided (it is, by default);</p></li>
+<li><p>Compute PMP for all <code>windows</code> provided, below the upper bound, or a default range when no <code>windows</code> is provided;</p></li>
+<li><p>Top Motifs;</p></li>
+<li><p>Top Discords;</p></li>
 <li><p>Plot PMP, motifs and discords.</p></li>
 </ol>
 
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
+    <p>Website: <a href='http://www.cs.ucr.edu/~eamonn/MatrixProfile.html'>http://www.cs.ucr.edu/~eamonn/MatrixProfile.html</a></p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other Main API: 
+<code><a href='compute.html'>compute</a>()</code>,
+<code><a href='visualize.html'>visualize</a>()</code></p></div>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='co'># Matrix Profile</span>
+<span class='no'>result</span> <span class='kw'>&lt;-</span> <span class='fu'>analyze</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[ ,<span class='fl'>1</span>], <span class='fl'>80</span>)</div><div class='img'><img src='analyze-1.png' alt='' width='700' height='433' /></div><div class='img'><img src='analyze-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='co'># Pan Matrix Profile</span>
+   <span class='no'>result</span> <span class='kw'>&lt;-</span> <span class='fu'>analyze</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[ ,<span class='fl'>1</span>])
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -188,6 +226,9 @@ the PMP is computed:</p><ol>
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#references">References</a></li>
+      <li><a href="#see-also">See also</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

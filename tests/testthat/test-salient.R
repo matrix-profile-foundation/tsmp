@@ -11,7 +11,7 @@ if (!testthat:::on_cran()) {
   test_that("Finish", {
     expect_silent(salient_subsequences(mp, verbose = 0))
 
-    if (skip_on_cran()) {
+    if (!testthat:::on_cran()) {
       expect_message(res <<- salient_subsequences(mp, n_bits = c(4, 6, 8), verbose = 2), "Finished")
     } else {
       expect_message(res <<- salient_subsequences(mp, n_bits = c(4, 6, 8), verbose = 0), "Finished")

@@ -14,17 +14,17 @@ mpx(
 )
 }
 \arguments{
-\item{data}{data}
+\item{data}{a \code{matrix} or a \code{vector}. The time series to analyze.}
 
 \item{window_size}{window size}
 
 \item{query}{query}
 
-\item{idx}{calc and return indexes?}
+\item{idx}{compute the profile indexes?}
 
-\item{dist}{distance measure, euclidean or pearson?}
+\item{dist}{distance measure, Euclidean or Pearson?}
 
-\item{n_workers}{theads for multi-threading}
+\item{n_workers}{threads for multi-threading}
 }
 \value{
 Returns MP and MPI

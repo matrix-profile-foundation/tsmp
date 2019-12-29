@@ -70,8 +70,8 @@ result <- analyze(mp_toy_data$data[ ,1], 80)
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other main api: 
+Other Main API: 
 \code{\link{compute}()},
 \code{\link{visualize}()}
 }
-\concept{main api}
+\concept{Main API}

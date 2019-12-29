@@ -56,8 +56,8 @@ result <- compute(mp_toy_data$data[ ,1], 80)
 }
 }
 \seealso{
-Other main api: 
+Other Main API: 
 \code{\link{analyze}()},
 \code{\link{visualize}()}
 }
-\concept{main api}
+\concept{Main API}

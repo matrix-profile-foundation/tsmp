@@ -125,6 +125,7 @@ fast_avg_sd <- function(data, window_size, rcpp = FALSE) {
   data2 <- data^2
   data2_sum <- cumsum(c(sum(data2[1:window_size]), diff(data2, window_size)))
   data_sd2 <- (data2_sum / window_size) - (data_mean^2) # variance
+  data_sd2[data_sd2 < 0] <- 0
   data_sd <- sqrt(data_sd2) # std deviation
   data_sig <- sqrt(1 / (data_sd2 * window_size))
 

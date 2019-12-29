@@ -28,18 +28,17 @@
 #'
 #' @export
 #'
-#' @family main api
+#' @family Main API
 #'
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #'
 #' @examples
 #'
 #' # Matrix Profile
-#' result <- analyze(mp_toy_data$data[ ,1], 80)
-#'
+#' result <- analyze(mp_toy_data$data[, 1], 80)
 #' \dontrun{
 #' # Pan Matrix Profile
-#'    result <- analyze(mp_toy_data$data[ ,1])
+#' result <- analyze(mp_toy_data$data[, 1])
 #' }
 analyze <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshold = 0.98, n_jobs = 1L) {
 
@@ -74,6 +73,4 @@ analyze <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
   # Visualize --------------------------------------
   # figures <- NULL
   # figures <- visualize(result)
-
-
 }
