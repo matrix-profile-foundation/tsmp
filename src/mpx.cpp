@@ -12,6 +12,7 @@ List mpx_rcpp(NumericVector a, uint16_t w, uint16_t minlag, bool idxs = false, b
   try {
     double c, c_cmp;
     uint32_t off_max, off_diag, offset;
+    bool partial = false;
     // matrix profile using cross correlation,
     uint32_t n = a.length();
 
@@ -73,6 +74,7 @@ List mpx_rcpp(NumericVector a, uint16_t w, uint16_t minlag, bool idxs = false, b
         }
       }
     } catch (internal::InterruptedException &ex) {
+      partial = true;
       Rcout << "Process terminated.\n";
     }
 
@@ -86,11 +88,13 @@ List mpx_rcpp(NumericVector a, uint16_t w, uint16_t minlag, bool idxs = false, b
     if (idxs) {
       return (List::create(
           Rcpp::Named("mp") = mmp,
-          Rcpp::Named("pi") = mmpi
+          Rcpp::Named("pi") = mmpi,
+          Rcpp::Named("partial") = partial
       ));
     } else {
       return (List::create(
-          Rcpp::Named("mp") = mmp
+          Rcpp::Named("mp") = mmp,
+          Rcpp::Named("partial") = partial
       ));
     }
   } catch (...) {
@@ -102,6 +106,7 @@ List mpx_rcpp(NumericVector a, uint16_t w, uint16_t minlag, bool idxs = false, b
 List mpxab_rcpp(NumericVector a, NumericVector b, uint16_t w, bool idxs = false, bool euclidean = true) {
 
   try {
+    bool partial = false;
     double c, c_cmp;
     uint32_t off_max, off_diag, offset;
     // matrix profile using cross correlation,
@@ -213,6 +218,7 @@ List mpxab_rcpp(NumericVector a, NumericVector b, uint16_t w, bool idxs = false,
         }
       }
     } catch (internal::InterruptedException &ex) {
+      partial = true;
       Rcout  << "Process terminated.\n";
     }
 
@@ -230,12 +236,14 @@ List mpxab_rcpp(NumericVector a, NumericVector b, uint16_t w, bool idxs = false,
           Rcpp::Named("mp") = mmp_a,
           Rcpp::Named("pi") = mmpi_a,
           Rcpp::Named("mpb") = mmp_b,
-          Rcpp::Named("pib") = mmpi_b
+          Rcpp::Named("pib") = mmpi_b,
+          Rcpp::Named("partial") = partial
       ));
     } else {
       return (List::create(
           Rcpp::Named("mp") = mmp_a,
-          Rcpp::Named("mpb") = mmp_b
+          Rcpp::Named("mpb") = mmp_b,
+          Rcpp::Named("partial") = partial
       ));
     }
   } catch (...) {
@@ -305,6 +313,7 @@ List mpx_rcpp_parallel(NumericVector a, uint16_t w, uint16_t minlag, bool idxs =
 
   try {
     // matrix profile using cross correlation,
+    bool partial = false;
     uint32_t n = a.length();
 
     List msd = muinvn_rcpp(a, w);
@@ -332,6 +341,7 @@ List mpx_rcpp_parallel(NumericVector a, uint16_t w, uint16_t minlag, bool idxs =
     try {
       parallelFor(minlag, profile_len, matrix_profile, 100);
     } catch (internal::InterruptedException &ex) {
+      partial = true;
       Rcout << "Process terminated.\n";
     }
 
@@ -345,11 +355,13 @@ List mpx_rcpp_parallel(NumericVector a, uint16_t w, uint16_t minlag, bool idxs =
     if (idxs) {
       return (List::create(
           Rcpp::Named("mp") = mp,
-          Rcpp::Named("pi") = mpi
+          Rcpp::Named("pi") = mpi,
+          Rcpp::Named("partial") = partial
       ));
     } else {
       return (List::create(
-          Rcpp::Named("mp") = mp
+          Rcpp::Named("mp") = mp,
+          Rcpp::Named("partial") = partial
       ));
     }
   } catch (...) {
@@ -481,6 +493,7 @@ List mpxab_rcpp_parallel(NumericVector a, NumericVector b, uint16_t w, bool idxs
 
   try {
     // matrix profile using cross correlation,
+    bool partial = false;
     uint32_t a_len = a.length();
     uint32_t b_len = b.length();
 
@@ -528,6 +541,7 @@ List mpxab_rcpp_parallel(NumericVector a, NumericVector b, uint16_t w, bool idxs
     try {
       parallelFor(0, profile_len_a, matrix_profile);
     } catch (internal::InterruptedException &ex) {
+      partial = true;
       Rcout << "Process AB terminated.\n";
     }
 
@@ -539,6 +553,7 @@ List mpxab_rcpp_parallel(NumericVector a, NumericVector b, uint16_t w, bool idxs
     try {
       parallelFor(0, profile_len_b, matrix_profile);
     } catch (internal::InterruptedException &ex) {
+      partial = true;
       Rcout << "Process BA terminated.\n";
     }
 
@@ -556,12 +571,14 @@ List mpxab_rcpp_parallel(NumericVector a, NumericVector b, uint16_t w, bool idxs
           Rcpp::Named("mp") = mp_a,
           Rcpp::Named("pi") = mpi_a,
           Rcpp::Named("mpb") = mp_b,
-          Rcpp::Named("pib") = mpi_b
+          Rcpp::Named("pib") = mpi_b,
+          Rcpp::Named("partial") = partial
       ));
     } else {
       return (List::create(
           Rcpp::Named("mp") = mp_a,
-          Rcpp::Named("mpb") = mp_b
+          Rcpp::Named("mpb") = mp_b,
+          Rcpp::Named("partial") = partial
       ));
     }
   } catch (...) {

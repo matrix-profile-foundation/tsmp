@@ -1,25 +1,44 @@
-#' Computes the exact or approximate MatrixProfile
+#' Computes the MatrixProfile or Pan-MatrixProfile
 #'
 #' Computes the exact or approximate MatrixProfile based on the sample percent
-#' specified. Currently, MPX and SCRIMP++ is used for the exact and
-#' approximate algorithms respectively. When multiple windows are passed, the
-#' Pan-MatrixProfile is computed and returned.
+#' specified. Currently, MPX and SCRIMP++ are used for the exact and
+#' approximate algorithms respectively. See details for more information about the arguments
+#' combinations.
 #'
 #' @param ts a `matrix` or a `vector`. The time series to analyze.
-#' @param windows an `int` or a `vector`. The window(s) to compute the MatrixProfile. Note that it may be an `int`
-#' for a single matrix profile computation or a `vector` of `int` for computing the pan matrix profile (PMP).
 #' @param query a `matrix` or a `vector`. Optional The query to analyze. Note that when computing the PMP the query
 #' is ignored!
+#' @param windows an `int` or a `vector`. The window(s) to compute the MatrixProfile. Note that it may be an `int`
+#' for a single matrix profile computation or a `vector` of `int` for computing the pan matrix profile (PMP).
 #' @param sample_pct a `numeric`. A number between 0 and 1 representing how many samples to compute for
-#' the MP or PMP. When it is 1, the exact algorithm is used. (default is `1`).
+#' the MP or PMP. When it is 1, the exact algorithm is used. (default is `1.0`).
+#' @param threshold a `numeric`. Correlation threshold. See details.  (Default is `0.98`).
 #' @param n_jobs an `int`. The number of cpu cores to use when computing the MP. (default is `1`).
+#'
+#' @details
+#'
+#' When a single `windows` is given, the MatrixProfile is computed. If a `query` is provided, AB join is computed.
+#' Otherwise the self-join is computed.
+#' When multiple `windows` or none are given, the Pan-MatrixProfile is computed. If a `threshold` is set (it is,
+#' by default), the upper bound will be computed and the given `windows` or a default range (when no `windows`), below
+#' the upper bound will be computed.
 #'
 #' @return
 #' The profile computed.
-
+#'
 #' @export
 #'
+#' @family main api
+#'
 #' @examples
+#'
+#' # Matrix Profile
+#' result <- compute(mp_toy_data$data[ ,1], 80)
+#'
+#' \dontrun{
+#' # Pan Matrix Profile
+#'    result <- compute(mp_toy_data$data[ ,1])
+#' }
 compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshold = 0.98, n_jobs = 1L) {
 
   # Parse arguments ---------------------------------
@@ -120,5 +139,5 @@ compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
 
   # End ---------------------------------
 
-  return(result)
+  return(invisible(result))
 }

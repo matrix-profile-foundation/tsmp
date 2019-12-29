@@ -15,6 +15,7 @@
 \alias{plot.Motif}
 \alias{plot.MultiMotif}
 \alias{plot.Salient}
+\alias{plot.PanMatrixProfile}
 \title{Plot a TSMP object}
 \usage{
 \method{plot}{ArcCount}(
@@ -139,6 +140,15 @@
 )
 
 \method{plot}{Salient}(x, data, main = "Salient Subsections", xlab = "index", ylab = "", ...)
+
+\method{plot}{PanMatrixProfile}(
+  x,
+  ylab = "distance",
+  xlab = "index",
+  main = "Unidimensional Matrix Profile",
+  data = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{a Matrix Profile}

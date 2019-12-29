@@ -1229,18 +1229,19 @@ skimp_plot_add_raster <- function(layer, window, window_set = NULL, func = NULL)
   invisible()
 }
 
-
-#' Title
-#'
-#' @param pmp
-#' @param inv
-#'
-#' @return
 #' @export
+#' @keywords hplot
+#' @name plot
 #'
-#' @examples
+plot.PanMatrixProfile <- function(x, ylab = "distance", xlab = "index", main = "Unidimensional Matrix Profile", data = FALSE, ...) {
+  stop("Not yet implemented")
+}
+
+#' @export
+#' @keywords hplot
+#' @noRd
 #'
-plot.Skimp <- function(pmp, func = NULL) {
+plot_skimp <- function(pmp, func = NULL) {
   def_par <- graphics::par(no.readonly = TRUE)
   # prepare plot using the values in `windows` vector.
   min_window <- min(pmp$windows)

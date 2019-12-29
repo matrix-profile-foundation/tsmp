@@ -5,12 +5,11 @@
 #' @param window_size window size
 #' @param query query
 #' @param idx calc and return indexes?
-#' @param dist
-#' @param n_workers
+#' @param dist distance measure, euclidean or pearson?
+#' @param n_workers theads for multi-threading
 #'
 #' @return Returns MP and MPI
-#' @keywords internal
-#' @noRd
+#' @export
 
 mpx <- function(data, window_size, query = NULL, idx = TRUE, dist = c("euclidean", "pearson"), n_workers = 1) {
 

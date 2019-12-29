@@ -30,7 +30,6 @@
 #' `verbose` changes how much information is printed by this function; `0` means nothing, `1` means text, `2`
 #' adds the progress bar, `3` adds the finish sound.
 #'
-#'
 #' Talk about upper bound and window sizes
 #' # 1. upper_window will be set to Inf on new objects
 #' # 1.1. upper_window will also be used for plot, and for discovery, it must not remove any existing data from the object
@@ -44,10 +43,11 @@
 #' @examples
 #' # Just compute
 #' pan <- pmp(mp_gait_data)
-#'
+#' \dontrun{
 #' # Compute the upper bound, than add new profiles
 #' pan <- pmp_upper_bound(mp_gait_data)
 #' pan <- pmp(mp_gait_data, pmp_obj = pan)
+#' }
 pmp <- function(data,
                 window_sizes = seq.int(from = 10, to = length(data) / 2, length.out = 20),
                 plot = FALSE,
@@ -278,14 +278,34 @@ pmp_upper_bound <- function(data,
   windows <- NULL
   max_window <- floor(length(data) / 2)
 
+  # Register the anytime exit point
+  on.exit(
+    {
+      if (return_pmp) {
+        pmp_obj <- list(upper_window = max(windows), pmp = pmp, pmpi = pmpi, windows = windows)
+        class(pmp_obj) <- "PanMatrixProfile"
+        return(pmp_obj)
+      } else {
+        return(window_size)
+      }
+    },
+    TRUE
+  )
+
   # first perform a wide search by increasing window by 2 in each iteration
   while (window_size <= max_window) {
-    message("window: ", window_size)
+    # message("window: ", window_size)
 
     result <- tsmp:::mpx(data = data, window_size = window_size, idx = do_idxs, dist = "pearson", n_workers = n_workers)
+    if (is.null(result) || result$partial) {
+      warning("The computation was terminated prematurely. The results are partial.")
+      return()
+    }
+
     correlation_max <- max(result$mp[!is.infinite(result$mp)], na.rm = TRUE)
 
     if (correlation_max < threshold) {
+      # message("break at ", window_size)
       break
     }
 
@@ -299,32 +319,32 @@ pmp_upper_bound <- function(data,
     window_size <- window_size * 2
   }
 
-  # refine the upper bound by increase by + X% increments
-  test_windows <- 2 * round(((seq(refine_stepsize, 1 - 1e-5, refine_stepsize) + 1) * window_size / 2) / 2)
+  if (window_size <= max_window) {
+    # refine the upper bound by increase by + X% increments
+    test_windows <- 2 * round(((seq(refine_stepsize, 1 - 1e-5, refine_stepsize) + 1) * window_size / 2) / 2)
 
-  for (window_size in test_windows) {
-    message("window: ", window_size)
+    for (window_size in test_windows) {
+      # message("refine window: ", window_size)
 
-    windows <- c(windows, window_size)
+      result <- tsmp:::mpx(data = data, window_size = window_size, idx = do_idxs, dist = "pearson", n_workers = n_workers)
+      if (is.null(result) || result$partial) {
+        warning("The computation was terminated prematurely. The results are partial.")
+        return()
+      }
 
-    result <- tsmp:::mpx(data = data, window_size = window_size, idx = do_idxs, dist = "pearson", n_workers = n_workers)
-    correlation_max <- max(result$mp[!is.infinite(result$mp)], na.rm = TRUE)
+      windows <- c(windows, window_size)
 
-    if (return_pmp) {
-      pmp[[as.character(window_size)]] <- corr_ed(result$mp, window_size)
-      pmpi[[as.character(window_size)]] <- result$pi
+      correlation_max <- max(result$mp[!is.infinite(result$mp)], na.rm = TRUE)
+
+      if (return_pmp) {
+        pmp[[as.character(window_size)]] <- corr_ed(result$mp, window_size)
+        pmpi[[as.character(window_size)]] <- result$pi
+      }
+
+      if (correlation_max < threshold) {
+        # message("break refine at ", window_size)
+        break
+      }
     }
-
-    if (correlation_max < threshold) {
-      break
-    }
-  }
-
-  if (return_pmp) {
-    pmp_obj <- list(upper_window = window_size, pmp = pmp, pmpi = pmpi, windows = windows)
-    class(pmp_obj) <- "PanMatrixProfile"
-    return(pmp_obj)
-  } else {
-    return(window_size)
   }
 }
