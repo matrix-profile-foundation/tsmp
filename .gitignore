@@ -7,3 +7,6 @@ packrat/lib*/
 .httr-oauth
 packrat/src/
 /LOCAL_APPDATA_FONTCONFIG_CACHE/
+tsmp.Rcheck/
+tsmp*.tar.gz
+tsmp*.tgz
