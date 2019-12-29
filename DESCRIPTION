@@ -38,6 +38,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.0.2
 NeedsCompilation: no
 Suggests:
+    covr
 VignetteBuilder: knitr
 LinkingTo: 
     Rcpp, RcppParallel

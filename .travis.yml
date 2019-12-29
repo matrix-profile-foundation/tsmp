@@ -32,4 +32,4 @@ install:
   - Rscript -e "devtools::install_github('jimhester/covr')"
 r_check_args: --as-cran
 after_success:
-  - Rscript -e 'library(covr); codecov()'
+  - Rscript -e 'covr::codecov()'

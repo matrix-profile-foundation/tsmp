@@ -33,3 +33,4 @@
 ^tsmp\.Rcheck$
 ^tsmp.*\.tar\.gz$
 ^tsmp.*\.tgz$
+^codecov\.yml$
