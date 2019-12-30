@@ -18,6 +18,7 @@ branches:
 matrix:
   allow_failures:
     - os: osx
+    - r: devel
 language: r
 r:
   - oldrel
