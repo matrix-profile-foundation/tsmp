@@ -47,9 +47,10 @@
 #' # using all dimensions
 #' mp <- mstomp(mp_toy_data$data[1:150, ], 30, verbose = 0)
 #'
-#' # using threads
-#' mp <- mstomp_par(mp_toy_data$data[1:150, ], 30, verbose = 0)
 #' \dontrun{
+#' #' # using threads
+#' mp <- mstomp_par(mp_toy_data$data[1:150, ], 30, verbose = 0)
+#'
 #' # force using dimensions 1 and 2
 #' mp <- mstomp(mp_toy_data$data[1:200, ], 30, must_dim = c(1, 2))
 #' # exclude dimensions 2 and 3

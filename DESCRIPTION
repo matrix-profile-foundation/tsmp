@@ -32,14 +32,22 @@ Imports:
     Rcpp,
     RcppParallel
 Encoding: UTF-8
+SystemRequirements: 
+    GNU make
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.0.2
 NeedsCompilation: no
 Suggests:
-    covr
+    spelling,
+    testthat,
+    knitr,
+    gdtools,
+    vdiffr,
+    covr,
+    checkmate,
+    raster
 VignetteBuilder: knitr
 LinkingTo: 
     Rcpp, RcppParallel
-SystemRequirements: GNU make

@@ -45,10 +45,6 @@ sum_of_squares <- function(a) {
     .Call(`_tsmp_sum_of_squares`, a)
 }
 
-#' MPX
-#'
-#' @param a Time Series
-#' @return a List
 mpx_rcpp <- function(a, w, minlag, idxs = FALSE, euclidean = TRUE) {
     .Call(`_tsmp_mpx_rcpp`, a, w, minlag, idxs, euclidean)
 }

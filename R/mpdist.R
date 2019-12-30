@@ -123,7 +123,7 @@ mpdist <- function(ref_data, query_data, window_size, type = c("simple", "vector
 #' @keywords internal
 #' @noRd
 mpdist_simple <- function(ref_data, query_data, window_size, thr = 0.05) {
-  mp <- tsmp:::mpx(data = ref_data, query = query_data, window_size = window_size, idx = FALSE)
+  mp <- mpx(data = ref_data, query = query_data, window_size = window_size, idx = FALSE)
 
   dist <- cal_mp_dist(c(mp$mpa, mp$mpb), thr, nrow(ref_data) + nrow(query_data))
 

@@ -24,6 +24,8 @@ and sorted. (Default is a sequence of 20 values from 10 to half data size).}
 \item{pmp_obj}{a \code{PMP} object that may or not contain an upper bound value, and previous computed profiles. The function will
 add new profiles, not replace. (Default is \code{NULL}).}
 
+\item{n_workers}{an \code{int}. Number of workers for parallel. (Default is \code{1}).}
+
 \item{verbose}{an \code{int}. See details. (Default is \code{2}).}
 }
 \value{
@@ -53,6 +55,13 @@ never changing the values already computed.
 adds the progress bar, \code{3} adds the finish sound.
 
 Talk about upper bound and window sizes
+\enumerate{
+\item upper_window will be set to Inf on new objects
+1.1. upper_window will also be used for plot, and for discovery, it must not remove any existing data from the object
+\item window_sizes is used for plot, it must not remove any mp inside the object
+2.1. window_sizes tells the function what mp are stored, it may be updated with as.numeric(names(pmp))
+\item the functions must be capable to handle the data without need to sort by window_size, but sort may be useful later(?)
+}
 }
 \examples{
 # Just compute
@@ -62,14 +71,4 @@ pan <- pmp(mp_gait_data)
 pan <- pmp_upper_bound(mp_gait_data)
 pan <- pmp(mp_gait_data, pmp_obj = pan)
 }
-}
-\section{1. upper_window will be set to Inf on new objects}{
-}
-\section{1.1. upper_window will also be used for plot, and for discovery, it must not remove any existing data from the object}{
-}
-\section{2. window_sizes is used for plot, it must not remove any mp inside the object}{
-}
-\section{2.1. window_sizes tells the function what mp are stored, it may be updated with as.numeric(names(pmp))}{
-}
-\section{3. the functions must be capable to handle the data without need to sort by window_size, but sort may be useful later(?)}{
 }

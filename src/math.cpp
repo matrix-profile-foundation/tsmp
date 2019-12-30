@@ -1,4 +1,4 @@
-#include "math.hpp"
+#include "math.h"
 
 //[[Rcpp::export]]
 double std_rcpp(const NumericVector data, const bool na_rm = false) {

@@ -110,7 +110,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/franzbischoff/tsmp">
+  <a href="https://github.com/matrix-profile-foundation/tsmp">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -129,7 +129,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Multivariate STOMP algorithm Parallel version</h1>
-    <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/mstomp-par.R'><code>R/mstomp-par.R</code></a>, <a href='https://github.com/franzbischoff/tsmp/blob/master/R/mstomp.R'><code>R/mstomp.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/matrix-profile-foundation/tsmp/blob/master/R/mstomp-par.R'><code>R/mstomp-par.R</code></a>, <a href='https://github.com/matrix-profile-foundation/tsmp/blob/master/R/mstomp.R'><code>R/mstomp.R</code></a></small>
     <div class="hidden name"><code>mstomp.Rd</code></div>
     </div>
 
@@ -244,9 +244,10 @@ New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1-27.</p><
     <pre class="examples"><div class='input'><span class='co'># using all dimensions</span>
 <span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>mstomp</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>150</span>, ], <span class='fl'>30</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 
-<span class='co'># using threads</span>
-<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>mstomp_par</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>150</span>, ], <span class='fl'>30</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='co'>#' # using threads</span>
+<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>mstomp_par</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>150</span>, ], <span class='fl'>30</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+
 <span class='co'># force using dimensions 1 and 2</span>
 <span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>mstomp</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>200</span>, ], <span class='fl'>30</span>, <span class='kw'>must_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>))
 <span class='co'># exclude dimensions 2 and 3</span>

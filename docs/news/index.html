@@ -109,7 +109,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/franzbischoff/tsmp">
+  <a href="https://github.com/matrix-profile-foundation/tsmp">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -128,7 +128,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
       <h1>Changelog <small></small></h1>
-      <small>Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
+      <small>Source: <a href='https://github.com/matrix-profile-foundation/tsmp/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
     <div id="tsmp-040" class="section level1">
@@ -138,6 +138,10 @@
 <ul>
 <li>Added MPdist algorithm to compare two time series.</li>
 <li>Added <code><a href="../reference/find_snippet.html">find_snippet()</a></code> that uses MPdist to show representative data.</li>
+<li>Added <code><a href="../reference/mpx.html">mpx()</a></code> algorithm that doesn’t depends on FFT.</li>
+<li>Added <code><a href="../reference/pmp.html">pmp()</a></code> pan-matrix profile.</li>
+<li>Improvement with several implementations in Rcpp. Computation speed is much faster.</li>
+<li>Added <code><a href="../reference/compute.html">compute()</a></code>, <code><a href="../reference/analyze.html">analyze()</a></code> and <code><a href="../reference/visualize.html">visualize()</a></code>. Starting point in the unified API from MPF.</li>
 </ul>
 </div>
     <div id="tsmp-035" class="section level1">
@@ -148,7 +152,7 @@
 <li>Changed <code><a href="../reference/tsmp-deprecated.html">mass()</a></code> to <code><a href="../reference/dist_profile.html">dist_profile()</a></code>, including options to different algorithms.</li>
 <li>Added MASS_V3 and MASS_Weighted to <code><a href="../reference/dist_profile.html">dist_profile()</a></code> algorithms.</li>
 <li>Function <code><a href="../reference/dist_profile.html">dist_profile()</a></code> allows Query with Gap (QwG) and Approximate Distance Profile (ADP, with PAA)</li>
-<li>Fixed long runtime of FFT for some data sizes, using MASS_V3. Issue <a href='https://github.com/franzbischoff/tsmp/issues/36'>#36</a>.</li>
+<li>Fixed long runtime of FFT for some data sizes, using MASS_V3. Issue <a href='https://github.com/matrix-profile-foundation/tsmp/issues/36'>#36</a>.</li>
 <li>Added <code><a href="../reference/stompi_update.html">stompi_update()</a></code> that updates the matrix profile allowing real-time computation.</li>
 <li>Added <code><a href="../reference/floss.html">floss()</a></code> which can do real-time FLUSS computation.</li>
 <li>Added subset operator <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code> for <code>tsmp</code> objects.</li>
@@ -172,7 +176,7 @@
 <a href="#tsmp-033" class="anchor"></a>tsmp 0.3.3<small> Unreleased </small>
 </h1>
 <ul>
-<li>Fixed <code><a href="../reference/find_chains.html">find_chains()</a></code> not returning the longest chain. Issue <a href='https://github.com/franzbischoff/tsmp/issues/33'>#33</a></li>
+<li>Fixed <code><a href="../reference/find_chains.html">find_chains()</a></code> not returning the longest chain. Issue <a href='https://github.com/matrix-profile-foundation/tsmp/issues/33'>#33</a></li>
 </ul>
 </div>
     <div id="tsmp-032" class="section level1">
@@ -181,13 +185,13 @@
 </h1>
 <ul>
 <li>Fixed Matrix Profile print, dimensions are now reported correctly.</li>
-<li>Fixed pipe imports. Issue <a href='https://github.com/franzbischoff/tsmp/issues/22'>#22</a></li>
-<li>Fixed bug with <code>vars</code>. Issue <a href='https://github.com/franzbischoff/tsmp/issues/23'>#23</a></li>
+<li>Fixed pipe imports. Issue <a href='https://github.com/matrix-profile-foundation/tsmp/issues/22'>#22</a></li>
+<li>Fixed bug with <code>vars</code>. Issue <a href='https://github.com/matrix-profile-foundation/tsmp/issues/23'>#23</a></li>
 <li>Changed package license to GPL-3.</li>
 <li>Changed verbose mode, added one more step to separate messages from progression bar.</li>
 <li>Fixed SCRIMP and added PRE-SCRIMP, so this is the SCRIMP++. AB-join not yet implemented.</li>
 <li>Changed progress bar for a better one from <code>progress</code> package.</li>
-<li>Added Print and Plot to SiMPle. Issue <a href='https://github.com/franzbischoff/tsmp/issues/24'>#24</a></li>
+<li>Added Print and Plot to SiMPle. Issue <a href='https://github.com/matrix-profile-foundation/tsmp/issues/24'>#24</a></li>
 <li>Added Print and Plot to Salient.</li>
 </ul>
 </div>

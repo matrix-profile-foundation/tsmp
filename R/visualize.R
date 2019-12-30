@@ -10,11 +10,12 @@
 #' @family Main API
 #'
 #' @examples
-#'
+#' result <- compute(mp_toy_data$data[, 1], 80)
+#' visualize(result)
 visualize <- function(obj) {
   if (!is.null(obj$profile)) {
-    invisible(plot(obj$profile))
+    invisible(graphics::plot(obj$profile))
   } else {
-    invisible(plot(obj))
+    invisible(graphics::plot(obj))
   }
 }

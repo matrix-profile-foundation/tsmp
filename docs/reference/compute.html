@@ -113,7 +113,7 @@ combinations." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/franzbischoff/tsmp">
+  <a href="https://github.com/matrix-profile-foundation/tsmp">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -132,7 +132,7 @@ combinations." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Computes the MatrixProfile or Pan-MatrixProfile</h1>
-    <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/compute.R'><code>R/compute.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/matrix-profile-foundation/tsmp/blob/master/R/compute.R'><code>R/compute.R</code></a></small>
     <div class="hidden name"><code>compute.Rd</code></div>
     </div>
 
@@ -203,11 +203,10 @@ the upper bound will be computed.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='co'># Matrix Profile</span>
-<span class='no'>result</span> <span class='kw'>&lt;-</span> <span class='fu'>compute</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[ ,<span class='fl'>1</span>], <span class='fl'>80</span>)
-
+<span class='no'>result</span> <span class='kw'>&lt;-</span> <span class='fu'>compute</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[, <span class='fl'>1</span>], <span class='fl'>80</span>)
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># Pan Matrix Profile</span>
-   <span class='no'>result</span> <span class='kw'>&lt;-</span> <span class='fu'>compute</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[ ,<span class='fl'>1</span>])
+<span class='no'>result</span> <span class='kw'>&lt;-</span> <span class='fu'>compute</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[, <span class='fl'>1</span>])
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

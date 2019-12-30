@@ -20,6 +20,7 @@
 #' @param plot a `logical`. If `TRUE`, every new computation will be plotted. (Default is `FALSE`).
 #' @param pmp_obj a `PMP` object that may or not contain an upper bound value, and previous computed profiles. The function will
 #' add new profiles, not replace. (Default is `NULL`).
+#' @param n_workers an `int`. Number of workers for parallel. (Default is `1`).
 #' @param verbose an `int`. See details. (Default is `2`).
 #'
 #' @details
@@ -31,11 +32,11 @@
 #' adds the progress bar, `3` adds the finish sound.
 #'
 #' Talk about upper bound and window sizes
-#' # 1. upper_window will be set to Inf on new objects
-#' # 1.1. upper_window will also be used for plot, and for discovery, it must not remove any existing data from the object
-#' # 2. window_sizes is used for plot, it must not remove any mp inside the object
-#' # 2.1. window_sizes tells the function what mp are stored, it may be updated with as.numeric(names(pmp))
-#' # 3. the functions must be capable to handle the data without need to sort by window_size, but sort may be useful later(?)
+#' 1. upper_window will be set to Inf on new objects
+#' 1.1. upper_window will also be used for plot, and for discovery, it must not remove any existing data from the object
+#' 2. window_sizes is used for plot, it must not remove any mp inside the object
+#' 2.1. window_sizes tells the function what mp are stored, it may be updated with as.numeric(names(pmp))
+#' 3. the functions must be capable to handle the data without need to sort by window_size, but sort may be useful later(?)
 #'
 #' @return Returns a Pan Matrix Profile object.
 #' @export
@@ -97,13 +98,13 @@ pmp <- function(data,
   max_window <- max(window_sizes)
   window_sizes <- sort(window_sizes)
 
-  print(str(list(min_window = min_window, max_window = max_window, window_sizes = window_sizes)))
+  # print(str(list(min_window = min_window, max_window = max_window, window_sizes = window_sizes)))
 
   # if we'll plot while computing, prepare the canvas
   if (plot == TRUE) {
     # if an object is given, plot it using existing windows
     if (!is.null(pmp_obj)) {
-      plot(pmp_obj) # skimp_plot_set_canvas(pmp_obj = pmp_obj)
+      graphics::plot(pmp_obj) # skimp_plot_set_canvas(pmp_obj = pmp_obj)
       Sys.sleep(1) # needed for plot update
     } else {
       # create a blank canvas with the proper size
@@ -191,7 +192,7 @@ pmp <- function(data,
     }
 
     # Run Matrix Profile
-    result <- tsmp:::mpx(data = data, window_size = w, idx = TRUE, dist = "euclidean", n_workers = n_workers)
+    result <- mpx(data = data, window_size = w, idx = TRUE, dist = "euclidean", n_workers = n_workers)
 
     message(
       "step: ", i, "/", length(split_idx), " binary idx: ", idx, " window: ", w
@@ -236,6 +237,7 @@ pmp <- function(data,
 #' @param refine_stepsize a `numeric`. Step size for the last upper bound search. See details.  (Default is `0.25`).
 #' @param return_pmp a `logical`. If `TRUE`, returns the computed data as a `PMP` object, if `FALSE`,
 #' returns just the upper bound value. (Default is `TRUE`).
+#' @param n_workers an `int`. Number of workers for parallel. (Default is `1`).
 #' @param verbose verbose an `int`. See details. (Default is `2`).
 #'
 #' @details
@@ -296,7 +298,7 @@ pmp_upper_bound <- function(data,
   while (window_size <= max_window) {
     # message("window: ", window_size)
 
-    result <- tsmp:::mpx(data = data, window_size = window_size, idx = do_idxs, dist = "pearson", n_workers = n_workers)
+    result <- mpx(data = data, window_size = window_size, idx = do_idxs, dist = "pearson", n_workers = n_workers)
     if (is.null(result) || result$partial) {
       warning("The computation was terminated prematurely. The results are partial.")
       return()
@@ -326,7 +328,7 @@ pmp_upper_bound <- function(data,
     for (window_size in test_windows) {
       # message("refine window: ", window_size)
 
-      result <- tsmp:::mpx(data = data, window_size = window_size, idx = do_idxs, dist = "pearson", n_workers = n_workers)
+      result <- mpx(data = data, window_size = window_size, idx = do_idxs, dist = "pearson", n_workers = n_workers)
       if (is.null(result) || result$partial) {
         warning("The computation was terminated prematurely. The results are partial.")
         return()

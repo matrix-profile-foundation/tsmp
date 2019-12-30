@@ -34,3 +34,4 @@
 ^tsmp.*\.tar\.gz$
 ^tsmp.*\.tgz$
 ^codecov\.yml$
+^pkgdown/

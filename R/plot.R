@@ -277,8 +277,10 @@ plot.MatrixProfile <- function(x, ylab = "distance", xlab = "index", main = "Uni
   }
 
   if (!is.null(attr(x, "join")) && !attr(x, "join")) {
-    allmatrix <- TRUE
-    num_charts <- 3
+    if (!any(is.null(x$rmp), is.null(x$lmp))) {
+      allmatrix <- TRUE
+      num_charts <- 3
+    }
   }
 
   if (data) {
@@ -328,8 +330,10 @@ plot.MultiMatrixProfile <- function(x, ylab = "distance", xlab = "index", main =
   }
 
   if (!is.null(attr(x, "join")) && !attr(x, "join")) {
-    allmatrix <- TRUE
-    num_charts <- 3
+    if (!any(is.null(x$rmp), is.null(x$lmp))) {
+      allmatrix <- TRUE
+      num_charts <- 3
+    }
   }
 
   if (allmatrix == TRUE) {
@@ -1065,20 +1069,20 @@ skimp_plot_set_canvas <- function(..., pmp_obj = NULL) {
     ymin <- pars$ymin
     ymax <- pars$ymax
 
-    plot(c(xmin, xmax), c(ymin, ymax),
+    graphics::plot(c(xmin, xmax), c(ymin, ymax),
       main = "Pan Matrix Profile", xlab = "", ylab = "window",
       type = "n", xaxt = "n", yaxt = "n", xlim = c(xmin, xmax)
     )
 
-    axis(side = 1, at = floor(c(xmin, seq(xmin, xmax, length.out = 10), xmax))) # X
-    axis(side = 2, at = floor(c(ymin, seq(ymin, ymax, length.out = 10), ymax))) # Y
+    graphics::axis(side = 1, at = floor(c(xmin, seq(xmin, xmax, length.out = 10), xmax))) # X
+    graphics::axis(side = 2, at = floor(c(ymin, seq(ymin, ymax, length.out = 10), ymax))) # Y
   }
 
   invisible()
 }
 
 skimp_plot_add_layer <- function(layer, window, window_set = NULL, func = NULL) {
-  coords <- par("usr")
+  coords <- graphics::par("usr")
   xmin <- 1
   ymin <- window
   data_size <- length(layer) + window - 1 # theoretical data size
@@ -1123,7 +1127,7 @@ skimp_plot_add_layer <- function(layer, window, window_set = NULL, func = NULL) 
   # layer <- normalize(layer, 0, 1)
 
   if (is.function(func)) {
-    layer <- func(layer, i)
+    layer <- func(layer)
   }
 
   layer[layer > 1] <- 1
@@ -1154,7 +1158,7 @@ skimp_plot_add_layer <- function(layer, window, window_set = NULL, func = NULL) 
 # image() ?
 
 skimp_plot_add_raster <- function(layer, window, window_set = NULL, func = NULL) {
-  coords <- par("usr")
+  coords <- graphics::par("usr")
   xmin <- 1
   ymin <- window
   data_size <- length(layer) + window - 1 # theoretical data size
@@ -1199,7 +1203,7 @@ skimp_plot_add_raster <- function(layer, window, window_set = NULL, func = NULL)
   # layer <- normalize(layer, 0, 1)
 
   if (is.function(func)) {
-    layer <- func(layer, i)
+    layer <- func(layer)
   }
 
   layer[layer > 1] <- 1
@@ -1223,7 +1227,7 @@ skimp_plot_add_raster <- function(layer, window, window_set = NULL, func = NULL)
     ymn = ymin, ymx = ytop
   )
 
-  plot(raster::brick(ras), add = TRUE)
+  graphics::plot(raster::brick(ras), add = TRUE)
   Sys.sleep(1) # needed for plot update
 
   invisible()
@@ -1237,8 +1241,7 @@ plot.PanMatrixProfile <- function(x, ylab = "distance", xlab = "index", main = "
   stop("Not yet implemented")
 }
 
-#' @export
-#' @keywords hplot
+#' @keywords internal
 #' @noRd
 #'
 plot_skimp <- function(pmp, func = NULL) {

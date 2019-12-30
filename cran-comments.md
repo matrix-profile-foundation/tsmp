@@ -1,14 +1,13 @@
 ## Comments
-Fixed:
-Found the following (possibly) invalid file URI:
-     URI: CODE_OF_CONDUCT.md
-       From: README.md
+This version added Rcpp implementations and RcppParallel to allow multi-threading.
+Progressivelly I'll convert the bottlenecks to Rcpp and hope to get rid of `doSNOW` for parallelization.
 
 ## Test environments
 * Rhub
-  * Windows Server 2008 R2 SP1, R-devel
-  * Fedora Linux, R-devel, clang, gfortran
+  * Windows Server 2008 R2 SP1, R-devel, 32/64 bit
   * Ubuntu Linux 16.04 LTS, R-release, GCC
+  * Fedora Linux, R-devel, clang, gfortran
+  * Debian Linux, R-devel, GCC ASAN/UBSAN
 * Travis-CI
   * Ubuntu Linux 14.04.5 LTS, R-oldrel, R-release, R-devel, GCC
   * Mac OS X 10.13.3, R-oldrel, R-release, xcode 9.4.1
@@ -17,7 +16,7 @@ Found the following (possibly) invalid file URI:
 
 ## R CMD check results
 
-`0 errors | 0 warnings | 1 note`
+`0 errors | 0 warnings | 4 notes`
 
 ## Downstream dependencies
 
@@ -25,7 +24,10 @@ Found the following (possibly) invalid file URI:
 
 ## Known Issues (a.k.a NOTES)
 
-* Installed size is 5.6Mb. 
+* GNU make is a SystemRequirements.
+  * Requirement of package RcppParallel. I haven't find a workaround to solve this NOTE.
+
+* Installed size is 7.5Mb. 
   * This is due to datasets in this package. I believe they are essential to learning all the features
     of this package.
 
@@ -38,3 +40,4 @@ Found the following (possibly) invalid file URI:
 
 * Authors@R field gives persons with non-standard roles
   * These non-standard roles where appropriately chosen using [MARC Code List for Relators](https://www.loc.gov/marc/relators/relaterm.html)
+

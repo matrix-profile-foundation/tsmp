@@ -94,9 +94,6 @@
 #' # default with [stomp()]
 #' mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
 #'
-#' # parallel with [stomp_par()]
-#' mp <- tsmp(mp_test_data$train$data[1:1000, 1], window_size = 30, n_workers = 2, verbose = 0)
-#'
 #' # Anytime STAMP
 #' mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, mode = "stamp", s_size = 50, verbose = 0)
 #'
@@ -105,6 +102,11 @@
 #'
 #' # [simple_fast()]
 #' mp <- tsmp(mp_toy_data$data[1:200, ], window_size = 30, mode = "simple", verbose = 0)
+#'
+#' \dontrun{
+#' # parallel with [stomp_par()]
+#' mp <- tsmp(mp_test_data$train$data[1:1000, 1], window_size = 30, n_workers = 2, verbose = 0)
+#' }
 tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zone", 1 / 2),
                  mode = c("stomp", "stamp", "simple", "mstomp", "scrimp", "valmod"),
                  verbose = getOption("tsmp.verbose", 2), n_workers = 1, s_size = Inf, must_dim = NULL, exc_dim = NULL,

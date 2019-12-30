@@ -23,6 +23,8 @@ pmp_upper_bound(
 \item{return_pmp}{a \code{logical}. If \code{TRUE}, returns the computed data as a \code{PMP} object, if \code{FALSE},
 returns just the upper bound value. (Default is \code{TRUE}).}
 
+\item{n_workers}{an \code{int}. Number of workers for parallel. (Default is \code{1}).}
+
 \item{verbose}{verbose an \code{int}. See details. (Default is \code{2}).}
 }
 \value{

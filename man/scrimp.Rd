@@ -29,6 +29,8 @@ random calculation will occur (default is \code{Inf}).}
 
 \item{pre_scrimp}{a \code{numeric}. Set the pre-scrimp step based on \code{window_size}, if \code{0}, disables pre-scrimp.
 (default is \code{1/4}).}
+
+\item{pre_only}{a \code{logical}. Returns only the pre script data. (Default is \code{FALSE}).}
 }
 \value{
 Returns a \code{MatrixProfile} object, a \code{list} with the matrix profile \code{mp}, profile index \code{pi}

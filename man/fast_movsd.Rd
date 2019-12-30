@@ -10,6 +10,8 @@ fast_movsd(data, window_size, rcpp = FALSE)
 \item{data}{a \code{vector} or a column \code{matrix} of \code{numeric}.}
 
 \item{window_size}{moving sd window size}
+
+\item{rcpp}{a \code{logical}. Uses rcpp implementation.}
 }
 \value{
 Returns a \code{vector} with the moving standard deviation

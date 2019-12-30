@@ -16,7 +16,8 @@ A list of matplotlib figures
 Plots an object generated from one of the algorithms. In some cases multiple plots will be generated
 }
 \examples{
-
+result <- compute(mp_toy_data$data[, 1], 80)
+visualize(result)
 }
 \seealso{
 Other Main API: 

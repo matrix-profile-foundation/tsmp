@@ -71,6 +71,7 @@ MDL
 MDS
 MOTIFs
 MPdist
+MPF
 MPX
 mSTAMP
 mSTOMP
@@ -100,6 +101,8 @@ Proc
 pyMatrixProfile
 QwG
 Rakthanmanon
+rcpp
+Rcpp
 README
 Reiss
 restructuration

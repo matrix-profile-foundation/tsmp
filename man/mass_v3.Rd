@@ -80,4 +80,3 @@ Website: \url{https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html}
 \seealso{
 \code{\link[=mass_pre]{mass_pre()}} to precomputation of input values.
 }
-\keyword{internal}

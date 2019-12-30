@@ -61,7 +61,7 @@ compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
       ### Self-join #############################
 
       if (sample_pct >= 1) {
-        res <- tsmp:::mpx(data = ts, window_size = windows, idx = TRUE, dist = metric, n_workers = n_jobs)
+        res <- mpx(data = ts, window_size = windows, idx = TRUE, dist = metric, n_workers = n_jobs)
         algorithm <- "mpx"
       } else {
         res <- scrimp(ts, window_size = windows, s_size = floor(sample_pct * length(ts))) # n_jobs
@@ -71,7 +71,7 @@ compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
       ### AB join #############################
       join <- TRUE
       if (sample_pct >= 1) {
-        res <- tsmp:::mpx(data = ts, query = query, window_size = windows, idx = TRUE, dist = metric, n_workers = n_jobs)
+        res <- mpx(data = ts, query = query, window_size = windows, idx = TRUE, dist = metric, n_workers = n_jobs)
         algorithm <- "mpx"
       } else {
         # TODO: add scrimp AB-join
@@ -84,7 +84,7 @@ compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
 
     if (!is.null(threshold)) {
       # when a threshold is passed, we compute the upper bound
-      res <- tsmp::pmp_upper_bound(data = ts, threshold = threshold, n_workers = n_jobs)
+      res <- pmp_upper_bound(data = ts, threshold = threshold, n_workers = n_jobs)
     }
 
     if (is.null(windows)) {
@@ -97,7 +97,7 @@ compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
 
     windows <- floor(windows)
 
-    res <- tsmp::pmp(data = ts, window_sizes = windows, plot = FALSE, pmp_obj = res, n_workers = n_jobs)
+    res <- pmp(data = ts, window_sizes = windows, plot = FALSE, pmp_obj = res, n_workers = n_jobs)
 
     algorithm <- "pmp"
   }

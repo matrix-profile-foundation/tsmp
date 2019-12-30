@@ -72,9 +72,11 @@ avoid  trivial matches; if a query data is provided (join similarity), this para
 \examples{
 mp <- stamp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
 
-# using threads
-mp <- stamp_par(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
 \dontrun{
+
+#' # using threads
+mp <- stamp_par(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+
 ref_data <- mp_toy_data$data[, 1]
 query_data <- mp_toy_data$data[, 2]
 # self similarity

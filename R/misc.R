@@ -14,6 +14,7 @@
 #'
 #' @param data a `vector` or a column `matrix` of `numeric`.
 #' @param window_size moving sd window size
+#' @param rcpp a `logical`. Uses rcpp implementation.
 #'
 #' @return Returns a `vector` with the moving standard deviation
 #' @export
@@ -97,7 +98,6 @@ corr_ed <- function(x, w) {
 #'
 #' @return Returns a `list` with `avg` and `sd` `vector`s
 #' @export
-#' @noRd
 
 fast_avg_sd <- function(data, window_size, rcpp = FALSE) {
   if (window_size < 2) {

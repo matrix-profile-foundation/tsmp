@@ -1,10 +1,10 @@
-#include "mpx.hpp"
-#include "math.hpp"
+#include "mpx.h"
+#include "math.h"
 
-//' MPX
-//'
-//' @param a Time Series
-//' @return a List
+// MPX
+//
+// @param a Time Series
+// @return a List
 // [[Rcpp::export]]
 
 List mpx_rcpp(NumericVector a, uint16_t w, uint16_t minlag, bool idxs = false, bool euclidean = true) {

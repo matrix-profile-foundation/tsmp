@@ -1,7 +1,7 @@
 NEWS
 ================
 Francisco Bischoff
-\- 29 Dec 2019
+\- 30 Dec 2019
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
@@ -9,6 +9,12 @@ Francisco Bischoff
 
   - Added MPdist algorithm to compare two time series.
   - Added `find_snippet()` that uses MPdist to show representative data.
+  - Added `mpx()` algorithm that doesn’t depends on FFT.
+  - Added `pmp()` pan-matrix profile.
+  - Improvement with several implementations in Rcpp. Computation speed
+    is much faster.
+  - Added `compute()`, `analyze()` and `visualize()`. Starting point in
+    the unified API from MPF.
 
 # tsmp 0.3.5
 

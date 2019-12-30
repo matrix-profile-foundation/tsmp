@@ -24,6 +24,7 @@
 #'   random calculation will occur (default is `Inf`).
 #' @param pre_scrimp a `numeric`. Set the pre-scrimp step based on `window_size`, if `0`, disables pre-scrimp.
 #' (default is `1/4`).
+#' @param pre_only a `logical`. Returns only the pre script data. (Default is `FALSE`).
 #'
 #' @return Returns a `MatrixProfile` object, a `list` with the matrix profile `mp`, profile index `pi`
 #'   left and right matrix profile `lmp`, `rmp` and profile index `lpi`, `rpi`, window size `w` and

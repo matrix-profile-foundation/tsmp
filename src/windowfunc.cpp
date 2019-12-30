@@ -11,8 +11,8 @@
 // movmin          Unk     Unk      No
 // movmax          Unk     Unk      No
 
-#include "windowfunc.hpp"
-#include "math.hpp"
+#include "windowfunc.h"
+#include "math.h"
 
 //[[Rcpp::export]]
 NumericVector movmin(NumericVector data, uint32_t window_size) {
