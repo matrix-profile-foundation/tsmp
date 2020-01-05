@@ -1,6 +1,7 @@
 FROM r-base
                     
-USER gitpod
+USER docker
+
 
 # Install custom tools, runtime, etc. using apt-get
 # For example, the command below would install "bastet" - a command line tetris clone:
