@@ -1,6 +1,6 @@
-FROM r-base
+#FROM r-base
                     
-USER root
+#USER root
 
 
 # Install custom tools, runtime, etc. using apt-get
