@@ -1,4 +1,4 @@
-FROM gitpod/workspace-full
+FROM rocker/r-base
                     
 USER gitpod
 
