@@ -1,6 +1,6 @@
 FROM r-base
                     
-USER docker
+USER root
 
 
 # Install custom tools, runtime, etc. using apt-get
