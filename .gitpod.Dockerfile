@@ -8,7 +8,7 @@ RUN yes | unminimize \
     && locale-gen en_US.UTF-8 \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
 RUN Rscript -e 'if (!require("devtools")) install.packages("devtools")'
-RUN Rscript -e 'devtools::install_deps(dep = TRUE)'
+# RUN Rscript -e 'devtools::install_deps(dep = TRUE)'
 # RUN Rscript -e 'devtools::install_github("jimhester/covr")
 USER gitpod
 ENV LANG=en_US.UTF-8
