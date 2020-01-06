@@ -10,7 +10,7 @@ RUN yes | unminimize \
     
 RUN Rscript -e 'if (!require("devtools")) install.packages("devtools")'
 
-RUN Rscript -e 'devtools::install_deps(dep = TRUE)'
+RUN Rscript -e 'setwd("/workspace/tsmp"); devtools::install_deps(dep = TRUE)'
 # RUN Rscript -e 'devtools::install_github("jimhester/covr")
 
 USER gitpod
