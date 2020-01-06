@@ -1,4 +1,4 @@
-FROM r-base
+FROM rocker/r-base
                     
 ### User ###
 ENV HOME=/home/docker
