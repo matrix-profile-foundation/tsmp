@@ -13,6 +13,7 @@ ENV LC_ALL=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 
 RUN echo "deb https://cloud.r-project.org/bin/linux/ubuntu disco-cran35/" >> /etc/apt/sources.list
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
 RUN apt-get update
 #RUN yes | unminimize \
 RUN apt-get install -yq \
