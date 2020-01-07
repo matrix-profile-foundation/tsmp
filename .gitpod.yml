@@ -1,8 +1,21 @@
 image:
   file: .gitpod.Dockerfile 
 
+# https://www.gitpod.io/docs/44_config_start_tasks/
+# Fresh Workspace   before && init && command
+# Restart Workspace before && command
+# Snapshot          before && command
+# Prebuild          before && init && prebuild
 tasks:
   - command: R
 
-
-
+github:
+  prebuilds:
+    master: true
+    branches: true
+    pullRequests: true
+    pullRequestsFromForks: false
+    addCheck: false
+    addComment: true
+    addBadge: false
+    addLabel: false

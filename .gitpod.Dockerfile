@@ -15,13 +15,12 @@ ENV LANG=en_US.UTF-8
 RUN echo "deb https://cloud.r-project.org/bin/linux/ubuntu disco-cran35/" >> /etc/apt/sources.list
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
 RUN apt-get update
-#RUN yes | unminimize \
 RUN apt-get install -yq \
       r-base \
   && locale-gen en_US.UTF-8 \
   && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
 
-RUN Rscript -e 'if (!require("devtools")) install.packages("devtools")'
+# RUN Rscript -e 'if (!require("devtools")) install.packages("devtools")'
 
 #COPY --chown=gitpod:gitpod * /workspace/tsmp/
 #RUN Rscript -e 'devtools::install_github("jimhester/covr")'
