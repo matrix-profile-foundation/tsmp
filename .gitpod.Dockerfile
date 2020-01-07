@@ -18,7 +18,7 @@ RUN yes | unminimize \
   && locale-gen en_US.UTF-8 \
   && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
 
-ADD --chown=gitpod:gitpod * /workspace/tsmp
+ADD --chown=gitpod:gitpod * /workspace/tsmp/
 
 RUN Rscript -e 'if (!require("devtools")) install.packages("devtools")'
 RUN Rscript -e 'setwd("/workspace/tsmp"); devtools::install_deps(dep = TRUE)'
