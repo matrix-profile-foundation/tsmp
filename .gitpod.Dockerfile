@@ -13,17 +13,27 @@ ENV LC_ALL=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 
 RUN echo "deb https://cloud.r-project.org/bin/linux/ubuntu disco-cran35/" >> /etc/apt/sources.list
+<<<<<<< HEAD
 RUN apt-get update
+=======
+>>>>>>> 9e42da2fa537669f651b6cfe84ee7e4b774e1079
 #RUN yes | unminimize \
 RUN apt-get install -yq \
       r-base \
   && locale-gen en_US.UTF-8 \
   && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
 
+<<<<<<< HEAD
 #RUN Rscript -e 'if (!require("devtools")) install.packages("devtools")'
 #COPY --chown=gitpod:gitpod * /workspace/tsmp/
 #RUN Rscript -e 'devtools::install_github("jimhester/covr")'
 #RUN Rscript -e 'setwd("/workspace/tsmp"); devtools::install_deps(dep = TRUE)'
+=======
+RUN Rscript -e 'if (!require("devtools")) install.packages("devtools")'
+COPY --chown=gitpod:gitpod * /workspace/tsmp/
+RUN Rscript -e 'devtools::install_github("jimhester/covr")'
+RUN Rscript -e 'setwd("/workspace/tsmp"); devtools::install_deps(dep = TRUE)'
+>>>>>>> 9e42da2fa537669f651b6cfe84ee7e4b774e1079
 ## End Root tasks ##
 
 ## Begin User tasks ##
