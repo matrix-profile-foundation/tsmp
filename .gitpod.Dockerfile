@@ -18,9 +18,8 @@ RUN yes | unminimize \
   && locale-gen en_US.UTF-8 \
   && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
 
-ADD --chown=gitpod:gitpod * /workspace/tsmp/
-
 RUN Rscript -e 'if (!require("devtools")) install.packages("devtools")'
+COPY --chown=gitpod:gitpod * /workspace/tsmp/
 RUN Rscript -e 'setwd("/workspace/tsmp"); devtools::install_deps(dep = TRUE)'
 # RUN Rscript -e 'devtools::install_github("jimhester/covr")
 ## End Root tasks ##
@@ -31,12 +30,13 @@ ENV R_BASE_VERSION=3.6.2
 ENV LC_ALL=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 ENV HOME=/home/gitpod
-WORKDIR $HOME
 ### checks ###
 # no root-owned files in the home directory
 RUN notOwnedFile=$(find . -not "(" -user gitpod -and -group gitpod ")" -print -quit) \
   && { [ -z "$notOwnedFile" ] \
     || { echo "Error: not all files/dirs in $HOME are owned by 'gitpod' user & group"; exit 1; } }
+    
+RUN Rscript -e 'setwd("/workspace/tsmp"); devtools::check(args = c("--as-cran"), env_vars = NULL)'
 CMD ["R"]
 ## End user tasks ##
 
