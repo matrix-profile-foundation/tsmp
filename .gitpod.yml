@@ -1,1 +1,8 @@
-{ image: { file: .gitpod.Dockerfile } }
+image:
+  file: .gitpod.Dockerfile 
+
+tasks:
+  - command: R
+
+
+
