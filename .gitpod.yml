@@ -7,12 +7,9 @@ image:
 # Snapshot          before && command
 # Prebuild          before && init && prebuild
 tasks:
-  - command: R
+  - openMode: tab-after
+    command: R
     name: R Console
-  - openMode: split-right
-    command: echo SplitTerminal    
-  - openIn: left
-    command: echo LeftPanelTerminal
 
 github:
   prebuilds:
@@ -24,3 +21,7 @@ github:
     addComment: true
     addBadge: false
     addLabel: false
+
+vscode:
+  extensions:
+    - Ikuyadeu.r@1.2.0:SA5v2k2nYsez9ocfLUGTqg==
