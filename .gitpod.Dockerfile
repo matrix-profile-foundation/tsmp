@@ -32,6 +32,7 @@ ENV HOME=/home/gitpod
 
 RUN Rscript -e 'if(!dir.exists(Sys.getenv("R_LIBS_USER"))) dir.create(Sys.getenv("R_LIBS_USER"), recursive=TRUE)'
 RUN Rscript -e 'if (!require("devtools")) install.packages("devtools", lib = Sys.getenv("R_LIBS_USER"))'
+RUN Rscript -e 'if (!require("languageserver")) install.packages("languageserver", lib = Sys.getenv("R_LIBS_USER"))'
 RUN Rscript -e 'devtools::install_github("jimhester/covr", ref = "master")'
 RUN Rscript -e 'setwd("/workspace/tsmp"); devtools::install_deps(dep = TRUE)'
 
