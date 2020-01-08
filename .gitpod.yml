@@ -8,6 +8,11 @@ image:
 # Prebuild          before && init && prebuild
 tasks:
   - command: R
+    name: R Console
+  - openMode: split-right
+    command: echo SplitTerminal    
+  - openIn: left
+    command: echo LeftPanelTerminal
 
 github:
   prebuilds:
