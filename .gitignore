@@ -4,6 +4,7 @@ inst/doc
 .Rproj.user
 .RData
 .Rhistory
+.vscode
 packrat/lib*/
 .httr-oauth
 packrat/src/

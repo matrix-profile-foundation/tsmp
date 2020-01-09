@@ -7,9 +7,7 @@ image:
 # Snapshot          before && command
 # Prebuild          before && init && prebuild
 tasks:
-  - openMode: tab-after
-    command: R
-    name: R Console
+  - init: "echo R >> ~/.bashrc"
 
 github:
   prebuilds:

@@ -28,6 +28,7 @@
 ^CONTRIBUTING\.md$
 ^CONTRIBUTING\.Rmd$
 ^\.github/
+^\.vscode/
 ^LOCAL_APPDATA_FONTCONFIG_CACHE/
 ^.whitesource
 ^tsmp\.Rcheck$
