@@ -9,6 +9,6 @@
   "r.lsp.debug": false,
   "r.lsp.diagnostics": true,
   "r.lsp.lang": "en_US.UTF-8",
-  "r.alwaysUseActiveTerminal": false,
+  "r.alwaysUseActiveTerminal": true,
   "r.sessionWatcher": true
 }

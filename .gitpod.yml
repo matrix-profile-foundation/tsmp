@@ -6,8 +6,8 @@ image:
 # Restart Workspace before && command
 # Snapshot          before && command
 # Prebuild          before && init && prebuild
-#tasks:
-#  - init: 
+tasks:
+  - name: R Interactive
 
 github:
   prebuilds:
