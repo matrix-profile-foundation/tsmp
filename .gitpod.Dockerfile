@@ -35,7 +35,6 @@ RUN Rscript -e 'if (!require("devtools")) install.packages("devtools", lib = Sys
 RUN Rscript -e 'if (!require("languageserver")) install.packages("languageserver", lib = Sys.getenv("R_LIBS_USER"))'
 RUN Rscript -e 'devtools::install_github("jimhester/covr", ref = "master")'
 RUN Rscript -e 'setwd("/workspace/tsmp"); devtools::install_deps(dep = TRUE)'
-
 ### checks ###
 # no root-owned files in the home directory
  RUN notOwnedFile=$(find . -not "(" -user gitpod -and -group gitpod ")" -print -quit) \
@@ -43,9 +42,9 @@ RUN Rscript -e 'setwd("/workspace/tsmp"); devtools::install_deps(dep = TRUE)'
     || { echo "Error: not all files/dirs in $HOME are owned by 'gitpod' user & group"; exit 1; } }
     
 # RUN Rscript -e 'setwd("/workspace/tsmp"); devtools::check(args = c("--as-cran"), env_vars = NULL)'
-#CMD ["R"]
+RUN echo "/usr/bin/R" >> ~/.bashrc
 ## End user tasks ##
 
 ## Give back control to the engine ##
-# USER root
+USER root
 # https://gitpod.io/#https://github.com/matrix-profile-foundation/tsmp/tree/franzbischoff/gitpod-setup
