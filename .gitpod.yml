@@ -1,5 +1,5 @@
 image:
-  file: .gitpod.Dockerfile 
+  file: .gitpod.Dockerfile
 
 # https://www.gitpod.io/docs/44_config_start_tasks/
 # Fresh Workspace   before && init && command
@@ -7,7 +7,9 @@ image:
 # Snapshot          before && command
 # Prebuild          before && init && prebuild
 tasks:
-  - name: R Interactive
+  - command: ""
+  - name: R
+  - openMode: split-left
 
 github:
   prebuilds:

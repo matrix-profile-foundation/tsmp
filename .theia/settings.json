@@ -1,6 +1,15 @@
 {
-  "extensions.showBuiltin": false,
-  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "editor.insertSpaces": true,
+  "[json]": {
+    "editor.tabSize": 2,
+  },
+  "[jsonc]": {
+    "editor.tabSize": 2,
+  },
+  "[r]": {
+    "editor.tabSize": 2,
+  },
   "editor.rulers": [
     120
   ],
