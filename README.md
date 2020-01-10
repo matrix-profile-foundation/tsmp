@@ -1,11 +1,14 @@
 README
 ================
 Francisco Bischoff
-\- 30 Dec 2019
+\- 10 Jan 2020
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 <img src="man/figures/logo.png" align="right" style="float:right;" />
+
+[![Gitpod
+Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/matrix-profile-foundation/tsmp)
 
 # Time Series with Matrix Profile
 

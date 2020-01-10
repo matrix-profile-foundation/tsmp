@@ -17,6 +17,8 @@ knitr::opts_chunk$set(
 
 <img src="man/figures/logo.png" align="right" style="float:right;" />
 
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/matrix-profile-foundation/tsmp) 
+
 # Time Series with Matrix Profile 
 
 [![Packagist](https://img.shields.io/badge/license-GPL--3-brightgreen.svg)](https://choosealicense.com/licenses/gpl-3.0/)
