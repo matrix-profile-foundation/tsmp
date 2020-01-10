@@ -9,9 +9,9 @@ output: github_document
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-"
+    collapse = TRUE,
+    comment = "#>",
+    fig.path = "man/figures/README-"
 )
 ```
 
@@ -52,8 +52,8 @@ This package provides:
 ```{r, examples, eval = FALSE}
 # Basic workflow:
 matrix <- tsmp(data, window_size = 30) %>%
-  find_motif(n_motifs = 3) %>%
-  plot()
+    find_motif(n_motifs = 3) %>%
+    plot()
 
 # SDTS still have a unique way to work:
 model <- sdts_train(data, labels, windows)
