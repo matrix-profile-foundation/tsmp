@@ -6,7 +6,7 @@ image:
 # Snapshot          before && command
 # Prebuild          before && init && prebuild
 tasks:
-  - name: R Interactive
+  - name: "R Interactive"
 
 github:
   prebuilds:
@@ -22,4 +22,4 @@ github:
 vscode:
   extensions:
     - REditorSupport.r-lsp@0.1.4:tK/umXcVigb0DZuSLvhuEg==
-    - Ikuyadeu.r@1.2.0:7pS+BDJ++h7A64+N6K7Rkw==
+    - Ikuyadeu.r@1.2.0:kHOANB/UyLS+dPA2Q6ILXA==

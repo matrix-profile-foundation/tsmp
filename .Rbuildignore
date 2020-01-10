@@ -36,3 +36,4 @@
 ^tsmp.*\.tgz$
 ^codecov\.yml$
 ^pkgdown/
+^\.lintr$
