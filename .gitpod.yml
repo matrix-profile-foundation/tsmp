@@ -5,7 +5,6 @@ image:
 # Restart Workspace before && command
 # Snapshot          before && command
 # Prebuild          before && init && prebuild
-
 tasks:
   - name: R Interactive
 
@@ -23,4 +22,4 @@ github:
 vscode:
   extensions:
     - REditorSupport.r-lsp@0.1.4:tK/umXcVigb0DZuSLvhuEg==
-    - Ikuyadeu.r@1.2.0.1:ZoH2S52zmWmAy+8oBJtqow==
+    - Ikuyadeu.r@1.2.0:wSnBbglNKOTmLz6r9YN0jg==
