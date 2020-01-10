@@ -8,7 +8,7 @@ Francisco Bischoff
 <img src="man/figures/logo.png" align="right" style="float:right;" />
 
 [![Gitpod
-Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/matrix-profile-foundation/tsmp)
+Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/matrix-profile-foundation/tsmp/tree/develop)
 
 # Time Series with Matrix Profile
 
