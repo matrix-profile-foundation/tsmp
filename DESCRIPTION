@@ -29,6 +29,7 @@ Imports:
     foreach,
     progress,
     magrittr,
+    RJSONIO,
     Rcpp,
     RcppParallel
 Encoding: UTF-8

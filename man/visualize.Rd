@@ -4,13 +4,13 @@
 \alias{visualize}
 \title{Plots an object generated from one of the algorithms. In some cases multiple plots will be generated}
 \usage{
-visualize(obj)
+visualize(profile)
 }
 \arguments{
-\item{obj}{dict_like The object to plot.}
+\item{profile}{PMP or MP data structure to visualize.}
 }
 \value{
-A list of matplotlib figures
+empty
 }
 \description{
 Plots an object generated from one of the algorithms. In some cases multiple plots will be generated
