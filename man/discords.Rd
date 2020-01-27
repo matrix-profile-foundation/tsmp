@@ -4,12 +4,26 @@
 \alias{discords}
 \title{Search for Discord}
 \usage{
-discords(.mp, ...)
+discords(
+  profile,
+  exclusion_zone = profile$ez,
+  k = 3L,
+  neighbor_count = 10L,
+  radius = 3
+)
 }
 \arguments{
-\item{.mp}{a TSMP object of class \code{MatrixProfile}}
+\item{profile}{the PMP or MP data structure}
 
-\item{\dots}{further arguments to be passed to class specific function.}
+\item{exclusion_zone}{an \code{int}. Number of values to exclude on both sides of the motif to avoid trivial matches.
+Defaults to the exclusion zone used to compute the MP/PMP which is found in the profile data structure.}
+
+\item{k}{an \code{int}. Number of discords to find. (Default is \code{3}).}
+
+\item{neighbor_count}{an \code{int}. Number of neighbors to find. (Default is \code{3}).}
+
+\item{radius}{an \code{int}. Set a threshold to exclude matching neighbors with distance > current
+discord distance * \code{radius}. (Default is \code{3}).}
 }
 \description{
 Search for Discord

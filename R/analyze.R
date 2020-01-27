@@ -65,10 +65,10 @@ analyze <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
 
   # Explore --------------------------------------
   # extract top motifs
-  result <- motifs(result, n_motifs = 3L) %T>% visualize()
+  result <- motifs(result, k = 3L) %T>% visualize()
 
   # extract top discords
-  result <- motifs(result, n_discords = 3L) %T>% visualize()
+  result <- discords(result, k = 3L) %T>% visualize()
 
   # Visualize --------------------------------------
   # figures <- NULL
