@@ -1,27 +1,38 @@
-#' Title
+#' Write a TSMP object to JSON file.
 #'
-#' @param x
-#' @param ...
+#' @param x a `MatrixProfile` or `PanMatrixProfile` object. If not, the `base::write()` function will be called.
+#' @param file a `character` string with the output filename.
+#' @param ... other arguments to be passed forward.
 #'
-#' @return
+#' @name write
 #' @export
-#'
 #' @examples
+#'
+#' result <- compute(mp_toy_data$data[, 1], 80)
+#' \dontrun{
+#' write(result, file = "output.json")
+#' }
 write <- function(x, ...) {
   UseMethod("write")
 }
 
-write.default <- function(...) {
+#' @export
+write.default <- function(x, ...) {
+  # little trick to allow using the base::write() when no class is matched
   pos <- which("package:tsmp" == search())
-  get("write", pos = pos + 1, mode = "function", inherits = TRUE)(...)
+  get("write", pos = pos + 1, mode = "function", inherits = TRUE)(x, ...)
 }
 
-write.MatrixProfile <- function(x, ...) {
+#' @name write
+#' @export
 
-  pars <- list(...)
+write.MatrixProfile <- function(x, file, ...) {
+
+  # Parse arguments ---------------------------------
+  checkmate::qassert(file, "S+")
 
   rplc <- function(y) {
-    if(length(y) > 0) {
+    if (length(y) > 0) {
       return(I(y))
     } else {
       return(NULL)
@@ -30,8 +41,14 @@ write.MatrixProfile <- function(x, ...) {
 
   x$mp <- as.vector(x$mp)
   x$pi <- as.vector(x$pi)
-  x$motif <- rapply(x$motif, rplc, how = "list")
-  x$discord <- rapply(x$discord, rplc, how = "list")
+
+  if (!is.null(x$motif)) {
+    x$motif <- rapply(x$motif, rplc, how = "list")
+  }
+
+  if (!is.null(x$discord)) {
+    x$discord <- rapply(x$discord, rplc, how = "list")
+  }
 
   dgtz <- getOption("digits", 5)
   options(digits = 19)
@@ -41,29 +58,66 @@ write.MatrixProfile <- function(x, ...) {
     collapse = "", # default "\n"
     .withNames = TRUE, # default length(x) > 0 && length(names(x)) > 0
     asIs = NA # default NA
-  ), file = pars$file)
+  ), file = file)
   options(digits = dgtz)
 }
 
-write.PanMatrixProfile <- function(x, ...) {
+#' @name write
+#' @export
+write.PanMatrixProfile <- function(x, file, ...) {
 
+  # Parse arguments ---------------------------------
+  checkmate::qassert(file, "S+")
 
+  rplc <- function(y) {
+    if (length(y) > 0) {
+      return(I(y))
+    } else {
+      return(NULL)
+    }
+  }
+
+  x$mp <- as.vector(x$mp)
+  x$pi <- as.vector(x$pi)
+
+  if (!is.null(x$motif)) {
+    x$motif <- rapply(x$motif, rplc, how = "list")
+  }
+
+  if (!is.null(x$discord)) {
+    x$discord <- rapply(x$discord, rplc, how = "list")
+  }
+
+  dgtz <- getOption("digits", 5)
+  options(digits = 19)
+  write(RJSONIO::toJSON(x,
+    .inf = "Infinity", # default "" Infinity"
+    .na = "NaN", # default "null"
+    collapse = "", # default "\n"
+    .withNames = TRUE, # default length(x) > 0 && length(names(x)) > 0
+    asIs = NA # default NA
+  ), file = file)
+  options(digits = dgtz)
 }
 
-#' Title
+#' Read TSMP object from JSON file.
 #'
-#' @param x
-#' @param ...
+#' @param x a `character` string with the input filename.
+#' @param ... other arguments to be passed forward.
 #'
-#' @return
+#' @name read
 #' @export
 #'
 #' @examples
+#'
+#' \dontrun{
+#' result <- read("input.json")
+#' }
 read <- function(x, ...) {
   UseMethod("read")
-
 }
 
+#' @export
 read.default <- function(x, ...) {
   mp <- RJSONIO::fromJSON(x, asText = FALSE, simplify = TRUE)
 

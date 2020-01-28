@@ -2,16 +2,21 @@
 % Please edit documentation in R/serialize.R
 \name{read}
 \alias{read}
-\title{Title}
+\title{Read object from file}
 \usage{
 read(x, ...)
 }
 \arguments{
-\item{...}{}
-}
-\value{
+\item{x}{a \code{character} string with the input filename.}
 
+\item{...}{other arguments to be passed forward.}
 }
 \description{
-Title
+Read object from file
+}
+\examples{
+
+\dontrun{
+result <- read("input.json")
+}
 }

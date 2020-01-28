@@ -2,16 +2,30 @@
 % Please edit documentation in R/serialize.R
 \name{write}
 \alias{write}
-\title{Title}
+\alias{write.MatrixProfile}
+\alias{write.PanMatrixProfile}
+\title{Write object to file}
 \usage{
 write(x, ...)
+
+\method{write}{MatrixProfile}(x, file, ...)
+
+\method{write}{PanMatrixProfile}(x, file, ...)
 }
 \arguments{
-\item{...}{}
-}
-\value{
+\item{x}{a \code{MatrixProfile} or \code{PanMatrixProfile} object. If not, the \code{base::write()} function will be called.}
 
+\item{...}{other arguments to be passed forward.}
+
+\item{file}{a \code{character} string with the output filename.}
 }
 \description{
-Title
+Write object to file
+}
+\examples{
+
+result <- compute(mp_toy_data$data[, 1], 80)
+\dontrun{
+write(result, file = "output.json")
+}
 }
