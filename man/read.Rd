@@ -2,7 +2,7 @@
 % Please edit documentation in R/serialize.R
 \name{read}
 \alias{read}
-\title{Read object from file}
+\title{Read TSMP object from JSON file.}
 \usage{
 read(x, ...)
 }
@@ -12,7 +12,7 @@ read(x, ...)
 \item{...}{other arguments to be passed forward.}
 }
 \description{
-Read object from file
+Read TSMP object from JSON file.
 }
 \examples{
 

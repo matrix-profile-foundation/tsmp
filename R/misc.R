@@ -1155,9 +1155,9 @@ set_data <- function(.mp, data) {
 #' get_data(mp)
 get_data <- function(.mp) {
   if (length(.mp$data) == 1) {
-    return(as.matrix(.mp$data[[1]]))
+    return(invisible(as.matrix(.mp$data[[1]])))
   } else {
-    return(as.matrix(.mp$data))
+    return(invisible(as.matrix(.mp$data)))
   }
 }
 

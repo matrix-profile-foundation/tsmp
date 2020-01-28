@@ -386,6 +386,7 @@ salient_mds <- function(.mp, data, bit_idx = 1) {
 #'
 #' @param .mp a Matrix Profile object.
 #' @param gtruth a `vector` of `integers` with the indexes of relevant subsequences.
+#' @param verbose an `int`. (Default is `2`).
 #'
 #' @return Returns a `list` with `f_score`, `precision`, `recall` and `bits` used in the algorithm.
 #'
@@ -405,8 +406,8 @@ salient_mds <- function(.mp, data, bit_idx = 1) {
 #' mp <- tsmp(data, window_size = 30, verbose = 0)
 #' mps <- salient_subsequences(mp, n_bits = c(4, 6, 8), verbose = 0)
 #' label_idx <- seq(2, 500, by = 110) # fake data
-#' salient_score(mps, label_idx)
-salient_score <- function(.mp, gtruth) {
+#' salient_score(mps, label_idx, verbose = 0)
+salient_score <- function(.mp, gtruth, verbose = getOption("tsmp.verbose", 2)) {
   if (!("Salient" %in% class(.mp))) {
     stop("First argument must be an object of class `Salient`.")
   }
@@ -419,7 +420,9 @@ salient_score <- function(.mp, gtruth) {
   cor_th <- 0.2
 
   for (b in seq_len(length(.mp$salient$bits))) {
-    message("Bits: ", .mp$salient$bits[b])
+    if (verbose > 0) {
+      message("Bits: ", .mp$salient$bits[b])
+    }
 
     hit_miss <- rep(FALSE, length(.mp$salient$indexes))
 
@@ -455,16 +458,22 @@ salient_score <- function(.mp, gtruth) {
         best_bit <- .mp$salient$bits[b]
       }
 
-      message("Precision: ", round(precision, 4))
-      message("Recall: ", round(recall, 4))
-      message("F_1 Score: ", round(f_score, 4))
-      message("-----------------")
+      if (verbose > 0) {
+        message("Precision: ", round(precision, 4))
+        message("Recall: ", round(recall, 4))
+        message("F_1 Score: ", round(f_score, 4))
+        message("-----------------")
+      }
     } else {
-      message("Nothing to do")
+      if (verbose > 0) {
+        message("Nothing to do")
+      }
     }
   }
 
-  message("Best F_1 Score: ", round(best_f, 4), " Bits: ", best_bit)
+  if (verbose > 0) {
+    message("Best F_1 Score: ", round(best_f, 4), " Bits: ", best_bit)
+  }
 
   return(invisible(list(fscore = f_score, precision = best_p, recall = best_r, bits = best_bit)))
 }

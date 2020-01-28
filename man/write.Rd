@@ -4,7 +4,7 @@
 \alias{write}
 \alias{write.MatrixProfile}
 \alias{write.PanMatrixProfile}
-\title{Write object to file}
+\title{Write a TSMP object to JSON file.}
 \usage{
 write(x, ...)
 
@@ -20,7 +20,7 @@ write(x, ...)
 \item{file}{a \code{character} string with the output filename.}
 }
 \description{
-Write object to file
+Write a TSMP object to JSON file.
 }
 \examples{
 
