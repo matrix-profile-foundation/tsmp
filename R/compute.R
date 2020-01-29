@@ -111,10 +111,10 @@ compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
       pi = as.matrix(res$pi),
       # mpb = NULL,
       # pib = NULL,
-      # rmp = NULL,
-      # rpi = NULL,
-      # lmp = NULL,
-      # lpi = NULL,
+      rmp = NULL,
+      rpi = NULL,
+      lmp = NULL,
+      lpi = NULL,
       w = windows
     )
     class(result) <- "MatrixProfile"
@@ -126,6 +126,7 @@ compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
     class(result) <- "PanMatrixProfile"
   }
   result$ez <- getOption("tsmp.exclusion_zone", 1 / 2)
+  result$sample_pct <- sample_pct
   result$data <- list(
     ts = as.vector(ts),
     query = as.vector(query)

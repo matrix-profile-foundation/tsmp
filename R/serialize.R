@@ -40,7 +40,7 @@ write.MatrixProfile <- function(x, file, ...) {
   }
 
   x$mp <- as.vector(x$mp)
-  x$pi <- as.vector(x$pi)
+  x$pi <- as.vector(x$pi) - 1L
 
   if (!is.null(x$motif)) {
     x$motif <- rapply(x$motif, rplc, how = "list")
@@ -49,6 +49,13 @@ write.MatrixProfile <- function(x, file, ...) {
   if (!is.null(x$discord)) {
     x$discord <- rapply(x$discord, rplc, how = "list")
   }
+
+  x$ez <- floor(x$w * x$ez)
+
+  x$metric <- attr(x, "metric", TRUE)
+  x$join <- attr(x, "join", TRUE)
+  x$class <- attr(x, "class", TRUE)
+  x$algorithm <- attr(x, "algorithm", TRUE)
 
   dgtz <- getOption("digits", 5)
   options(digits = 19)
@@ -67,37 +74,7 @@ write.MatrixProfile <- function(x, file, ...) {
 write.PanMatrixProfile <- function(x, file, ...) {
 
   # Parse arguments ---------------------------------
-  checkmate::qassert(file, "S+")
-
-  rplc <- function(y) {
-    if (length(y) > 0) {
-      return(I(y))
-    } else {
-      return(NULL)
-    }
-  }
-
-  x$mp <- as.vector(x$mp)
-  x$pi <- as.vector(x$pi)
-
-  if (!is.null(x$motif)) {
-    x$motif <- rapply(x$motif, rplc, how = "list")
-  }
-
-  if (!is.null(x$discord)) {
-    x$discord <- rapply(x$discord, rplc, how = "list")
-  }
-
-  dgtz <- getOption("digits", 5)
-  options(digits = 19)
-  write(RJSONIO::toJSON(x,
-    .inf = "Infinity", # default "" Infinity"
-    .na = "NaN", # default "null"
-    collapse = "", # default "\n"
-    .withNames = TRUE, # default length(x) > 0 && length(names(x)) > 0
-    asIs = NA # default NA
-  ), file = file)
-  options(digits = dgtz)
+  write.MatrixProfile(x, file, ...)
 }
 
 #' Read TSMP object from JSON file.
@@ -121,9 +98,44 @@ read <- function(x, ...) {
 read.default <- function(x, ...) {
   mp <- RJSONIO::fromJSON(x, asText = FALSE, simplify = TRUE)
 
-  mp$mp <- as.matrix(mp$mp)
-  mp$pi <- as.matrix(mp$pi)
-  mp$data$ts <- as.vector(mp$data$ts)
+  if (mp$class == "MatrixProfile") {
+    mp$mp <- as.matrix(mp$mp)
+    mp$pi <- as.matrix(mp$pi + 1L)
+
+    mp$data$ts <- as.vector(mp$data$ts)
+    mp$ez <- mp$ez / mp$w
+
+    attributes(mp) <- list(
+      names = names(mp),
+      class = mp$class,
+      join = mp$join,
+      metric = mp$metric,
+      algorithm = mp$algorithm
+    )
+
+    mp$metric <- NULL
+    mp$join <- NULL
+    mp$class <- NULL
+    mp$algorithm <- NULL
+  } else if (mp$class == "PMP") {
+    mp$pmpi <- lapply(mp$pmpi, function(x) x + 1)
+
+    mp$data$ts <- as.vector(mp$data$ts)
+    # mp$ez <- mp$ez / mp$w
+
+    attributes(mp) <- list(
+      names = names(mp),
+      class = mp$class,
+      join = mp$join,
+      metric = mp$metric,
+      algorithm = mp$algorithm
+    )
+
+    mp$metric <- NULL
+    mp$join <- NULL
+    mp$class <- NULL
+    mp$algorithm <- NULL
+  }
 
   return(mp)
 }
