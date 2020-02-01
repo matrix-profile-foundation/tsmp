@@ -50,8 +50,6 @@ write.MatrixProfile <- function(x, file, ...) {
     x$discord <- rapply(x$discord, rplc, how = "list")
   }
 
-  x$ez <- floor(x$w * x$ez)
-
   x$metric <- attr(x, "metric", TRUE)
   x$join <- attr(x, "join", TRUE)
   x$class <- attr(x, "class", TRUE)
@@ -60,11 +58,11 @@ write.MatrixProfile <- function(x, file, ...) {
   dgtz <- getOption("digits", 5)
   options(digits = 19)
   write(RJSONIO::toJSON(x,
-    .inf = "Infinity", # default "" Infinity"
-    .na = "NaN", # default "null"
-    collapse = "", # default "\n"
-    .withNames = TRUE, # default length(x) > 0 && length(names(x)) > 0
-    asIs = NA # default NA
+                        .inf = "Infinity", # default "" Infinity"
+                        .na = "NaN", # default "null"
+                        collapse = "", # default "\n"
+                        .withNames = TRUE, # default length(x) > 0 && length(names(x)) > 0
+                        asIs = NA # default NA
   ), file = file)
   options(digits = dgtz)
 }
@@ -74,7 +72,41 @@ write.MatrixProfile <- function(x, file, ...) {
 write.PanMatrixProfile <- function(x, file, ...) {
 
   # Parse arguments ---------------------------------
-  write.MatrixProfile(x, file, ...)
+  checkmate::qassert(file, "S+")
+
+  rplc <- function(y) {
+    if (length(y) > 0) {
+      return(I(y))
+    } else {
+      return(NULL)
+    }
+  }
+
+  x$pmpi <- lapply(x$pmpi, function(x) x - 1L)
+
+  if (!is.null(x$motif)) {
+    x$motif <- rapply(x$motif, rplc, how = "list")
+  }
+
+  if (!is.null(x$discord)) {
+    x$discord <- rapply(x$discord, rplc, how = "list")
+  }
+
+  x$metric <- attr(x, "metric", TRUE)
+  x$join <- attr(x, "join", TRUE)
+  x$class <- attr(x, "class", TRUE)
+  x$algorithm <- attr(x, "algorithm", TRUE)
+
+  dgtz <- getOption("digits", 5)
+  options(digits = 19)
+  write(RJSONIO::toJSON(x,
+                        .inf = "Infinity", # default "" Infinity"
+                        .na = "NaN", # default "null"
+                        collapse = "", # default "\n"
+                        .withNames = TRUE, # default length(x) > 0 && length(names(x)) > 0
+                        asIs = NA # default NA
+  ), file = file)
+  options(digits = dgtz)
 }
 
 #' Read TSMP object from JSON file.
@@ -103,7 +135,6 @@ read.default <- function(x, ...) {
     mp$pi <- as.matrix(mp$pi + 1L)
 
     mp$data$ts <- as.vector(mp$data$ts)
-    mp$ez <- mp$ez / mp$w
 
     attributes(mp) <- list(
       names = names(mp),
@@ -118,10 +149,9 @@ read.default <- function(x, ...) {
     mp$class <- NULL
     mp$algorithm <- NULL
   } else if (mp$class == "PMP") {
-    mp$pmpi <- lapply(mp$pmpi, function(x) x + 1)
+    mp$pmpi <- lapply(mp$pmpi, function(x) x + 1L)
 
     mp$data$ts <- as.vector(mp$data$ts)
-    # mp$ez <- mp$ez / mp$w
 
     attributes(mp) <- list(
       names = names(mp),
