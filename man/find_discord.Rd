@@ -3,6 +3,7 @@
 \name{find_discord}
 \alias{find_discord}
 \alias{find_discord.MatrixProfile}
+\alias{find_discord.PMP}
 \title{Search for Discord}
 \usage{
 find_discord(.mp, ...)
@@ -16,9 +17,19 @@ find_discord(.mp, ...)
   exclusion_zone = NULL,
   ...
 )
+
+\method{find_discord}{PMP}(
+  .mp,
+  data,
+  n_discords = 1,
+  n_neighbors = 3,
+  radius = 3,
+  exclusion_zone = NULL,
+  ...
+)
 }
 \arguments{
-\item{.mp}{a TSMP object of class \code{MatrixProfile}}
+\item{.mp}{a \code{MatrixProfile} object.}
 
 \item{\dots}{further arguments to be passed to class specific function.}
 
@@ -35,6 +46,9 @@ discord distance * \code{radius}. (Default is \code{3}).}
 }
 \value{
 For class \code{MatrixProfile}, returns the input \code{.mp} object with a new name \code{discord}. It contains: \code{discord_idx}, a \code{vector}
+of discords found
+
+For class \code{PMP}, returns the input \code{.mp} object with a new name \code{discord}. It contains: \code{discord_idx}, a \code{vector}
 of discords found
 }
 \description{

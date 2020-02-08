@@ -524,7 +524,7 @@ ipaa <- function(data, p) {
 
 #' Get index of the minimum value from a matrix profile and its nearest neighbor
 #'
-#' @param .mp a TSMP object of class `MatrixProfile`.
+#' @param .mp a `MatrixProfile` object.
 #' @param n_dim number of dimensions of the matrix profile
 #' @param valid check for valid numbers
 #'
@@ -802,7 +802,7 @@ compute_f_meas <- function(label, pos_st, pos_ed, dist_pro, thold, window_size, 
 
 # Salient Aux functions --------------------------------------------------------------------------
 
-#' Retrieve the index of a number of candidates from the lowest points of a MP
+#' Retrieve the index of a number of candidates from the lowest points of a Matrix Profile
 #'
 #' @param matrix_profile the matrix profile
 #' @param n_cand number of candidates to extract

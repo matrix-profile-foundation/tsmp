@@ -1,6 +1,6 @@
-#' Pan Matrix Profile
+#' Pan-Matrix Profile
 #'
-#' Computes the Pan Matrix Profile (PMP) for the given time series.
+#' Computes the Pan-Matrix Profile (PMP) for the given time series.
 #'
 #' The work closest in spirit to ours is VALMOD. The idea of VALMOD is to compute the MP for
 #' the shortest length of interest, then use the information gleaned from it to guide a search
@@ -38,7 +38,7 @@
 #' 2.1. window_sizes tells the function what mp are stored, it may be updated with as.numeric(names(pmp))
 #' 3. the functions must be capable to handle the data without need to sort by window_size, but sort may be useful later(?)
 #'
-#' @return Returns a Pan Matrix Profile object.
+#' @return Returns a `PMP` object.
 #' @export
 #'
 #' @examples
@@ -68,8 +68,8 @@ pmp <- function(data,
 
   # checks if the given object is actualy a skimp object
   if (!is.null(pmp_obj)) {
-    if (class(pmp_obj) != "PanMatrixProfile") {
-      stop("`pmp_obj` must be of class `PanMatrixProfile`")
+    if (class(pmp_obj) != "PMP") {
+      stop("`pmp_obj` must be of class `PMP`")
     }
   }
 
@@ -169,7 +169,7 @@ pmp <- function(data,
   # if not given, create a new object to start with
   if (is.null(pmp_obj)) {
     pmp_obj <- list(pmp = list(), pmpi = list())
-    class(pmp_obj) <- "PanMatrixProfile"
+    class(pmp_obj) <- "PMP"
   }
 
   # Determine the order in which we will explore the window_sizes
@@ -285,7 +285,7 @@ pmp_upper_bound <- function(data,
     {
       if (return_pmp) {
         pmp_obj <- list(upper_window = max(windows), pmp = pmp, pmpi = pmpi, windows = windows)
-        class(pmp_obj) <- "PanMatrixProfile"
+        class(pmp_obj) <- "PMP"
         return(pmp_obj)
       } else {
         return(window_size)

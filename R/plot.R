@@ -1237,7 +1237,7 @@ skimp_plot_add_raster <- function(layer, window, window_set = NULL, func = NULL)
 #' @keywords hplot
 #' @name plot
 #'
-plot.PanMatrixProfile <- function(x, ylab = "distance", xlab = "index", main = "Unidimensional Matrix Profile", data = FALSE, ...) {
+plot.PMP <- function(x, ylab = "distance", xlab = "index", main = "Unidimensional Matrix Profile", data = FALSE, ...) {
   stop("Not yet implemented")
 }
 

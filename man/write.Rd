@@ -3,17 +3,17 @@
 \name{write}
 \alias{write}
 \alias{write.MatrixProfile}
-\alias{write.PanMatrixProfile}
+\alias{write.PMP}
 \title{Write a TSMP object to JSON file.}
 \usage{
 write(x, ...)
 
 \method{write}{MatrixProfile}(x, file, ...)
 
-\method{write}{PanMatrixProfile}(x, file, ...)
+\method{write}{PMP}(x, file, ...)
 }
 \arguments{
-\item{x}{a \code{MatrixProfile} or \code{PanMatrixProfile} object. If not, the \code{base::write()} function will be called.}
+\item{x}{a \code{MatrixProfile} or \code{PMP} object. If not, the \code{base::write()} function will be called.}
 
 \item{...}{other arguments to be passed forward.}
 

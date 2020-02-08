@@ -2,7 +2,7 @@
 % Please edit documentation in R/compute.R
 \name{compute}
 \alias{compute}
-\title{Computes the MatrixProfile or Pan-MatrixProfile}
+\title{Computes the Matrix Profile or Pan-Matrix Profile}
 \usage{
 compute(
   ts,
@@ -16,32 +16,34 @@ compute(
 \arguments{
 \item{ts}{a \code{matrix} or a \code{vector}. The time series to analyze.}
 
-\item{windows}{an \code{int} or a \code{vector}. The window(s) to compute the MatrixProfile. Note that it may be an \code{int}
-for a single matrix profile computation or a \code{vector} of \code{int} for computing the pan matrix profile (PMP).}
+\item{windows}{an \code{int} or a \code{vector}. The window(s) to compute the Matrix Profile. Note that it may be an \code{int}
+for a single matrix profile computation or a \code{vector} of \code{int} for computing the Pan-Matrix Profile.}
 
-\item{query}{a \code{matrix} or a \code{vector}. Optional The query to analyze. Note that when computing the PMP the query
-is ignored!}
+\item{query}{a \code{matrix} or a \code{vector}. Optional The query to analyze. Note that when computing the Pan-Matrix Profile
+the query is ignored!}
 
 \item{sample_pct}{a \code{numeric}. A number between 0 and 1 representing how many samples to compute for
-the MP or PMP. When it is 1, the exact algorithm is used. (default is \code{1.0}).}
+the Matrix Profile or Pan-Matrix Profile. When it is 1, the exact algorithm is used. (default is \code{1.0}).}
 
 \item{threshold}{a \code{numeric}. Correlation threshold. See details.  (Default is \code{0.98}).}
 
-\item{n_jobs}{an \code{int}. The number of cpu cores to use when computing the MP. (default is \code{1}).}
+\item{n_jobs}{an \code{int}. The number of cpu cores to use when computing the MatrixProfile. (default is \code{1}).}
 }
 \value{
 The profile computed.
 }
 \description{
-Computes the exact or approximate MatrixProfile based on the sample percent
+Main API Function
+}
+\details{
+Computes the exact or approximate Matrix Profile based on the sample percent
 specified. Currently, MPX and SCRIMP++ are used for the exact and
 approximate algorithms respectively. See details for more information about the arguments
 combinations.
-}
-\details{
-When a single \code{windows} is given, the MatrixProfile is computed. If a \code{query} is provided, AB join is computed.
+
+When a single \code{windows} is given, the Matrix Profile is computed. If a \code{query} is provided, AB join is computed.
 Otherwise the self-join is computed.
-When multiple \code{windows} or none are given, the Pan-MatrixProfile is computed. If a \code{threshold} is set (it is,
+When multiple \code{windows} or none are given, the Pan-Matrix Profile is computed. If a \code{threshold} is set (it is,
 by default), the upper bound will be computed and the given \code{windows} or a default range (when no \code{windows}), below
 the upper bound will be computed.
 }
@@ -50,13 +52,18 @@ the upper bound will be computed.
 # Matrix Profile
 result <- compute(mp_toy_data$data[, 1], 80)
 \dontrun{
-# Pan Matrix Profile
+# Pan-Matrix Profile
 result <- compute(mp_toy_data$data[, 1])
 }
+}
+\references{
+Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
 Other Main API: 
 \code{\link{analyze}()},
+\code{\link{discords}()},
+\code{\link{motifs}()},
 \code{\link{visualize}()}
 }
 \concept{Main API}

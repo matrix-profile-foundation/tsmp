@@ -7,7 +7,7 @@
 floss_cac(.mp, data_window, exclusion_zone = NULL)
 }
 \arguments{
-\item{.mp}{a TSMP object of class \code{MatrixProfile}.}
+\item{.mp}{a \code{MatrixProfile} object.}
 
 \item{data_window}{an \code{int}. Sets the size of the buffer used to keep track of semantic changes.}
 

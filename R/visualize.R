@@ -1,11 +1,10 @@
 #' Plots an object generated from one of the algorithms. In some cases multiple plots will be generated
 #'
-#' @param profile PMP or MP data structure to visualize.
-#'
-#' @return
-#' empty
+#' @param profile a `MatrixProfile` or `PMP` object.
 #'
 #' @export
+#'
+#' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #'
 #' @family Main API
 #'

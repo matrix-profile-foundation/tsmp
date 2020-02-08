@@ -4,6 +4,7 @@
 \alias{find_motif}
 \alias{find_motif.MatrixProfile}
 \alias{find_motif.MultiMatrixProfile}
+\alias{find_motif.PMP}
 \title{Search for Motifs}
 \usage{
 find_motif(.mp, ...)
@@ -28,9 +29,19 @@ find_motif(.mp, ...)
   n_dim = NULL,
   ...
 )
+
+\method{find_motif}{PMP}(
+  .mp,
+  data,
+  n_motifs = 3,
+  n_neighbors = 10,
+  radius = 3,
+  exclusion_zone = NULL,
+  ...
+)
 }
 \arguments{
-\item{.mp}{a TSMP object of class \code{MatrixProfile} or \code{MultiMatrixProfile}.}
+\item{.mp}{a \code{MatrixProfile} or \code{MultiMatrixProfile} object.}
 
 \item{\dots}{further arguments to be passed to class specific function.}
 
@@ -57,6 +68,9 @@ of motif pairs found and \code{motif_neighbor} a \code{list} with respective mot
 
 For class \code{MultiMatrixProfile}, returns the input \code{.mp} object with a new name \code{motif}. It contains: \code{motif_idx}, a \code{vector}
 of motifs found and \code{motif_dim} a \code{list} the dimensions where the motifs were found
+
+For class \code{PMP}, returns the input \code{.mp} object with a new name \code{motif}. It contains: \code{motif_idx}, a \code{list}
+of motif pairs found and \code{motif_neighbor} a \code{list} with respective motif's neighbors.
 }
 \description{
 Search for Motifs

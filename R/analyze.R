@@ -8,23 +8,24 @@
 #' @details
 #' For now the following is computed:
 #'
-#' 1. Matrix Profile - exact or approximate based on `sample_pct` given that a single
-#' `windows` is provided. By default is the exact algorithm;
+#' 1. Matrix Profile - exact or approximate based on `sample_pct` given that a single `windows` is provided. By default
+#' is the exact algorithm;
 #' 2. Top 3 Motifs;
 #' 3. Top 3 Discords;
-#' 4. Plot MP, Motifs and Discords.
+#' 4. Plot Matrix Profile, Motifs and Discords.
 #'
 #' When `windows` is not provided or more than a single window is provided,
-#' the PMP is computed:
+#' the Pan-Matrix Profile is computed:
 #'
 #' 1. Compute the upper bound when a `threshold` is provided (it is, by default);
-#' 2. Compute PMP for all `windows` provided, below the upper bound, or a default range when no `windows` is provided;
+#' 2. Compute Pan-Matrix Profile for all `windows` provided, below the upper bound, or a default range when no `windows`
+#' is provided;
 #' 3. Top Motifs;
 #' 4. Top Discords;
-#' 5. Plot PMP, motifs and discords.
+#' 5. Plot Pan-Matrix Profile, motifs and discords.
 #'
 #' @return
-#' The appropriate MP or PMP profile object and also plots the graphics.
+#' The appropriate Matrix Profile or Pan-Matrix Profile profile object and also plots the graphics.
 #'
 #' @export
 #'

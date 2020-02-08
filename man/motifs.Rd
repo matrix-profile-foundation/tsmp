@@ -13,10 +13,10 @@ motifs(
 )
 }
 \arguments{
-\item{profile}{the PMP or MP data structure}
+\item{profile}{a \code{MatrixProfile} or \code{PMP} object.}
 
 \item{exclusion_zone}{an \code{int}. Number of values to exclude on both sides of the motif to avoid trivial matches.
-Defaults to the exclusion zone used to compute the MP/PMP which is found in the profile data structure.}
+Defaults to the exclusion zone used to compute the (Pan-)Matrix Profile which is found in the profile data structure.}
 
 \item{k}{an \code{int}. Number of motifs to find. (Default is \code{3}).}
 
@@ -28,3 +28,14 @@ discord distance * \code{radius}. (Default is \code{3}).}
 \description{
 Search for Motifs
 }
+\references{
+Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
+}
+\seealso{
+Other Main API: 
+\code{\link{analyze}()},
+\code{\link{compute}()},
+\code{\link{discords}()},
+\code{\link{visualize}()}
+}
+\concept{Main API}

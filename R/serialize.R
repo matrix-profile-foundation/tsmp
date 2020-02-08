@@ -1,6 +1,6 @@
 #' Write a TSMP object to JSON file.
 #'
-#' @param x a `MatrixProfile` or `PanMatrixProfile` object. If not, the `base::write()` function will be called.
+#' @param x a `MatrixProfile` or `PMP` object. If not, the `base::write()` function will be called.
 #' @param file a `character` string with the output filename.
 #' @param ... other arguments to be passed forward.
 #'
@@ -69,7 +69,7 @@ write.MatrixProfile <- function(x, file, ...) {
 
 #' @name write
 #' @export
-write.PanMatrixProfile <- function(x, file, ...) {
+write.PMP <- function(x, file, ...) {
 
   # Parse arguments ---------------------------------
   checkmate::qassert(file, "S+")

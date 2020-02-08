@@ -2,7 +2,7 @@
 % Please edit documentation in R/pmp.R
 \name{pmp}
 \alias{pmp}
-\title{Pan Matrix Profile}
+\title{Pan-Matrix Profile}
 \usage{
 pmp(
   data,
@@ -29,10 +29,10 @@ add new profiles, not replace. (Default is \code{NULL}).}
 \item{verbose}{an \code{int}. See details. (Default is \code{2}).}
 }
 \value{
-Returns a Pan Matrix Profile object.
+Returns a \code{PMP} object.
 }
 \description{
-Computes the Pan Matrix Profile (PMP) for the given time series.
+Computes the Pan-Matrix Profile (PMP) for the given time series.
 }
 \details{
 The work closest in spirit to ours is VALMOD. The idea of VALMOD is to compute the MP for
