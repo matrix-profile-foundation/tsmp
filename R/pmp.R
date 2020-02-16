@@ -77,8 +77,6 @@ pmp <- function(data,
 
   data_size <- length(data)
 
-
-
   # if an object is given, remove the windows that already have been computed and are below the upper_window
   if (!is.null(pmp_obj)) {
     # remove already computed
@@ -122,8 +120,6 @@ pmp <- function(data,
   on.exit(
     {
       if (is.null(pmp_obj)) {
-        message("on.exit NULL")
-
         return(NULL)
       } else {
 
@@ -158,7 +154,7 @@ pmp <- function(data,
         #   window_sizes <- as.numeric(names(pmp_obj$pmp))
         # }
 
-        message("on.exit OBJ")
+        pmp_obj$ez <- getOption("tsmp.exclusion_zone", 1 / 2)
 
         return(pmp_obj)
       }

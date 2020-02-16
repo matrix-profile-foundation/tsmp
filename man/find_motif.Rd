@@ -87,4 +87,6 @@ w <- mp_toy_data$sub_len
 data <- mp_toy_data$data[1:200, ]
 mp <- tsmp(data, window_size = w, mode = "mstomp", verbose = 0)
 mp <- find_motif(mp)
+pan <- tsmp(mp_gait_data, window_size = 20:30, mode = "pmp")
+mp <- find_motif(pan)
 }

@@ -119,14 +119,14 @@ compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
       rpi = NULL,
       lmp = NULL,
       lpi = NULL,
-      w = windows
+      w = windows,
+      ez = res$ez
     )
     class(result) <- "MatrixProfile"
   } else {
     result <- res
     class(result) <- "PMP"
   }
-  result$ez <- getOption("tsmp.exclusion_zone", 1 / 2)
   result$sample_pct <- sample_pct
   result$data <- list(
     ts = as.vector(ts),

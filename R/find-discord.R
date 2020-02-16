@@ -143,7 +143,8 @@ find_discord.MatrixProfile <- function(.mp, data, n_discords = 1, n_neighbors = 
 #' @return For class `PMP`, returns the input `.mp` object with a new name `discord`. It contains: `discord_idx`, a `vector`
 #' of discords found
 #' @examples
-
+#' pan <- tsmp(mp_gait_data, window_size = 20:30, mode = "pmp")
+#' mp <- find_discord(pan)
 find_discord.PMP <- function(.mp, data, n_discords = 1, n_neighbors = 3, radius = 3, exclusion_zone = NULL, ...) {
   if (!("PMP" %in% class(.mp))) {
     stop("First argument must be an object of class `MatrixProfile`.")

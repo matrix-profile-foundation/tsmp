@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Computes the MatrixProfile or Pan-MatrixProfile — compute • tsmp</title>
+<title>Computes the Matrix Profile or Pan-Matrix Profile — compute • tsmp</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,11 +42,8 @@
 
 
 
-<meta property="og:title" content="Computes the MatrixProfile or Pan-MatrixProfile — compute" />
-<meta property="og:description" content="Computes the exact or approximate MatrixProfile based on the sample percent
-specified. Currently, MPX and SCRIMP++ are used for the exact and
-approximate algorithms respectively. See details for more information about the arguments
-combinations." />
+<meta property="og:title" content="Computes the Matrix Profile or Pan-Matrix Profile — compute" />
+<meta property="og:description" content="Main API Function" />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -131,16 +128,13 @@ combinations." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Computes the MatrixProfile or Pan-MatrixProfile</h1>
+    <h1>Computes the Matrix Profile or Pan-Matrix Profile</h1>
     <small class="dont-index">Source: <a href='https://github.com/matrix-profile-foundation/tsmp/blob/master/R/compute.R'><code>R/compute.R</code></a></small>
     <div class="hidden name"><code>compute.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Computes the exact or approximate MatrixProfile based on the sample percent
-specified. Currently, MPX and SCRIMP++ are used for the exact and
-approximate algorithms respectively. See details for more information about the arguments
-combinations.</p>
+    <p>Main API Function</p>
     </div>
 
     <pre class="usage"><span class='fu'>compute</span>(
@@ -161,18 +155,18 @@ combinations.</p>
     </tr>
     <tr>
       <th>windows</th>
-      <td><p>an <code>int</code> or a <code>vector</code>. The window(s) to compute the MatrixProfile. Note that it may be an <code>int</code>
-for a single matrix profile computation or a <code>vector</code> of <code>int</code> for computing the pan matrix profile (PMP).</p></td>
+      <td><p>an <code>int</code> or a <code>vector</code>. The window(s) to compute the Matrix Profile. Note that it may be an <code>int</code>
+for a single matrix profile computation or a <code>vector</code> of <code>int</code> for computing the Pan-Matrix Profile.</p></td>
     </tr>
     <tr>
       <th>query</th>
-      <td><p>a <code>matrix</code> or a <code>vector</code>. Optional The query to analyze. Note that when computing the PMP the query
-is ignored!</p></td>
+      <td><p>a <code>matrix</code> or a <code>vector</code>. Optional The query to analyze. Note that when computing the Pan-Matrix Profile
+the query is ignored!</p></td>
     </tr>
     <tr>
       <th>sample_pct</th>
       <td><p>a <code>numeric</code>. A number between 0 and 1 representing how many samples to compute for
-the MP or PMP. When it is 1, the exact algorithm is used. (default is <code>1.0</code>).</p></td>
+the Matrix Profile or Pan-Matrix Profile. When it is 1, the exact algorithm is used. (default is <code>1.0</code>).</p></td>
     </tr>
     <tr>
       <th>threshold</th>
@@ -180,7 +174,7 @@ the MP or PMP. When it is 1, the exact algorithm is used. (default is <code>1.0<
     </tr>
     <tr>
       <th>n_jobs</th>
-      <td><p>an <code>int</code>. The number of cpu cores to use when computing the MP. (default is <code>1</code>).</p></td>
+      <td><p>an <code>int</code>. The number of cpu cores to use when computing the MatrixProfile. (default is <code>1</code>).</p></td>
     </tr>
     </table>
 
@@ -189,15 +183,24 @@ the MP or PMP. When it is 1, the exact algorithm is used. (default is <code>1.0<
     <p>The profile computed.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>When a single <code>windows</code> is given, the MatrixProfile is computed. If a <code>query</code> is provided, AB join is computed.
+    <p>Computes the exact or approximate Matrix Profile based on the sample percent
+specified. Currently, MPX and SCRIMP++ are used for the exact and
+approximate algorithms respectively. See details for more information about the arguments
+combinations.</p>
+<p>When a single <code>windows</code> is given, the Matrix Profile is computed. If a <code>query</code> is provided, AB join is computed.
 Otherwise the self-join is computed.
-When multiple <code>windows</code> or none are given, the Pan-MatrixProfile is computed. If a <code>threshold</code> is set (it is,
+When multiple <code>windows</code> or none are given, the Pan-Matrix Profile is computed. If a <code>threshold</code> is set (it is,
 by default), the upper bound will be computed and the given <code>windows</code> or a default range (when no <code>windows</code>), below
 the upper bound will be computed.</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Website: <a href='http://www.cs.ucr.edu/~eamonn/MatrixProfile.html'>http://www.cs.ucr.edu/~eamonn/MatrixProfile.html</a></p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Main API: 
 <code><a href='analyze.html'>analyze</a>()</code>,
+<code><a href='discords.html'>discords</a>()</code>,
+<code><a href='motifs.html'>motifs</a>()</code>,
 <code><a href='visualize.html'>visualize</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -205,7 +208,7 @@ the upper bound will be computed.</p>
 <span class='co'># Matrix Profile</span>
 <span class='no'>result</span> <span class='kw'>&lt;-</span> <span class='fu'>compute</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[, <span class='fl'>1</span>], <span class='fl'>80</span>)
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='co'># Pan Matrix Profile</span>
+<span class='co'># Pan-Matrix Profile</span>
 <span class='no'>result</span> <span class='kw'>&lt;-</span> <span class='fu'>compute</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[, <span class='fl'>1</span>])
 }</div></pre>
   </div>
@@ -215,6 +218,7 @@ the upper bound will be computed.</p>
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#references">References</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>

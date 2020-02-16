@@ -364,7 +364,8 @@ find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("gui
 #' @return For class `PMP`, returns the input `.mp` object with a new name `motif`. It contains: `motif_idx`, a `list`
 #' of motif pairs found and `motif_neighbor` a `list` with respective motif's neighbors.
 #' @examples
-
+#' pan <- tsmp(mp_gait_data, window_size = 20:30, mode = "pmp")
+#' mp <- find_motif(pan)
 find_motif.PMP <- function(.mp, data, n_motifs = 3, n_neighbors = 10, radius = 3, exclusion_zone = NULL, ...) {
   if (!("PMP" %in% class(.mp))) {
     stop("First argument must be an object of class `PMP`.")

@@ -71,7 +71,6 @@ avoid  trivial matches; if a query data is provided (join similarity), this para
 
 \examples{
 mp <- stamp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
-
 \dontrun{
 
 #' # using threads

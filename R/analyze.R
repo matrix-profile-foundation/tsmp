@@ -70,8 +70,4 @@ analyze <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
 
   # extract top discords
   result <- discords(result, k = 3L) %T>% visualize()
-
-  # Visualize --------------------------------------
-  # figures <- NULL
-  # figures <- visualize(result)
 }

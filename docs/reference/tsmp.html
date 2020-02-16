@@ -143,7 +143,7 @@ Profile and Profile Index for multiple purposes.</p>
   <span class='no'>...</span>,
   <span class='no'>window_size</span>,
   <span class='kw'>exclusion_zone</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"tsmp.exclusion_zone"</span>, <span class='fl'>1</span>/<span class='fl'>2</span>),
-  <span class='kw'>mode</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"stomp"</span>, <span class='st'>"stamp"</span>, <span class='st'>"simple"</span>, <span class='st'>"mstomp"</span>, <span class='st'>"scrimp"</span>, <span class='st'>"valmod"</span>),
+  <span class='kw'>mode</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"stomp"</span>, <span class='st'>"stamp"</span>, <span class='st'>"simple"</span>, <span class='st'>"mstomp"</span>, <span class='st'>"scrimp"</span>, <span class='st'>"valmod"</span>, <span class='st'>"pmp"</span>),
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"tsmp.verbose"</span>, <span class='fl'>2</span>),
   <span class='kw'>n_workers</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>s_size</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
@@ -243,6 +243,7 @@ meaningful MOTIF discovery in Multivariate Time Series. And <code><a href='simpl
 Multivariate Time Series, but focused in Music Analysis and Exploration.</p>
 <p>The <code><a href='valmod.html'>valmod()</a></code> uses a new pruning algorithm allowing a similarity search with a range of sliding
 window sizes.</p>
+<p>The <code><a href='pmp.html'>pmp()</a></code> is a new concept that creates several profiles from a range of windows.</p>
 <p>Some parameters are global across the algorithms:</p><dl class='dl-horizontal'>
 <dt>...</dt><dd><p>One or two time series (except for <code><a href='mstomp.html'>mstomp()</a></code>). The second time series can be smaller than the first.</p></dd>
 <dt>window_size</dt><dd><p>The sliding window.</p></dd>
@@ -258,7 +259,7 @@ If the value is 2 or more, the '_par' version of the algorithm will be used.</p>
 <p><code>s_size</code> is used only in Anytime algorithms: <code><a href='stamp.html'>stamp()</a></code> and <code><a href='scrimp.html'>scrimp()</a></code>.
 <code>must_dim</code> and <code>exc_dim</code> are used only in <code><a href='mstomp.html'>mstomp()</a></code>.
 <code>heap_size</code> is used only for <code><a href='valmod.html'>valmod()</a></code>
-<code>mode</code> can be any of the following: <code>stomp</code>, <code>stamp</code>, <code>simple</code>, <code>mstomp</code>, <code>scrimp</code>, <code>valmod</code>.</p>
+<code>mode</code> can be any of the following: <code>stomp</code>, <code>stamp</code>, <code>simple</code>, <code>mstomp</code>, <code>scrimp</code>, <code>valmod</code>, <code>pmp</code>.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     
@@ -318,7 +319,6 @@ Joins. Icdm. 2016 Jan 22;54(1):739-48.</p></li>
 
 <span class='co'># [simple_fast()]</span>
 <span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>tsmp</span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>200</span>, ], <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"simple"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
-
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># parallel with [stomp_par()]</span>
 <span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'>tsmp</span>(<span class='no'>mp_test_data</span>$<span class='no'>train</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>1000</span>, <span class='fl'>1</span>], <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>n_workers</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)

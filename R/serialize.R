@@ -58,11 +58,11 @@ write.MatrixProfile <- function(x, file, ...) {
   dgtz <- getOption("digits", 5)
   options(digits = 19)
   write(RJSONIO::toJSON(x,
-                        .inf = "Infinity", # default "" Infinity"
-                        .na = "NaN", # default "null"
-                        collapse = "", # default "\n"
-                        .withNames = TRUE, # default length(x) > 0 && length(names(x)) > 0
-                        asIs = NA # default NA
+    .inf = "Infinity", # default "" Infinity"
+    .na = "NaN", # default "null"
+    collapse = "", # default "\n"
+    .withNames = TRUE, # default length(x) > 0 && length(names(x)) > 0
+    asIs = NA # default NA
   ), file = file)
   options(digits = dgtz)
 }
@@ -100,11 +100,11 @@ write.PMP <- function(x, file, ...) {
   dgtz <- getOption("digits", 5)
   options(digits = 19)
   write(RJSONIO::toJSON(x,
-                        .inf = "Infinity", # default "" Infinity"
-                        .na = "NaN", # default "null"
-                        collapse = "", # default "\n"
-                        .withNames = TRUE, # default length(x) > 0 && length(names(x)) > 0
-                        asIs = NA # default NA
+    .inf = "Infinity", # default "" Infinity"
+    .na = "NaN", # default "null"
+    collapse = "", # default "\n"
+    .withNames = TRUE, # default length(x) > 0 && length(names(x)) > 0
+    asIs = NA # default NA
   ), file = file)
   options(digits = dgtz)
 }

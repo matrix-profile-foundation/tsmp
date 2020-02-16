@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Computes the F-Score of salient algorithm. — salient_score • tsmp</title>
+<title>Search for Discord — discords • tsmp</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,10 +42,8 @@
 
 
 
-<meta property="og:title" content="Computes the F-Score of salient algorithm. — salient_score" />
-<meta property="og:description" content="This score function is useful for testing several values of n_bits for MDL discretization and
-checking against a known set of indexes. This increase the probability of better results on
-relevant subsequence extraction." />
+<meta property="og:title" content="Search for Discord — discords" />
+<meta property="og:description" content="Search for Discord" />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -130,71 +128,68 @@ relevant subsequence extraction." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Computes the F-Score of salient algorithm.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/matrix-profile-foundation/tsmp/blob/master/R/salient.R'><code>R/salient.R</code></a></small>
-    <div class="hidden name"><code>salient_score.Rd</code></div>
+    <h1>Search for Discord</h1>
+    <small class="dont-index">Source: <a href='https://github.com/matrix-profile-foundation/tsmp/blob/master/R/discords.R'><code>R/discords.R</code></a></small>
+    <div class="hidden name"><code>discords.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This score function is useful for testing several values of <code>n_bits</code> for MDL discretization and
-checking against a known set of indexes. This increase the probability of better results on
-relevant subsequence extraction.</p>
+    <p>Search for Discord</p>
     </div>
 
-    <pre class="usage"><span class='fu'>salient_score</span>(<span class='no'>.mp</span>, <span class='no'>gtruth</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"tsmp.verbose"</span>, <span class='fl'>2</span>))</pre>
+    <pre class="usage"><span class='fu'>discords</span>(
+  <span class='no'>profile</span>,
+  <span class='kw'>exclusion_zone</span> <span class='kw'>=</span> <span class='no'>profile</span>$<span class='no'>ez</span>,
+  <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>3L</span>,
+  <span class='kw'>neighbor_count</span> <span class='kw'>=</span> <span class='fl'>10L</span>,
+  <span class='kw'>radius</span> <span class='kw'>=</span> <span class='fl'>3</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>.mp</th>
-      <td><p>a Matrix Profile object.</p></td>
+      <th>profile</th>
+      <td><p>a <code>MatrixProfile</code> or <code>PMP</code> object.</p></td>
     </tr>
     <tr>
-      <th>gtruth</th>
-      <td><p>a <code>vector</code> of <code>integers</code> with the indexes of relevant subsequences.</p></td>
+      <th>exclusion_zone</th>
+      <td><p>an <code>int</code>. Number of values to exclude on both sides of the motif to avoid trivial matches.
+Defaults to the exclusion zone used to compute the (Pan-)Matrix Profile which is found in the profile data structure.</p></td>
     </tr>
     <tr>
-      <th>verbose</th>
-      <td><p>an <code>int</code>. (Default is <code>2</code>).</p></td>
+      <th>k</th>
+      <td><p>an <code>int</code>. Number of discords to find. (Default is <code>3</code>).</p></td>
+    </tr>
+    <tr>
+      <th>neighbor_count</th>
+      <td><p>an <code>int</code>. Number of neighbors to find. (Default is <code>3</code>).</p></td>
+    </tr>
+    <tr>
+      <th>radius</th>
+      <td><p>an <code>int</code>. Set a threshold to exclude matching neighbors with distance &gt; current
+discord distance * <code>radius</code>. (Default is <code>3</code>).</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>Returns a <code>list</code> with <code>f_score</code>, <code>precision</code>, <code>recall</code> and <code>bits</code> used in the algorithm.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    
-<ul>
-<li><p>Yeh CCM, Van Herle H, Keogh E. Matrix profile III: The matrix profile allows
-visualization of salient subsequences in massive time series. Proc - IEEE Int Conf Data Mining,
-ICDM. 2017;579-88.</p></li>
-</ul>
+    <p>Website: <a href='http://www.cs.ucr.edu/~eamonn/MatrixProfile.html'>http://www.cs.ucr.edu/~eamonn/MatrixProfile.html</a></p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-<ul>
-<li><p>Hu B, Rakthanmanon T, Hao Y, Evans S, Lonardi S, Keogh E. Discovering the Intrinsic
-Cardinality and Dimensionality of Time Series Using MDL. In: 2011 IEEE 11th International
-Conference on Data Mining. IEEE; 2011. p. 1086-91.</p></li>
-</ul>
+    <div class='dont-index'><p>Other Main API: 
+<code><a href='analyze.html'>analyze</a>()</code>,
+<code><a href='compute.html'>compute</a>()</code>,
+<code><a href='motifs.html'>motifs</a>()</code>,
+<code><a href='visualize.html'>visualize</a>()</code></p></div>
 
-<p>Website: <a href='https://sites.google.com/site/salientsubs/'>https://sites.google.com/site/salientsubs/</a></p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># toy example</span>
-<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='no'>mp_toy_data</span>$<span class='no'>data</span>[, <span class='fl'>1</span>]
-<span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span>(<span class='no'>data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
-<span class='no'>mps</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='salient_subsequences.html'>salient_subsequences</a></span>(<span class='no'>mp</span>, <span class='kw'>n_bits</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>4</span>, <span class='fl'>6</span>, <span class='fl'>8</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
-<span class='no'>label_idx</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>2</span>, <span class='fl'>500</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='fl'>110</span>) <span class='co'># fake data</span>
-<span class='fu'>salient_score</span>(<span class='no'>mps</span>, <span class='no'>label_idx</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
       <li><a href="#references">References</a></li>
-      <li><a href="#examples">Examples</a></li>
+      <li><a href="#see-also">See also</a></li>
     </ul>
 
   </div>

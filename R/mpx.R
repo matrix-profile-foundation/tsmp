@@ -27,12 +27,20 @@ mpx <- function(data, window_size, query = NULL, idx = TRUE, dist = c("euclidean
     dist <- FALSE
   }
 
+  ez <- getOption("tsmp.exclusion_zone", 1 / 2) # TODO: check minlag and ez
   result <- NULL
 
   # Register anytime exit point
-  on.exit(return({
-    result
-  }), TRUE)
+  on.exit(
+      if (is.null(result)) {
+        return(invisible(NULL))
+      } else {
+        result$ez <- ez
+        return(result)
+      }
+    ,
+    TRUE
+  )
 
   # Computation ------------------------------------
   if (is.null(query)) {
@@ -65,6 +73,8 @@ mpx <- function(data, window_size, query = NULL, idx = TRUE, dist = c("euclidean
     )
   } else {
     ## AB-Join ====================================
+    ez <- 0
+
     tryCatch(
       {
         if (n_workers > 1) {

@@ -60,4 +60,6 @@ w <- 50
 data <- mp_gait_data
 mp <- tsmp(data, window_size = w, exclusion_zone = 1 / 4, verbose = 0)
 mp <- find_discord(mp)
+pan <- tsmp(mp_gait_data, window_size = 20:30, mode = "pmp")
+mp <- find_discord(pan)
 }
