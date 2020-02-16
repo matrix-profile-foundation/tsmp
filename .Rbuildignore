@@ -35,3 +35,6 @@
 ^tsmp.*\.tgz$
 ^codecov\.yml$
 ^pkgdown/
+^examples_.*/$
+^tests_.*/$
+^.*\.Rout$
