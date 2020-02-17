@@ -1,3 +1,5 @@
+^.*\.Rproj$
+^\.Rproj\.user$
 ^\.covrignore$
 ^API$
 ^CRAN-RELEASE$
@@ -10,8 +12,6 @@
 ^dev/
 ^\.Rprofile$
 ^\.travis\.yml$
-^.*\.Rproj$
-^\.Rproj\.user$
 ^LICENSE\.md$
 ^NEWS\.Rmd$
 ^NEWS-.*\.png$
@@ -38,3 +38,4 @@
 ^examples_.*/$
 ^tests_.*/$
 ^.*\.Rout$
+^\.circleci/config\.yml$

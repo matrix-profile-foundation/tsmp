@@ -1,7 +1,7 @@
 README
 ================
 Francisco Bischoff
-\- 30 Dec 2019
+\- 17 Feb 2020
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -9,12 +9,14 @@ Francisco Bischoff
 
 # Time Series with Matrix Profile
 
+<!-- badges: start -->
 [![Packagist](https://img.shields.io/badge/license-GPL--3-brightgreen.svg)](https://choosealicense.com/licenses/gpl-3.0/)
 [![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
 [![CRAN
 version](http://www.r-pkg.org/badges/version/tsmp)](https://cran.r-project.org/package=tsmp)
 [![CRAN
 Downloads](https://cranlogs.r-pkg.org/badges/tsmp)](https://cran.r-project.org/package=tsmp)
+<!-- badges: end -->
 
 |               | Build                                                                                                                                                                             | Dev                                                                                                                                                                                 |
 | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
