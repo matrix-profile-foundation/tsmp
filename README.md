@@ -1,7 +1,7 @@
 README
 ================
 Francisco Bischoff
-\- 17 Feb 2020
+\- 19 Feb 2020
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -152,6 +152,6 @@ Visit: [Matrix Profile Foundation](https://matrixprofile.org)
 
 ## Code of Conduct
 
-Please note that this project is released with a [Contributor Code of
-Conduct](https://github.com/matrix-profile-foundation/tsmp/blob/master/CODE_OF_CONDUCT.md).
-By participating in this project, you agree to abide by its terms.
+Please note that the ‘tsmp’ project is released with a [Contributor Code
+of Conduct](.github/CODE_OF_CONDUCT.md). By contributing to this
+project, you agree to abide by its terms.

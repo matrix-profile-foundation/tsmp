@@ -1,54 +1,76 @@
-Package: tsmp
 Type: Package
+Package: tsmp
 Title: Time Series with Matrix Profile
 Version: 0.4.0.9002
-Authors@R: c(
-    person("Francisco", "Bischoff", email = "fbischoff@med.up.pt", role = c("aut", "cre"),
-    comment = c(ORCID = "https://orcid.org/0000-0002-5301-8672")),
-    person("Michael", "Yeh", email = "myeh003@ucr.edu", role = c("res", "ccp", "ctb"),
-    comment = c(ORCID = "https://orcid.org/0000-0002-9807-2963")),
-    person("Diego", "Silva", email = "diegofs@ufscar.br", role = c("res", "ccp", "ctb"),
-    comment = c(ORCID = "https://orcid.org/0000-0002-5184-9413")),
-    person("Yan", "Zhu", email = "yzhu015@ucr.edu", role = c("res", "ccp", "ctb"),
-    comment = c(ORCID = "https://orcid.org/0000-0002-5952-2108")),
-    person("Hoang", "Dau", email = "hdau001@ucr.edu", role = c("res", "ccp", "ctb"),
-    comment = c(ORCID = "https://orcid.org/0000-0003-2439-5185")),
-    person("Michele", "Linardi", email = "michele.linardi@orange.fr", role = c("res", "ccp", "ctb"),
-    comment = c(ORCID = "https://orcid.org/0000-0002-3249-2068"))
-  )
+Authors@R: 
+    c(person(given = "Francisco",
+             family = "Bischoff",
+             role = c("aut", "cre"),
+             email = "fbischoff@med.up.pt",
+             comment = c(ORCID = "https://orcid.org/0000-0002-5301-8672")),
+      person(given = "Michael",
+             family = "Yeh",
+             role = c("res", "ccp", "ctb"),
+             email = "myeh003@ucr.edu",
+             comment = c(ORCID = "https://orcid.org/0000-0002-9807-2963")),
+      person(given = "Diego",
+             family = "Silva",
+             role = c("res", "ccp", "ctb"),
+             email = "diegofs@ufscar.br",
+             comment = c(ORCID = "https://orcid.org/0000-0002-5184-9413")),
+      person(given = "Yan",
+             family = "Zhu",
+             role = c("res", "ccp", "ctb"),
+             email = "yzhu015@ucr.edu",
+             comment = c(ORCID = "https://orcid.org/0000-0002-5952-2108")),
+      person(given = "Hoang",
+             family = "Dau",
+             role = c("res", "ccp", "ctb"),
+             email = "hdau001@ucr.edu",
+             comment = c(ORCID = "https://orcid.org/0000-0003-2439-5185")),
+      person(given = "Michele",
+             family = "Linardi",
+             role = c("res", "ccp", "ctb"),
+             email = "michele.linardi@orange.fr",
+             comment = c(ORCID = "https://orcid.org/0000-0002-3249-2068")))
 Maintainer: Francisco Bischoff <fbischoff@med.up.pt>
-Description: A toolkit implementing the Matrix Profile concept that was created by CS-UCR <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>.
+Description: A toolkit implementing the Matrix Profile concept
+    that was created by CS-UCR
+    <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>.
 License: GPL-3
 URL: https://github.com/matrix-profile-foundation/tsmp
-BugReports: https://github.com/matrix-profile-foundation/tsmp/issues
-Depends: R (>= 2.10)
+BugReports: 
+    https://github.com/matrix-profile-foundation/tsmp/issues
+Depends: 
+    R (>= 3.2)
 Imports:
-    audio,
-    doSNOW,
+    audio (>= 0.1-6),
+    doSNOW (>= 1.0.18),
+    foreach (>= 1.4.8),
+    magrittr (>= 1.5),
     parallel,
-    foreach,
-    progress,
-    magrittr,
-    RJSONIO,
-    Rcpp,
-    RcppParallel
+    progress (>= 1.2.2),
+    Rcpp (>= 1.0.3),
+    RcppParallel (>= 4.4.4),
+    RJSONIO (>= 1.3-1.4)
+Suggests:
+    checkmate (>= 2.0.0),
+    covr (>= 3.4.0),
+    gdtools (>= 0.2.1),
+    knitr (>= 1.28),
+    raster (>= 3.0-12),
+    spelling (>= 2.1),
+    testthat (>= 2.3.1),
+    vdiffr (>= 0.3.1)
+LinkingTo: 
+    Rcpp (>= 1.0.3),
+    RcppParallel (>= 4.4.4)
+VignetteBuilder: 
+    knitr
 Encoding: UTF-8
-SystemRequirements: 
-    GNU make
 Language: en-US
 LazyData: true
+NeedsCompilation: no
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.0.2
-NeedsCompilation: no
-Suggests:
-    spelling,
-    testthat (>= 2.1.0),
-    knitr,
-    gdtools,
-    vdiffr,
-    covr,
-    checkmate,
-    raster
-VignetteBuilder: knitr
-LinkingTo: 
-    Rcpp, RcppParallel
+SystemRequirements: GNU make

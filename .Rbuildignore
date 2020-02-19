@@ -39,3 +39,4 @@
 ^tests_.*/$
 ^.*\.Rout$
 ^\.circleci/config\.yml$
+^\.github$

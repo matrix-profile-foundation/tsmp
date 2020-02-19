@@ -32,13 +32,12 @@ mpx <- function(data, window_size, query = NULL, idx = TRUE, dist = c("euclidean
 
   # Register anytime exit point
   on.exit(
-      if (is.null(result)) {
-        return(invisible(NULL))
-      } else {
-        result$ez <- ez
-        return(result)
-      }
-    ,
+    if (is.null(result)) {
+      return(invisible(NULL))
+    } else {
+      result$ez <- ez
+      return(result)
+    },
     TRUE
   )
 
