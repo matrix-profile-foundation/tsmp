@@ -1068,8 +1068,8 @@ plot.Salient <- function(x, data, main = "Salient Subsections", xlab = "index", 
 skimp_plot_set_canvas <- function(..., pmp_obj = NULL) {
   if (!is.null(pmp_obj)) {
     xmin <- 1
-    ymin <- min(pmp_obj$windows)
-    ymax <- max(pmp_obj$windows) + floor((max(pmp_obj$windows) - ymin) / 24) # arbitrary
+    ymin <- min(pmp_obj$w)
+    ymax <- max(pmp_obj$w) + floor((max(pmp_obj$w) - ymin) / 24) # arbitrary
     mp_min <- length(pmp_obj$pmp[[as.character(ymin)]])
     xmax <- mp_min + ymin - 1
   } else {
@@ -1257,8 +1257,8 @@ plot.PMP <- function(x, ylab = "distance", xlab = "index", main = "Unidimensiona
 plot_skimp <- function(pmp, func = NULL) {
   def_par <- graphics::par(no.readonly = TRUE)
   # prepare plot using the values in `windows` vector.
-  min_window <- min(pmp$windows)
-  max_window <- max(pmp$windows)
+  min_window <- min(pmp$w)
+  max_window <- max(pmp$w)
   mp_len <- length(pmp$pmp[[as.character(min_window)]])
 
   if (!(mp_len > 0)) {
@@ -1266,7 +1266,7 @@ plot_skimp <- function(pmp, func = NULL) {
   }
 
   data_size <- mp_len + min_window - 1
-  sizes <- sort(pmp$windows, index.return = TRUE)
+  sizes <- sort(pmp$w, index.return = TRUE)
   window_sizes <- sizes$x
   # window_idxs <- sizes$ix
 

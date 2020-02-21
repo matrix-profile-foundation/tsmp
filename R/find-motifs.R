@@ -418,7 +418,7 @@ find_motif.PMP <- function(.mp, data, n_motifs = 3, n_neighbors = 10, radius = 3
     exclusion_zone <- .mp$ez
   }
 
-  exclusion_zone <- round(.mp$windows[row] * exclusion_zone + vars()$eps)
+  exclusion_zone <- round(.mp$w[row] * exclusion_zone + vars()$eps)
 
   nn <- NULL
 
@@ -437,7 +437,7 @@ find_motif.PMP <- function(.mp, data, n_motifs = 3, n_neighbors = 10, radius = 3
     motif_idxs[[1]][[i]] <- sort(idxs)
     motif_idx <- motif_idxs[[1L]][[i]][1]
 
-    window <- .mp$windows[1]
+    window <- .mp$w[1]
     e_zone <- exclusion_zone
 
 

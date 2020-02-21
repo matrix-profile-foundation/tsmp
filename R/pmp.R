@@ -80,7 +80,7 @@ pmp <- function(data,
   # if an object is given, remove the windows that already have been computed and are below the upper_window
   if (!is.null(pmp_obj)) {
     # remove already computed
-    window_sizes <- window_sizes[!(window_sizes %in% pmp_obj$windows)]
+    window_sizes <- window_sizes[!(window_sizes %in% pmp_obj$w)]
 
     if (!is.null(pmp_obj$upper_window)) {
       # remove those above the upper_window
@@ -129,7 +129,7 @@ pmp <- function(data,
         expected_indexes <- as.numeric(names(pmp_obj$pmpi))
 
         # check if the windows vector contains any uncomputed matrix profile
-        if (any(!(pmp_obj$windows %in% expected_profiles))) {
+        if (any(!(pmp_obj$w %in% expected_profiles))) {
           warning("`windows` contains values not computed in `pmp`")
         }
 
@@ -195,15 +195,15 @@ pmp <- function(data,
     )
 
     # if pmp_obj is a new empty object, accessing windows will return NULL, so it's fine
-    pmp_obj$windows <- c(pmp_obj$windows, w)
+    pmp_obj$w <- c(pmp_obj$w, w)
     # using character to create a tuple list. Numbers would create NULL's
     pmp_obj$pmp[[as.character(w)]] <- result$mp
     pmp_obj$pmpi[[as.character(w)]] <- result$pi
 
     if (plot == TRUE) {
-      # add a layer to the plot. `pmp_obj$windows` is currently used to know the heigth of
+      # add a layer to the plot. `pmp_obj$w` is currently used to know the heigth of
       # the new layer. May be room to improve.
-      skimp_plot_add_layer(result$mp, w, pmp_obj$windows)
+      skimp_plot_add_layer(result$mp, w, pmp_obj$w)
       Sys.sleep(1) # needed for plot update
     }
   }
@@ -280,7 +280,7 @@ pmp_upper_bound <- function(data,
   on.exit(
     {
       if (return_pmp) {
-        pmp_obj <- list(upper_window = max(windows), pmp = pmp, pmpi = pmpi, windows = windows)
+        pmp_obj <- list(upper_window = max(windows), pmp = pmp, pmpi = pmpi, w = windows)
         class(pmp_obj) <- "PMP"
         return(pmp_obj)
       } else {

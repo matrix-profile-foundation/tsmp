@@ -45,7 +45,7 @@ analyze <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
 
   # Parse arguments ---------------------------------
   checkmate::qassert(ts, "N+")
-  windows <- checkmate::qassert(windows, c("0", "X+"))
+  windows <- checkmate::qassert(windows, c("0", "X+[4,)"))
   checkmate::qassert(query, c("0", "N>=4"))
   checkmate::qassert(sample_pct, "N1(0,1]")
   checkmate::qassert(threshold, c("0", "N1(0,1]"))

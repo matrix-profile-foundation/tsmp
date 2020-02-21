@@ -197,7 +197,7 @@ find_discord.PMP <- function(.mp, data, n_discords = 1, n_neighbors = 3, radius 
     exclusion_zone <- .mp$ez
   }
 
-  exclusion_zone <- round(.mp$windows[row] * exclusion_zone + vars()$eps)
+  exclusion_zone <- round(.mp$w[row] * exclusion_zone + vars()$eps)
 
   nn <- NULL
 
