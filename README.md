@@ -75,13 +75,21 @@ data <- cumsum(sample(c(-1, 1), 40000, TRUE))
 
 #### Current version benchmark
 
+    #> Finished in 1.53 mins
+    #> Warming up parallel with 8 cores.
+    #> Finished in 39.80 secs
+    #> Finished in 2.14 mins
+    #> 92.36
+    #> 42.7
+    #> 129.06
+
 |             | Elapsed Time(s) | Data Size | Window Size | Threads | Lang |
 | ----------- | --------------: | --------: | ----------: | ------: | :--- |
-| `mpx_par`   |            0.59 |     40000 |        1000 |       8 | Rcpp |
-| `mpx`       |            2.09 |     40000 |        1000 |       1 | Rcpp |
-| `stomp_par` |           41.56 |     40000 |        1000 |       8 | R    |
-| `stomp`     |           91.15 |     40000 |        1000 |       1 | R    |
-| `scrimp`    |          132.88 |     40000 |        1000 |       1 | R    |
+| `mpx_par`   |            0.64 |     40000 |        1000 |       8 | Rcpp |
+| `mpx`       |            2.08 |     40000 |        1000 |       1 | Rcpp |
+| `stomp_par` |           42.70 |     40000 |        1000 |       8 | R    |
+| `stomp`     |           92.36 |     40000 |        1000 |       1 | R    |
+| `scrimp`    |          129.06 |     40000 |        1000 |       1 | R    |
 | `stamp_par` |          895.75 |     40000 |        1000 |       8 | R    |
 | `stamp`     |         3864.05 |     40000 |        1000 |       1 | R    |
 

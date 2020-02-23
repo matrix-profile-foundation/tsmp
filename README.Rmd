@@ -75,17 +75,17 @@ data <- cumsum(sample(c(-1, 1), 40000, TRUE))
 
 #### Current version benchmark
 
-```{r benchmark, include=FALSE, cache=TRUE}
+```{r benchmark, cache=TRUE, include=FALSE}
 w <- 1000
 workers <- 8
 data_size <- 40000
 set.seed(2018)
 data <- cumsum(sample(c(-1, 1), data_size, TRUE))
-mbm_stomp <- round(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "stomp"), times = 1L)$time / 10^9, 2)
-mbm_stomp_par <- round(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "stomp", n_workers = workers), times = 1L)$time / 10^9, 2)
-mbm_scrimp <- round(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "scrimp"), times = 1L)$time / 10^9, 2)
-mbm_stamp <- round(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "stamp"), times = 1L)$time / 10^9, 2)
-mbm_stamp_par <- round(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "stamp", n_workers = workers), times = 1L)$time / 10^9, 2)
+mbm_stomp <- round(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "stomp", verbose = 0), times = 1L)$time / 10^9, 2)
+mbm_stomp_par <- round(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "stomp", n_workers = workers, verbose = 0), times = 1L)$time / 10^9, 2)
+mbm_scrimp <- round(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "scrimp", verbose = 0), times = 1L)$time / 10^9, 2)
+mbm_stamp <- round(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "stamp", verbose = 0), times = 1L)$time / 10^9, 2)
+mbm_stamp_par <- round(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "stamp", n_workers = workers, verbose = 0), times = 1L)$time / 10^9, 2)
 mbm_mpx <- round(microbenchmark::microbenchmark(mpx(data, window_size = w), times = 1L)$time / 10^9, 2)
 mbm_mpx_par <- round(microbenchmark::microbenchmark(mpx(data, window_size = w, n_workers = workers), times = 1L)$time / 10^9, 2)
 ```
