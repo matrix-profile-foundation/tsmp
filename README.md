@@ -16,8 +16,6 @@ Francisco Bischoff
 version](http://www.r-pkg.org/badges/version/tsmp)](https://cran.r-project.org/package=tsmp)
 [![CRAN
 Downloads](https://cranlogs.r-pkg.org/badges/tsmp)](https://cran.r-project.org/package=tsmp)
-[![CircleCI build
-status](https://circleci.com/gh/matrix-profile-foundation/tsmp.svg?style=svg)](https://circleci.com/gh/matrix-profile-foundation/tsmp)
 <!-- badges: end -->
 
 |               | Build                                                                                                                                                                             | Dev                                                                                                                                                                                 |
