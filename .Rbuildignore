@@ -40,3 +40,5 @@
 ^.*\.Rout$
 ^\.circleci/config\.yml$
 ^\.github$
+^_pkgdown\.yml$
+^README_cache/

@@ -1,7 +1,7 @@
 README
 ================
 Francisco Bischoff
-\- 19 Feb 2020
+\- 23 Feb 2020
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -73,13 +73,27 @@ set.seed(2018)
 data <- cumsum(sample(c(-1, 1), 40000, TRUE))
 ```
 
-|               | Elapsed Time | Data size | Window size | Threads |
-| ------------- | :----------: | :-------: | :---------: | :-----: |
-| `stomp_par()` |    52.72s    |   40000   |    1000     |    8    |
-| `scrimp()`    |    92.44s    |   40000   |    1000     |    1    |
-| `stomp()`     |   136.01s    |   40000   |    1000     |    1    |
-| `stamp_par()` |   140.25s    |   40000   |    1000     |    8    |
-| `stamp()`     |   262.03s    |   40000   |    1000     |    1    |
+#### Current version benchmark
+
+|             | Elapsed Time(s) | Data Size | Window Size | Threads |
+| ----------- | --------------: | --------: | ----------: | ------: |
+| `mpx_par`   |            0.59 |     40000 |        1000 |       8 |
+| `mpx`       |            2.09 |     40000 |        1000 |       1 |
+| `stomp_par` |           41.56 |     40000 |        1000 |       8 |
+| `stomp`     |           91.15 |     40000 |        1000 |       1 |
+| `scrimp`    |          132.88 |     40000 |        1000 |       1 |
+| `stamp_par` |          895.75 |     40000 |        1000 |       8 |
+| `stamp`     |         3864.05 |     40000 |        1000 |       1 |
+
+#### Old benchmark (\<=v0.3.0)
+
+|             | Elapsed Time(s) | Data size | Window size | Threads |
+| ----------- | --------------: | --------: | ----------: | ------: |
+| `stomp_par` |           52.72 |     40000 |        1000 |       8 |
+| `scrimp`    |           92.44 |     40000 |        1000 |       1 |
+| `stomp`     |          136.01 |     40000 |        1000 |       1 |
+| `stamp_par` |          140.25 |     40000 |        1000 |       8 |
+| `stamp`     |          262.03 |     40000 |        1000 |       1 |
 
 ## Installation
 

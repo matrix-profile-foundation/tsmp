@@ -12,7 +12,7 @@ if (!testthat:::on_cran()) {
     expect_s3_class(result, "MatrixProfile")
     expect_length(result, 11)
     expect_false(attr(result, "join"))
-    expect_equal(round(mean(unlist(result$motif)), 4), 254.2258)
-    expect_equal(round(sd(unlist(result$motif)), 4), 175.1098)
+    expect_equal(round(mean(unlist(result$motif)), 4), 256.3182)
+    expect_equal(round(sd(unlist(result$motif)), 4), 167.7008)
   })
 }

@@ -13,6 +13,7 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.path = "man/figures/README-"
 )
+library(tsmp)
 ```
 
 <img src="man/figures/logo.png" align="right" style="float:right;" />
@@ -49,7 +50,7 @@ This package provides:
 * Basic plotting for all outputs generated here.
 * Sequencial workflow, see below.
 
-```{r, examples, eval = FALSE}
+```{r basic, examples, eval = FALSE}
 # Basic workflow:
 matrix <- tsmp(data, window_size = 30) %>%
   find_motif(n_motifs = 3) %>%
@@ -67,27 +68,51 @@ Please be welcome to suggest improvements.
 
 ### Performance on an Intel(R) Core(TM) i7-7700 CPU @ 3.60GHz using a random walk dataset
 
-```{r eval=FALSE, include=TRUE}
+```{r bench_data, eval=FALSE, include=TRUE}
 set.seed(2018)
 data <- cumsum(sample(c(-1, 1), 40000, TRUE))
 ```
 
-```{r table2, echo=FALSE, message=FALSE, warnings=FALSE, results='asis'}
+#### Current version benchmark
+
+```{r benchmark, include=FALSE, cache=TRUE}
+w <- 1000
+workers <- 8
+data_size <- 40000
+set.seed(2018)
+data <- cumsum(sample(c(-1, 1), data_size, TRUE))
+mbm_stomp <- round(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "stomp"), times = 1L)$time / 10^9, 2)
+mbm_stomp_par <- round(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "stomp", n_workers = workers), times = 1L)$time / 10^9, 2)
+mbm_scrimp <- round(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "scrimp"), times = 1L)$time / 10^9, 2)
+mbm_stamp <- round(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "stamp"), times = 1L)$time / 10^9, 2)
+mbm_stamp_par <- round(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "stamp", n_workers = workers), times = 1L)$time / 10^9, 2)
+mbm_mpx <- round(microbenchmark::microbenchmark(mpx(data, window_size = w), times = 1L)$time / 10^9, 2)
+mbm_mpx_par <- round(microbenchmark::microbenchmark(mpx(data, window_size = w, n_workers = workers), times = 1L)$time / 10^9, 2)
+```
+
+```{r bench_dataset, echo = FALSE, message=FALSE, warnings=FALSE}
+bench_data <- data.frame("Elapsed Time(s)" = c(mbm_stamp, mbm_stamp_par, mbm_stomp, mbm_stomp_par, mbm_scrimp, mbm_mpx, mbm_mpx_par), "Data Size" = data_size, "Window Size" = w, Threads = c(1, workers, 1, workers, 1, 1, workers), row.names = c("`stamp`", "`stamp_par`", "`stomp`", "`stomp_par`", "`scrimp`", "`mpx`", "`mpx_par`"), check.names = FALSE)
+
+knitr::kable(bench_data[order(bench_data$`Elapsed Time(s)`),])
+```
+
+#### Old benchmark (<=v0.3.0)
+```{r table_old, echo=FALSE, message=FALSE, warnings=FALSE, results='asis'}
 tabl <- "
-|  | Elapsed Time | Data size | Window size | Threads |
-|-----------|:------------:|:---------:|:-----------:|:-------:|
-| `stomp_par()` | 52.72s | 40000 | 1000 | 8 |
-| `scrimp()` | 92.44s | 40000 | 1000 | 1 |
-| `stomp()` | 136.01s | 40000 | 1000 | 1 |
-| `stamp_par()` | 140.25s | 40000 | 1000 | 8 |
-| `stamp()` | 262.03s | 40000 | 1000 | 1 |
+|  | Elapsed Time(s) | Data size | Window size | Threads |
+|-----------|------------:|---------:|-----------:|-------:|
+| `stomp_par` | 52.72 | 40000 | 1000 | 8 |
+| `scrimp` | 92.44 | 40000 | 1000 | 1 |
+| `stomp` | 136.01 | 40000 | 1000 | 1 |
+| `stamp_par` | 140.25 | 40000 | 1000 | 8 |
+| `stamp` | 262.03 | 40000 | 1000 | 1 |
 "
 cat(tabl) # output the table in a format good for HTML/PDF/docx conversion
 ```
 
 ## Installation
 
-```{r, gh-installation, eval = FALSE}
+```{r installation, gh-installation, eval = FALSE}
 # Install the released version from CRAN
 install.packages("tsmp")
 
