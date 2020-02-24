@@ -27,7 +27,7 @@ library(tsmp)
 [![CircleCI build status](https://circleci.com/gh/matrix-profile-foundation/tsmp.svg?style=svg)](https://circleci.com/gh/matrix-profile-foundation/tsmp)
   <!-- badges: end -->
 
-|              | Build | Dev |
+|              | master | develop |
 |--------------|-------|-----|
 | Linux x86_64 | [![Build Status](https://travis-ci.com/matrix-profile-foundation/tsmp.svg?branch=master)](https://travis-ci.com/matrix-profile-foundation/tsmp) | [![Build Status](https://travis-ci.com/matrix-profile-foundation/tsmp.svg?branch=develop)](https://travis-ci.com/matrix-profile-foundation/tsmp) |
 | OSX | [![Build Status](https://travis-ci.com/matrix-profile-foundation/tsmp.svg?branch=master)](https://travis-ci.com/matrix-profile-foundation/tsmp) | [![Build Status](https://travis-ci.com/matrix-profile-foundation/tsmp.svg?branch=develop)](https://travis-ci.com/matrix-profile-foundation/tsmp) |
@@ -94,20 +94,6 @@ mbm_mpx_par <- round(microbenchmark::microbenchmark(mpx(data, window_size = w, n
 bench_data <- data.frame("Elapsed Time(s)" = c(mbm_stamp, mbm_stamp_par, mbm_stomp, mbm_stomp_par, mbm_scrimp, mbm_mpx, mbm_mpx_par), "Data Size" = data_size, "Window Size" = w, Threads = c(1, workers, 1, workers, 1, 1, workers), Lang = c("R", "R", "R", "R", "R", "Rcpp", "Rcpp"), row.names = c("`stamp`", "`stamp_par`", "`stomp`", "`stomp_par`", "`scrimp`", "`mpx`", "`mpx_par`"), check.names = FALSE)
 
 knitr::kable(bench_data[order(bench_data$`Elapsed Time(s)`),])
-```
-
-#### Old benchmark (<=v0.3.0)
-```{r table_old, echo=FALSE, message=FALSE, warnings=FALSE, results='asis'}
-tabl <- "
-|  | Elapsed Time(s) | Data size | Window size | Threads | Lang |
-|-----------|------------:|---------:|-----------:|-------:|-----:|
-| `stomp_par` | 52.72 | 40000 | 1000 | 8 | R |
-| `scrimp` | 92.44 | 40000 | 1000 | 1 | R |
-| `stomp` | 136.01 | 40000 | 1000 | 1 | R |
-| `stamp_par` | 140.25 | 40000 | 1000 | 8 | R |
-| `stamp` | 262.03 | 40000 | 1000 | 1 | R |
-"
-cat(tabl) # output the table in a format good for HTML/PDF/docx conversion
 ```
 
 ## Installation

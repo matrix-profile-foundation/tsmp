@@ -35,10 +35,13 @@
 ^tsmp.*\.tgz$
 ^codecov\.yml$
 ^pkgdown/
-^examples_.*/$
-^tests_.*/$
+^examples_*/$
+^tests_*/$
 ^.*\.Rout$
 ^\.circleci/config\.yml$
 ^\.github$
 ^_pkgdown\.yml$
 ^README_cache/
+^\.circleci$
+^tsmp-Ex_x64\.Rout$
+^tsmp-Ex_i386\.Rout$

@@ -12,6 +12,6 @@ lhs \%T>\% rhs
 \description{
 See \code{magrittr::\link[magrittr:pipe]{\%>\%}} for details.
 
-See \code{magrittr::\link[magrittr pipe]{\%T>\%}} for details.
+See \code{magrittr::\link[magrittr:pipe]{\%T>\%}} for details.
 }
 \keyword{internal}

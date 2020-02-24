@@ -12,7 +12,7 @@ NULL
 
 #' Tee operator
 #'
-#' See \code{magrittr::\link[magrittr pipe]{\%T>\%}} for details.
+#' See \code{magrittr::\link[magrittr:pipe]{\%T>\%}} for details.
 #'
 #' @name %T>%
 #' @rdname pipe

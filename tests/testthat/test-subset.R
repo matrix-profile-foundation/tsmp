@@ -8,7 +8,7 @@ if (!testthat:::on_cran()) {
   w <- mp_fluss_data$tilt_abp$window
   nseg <- 1
   offset <- 4000
-  test_mp <- tsmp(data, window_size = w, n_workers = 2L)
+  test_mp <- tsmp(data, window_size = w)
   mpd_vect <- mpdist(data, mpd_query, floor(w/10), type = "vector")
   test_floss <- floss(test_mp, data_new, 5000)
 

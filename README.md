@@ -1,7 +1,7 @@
 README
 ================
 Francisco Bischoff
-\- 23 Feb 2020
+\- 24 Feb 2020
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -18,7 +18,7 @@ version](http://www.r-pkg.org/badges/version/tsmp)](https://cran.r-project.org/p
 Downloads](https://cranlogs.r-pkg.org/badges/tsmp)](https://cran.r-project.org/package=tsmp)
 <!-- badges: end -->
 
-|               | Build                                                                                                                                                                             | Dev                                                                                                                                                                                 |
+|               | master                                                                                                                                                                            | develop                                                                                                                                                                             |
 | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Linux x86\_64 | [![Build Status](https://travis-ci.com/matrix-profile-foundation/tsmp.svg?branch=master)](https://travis-ci.com/matrix-profile-foundation/tsmp)                                   | [![Build Status](https://travis-ci.com/matrix-profile-foundation/tsmp.svg?branch=develop)](https://travis-ci.com/matrix-profile-foundation/tsmp)                                    |
 | OSX           | [![Build Status](https://travis-ci.com/matrix-profile-foundation/tsmp.svg?branch=master)](https://travis-ci.com/matrix-profile-foundation/tsmp)                                   | [![Build Status](https://travis-ci.com/matrix-profile-foundation/tsmp.svg?branch=develop)](https://travis-ci.com/matrix-profile-foundation/tsmp)                                    |
@@ -73,33 +73,15 @@ data <- cumsum(sample(c(-1, 1), 40000, TRUE))
 
 #### Current version benchmark
 
-    #> Finished in 1.53 mins
-    #> Warming up parallel with 8 cores.
-    #> Finished in 39.80 secs
-    #> Finished in 2.14 mins
-    #> 92.36
-    #> 42.7
-    #> 129.06
-
 |             | Elapsed Time(s) | Data Size | Window Size | Threads | Lang |
 | ----------- | --------------: | --------: | ----------: | ------: | :--- |
-| `mpx_par`   |            0.64 |     40000 |        1000 |       8 | Rcpp |
-| `mpx`       |            2.08 |     40000 |        1000 |       1 | Rcpp |
-| `stomp_par` |           42.70 |     40000 |        1000 |       8 | R    |
-| `stomp`     |           92.36 |     40000 |        1000 |       1 | R    |
-| `scrimp`    |          129.06 |     40000 |        1000 |       1 | R    |
-| `stamp_par` |          895.75 |     40000 |        1000 |       8 | R    |
-| `stamp`     |         3864.05 |     40000 |        1000 |       1 | R    |
-
-#### Old benchmark (\<=v0.3.0)
-
-|             | Elapsed Time(s) | Data size | Window size | Threads | Lang |
-| ----------- | --------------: | --------: | ----------: | ------: | ---: |
-| `stomp_par` |           52.72 |     40000 |        1000 |       8 |    R |
-| `scrimp`    |           92.44 |     40000 |        1000 |       1 |    R |
-| `stomp`     |          136.01 |     40000 |        1000 |       1 |    R |
-| `stamp_par` |          140.25 |     40000 |        1000 |       8 |    R |
-| `stamp`     |          262.03 |     40000 |        1000 |       1 |    R |
+| `mpx_par`   |            0.70 |     40000 |        1000 |       8 | Rcpp |
+| `mpx`       |            2.63 |     40000 |        1000 |       1 | Rcpp |
+| `stomp_par` |           43.29 |     40000 |        1000 |       8 | R    |
+| `stomp`     |           98.10 |     40000 |        1000 |       1 | R    |
+| `scrimp`    |          137.44 |     40000 |        1000 |       1 | R    |
+| `stamp_par` |          963.27 |     40000 |        1000 |       8 | R    |
+| `stamp`     |         4018.01 |     40000 |        1000 |       1 | R    |
 
 ## Installation
 
