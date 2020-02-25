@@ -27,7 +27,7 @@ library(tsmp)
 [![CircleCI build status](https://circleci.com/gh/matrix-profile-foundation/tsmp.svg?style=svg)](https://circleci.com/gh/matrix-profile-foundation/tsmp)
   <!-- badges: end -->
 
-|              | master | develop |
+|              | Build | Dev |
 |--------------|-------|-----|
 | Linux x86_64 | [![Build Status](https://travis-ci.com/matrix-profile-foundation/tsmp.svg?branch=master)](https://travis-ci.com/matrix-profile-foundation/tsmp) | [![Build Status](https://travis-ci.com/matrix-profile-foundation/tsmp.svg?branch=develop)](https://travis-ci.com/matrix-profile-foundation/tsmp) |
 | OSX | [![Build Status](https://travis-ci.com/matrix-profile-foundation/tsmp.svg?branch=master)](https://travis-ci.com/matrix-profile-foundation/tsmp) | [![Build Status](https://travis-ci.com/matrix-profile-foundation/tsmp.svg?branch=develop)](https://travis-ci.com/matrix-profile-foundation/tsmp) |
@@ -53,7 +53,7 @@ This package provides:
 ```{r basic, examples, eval = FALSE}
 # Basic workflow:
 matrix <- tsmp(data, window_size = 30) %>%
-  find_motif(n_motifs = 3) %>%
+  find_motif(n_motifs = 3) %T>%
   plot()
 
 # SDTS still have a unique way to work:
@@ -80,14 +80,16 @@ w <- 1000
 workers <- 8
 data_size <- 40000
 set.seed(2018)
-data <- cumsum(sample(c(-1, 1), data_size, TRUE))
-mbm_stomp <- round(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "stomp", verbose = 0), times = 1L)$time / 10^9, 2)
-mbm_stomp_par <- round(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "stomp", n_workers = workers, verbose = 0), times = 1L)$time / 10^9, 2)
-mbm_scrimp <- round(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "scrimp", verbose = 0), times = 1L)$time / 10^9, 2)
-mbm_stamp <- round(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "stamp", verbose = 0), times = 1L)$time / 10^9, 2)
-mbm_stamp_par <- round(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "stamp", n_workers = workers, verbose = 0), times = 1L)$time / 10^9, 2)
-mbm_mpx <- round(microbenchmark::microbenchmark(mpx(data, window_size = w), times = 1L)$time / 10^9, 2)
-mbm_mpx_par <- round(microbenchmark::microbenchmark(mpx(data, window_size = w, n_workers = workers), times = 1L)$time / 10^9, 2)
+times <- 5L
+mbm_stomp <- round(median(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "stomp", verbose = 0), times = times, setup = (data <- cumsum(sample(c(-1, 1), data_size, TRUE))))$time) / 10^9, 2)
+mbm_stomp_par <- round(median(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "stomp", n_workers = workers, verbose = 0), times = times, setup = (data <- cumsum(sample(c(-1, 1), data_size, TRUE))))$time) / 10^9, 2)
+mbm_scrimp <- round(median(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "scrimp", verbose = 0), times = times, setup = (data <- cumsum(sample(c(-1, 1), data_size, TRUE))))$time) / 10^9, 2)
+times <- 10L
+mbm_mpx <- round(median(microbenchmark::microbenchmark(mpx(data, window_size = w), times = times, setup = (data <- cumsum(sample(c(-1, 1), data_size, TRUE))))$time) / 10^9, 2)
+mbm_mpx_par <- round(median(microbenchmark::microbenchmark(mpx(data, window_size = w, n_workers = workers), times = times, setup = (data <- cumsum(sample(c(-1, 1), data_size, TRUE))))$time) / 10^9, 2)
+times <- 3L
+mbm_stamp <- round(median(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "stamp", verbose = 0), times = times, setup = (data <- cumsum(sample(c(-1, 1), data_size, TRUE))))$time) / 10^9, 2)
+mbm_stamp_par <- round(median(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "stamp", n_workers = workers, verbose = 0), times = times, setup = (data <- cumsum(sample(c(-1, 1), data_size, TRUE))))$time) / 10^9, 2)
 ```
 
 ```{r bench_dataset, echo = FALSE, message=FALSE, warnings=FALSE}

@@ -16,9 +16,11 @@ Francisco Bischoff
 version](http://www.r-pkg.org/badges/version/tsmp)](https://cran.r-project.org/package=tsmp)
 [![CRAN
 Downloads](https://cranlogs.r-pkg.org/badges/tsmp)](https://cran.r-project.org/package=tsmp)
+[![CircleCI build
+status](https://circleci.com/gh/matrix-profile-foundation/tsmp.svg?style=svg)](https://circleci.com/gh/matrix-profile-foundation/tsmp)
 <!-- badges: end -->
 
-|               | master                                                                                                                                                                            | develop                                                                                                                                                                             |
+|               | Build                                                                                                                                                                             | Dev                                                                                                                                                                                 |
 | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Linux x86\_64 | [![Build Status](https://travis-ci.com/matrix-profile-foundation/tsmp.svg?branch=master)](https://travis-ci.com/matrix-profile-foundation/tsmp)                                   | [![Build Status](https://travis-ci.com/matrix-profile-foundation/tsmp.svg?branch=develop)](https://travis-ci.com/matrix-profile-foundation/tsmp)                                    |
 | OSX           | [![Build Status](https://travis-ci.com/matrix-profile-foundation/tsmp.svg?branch=master)](https://travis-ci.com/matrix-profile-foundation/tsmp)                                   | [![Build Status](https://travis-ci.com/matrix-profile-foundation/tsmp.svg?branch=develop)](https://travis-ci.com/matrix-profile-foundation/tsmp)                                    |
@@ -50,7 +52,7 @@ This package provides:
 ``` r
 # Basic workflow:
 matrix <- tsmp(data, window_size = 30) %>%
-  find_motif(n_motifs = 3) %>%
+  find_motif(n_motifs = 3) %T>%
   plot()
 
 # SDTS still have a unique way to work:
@@ -75,13 +77,13 @@ data <- cumsum(sample(c(-1, 1), 40000, TRUE))
 
 |             | Elapsed Time(s) | Data Size | Window Size | Threads | Lang |
 | ----------- | --------------: | --------: | ----------: | ------: | :--- |
-| `mpx_par`   |            0.70 |     40000 |        1000 |       8 | Rcpp |
-| `mpx`       |            2.63 |     40000 |        1000 |       1 | Rcpp |
-| `stomp_par` |           43.29 |     40000 |        1000 |       8 | R    |
-| `stomp`     |           98.10 |     40000 |        1000 |       1 | R    |
-| `scrimp`    |          137.44 |     40000 |        1000 |       1 | R    |
-| `stamp_par` |          963.27 |     40000 |        1000 |       8 | R    |
-| `stamp`     |         4018.01 |     40000 |        1000 |       1 | R    |
+| `mpx_par`   |            0.59 |     40000 |        1000 |       8 | Rcpp |
+| `mpx`       |            1.94 |     40000 |        1000 |       1 | Rcpp |
+| `stomp_par` |           38.90 |     40000 |        1000 |       8 | R    |
+| `stomp`     |           85.13 |     40000 |        1000 |       1 | R    |
+| `scrimp`    |          123.07 |     40000 |        1000 |       1 | R    |
+| `stamp_par` |          925.45 |     40000 |        1000 |       8 | R    |
+| `stamp`     |         3776.86 |     40000 |        1000 |       1 | R    |
 
 ## Installation
 
