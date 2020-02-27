@@ -7,7 +7,7 @@
 min_mp_idx(.mp, n_dim = NULL, valid = TRUE)
 }
 \arguments{
-\item{.mp}{a TSMP object of class \code{MatrixProfile}.}
+\item{.mp}{a \code{MatrixProfile} object.}
 
 \item{n_dim}{number of dimensions of the matrix profile}
 

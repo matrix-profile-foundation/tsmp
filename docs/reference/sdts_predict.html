@@ -81,7 +81,7 @@ algorithm will learn the switching points (even better) and try to predict using
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tsmp</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -193,15 +193,8 @@ to Predict Outcomes. Proc VLDB Endow. 2017 Aug 1;10(12):1802-12.</p></li>
 <span class='no'>te_label</span> <span class='kw'>&lt;-</span> <span class='no'>mp_test_data</span>$<span class='no'>test</span>$<span class='no'>label</span>[<span class='no'>subs</span>]
 <span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sdts_train.html'>sdts_train</a></span>(<span class='no'>tr_data</span>, <span class='no'>tr_label</span>, <span class='no'>w</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 <span class='no'>predict</span> <span class='kw'>&lt;-</span> <span class='fu'>sdts_predict</span>(<span class='no'>model</span>, <span class='no'>te_data</span>, <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='no'>w</span>)))
-<span class='fu'><a href='sdts_score.html'>sdts_score</a></span>(<span class='no'>predict</span>, <span class='no'>te_label</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; $f_score
-#&gt; [1] 0.125
-#&gt; 
-#&gt; $precision
-#&gt; [1] 0.06666667
-#&gt; 
-#&gt; $recall
-#&gt; [1] 1
-#&gt; </div><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='sdts_score.html'>sdts_score</a></span>(<span class='no'>predict</span>, <span class='no'>te_label</span>, <span class='fl'>1</span>)
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='no'>windows</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>110</span>, <span class='fl'>220</span>, <span class='fl'>330</span>)
 <span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sdts_train.html'>sdts_train</a></span>(<span class='no'>mp_test_data</span>$<span class='no'>train</span>$<span class='no'>data</span>, <span class='no'>mp_test_data</span>$<span class='no'>train</span>$<span class='no'>label</span>, <span class='no'>windows</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 <span class='no'>predict</span> <span class='kw'>&lt;-</span> <span class='fu'>sdts_predict</span>(<span class='no'>model</span>, <span class='no'>mp_test_data</span>$<span class='no'>test</span>$<span class='no'>data</span>, <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='no'>windows</span>)))

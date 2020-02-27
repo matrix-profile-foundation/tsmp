@@ -298,6 +298,15 @@
 #' @noRd
 #'
 
+`[.PMP` <- function(x, ..., drop = FALSE) {
+  stop("Subsetting PMP is not implemented yet")
+}
+
+#' @export
+#' @keywords internal
+#' @noRd
+#'
+
 `[.MatrixProfile` <- function(x, ..., drop = FALSE) {
   # str(...)
   # y <- NextMethod("[")

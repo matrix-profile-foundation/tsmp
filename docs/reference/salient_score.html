@@ -79,7 +79,7 @@ relevant subsequence extraction." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tsmp</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -141,7 +141,7 @@ checking against a known set of indexes. This increase the probability of better
 relevant subsequence extraction.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>salient_score</span>(<span class='no'>.mp</span>, <span class='no'>gtruth</span>)</pre>
+    <pre class="usage"><span class='fu'>salient_score</span>(<span class='no'>.mp</span>, <span class='no'>gtruth</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"tsmp.verbose"</span>, <span class='fl'>2</span>))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -153,6 +153,10 @@ relevant subsequence extraction.</p>
     <tr>
       <th>gtruth</th>
       <td><p>a <code>vector</code> of <code>integers</code> with the indexes of relevant subsequences.</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>an <code>int</code>. (Default is <code>2</code>).</p></td>
     </tr>
     </table>
 
@@ -182,7 +186,7 @@ Conference on Data Mining. IEEE; 2011. p. 1086-91.</p></li>
 <span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span>(<span class='no'>data</span>, <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 <span class='no'>mps</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='salient_subsequences.html'>salient_subsequences</a></span>(<span class='no'>mp</span>, <span class='kw'>n_bits</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>4</span>, <span class='fl'>6</span>, <span class='fl'>8</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 <span class='no'>label_idx</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>2</span>, <span class='fl'>500</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='fl'>110</span>) <span class='co'># fake data</span>
-<span class='fu'>salient_score</span>(<span class='no'>mps</span>, <span class='no'>label_idx</span>)</div><div class='output co'>#&gt; <span class='message'>Bits: 4</span></div><div class='output co'>#&gt; <span class='message'>Precision: 0.3333</span></div><div class='output co'>#&gt; <span class='message'>Recall: 0.2</span></div><div class='output co'>#&gt; <span class='message'>F_1 Score: 0.25</span></div><div class='output co'>#&gt; <span class='message'>-----------------</span></div><div class='output co'>#&gt; <span class='message'>Bits: 6</span></div><div class='output co'>#&gt; <span class='message'>Precision: 0.5</span></div><div class='output co'>#&gt; <span class='message'>Recall: 0.2</span></div><div class='output co'>#&gt; <span class='message'>F_1 Score: 0.2857</span></div><div class='output co'>#&gt; <span class='message'>-----------------</span></div><div class='output co'>#&gt; <span class='message'>Bits: 8</span></div><div class='output co'>#&gt; <span class='message'>Precision: 0.5</span></div><div class='output co'>#&gt; <span class='message'>Recall: 0.2</span></div><div class='output co'>#&gt; <span class='message'>F_1 Score: 0.2857</span></div><div class='output co'>#&gt; <span class='message'>-----------------</span></div><div class='output co'>#&gt; <span class='message'>Best F_1 Score: 0.2857 Bits: 6</span></div></pre>
+<span class='fu'>salient_score</span>(<span class='no'>mps</span>, <span class='no'>label_idx</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

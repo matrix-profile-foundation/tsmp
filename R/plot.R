@@ -641,6 +641,11 @@ plot.Discord <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "
     is.null(data) # check data presence before plotting anything
   }
 
+  if ("PMP" %in% class(x)) {
+    x$mp <- as.matrix(x$pmp[[1]])
+    x$pi <- as.matrix(x$pmpi[[1]])
+  }
+
   type <- match.arg(type)
 
   if (type == "data") {
@@ -786,6 +791,11 @@ plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "MO
   if (n_motifs == 0) {
     graphics::par(def_par)
     stop("No Motifs found to plot.")
+  }
+
+  if ("PMP" %in% class(x)) {
+    x$mp <- as.matrix(x$pmp[[1]])
+    x$pi <- as.matrix(x$pmpi[[1]])
   }
 
   if ("Valmod" %in% class(x)) {
@@ -1058,8 +1068,8 @@ plot.Salient <- function(x, data, main = "Salient Subsections", xlab = "index", 
 skimp_plot_set_canvas <- function(..., pmp_obj = NULL) {
   if (!is.null(pmp_obj)) {
     xmin <- 1
-    ymin <- min(pmp_obj$windows)
-    ymax <- max(pmp_obj$windows) + floor((max(pmp_obj$windows) - ymin) / 24) # arbitrary
+    ymin <- min(pmp_obj$w)
+    ymax <- max(pmp_obj$w) + floor((max(pmp_obj$w) - ymin) / 24) # arbitrary
     mp_min <- length(pmp_obj$pmp[[as.character(ymin)]])
     xmax <- mp_min + ymin - 1
   } else {
@@ -1237,8 +1247,48 @@ skimp_plot_add_raster <- function(layer, window, window_set = NULL, func = NULL)
 #' @keywords hplot
 #' @name plot
 #'
-plot.PanMatrixProfile <- function(x, ylab = "distance", xlab = "index", main = "Unidimensional Matrix Profile", data = FALSE, ...) {
-  stop("Not yet implemented")
+plot.PMP <- function(x, ylab = "distance", xlab = "index", main = "Unidimensional Matrix Profile", data = FALSE, ...) {
+  def_par <- graphics::par(no.readonly = TRUE)
+  # prepare plot using the values in `windows` vector.
+  min_window <- min(x$w)
+  max_window <- max(x$w)
+  max_len <- length(x$pmp[[as.character(min_window)]])
+  data_size <- max_len + min_window - 1
+
+  if (!(max_len > 0)) {
+    stop("matrix profile with window size ", min_window, " is not in the object. Cannot go further.")
+  }
+
+  # sort pmp
+  idxs <- as.numeric(names(x$pmp))
+  idxs <- sort(idxs, index.return = T)$ix
+  all_profiles <- x$pmp[idxs]
+
+  skimp_plot_set_canvas(
+    ymin = min_window,
+    ymax = max_window + floor((max_window - min_window) / 24), # arbitrary
+    xmin = 1,
+    xmax = data_size
+  )
+  Sys.sleep(1) # needed for plot update
+
+  # now start to print all layers
+  for (i in seq_along(all_profiles)) {
+    if (!is.null(all_profiles[i])) {
+      # layer <- tsmp:::normalize(all_profiles[[i]])
+      layer <- all_profiles[[i]]
+      layer[layer > 1] <- 1
+      curr_w <- as.numeric(names(all_profiles[i]))
+      next_w <- as.numeric(names(all_profiles[i + 1]))
+      next_w <- ifelse(is.na(next_w), curr_w, next_w)
+      graphics::rasterImage(matrix(layer, nrow = 1),
+        xleft = 1, xright = length(all_profiles[[i]]),
+        ybottom = curr_w, ytop = next_w + 5
+      )
+    }
+  }
+
+  graphics::par(def_par)
 }
 
 #' @keywords internal
@@ -1247,8 +1297,8 @@ plot.PanMatrixProfile <- function(x, ylab = "distance", xlab = "index", main = "
 plot_skimp <- function(pmp, func = NULL) {
   def_par <- graphics::par(no.readonly = TRUE)
   # prepare plot using the values in `windows` vector.
-  min_window <- min(pmp$windows)
-  max_window <- max(pmp$windows)
+  min_window <- min(pmp$w)
+  max_window <- max(pmp$w)
   mp_len <- length(pmp$pmp[[as.character(min_window)]])
 
   if (!(mp_len > 0)) {
@@ -1256,7 +1306,7 @@ plot_skimp <- function(pmp, func = NULL) {
   }
 
   data_size <- mp_len + min_window - 1
-  sizes <- sort(pmp$windows, index.return = TRUE)
+  sizes <- sort(pmp$w, index.return = TRUE)
   window_sizes <- sizes$x
   # window_idxs <- sizes$ix
 

@@ -524,7 +524,7 @@ ipaa <- function(data, p) {
 
 #' Get index of the minimum value from a matrix profile and its nearest neighbor
 #'
-#' @param .mp a TSMP object of class `MatrixProfile`.
+#' @param .mp a `MatrixProfile` object.
 #' @param n_dim number of dimensions of the matrix profile
 #' @param valid check for valid numbers
 #'
@@ -802,7 +802,7 @@ compute_f_meas <- function(label, pos_st, pos_ed, dist_pro, thold, window_size, 
 
 # Salient Aux functions --------------------------------------------------------------------------
 
-#' Retrieve the index of a number of candidates from the lowest points of a MP
+#' Retrieve the index of a number of candidates from the lowest points of a Matrix Profile
 #'
 #' @param matrix_profile the matrix profile
 #' @param n_cand number of candidates to extract
@@ -1155,9 +1155,9 @@ set_data <- function(.mp, data) {
 #' get_data(mp)
 get_data <- function(.mp) {
   if (length(.mp$data) == 1) {
-    return(as.matrix(.mp$data[[1]]))
+    return(invisible(as.matrix(.mp$data[[1]])))
   } else {
-    return(as.matrix(.mp$data))
+    return(invisible(as.matrix(.mp$data)))
   }
 }
 
@@ -1270,6 +1270,20 @@ as.multimatrixprofile <- function(.mp) {
   }
 
   class(.mp) <- update_class(class(.mp), "MultiMatrixProfile")
+
+  return(.mp)
+}
+
+#' @describeIn as.matrixprofile Cast an object changed by another function back to `PMP`.
+#' @export
+#'
+
+as.pmp <- function(.mp) {
+  if (!("PMP" %in% class(.mp))) {
+    stop("This object cannot be a `PMP`.")
+  }
+
+  class(.mp) <- update_class(class(.mp), "PMP")
 
   return(.mp)
 }

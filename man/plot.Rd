@@ -15,7 +15,7 @@
 \alias{plot.Motif}
 \alias{plot.MultiMotif}
 \alias{plot.Salient}
-\alias{plot.PanMatrixProfile}
+\alias{plot.PMP}
 \title{Plot a TSMP object}
 \usage{
 \method{plot}{ArcCount}(
@@ -141,7 +141,7 @@
 
 \method{plot}{Salient}(x, data, main = "Salient Subsections", xlab = "index", ylab = "", ...)
 
-\method{plot}{PanMatrixProfile}(
+\method{plot}{PMP}(
   x,
   ylab = "distance",
   xlab = "index",

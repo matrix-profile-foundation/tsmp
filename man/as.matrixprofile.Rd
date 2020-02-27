@@ -3,6 +3,7 @@
 \name{as.matrixprofile}
 \alias{as.matrixprofile}
 \alias{as.multimatrixprofile}
+\alias{as.pmp}
 \alias{as.valmod}
 \alias{as.fluss}
 \alias{as.chain}
@@ -16,6 +17,8 @@
 as.matrixprofile(.mp)
 
 as.multimatrixprofile(.mp)
+
+as.pmp(.mp)
 
 as.valmod(.mp)
 
@@ -50,6 +53,8 @@ to cast it back.
 \item \code{as.matrixprofile}: Cast an object changed by another function back to \code{MatrixProfile}.
 
 \item \code{as.multimatrixprofile}: Cast an object changed by another function back to \code{MultiMatrixProfile}.
+
+\item \code{as.pmp}: Cast an object changed by another function back to \code{PMP}.
 
 \item \code{as.valmod}: Cast an object changed by another function back to \code{MultiMatrixProfile}.
 

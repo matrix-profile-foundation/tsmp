@@ -16,21 +16,21 @@ analyze(
 \arguments{
 \item{ts}{a \code{matrix} or a \code{vector}. The time series to analyze.}
 
-\item{windows}{an \code{int} or a \code{vector}. The window(s) to compute the MatrixProfile. Note that it may be an \code{int}
-for a single matrix profile computation or a \code{vector} of \code{int} for computing the pan matrix profile (PMP).}
+\item{windows}{an \code{int} or a \code{vector}. The window(s) to compute the Matrix Profile. Note that it may be an \code{int}
+for a single matrix profile computation or a \code{vector} of \code{int} for computing the Pan-Matrix Profile.}
 
-\item{query}{a \code{matrix} or a \code{vector}. Optional The query to analyze. Note that when computing the PMP the query
-is ignored!}
+\item{query}{a \code{matrix} or a \code{vector}. Optional The query to analyze. Note that when computing the Pan-Matrix Profile
+the query is ignored!}
 
 \item{sample_pct}{a \code{numeric}. A number between 0 and 1 representing how many samples to compute for
-the MP or PMP. When it is 1, the exact algorithm is used. (default is \code{1.0}).}
+the Matrix Profile or Pan-Matrix Profile. When it is 1, the exact algorithm is used. (default is \code{1.0}).}
 
 \item{threshold}{a \code{numeric}. Correlation threshold. See details.  (Default is \code{0.98}).}
 
-\item{n_jobs}{an \code{int}. The number of cpu cores to use when computing the MP. (default is \code{1}).}
+\item{n_jobs}{an \code{int}. The number of cpu cores to use when computing the MatrixProfile. (default is \code{1}).}
 }
 \value{
-The appropriate MP or PMP profile object and also plots the graphics.
+The appropriate Matrix Profile or Pan-Matrix Profile profile object and also plots the graphics.
 }
 \description{
 The goal of this function is to compute all fundamental algorithms on the provided
@@ -39,21 +39,22 @@ time series data. See details for more information.
 \details{
 For now the following is computed:
 \enumerate{
-\item Matrix Profile - exact or approximate based on \code{sample_pct} given that a single
-\code{windows} is provided. By default is the exact algorithm;
+\item Matrix Profile - exact or approximate based on \code{sample_pct} given that a single \code{windows} is provided. By default
+is the exact algorithm;
 \item Top 3 Motifs;
 \item Top 3 Discords;
-\item Plot MP, Motifs and Discords.
+\item Plot Matrix Profile, Motifs and Discords.
 }
 
 When \code{windows} is not provided or more than a single window is provided,
-the PMP is computed:
+the Pan-Matrix Profile is computed:
 \enumerate{
 \item Compute the upper bound when a \code{threshold} is provided (it is, by default);
-\item Compute PMP for all \code{windows} provided, below the upper bound, or a default range when no \code{windows} is provided;
+\item Compute Pan-Matrix Profile for all \code{windows} provided, below the upper bound, or a default range when no \code{windows}
+is provided;
 \item Top Motifs;
 \item Top Discords;
-\item Plot PMP, motifs and discords.
+\item Plot Pan-Matrix Profile, motifs and discords.
 }
 }
 \examples{
@@ -71,6 +72,8 @@ Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 \seealso{
 Other Main API: 
 \code{\link{compute}()},
+\code{\link{discords}()},
+\code{\link{motifs}()},
 \code{\link{visualize}()}
 }
 \concept{Main API}

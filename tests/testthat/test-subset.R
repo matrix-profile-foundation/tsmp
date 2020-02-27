@@ -3,16 +3,49 @@ if (!testthat:::on_cran()) {
   library(tsmp)
 
   data <- mp_fluss_data$tilt_abp$data[20000L:30000L]
+  mpd_query <- mp_fluss_data$tilt_abp$data[25001L:25210L]
+  data_new <- mp_fluss_data$tilt_abp$data[30001L:31000L]
   w <- mp_fluss_data$tilt_abp$window
   nseg <- 1
   offset <- 4000
-  test_mp <- tsmp(data, window_size = w, n_workers = 2L)
+  test_mp <- tsmp(data, window_size = w)
+  mpd_vect <- mpdist(data, mpd_query, floor(w / 10), type = "vector")
+  test_floss <- floss(test_mp, data_new, 5000)
 
   cac <- fluss_cac(test_mp)
   segments <- fluss_extract(cac, nseg)
   chain <- find_chains(test_mp)
   motif <- find_motif(test_mp)
   discord <- find_discord(test_mp)
+  salient <- salient_subsequences(test_mp, n_bits = c(4, 6, 8), verbose = 0)
+  a_vector <- av_complexity(test_mp, apply = TRUE)
+
+  test_that("Sub FLOSS", {
+    s_test_floss <- test_floss[50L:4000L]
+    expect_equal(round(sum(s_test_floss$cac) / sd(s_test_floss$cac), 1), 9316.1)
+  })
+
+  test_that("Sub MPDist", {
+    s_mpd_vect <- mpd_vect[1000L:3000L]
+
+    expect_equal(round(sum(s_mpd_vect$mpdist) / sd(s_mpd_vect$mpdist), 1), 24167.6)
+    expect_equal(round(sum(s_mpd_vect$data[[1]]) / sd(s_mpd_vect$data[[1]]), 1), 13017.9)
+    expect_equal(round(sum(s_mpd_vect$data[[2]]) / sd(s_mpd_vect$data[[2]]), 1), 1620.5)
+  })
+
+  test_that("Sub Annotation Vector", {
+    s_a_vector <- a_vector[1000L:3000L]
+
+    expect_equal(round(sum(s_a_vector$av) / sd(s_a_vector$av), 3), 8243.961)
+  })
+
+  test_that("Sub Salient", {
+    s_salient <- salient[1000L:3000L]
+
+    expect_equal(round(sum(s_salient$salient$indexes) / sd(s_salient$salient$indexes), 4), 50.5029)
+    expect_equal(round(sum(s_salient$salient$idx_bit_size) / sd(s_salient$salient$idx_bit_size), 2), 95.25)
+    expect_equal(sum(s_salient$salient$bits), 18)
+  })
 
   test_that("Sub Motif", {
     s_motif <- motif[1000L:3000L]

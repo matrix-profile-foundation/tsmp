@@ -1,25 +1,27 @@
-#' Computes the MatrixProfile or Pan-MatrixProfile
+#' Computes the Matrix Profile or Pan-Matrix Profile
 #'
-#' Computes the exact or approximate MatrixProfile based on the sample percent
+#' Main API Function
+#'
+#' Computes the exact or approximate Matrix Profile based on the sample percent
 #' specified. Currently, MPX and SCRIMP++ are used for the exact and
 #' approximate algorithms respectively. See details for more information about the arguments
 #' combinations.
 #'
 #' @param ts a `matrix` or a `vector`. The time series to analyze.
-#' @param query a `matrix` or a `vector`. Optional The query to analyze. Note that when computing the PMP the query
-#' is ignored!
-#' @param windows an `int` or a `vector`. The window(s) to compute the MatrixProfile. Note that it may be an `int`
-#' for a single matrix profile computation or a `vector` of `int` for computing the pan matrix profile (PMP).
+#' @param query a `matrix` or a `vector`. Optional The query to analyze. Note that when computing the Pan-Matrix Profile
+#'  the query is ignored!
+#' @param windows an `int` or a `vector`. The window(s) to compute the Matrix Profile. Note that it may be an `int`
+#' for a single matrix profile computation or a `vector` of `int` for computing the Pan-Matrix Profile.
 #' @param sample_pct a `numeric`. A number between 0 and 1 representing how many samples to compute for
-#' the MP or PMP. When it is 1, the exact algorithm is used. (default is `1.0`).
+#' the Matrix Profile or Pan-Matrix Profile. When it is 1, the exact algorithm is used. (default is `1.0`).
 #' @param threshold a `numeric`. Correlation threshold. See details.  (Default is `0.98`).
-#' @param n_jobs an `int`. The number of cpu cores to use when computing the MP. (default is `1`).
+#' @param n_jobs an `int`. The number of cpu cores to use when computing the MatrixProfile. (default is `1`).
 #'
 #' @details
 #'
-#' When a single `windows` is given, the MatrixProfile is computed. If a `query` is provided, AB join is computed.
+#' When a single `windows` is given, the Matrix Profile is computed. If a `query` is provided, AB join is computed.
 #' Otherwise the self-join is computed.
-#' When multiple `windows` or none are given, the Pan-MatrixProfile is computed. If a `threshold` is set (it is,
+#' When multiple `windows` or none are given, the Pan-Matrix Profile is computed. If a `threshold` is set (it is,
 #' by default), the upper bound will be computed and the given `windows` or a default range (when no `windows`), below
 #' the upper bound will be computed.
 #'
@@ -30,19 +32,21 @@
 #'
 #' @family Main API
 #'
+#' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
+#'
 #' @examples
 #'
 #' # Matrix Profile
 #' result <- compute(mp_toy_data$data[, 1], 80)
 #' \dontrun{
-#' # Pan Matrix Profile
+#' # Pan-Matrix Profile
 #' result <- compute(mp_toy_data$data[, 1])
 #' }
 compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshold = 0.98, n_jobs = 1L) {
 
   # Parse arguments ---------------------------------
   checkmate::qassert(ts, "N+")
-  windows <- checkmate::qassert(windows, c("0", "X+"))
+  windows <- checkmate::qassert(windows, c("0", "X+[4,)"))
   checkmate::qassert(query, c("0", "N>=4"))
   checkmate::qassert(sample_pct, "N1(0,1]")
   checkmate::qassert(threshold, c("0", "N1(0,1]"))
@@ -109,26 +113,24 @@ compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
     result <- list(
       mp = as.matrix(res$mp),
       pi = as.matrix(res$pi),
-      mpb = NULL,
-      mpi = NULL,
+      # mpb = NULL,
+      # pib = NULL,
       rmp = NULL,
       rpi = NULL,
       lmp = NULL,
       lpi = NULL,
-      w = windows
+      w = windows,
+      ez = res$ez
     )
     class(result) <- "MatrixProfile"
   } else {
-    result <- list(
-      pmp = res,
-      w = windows
-    ) # TODO
-    class(result) <- "PanMatrixProfile"
+    result <- res
+    class(result) <- "PMP"
   }
-  result$ez <- getOption("tsmp.exclusion_zone", 1 / 2)
+  result$sample_pct <- sample_pct
   result$data <- list(
-    ts = ts,
-    query = query
+    ts = as.vector(ts),
+    query = as.vector(query)
   )
 
   # Attributes

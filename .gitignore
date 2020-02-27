@@ -1,5 +1,5 @@
 /dev
-/src-i386
+/src-*
 inst/doc
 .Rproj.user
 .RData
@@ -12,3 +12,5 @@ packrat/src/
 tsmp.Rcheck/
 tsmp*.tar.gz
 tsmp*.tgz
+/tests/*/Rplots.pdf
+/README_cache/

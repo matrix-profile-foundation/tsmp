@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>CONTRIBUTING • tsmp</title>
+<title>Contributing to tsmp • tsmp</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -42,7 +42,7 @@
 
 
 
-<meta property="og:title" content="CONTRIBUTING" />
+<meta property="og:title" content="Contributing to tsmp" />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -76,7 +76,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">tsmp</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -127,74 +127,53 @@
 <div class="row">
   <div class="contents col-md-9">
     <div class="page-header">
-      <h1>CONTRIBUTING</h1>
+      <h1>Contributing to tsmp</h1>
     </div>
 
-<div id="contributing" class="section level1">
+<div id="contributing-to-tsmp" class="section level1">
 
-<p>Francisco Bischoff - 29 Dec 2019</p>
-<!-- CONTRIBUTING.md is generated from CONTRIBUTING.Rmd Please edit that file -->
-<div id="contributing-to-tsmp" class="section level2">
-<h2 class="hasAnchor">
-<a href="#contributing-to-tsmp" class="anchor"></a>Contributing to tsmp</h2>
-<p>First off, thanks for taking the time to contribute!</p>
-<p>The goal of this guide is to help you contribute to tsmp as quickly and as easily possible. The guide is divided into two main pieces:</p>
-<ol>
-<li>Filing a bug report or feature request in an issue.</li>
-<li>Suggesting a change via a pull request.</li>
-</ol>
-</div>
-<div id="issues" class="section level2">
-<h2 class="hasAnchor">
-<a href="#issues" class="anchor"></a>Issues</h2>
-<p>Before you file an issue:</p>
-<ol>
-<li><p>Check that you’re using the latest version of tsmp. It’s quite possible that the problem you’re experiencing has already been fixed.</p></li>
-<li><p>Spend a few minutes looking at the existing issues. It’s possible that your issue has already been filed. But it’s almost always better to open a new issue instead of commenting on an existing issue. The only exception is that you are confident that your issue is identical to an existing problem, and your contribution will help us better understand the general case. It’s generally a bad idea to comment on a closed issue or a commit. Those comments don’t show up in the issue tracker and are easily misplaced.</p></li>
-</ol>
-<p>When filing an issue, the most important thing is to include a minimal reproducible example so that we can quickly verify the problem, and then figure out how to fix it. There are three things you need to include to make your example reproducible: required packages, data, code.</p>
-<ol>
-<li><p><strong>Packages</strong> should be loaded at the top of the script, so it’s easy to see which ones the example needs. Unless you’ve been specifically asked for it, please don’t include the output of <code><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo()</a></code></p></li>
-<li>
-<p>The easiest way to include <strong>data</strong> is to use <code><a href="https://rdrr.io/r/base/dput.html">dput()</a></code> to generate the R code to recreate it. For example, to recreate the <code>mtcars</code> dataset in R, I’d perform the following steps:</p>
-<ol>
-<li>Run <code><a href="https://rdrr.io/r/base/dput.html">dput(mtcars)</a></code> in R</li>
-<li>Copy the output</li>
-<li>In my reproducible script, type <code>mtcars &lt;-</code> then paste.</li>
-</ol>
-<p>But even better is if you can create a <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code> with just a handful of rows and columns that still illustrates the problem.</p>
-</li>
-<li>
-<p>Spend a little bit of time ensuring that your <strong>code</strong> is easy for others to read:</p>
+<p>This outlines how to propose a change to tsmp. For more detailed info about contributing to this, please see the tidyverse <a href="https://rstd.io/tidy-contrib"><strong>development contributing guide</strong></a>.</p>
+<div id="fixing-typos" class="section level3">
+<h3 class="hasAnchor">
+<a href="#fixing-typos" class="anchor"></a>Fixing typos</h3>
+<p>Small typos or grammatical errors in documentation may be edited directly using the GitHub web interface, so long as the changes are made in the <em>source</em> file.</p>
 <ul>
-<li><p>make sure you’ve used spaces and your variable names are concise, but informative</p></li>
-<li><p>use comments to indicate where your problem lies</p></li>
-<li><p>do your best to remove everything that is not related to the problem.<br>
-The shorter your code is, the easier it is to understand.</p></li>
+<li>YES: you edit a roxygen comment in a <code>.R</code> file below <code>R/</code>.</li>
+<li>NO: you edit an <code>.Rd</code> file below <code>man/</code>.</li>
 </ul>
-<p>Learn a little <a href="https://help.github.com/articles/basic-writing-and-formatting-syntax/">markdown</a> so you can correctly format your issue. The most important thing is to surround your code with <code>``` R</code> and <code>```</code> so it’s syntax highlighted (which makes it easier to read).</p>
-</li>
-<li><p>Check that you’ve actually made a reproducible example by using the <a href="https://github.com/jennybc/reprex">reprex package</a>.</p></li>
-</ol>
 </div>
-<div id="pull-requests" class="section level2">
-<h2 class="hasAnchor">
-<a href="#pull-requests" class="anchor"></a>Pull requests</h2>
+<div id="prerequisites" class="section level3">
+<h3 class="hasAnchor">
+<a href="#prerequisites" class="anchor"></a>Prerequisites</h3>
+<p>Before you make a substantial pull request, you should always file an issue and make sure someone from the team agrees that it’s a problem. If you’ve found a bug, create an associated issue and illustrate the bug with a minimal <a href="https://www.tidyverse.org/help/#reprex">reprex</a>.</p>
+</div>
+<div id="pull-request-process" class="section level3">
+<h3 class="hasAnchor">
+<a href="#pull-request-process" class="anchor"></a>Pull request process</h3>
 <ul>
-<li><p>Your pull request will be easiest for us to read if you use a common style: <a href="http://r-pkgs.had.co.nz/r.html#style" class="uri">http://r-pkgs.had.co.nz/r.html#style</a>. Please pay particular attention to whitespace.</p></li>
-<li><p>You should always add a bullet point to <code>NEWS.Rmd</code> motivating the change. It should look like “This is what changed (@yourusername, #issuenumber)”. Please don’t add headings like “bug fix” or “new features” - these are added during the release process.</p></li>
-<li><p>If you can, also write a test. Do the best you can.</p></li>
-<li><p>If you’re adding new parameters or a new function, you’ll also need to document them with <a href="http://r-pkgs.had.co.nz/man.html">roxygen2</a>. Make sure to re-run <code><a href="https://rdrr.io/pkg/devtools/man/document.html">devtools::document()</a></code> on the code before submitting.</p></li>
+<li>We recommend that you create a Git branch for each pull request (PR).<br>
+</li>
+<li>Look at the Travis and AppVeyor build status before and after making changes. The <code>README</code> should contain badges for any continuous integration services used by the package.<br>
+</li>
+<li>New code should follow the tidyverse <a href="https://style.tidyverse.org">style guide</a>. You can use the <a href="https://CRAN.R-project.org/package=styler">styler</a> package to apply these styles, but please don’t restyle code that has nothing to do with your PR.<br>
+</li>
+<li>We use <a href="https://cran.r-project.org/package=roxygen2">roxygen2</a>, with <a href="https://cran.r-project.org/web/packages/roxygen2/vignettes/markdown.html">Markdown syntax</a>, for documentation.<br>
+</li>
+<li>We use <a href="https://cran.r-project.org/package=testthat">testthat</a>. Contributions with test cases included are easier to accept.<br>
+</li>
+<li>For user-facing changes, add a bullet to the top of <code>NEWS.md</code> below the current development version header describing the changes made followed by your GitHub username, and links to relevant issue(s)/PR(s).</li>
 </ul>
-<p>A pull request is a process, and unless you’re a practiced contributor it’s unlikely that your pull request will be accepted as is. Typically the process looks like this:</p>
-<ol>
-<li><p>You submit the pull request.</p></li>
-<li><p>We review at a high-level and determine if this is something that we want to include in the package. If not, we’ll close the pull request and suggest an alternative home for your code.</p></li>
-<li><p>We’ll take a closer look at the code and give you feedback.</p></li>
-<li><p>You respond to our feedback, update the pull request and add a comment like “PTAL” (please take a look). Adding the comment is important, otherwise we don’t get any notification that your pull request is ready for review.</p></li>
-</ol>
-<p>Don’t worry if your pull request isn’t perfect. It’s a learning process and we’ll be happy to help you out.</p>
-<p>Thanks!</p>
+</div>
+<div id="code-of-conduct" class="section level3">
+<h3 class="hasAnchor">
+<a href="#code-of-conduct" class="anchor"></a>Code of Conduct</h3>
+<p>Please note that the tsmp project is released with a <a href="CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project you agree to abide by its terms.</p>
+</div>
+<div id="see-tidyverse-development-contributing-guide" class="section level3">
+<h3 class="hasAnchor">
+<a href="#see-tidyverse-development-contributing-guide" class="anchor"></a>See tidyverse <a href="https://rstd.io/tidy-contrib">development contributing guide</a>
+</h3>
+<p>for further details.</p>
 </div>
 </div>
 

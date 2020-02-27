@@ -1,5 +1,4 @@
 if (!testthat:::on_cran()) {
-
   context("Testing SDTS functions")
   library(tsmp)
 

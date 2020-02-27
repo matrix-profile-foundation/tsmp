@@ -4,12 +4,14 @@
 \alias{salient_score}
 \title{Computes the F-Score of salient algorithm.}
 \usage{
-salient_score(.mp, gtruth)
+salient_score(.mp, gtruth, verbose = getOption("tsmp.verbose", 2))
 }
 \arguments{
 \item{.mp}{a Matrix Profile object.}
 
 \item{gtruth}{a \code{vector} of \code{integers} with the indexes of relevant subsequences.}
+
+\item{verbose}{an \code{int}. (Default is \code{2}).}
 }
 \value{
 Returns a \code{list} with \code{f_score}, \code{precision}, \code{recall} and \code{bits} used in the algorithm.
@@ -25,7 +27,7 @@ data <- mp_toy_data$data[, 1]
 mp <- tsmp(data, window_size = 30, verbose = 0)
 mps <- salient_subsequences(mp, n_bits = c(4, 6, 8), verbose = 0)
 label_idx <- seq(2, 500, by = 110) # fake data
-salient_score(mps, label_idx)
+salient_score(mps, label_idx, verbose = 0)
 }
 \references{
 \itemize{

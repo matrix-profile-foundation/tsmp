@@ -7,7 +7,7 @@
 fluss(.mp, num_segments = 1, exclusion_zone = NULL)
 }
 \arguments{
-\item{.mp}{a TSMP object of class \code{MatrixProfile}.}
+\item{.mp}{a \code{MatrixProfile} object.}
 
 \item{num_segments}{an \code{int}. Number of segments to extract. Based on domain knowledge.}
 

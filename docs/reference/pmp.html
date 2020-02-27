@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Pan Matrix Profile — pmp • tsmp</title>
+<title>Pan-Matrix Profile — pmp • tsmp</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,8 @@
 
 
 
-<meta property="og:title" content="Pan Matrix Profile — pmp" />
-<meta property="og:description" content="Computes the Pan Matrix Profile (PMP) for the given time series." />
+<meta property="og:title" content="Pan-Matrix Profile — pmp" />
+<meta property="og:description" content="Computes the Pan-Matrix Profile (PMP) for the given time series." />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tsmp</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -128,13 +128,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Pan Matrix Profile</h1>
+    <h1>Pan-Matrix Profile</h1>
     <small class="dont-index">Source: <a href='https://github.com/matrix-profile-foundation/tsmp/blob/master/R/pmp.R'><code>R/pmp.R</code></a></small>
     <div class="hidden name"><code>pmp.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Computes the Pan Matrix Profile (PMP) for the given time series.</p>
+    <p>Computes the Pan-Matrix Profile (PMP) for the given time series.</p>
     </div>
 
     <pre class="usage"><span class='fu'>pmp</span>(
@@ -179,7 +179,7 @@ add new profiles, not replace. (Default is <code>NULL</code>).</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Returns a Pan Matrix Profile object.</p>
+    <p>Returns a <code>PMP</code> object.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The work closest in spirit to ours is VALMOD. The idea of VALMOD is to compute the MP for
@@ -210,7 +210,7 @@ adds the progress bar, <code>3</code> adds the finish sound.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Just compute</span>
-<span class='no'>pan</span> <span class='kw'>&lt;-</span> <span class='fu'>pmp</span>(<span class='no'>mp_gait_data</span>)</div><div class='output co'>#&gt; <span class='message'>step: 1/20 binary idx: 1 window: 10</span></div><div class='output co'>#&gt; <span class='message'>step: 2/20 binary idx: 11 window: 242</span></div><div class='output co'>#&gt; <span class='message'>step: 3/20 binary idx: 6 window: 126</span></div><div class='output co'>#&gt; <span class='message'>step: 4/20 binary idx: 16 window: 358</span></div><div class='output co'>#&gt; <span class='message'>step: 5/20 binary idx: 3 window: 56</span></div><div class='output co'>#&gt; <span class='message'>step: 6/20 binary idx: 8 window: 172</span></div><div class='output co'>#&gt; <span class='message'>step: 7/20 binary idx: 13 window: 289</span></div><div class='output co'>#&gt; <span class='message'>step: 8/20 binary idx: 18 window: 405</span></div><div class='output co'>#&gt; <span class='message'>step: 9/20 binary idx: 2 window: 33</span></div><div class='output co'>#&gt; <span class='message'>step: 10/20 binary idx: 4 window: 79</span></div><div class='output co'>#&gt; <span class='message'>step: 11/20 binary idx: 7 window: 149</span></div><div class='output co'>#&gt; <span class='message'>step: 12/20 binary idx: 9 window: 196</span></div><div class='output co'>#&gt; <span class='message'>step: 13/20 binary idx: 12 window: 265</span></div><div class='output co'>#&gt; <span class='message'>step: 14/20 binary idx: 14 window: 312</span></div><div class='output co'>#&gt; <span class='message'>step: 15/20 binary idx: 17 window: 382</span></div><div class='output co'>#&gt; <span class='message'>step: 16/20 binary idx: 19 window: 428</span></div><div class='output co'>#&gt; <span class='message'>step: 17/20 binary idx: 5 window: 103</span></div><div class='output co'>#&gt; <span class='message'>step: 18/20 binary idx: 10 window: 219</span></div><div class='output co'>#&gt; <span class='message'>step: 19/20 binary idx: 15 window: 335</span></div><div class='output co'>#&gt; <span class='message'>step: 20/20 binary idx: 20 window: 452</span></div><div class='output co'>#&gt; <span class='message'>on.exit OBJ</span></div><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='no'>pan</span> <span class='kw'>&lt;-</span> <span class='fu'>pmp</span>(<span class='no'>mp_gait_data</span>)</div><div class='output co'>#&gt; <span class='message'>step: 1/20 binary idx: 1 window: 10</span></div><div class='output co'>#&gt; <span class='message'>step: 2/20 binary idx: 11 window: 242</span></div><div class='output co'>#&gt; <span class='message'>step: 3/20 binary idx: 6 window: 126</span></div><div class='output co'>#&gt; <span class='message'>step: 4/20 binary idx: 16 window: 358</span></div><div class='output co'>#&gt; <span class='message'>step: 5/20 binary idx: 3 window: 56</span></div><div class='output co'>#&gt; <span class='message'>step: 6/20 binary idx: 8 window: 172</span></div><div class='output co'>#&gt; <span class='message'>step: 7/20 binary idx: 13 window: 289</span></div><div class='output co'>#&gt; <span class='message'>step: 8/20 binary idx: 18 window: 405</span></div><div class='output co'>#&gt; <span class='message'>step: 9/20 binary idx: 2 window: 33</span></div><div class='output co'>#&gt; <span class='message'>step: 10/20 binary idx: 4 window: 79</span></div><div class='output co'>#&gt; <span class='message'>step: 11/20 binary idx: 7 window: 149</span></div><div class='output co'>#&gt; <span class='message'>step: 12/20 binary idx: 9 window: 196</span></div><div class='output co'>#&gt; <span class='message'>step: 13/20 binary idx: 12 window: 265</span></div><div class='output co'>#&gt; <span class='message'>step: 14/20 binary idx: 14 window: 312</span></div><div class='output co'>#&gt; <span class='message'>step: 15/20 binary idx: 17 window: 382</span></div><div class='output co'>#&gt; <span class='message'>step: 16/20 binary idx: 19 window: 428</span></div><div class='output co'>#&gt; <span class='message'>step: 17/20 binary idx: 5 window: 103</span></div><div class='output co'>#&gt; <span class='message'>step: 18/20 binary idx: 10 window: 219</span></div><div class='output co'>#&gt; <span class='message'>step: 19/20 binary idx: 15 window: 335</span></div><div class='output co'>#&gt; <span class='message'>step: 20/20 binary idx: 20 window: 452</span></div><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># Compute the upper bound, than add new profiles</span>
 <span class='no'>pan</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pmp_upper_bound.html'>pmp_upper_bound</a></span>(<span class='no'>mp_gait_data</span>)
 <span class='no'>pan</span> <span class='kw'>&lt;-</span> <span class='fu'>pmp</span>(<span class='no'>mp_gait_data</span>, <span class='kw'>pmp_obj</span> <span class='kw'>=</span> <span class='no'>pan</span>)

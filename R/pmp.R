@@ -1,6 +1,6 @@
-#' Pan Matrix Profile
+#' Pan-Matrix Profile
 #'
-#' Computes the Pan Matrix Profile (PMP) for the given time series.
+#' Computes the Pan-Matrix Profile (PMP) for the given time series.
 #'
 #' The work closest in spirit to ours is VALMOD. The idea of VALMOD is to compute the MP for
 #' the shortest length of interest, then use the information gleaned from it to guide a search
@@ -38,7 +38,7 @@
 #' 2.1. window_sizes tells the function what mp are stored, it may be updated with as.numeric(names(pmp))
 #' 3. the functions must be capable to handle the data without need to sort by window_size, but sort may be useful later(?)
 #'
-#' @return Returns a Pan Matrix Profile object.
+#' @return Returns a `PMP` object.
 #' @export
 #'
 #' @examples
@@ -68,8 +68,8 @@ pmp <- function(data,
 
   # checks if the given object is actualy a skimp object
   if (!is.null(pmp_obj)) {
-    if (class(pmp_obj) != "PanMatrixProfile") {
-      stop("`pmp_obj` must be of class `PanMatrixProfile`")
+    if (class(pmp_obj) != "PMP") {
+      stop("`pmp_obj` must be of class `PMP`")
     }
   }
 
@@ -77,12 +77,10 @@ pmp <- function(data,
 
   data_size <- length(data)
 
-
-
   # if an object is given, remove the windows that already have been computed and are below the upper_window
   if (!is.null(pmp_obj)) {
     # remove already computed
-    window_sizes <- window_sizes[!(window_sizes %in% pmp_obj$windows)]
+    window_sizes <- window_sizes[!(window_sizes %in% pmp_obj$w)]
 
     if (!is.null(pmp_obj$upper_window)) {
       # remove those above the upper_window
@@ -122,8 +120,6 @@ pmp <- function(data,
   on.exit(
     {
       if (is.null(pmp_obj)) {
-        message("on.exit NULL")
-
         return(NULL)
       } else {
 
@@ -133,7 +129,7 @@ pmp <- function(data,
         expected_indexes <- as.numeric(names(pmp_obj$pmpi))
 
         # check if the windows vector contains any uncomputed matrix profile
-        if (any(!(pmp_obj$windows %in% expected_profiles))) {
+        if (any(!(pmp_obj$w %in% expected_profiles))) {
           warning("`windows` contains values not computed in `pmp`")
         }
 
@@ -158,7 +154,7 @@ pmp <- function(data,
         #   window_sizes <- as.numeric(names(pmp_obj$pmp))
         # }
 
-        message("on.exit OBJ")
+        pmp_obj$ez <- getOption("tsmp.exclusion_zone", 1 / 2)
 
         return(pmp_obj)
       }
@@ -169,7 +165,7 @@ pmp <- function(data,
   # if not given, create a new object to start with
   if (is.null(pmp_obj)) {
     pmp_obj <- list(pmp = list(), pmpi = list())
-    class(pmp_obj) <- "PanMatrixProfile"
+    class(pmp_obj) <- "PMP"
   }
 
   # Determine the order in which we will explore the window_sizes
@@ -194,20 +190,22 @@ pmp <- function(data,
     # Run Matrix Profile
     result <- mpx(data = data, window_size = w, idx = TRUE, dist = "euclidean", n_workers = n_workers)
 
-    message(
-      "step: ", i, "/", length(split_idx), " binary idx: ", idx, " window: ", w
-    )
+    if (verbose > 0) {
+      message(
+        "step: ", i, "/", length(split_idx), " binary idx: ", idx, " window: ", w
+      )
+    }
 
     # if pmp_obj is a new empty object, accessing windows will return NULL, so it's fine
-    pmp_obj$windows <- c(pmp_obj$windows, w)
+    pmp_obj$w <- c(pmp_obj$w, w)
     # using character to create a tuple list. Numbers would create NULL's
     pmp_obj$pmp[[as.character(w)]] <- result$mp
     pmp_obj$pmpi[[as.character(w)]] <- result$pi
 
     if (plot == TRUE) {
-      # add a layer to the plot. `pmp_obj$windows` is currently used to know the heigth of
+      # add a layer to the plot. `pmp_obj$w` is currently used to know the heigth of
       # the new layer. May be room to improve.
-      skimp_plot_add_layer(result$mp, w, pmp_obj$windows)
+      skimp_plot_add_layer(result$mp, w, pmp_obj$w)
       Sys.sleep(1) # needed for plot update
     }
   }
@@ -284,8 +282,8 @@ pmp_upper_bound <- function(data,
   on.exit(
     {
       if (return_pmp) {
-        pmp_obj <- list(upper_window = max(windows), pmp = pmp, pmpi = pmpi, windows = windows)
-        class(pmp_obj) <- "PanMatrixProfile"
+        pmp_obj <- list(upper_window = max(windows), pmp = pmp, pmpi = pmpi, w = windows)
+        class(pmp_obj) <- "PMP"
         return(pmp_obj)
       } else {
         return(window_size)

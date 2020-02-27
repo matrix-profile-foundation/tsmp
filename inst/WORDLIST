@@ -13,6 +13,7 @@ CAC
 Cardinality
 CCM
 Chetan
+CircleCI
 codecov
 Conf
 cpu
@@ -51,6 +52,7 @@ ISMIR
 ISWC
 javidlakha
 jbeleno
+JSON
 Kamgar
 Kavantzas
 Kaveh
@@ -64,7 +66,6 @@ lifecycle
 LMP
 Lonardi
 matlab
-matplotlib
 matrixprofile
 MatrixProfile
 MDL
@@ -134,6 +135,7 @@ summarizations
 Syst
 th
 TiltABP
+tsmp’
 ucr
 UCR
 Ulanova
