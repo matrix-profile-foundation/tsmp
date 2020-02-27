@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# tsmp 0.4.3
+# tsmp 0.4.4
 * Added MPdist algorithm to compare two time series.
 * Added `find_snippet()` that uses MPdist to show representative data.
 * Added `mpx()` algorithm that doesn't depends on FFT.

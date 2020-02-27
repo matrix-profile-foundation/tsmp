@@ -62,7 +62,7 @@ analyze <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
   )
 
   # Compute --------------------------------------
-  result <- compute(ts, windows, query, sample_pct, threshold, n_jobs)
+  result <- compute(ts, windows, query, sample_pct, threshold, n_jobs) %T>% visualize()
 
   # Explore --------------------------------------
   # extract top motifs
