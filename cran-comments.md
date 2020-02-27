@@ -1,4 +1,5 @@
 ## Comments
+quick-fix: checkmate package was in suggests but is imports.
 This version added Rcpp implementations and RcppParallel to allow multi-threading.
 Progressivelly I'll convert the bottlenecks to Rcpp and hope to get rid of `doSNOW` for parallelization.
 
