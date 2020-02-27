@@ -45,9 +45,9 @@ Depends:
     R (>= 3.2)
 Imports:
     audio (>= 0.1-6),
-    checkmate (>= 2.0.0),
+    checkmate,
     doSNOW (>= 1.0.18),
-    foreach (>= 1.4.8),
+    foreach,
     magrittr (>= 1.5),
     parallel,
     progress (>= 1.2.2),
