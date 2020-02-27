@@ -45,3 +45,7 @@
 ^\.circleci$
 ^tsmp-Ex_x64\.Rout$
 ^tsmp-Ex_i386\.Rout$
+^\.theia$
+^\.lintr$
+^\.gitpod.*$
+^\.docker.*$

@@ -25,6 +25,11 @@ Progressivelly I'll convert the bottlenecks to Rcpp and hope to get rid of `doSN
 
 ## Known Issues (a.k.a NOTES)
 
+* Found the following (possibly) invalid file URI:
+  URI: .github/CODE_OF_CONDUCT.md
+  From: README.md
+  * This is ok.
+
 * GNU make is a SystemRequirements.
   * Requirement of package RcppParallel. I haven't find a workaround to solve this NOTE.
 
