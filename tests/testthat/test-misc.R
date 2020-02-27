@@ -39,13 +39,12 @@ if (!testthat:::on_cran()) {
   })
 
   test_that("misc", {
-    expect_silent(set_data(mp, data[,1]))
+    expect_silent(set_data(mp, data[, 1]))
     expect_silent(remove_class(motifs, "Motif"))
-    expect_equal(as.vector(data[,1]), as.vector(get_data(mp)))
+    expect_equal(as.vector(data[, 1]), as.vector(get_data(mp)))
     expect_equal(round(sum(corr) / sd(corr), 3), 695.805)
     expect_equal(round(sum(norm) / sd(norm), 3), 168.874)
     expect_equal(round(sum(paa_t) / sd(paa_t), 3), 155.269)
     expect_equal(round(sum(paa_i) / sd(paa_i), 3), 312.118)
   })
-
 }

@@ -1274,6 +1274,20 @@ as.multimatrixprofile <- function(.mp) {
   return(.mp)
 }
 
+#' @describeIn as.matrixprofile Cast an object changed by another function back to `PMP`.
+#' @export
+#'
+
+as.pmp <- function(.mp) {
+  if (!("PMP" %in% class(.mp))) {
+    stop("This object cannot be a `PMP`.")
+  }
+
+  class(.mp) <- update_class(class(.mp), "PMP")
+
+  return(.mp)
+}
+
 #' @describeIn as.matrixprofile Cast an object changed by another function back to `MultiMatrixProfile`.
 #' @export
 #'

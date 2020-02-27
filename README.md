@@ -1,7 +1,7 @@
 README
 ================
 Francisco Bischoff
-\- 24 Feb 2020
+\- 26 Feb 2020
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 

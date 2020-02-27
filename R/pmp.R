@@ -190,9 +190,11 @@ pmp <- function(data,
     # Run Matrix Profile
     result <- mpx(data = data, window_size = w, idx = TRUE, dist = "euclidean", n_workers = n_workers)
 
-    message(
-      "step: ", i, "/", length(split_idx), " binary idx: ", idx, " window: ", w
-    )
+    if (verbose > 0) {
+      message(
+        "step: ", i, "/", length(split_idx), " binary idx: ", idx, " window: ", w
+      )
+    }
 
     # if pmp_obj is a new empty object, accessing windows will return NULL, so it's fine
     pmp_obj$w <- c(pmp_obj$w, w)
