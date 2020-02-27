@@ -4,8 +4,18 @@
 \alias{mass_v3}
 \title{Calculates the distance profile using MASS_V3 algorithm}
 \usage{
-mass_v3(query_window, data, window_size, data_size, data_mean, data_sd,
-  query_mean, query_sd, k = NULL, ...)
+mass_v3(
+  query_window,
+  data,
+  window_size,
+  data_size,
+  data_mean,
+  data_sd,
+  query_mean,
+  query_sd,
+  k = NULL,
+  ...
+)
 }
 \arguments{
 \item{query_window}{a \code{vector} of \code{numeric}. Query window.}
@@ -26,7 +36,7 @@ mass_v3(query_window, data, window_size, data_size, data_mean, data_sd,
 
 \item{k}{an \code{int} or \code{NULL}. Default is \code{NULL}. Defines the size of batch. Prefer to use a power of 2.}
 
-\item{...}{just a placeholder to catch unused parameters.}
+\item{\dots}{just a placeholder to catch unused parameters.}
 }
 \value{
 Returns the \code{distance_profile} for the given query and the \code{last_product} for STOMP
@@ -70,4 +80,3 @@ Website: \url{https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html}
 \seealso{
 \code{\link[=mass_pre]{mass_pre()}} to precomputation of input values.
 }
-\keyword{internal}

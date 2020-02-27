@@ -2,20 +2,22 @@
 % Please edit documentation in R/misc.R
 \name{fast_movsd}
 \alias{fast_movsd}
-\title{Fast implementation of moving standard deviation using filter}
+\title{Fast implementation of moving standard deviation}
 \usage{
-fast_movsd(data, window_size)
+fast_movsd(data, window_size, rcpp = FALSE)
 }
 \arguments{
 \item{data}{a \code{vector} or a column \code{matrix} of \code{numeric}.}
 
 \item{window_size}{moving sd window size}
+
+\item{rcpp}{a \code{logical}. Uses rcpp implementation.}
 }
 \value{
 Returns a \code{vector} with the moving standard deviation
 }
 \description{
-Fast implementation of moving standard deviation using filter
+This function does not handle NA values
 }
 \examples{
 data_sd <- fast_movsd(mp_toy_data$data[, 1], mp_toy_data$sub_len)

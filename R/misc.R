@@ -1,17 +1,154 @@
+# Window functions ----------------------------------------------------------------------------
 
-# Math functions ------------------------------------------------------------------------------
+# Supports:
+#               NA/NaN  -Inf/Inf  Edge  Rcpp
+# movmin          Unk     Unk      No   Yes
+# movmax          Unk     Unk      No   Yes
+# fast_movsd      No      Unk      No   No
+# fast_movavg     No      Unk      No   No
+# fast_avg_sd     No      Unk      No   No
 
-#' Fast implementation of moving standard deviation using filter
+#' Fast implementation of moving standard deviation
+#'
+#' This function does not handle NA values
 #'
 #' @param data a `vector` or a column `matrix` of `numeric`.
 #' @param window_size moving sd window size
+#' @param rcpp a `logical`. Uses rcpp implementation.
 #'
 #' @return Returns a `vector` with the moving standard deviation
 #' @export
 #'
 #' @examples
 #' data_sd <- fast_movsd(mp_toy_data$data[, 1], mp_toy_data$sub_len)
-fast_movsd <- function(data, window_size) {
+fast_movsd <- function(data, window_size, rcpp = FALSE) {
+  if (window_size < 2) {
+    stop("'window_size' must be at least 2.")
+  }
+
+  # Rcpp is slower
+  if (rcpp) {
+    return(fast_movsd_rcpp(data, window_size))
+  }
+
+  # Improve the numerical analysis by subtracting off the series mean
+  # this has no effect on the standard deviation.
+  data <- data - mean(data)
+
+  data_sum <- cumsum(c(sum(data[1:window_size]), diff(data, window_size)))
+  data_mean <- data_sum / window_size
+
+  data2 <- data^2
+  data2_sum <- cumsum(c(sum(data2[1:window_size]), diff(data2, window_size)))
+  data_sd2 <- (data2_sum / window_size) - (data_mean^2) # variance
+  data_sd <- sqrt(data_sd2)
+
+  return(data_sd)
+}
+
+#' Fast implementation of moving average
+#'
+#' This function does not handle NA values
+#'
+#' @inheritParams fast_movsd
+#'
+#' @return Returns a `vector` with the moving average
+#' @export
+#'
+#' @examples
+#' data_avg <- fast_movavg(mp_toy_data$data[, 1], mp_toy_data$sub_len)
+fast_movavg <- function(data, window_size) {
+  if (window_size < 2) {
+    stop("'window_size' must be at least 2.")
+  }
+
+  return(cumsum(c(sum(data[1:window_size]), diff(data, window_size))) / window_size)
+}
+
+#' Converts euclidean distances into correlation values
+#'
+#' @param x a `vector` or a column `matrix` of `numeric`.
+#' @param w the window size
+#'
+#' @return Returns the converted values
+#'
+#' @keywords internal
+#' @noRd
+ed_corr <- function(x, w) {
+  (2 * w - x^2) / (2 * w)
+}
+
+#' Converts correlation values into euclidean distances
+#'
+#' @inheritParams ed_corr
+#'
+#' @return Returns the converted values
+#'
+#' @keywords internal
+#' @noRd
+corr_ed <- function(x, w) {
+  sqrt(2 * w * (1 - ifelse(x > 1, 1, x)))
+}
+
+#' Fast implementation of moving average and moving standard deviation
+#'
+#' This function does not handle NA values
+#'
+#' @inheritParams fast_movsd
+#'
+#' @return Returns a `list` with `avg` and `sd` `vector`s
+#' @export
+
+fast_avg_sd <- function(data, window_size, rcpp = FALSE) {
+  if (window_size < 2) {
+    stop("'window_size' must be at least 2.")
+  }
+
+  # Rcpp is slower
+  if (rcpp) {
+    return(fast_avg_sd_rcpp(data, window_size))
+  }
+
+  mov_sum <- cumsum(c(sum(data[1:window_size]), diff(data, window_size)))
+  data2 <- data^2
+  mov2_sum <- cumsum(c(sum(data2[1:window_size]), diff(data2, window_size)))
+  mov_mean <- mov_sum / window_size
+
+
+  # Improve the numerical analysis by subtracting off the series mean
+  # this has no effect on the standard deviation.
+  dmean <- mean(data)
+  data <- data - dmean
+
+  data_sum <- cumsum(c(sum(data[1:window_size]), diff(data, window_size)))
+  data_mean <- data_sum / window_size
+  data2 <- data^2
+  data2_sum <- cumsum(c(sum(data2[1:window_size]), diff(data2, window_size)))
+  data_sd2 <- (data2_sum / window_size) - (data_mean^2) # variance
+  data_sd2[data_sd2 < 0] <- 0
+  data_sd <- sqrt(data_sd2) # std deviation
+  data_sig <- sqrt(1 / (data_sd2 * window_size))
+
+  return(list(avg = mov_mean, sd = data_sd, sig = data_sig, sum = mov_sum, sqrsum = mov2_sum))
+}
+
+# DO NOT Handles NA's
+fast_muinvn <- function(data, window_size) {
+  if (window_size < 2) {
+    stop("'window_size' must be at least 2.")
+  }
+
+  data_sum <- cumsum(c(sum(data[1:window_size]), diff(data, window_size)))
+  data_mean <- data_sum / window_size
+  data2 <- data^2
+  data2_sum <- cumsum(c(sum(data2[1:window_size]), diff(data2, window_size)))
+  data_dp <- 1 / sqrt(data2_sum - data_mean^2 * window_size)
+
+  return(list(avg = data_mean, isd = data_dp))
+}
+
+# Handles NA's
+old_fast_movsd <- function(data, window_size) {
 
   # length of the time series
   data_size <- length(data)
@@ -26,11 +163,11 @@ fast_movsd <- function(data, window_size) {
 
   # Improve the numerical analysis by subtracting off the series mean
   # this has no effect on the standard deviation.
-  data <- data - mean(data)
+  data <- data - mean(data, na.rm = TRUE)
 
   # scale the data to have unit variance too. will put that
   # scale factor back into the result at the end
-  data_sd <- std(data)
+  data_sd <- std(data, na.rm = TRUE)
   data <- data / data_sd
 
   # we will need the squared elements
@@ -44,32 +181,26 @@ fast_movsd <- function(data, window_size) {
   s <- Re(s)
   s <- s * sqrt((window_size - 1) / window_size)
 
-  return(s[!is.na(s)])
+  return(s[window_size:data_size])
 }
 
-#' Fast implementation of moving average and
-#'
-#' @inheritParams fast_movsd
-#'
-#' @return Returns a `vector` with the moving average
-#' @export
-#'
-#' @examples
-#' data_avg <- fast_movavg(mp_toy_data$data[, 1], mp_toy_data$sub_len)
-fast_movavg <- function(data, window_size) {
+# Handles NA's
+old_fast_movavg <- function(data, window_size) {
+  if (window_size < 2) {
+    stop("'window_size' must be at least 2.")
+  }
+
   data_mean <- stats::filter(data, rep(1 / window_size, window_size), sides = 2)
   return(data_mean[!is.na(data_mean)])
 }
 
-#' Fast implementation of moving average and moving standard deviation using cumsum
-#'
-#' @inheritParams fast_movsd
-#'
-#' @return Returns a `list` with `avg` and `sd` `vector`s
-#' @keywords internal
-#' @noRd
+# DO NOT Handles NA's
+# catastrophic cancellation
+old_fast_avg_sd <- function(data, window_size) {
+  if (window_size < 2) {
+    stop("'window_size' must be at least 2.")
+  }
 
-fast_avg_sd <- function(data, window_size) {
   data_len <- length(data)
 
   data[(data_len + 1):(window_size + data_len)] <- 0
@@ -82,12 +213,26 @@ fast_avg_sd <- function(data, window_size) {
   data_mean <- data_sum / window_size
 
   data_sd2 <- (data2_sum / window_size) - (data_mean^2)
-  data_sd2 <- Re(data_sd2)
   data_sd2 <- pmax(data_sd2, 0)
   data_sd <- sqrt(data_sd2)
 
   return(list(avg = data_mean, sd = data_sd, sum = data_sum, sqrsum = data2_sum))
 }
+
+
+# Math functions ------------------------------------------------------------------------------
+#
+# Supports:
+#               NA/NaN  -Inf/Inf
+# std             Unk      Unk
+# mode            Unk      Unk
+# znorm           Unk      Unk
+# diff2           Unk      Unk
+# bubble_up       Unk      Unk
+# paa             Unk      Unk
+# ipaa            Unk      Unk
+# min_mp_idx      Unk      Unk
+
 
 #' Population SD, as R always calculate with n-1 (sample), here we fix it
 #'
@@ -97,15 +242,17 @@ fast_avg_sd <- function(data, window_size) {
 #' @keywords internal
 #' @noRd
 #'
-std <- function(data) {
-  sdx <- stats::sd(data)
+std <- function(data, na.rm = FALSE, rcpp = TRUE) {
 
-  if (is.na(sdx)) {
-    return(1.0)
+  # Rcpp is faster
+  if (rcpp) {
+    return(std_rcpp(data, na.rm))
   }
 
-  if (sdx == 0) {
-    return(sdx)
+  sdx <- stats::sd(data, na.rm)
+
+  if (is.na(sdx)) {
+    return(NA)
   }
 
   return(sqrt((length(data) - 1) / length(data)) * sdx)
@@ -119,7 +266,13 @@ std <- function(data) {
 #' @keywords internal
 #' @noRd
 
-mode <- function(x) {
+mode <- function(x, rcpp = FALSE) {
+
+  # Rcpp is not faster
+  if (rcpp) {
+    return(mode_rcpp(x))
+  }
+
   ux <- unique(x)
   ux[which.max(tabulate(match(x, ux)))]
 }
@@ -132,16 +285,46 @@ mode <- function(x) {
 #' @keywords internal
 #' @noRd
 #'
-znorm <- function(data) {
+znorm <- function(data, rcpp = TRUE) {
+  # Rcpp is faster
+  if (rcpp) {
+    return(as.matrix(znorm_rcpp(data)))
+  }
+
   data_mean <- mean(data)
   data_dev <- std(data)
 
-  if (is.nan(data_dev) || data_dev <= 0.01) {
+  if (is.na(data_dev) || data_dev <= 0.01) {
     return(data - data_mean)
   }
   else {
     (data - data_mean) / (data_dev)
   }
+}
+
+#' Normalizes data to be between min and max
+#'
+#'
+#' @param data a `vector` or a column `matrix` of `numeric`.
+#' @param min the minimum value
+#' @param max the maximum value
+#'
+#' @return Returns the normalized data
+#' @keywords internal
+#' @noRd
+#'
+normalize <- function(data, min = 0, max = 1) {
+  min_val <- min(data, na.rm = TRUE)
+  max_val <- max(data, na.rm = TRUE)
+
+  a <- (max - min) / (max_val - min_val)
+  b <- max - a * max_val
+  data <- a * data + b
+
+  data[data < min] <- min
+  data[data > max] <- max
+
+  return(data)
 }
 
 #' Distance between two matrices
@@ -156,6 +339,7 @@ znorm <- function(data) {
 #' @noRd
 
 diff2 <- function(x, y) {
+  # Rcpp ?
   if (!is.numeric(x) || !is.numeric(y)) {
     stop("`x` and `y` must be numeric vectors or matrices.")
   }
@@ -176,18 +360,84 @@ diff2 <- function(x, y) {
   sqrt(pmax(xx + yy - 2 * xy, 0))
 }
 
-#' Distance between two matrices
+#' Binary Split algorithm
 #'
-#' Computes the Euclidean distance between rows of two matrices.
+#' Creates a vector with the indexes of binary split.
+#'
+#' @param n size of the vector
+#'
+#' @return Returns a `vector` with the binary split indexes
+#' @keywords internal
+#' @noRd
+
+binary_split <- function(n, rcpp = TRUE) {
+  if (rcpp) {
+    return(binary_split_rcpp(as.integer(n)))
+  }
+
+  if (n < 2) {
+    return(1)
+  }
+
+  split <- function(lb, ub, m) {
+    if (lb == m) {
+      l <- NULL
+      r <- c(m + 1, ub)
+    } else if (ub == m) {
+      l <- c(lb, m - 1)
+      r <- NULL
+    } else {
+      l <- c(lb, m - 1)
+      r <- c(m + 1, ub)
+    }
+
+    return(list(l = l, r = r))
+  }
+
+  idxs <- vector(mode = "numeric", length = n)
+  intervals <- list()
+
+  idxs[1] <- 1 # We always begin by explore the first integer
+  intervals[[1]] <- c(2, n) # After exploring the first integer, we begin splitting the interval 2:n
+  i <- 2
+
+  while (length(intervals) > 0) {
+    lb <- intervals[[1]][1]
+    ub <- intervals[[1]][2]
+    mid <- floor((lb + ub) / 2)
+    intervals[[1]] <- NULL
+
+    idxs[i] <- mid
+    i <- i + 1
+
+    if (lb == ub) {
+      next
+    } else {
+      lr <- split(lb, ub, mid)
+      if (!is.null(lr$l)) {
+        intervals[[length(intervals) + 1]] <- lr$l
+      }
+      if (!is.null(lr$r)) {
+        intervals[[length(intervals) + 1]] <- lr$r
+      }
+    }
+  }
+  return(idxs)
+}
+
+#' Bubble up algorithm
+#'
+#' Bubble up algorithm.
 #'
 #' @param data a vector of values
 #' @param len size of data
 #'
-#' @return Returns a `matrix` of size m x n if x is of size m x k and y is of size n x k.
+#' @return Doesnt return. Not used for now
 #' @keywords internal
 #' @noRd
 
 bubble_up <- function(data, len) {
+  # Rcpp ?
   pos <- len
 
   while (pos > 0 && data[pos / 2] < data[pos]) {
@@ -211,6 +461,7 @@ bubble_up <- function(data, len) {
 #' @noRd
 
 paa <- function(data, p) {
+  # Rcpp ?
   paa_data <- as.vector(data)
   len <- length(paa_data)
 
@@ -243,6 +494,7 @@ paa <- function(data, p) {
 #' @noRd
 
 ipaa <- function(data, p) {
+  # Rcpp ?
   if (is.null(data)) {
     return(NULL)
   }
@@ -272,11 +524,11 @@ ipaa <- function(data, p) {
 
 #' Get index of the minimum value from a matrix profile and its nearest neighbor
 #'
-#' @param .mp a TSMP object of class `MatrixProfile`.
+#' @param .mp a `MatrixProfile` object.
 #' @param n_dim number of dimensions of the matrix profile
 #' @param valid check for valid numbers
 #'
-#' @return returns the minimum and the nearest neighbor
+#' @return returns a `matrix` with two columns: the minimum and the nearest neighbor
 #' @export
 #'
 #' @examples
@@ -362,6 +614,7 @@ min_mp_idx <- function(.mp, n_dim = NULL, valid = TRUE) {
 #' @noRd
 #'
 golden_section <- function(dist_pro, label, pos_st, pos_ed, beta, window_size) {
+  # Rcpp ?
   golden_ratio <- (1 + sqrt(5)) / 2
   a_thold <- min(dist_pro)
   b_thold <- max(dist_pro[!is.infinite(dist_pro)])
@@ -410,6 +663,7 @@ golden_section <- function(dist_pro, label, pos_st, pos_ed, beta, window_size) {
 #' @noRd
 
 golden_section_2 <- function(dist_pro, thold, label, pos_st, pos_ed, beta, window_size, fit_idx) {
+  # Rcpp ?
   golden_ratio <- (1 + sqrt(5)) / 2
   a_thold <- min(dist_pro[[fit_idx]])
   b_thold <- max(dist_pro[[fit_idx]][!is.infinite(dist_pro[[fit_idx]])])
@@ -463,6 +717,7 @@ golden_section_2 <- function(dist_pro, thold, label, pos_st, pos_ed, beta, windo
 #' @noRd
 
 compute_f_meas <- function(label, pos_st, pos_ed, dist_pro, thold, window_size, beta) {
+  # Rcpp ?
   # generate annotation curve for each pattern
   if (is.list(dist_pro)) {
     anno_st <- list()
@@ -514,25 +769,25 @@ compute_f_meas <- function(label, pos_st, pos_ed, dist_pro, thold, window_size, 
     anno[anno_st[i]:anno_ed[i]] <- 1
   }
 
-  is.tp <- rep(FALSE, length(anno_st))
+  is_tp <- rep(FALSE, length(anno_st))
 
   for (i in seq_len(length(anno_st))) {
     if (anno_ed[i] > length(label)) {
       anno_ed[i] <- length(label)
     }
     if (sum(label[anno_st[i]:anno_ed[i]]) > (0.8 * window_size)) {
-      is.tp[i] <- TRUE
+      is_tp[i] <- TRUE
     }
   }
-  tp_pre <- sum(is.tp)
+  tp_pre <- sum(is_tp)
 
-  is.tp <- rep(FALSE, length(pos_st))
+  is_tp <- rep(FALSE, length(pos_st))
   for (i in seq_len(length(pos_st))) {
     if (sum(anno[pos_st[i]:pos_ed[i]]) > (0.8 * window_size)) {
-      is.tp[i] <- TRUE
+      is_tp[i] <- TRUE
     }
   }
-  tp_rec <- sum(is.tp)
+  tp_rec <- sum(is_tp)
 
   pre <- tp_pre / length(anno_st)
   rec <- tp_rec / length(pos_st)
@@ -547,7 +802,7 @@ compute_f_meas <- function(label, pos_st, pos_ed, dist_pro, thold, window_size, 
 
 # Salient Aux functions --------------------------------------------------------------------------
 
-#' Retrieve the index of a number of candidates from the lowest points of a MP
+#' Retrieve the index of a number of candidates from the lowest points of a Matrix Profile
 #'
 #' @param matrix_profile the matrix profile
 #' @param n_cand number of candidates to extract
@@ -559,6 +814,7 @@ compute_f_meas <- function(label, pos_st, pos_ed, dist_pro, thold, window_size, 
 #' @noRd
 #'
 get_sorted_idx <- function(matrix_profile, n_cand, exclusion_zone = 0) {
+  # Rcpp ?
   idx <- sort(matrix_profile, index.return = TRUE)$ix
 
   if (exclusion_zone > 0) {
@@ -899,9 +1155,9 @@ set_data <- function(.mp, data) {
 #' get_data(mp)
 get_data <- function(.mp) {
   if (length(.mp$data) == 1) {
-    return(as.matrix(.mp$data[[1]]))
+    return(invisible(as.matrix(.mp$data[[1]])))
   } else {
-    return(as.matrix(.mp$data))
+    return(invisible(as.matrix(.mp$data)))
   }
 }
 
@@ -1014,6 +1270,20 @@ as.multimatrixprofile <- function(.mp) {
   }
 
   class(.mp) <- update_class(class(.mp), "MultiMatrixProfile")
+
+  return(.mp)
+}
+
+#' @describeIn as.matrixprofile Cast an object changed by another function back to `PMP`.
+#' @export
+#'
+
+as.pmp <- function(.mp) {
+  if (!("PMP" %in% class(.mp))) {
+    stop("This object cannot be a `PMP`.")
+  }
+
+  class(.mp) <- update_class(class(.mp), "PMP")
 
   return(.mp)
 }
@@ -1136,17 +1406,18 @@ as.salient <- function(.mp) {
 #'
 beep <- function(data) {
   if (!(is.null(audio::audio.drivers()) || nrow(audio::audio.drivers()) == 0)) {
-    tryCatch({
-      audio::play(data)
-    },
-    error = function(cond) {
-      message("Warning: Failed to play audio alert")
-      message(cond)
-    },
-    warning = function(cond) {
-      message("Warning: Something went wrong playing audio alert")
-      message(cond)
-    }
+    tryCatch(
+      {
+        audio::play(data)
+      },
+      error = function(cond) {
+        message("Warning: Failed to play audio alert")
+        message(cond)
+      },
+      warning = function(cond) {
+        message("Warning: Something went wrong playing audio alert")
+        message(cond)
+      }
     )
   }
   Sys.sleep(1)

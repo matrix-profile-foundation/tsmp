@@ -11,7 +11,7 @@
 #' @param data_sd precomputed data moving standard deviation.
 #' @param query_mean precomputed query average.
 #' @param query_sd precomputed query standard deviation.
-#' @param ... just a placeholder to catch unused parameters.
+#' @param \dots just a placeholder to catch unused parameters.
 #'
 #' @return Returns the `distance_profile` for the given query and the `last_product` for STOMP
 #'   algorithm.
@@ -45,13 +45,15 @@
 mass_v2 <- function(query_window, window_size, data_fft, data_size, data_mean, data_sd, query_mean, query_sd, ...) {
   # pre-process query for fft
   query_window <- rev(query_window)
-  query_window[(window_size + 1):data_size] <- 0
+  pad_size <- length(data_fft)
+  query_window[(window_size + 1):pad_size] <- 0
   # compute the product
   prod <- data_fft * stats::fft(query_window)
-  z <- stats::fft(prod, inverse = TRUE) / length(prod)
+  z <- Re(stats::fft(prod, inverse = TRUE) / length(prod))
   # compute the distance profile
-  distance_profile <- 2 * (window_size - (z[window_size:data_size] - window_size * data_mean * query_mean) / (data_sd * query_sd))
   last_product <- z[window_size:data_size]
+  distance_profile <- 2 * (window_size - (last_product - window_size * data_mean * query_mean) / (data_sd * query_sd))
+  distance_profile[distance_profile < 0] <- 0
 
   return(list(distance_profile = distance_profile, last_product = last_product))
 }

@@ -1,4 +1,5 @@
 /dev
+/src-*
 inst/doc
 .Rproj.user
 .RData
@@ -7,3 +8,8 @@ packrat/lib*/
 .httr-oauth
 packrat/src/
 /LOCAL_APPDATA_FONTCONFIG_CACHE/
+tsmp.Rcheck/
+tsmp*.tar.gz
+tsmp*.tgz
+/tests/*/Rplots.pdf
+/README_cache/

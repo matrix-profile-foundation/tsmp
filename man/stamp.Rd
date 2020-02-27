@@ -5,14 +5,27 @@
 \alias{stamp}
 \title{Anytime univariate STAMP algorithm Parallel version}
 \usage{
-stamp_par(..., window_size, exclusion_zone = 1/2, verbose = 2,
-  s_size = Inf, n_workers = 2, weight = NULL)
+stamp_par(
+  ...,
+  window_size,
+  exclusion_zone = getOption("tsmp.exclusion_zone", 1/2),
+  verbose = getOption("tsmp.verbose", 2),
+  s_size = Inf,
+  n_workers = 2,
+  weight = NULL
+)
 
-stamp(..., window_size, exclusion_zone = 1/2, verbose = 2,
-  s_size = Inf, weight = NULL)
+stamp(
+  ...,
+  window_size,
+  exclusion_zone = getOption("tsmp.exclusion_zone", 1/2),
+  verbose = getOption("tsmp.verbose", 2),
+  s_size = Inf,
+  weight = NULL
+)
 }
 \arguments{
-\item{...}{a \code{matrix} or a \code{vector}. If a second time series is supplied it will be a join matrix
+\item{\dots}{a \code{matrix} or a \code{vector}. If a second time series is supplied it will be a join matrix
 profile.}
 
 \item{window_size}{an \code{int}. Size of the sliding window.}
@@ -58,10 +71,11 @@ avoid  trivial matches; if a query data is provided (join similarity), this para
 
 \examples{
 mp <- stamp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
-
-# using threads
-mp <- stamp_par(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
 \dontrun{
+
+#' # using threads
+mp <- stamp_par(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+
 ref_data <- mp_toy_data$data[, 1]
 query_data <- mp_toy_data$data[, 2]
 # self similarity
@@ -75,19 +89,22 @@ mp <- stamp(ref_data, query_data, window_size = 30, s_size = round(nrow(query_da
 \itemize{
 \item Yeh CCM, Zhu Y, Ulanova L, Begum N, Ding Y, Dau HA, et al. Matrix profile I: All
 pairs similarity joins for time series: A unifying view that includes motifs, discords and
-shapelets. Proc - IEEE Int Conf Data Mining, ICDM. 2017;1317–22.
+shapelets. Proc - IEEE Int Conf Data Mining, ICDM. 2017;1317-22.
 }
 
 \itemize{
 \item Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A
-New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
+New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1-27.
 }
 
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other matrix profile computations: \code{\link{mstomp_par}},
-  \code{\link{scrimp}}, \code{\link{stomp_par}},
-  \code{\link{tsmp}}, \code{\link{valmod}}
+Other matrix profile computations: 
+\code{\link{mstomp_par}()},
+\code{\link{scrimp}()},
+\code{\link{stomp_par}()},
+\code{\link{tsmp}()},
+\code{\link{valmod}()}
 }
 \concept{matrix profile computations}

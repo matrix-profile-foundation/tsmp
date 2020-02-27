@@ -5,11 +5,24 @@
 \alias{mstomp}
 \title{Multivariate STOMP algorithm Parallel version}
 \usage{
-mstomp_par(data, window_size, exclusion_zone = 1/2, verbose = 2,
-  must_dim = NULL, exc_dim = NULL, n_workers = 2)
+mstomp_par(
+  data,
+  window_size,
+  exclusion_zone = getOption("tsmp.exclusion_zone", 1/2),
+  verbose = getOption("tsmp.verbose", 2),
+  must_dim = NULL,
+  exc_dim = NULL,
+  n_workers = 2
+)
 
-mstomp(data, window_size, exclusion_zone = 1/2, verbose = 2,
-  must_dim = NULL, exc_dim = NULL)
+mstomp(
+  data,
+  window_size,
+  exclusion_zone = getOption("tsmp.exclusion_zone", 1/2),
+  verbose = getOption("tsmp.verbose", 2),
+  must_dim = NULL,
+  exc_dim = NULL
+)
 }
 \arguments{
 \item{data}{a \code{matrix} of \code{numeric}, where each column is a time series. Accepts \code{vector} (see
@@ -61,10 +74,10 @@ means nothing, \code{1} means text, \code{2} adds the progress bar, \code{3} add
 \examples{
 # using all dimensions
 mp <- mstomp(mp_toy_data$data[1:150, ], 30, verbose = 0)
-
-# using threads
-mp <- mstomp_par(mp_toy_data$data[1:150, ], 30, verbose = 0)
 \dontrun{
+#' # using threads
+mp <- mstomp_par(mp_toy_data$data[1:150, ], 30, verbose = 0)
+
 # force using dimensions 1 and 2
 mp <- mstomp(mp_toy_data$data[1:200, ], 30, must_dim = c(1, 2))
 # exclude dimensions 2 and 3
@@ -80,7 +93,7 @@ Discovery.
 
 \itemize{
 \item Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A
-New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
+New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1-27.
 }
 
 Website: \url{https://sites.google.com/view/mstamp/}
@@ -88,8 +101,11 @@ Website: \url{https://sites.google.com/view/mstamp/}
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other matrix profile computations: \code{\link{scrimp}},
-  \code{\link{stamp_par}}, \code{\link{stomp_par}},
-  \code{\link{tsmp}}, \code{\link{valmod}}
+Other matrix profile computations: 
+\code{\link{scrimp}()},
+\code{\link{stamp_par}()},
+\code{\link{stomp_par}()},
+\code{\link{tsmp}()},
+\code{\link{valmod}()}
 }
 \concept{matrix profile computations}

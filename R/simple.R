@@ -4,7 +4,7 @@
 #' `verbose` changes how much information is printed by this function; `0` means nothing, `1` means
 #' text, `2` adds the progress bar, `3` adds the finish sound.
 #'
-#' @param ... a `matrix` of `numeric`, where each column is a time series. Accepts `list` and
+#' @param \dots a `matrix` of `numeric`, where each column is a time series. Accepts `list` and
 #'   `data.frame` too. If a second time series is supplied it will be a join matrix profile.
 #' @param window_size an `int` with the size of the sliding window.
 #' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is
@@ -16,9 +16,9 @@
 #'
 #' @export
 #' @references * Silva D, Yeh C, Batista G, Keogh E. Simple: Assessing Music Similarity Using
-#'   Subsequences Joins. Proc 17th ISMIR Conf. 2016;23–30.
+#'   Subsequences Joins. Proc 17th ISMIR Conf. 2016;23-30.
 #' @references * Silva DF, Yeh C-CM, Zhu Y, Batista G, Keogh E. Fast Similarity Matrix Profile for
-#'   Music Analysis and Exploration. IEEE Trans Multimed. 2018;14(8):1–1.
+#'   Music Analysis and Exploration. IEEE Trans Multimed. 2018;14(8):1-1.
 #' @references Website: <https://sites.google.com/view/simple-fast>
 #' @references Website: <https://sites.google.com/site/ismir2016simple/home>
 #'
@@ -26,7 +26,8 @@
 #' w <- 30
 #' data <- mp_toy_data$data # 3 dimensions matrix
 #' result <- simple_fast(data, window_size = w, verbose = 0)
-simple_fast <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
+simple_fast <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zone", 1 / 2),
+                        verbose = getOption("tsmp.verbose", 2)) {
   if (!is.numeric(window_size) || length(window_size) > 1) {
     stop("Unknown type of `window_size`. Must be an `int` or `numeric`")
   }

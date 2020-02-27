@@ -1,4 +1,4 @@
-if (skip_on_cran()) {
+if (!testthat:::on_cran()) {
   context("Testing MPdist")
   library(tsmp)
 
@@ -17,9 +17,9 @@ if (skip_on_cran()) {
   ddvect <- mpdist(ref_data, qd_data, w, type = "vector")
 
   test_that("MPdist", {
-    expect_equal(round(deq, 5), 1.87054)
-    expect_equal(round(ddiff, 5), 4.32203)
-    expect_equal(round(mean(ddvect$mpdist), 5), 4.64784)
-    expect_equal(round(sd(ddvect$mpdist), 5), 1.54083)
+    expect_equal(round(deq, 5), 2.02497)
+    expect_equal(round(ddiff, 5), 5.69151)
+    expect_equal(round(mean(ddvect$mpdist), 5), 4.63318)
+    expect_equal(round(sd(ddvect$mpdist), 5), 1.55205)
   })
 }

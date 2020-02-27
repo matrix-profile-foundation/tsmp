@@ -28,7 +28,7 @@
 #' @param main a `string`. (Default is `"Arc Plot"`). Main title.
 #' @param ylab a `string`. (Default is `""`). Y label.
 #' @param xlab a `string`. (Default is `"Profile Index"`). X label.
-#' @param ... further arguments to be passed to [plot()]. See [par()].
+#' @param \dots further arguments to be passed to [plot()]. See [par()].
 #' @param xmin an `int`. (Default is `NULL`). Set the minimum value of x axis.
 #' @param xmax an `int`. (Default is `NULL`). Set the maximum value of x axis.
 #'
@@ -112,7 +112,7 @@ plot_arcs <- function(pairs, alpha = NULL, quality = 30, lwd = 15, col = c("blue
 #' @param xlab a `string`. X label.
 #' @param ylab a `string`. Y label.
 #' @param ncol an `int`. Number of columns to plot Motifs.
-#' @param ... further arguments to be passed to [plot()]. See [par()].
+#' @param \dots further arguments to be passed to [plot()]. See [par()].
 #'
 #' @return None
 #'
@@ -277,8 +277,10 @@ plot.MatrixProfile <- function(x, ylab = "distance", xlab = "index", main = "Uni
   }
 
   if (!is.null(attr(x, "join")) && !attr(x, "join")) {
-    allmatrix <- TRUE
-    num_charts <- 3
+    if (!any(is.null(x$rmp), is.null(x$lmp))) {
+      allmatrix <- TRUE
+      num_charts <- 3
+    }
   }
 
   if (data) {
@@ -328,8 +330,10 @@ plot.MultiMatrixProfile <- function(x, ylab = "distance", xlab = "index", main =
   }
 
   if (!is.null(attr(x, "join")) && !attr(x, "join")) {
-    allmatrix <- TRUE
-    num_charts <- 3
+    if (!any(is.null(x$rmp), is.null(x$lmp))) {
+      allmatrix <- TRUE
+      num_charts <- 3
+    }
   }
 
   if (allmatrix == TRUE) {
@@ -637,6 +641,11 @@ plot.Discord <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "
     is.null(data) # check data presence before plotting anything
   }
 
+  if ("PMP" %in% class(x)) {
+    x$mp <- as.matrix(x$pmp[[1]])
+    x$pi <- as.matrix(x$pmpi[[1]])
+  }
+
   type <- match.arg(type)
 
   if (type == "data") {
@@ -782,6 +791,11 @@ plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "MO
   if (n_motifs == 0) {
     graphics::par(def_par)
     stop("No Motifs found to plot.")
+  }
+
+  if ("PMP" %in% class(x)) {
+    x$mp <- as.matrix(x$pmp[[1]])
+    x$pi <- as.matrix(x$pmpi[[1]])
   }
 
   if ("Valmod" %in% class(x)) {
@@ -1051,9 +1065,270 @@ plot.Salient <- function(x, data, main = "Salient Subsections", xlab = "index", 
   graphics::par(def_par)
 }
 
+skimp_plot_set_canvas <- function(..., pmp_obj = NULL) {
+  if (!is.null(pmp_obj)) {
+    xmin <- 1
+    ymin <- min(pmp_obj$w)
+    ymax <- max(pmp_obj$w) + floor((max(pmp_obj$w) - ymin) / 24) # arbitrary
+    mp_min <- length(pmp_obj$pmp[[as.character(ymin)]])
+    xmax <- mp_min + ymin - 1
+  } else {
+    pars <- list(...)
+    xmin <- pars$xmin
+    xmax <- pars$xmax
+    ymin <- pars$ymin
+    ymax <- pars$ymax
+
+    graphics::plot(c(xmin, xmax), c(ymin, ymax),
+      main = "Pan Matrix Profile", xlab = "", ylab = "window",
+      type = "n", xaxt = "n", yaxt = "n", xlim = c(xmin, xmax)
+    )
+
+    graphics::axis(side = 1, at = floor(c(xmin, seq(xmin, xmax, length.out = 10), xmax))) # X
+    graphics::axis(side = 2, at = floor(c(ymin, seq(ymin, ymax, length.out = 10), ymax))) # Y
+  }
+
+  invisible()
+}
+
+skimp_plot_add_layer <- function(layer, window, window_set = NULL, func = NULL) {
+  coords <- graphics::par("usr")
+  xmin <- 1
+  ymin <- window
+  data_size <- length(layer) + window - 1 # theoretical data size
+
+  # assert
+  if (data_size != (coords[[2]] + coords[[1]] - xmin)) {
+    stop("data_size calc is wrong")
+  }
+
+  if (is.null(window_set)) {
+    # if this is the first layer
+    w_min <- window
+  } else {
+    # else, find the position to plot
+    w_min <- min(window_set)
+    ymax <- coords[[4]] + coords[[3]] - w_min
+    # assert
+    # if (ymax != (max(window_set) + floor((max(window_set) - min(window_set)) / 24))) {
+    #   print(list(
+    #     ymax = ymax,
+    #     max_window = max(window_set),
+    #     min_window = min(window_set),
+    #     result = (max(window_set) + floor((max(window_set) - min(window_set)) / 24))
+    #   ))
+    #   stop("ymax calc is wrong.")
+    #   print(str(ymax = ymax, window_set = window_set, max_window = max(window_set), min_window = min(window_set)))
+    # }
+
+    upper_windows <- window_set[window_set > window]
+
+    if (length(upper_windows) > 0) {
+      ytop <- min(upper_windows)
+    } else {
+      ytop <- ymax
+    }
+  }
+
+  layer <- c(layer, rep(0, window - 1))
+  #  layer <- ed_corr(layer, window)
+  xmax <- length(layer)
+
+  # layer <- normalize(layer, 0, 1)
+
+  if (is.function(func)) {
+    layer <- func(layer)
+  }
+
+  layer[layer > 1] <- 1
+  layer[layer < 0] <- 0
+
+  # print(list(
+  #   coords = coords, xmin = xmin, xmax = xmax,
+  #   ymin = ymin, ymax = ymax, ytop = ytop, w_min = w_min
+  # ))
+  #
+  message("layer: ", ymin, "-", ytop)
+
+  graphics::image(matrix(layer, nrow = 1),
+    xlim = c(xmin, xmax), ylim = c(ymin, ytop)
+  )
+
+  # graphics::rasterImage(matrix(layer, nrow = 1),
+  #   xleft = xmin, xright = xmax,
+  #   ybottom = ymin, ytop = ytop,
+  #   interpolate = FALSE
+  # )
+
+  Sys.sleep(1) # needed for plot update
+
+  invisible()
+}
+
+# image() ?
+
+skimp_plot_add_raster <- function(layer, window, window_set = NULL, func = NULL) {
+  coords <- graphics::par("usr")
+  xmin <- 1
+  ymin <- window
+  data_size <- length(layer) + window - 1 # theoretical data size
+
+  # assert
+  if (data_size != (coords[[2]] + coords[[1]] - xmin)) {
+    stop("data_size calc is wrong")
+  }
+
+  if (is.null(window_set)) {
+    # if this is the first layer
+    w_min <- window
+  } else {
+    # else, find the position to plot
+    w_min <- min(window_set)
+    ymax <- coords[[4]] + coords[[3]] - w_min
+    # assert
+    # if (ymax != (max(window_set) + floor((max(window_set) - min(window_set)) / 24))) {
+    #   print(list(
+    #     ymax = ymax,
+    #     max_window = max(window_set),
+    #     min_window = min(window_set),
+    #     result = (max(window_set) + floor((max(window_set) - min(window_set)) / 24))
+    #   ))
+    #   stop("ymax calc is wrong.")
+    #   print(str(ymax = ymax, window_set = window_set, max_window = max(window_set), min_window = min(window_set)))
+    # }
+
+    upper_windows <- window_set[window_set > window]
+
+    if (length(upper_windows) > 0) {
+      ytop <- min(upper_windows)
+    } else {
+      ytop <- ymax
+    }
+  }
+
+  layer <- c(layer, rep(0, window - 1))
+  #  layer <- ed_corr(layer, window)
+  xmax <- length(layer)
+
+  # layer <- normalize(layer, 0, 1)
+
+  if (is.function(func)) {
+    layer <- func(layer)
+  }
+
+  layer[layer > 1] <- 1
+  layer[layer < 0] <- 0
+
+  # print(list(
+  #   coords = coords, xmin = xmin, xmax = xmax,
+  #   ymin = ymin, ymax = ymax, ytop = ytop, w_min = w_min
+  # ))
+  #
+  message("layer: ", ymin, "-", ytop)
+
+  # graphics::rasterImage(matrix(layer, nrow = 1),
+  #   xleft = xmin, xright = xmax,
+  #   ybottom = ymin, ytop = ytop,
+  #   interpolate = FALSE
+  # )
+
+  ras <- raster::raster(matrix(layer, nrow = 1),
+    xmn = xmin, xmx = xmax,
+    ymn = ymin, ymx = ytop
+  )
+
+  graphics::plot(raster::brick(ras), add = TRUE)
+  Sys.sleep(1) # needed for plot update
+
+  invisible()
+}
+
+#' @export
+#' @keywords hplot
+#' @name plot
+#'
+plot.PMP <- function(x, ylab = "distance", xlab = "index", main = "Unidimensional Matrix Profile", data = FALSE, ...) {
+  def_par <- graphics::par(no.readonly = TRUE)
+  # prepare plot using the values in `windows` vector.
+  min_window <- min(x$w)
+  max_window <- max(x$w)
+  max_len <- length(x$pmp[[as.character(min_window)]])
+  data_size <- max_len + min_window - 1
+
+  if (!(max_len > 0)) {
+    stop("matrix profile with window size ", min_window, " is not in the object. Cannot go further.")
+  }
+
+  # sort pmp
+  idxs <- as.numeric(names(x$pmp))
+  idxs <- sort(idxs, index.return = T)$ix
+  all_profiles <- x$pmp[idxs]
+
+  skimp_plot_set_canvas(
+    ymin = min_window,
+    ymax = max_window + floor((max_window - min_window) / 24), # arbitrary
+    xmin = 1,
+    xmax = data_size
+  )
+  Sys.sleep(1) # needed for plot update
+
+  # now start to print all layers
+  for (i in seq_along(all_profiles)) {
+    if (!is.null(all_profiles[i])) {
+      # layer <- tsmp:::normalize(all_profiles[[i]])
+      layer <- all_profiles[[i]]
+      layer[layer > 1] <- 1
+      curr_w <- as.numeric(names(all_profiles[i]))
+      next_w <- as.numeric(names(all_profiles[i + 1]))
+      next_w <- ifelse(is.na(next_w), curr_w, next_w)
+      graphics::rasterImage(matrix(layer, nrow = 1),
+        xleft = 1, xright = length(all_profiles[[i]]),
+        ybottom = curr_w, ytop = next_w + 5
+      )
+    }
+  }
+
+  graphics::par(def_par)
+}
+
+#' @keywords internal
+#' @noRd
+#'
+plot_skimp <- function(pmp, func = NULL) {
+  def_par <- graphics::par(no.readonly = TRUE)
+  # prepare plot using the values in `windows` vector.
+  min_window <- min(pmp$w)
+  max_window <- max(pmp$w)
+  mp_len <- length(pmp$pmp[[as.character(min_window)]])
+
+  if (!(mp_len > 0)) {
+    stop("matrix profile with window size ", min_window, " is not in the object. Cannot go further.")
+  }
+
+  data_size <- mp_len + min_window - 1
+  sizes <- sort(pmp$w, index.return = TRUE)
+  window_sizes <- sizes$x
+  # window_idxs <- sizes$ix
+
+  skimp_plot_set_canvas(
+    ymin = min_window,
+    ymax = max_window + floor((max_window - min_window) / 24), # arbitrary
+    xmin = 1,
+    xmax = data_size
+  )
+  Sys.sleep(1) # needed for plot update
+
+  # now start to print all layers
 
 
-# if (plot) {
 
-# }
-#
+  for (i in window_sizes) {
+    layer <- pmp$pmp[[as.character(i)]]
+
+    if (!is.null(layer)) {
+      skimp_plot_add_layer(layer, i, window_sizes, func)
+    }
+  }
+
+  graphics::par(def_par)
+}

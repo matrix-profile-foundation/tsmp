@@ -4,8 +4,17 @@
 \alias{mass_weighted}
 \title{Calculates the distance profile using MASS_WEIGHTED algorithm}
 \usage{
-mass_weighted(query_window, window_size, data_fft, data_size, data_mean,
-  data_sd, data_pre, weight, ...)
+mass_weighted(
+  query_window,
+  window_size,
+  data_fft,
+  data_size,
+  data_mean,
+  data_sd,
+  data_pre,
+  weight,
+  ...
+)
 }
 \arguments{
 \item{query_window}{a \code{vector} of \code{numeric}. Query window.}
@@ -24,7 +33,7 @@ mass_weighted(query_window, window_size, data_fft, data_size, data_mean,
 
 \item{weight}{a \code{vector} of \code{numeric} with the same length of the \code{window_size}.}
 
-\item{...}{just a placeholder to catch unused parameters.}
+\item{\dots}{just a placeholder to catch unused parameters.}
 }
 \value{
 Returns the \code{distance_profile} for the given query and the \code{last_product} for STOMP

@@ -1,3 +1,5 @@
+^.*\.Rproj$
+^\.Rproj\.user$
 ^\.covrignore$
 ^API$
 ^CRAN-RELEASE$
@@ -10,8 +12,6 @@
 ^dev/
 ^\.Rprofile$
 ^\.travis\.yml$
-^.*\.Rproj$
-^\.Rproj\.user$
 ^LICENSE\.md$
 ^NEWS\.Rmd$
 ^NEWS-.*\.png$
@@ -30,3 +30,18 @@
 ^\.github/
 ^LOCAL_APPDATA_FONTCONFIG_CACHE/
 ^.whitesource
+^tsmp\.Rcheck$
+^tsmp.*\.tar\.gz$
+^tsmp.*\.tgz$
+^codecov\.yml$
+^pkgdown/
+^examples_*/$
+^tests_*/$
+^.*\.Rout$
+^\.circleci/config\.yml$
+^\.github$
+^_pkgdown\.yml$
+^README_cache/
+^\.circleci$
+^tsmp-Ex_x64\.Rout$
+^tsmp-Ex_i386\.Rout$

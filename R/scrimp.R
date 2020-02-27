@@ -15,7 +15,7 @@
 #' `1` means text, `2` adds the progress bar, `3` adds the finish sound. `exclusion_zone` is used to
 #' avoid  trivial matches.
 #'
-#' @param ... a `matrix` or a `vector`.
+#' @param \dots a `matrix` or a `vector`.
 #' @param window_size an `int`. Size of the sliding window.
 #' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is
 #'   `1/2`). See details.
@@ -24,6 +24,7 @@
 #'   random calculation will occur (default is `Inf`).
 #' @param pre_scrimp a `numeric`. Set the pre-scrimp step based on `window_size`, if `0`, disables pre-scrimp.
 #' (default is `1/4`).
+#' @param pre_only a `logical`. Returns only the pre script data. (Default is `FALSE`).
 #'
 #' @return Returns a `MatrixProfile` object, a `list` with the matrix profile `mp`, profile index `pi`
 #'   left and right matrix profile `lmp`, `rmp` and profile index `lpi`, `rpi`, window size `w` and
@@ -45,7 +46,9 @@
 #' mp <- scrimp(ref_data, query_data, window_size = 30, s_size = round(nrow(query_data) * 0.1))
 #' }
 #'
-scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size = Inf, pre_scrimp = 1 / 4) {
+scrimp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zone", 1 / 2),
+                   verbose = getOption("tsmp.verbose", 2),
+                   s_size = Inf, pre_scrimp = 1 / 4, pre_only = FALSE) {
   argv <- list(...)
   argc <- length(argv)
   data <- argv[[1]]
@@ -152,6 +155,7 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
   if (verbose > 2) {
     on.exit(beep(sounds[[1]]), TRUE)
   }
+
   # anytime must return the result always
   on.exit(return({
     obj <- list(
@@ -176,12 +180,11 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
     # compute the matrix profile
     dotproduct <- matrix(0, matrix_profile_size, 1)
     refine_distance <- matrix(Inf, matrix_profile_size, 1)
-
     j <- 1
     for (i in pre_scrimp_idxs) {
       # compute the distance profile
       nn <- dist_profile(data, data, nn, window_size = window_size, index = i)
-      distance_profile <- abs(sqrt(nn$distance_profile))
+      distance_profile <- sqrt(nn$distance_profile)
 
       # apply exclusion zone
       exc_st <- max(1, (i - exclusion_zone))
@@ -254,6 +257,17 @@ scrimp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size
       )
     }
   }
+
+  if (pre_only) {
+    tictac <- Sys.time() - tictac
+
+    if (verbose > 0) {
+      message(sprintf("Finished in %.2f %s", tictac, units(tictac)))
+    }
+
+    return()
+  }
+
   # SCRIMP ----
   curlastz <- rep(0, num_queries)
   curdistance <- rep(0, num_queries)

@@ -4,12 +4,14 @@
 \alias{salient_score}
 \title{Computes the F-Score of salient algorithm.}
 \usage{
-salient_score(.mp, gtruth)
+salient_score(.mp, gtruth, verbose = getOption("tsmp.verbose", 2))
 }
 \arguments{
 \item{.mp}{a Matrix Profile object.}
 
 \item{gtruth}{a \code{vector} of \code{integers} with the indexes of relevant subsequences.}
+
+\item{verbose}{an \code{int}. (Default is \code{2}).}
 }
 \value{
 Returns a \code{list} with \code{f_score}, \code{precision}, \code{recall} and \code{bits} used in the algorithm.
@@ -25,19 +27,19 @@ data <- mp_toy_data$data[, 1]
 mp <- tsmp(data, window_size = 30, verbose = 0)
 mps <- salient_subsequences(mp, n_bits = c(4, 6, 8), verbose = 0)
 label_idx <- seq(2, 500, by = 110) # fake data
-salient_score(mps, label_idx)
+salient_score(mps, label_idx, verbose = 0)
 }
 \references{
 \itemize{
 \item Yeh CCM, Van Herle H, Keogh E. Matrix profile III: The matrix profile allows
 visualization of salient subsequences in massive time series. Proc - IEEE Int Conf Data Mining,
-ICDM. 2017;579–88.
+ICDM. 2017;579-88.
 }
 
 \itemize{
 \item Hu B, Rakthanmanon T, Hao Y, Evans S, Lonardi S, Keogh E. Discovering the Intrinsic
 Cardinality and Dimensionality of Time Series Using MDL. In: 2011 IEEE 11th International
-Conference on Data Mining. IEEE; 2011. p. 1086–91.
+Conference on Data Mining. IEEE; 2011. p. 1086-91.
 }
 
 Website: \url{https://sites.google.com/site/salientsubs/}

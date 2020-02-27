@@ -10,8 +10,8 @@
 #' @family Annotation vectors
 #' @references * Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
 #'   Knowledge into Motif Discovery. In: Proceedings of the 23rd ACM SIGKDD International Conference
-#'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
-#'   125–34.
+#'   on Knowledge Discovery and Data Mining - KDD '17. New York, New York, USA: ACM Press; 2017. p.
+#'   125-34.
 #' @examples
 #' data <- mp_test_data$train$data[1:1000]
 #' w <- 50
@@ -23,16 +23,16 @@ av_zerocrossing <- function(.mp, data, apply = FALSE) {
   }
 
   if (missing(data) && !is.null(.mp$data)) {
-    data <- .mp$data[[1]]
+    data <- .mp$data[[1L]]
   }
 
   data <- as.matrix(data)
-  data <- as.matrix(data[, 1])
+  data <- as.matrix(data[, 1L])
   data <- znorm(data)
   profile_size <- length(.mp$mp)
-  av <- matrix(0, profile_size, 1)
-  for (j in 1:profile_size) {
-    av[j] <- zero_crossings(data[j:(j + .mp$w - 1), ])
+  av <- matrix(0L, profile_size, 1L)
+  for (j in 1L:profile_size) {
+    av[j] <- zero_crossings(data[j:(j + .mp$w - 1L), ])
   }
 
   av <- zero_one_norm(av)
@@ -58,8 +58,8 @@ av_zerocrossing <- function(.mp, data, apply = FALSE) {
 #' @family Annotation vectors
 #' @references * Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
 #'   Knowledge into Motif Discovery. In: Proceedings of the 23rd ACM SIGKDD International Conference
-#'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
-#'   125–34.
+#'   on Knowledge Discovery and Data Mining - KDD '17. New York, New York, USA: ACM Press; 2017. p.
+#'   125-34.
 #' @examples
 #' data <- mp_test_data$train$data[1:1000]
 #' w <- 50
@@ -89,7 +89,7 @@ av_complexity <- function(.mp, data, dilution_factor = 0, apply = FALSE) {
   # Select dilution factor, 0 is no dilution,
   # larger numbers are more dilution
   av <- av + dilution_factor
-  av <- av / (dilution_factor + 1)
+  av <- av / (dilution_factor + 1L)
 
   .mp$av <- av
 
@@ -112,8 +112,8 @@ av_complexity <- function(.mp, data, dilution_factor = 0, apply = FALSE) {
 #' @family Annotation vectors
 #' @references * Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
 #'   Knowledge into Motif Discovery. In: Proceedings of the 23rd ACM SIGKDD International Conference
-#'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
-#'   125–34.
+#'   on Knowledge Discovery and Data Mining - KDD '17. New York, New York, USA: ACM Press; 2017. p.
+#'   125-34.
 #' @examples
 #' data <- mp_test_data$train$data[1:1000]
 #' w <- 50
@@ -132,10 +132,10 @@ av_motion_artifact <- function(.mp, data, apply = FALSE) {
   data <- as.matrix(data[, 1])
   data <- znorm(data)
   profile_size <- length(.mp$mp)
-  av <- matrix(0, profile_size, 1)
+  av <- matrix(0L, profile_size, 1)
 
   for (i in 1:profile_size) {
-    s <- data[i:(i + .mp$w - 1), ]
+    s <- data[i:(i + .mp$w - 1L), ]
     av[i] <- stats::sd(s)
   }
 
@@ -173,8 +173,8 @@ av_motion_artifact <- function(.mp, data, apply = FALSE) {
 #' @family Annotation vectors
 #' @references * Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
 #'   Knowledge into Motif Discovery. In: Proceedings of the 23rd ACM SIGKDD International Conference
-#'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
-#'   125–34.
+#'   on Knowledge Discovery and Data Mining - KDD '17. New York, New York, USA: ACM Press; 2017. p.
+#'   125-34.
 #' @examples
 #' data <- mp_test_data$train$data[1:1000]
 #' w <- 50
@@ -186,7 +186,7 @@ av_stop_word <- function(.mp, data, stop_word_loc, exclusion_zone = NULL, thresh
   }
 
   if (missing(data) && !is.null(.mp$data)) {
-    data <- .mp$data[[1]]
+    data <- .mp$data[[1L]]
   }
 
   if (is.null(exclusion_zone)) {
@@ -196,14 +196,14 @@ av_stop_word <- function(.mp, data, stop_word_loc, exclusion_zone = NULL, thresh
   data <- as.matrix(data)
   data <- as.matrix(data[, 1])
   data <- znorm(data)
-  stop_word <- data[stop_word_loc:(stop_word_loc + .mp$w - 1), ]
+  stop_word <- data[stop_word_loc:(stop_word_loc + .mp$w - 1L), ]
 
   profile_size <- length(.mp$mp)
 
-  av <- matrix(0, profile_size, 1)
+  av <- matrix(0L, profile_size, 1L)
 
-  for (i in 1:profile_size) {
-    s <- data[i:(i + .mp$w - 1), ]
+  for (i in 1L:profile_size) {
+    s <- data[i:(i + .mp$w - 1L), ]
     av[i, ] <- diff2(s, stop_word)
   }
 
@@ -213,9 +213,9 @@ av_stop_word <- function(.mp, data, stop_word_loc, exclusion_zone = NULL, thresh
 
   for (i in seq_len(length(index))) {
     if (index[i] < exclusion_zone) {
-      av[(index[i] - index[i] + 1):min((index[i] + exclusion_zone - 1), profile_size), ] <- 0
+      av[(index[i] - index[i] + 1):min((index[i] + exclusion_zone - 1L), profile_size), ] <- 0L
     } else {
-      av[(index[i] - exclusion_zone + 1):min((index[i] + exclusion_zone - 1), profile_size), ] <- 0
+      av[(index[i] - exclusion_zone + 1L):min((index[i] + exclusion_zone - 1L), profile_size), ] <- 0L
     }
   }
 
@@ -239,8 +239,8 @@ av_stop_word <- function(.mp, data, stop_word_loc, exclusion_zone = NULL, thresh
 #' @family Annotation vectors
 #' @references * Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
 #'   Knowledge into Motif Discovery. In: Proceedings of the 23rd ACM SIGKDD International Conference
-#'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
-#'   125–34.
+#'   on Knowledge Discovery and Data Mining - KDD '17. New York, New York, USA: ACM Press; 2017. p.
+#'   125-34.
 #' @examples
 #' data <- mp_test_data$train$data[1:1000]
 #' w <- 50
@@ -252,25 +252,25 @@ av_hardlimit_artifact <- function(.mp, data, apply = FALSE) {
   }
 
   if (missing(data) && !is.null(.mp$data)) {
-    data <- .mp$data[[1]]
+    data <- .mp$data[[1L]]
   }
 
   data <- as.matrix(data)
-  data <- as.matrix(data[, 1])
+  data <- as.matrix(data[, 1L])
   data <- znorm(data)
   max <- max(data)
   min <- min(data)
 
   profile_size <- length(.mp$mp)
-  av <- matrix(0, profile_size, 1)
+  av <- matrix(0, profile_size, 1L)
 
-  for (i in 1:profile_size) {
-    s <- data[i:(i + .mp$w - 1), ]
+  for (i in 1L:profile_size) {
+    s <- data[i:(i + .mp$w - 1L), ]
     av[i, ] <- length(s[s == max | s == min])
   }
 
   av <- zero_one_norm(av) # zero-one normalize the av
-  av <- 1 - av
+  av <- 1L - av
 
   .mp$av <- av
 
@@ -294,8 +294,8 @@ av_hardlimit_artifact <- function(.mp, data, apply = FALSE) {
 #' @family Annotation vectors
 #' @references * Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
 #'   Knowledge into Motif Discovery. In: Proceedings of the 23rd ACM SIGKDD International Conference
-#'   on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
-#'   125–34.
+#'   on Knowledge Discovery and Data Mining - KDD '17. New York, New York, USA: ACM Press; 2017. p.
+#'   125-34.
 #' @examples
 #' data <- mp_test_data$train$data[1:1000]
 #' w <- 50

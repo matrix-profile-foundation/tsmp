@@ -7,7 +7,9 @@
 #' @describeIn mstomp Parallel version.
 
 
-mstomp_par <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, must_dim = NULL, exc_dim = NULL, n_workers = 2) {
+mstomp_par <- function(data, window_size, exclusion_zone = getOption("tsmp.exclusion_zone", 1 / 2),
+                       verbose = getOption("tsmp.verbose", 2),
+                       must_dim = NULL, exc_dim = NULL, n_workers = 2) {
   # get various length
   ez <- exclusion_zone # store original
   exclusion_zone <- round(window_size * exclusion_zone + vars()$eps)
@@ -195,7 +197,6 @@ mstomp_par <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, m
           (data_sd * kronecker(matrix(1, matrix_profile_size, 1), t(data_sd[idx, ]))))
       }
 
-      dist_pro <- Re(dist_pro)
       drop_value <- query_window[1, ]
 
       # apply exclusion zone

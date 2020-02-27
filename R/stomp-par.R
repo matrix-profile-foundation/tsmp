@@ -6,7 +6,8 @@
 #'
 #' @describeIn stomp Parallel version.
 
-stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_workers = 2) {
+stomp_par <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zone", 1 / 2),
+                      verbose = getOption("tsmp.verbose", 2), n_workers = 2) {
   argv <- list(...)
   argc <- length(argv)
   data <- argv[[1]]
@@ -187,7 +188,8 @@ stomp_par <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, n_w
           (nni$par$data_sd * nni$par$query_sd[idx]))
       }
 
-      dist_pro <- Re(sqrt(dist_pro))
+      dist_pro[dist_pro < 0] <- 0
+      dist_pro <- sqrt(dist_pro)
       drop_value <- query_window[1, 1]
 
       # apply exclusion zone

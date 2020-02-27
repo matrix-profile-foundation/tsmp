@@ -32,6 +32,8 @@
 #'   The [valmod()] uses a new pruning algorithm allowing a similarity search with a range of sliding
 #'   window sizes.
 #'
+#'   The [pmp()] is a new concept that creates several profiles from a range of windows.
+#'
 #'   Some parameters are global across the algorithms:
 #'   \describe{
 #'     \item{...}{One or two time series (except for [mstomp()]). The second time series can be smaller than the first.}
@@ -47,9 +49,9 @@
 #'   `s_size` is used only in Anytime algorithms: [stamp()] and [scrimp()].
 #'   `must_dim` and `exc_dim` are used only in [mstomp()].
 #'   `heap_size` is used only for [valmod()]
-#'   `mode` can be any of the following: `stomp`, `stamp`, `simple`, `mstomp`, `scrimp`, `valmod`.
+#'   `mode` can be any of the following: `stomp`, `stamp`, `simple`, `mstomp`, `scrimp`, `valmod`, `pmp`.
 #'
-#' @param ... a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix
+#' @param \dots a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix
 #'   profile (except for [mstomp()]).
 #' @param window_size an `int` with the size of the sliding window. Use a vector for Valmod.
 #' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is
@@ -73,19 +75,19 @@
 #'   Time Series Chains. [mstomp()] returns a multidimensional Matrix Profile.
 #' @export
 #' @references * Silva D, Yeh C, Batista G, Keogh E. Simple: Assessing Music Similarity Using
-#'   Subsequences Joins. Proc 17th ISMIR Conf. 2016;23–30.
+#'   Subsequences Joins. Proc 17th ISMIR Conf. 2016;23-30.
 #' @references * Silva DF, Yeh C-CM, Zhu Y, Batista G, Keogh E. Fast Similarity Matrix Profile for
-#'   Music Analysis and Exploration. IEEE Trans Multimed. 2018;14(8):1–1.
+#'   Music Analysis and Exploration. IEEE Trans Multimed. 2018;14(8):1-1.
 #' @references * Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif
 #'   Discovery.
 #' @references * Yeh CCM, Zhu Y, Ulanova L, Begum N, Ding Y, Dau HA, et al. Matrix profile I: All
 #'   pairs similarity joins for time series: A unifying view that includes motifs, discords and
-#'   shapelets. Proc - IEEE Int Conf Data Mining, ICDM. 2017;1317–22.
+#'   shapelets. Proc - IEEE Int Conf Data Mining, ICDM. 2017;1317-22.
 #' @references * Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A
-#'   New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
+#'   New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1-27.
 #' @references * Zhu Y, Zimmerman Z, Senobari NS, Yeh CM, Funning G. Matrix Profile II : Exploiting
 #'   a Novel Algorithm and GPUs to Break the One Hundred Million Barrier for Time Series Motifs and
-#'   Joins. Icdm. 2016 Jan 22;54(1):739–48.
+#'   Joins. Icdm. 2016 Jan 22;54(1):739-48.
 #' @references Website: <https://sites.google.com/view/simple-fast>
 #' @references Website: <https://sites.google.com/site/ismir2016simple/home>
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
@@ -93,9 +95,6 @@
 #' @examples
 #' # default with [stomp()]
 #' mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
-#'
-#' # parallel with [stomp_par()]
-#' mp <- tsmp(mp_test_data$train$data[1:1000, 1], window_size = 30, n_workers = 2, verbose = 0)
 #'
 #' # Anytime STAMP
 #' mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, mode = "stamp", s_size = 50, verbose = 0)
@@ -105,8 +104,14 @@
 #'
 #' # [simple_fast()]
 #' mp <- tsmp(mp_toy_data$data[1:200, ], window_size = 30, mode = "simple", verbose = 0)
-tsmp <- function(..., window_size, exclusion_zone = 1 / 2, mode = c("stomp", "stamp", "simple", "mstomp", "scrimp", "valmod"),
-                 verbose = 2, n_workers = 1, s_size = Inf, must_dim = NULL, exc_dim = NULL, heap_size = 50, paa = 1, .keep_data = TRUE) {
+#' \dontrun{
+#' # parallel with [stomp_par()]
+#' mp <- tsmp(mp_test_data$train$data[1:1000, 1], window_size = 30, n_workers = 2, verbose = 0)
+#' }
+tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zone", 1 / 2),
+                 mode = c("stomp", "stamp", "simple", "mstomp", "scrimp", "valmod", "pmp"),
+                 verbose = getOption("tsmp.verbose", 2), n_workers = 1, s_size = Inf, must_dim = NULL, exc_dim = NULL,
+                 heap_size = 50, paa = 1, .keep_data = TRUE) {
   algo <- match.arg(mode)
 
   argv <- list(...)
@@ -221,6 +226,9 @@ tsmp <- function(..., window_size, exclusion_zone = 1 / 2, mode = c("stomp", "st
         window_min = min(window_size), window_max = max(window_size), heap_size = heap_size, exclusion_zone = exclusion_zone,
         verbose = verbose
       )
+    },
+    "pmp" = {
+      pmp(data, window_sizes = window_size, n_workers = n_workers, verbose = verbose)
     },
     stop("`mode` must be ", mode)
   )

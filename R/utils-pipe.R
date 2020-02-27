@@ -1,6 +1,6 @@
 #' Pipe operator
 #'
-#' See \code{magrittr::\link[magrittr]{\%>\%}} for details.
+#' See \code{magrittr::\link[magrittr:pipe]{\%>\%}} for details.
 #'
 #' @name %>%
 #' @rdname pipe
@@ -12,7 +12,7 @@ NULL
 
 #' Tee operator
 #'
-#' See \code{magrittr::\link[magrittr]{\%T>\%}} for details.
+#' See \code{magrittr::\link[magrittr:pipe]{\%T>\%}} for details.
 #'
 #' @name %T>%
 #' @rdname pipe

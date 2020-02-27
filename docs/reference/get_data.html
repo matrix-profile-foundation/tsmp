@@ -8,21 +8,32 @@
 
 <title>Get the data included in a TSMP object, if any. — get_data • tsmp</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,12 +41,12 @@
 
 
 
+
 <meta property="og:title" content="Get the data included in a TSMP object, if any. — get_data" />
-
 <meta property="og:description" content="Get the data included in a TSMP object, if any." />
-
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -47,6 +58,7 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
 
 
   </head>
@@ -65,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tsmp</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -73,7 +85,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -96,11 +108,10 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/franzbischoff/tsmp">
-    <span class="fa fa-github fa-lg"></span>
+  <a href="https://github.com/matrix-profile-foundation/tsmp">
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -111,24 +122,23 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Get the data included in a TSMP object, if any.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/franzbischoff/tsmp/blob/master/R/misc.R'><code>R/misc.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/matrix-profile-foundation/tsmp/blob/master/R/misc.R'><code>R/misc.R</code></a></small>
     <div class="hidden name"><code>get_data.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>Get the data included in a TSMP object, if any.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>get_data</span>(<span class='no'>.mp</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -137,228 +147,26 @@
       <td><p>a TSMP object.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Returns the data as <code>matrix</code>. If there is more than one series, returns a <code>list</code>.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>mp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span>(<span class='no'>mp_toy_data</span>$<span class='no'>data</span>[<span class='fl'>1</span>:<span class='fl'>200</span>, <span class='fl'>1</span>], <span class='kw'>window_size</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>)
-<span class='fu'>get_data</span>(<span class='no'>mp</span>)</div><div class='output co'>#&gt;               [,1]
-#&gt;   [1,] 0.741821741
-#&gt;   [2,] 0.739731062
-#&gt;   [3,] 0.718756785
-#&gt;   [4,] 0.730169014
-#&gt;   [5,] 0.752405692
-#&gt;   [6,] 0.717368681
-#&gt;   [7,] 0.682854901
-#&gt;   [8,] 0.701359264
-#&gt;   [9,] 0.641110419
-#&gt;  [10,] 0.608959626
-#&gt;  [11,] 0.603471881
-#&gt;  [12,] 0.655628440
-#&gt;  [13,] 0.663067469
-#&gt;  [14,] 0.689184057
-#&gt;  [15,] 0.701147551
-#&gt;  [16,] 0.652910130
-#&gt;  [17,] 0.716042971
-#&gt;  [18,] 0.659876625
-#&gt;  [19,] 0.700725784
-#&gt;  [20,] 0.711876615
-#&gt;  [21,] 0.755240562
-#&gt;  [22,] 0.756350313
-#&gt;  [23,] 0.760785930
-#&gt;  [24,] 0.745505364
-#&gt;  [25,] 0.788137868
-#&gt;  [26,] 0.765197390
-#&gt;  [27,] 0.795659774
-#&gt;  [28,] 0.864325176
-#&gt;  [29,] 0.867925329
-#&gt;  [30,] 0.921438249
-#&gt;  [31,] 0.869553785
-#&gt;  [32,] 0.824553595
-#&gt;  [33,] 0.920133610
-#&gt;  [34,] 0.907886851
-#&gt;  [35,] 0.909186634
-#&gt;  [36,] 0.935932291
-#&gt;  [37,] 0.938180813
-#&gt;  [38,] 0.893005028
-#&gt;  [39,] 0.924294307
-#&gt;  [40,] 0.934375810
-#&gt;  [41,] 0.932201201
-#&gt;  [42,] 0.912788143
-#&gt;  [43,] 0.963176515
-#&gt;  [44,] 0.940563953
-#&gt;  [45,] 0.942074027
-#&gt;  [46,] 0.929375518
-#&gt;  [47,] 0.923224864
-#&gt;  [48,] 0.929309747
-#&gt;  [49,] 0.876804605
-#&gt;  [50,] 0.858382626
-#&gt;  [51,] 0.870708263
-#&gt;  [52,] 0.845266349
-#&gt;  [53,] 0.807013632
-#&gt;  [54,] 0.828500005
-#&gt;  [55,] 0.762222115
-#&gt;  [56,] 0.677716046
-#&gt;  [57,] 0.642138745
-#&gt;  [58,] 0.668371292
-#&gt;  [59,] 0.637161470
-#&gt;  [60,] 0.635289388
-#&gt;  [61,] 0.608128471
-#&gt;  [62,] 0.619497437
-#&gt;  [63,] 0.628413733
-#&gt;  [64,] 0.570230020
-#&gt;  [65,] 0.539388095
-#&gt;  [66,] 0.516860708
-#&gt;  [67,] 0.475874339
-#&gt;  [68,] 0.492010197
-#&gt;  [69,] 0.471099411
-#&gt;  [70,] 0.503603985
-#&gt;  [71,] 0.451854050
-#&gt;  [72,] 0.432425184
-#&gt;  [73,] 0.472835395
-#&gt;  [74,] 0.451166845
-#&gt;  [75,] 0.408941395
-#&gt;  [76,] 0.432551536
-#&gt;  [77,] 0.356819354
-#&gt;  [78,] 0.380754854
-#&gt;  [79,] 0.294365830
-#&gt;  [80,] 0.329633225
-#&gt;  [81,] 0.345720443
-#&gt;  [82,] 0.354308001
-#&gt;  [83,] 0.354093804
-#&gt;  [84,] 0.332796464
-#&gt;  [85,] 0.314527407
-#&gt;  [86,] 0.320314475
-#&gt;  [87,] 0.363575270
-#&gt;  [88,] 0.342730070
-#&gt;  [89,] 0.363128209
-#&gt;  [90,] 0.424479800
-#&gt;  [91,] 0.383387152
-#&gt;  [92,] 0.386402984
-#&gt;  [93,] 0.380746490
-#&gt;  [94,] 0.395972572
-#&gt;  [95,] 0.414123859
-#&gt;  [96,] 0.404991513
-#&gt;  [97,] 0.397263241
-#&gt;  [98,] 0.393774396
-#&gt;  [99,] 0.404827290
-#&gt; [100,] 0.399275038
-#&gt; [101,] 0.432381951
-#&gt; [102,] 0.391186730
-#&gt; [103,] 0.352392218
-#&gt; [104,] 0.358478675
-#&gt; [105,] 0.319497852
-#&gt; [106,] 0.328298837
-#&gt; [107,] 0.343636013
-#&gt; [108,] 0.354713250
-#&gt; [109,] 0.427910421
-#&gt; [110,] 0.443906695
-#&gt; [111,] 0.419781615
-#&gt; [112,] 0.452979120
-#&gt; [113,] 0.492483474
-#&gt; [114,] 0.426598567
-#&gt; [115,] 0.393915657
-#&gt; [116,] 0.368224153
-#&gt; [117,] 0.381865448
-#&gt; [118,] 0.343360785
-#&gt; [119,] 0.254770474
-#&gt; [120,] 0.260662386
-#&gt; [121,] 0.279932850
-#&gt; [122,] 0.272179242
-#&gt; [123,] 0.210991744
-#&gt; [124,] 0.207736511
-#&gt; [125,] 0.147295131
-#&gt; [126,] 0.127109143
-#&gt; [127,] 0.045535708
-#&gt; [128,] 0.008983398
-#&gt; [129,] 0.000000000
-#&gt; [130,] 0.016304830
-#&gt; [131,] 0.134545618
-#&gt; [132,] 0.110997624
-#&gt; [133,] 0.138803055
-#&gt; [134,] 0.155273459
-#&gt; [135,] 0.148938954
-#&gt; [136,] 0.136825830
-#&gt; [137,] 0.144732675
-#&gt; [138,] 0.153015354
-#&gt; [139,] 0.145880943
-#&gt; [140,] 0.216215969
-#&gt; [141,] 0.171879848
-#&gt; [142,] 0.207265552
-#&gt; [143,] 0.213494401
-#&gt; [144,] 0.255736557
-#&gt; [145,] 0.275448991
-#&gt; [146,] 0.269966136
-#&gt; [147,] 0.303178409
-#&gt; [148,] 0.310328327
-#&gt; [149,] 0.291365893
-#&gt; [150,] 0.228641884
-#&gt; [151,] 0.254572320
-#&gt; [152,] 0.299018213
-#&gt; [153,] 0.313799627
-#&gt; [154,] 0.349773904
-#&gt; [155,] 0.316683531
-#&gt; [156,] 0.313980260
-#&gt; [157,] 0.254227880
-#&gt; [158,] 0.228576271
-#&gt; [159,] 0.219509590
-#&gt; [160,] 0.199965330
-#&gt; [161,] 0.230179256
-#&gt; [162,] 0.204002293
-#&gt; [163,] 0.225600403
-#&gt; [164,] 0.202708540
-#&gt; [165,] 0.243702331
-#&gt; [166,] 0.291718296
-#&gt; [167,] 0.294320031
-#&gt; [168,] 0.353427577
-#&gt; [169,] 0.311933247
-#&gt; [170,] 0.293660152
-#&gt; [171,] 0.308887073
-#&gt; [172,] 0.377186413
-#&gt; [173,] 0.358189176
-#&gt; [174,] 0.383394354
-#&gt; [175,] 0.464481308
-#&gt; [176,] 0.380966482
-#&gt; [177,] 0.286085102
-#&gt; [178,] 0.274339710
-#&gt; [179,] 0.242262041
-#&gt; [180,] 0.242075309
-#&gt; [181,] 0.301145829
-#&gt; [182,] 0.314990598
-#&gt; [183,] 0.377988072
-#&gt; [184,] 0.390662103
-#&gt; [185,] 0.297591204
-#&gt; [186,] 0.274707552
-#&gt; [187,] 0.272590060
-#&gt; [188,] 0.337342358
-#&gt; [189,] 0.316811176
-#&gt; [190,] 0.328261624
-#&gt; [191,] 0.354453781
-#&gt; [192,] 0.325087866
-#&gt; [193,] 0.272290850
-#&gt; [194,] 0.324803556
-#&gt; [195,] 0.292531403
-#&gt; [196,] 0.321037073
-#&gt; [197,] 0.350714792
-#&gt; [198,] 0.339933175
-#&gt; [199,] 0.380034167
-#&gt; [200,] 0.374392297</div></pre>
+<span class='fu'>get_data</span>(<span class='no'>mp</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -366,13 +174,16 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

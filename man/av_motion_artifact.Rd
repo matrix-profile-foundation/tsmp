@@ -30,14 +30,16 @@ av <- av_motion_artifact(mp, apply = TRUE)
 \itemize{
 \item Dau HA, Keogh E. Matrix Profile V: A Generic Technique to Incorporate Domain
 Knowledge into Motif Discovery. In: Proceedings of the 23rd ACM SIGKDD International Conference
-on Knowledge Discovery and Data Mining - KDD ’17. New York, New York, USA: ACM Press; 2017. p.
-125–34.
+on Knowledge Discovery and Data Mining - KDD '17. New York, New York, USA: ACM Press; 2017. p.
+125-34.
 }
 }
 \seealso{
-Other Annotation vectors: \code{\link{av_apply}},
-  \code{\link{av_complexity}},
-  \code{\link{av_hardlimit_artifact}},
-  \code{\link{av_stop_word}}, \code{\link{av_zerocrossing}}
+Other Annotation vectors: 
+\code{\link{av_apply}()},
+\code{\link{av_complexity}()},
+\code{\link{av_hardlimit_artifact}()},
+\code{\link{av_stop_word}()},
+\code{\link{av_zerocrossing}()}
 }
 \concept{Annotation vectors}

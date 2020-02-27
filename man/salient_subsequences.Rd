@@ -4,8 +4,14 @@
 \alias{salient_subsequences}
 \title{Framework for retrieve salient subsequences from a dataset}
 \usage{
-salient_subsequences(.mp, data, n_bits = 8, n_cand = 10,
-  exclusion_zone = NULL, verbose = 2)
+salient_subsequences(
+  .mp,
+  data,
+  n_bits = 8,
+  n_cand = 10,
+  exclusion_zone = NULL,
+  verbose = getOption("tsmp.verbose", 2)
+)
 }
 \arguments{
 \item{.mp}{a TSMP object of class \code{MatrixProfile}.}
@@ -52,13 +58,13 @@ mps <- salient_subsequences(mp, data, n_bits = c(4, 6, 8), verbose = 2)
 \itemize{
 \item Yeh CCM, Van Herle H, Keogh E. Matrix profile III: The matrix profile allows
 visualization of salient subsequences in massive time series. Proc - IEEE Int Conf Data Mining,
-ICDM. 2017;579–88.
+ICDM. 2017;579-88.
 }
 
 \itemize{
 \item Hu B, Rakthanmanon T, Hao Y, Evans S, Lonardi S, Keogh E. Discovering the Intrinsic
 Cardinality and Dimensionality of Time Series Using MDL. In: 2011 IEEE 11th International
-Conference on Data Mining. IEEE; 2011. p. 1086–91.
+Conference on Data Mining. IEEE; 2011. p. 1086-91.
 }
 
 Website: \url{https://sites.google.com/site/salientsubs/}

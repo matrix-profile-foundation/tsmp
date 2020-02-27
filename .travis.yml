@@ -1,4 +1,4 @@
-# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
+#  R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 warnings_are_errors: false
 os:
   - linux
@@ -18,6 +18,7 @@ branches:
 matrix:
   allow_failures:
     - os: osx
+    - r: devel
 language: r
 r:
   - oldrel
@@ -32,4 +33,4 @@ install:
   - Rscript -e "devtools::install_github('jimhester/covr')"
 r_check_args: --as-cran
 after_success:
-  - Rscript -e 'library(covr); codecov()'
+  - Rscript -e 'covr::codecov()'
