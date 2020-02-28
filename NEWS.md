@@ -1,11 +1,11 @@
 NEWS
 ================
 Francisco Bischoff
-\- 27 Feb 2020
+\- 28 Feb 2020
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
-# tsmp 0.4.5
+# tsmp 0.4.8
 
   - Added MPdist algorithm to compare two time series.
   - Added `find_snippet()` that uses MPdist to show representative data.

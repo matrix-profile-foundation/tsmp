@@ -1,7 +1,7 @@
 Type: Package
 Package: tsmp
 Title: Time Series with Matrix Profile
-Version: 0.4.5
+Version: 0.4.8
 Authors@R: 
     c(person(given = "Francisco",
              family = "Bischoff",
@@ -44,24 +44,25 @@ BugReports:
 Depends: 
     R (>= 3.2)
 Imports:
-    audio (>= 0.1-6),
+    audio,
     checkmate,
-    doSNOW (>= 1.0.18),
+    doSNOW,
     foreach,
-    magrittr (>= 1.5),
+    magrittr,
     parallel,
-    progress (>= 1.2.2),
-    Rcpp (>= 1.0.3),
-    RcppParallel (>= 4.4.4),
+    progress,
+    Rcpp,
+    RcppParallel,
     RJSONIO
 Suggests:
-    covr (>= 3.4.0),
-    gdtools (>= 0.2.1),
-    knitr (>= 1.28),
-    raster (>= 3.0-12),
-    spelling (>= 2.1),
-    testthat (>= 2.3.1),
-    vdiffr (>= 0.3.1)
+    covr,
+    gdtools,
+    knitr,
+    rmarkdown,
+    raster,
+    spelling,
+    testthat,
+    vdiffr
 LinkingTo: 
     Rcpp (>= 1.0.3),
     RcppParallel (>= 4.4.4)
