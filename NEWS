@@ -1,6 +1,6 @@
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
-tsmp 0.4.4
+tsmp 0.4.5
 ==========
 
 -   Added MPdist algorithm to compare two time series.

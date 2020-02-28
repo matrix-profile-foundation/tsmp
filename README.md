@@ -157,5 +157,6 @@ Visit: [Matrix Profile Foundation](https://matrixprofile.org)
 ## Code of Conduct
 
 Please note that the ‘tsmp’ project is released with a [Contributor Code
-of Conduct](.github/CODE_OF_CONDUCT.md). By contributing to this
-project, you agree to abide by its terms.
+of
+Conduct](https://github.com/matrix-profile-foundation/tsmp/blob/master/.github/CODE_OF_CONDUCT.md).
+By contributing to this project, you agree to abide by its terms.
