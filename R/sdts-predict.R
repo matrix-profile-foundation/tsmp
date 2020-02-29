@@ -183,5 +183,5 @@ sdts_score <- function(pred, gtruth, beta = 1) {
 
   f_score <- (1 + beta^2) * (pre * rec) / ((beta^2) * pre + rec)
 
-  return(list(f_score = f_score, precision = pre, recall = rec))
+  return(invisible(list(f_score = f_score, precision = pre, recall = rec)))
 }

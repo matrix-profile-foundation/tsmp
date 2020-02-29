@@ -15,7 +15,7 @@ floss(
 )
 }
 \arguments{
-\item{.mp}{.mp a TSMP object of class \code{MatrixProfile}.}
+\item{.mp}{a \code{MatrixProfile} object.}
 
 \item{new_data}{a \code{matrix}or \code{vector} of new observations.}
 

@@ -17,7 +17,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Time Series with Matrix Profile">
-<meta property="og:description" content="A toolkit implementing the Matrix Profile concept that was created by CS-UCR &lt;http://www.cs.ucr.edu/~eamonn/MatrixProfile.html&gt;.">
+<meta property="og:description" content="A toolkit implementing the Matrix Profile concept
+    that was created by CS-UCR
+    &lt;http://www.cs.ucr.edu/~eamonn/MatrixProfile.html&gt;.">
 <meta property="og:image" content="/logo.png">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -38,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">tsmp</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.8</span>
       </span>
     </div>
 
@@ -92,14 +94,15 @@
 <div id="readme" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#readme" class="anchor"></a>README</h1></div>
-<p>Francisco Bischoff - 30 Dec 2019</p>
+<p>Francisco Bischoff - 28 Feb 2020</p>
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <p><img src="reference/figures/logo.png" align="right" style="float:right;"></p>
 </div>
 <div id="time-series-with-matrix-profile" class="section level1">
 <h1 class="hasAnchor">
 <a href="#time-series-with-matrix-profile" class="anchor"></a>Time Series with Matrix Profile</h1>
-<p><a href="https://choosealicense.com/licenses/gpl-3.0/"><img src="https://img.shields.io/badge/license-GPL--3-brightgreen.svg" alt="Packagist"></a> <a href="https://www.tidyverse.org/lifecycle/#stable"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="lifecycle"></a> <a href="https://cran.r-project.org/package=tsmp"><img src="http://www.r-pkg.org/badges/version/tsmp" alt="CRAN version"></a> <a href="https://cran.r-project.org/package=tsmp"><img src="https://cranlogs.r-pkg.org/badges/tsmp" alt="CRAN Downloads"></a></p>
+<!-- badges: start -->
+
 <table class="table">
 <thead><tr class="header">
 <th></th>
@@ -119,8 +122,8 @@
 </tr>
 <tr class="odd">
 <td>Windows</td>
-<td><a href="https://ci.appveyor.com/project/matrix-profile-foundation/tsmp"><img src="https://ci.appveyor.com/api/projects/status/github/matrix-profile-foundation/tsmp?branch=master&amp;svg=true" alt="AppVeyor build status"></a></td>
-<td><a href="https://ci.appveyor.com/project/matrix-profile-foundation/tsmp"><img src="https://ci.appveyor.com/api/projects/status/github/matrix-profile-foundation/tsmp?branch=develop&amp;svg=true" alt="AppVeyor build status"></a></td>
+<td><a href="https://ci.appveyor.com/project/franzbischoff/tsmp/branch/master"><img src="https://ci.appveyor.com/api/projects/status/byfyqncr60ten98g/branch/master?svg=true" alt="AppVeyor build status"></a></td>
+<td><a href="https://ci.appveyor.com/project/franzbischoff/tsmp/branch/develop"><img src="https://ci.appveyor.com/api/projects/status/byfyqncr60ten98g/branch/develop?svg=true" alt="AppVeyor build status"></a></td>
 </tr>
 <tr class="even">
 <td>Coverage</td>
@@ -146,7 +149,7 @@
 </ul>
 <!-- end list --><div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># Basic workflow:</span></a>
 <a class="sourceLine" id="cb1-2" title="2">matrix &lt;-<span class="st"> </span><span class="kw"><a href="reference/tsmp.html">tsmp</a></span>(data, <span class="dt">window_size =</span> <span class="dv">30</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="st">  </span><span class="kw"><a href="reference/find_motif.html">find_motif</a></span>(<span class="dt">n_motifs =</span> <span class="dv">3</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="st">  </span><span class="kw"><a href="reference/find_motif.html">find_motif</a></span>(<span class="dt">n_motifs =</span> <span class="dv">3</span>) <span class="op">%T&gt;%</span></a>
 <a class="sourceLine" id="cb1-4" title="4"><span class="st">  </span><span class="kw"><a href="reference/plot.html">plot</a></span>()</a>
 <a class="sourceLine" id="cb1-5" title="5"></a>
 <a class="sourceLine" id="cb1-6" title="6"><span class="co"># SDTS still have a unique way to work:</span></a>
@@ -159,52 +162,78 @@
 <a href="#performance-on-an-intelr-coretm-i7-7700-cpu--360ghz-using-a-random-walk-dataset" class="anchor"></a>Performance on an Intel(R) Core(TM) i7-7700 CPU @ 3.60GHz using a random walk dataset</h3>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">2018</span>)</a>
 <a class="sourceLine" id="cb2-2" title="2">data &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/cumsum.html">cumsum</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="dv">40000</span>, <span class="ot">TRUE</span>))</a></code></pre></div>
+<div id="current-version-benchmark" class="section level4">
+<h4 class="hasAnchor">
+<a href="#current-version-benchmark" class="anchor"></a>Current version benchmark</h4>
 <table class="table">
 <thead><tr class="header">
 <th></th>
-<th align="center">Elapsed Time</th>
-<th align="center">Data size</th>
-<th align="center">Window size</th>
-<th align="center">Threads</th>
+<th align="right">Elapsed Time(s)</th>
+<th align="right">Data Size</th>
+<th align="right">Window Size</th>
+<th align="right">Threads</th>
+<th align="left">Lang</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td><code><a href="reference/stomp.html">stomp_par()</a></code></td>
-<td align="center">52.72s</td>
-<td align="center">40000</td>
-<td align="center">1000</td>
-<td align="center">8</td>
+<td><code>mpx_par</code></td>
+<td align="right">0.59</td>
+<td align="right">40000</td>
+<td align="right">1000</td>
+<td align="right">8</td>
+<td align="left">Rcpp</td>
 </tr>
 <tr class="even">
-<td><code><a href="reference/scrimp.html">scrimp()</a></code></td>
-<td align="center">92.44s</td>
-<td align="center">40000</td>
-<td align="center">1000</td>
-<td align="center">1</td>
+<td><code>mpx</code></td>
+<td align="right">1.94</td>
+<td align="right">40000</td>
+<td align="right">1000</td>
+<td align="right">1</td>
+<td align="left">Rcpp</td>
 </tr>
 <tr class="odd">
-<td><code><a href="reference/stomp.html">stomp()</a></code></td>
-<td align="center">136.01s</td>
-<td align="center">40000</td>
-<td align="center">1000</td>
-<td align="center">1</td>
+<td><code>stomp_par</code></td>
+<td align="right">38.90</td>
+<td align="right">40000</td>
+<td align="right">1000</td>
+<td align="right">8</td>
+<td align="left">R</td>
 </tr>
 <tr class="even">
-<td><code><a href="reference/stamp.html">stamp_par()</a></code></td>
-<td align="center">140.25s</td>
-<td align="center">40000</td>
-<td align="center">1000</td>
-<td align="center">8</td>
+<td><code>stomp</code></td>
+<td align="right">85.13</td>
+<td align="right">40000</td>
+<td align="right">1000</td>
+<td align="right">1</td>
+<td align="left">R</td>
 </tr>
 <tr class="odd">
-<td><code><a href="reference/stamp.html">stamp()</a></code></td>
-<td align="center">262.03s</td>
-<td align="center">40000</td>
-<td align="center">1000</td>
-<td align="center">1</td>
+<td><code>scrimp</code></td>
+<td align="right">123.07</td>
+<td align="right">40000</td>
+<td align="right">1000</td>
+<td align="right">1</td>
+<td align="left">R</td>
+</tr>
+<tr class="even">
+<td><code>stamp_par</code></td>
+<td align="right">925.45</td>
+<td align="right">40000</td>
+<td align="right">1000</td>
+<td align="right">8</td>
+<td align="left">R</td>
+</tr>
+<tr class="odd">
+<td><code>stamp</code></td>
+<td align="right">3776.86</td>
+<td align="right">40000</td>
+<td align="right">1000</td>
+<td align="right">1</td>
+<td align="left">R</td>
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 </div>
 <div id="installation" class="section level2">
@@ -215,7 +244,7 @@
 <a class="sourceLine" id="cb3-3" title="3"></a>
 <a class="sourceLine" id="cb3-4" title="4"><span class="co"># Or the development version from GitHub:</span></a>
 <a class="sourceLine" id="cb3-5" title="5"><span class="co"># install.packages("devtools")</span></a>
-<a class="sourceLine" id="cb3-6" title="6">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"matrix-profile-foundation/tsmp"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb3-6" title="6">devtools<span class="op">::</span><span class="kw"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"matrix-profile-foundation/tsmp"</span>)</a></code></pre></div>
 </div>
 <div id="currently-available-features" class="section level2">
 <h2 class="hasAnchor">
@@ -301,7 +330,7 @@
 <div id="code-of-conduct" class="section level2">
 <h2 class="hasAnchor">
 <a href="#code-of-conduct" class="anchor"></a>Code of Conduct</h2>
-<p>Please note that this project is released with a <a href="https://github.com/matrix-profile-foundation/tsmp/blob/master/CODE_OF_CONDUCT.md">Contributor Code of Conduct</a>. By participating in this project, you agree to abide by its terms.</p>
+<p>Please note that the ‘tsmp’ project is released with a <a href="https://github.com/matrix-profile-foundation/tsmp/blob/master/.github/CODE_OF_CONDUCT.md">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
 </div>
 </div>
 
@@ -315,7 +344,8 @@
 </li>
 <li>Browse source code at <br><a href="https://github.com/matrix-profile-foundation/tsmp">https://​github.com/​matrix-profile-foundation/​tsmp</a>
 </li>
-<li>Report a bug at <br><a href="https://github.com/matrix-profile-foundation/tsmp/issues">https://​github.com/​matrix-profile-foundation/​tsmp/​issues</a>
+<li>Report a bug at <br><a href="https://github.com/matrix-profile-foundation/tsmp/issues">
+    https://​github.com/​matrix-profile-foundation/​tsmp/​issues</a>
 </li>
 </ul>
 </div>
@@ -341,7 +371,17 @@
 </ul>
 </div>
 
-  </div>
+  <div class="dev-status">
+<h2>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://choosealicense.com/licenses/gpl-3.0/"><img src="https://img.shields.io/badge/license-GPL--3-brightgreen.svg" alt="Packagist"></a></li>
+<li><a href="https://www.tidyverse.org/lifecycle/#stable"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="lifecycle"></a></li>
+<li><a href="https://cran.r-project.org/package=tsmp"><img src="http://www.r-pkg.org/badges/version/tsmp" alt="CRAN version"></a></li>
+<li><a href="https://cran.r-project.org/package=tsmp"><img src="https://cranlogs.r-pkg.org/badges/tsmp" alt="CRAN Downloads"></a></li>
+<li><a href="https://circleci.com/gh/matrix-profile-foundation/tsmp"><img src="https://circleci.com/gh/matrix-profile-foundation/tsmp.svg?style=svg" alt="CircleCI build status"></a></li>
+</ul>
+</div>
+</div>
 </div>
 
 

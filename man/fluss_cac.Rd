@@ -7,7 +7,7 @@
 fluss_cac(.mp, exclusion_zone = NULL)
 }
 \arguments{
-\item{.mp}{a TSMP object of class \code{MatrixProfile}.}
+\item{.mp}{a \code{MatrixProfile} object.}
 
 \item{exclusion_zone}{if a \code{number} will be used instead of embedded value. (Default is \code{NULL}).}
 }

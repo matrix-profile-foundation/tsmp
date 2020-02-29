@@ -1,23 +1,24 @@
 README
 ================
 Francisco Bischoff
-\- 10 Jan 2020
+\- 28 Feb 2020
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 <img src="man/figures/logo.png" align="right" style="float:right;" />
 
-[![Gitpod
-Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/matrix-profile-foundation/tsmp/tree/develop)
-
 # Time Series with Matrix Profile
 
+<!-- badges: start -->
 [![Packagist](https://img.shields.io/badge/license-GPL--3-brightgreen.svg)](https://choosealicense.com/licenses/gpl-3.0/)
 [![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
 [![CRAN
 version](http://www.r-pkg.org/badges/version/tsmp)](https://cran.r-project.org/package=tsmp)
 [![CRAN
 Downloads](https://cranlogs.r-pkg.org/badges/tsmp)](https://cran.r-project.org/package=tsmp)
+[![CircleCI build
+status](https://circleci.com/gh/matrix-profile-foundation/tsmp.svg?style=svg)](https://circleci.com/gh/matrix-profile-foundation/tsmp)
+<!-- badges: end -->
 
 |               | Build                                                                                                                                                                             | Dev                                                                                                                                                                                 |
 | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -51,7 +52,7 @@ This package provides:
 ``` r
 # Basic workflow:
 matrix <- tsmp(data, window_size = 30) %>%
-  find_motif(n_motifs = 3) %>%
+  find_motif(n_motifs = 3) %T>%
   plot()
 
 # SDTS still have a unique way to work:
@@ -72,13 +73,17 @@ set.seed(2018)
 data <- cumsum(sample(c(-1, 1), 40000, TRUE))
 ```
 
-|               | Elapsed Time | Data size | Window size | Threads |
-| ------------- | :----------: | :-------: | :---------: | :-----: |
-| `stomp_par()` |    52.72s    |   40000   |    1000     |    8    |
-| `scrimp()`    |    92.44s    |   40000   |    1000     |    1    |
-| `stomp()`     |   136.01s    |   40000   |    1000     |    1    |
-| `stamp_par()` |   140.25s    |   40000   |    1000     |    8    |
-| `stamp()`     |   262.03s    |   40000   |    1000     |    1    |
+#### Current version benchmark
+
+|             | Elapsed Time(s) | Data Size | Window Size | Threads | Lang |
+| ----------- | --------------: | --------: | ----------: | ------: | :--- |
+| `mpx_par`   |            0.59 |     40000 |        1000 |       8 | Rcpp |
+| `mpx`       |            1.94 |     40000 |        1000 |       1 | Rcpp |
+| `stomp_par` |           38.90 |     40000 |        1000 |       8 | R    |
+| `stomp`     |           85.13 |     40000 |        1000 |       1 | R    |
+| `scrimp`    |          123.07 |     40000 |        1000 |       1 | R    |
+| `stamp_par` |          925.45 |     40000 |        1000 |       8 | R    |
+| `stamp`     |         3776.86 |     40000 |        1000 |       1 | R    |
 
 ## Installation
 
@@ -151,6 +156,7 @@ Visit: [Matrix Profile Foundation](https://matrixprofile.org)
 
 ## Code of Conduct
 
-Please note that this project is released with a [Contributor Code of
-Conduct](https://github.com/matrix-profile-foundation/tsmp/blob/master/CODE_OF_CONDUCT.md).
-By participating in this project, you agree to abide by its terms.
+Please note that the ‘tsmp’ project is released with a [Contributor Code
+of
+Conduct](https://github.com/matrix-profile-foundation/tsmp/blob/master/.github/CODE_OF_CONDUCT.md).
+By contributing to this project, you agree to abide by its terms.

@@ -8,7 +8,7 @@ tsmp(
   ...,
   window_size,
   exclusion_zone = getOption("tsmp.exclusion_zone", 1/2),
-  mode = c("stomp", "stamp", "simple", "mstomp", "scrimp", "valmod"),
+  mode = c("stomp", "stamp", "simple", "mstomp", "scrimp", "valmod", "pmp"),
   verbose = getOption("tsmp.verbose", 2),
   n_workers = 1,
   s_size = Inf,
@@ -89,6 +89,8 @@ Multivariate Time Series, but focused in Music Analysis and Exploration.
 The \code{\link[=valmod]{valmod()}} uses a new pruning algorithm allowing a similarity search with a range of sliding
 window sizes.
 
+The \code{\link[=pmp]{pmp()}} is a new concept that creates several profiles from a range of windows.
+
 Some parameters are global across the algorithms:
 \describe{
 \item{...}{One or two time series (except for \code{\link[=mstomp]{mstomp()}}). The second time series can be smaller than the first.}
@@ -104,7 +106,7 @@ If the value is 2 or more, the '_par' version of the algorithm will be used.}
 \code{s_size} is used only in Anytime algorithms: \code{\link[=stamp]{stamp()}} and \code{\link[=scrimp]{scrimp()}}.
 \code{must_dim} and \code{exc_dim} are used only in \code{\link[=mstomp]{mstomp()}}.
 \code{heap_size} is used only for \code{\link[=valmod]{valmod()}}
-\code{mode} can be any of the following: \code{stomp}, \code{stamp}, \code{simple}, \code{mstomp}, \code{scrimp}, \code{valmod}.
+\code{mode} can be any of the following: \code{stomp}, \code{stamp}, \code{simple}, \code{mstomp}, \code{scrimp}, \code{valmod}, \code{pmp}.
 }
 \examples{
 # default with [stomp()]
@@ -118,7 +120,6 @@ mp <- tsmp(mp_toy_data$data[1:200, ], window_size = 30, mode = "mstomp", verbose
 
 # [simple_fast()]
 mp <- tsmp(mp_toy_data$data[1:200, ], window_size = 30, mode = "simple", verbose = 0)
-
 \dontrun{
 # parallel with [stomp_par()]
 mp <- tsmp(mp_test_data$train$data[1:1000, 1], window_size = 30, n_workers = 2, verbose = 0)

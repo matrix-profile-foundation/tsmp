@@ -83,6 +83,31 @@ print.MultiMatrixProfile <- function(x, ...) {
   }
 }
 
+#' Prints a PMP
+#'
+#' @param x a TSMP object of class `PMP`.
+#' @param \dots additional arguments ignored.
+#' @export
+#' @keywords internal
+#' @noRd
+
+print.PMP <- function(x, ...) {
+  cat("Pan-Matrix Profile\n")
+  cat("------------------\n")
+
+  cat("Number of profiles =", length(x$pmp), "\n")
+  cat("Window sizes = from", min(x$w), "to", max(x$w), "\n")
+  cat("Exclusion zone =", x$ez, "\n")
+
+  if (!is.null(x$data)) {
+    set <- 1
+    obs <- length(x$data[[1]])
+    cat(
+      "Contains", set, ifelse(set > 1, "sets", "set"), "of data with", obs, "observations\n"
+    )
+  }
+}
+
 #' Prints a SiMPle Matrix Profile
 #'
 #' @param x a TSMP object of class `SimpleMatrixProfile`.
@@ -210,6 +235,8 @@ print.Discord <- function(x, ...) {
     print.MatrixProfile(x, ...)
   } else if (any(class(x) %in% "MultiMatrixProfile")) {
     print.MultiMatrixProfile(x, ...)
+  } else if (any(class(x) %in% "PMP")) {
+    print.PMP(x, ...)
   }
 
   cat("\nDiscord\n")
@@ -267,6 +294,8 @@ print.Motif <- function(x, ...) {
     print.MatrixProfile(x, ...)
   } else if ("MultiMatrixProfile" %in% class(x)) {
     print.MultiMatrixProfile(x, ...)
+  } else if (any(class(x) %in% "PMP")) {
+    print.PMP(x, ...)
   }
 
   if (valmod) {

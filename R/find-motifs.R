@@ -1,6 +1,6 @@
 #' Search for Motifs
 #'
-#' @param .mp a TSMP object of class `MatrixProfile` or `MultiMatrixProfile`.
+#' @param .mp a `MatrixProfile` or `MultiMatrixProfile` object.
 #' @param \dots further arguments to be passed to class specific function.
 #'
 #' @name find_motif
@@ -350,4 +350,147 @@ find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("gui
     class(.mp) <- update_class(class(.mp), "MultiMotif")
     return(.mp)
   }
+}
+
+#' @param data the data used to build the Matrix Profile, if not embedded.
+#' @param n_motifs an `int`. Number of motifs to find. (Default is `3`).
+#' @param n_neighbors an `int`. Number of neighbors to find. (Default is `10`).
+#' @param radius an `int`. Set a threshold to exclude matching neighbors with distance > current
+#' motif distance * `radius`. (Default is `3`).
+#' @param exclusion_zone if a `number` will be used instead of embedded value. (Default is `NULL`).
+#'
+#' @name find_motif
+#' @export
+#' @return For class `PMP`, returns the input `.mp` object with a new name `motif`. It contains: `motif_idx`, a `list`
+#' of motif pairs found and `motif_neighbor` a `list` with respective motif's neighbors.
+#' @examples
+#' pan <- tsmp(mp_gait_data, window_size = 20:30, mode = "pmp")
+#' mp <- find_motif(pan)
+find_motif.PMP <- function(.mp, data, n_motifs = 3, n_neighbors = 10, radius = 3, exclusion_zone = NULL, ...) {
+  if (!("PMP" %in% class(.mp))) {
+    stop("First argument must be an object of class `PMP`.")
+  }
+
+  if (missing(data) && !is.null(.mp$data)) {
+    data <- .mp$data[[1]]
+  }
+
+  # transform data list into matrix
+  if (is.matrix(data) || is.data.frame(data)) {
+    if (is.data.frame(data)) {
+      data <- as.matrix(data)
+    } # just to be uniform
+    if (ncol(data) > nrow(data)) {
+      data <- t(data)
+    }
+    data_len <- nrow(data)
+    data_dim <- ncol(data)
+  } else if (is.list(data)) {
+    data_len <- length(data[[1]])
+    data_dim <- length(data)
+
+    for (i in 1:data_dim) {
+      len <- length(data[[i]])
+      # Fix TS size with NaN
+      if (len < data_len) {
+        data[[i]] <- c(data[[i]], rep(NA, data_len - len))
+      }
+    }
+    # transform data into matrix (each column is a TS)
+    data <- sapply(data, cbind)
+  } else if (is.vector(data)) {
+    data_len <- length(data)
+    data_dim <- 1
+    # transform data into 1-col matrix
+    data <- as.matrix(data) # just to be uniform
+  } else {
+    stop("`data` must be `matrix`, `data.frame`, `vector` or `list`.")
+  }
+
+  # TODO: for now, computes only for the first window:
+  row <- 1
+
+  matrix_profile <- .mp # keep mp intact
+  matrix_profile_size <- length(matrix_profile$pmp[[row]])
+  motif_idxs <- list(motifs = list(NULL), neighbors = list(NULL), windows = list(NULL))
+
+  if (is.null(exclusion_zone)) {
+    exclusion_zone <- .mp$ez
+  }
+
+  exclusion_zone <- round(.mp$w[row] * exclusion_zone + vars()$eps)
+
+  nn <- NULL
+
+  for (i in seq_len(n_motifs)) {
+    # idxs <- min_mp_idx(matrix_profile) # todo for PMP
+    idxs <- which.min(matrix_profile$pmp[[row]])
+    idxs <- c(idxs, matrix_profile$pmpi[[row]][idxs])
+
+
+    if (is.na(idxs[1])) {
+      break
+    }
+
+    min_idx <- idxs[1]
+    motif_distance <- matrix_profile$pmp[[row]][min_idx]
+    motif_idxs[[1]][[i]] <- sort(idxs)
+    motif_idx <- motif_idxs[[1L]][[i]][1]
+
+    window <- .mp$w[1]
+    e_zone <- exclusion_zone
+
+
+    # query using the motif to find its neighbors
+    nn <- dist_profile(data, data, nn, window_size = window, index = min_idx)
+
+    distance_profile <- nn$distance_profile
+
+    distance_profile[distance_profile > (motif_distance * radius)^2] <- Inf
+    motif_zone_start <- pmax(1, motif_idx - e_zone)
+    motif_zone_end <- pmin(matrix_profile_size, motif_idx + e_zone)
+    distance_profile[motif_zone_start:motif_zone_end] <- Inf
+    motif_idx <- motif_idxs[[1]][[i]][2]
+    motif_zone_start <- pmax(1, motif_idx - e_zone)
+    motif_zone_end <- pmin(matrix_profile_size, motif_idx + e_zone)
+    distance_profile[motif_zone_start:motif_zone_end] <- Inf
+    st <- sort(distance_profile, index.return = TRUE)
+    distance_order <- st$x
+    distance_idx_order <- st$ix
+
+    motif_neighbor <- vector(mode = "numeric")
+
+    for (j in seq_len(n_neighbors)) {
+      if (is.infinite(distance_order[1]) || length(distance_order) < j) {
+        break
+      }
+      motif_neighbor[j] <- distance_idx_order[1]
+      distance_order <- distance_order[2:length(distance_order)]
+      distance_idx_order <- distance_idx_order[2:length(distance_idx_order)]
+      distance_order <- distance_order[!(abs(distance_idx_order - motif_neighbor[j]) < e_zone)]
+      distance_idx_order <- distance_idx_order[!(abs(distance_idx_order - motif_neighbor[j]) < e_zone)]
+    }
+
+    motif_neighbor <- motif_neighbor[motif_neighbor != 0]
+    motif_idxs[[2]][[i]] <- motif_neighbor
+    motif_idxs[[3]][[i]] <- window
+
+    remove_idx <- c(motif_idxs[[1]][[i]], motif_idxs[[2]][[i]])
+
+    for (j in seq_len(length(remove_idx))) {
+      remove_zone_start <- max(1, remove_idx[j] - e_zone)
+      remove_zone_end <- min(matrix_profile_size, remove_idx[j] + e_zone)
+      matrix_profile$pmp[[row]][remove_zone_start:remove_zone_end] <- Inf
+    }
+  }
+
+  if (is.null(motif_idxs[[1]][[1]])) {
+    message("No valid motif found.")
+    .mp <- remove_class(.mp, "Motif")
+    return(.mp)
+  }
+
+  .mp$motif <- list(motif_idx = motif_idxs[[1]], motif_neighbor = motif_idxs[[2]], motif_window = motif_idxs[[3]])
+  class(.mp) <- update_class(class(.mp), "Motif")
+  return(.mp)
 }

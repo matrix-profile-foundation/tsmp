@@ -14,7 +14,7 @@
 mpx <- function(data, window_size, query = NULL, idx = TRUE, dist = c("euclidean", "pearson"), n_workers = 1) {
 
   # Parse arguments ---------------------------------
-  minlag <- floor(window_size / 4)
+  minlag <- floor(window_size / 2)
   dist <- match.arg(dist)
   checkmate::qassert(data, "N+")
   window_size <- as.integer(checkmate::qassert(window_size, "X+"))
@@ -27,12 +27,19 @@ mpx <- function(data, window_size, query = NULL, idx = TRUE, dist = c("euclidean
     dist <- FALSE
   }
 
+  ez <- getOption("tsmp.exclusion_zone", 1 / 2) # minlag is the exclusion zone
   result <- NULL
 
   # Register anytime exit point
-  on.exit(return({
-    result
-  }), TRUE)
+  on.exit(
+    if (is.null(result)) {
+      return(invisible(NULL))
+    } else {
+      result$ez <- ez
+      return(result)
+    },
+    TRUE
+  )
 
   # Computation ------------------------------------
   if (is.null(query)) {
@@ -65,6 +72,8 @@ mpx <- function(data, window_size, query = NULL, idx = TRUE, dist = c("euclidean
     )
   } else {
     ## AB-Join ====================================
+    ez <- 0
+
     tryCatch(
       {
         if (n_workers > 1) {
