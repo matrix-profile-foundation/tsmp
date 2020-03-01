@@ -37,7 +37,7 @@ Maintainer: Francisco Bischoff <fbischoff@med.up.pt>
 Description: A toolkit implementing the Matrix Profile concept
     that was created by CS-UCR
     <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>.
-License: GPL-3
+License: Apache License (>= 2.0)
 URL: https://github.com/matrix-profile-foundation/tsmp
 BugReports: 
     https://github.com/matrix-profile-foundation/tsmp/issues
