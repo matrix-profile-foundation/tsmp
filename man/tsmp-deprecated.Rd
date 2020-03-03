@@ -5,8 +5,16 @@
 \alias{tsmp-deprecated}
 \title{Deprecated functions in package \pkg{tsmp}.}
 \usage{
-mass(data_fft, query_window, data_size, window_size, data_mean, data_sd,
-  query_mean, query_sd)
+mass(
+  data_fft,
+  query_window,
+  data_size,
+  window_size,
+  data_mean,
+  data_sd,
+  query_mean,
+  query_sd
+)
 }
 \description{
 The functions listed below are deprecated and will be defunct in

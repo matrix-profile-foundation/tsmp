@@ -1,4 +1,4 @@
-if (skip_on_cran()) {
+if (!testthat:::on_cran()) {
   context("Testing Time Series Chains")
   library(tsmp)
 

@@ -4,8 +4,17 @@
 \alias{mass_v2}
 \title{Calculates the distance profile using MASS_V2 algorithm}
 \usage{
-mass_v2(query_window, window_size, data_fft, data_size, data_mean, data_sd,
-  query_mean, query_sd, ...)
+mass_v2(
+  query_window,
+  window_size,
+  data_fft,
+  data_size,
+  data_mean,
+  data_sd,
+  query_mean,
+  query_sd,
+  ...
+)
 }
 \arguments{
 \item{query_window}{a \code{vector} of \code{numeric}. Query window.}
@@ -24,7 +33,7 @@ mass_v2(query_window, window_size, data_fft, data_size, data_mean, data_sd,
 
 \item{query_sd}{precomputed query standard deviation.}
 
-\item{...}{just a placeholder to catch unused parameters.}
+\item{\dots}{just a placeholder to catch unused parameters.}
 }
 \value{
 Returns the \code{distance_profile} for the given query and the \code{last_product} for STOMP

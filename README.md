@@ -1,7 +1,7 @@
 README
 ================
 Francisco Bischoff
-\- 07 Jul 2019
+\- 03 Mar 2020
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -9,19 +9,23 @@ Francisco Bischoff
 
 # Time Series with Matrix Profile
 
-[![Packagist](https://img.shields.io/badge/license-GPL--3-brightgreen.svg)](https://choosealicense.com/licenses/gpl-3.0/)
+<!-- badges: start -->
+[![Packagist](https://img.shields.io/badge/License-Apache--2.0-brightgreen.svg)](https://choosealicense.com/licenses/apache-2.0/)
 [![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
 [![CRAN
 version](http://www.r-pkg.org/badges/version/tsmp)](https://cran.r-project.org/package=tsmp)
 [![CRAN
 Downloads](https://cranlogs.r-pkg.org/badges/tsmp)](https://cran.r-project.org/package=tsmp)
+[![CircleCI build
+status](https://circleci.com/gh/matrix-profile-foundation/tsmp.svg?style=svg)](https://circleci.com/gh/matrix-profile-foundation/tsmp)
+<!-- badges: end -->
 
-|               | Build                                                                                                                                                                        | Dev                                                                                                                                                                           |
-| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Linux x86\_64 | [![Build Status](https://travis-ci.com/franzbischoff/tsmp.svg?branch=master)](https://travis-ci.com/franzbischoff/tsmp)                                                      | [![Build Status](https://travis-ci.com/franzbischoff/tsmp.svg?branch=develop)](https://travis-ci.com/franzbischoff/tsmp)                                                      |
-| OSX           | [![Build Status](https://travis-ci.com/franzbischoff/tsmp.svg?branch=master)](https://travis-ci.com/franzbischoff/tsmp)                                                      | [![Build Status](https://travis-ci.com/franzbischoff/tsmp.svg?branch=develop)](https://travis-ci.com/franzbischoff/tsmp)                                                      |
-| Windows       | [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/franzbischoff/tsmp?branch=master&svg=true)](https://ci.appveyor.com/project/franzbischoff/tsmp) | [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/franzbischoff/tsmp?branch=develop&svg=true)](https://ci.appveyor.com/project/franzbischoff/tsmp) |
-| Coverage      | [![codecov](https://codecov.io/gh/franzbischoff/tsmp/branch/master/graph/badge.svg)](https://codecov.io/gh/franzbischoff/tsmp)                                               | [![codecov](https://codecov.io/gh/franzbischoff/tsmp/branch/develop/graph/badge.svg)](https://codecov.io/gh/franzbischoff/tsmp)                                               |
+|               | Build                                                                                                                                                                             | Dev                                                                                                                                                                                 |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Linux x86\_64 | [![Build Status](https://travis-ci.com/matrix-profile-foundation/tsmp.svg?branch=master)](https://travis-ci.com/matrix-profile-foundation/tsmp)                                   | [![Build Status](https://travis-ci.com/matrix-profile-foundation/tsmp.svg?branch=develop)](https://travis-ci.com/matrix-profile-foundation/tsmp)                                    |
+| OSX           | [![Build Status](https://travis-ci.com/matrix-profile-foundation/tsmp.svg?branch=master)](https://travis-ci.com/matrix-profile-foundation/tsmp)                                   | [![Build Status](https://travis-ci.com/matrix-profile-foundation/tsmp.svg?branch=develop)](https://travis-ci.com/matrix-profile-foundation/tsmp)                                    |
+| Windows       | [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/byfyqncr60ten98g/branch/master?svg=true)](https://ci.appveyor.com/project/franzbischoff/tsmp/branch/master) | [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/byfyqncr60ten98g/branch/develop?svg=true)](https://ci.appveyor.com/project/franzbischoff/tsmp/branch/develop) |
+| Coverage      | [![codecov](https://codecov.io/gh/matrix-profile-foundation/tsmp/branch/master/graph/badge.svg)](https://codecov.io/gh/matrix-profile-foundation/tsmp)                            | [![codecov](https://codecov.io/gh/matrix-profile-foundation/tsmp/branch/develop/graph/badge.svg)](https://codecov.io/gh/matrix-profile-foundation/tsmp)                             |
 
 ## Overview
 
@@ -48,7 +52,7 @@ This package provides:
 ``` r
 # Basic workflow:
 matrix <- tsmp(data, window_size = 30) %>%
-  find_motif(n_motifs = 3) %>%
+  find_motif(n_motifs = 3) %T>%
   plot()
 
 # SDTS still have a unique way to work:
@@ -57,11 +61,10 @@ result <- sdts_predict(model, data, round(mean(windows)))
 ```
 
 Please refer to the [User
-Manual](https://franzbischoff.github.io/tsmp/reference/) for more
-details.
+Manual](https://matrix-profile-foundation.github.io/tsmp/reference/) for
+more details.
 
-Please be welcome to suggest
-improvements.
+Please be welcome to suggest improvements.
 
 ### Performance on an Intel(R) Core(TM) i7-7700 CPU @ 3.60GHz using a random walk dataset
 
@@ -70,13 +73,17 @@ set.seed(2018)
 data <- cumsum(sample(c(-1, 1), 40000, TRUE))
 ```
 
-|               | Elapsed Time | Data size | Window size | Threads |
-| ------------- | :----------: | :-------: | :---------: | :-----: |
-| `stomp_par()` |    52.72s    |   40000   |    1000     |    8    |
-| `scrimp()`    |    92.44s    |   40000   |    1000     |    1    |
-| `stomp()`     |   136.01s    |   40000   |    1000     |    1    |
-| `stamp_par()` |   140.25s    |   40000   |    1000     |    8    |
-| `stamp()`     |   262.03s    |   40000   |    1000     |    1    |
+#### Current version benchmark
+
+|             | Elapsed Time(s) | Data Size | Window Size | Threads | Lang |
+| ----------- | --------------: | --------: | ----------: | ------: | :--- |
+| `mpx_par`   |            0.59 |     40000 |        1000 |       8 | Rcpp |
+| `mpx`       |            1.94 |     40000 |        1000 |       1 | Rcpp |
+| `stomp_par` |           38.90 |     40000 |        1000 |       8 | R    |
+| `stomp`     |           85.13 |     40000 |        1000 |       1 | R    |
+| `scrimp`    |          123.07 |     40000 |        1000 |       1 | R    |
+| `stamp_par` |          925.45 |     40000 |        1000 |       8 | R    |
+| `stamp`     |         3776.86 |     40000 |        1000 |       1 | R    |
 
 ## Installation
 
@@ -86,7 +93,7 @@ install.packages("tsmp")
 
 # Or the development version from GitHub:
 # install.packages("devtools")
-devtools::install_github("franzbischoff/tsmp")
+devtools::install_github("matrix-profile-foundation/tsmp")
 ```
 
 ## Currently available Features
@@ -149,6 +156,7 @@ Visit: [Matrix Profile Foundation](https://matrixprofile.org)
 
 ## Code of Conduct
 
-Please note that this project is released with a [Contributor Code of
-Conduct](https://github.com/franzbischoff/tsmp/blob/master/CODE_OF_CONDUCT.md).
-By participating in this project, you agree to abide by its terms.
+Please note that the ‘tsmp’ project is released with a [Contributor Code
+of
+Conduct](https://github.com/matrix-profile-foundation/tsmp/blob/master/.github/CODE_OF_CONDUCT.md).
+By contributing to this project, you agree to abide by its terms.

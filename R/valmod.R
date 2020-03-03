@@ -9,7 +9,10 @@
 #' `3` adds the finish sound. `exclusion_zone` is used to avoid  trivial matches; if a query data
 #' is provided (join similarity), this parameter is ignored.
 #'
-#' @param ... a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix
+#' Paper that implements `skimp()` suggests that window_max / window_min > than 1.24 begins to
+#' weakening pruning in `valmod()`.
+#'
+#' @param \dots a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix
 #'   profile.
 #' @param window_min an `int`. Minimum size of the sliding window.
 #' @param window_max an `int`. Maximum size of the sliding window.
@@ -31,12 +34,12 @@
 #'
 #' @references * Linardi M, Zhu Y, Palpanas T, Keogh E. VALMOD: A Suite for Easy and Exact Detection
 #'  of Variable Length Motifs in Data Series. In: Proceedings of the 2018 International Conference
-#'   on Management of Data - SIGMOD ’18. New York, New York, USA: ACM Press; 2018. p. 1757–60.
+#'   on Management of Data - SIGMOD '18. New York, New York, USA: ACM Press; 2018. p. 1757-60.
 #'
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #'
 #' @examples
-#' mp <- valmod(mp_toy_data$data[1:200, 1], window_min = 30, window_max = 40)
+#' mp <- valmod(mp_toy_data$data[1:200, 1], window_min = 30, window_max = 40, verbose = 0)
 #' \dontrun{
 #' ref_data <- mp_toy_data$data[, 1]
 #' query_data <- mp_toy_data$data[, 2]
@@ -46,7 +49,7 @@
 #' mp <- valmod(ref_data, query_data, window_min = 30, window_max = 40)
 #' }
 #'
-valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone = 1 / 2, lb = TRUE, verbose = 2) {
+valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone = getOption("tsmp.exclusion_zone", 1 / 2), lb = TRUE, verbose = getOption("tsmp.verbose", 2)) {
   argv <- list(...)
   argc <- length(argv)
   data <- argv[[1]]
@@ -225,10 +228,9 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
             (nn$par$data_sd * nn$par$query_sd[i]))
         }
 
-        distance_profile <- Re(distance_profile)
         distance_profile[distance_profile < 0] <- 0
 
-        new_lb_profile <- Re(((last_product / window_size) - (nn$par$query_mean[i] * nn$par$data_mean)) / (nn$par$query_sd[i] * nn$par$data_sd))
+        new_lb_profile <- ((last_product / window_size) - (nn$par$query_mean[i] * nn$par$data_mean)) / (nn$par$query_sd[i] * nn$par$data_sd)
         new_lb_profile[new_lb_profile < 0] <- 0
         new_lb_profile_len <- length(new_lb_profile)
 
@@ -280,7 +282,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
         list_motifs_profile[i, "lb_distances", ] <- lb_profile[lb_idxs]
         list_motifs_profile[i, "index_query", ] <- i
         list_motifs_profile[i, "indexes_data", ] <- lb_idxs
-        list_motifs_profile[i, "dps", ] <- Re(last_product[lb_idxs])
+        list_motifs_profile[i, "dps", ] <- last_product[lb_idxs]
 
         distance_profile <- sqrt(distance_profile)
 
@@ -394,7 +396,6 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
         list_motifs_profile[i_v, "distances", j_v]
       )
 
-      dist_v <- Re(dist_v)
       dist_v[dist_v < 0] <- 0
 
       list_motifs_profile[i_v, "distances", j_v] <- dist_v
@@ -543,11 +544,10 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
 
               drop_value <- query_window[1]
 
-              distance_profile <- Re(distance_profile)
               distance_profile[distance_profile < 0] <- 0
 
-              new_lb_profile <- Re(((last_product / window_size) - (nn$par$query_mean[seq[i]] *
-                nn$par$data_mean)) / (nn$par$query_sd[seq[i]] * nn$par$data_sd))
+              new_lb_profile <- ((last_product / window_size) - (nn$par$query_mean[seq[i]] *
+                nn$par$data_mean)) / (nn$par$query_sd[seq[i]] * nn$par$data_sd)
               new_lb_profile[new_lb_profile < 0] <- 0
               new_lb_profile_len <- length(new_lb_profile)
 
@@ -594,7 +594,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
               list_motifs_profile[seq[i], "lb_distances", ] <- lb_profile[lb_idxs]
               list_motifs_profile[seq[i], "index_query", ] <- seq[i]
               list_motifs_profile[seq[i], "indexes_data", ] <- lb_idxs
-              list_motifs_profile[seq[i], "dps", ] <- Re(last_product[lb_idxs])
+              list_motifs_profile[seq[i], "dps", ] <- last_product[lb_idxs]
             }
           }
 

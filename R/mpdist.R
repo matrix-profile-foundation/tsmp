@@ -41,8 +41,6 @@
 #' # distance vector between data of different sizes
 #' ddvect <- mpdist(ref_data, qd_data, w, type = "vector")
 mpdist <- function(ref_data, query_data, window_size, type = c("simple", "vector"), thr = 0.05) {
-  # TODO: check bugs in mass_v3 for large window_sizes
-
   type <- match.arg(type)
 
   # transform data into matrix
@@ -77,14 +75,22 @@ mpdist <- function(ref_data, query_data, window_size, type = c("simple", "vector
     query_data <- temp
   }
 
-  # TODO: handle window_size == nrow(query_data)
-  if (nrow(query_data) == window_size) {
-    stop("Not implemented yet: window_size equals to query_data length.")
-  } else if (type == "simple" || nrow(ref_data) == nrow(query_data)) {
-    dist <- mpdist_simple(ref_data, query_data, window_size, thr)
+  if (type == "simple" || nrow(ref_data) == nrow(query_data)) {
+    if (nrow(query_data) == window_size) {
+      warning("Distance profile is being used since window_size equals to query size")
+      dist <- dist_profile(ref_data, query_data)$distance_profile
+      dist <- sqrt(cal_mp_dist(dist, thr, nrow(ref_data)))
+    } else {
+      dist <- mpdist_simple(ref_data, query_data, window_size, thr)
+    }
   } else {
     obj <- list()
-    obj$mpdist <- mpdist_vect(ref_data, query_data, window_size, thr)
+    if (nrow(query_data) == window_size) {
+      warning("Distance profile is being used since window_size equals to query size")
+      obj$mpdist <- sqrt(dist_profile(ref_data, query_data)$distance_profile)
+    } else {
+      obj$mpdist <- mpdist_vect(ref_data, query_data, window_size, thr)
+    }
     obj$w <- window_size
     obj$data <- list(ref_data, query_data)
     class(obj) <- "MPdistProfile"
@@ -117,7 +123,7 @@ mpdist <- function(ref_data, query_data, window_size, type = c("simple", "vector
 #' @keywords internal
 #' @noRd
 mpdist_simple <- function(ref_data, query_data, window_size, thr = 0.05) {
-  mp <- mpx_abba_stomp(ref_data, query_data, window_size = window_size)
+  mp <- mpx(data = ref_data, query = query_data, window_size = window_size, idx = FALSE)
 
   dist <- cal_mp_dist(c(mp$mpa, mp$mpb), thr, nrow(ref_data) + nrow(query_data))
 
@@ -136,7 +142,6 @@ mpdist_simple <- function(ref_data, query_data, window_size, thr = 0.05) {
 #' @keywords internal
 #' @noRd
 mpdist_vect <- function(data, query, window_size, thr = 0.05) {
-
   nn <- NULL
   query_size <- nrow(query)
   data_size <- nrow(data)
@@ -145,26 +150,25 @@ mpdist_vect <- function(data, query, window_size, thr = 0.05) {
   mat <- matrix(nrow = num_subseqs, ncol = dist_profile_size)
 
   for (i in seq_len(num_subseqs)) {
-    nn <- dist_profile(data, query, nn, window_size = window_size, index = i, method = "v2")
-    mat[i, ] <- Re(nn$distance_profile)
+    nn <- dist_profile(data, query, nn, window_size = window_size, index = i)
+    mat[i, ] <- nn$distance_profile
   }
 
   all_right_histogram <- do.call(pmin, as.data.frame(t(mat))) # col min
 
-  mass_dist_slid_min <- matrix(nrow = num_subseqs, ncol = dist_profile_size)
-
+  mass_dist_slid_min <- matrix(nrow = num_subseqs, ncol = dist_profile_size - num_subseqs + 1)
+  # apply is not faster
   for (i in seq_len(num_subseqs)) {
-    mass_dist_slid_min[i, ] <- caTools::runmin(mat[i, ], num_subseqs)
+    mass_dist_slid_min[i, ] <- movmin(mat[i, ], num_subseqs)
   }
 
   mp_dist_length <- data_size - query_size + 1
   right_hist_length <- query_size - window_size + 1 # num_subseqs
   mpdist_array <- vector(mode = "numeric", length = mp_dist_length)
-  half_subseq <- floor(num_subseqs / 2)
 
   for (i in seq_len(mp_dist_length)) {
     right_hist <- all_right_histogram[i:(right_hist_length + i - 1)]
-    left_hist <- mass_dist_slid_min[, (half_subseq + i)]
+    left_hist <- mass_dist_slid_min[, i]
     recreated_mp <- c(left_hist, right_hist)
     mpdist_array[i] <- cal_mp_dist(recreated_mp, thr, 2 * query_size)
   }
@@ -205,59 +209,4 @@ cal_mp_dist <- function(mp, thr, data_size, partial = TRUE) {
   dist <- mp_sorted[k]
 
   return(dist)
-}
-
-#' ABBA Stomp
-#'
-#' @param data reference data
-#' @param query query data
-#' @param window_size window size
-#'
-#' @return join matrix profile AB and BA
-#'
-#' @keywords internal
-#' @noRd
-mpx_abba_stomp <- function(data, query, window_size) {
-  # forward
-  nn <- dist_profile(data, query, window_size = window_size, method = "v2")
-  # reverse
-  # This is needed to handle with the join similarity.
-  rnn <- dist_profile(query, data, window_size = window_size, method = "v2")
-
-  data_size <- nrow(data)
-  query_size <- nrow(query)
-  matrix_profile_size <- data_size - window_size + 1
-  matrix_profile2_size <- query_size - window_size + 1
-  matrix_profile <- rep(Inf, matrix_profile_size)
-  matrix_profile2 <- rep(Inf, matrix_profile2_size)
-  num_queries <- query_size - window_size + 1
-
-  first_product <- rnn$last_product
-
-  for (i in 1:num_queries) {
-    # compute the distance profile
-    query_window <- query[i:(i + window_size - 1)]
-
-    if (i == 1) {
-      distance_profile <- nn$distance_profile
-      last_product <- nn$last_product
-    } else {
-      last_product[2:(data_size - window_size + 1)] <- last_product[1:(data_size - window_size)] -
-        data[1:(data_size - window_size)] * drop_value +
-        data[(window_size + 1):data_size] * query_window[window_size]
-
-      last_product[1] <- first_product[i]
-      distance_profile <- 2 * (window_size - (last_product - window_size * nn$par$data_mean * nn$par$query_mean[i]) /
-        (nn$par$data_sd * nn$par$query_sd[i]))
-    }
-
-    distance_profile <- Re(sqrt(distance_profile))
-    drop_value <- query_window[1]
-
-    ind <- (distance_profile < matrix_profile)
-    matrix_profile[ind] <- distance_profile[ind]
-    matrix_profile2[i] <- min(distance_profile)
-  }
-
-  return(list(mpa = matrix_profile, mpb = matrix_profile2))
 }

@@ -1,4 +1,3 @@
-’
 Abdullah
 accelerometer
 ACM
@@ -14,8 +13,10 @@ CAC
 Cardinality
 CCM
 Chetan
+CircleCI
 codecov
 Conf
+cpu
 Crouter
 CUDA
 Darvishzadeh
@@ -46,11 +47,12 @@ Icdm
 ICDM
 Imamura
 Imani
-Int’l
+Int'l
 ISMIR
 ISWC
 javidlakha
 jbeleno
+JSON
 Kamgar
 Kavantzas
 Kaveh
@@ -70,6 +72,8 @@ MDL
 MDS
 MOTIFs
 MPdist
+MPF
+MPX
 mSTAMP
 mSTOMP
 MSTOMP
@@ -86,6 +90,8 @@ Packagist
 Palpanas
 PAMAP's
 parallelizable
+pmp
+PMP
 pre
 PRE
 precomputation
@@ -96,6 +102,8 @@ Proc
 pyMatrixProfile
 QwG
 Rakthanmanon
+rcpp
+Rcpp
 README
 Reiss
 restructuration
@@ -127,6 +135,7 @@ summarizations
 Syst
 th
 TiltABP
+tsmp’
 ucr
 UCR
 Ulanova

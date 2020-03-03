@@ -7,14 +7,14 @@
 min_mp_idx(.mp, n_dim = NULL, valid = TRUE)
 }
 \arguments{
-\item{.mp}{a TSMP object of class \code{MatrixProfile}.}
+\item{.mp}{a \code{MatrixProfile} object.}
 
 \item{n_dim}{number of dimensions of the matrix profile}
 
 \item{valid}{check for valid numbers}
 }
 \value{
-returns the minimum and the nearest neighbor
+returns a \code{matrix} with two columns: the minimum and the nearest neighbor
 }
 \description{
 Get index of the minimum value from a matrix profile and its nearest neighbor

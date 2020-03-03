@@ -4,11 +4,18 @@
 \alias{floss}
 \title{Fast Low-cost Online Semantic Segmentation (FLOSS)}
 \usage{
-floss(.mp, new_data, data_window, threshold = 1, exclusion_zone = NULL,
-  chunk_size = NULL, keep_cac = TRUE)
+floss(
+  .mp,
+  new_data,
+  data_window,
+  threshold = 1,
+  exclusion_zone = NULL,
+  chunk_size = NULL,
+  keep_cac = TRUE
+)
 }
 \arguments{
-\item{.mp}{.mp a TSMP object of class \code{MatrixProfile}.}
+\item{.mp}{a \code{MatrixProfile} object.}
 
 \item{new_data}{a \code{matrix}or \code{vector} of new observations.}
 
@@ -48,7 +55,7 @@ mp <- floss(mp, new_data2, data_window)
 \itemize{
 \item Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII:
 Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE
-International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
+International Conference on Data Mining (ICDM). IEEE; 2017. p. 117-26.
 }
 
 Website: \url{https://sites.google.com/site/onlinesemanticsegmentation/}
@@ -56,9 +63,12 @@ Website: \url{https://sites.google.com/site/onlinesemanticsegmentation/}
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other Semantic Segmentations: \code{\link{floss_cac}},
-  \code{\link{floss_extract}}, \code{\link{fluss_cac}},
-  \code{\link{fluss_extract}}, \code{\link{fluss_score}},
-  \code{\link{fluss}}
+Other Semantic Segmentations: 
+\code{\link{floss_cac}()},
+\code{\link{floss_extract}()},
+\code{\link{fluss_cac}()},
+\code{\link{fluss_extract}()},
+\code{\link{fluss_score}()},
+\code{\link{fluss}()}
 }
 \concept{Semantic Segmentations}

@@ -15,12 +15,12 @@
 #' @param query_mean precomputed query average.
 #' @param query_sd precomputed query standard deviation.
 #' @param k an `int` or `NULL`. Default is `NULL`. Defines the size of batch. Prefer to use a power of 2.
-#' @param ... just a placeholder to catch unused parameters.
+#' @param \dots just a placeholder to catch unused parameters.
 #'
 #' @return Returns the `distance_profile` for the given query and the `last_product` for STOMP
 #'   algorithm.
 #'
-#' @keywords internal
+#' @export
 #'
 #' @seealso [mass_pre()] to precomputation of input values.
 #'
@@ -47,24 +47,28 @@
 #'   )
 #' }
 mass_v3 <- function(query_window, data, window_size, data_size, data_mean, data_sd, query_mean, query_sd, k = NULL, ...) {
-  distance_profile <- vector(mode = "complex", data_size - window_size + 1)
-  last_product <- vector(mode = "complex", data_size - window_size + 1)
+  distance_profile <- vector(mode = "numeric", data_size - window_size + 1)
+  last_product <- vector(mode = "numeric", data_size - window_size + 1)
 
   if (is.null(k)) {
-    k <- 4096
+    k <- 1024
   }
 
   if (k > data_size) {
     k <- 2^ceiling(log2(sqrt(data_size)))
   }
 
-  if (k < window_size) {
-    k <- 2^ceiling(log2(window_size))
+  if (k <= window_size) {
+    k <- 2^(ceiling(log2(window_size)) + 1)
+    if (k > data_size) {
+      k <- data_size
+    }
   }
 
   # pre-process query for fft
   query_window <- rev(query_window)
   query_window[(window_size + 1):k] <- 0
+  query_fft <- stats::fft(query_window)
 
   jump <- k - window_size + 1
   seq_end <- data_size - k + 1
@@ -74,9 +78,8 @@ mass_v3 <- function(query_window, data, window_size, data_size, data_mean, data_
     idx_end <- j + k - window_size
     # The main trick of getting dot products in O(n log n) time
     data_fft <- stats::fft(data[j:(j + k - 1)])
-    query_fft <- stats::fft(query_window)
     prod <- data_fft * query_fft
-    z <- stats::fft(prod, inverse = TRUE) / length(prod)
+    z <- Re(stats::fft(prod, inverse = TRUE) / length(prod))
     d <- 2 * (window_size - (z[window_size:k] - window_size * data_mean[idx_begin:idx_end] * query_mean) / (data_sd[idx_begin:idx_end] * query_sd))
     distance_profile[idx_begin:idx_end] <- d
     last_product[idx_begin:idx_end] <- z[window_size:k]
@@ -94,12 +97,14 @@ mass_v3 <- function(query_window, data, window_size, data_size, data_mean, data_
     query_window <- query_window[1:k]
     query_fft <- stats::fft(query_window)
     prod <- data_fft * query_fft
-    z <- stats::fft(prod, inverse = TRUE) / length(prod)
+    z <- Re(stats::fft(prod, inverse = TRUE) / length(prod))
 
     d <- 2 * (window_size - (z[window_size:k] - window_size * data_mean[idx_begin:idx_end] * query_mean) / (data_sd[idx_begin:idx_end] * query_sd))
     distance_profile[idx_begin:idx_end] <- d
     last_product[idx_begin:idx_end] <- z[window_size:k]
   }
+
+  distance_profile[distance_profile < 0] <- 0
 
   return(list(distance_profile = distance_profile, last_product = last_product))
 }

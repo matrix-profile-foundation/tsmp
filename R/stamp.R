@@ -13,7 +13,7 @@
 #' `1` means text, `2` adds the progress bar, `3` adds the finish sound. `exclusion_zone` is used to
 #' avoid  trivial matches; if a query data is provided (join similarity), this parameter is ignored.
 #'
-#' @param ... a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix
+#' @param \dots a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix
 #'   profile.
 #' @param window_size an `int`. Size of the sliding window.
 #' @param exclusion_zone a `numeric`. Size of the exclusion zone, based on window size (default is
@@ -36,17 +36,18 @@
 #'
 #' @references * Yeh CCM, Zhu Y, Ulanova L, Begum N, Ding Y, Dau HA, et al. Matrix profile I: All
 #'   pairs similarity joins for time series: A unifying view that includes motifs, discords and
-#'   shapelets. Proc - IEEE Int Conf Data Mining, ICDM. 2017;1317–22.
+#'   shapelets. Proc - IEEE Int Conf Data Mining, ICDM. 2017;1317-22.
 #' @references * Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A
-#'   New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
+#'   New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1-27.
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #'
 #' @examples
 #' mp <- stamp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
-#'
-#' # using threads
-#' mp <- stamp_par(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
 #' \dontrun{
+#'
+#' #' # using threads
+#' mp <- stamp_par(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+#'
 #' ref_data <- mp_toy_data$data[, 1]
 #' query_data <- mp_toy_data$data[, 2]
 #' # self similarity
@@ -55,7 +56,9 @@
 #' mp <- stamp(ref_data, query_data, window_size = 30, s_size = round(nrow(query_data) * 0.1))
 #' }
 #'
-stamp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size = Inf, weight = NULL) {
+stamp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zone", 1 / 2),
+                  verbose = getOption("tsmp.verbose", 2),
+                  s_size = Inf, weight = NULL) {
   argv <- list(...)
   argc <- length(argv)
   data <- argv[[1]]
@@ -176,7 +179,7 @@ stamp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2, s_size 
       nn <- dist_profile(data, query, nn, window_size = window_size, index = i, method = "weighted", weight = weight)
     }
 
-    distance_profile <- Re(sqrt(nn$distance_profile))
+    distance_profile <- sqrt(nn$distance_profile)
 
     # apply exclusion zone
     if (exclusion_zone > 0) {

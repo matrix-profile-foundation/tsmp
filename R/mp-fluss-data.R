@@ -15,12 +15,12 @@
 #'
 #' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII:
 #'   Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE
-#'   International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
+#'   International Conference on Data Mining (ICDM). IEEE; 2017. p. 117-26.
 #' @references * Heldt, T., Oefinger, M.B., Hoshiyama, M. and Mark, R.G., 2003, September.
 #'   Circulatory response to passive and active changes in posture. In IEEE Computers in Cardiology,
 #'   2003 (pp. 263-266).
 #' @references * Reiss, A. and Stricker, D., 2012. Introducing a new benchmarked dataset for
 #'   activity monitoring. In 16th International Symposium on Wearable Computers (ISWC), 2012, pages
-#'   108–109. IEEE, 2012.
+#'   108-109. IEEE, 2012.
 #' @keywords datasets
 "mp_fluss_data"

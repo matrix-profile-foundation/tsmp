@@ -7,7 +7,7 @@
 fluss(.mp, num_segments = 1, exclusion_zone = NULL)
 }
 \arguments{
-\item{.mp}{a TSMP object of class \code{MatrixProfile}.}
+\item{.mp}{a \code{MatrixProfile} object.}
 
 \item{num_segments}{an \code{int}. Number of segments to extract. Based on domain knowledge.}
 
@@ -32,7 +32,7 @@ mp <- fluss(mp, 2)
 \itemize{
 \item Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII:
 Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE
-International Conference on Data Mining (ICDM). IEEE; 2017. p. 117–26.
+International Conference on Data Mining (ICDM). IEEE; 2017. p. 117-26.
 }
 
 Website: \url{https://sites.google.com/site/onlinesemanticsegmentation/}
@@ -40,9 +40,12 @@ Website: \url{https://sites.google.com/site/onlinesemanticsegmentation/}
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other Semantic Segmentations: \code{\link{floss_cac}},
-  \code{\link{floss_extract}}, \code{\link{floss}},
-  \code{\link{fluss_cac}}, \code{\link{fluss_extract}},
-  \code{\link{fluss_score}}
+Other Semantic Segmentations: 
+\code{\link{floss_cac}()},
+\code{\link{floss_extract}()},
+\code{\link{floss}()},
+\code{\link{fluss_cac}()},
+\code{\link{fluss_extract}()},
+\code{\link{fluss_score}()}
 }
 \concept{Semantic Segmentations}

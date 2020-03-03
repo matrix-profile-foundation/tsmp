@@ -4,15 +4,24 @@
 \alias{dist_profile}
 \title{Calculates the distance profile using MASS algorithms}
 \usage{
-dist_profile(data, query, ..., window_size = NULL, method = "v3",
-  index = 1, k = NULL, weight = NULL, paa = 1)
+dist_profile(
+  data,
+  query,
+  ...,
+  window_size = NULL,
+  method = "v3",
+  index = 1,
+  k = NULL,
+  weight = NULL,
+  paa = 1
+)
 }
 \arguments{
 \item{data}{a \code{matrix} or a \code{vector}.}
 
 \item{query}{a \code{matrix} or a \code{vector}. See details.}
 
-\item{...}{Precomputed values from the first iteration. If not supplied, these values will be computed.}
+\item{\dots}{Precomputed values from the first iteration. If not supplied, these values will be computed.}
 
 \item{window_size}{an \code{int} or \code{NULL}. Sliding window size. See details.}
 
@@ -56,11 +65,11 @@ w <- mp_toy_data$sub_len
 ref_data <- mp_toy_data$data[, 1]
 # minimum example, data and query
 nn <- dist_profile(ref_data, ref_data[1:w])
-distance_profile <- Re(sqrt(nn$distance_profile))
+distance_profile <- sqrt(nn$distance_profile)
 
 # data and indexed query
 nn <- dist_profile(ref_data, ref_data, window_size = w, index = 10)
-distance_profile <- Re(sqrt(nn$distance_profile))
+distance_profile <- sqrt(nn$distance_profile)
 
 # recursive
 nn <- NULL
@@ -76,7 +85,7 @@ nn <- dist_profile(ref_data, ref_data,
   window_size = w, index = 1, method = "weighted",
   weight = weight
 )
-distance_profile <- Re(sqrt(nn$distance_profile))
+distance_profile <- sqrt(nn$distance_profile)
 }
 \references{
 \itemize{

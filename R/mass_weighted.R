@@ -11,7 +11,7 @@
 #' @param data_pre precomputed weighted data product.
 #' @param weight a `vector` of `numeric` with the same length of the `window_size`.
 #' @param data_sd precomputed data moving standard deviation.
-#' @param ... just a placeholder to catch unused parameters.
+#' @param \dots just a placeholder to catch unused parameters.
 #'
 #' @return Returns the `distance_profile` for the given query and the `last_product` for STOMP
 #'   algorithm.

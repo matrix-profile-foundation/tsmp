@@ -4,11 +4,18 @@
 \alias{scrimp}
 \title{Anytime univariate SCRIMP++ algorithm}
 \usage{
-scrimp(..., window_size, exclusion_zone = 1/2, verbose = 2,
-  s_size = Inf, pre_scrimp = 1/4)
+scrimp(
+  ...,
+  window_size,
+  exclusion_zone = getOption("tsmp.exclusion_zone", 1/2),
+  verbose = getOption("tsmp.verbose", 2),
+  s_size = Inf,
+  pre_scrimp = 1/4,
+  pre_only = FALSE
+)
 }
 \arguments{
-\item{...}{a \code{matrix} or a \code{vector}.}
+\item{\dots}{a \code{matrix} or a \code{vector}.}
 
 \item{window_size}{an \code{int}. Size of the sliding window.}
 
@@ -22,6 +29,8 @@ random calculation will occur (default is \code{Inf}).}
 
 \item{pre_scrimp}{a \code{numeric}. Set the pre-scrimp step based on \code{window_size}, if \code{0}, disables pre-scrimp.
 (default is \code{1/4}).}
+
+\item{pre_only}{a \code{logical}. Returns only the pre script data. (Default is \code{FALSE}).}
 }
 \value{
 Returns a \code{MatrixProfile} object, a \code{list} with the matrix profile \code{mp}, profile index \code{pi}
@@ -60,8 +69,11 @@ mp <- scrimp(ref_data, query_data, window_size = 30, s_size = round(nrow(query_d
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other matrix profile computations: \code{\link{mstomp_par}},
-  \code{\link{stamp_par}}, \code{\link{stomp_par}},
-  \code{\link{tsmp}}, \code{\link{valmod}}
+Other matrix profile computations: 
+\code{\link{mstomp_par}()},
+\code{\link{stamp_par}()},
+\code{\link{stomp_par}()},
+\code{\link{tsmp}()},
+\code{\link{valmod}()}
 }
 \concept{matrix profile computations}

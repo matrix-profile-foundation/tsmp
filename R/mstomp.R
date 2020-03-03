@@ -39,24 +39,26 @@
 #' @references * Yeh CM, Kavantzas N, Keogh E. Matrix Profile VI : Meaningful Multidimensional Motif
 #'   Discovery.
 #' @references * Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A
-#'   New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
+#'   New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1-27.
 #' @references Website: <https://sites.google.com/view/mstamp/>
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #'
 #' @examples
 #' # using all dimensions
 #' mp <- mstomp(mp_toy_data$data[1:150, ], 30, verbose = 0)
-#'
-#' # using threads
-#' mp <- mstomp_par(mp_toy_data$data[1:150, ], 30, verbose = 0)
 #' \dontrun{
+#' #' # using threads
+#' mp <- mstomp_par(mp_toy_data$data[1:150, ], 30, verbose = 0)
+#'
 #' # force using dimensions 1 and 2
 #' mp <- mstomp(mp_toy_data$data[1:200, ], 30, must_dim = c(1, 2))
 #' # exclude dimensions 2 and 3
 #' mp2 <- mstomp(mp_toy_data$data[1:200, ], 30, exc_dim = c(2, 3))
 #' }
 #'
-mstomp <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, must_dim = NULL, exc_dim = NULL) {
+mstomp <- function(data, window_size, exclusion_zone = getOption("tsmp.exclusion_zone", 1 / 2),
+                   verbose = getOption("tsmp.verbose", 2),
+                   must_dim = NULL, exc_dim = NULL) {
   # get various length
   ez <- exclusion_zone # store original
   exclusion_zone <- round(window_size * exclusion_zone + vars()$eps)
@@ -192,7 +194,6 @@ mstomp <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, must_
         (data_sd * kronecker(matrix(1, matrix_profile_size, 1), t(data_sd[i, ]))))
     }
 
-    distance_profile <- Re(distance_profile)
     drop_value <- query_window[1, ]
 
     # apply exclusion zone

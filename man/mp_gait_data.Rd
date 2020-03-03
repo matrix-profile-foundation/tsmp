@@ -17,7 +17,7 @@ Original data used in the Time Series Chain demo
 \references{
 \itemize{
 \item Zhu Y, Imamura M, Nikovski D, Keogh E. Matrix Profile VII: Time Series Chains: A
-New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1–27.
+New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1-27.
 }
 }
 \keyword{datasets}

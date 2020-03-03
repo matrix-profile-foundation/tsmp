@@ -1,6 +1,6 @@
 Version: 1.0
 
-RestoreWorkspace: Yes
+RestoreWorkspace: No
 SaveWorkspace: Ask
 AlwaysSaveHistory: Yes
 

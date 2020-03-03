@@ -16,7 +16,7 @@
 #' @param window_size an `int` or a `vector` of `int`. Sliding window sizes.
 #' @param beta a `numeric`. See details. (default is `1`).
 #' @param pat_max an `int`. Max number of shape features captured. (default is `Inf`).
-#' @param parallel a `logical`. Use parallel computation inside (default is `TRUE`).
+#' @param parallel a `logical`. Use parallel computation inside (default is `FALSE`).
 #' @param verbose an `int`. See details. (Default is `2`).
 #'
 #' @return Returns a list with the learned dictionary `score` (estimated score), `score_hist`
@@ -25,7 +25,7 @@
 #' @export
 #' @family Scalable Dictionaries
 #' @references * Yeh C-CM, Kavantzas N, Keogh E. Matrix profile IV: Using Weakly Labeled Time Series
-#'   to Predict Outcomes. Proc VLDB Endow. 2017 Aug 1;10(12):1802–12.
+#'   to Predict Outcomes. Proc VLDB Endow. 2017 Aug 1;10(12):1802-12.
 #' @references Website: <https://sites.google.com/view/weaklylabeled>
 #' @examples
 #' # This is a fast toy example and results are useless. For a complete result, run the code inside
@@ -45,7 +45,7 @@
 #' predict <- sdts_predict(model, mp_test_data$test$data, round(mean(windows)))
 #' sdts_score(predict, mp_test_data$test$label, 1)
 #' }
-sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parallel = TRUE, verbose = 2) {
+sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parallel = FALSE, verbose = getOption("tsmp.verbose", 2)) {
 
   # transform data list into matrix ----
   if (is.matrix(data) || is.data.frame(data)) {
@@ -176,7 +176,7 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
 
     for (j in 1:n_pos) {
       nn <- dist_profile(data, candi[[i]][[j]], window_size = window_size[i])
-      dist_pro <- Re(sqrt(nn$distance_profile))
+      dist_pro <- sqrt(nn$distance_profile)
       candi_pro[[i]][[j]] <- dist_pro
       exc_st <- max(1, candi_idx[[i]][j] - window_size[i])
       exc_ed <- min(length(dist_pro), candi_idx[[i]][j] + window_size[i])
