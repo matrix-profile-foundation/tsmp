@@ -32,6 +32,8 @@
 #'   The [valmod()] uses a new pruning algorithm allowing a similarity search with a range of sliding
 #'   window sizes.
 #'
+#'   The [pmp()] is a new concept that creates several profiles from a range of windows.
+#'
 #'   Some parameters are global across the algorithms:
 #'   \describe{
 #'     \item{...}{One or two time series (except for [mstomp()]). The second time series can be smaller than the first.}
@@ -47,7 +49,7 @@
 #'   `s_size` is used only in Anytime algorithms: [stamp()] and [scrimp()].
 #'   `must_dim` and `exc_dim` are used only in [mstomp()].
 #'   `heap_size` is used only for [valmod()]
-#'   `mode` can be any of the following: `stomp`, `stamp`, `simple`, `mstomp`, `scrimp`, `valmod`.
+#'   `mode` can be any of the following: `stomp`, `stamp`, `simple`, `mstomp`, `scrimp`, `valmod`, `pmp`.
 #'
 #' @param \dots a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix
 #'   profile (except for [mstomp()]).
@@ -94,9 +96,6 @@
 #' # default with [stomp()]
 #' mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
 #'
-#' # parallel with [stomp_par()]
-#' mp <- tsmp(mp_test_data$train$data[1:1000, 1], window_size = 30, n_workers = 2, verbose = 0)
-#'
 #' # Anytime STAMP
 #' mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, mode = "stamp", s_size = 50, verbose = 0)
 #'
@@ -105,8 +104,14 @@
 #'
 #' # [simple_fast()]
 #' mp <- tsmp(mp_toy_data$data[1:200, ], window_size = 30, mode = "simple", verbose = 0)
-tsmp <- function(..., window_size, exclusion_zone = 1 / 2, mode = c("stomp", "stamp", "simple", "mstomp", "scrimp", "valmod"),
-                 verbose = 2, n_workers = 1, s_size = Inf, must_dim = NULL, exc_dim = NULL, heap_size = 50, paa = 1, .keep_data = TRUE) {
+#' \dontrun{
+#' # parallel with [stomp_par()]
+#' mp <- tsmp(mp_test_data$train$data[1:1000, 1], window_size = 30, n_workers = 2, verbose = 0)
+#' }
+tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zone", 1 / 2),
+                 mode = c("stomp", "stamp", "simple", "mstomp", "scrimp", "valmod", "pmp"),
+                 verbose = getOption("tsmp.verbose", 2), n_workers = 1, s_size = Inf, must_dim = NULL, exc_dim = NULL,
+                 heap_size = 50, paa = 1, .keep_data = TRUE) {
   algo <- match.arg(mode)
 
   argv <- list(...)
@@ -221,6 +226,9 @@ tsmp <- function(..., window_size, exclusion_zone = 1 / 2, mode = c("stomp", "st
         window_min = min(window_size), window_max = max(window_size), heap_size = heap_size, exclusion_zone = exclusion_zone,
         verbose = verbose
       )
+    },
+    "pmp" = {
+      pmp(data, window_sizes = window_size, n_workers = n_workers, verbose = verbose)
     },
     stop("`mode` must be ", mode)
   )

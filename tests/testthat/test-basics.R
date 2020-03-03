@@ -1,4 +1,4 @@
-if (skip_on_cran()) {
+if (!testthat:::on_cran()) {
   context("Testing if basic functions are ok")
   library(tsmp)
   w <- 30
@@ -27,10 +27,16 @@ if (skip_on_cran()) {
   pre$query_sd <- pre$query_sd[1]
 
   pre3 <- c(pre, list(data = ref_data, k = NULL))
-
-  res <- do.call("mass_v2", (c(list(query_data[1:w]), pre)))
-  res3 <- do.call("mass_v3", (c(list(query_data[1:w]), pre3)))
   pre3$k <- 1 # fix hash later
+
+  res <- tsmp:::mass_v2(
+    query_data[1:w], pre$window_size, pre$data_fft, pre$data_size,
+    pre$data_mean, pre$data_sd, pre$query_mean, pre$query_sd
+  )
+  res3 <- tsmp:::mass_v3(
+    query_data[1:w], ref_data, pre$window_size, pre$data_size,
+    pre$data_mean, pre$data_sd, pre$query_mean, pre$query_sd
+  )
 
   movsd <- fast_movsd(mp_toy_data$data[, 1], 30)
   movavg <- fast_movavg(mp_toy_data$data[, 1], 30)

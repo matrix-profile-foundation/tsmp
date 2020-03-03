@@ -4,7 +4,7 @@
 #' arc are crossing a given index point, means that there is a high probability of semantic change.
 #' This function is a wrap to [fluss_cac()] and [fluss_extract()].
 #'
-#' @param .mp a TSMP object of class `MatrixProfile`.
+#' @param .mp a `MatrixProfile` object.
 #' @param num_segments an `int`. Number of segments to extract. Based on domain knowledge.
 #' @param exclusion_zone if a `number` will be used instead of embedded value. (Default is `NULL`).
 #'
@@ -32,7 +32,7 @@ fluss <- function(.mp, num_segments = 1, exclusion_zone = NULL) {
 
 #' Fast Low-cost Online Semantic Segmentation (FLOSS)
 #'
-#' @param .mp .mp a TSMP object of class `MatrixProfile`.
+#' @param .mp a `MatrixProfile` object.
 #' @param new_data a `matrix`or `vector` of new observations.
 #' @param data_window an `int`. Sets the size of the buffer used to keep track of semantic changes.
 #' @param threshold a `number`. (Default is `1`). Set the maximum value for evaluating semantic changes.
@@ -289,7 +289,7 @@ fluss_extract <- function(.mpac, num_segments = 1, exclusion_zone = NULL) {
 #' where a semantic change may occur in CAC. This may be useful in real-time implementation as we don't
 #' know in advance the number of domain changes to look for. Please check original paper (1).
 #'
-#' @param .mp a TSMP object of class `MatrixProfile`.
+#' @param .mp a `MatrixProfile` object.
 #' @param exclusion_zone if a `number` will be used instead of embedded value. (Default is `NULL`).
 #'
 #' @return Returns the input `.mp` object a new name `cac` with the corrected arc count.
@@ -363,7 +363,7 @@ fluss_cac <- function(.mp, exclusion_zone = NULL) {
 #' where a semantic change may occur in CAC. This may be useful in real-time implementation as we don't
 #' know in advance the number of domain changes to look for. Please check original paper (1).
 #'
-#' @param .mp a TSMP object of class `MatrixProfile`.
+#' @param .mp a `MatrixProfile` object.
 #' @param data_window an `int`. Sets the size of the buffer used to keep track of semantic changes.
 #' @param exclusion_zone if a `number` will be used instead of embedded value. (Default is `NULL`).
 #'

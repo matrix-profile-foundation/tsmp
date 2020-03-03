@@ -1,4 +1,4 @@
-if (skip_on_cran()) {
+if (!testthat:::on_cran()) {
   context("Testing SiMPle Fast")
   library(tsmp)
 
@@ -30,7 +30,7 @@ if (skip_on_cran()) {
     expect_warning(tsmp(data, data, data, window_size = w, verbose = 0, mode = "simple"), "Only the first two")
   })
 
-  if (skip_on_cran()) {
+  if (!testthat:::on_cran()) {
     result_self <- simple_fast(list(data[, 1], data[, 2], data[, 3]), window_size = w, verbose = 2)
     result_join <- simple_fast(as.data.frame(t(data)), as.data.frame(t(query)), window_size = w, verbose = 2)
   } else {

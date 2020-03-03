@@ -1,4 +1,4 @@
-if (skip_on_cran()) {
+if (!testthat:::on_cran()) {
   context("Testing if mass v2 and mass v3 agrees")
   library(tsmp)
 

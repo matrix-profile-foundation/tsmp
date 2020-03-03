@@ -66,7 +66,7 @@
 #'   weight = weight
 #' )
 #' distance_profile <- sqrt(nn$distance_profile)
-dist_profile <- function(data, query, ..., window_size = NULL, method = "v2", index = 1, k = NULL,
+dist_profile <- function(data, query, ..., window_size = NULL, method = "v3", index = 1, k = NULL,
                          weight = NULL, paa = 1) {
 
   ## ---- Verify if method exists ----
@@ -106,7 +106,7 @@ dist_profile <- function(data, query, ..., window_size = NULL, method = "v2", in
     min_idx <- min(which(is.na(query))) - 1
     max_idx <- max(which(is.na(query))) + 1
 
-    if (min_idx >= 4) {
+    if (min_idx >= 4L) {
       q1 <- query[1:min_idx]
     }
 

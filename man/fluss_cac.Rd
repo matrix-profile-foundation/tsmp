@@ -7,7 +7,7 @@
 fluss_cac(.mp, exclusion_zone = NULL)
 }
 \arguments{
-\item{.mp}{a TSMP object of class \code{MatrixProfile}.}
+\item{.mp}{a \code{MatrixProfile} object.}
 
 \item{exclusion_zone}{if a \code{number} will be used instead of embedded value. (Default is \code{NULL}).}
 }
@@ -38,9 +38,12 @@ Website: \url{https://sites.google.com/site/onlinesemanticsegmentation/}
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other Semantic Segmentations: \code{\link{floss_cac}},
-  \code{\link{floss_extract}}, \code{\link{floss}},
-  \code{\link{fluss_extract}}, \code{\link{fluss_score}},
-  \code{\link{fluss}}
+Other Semantic Segmentations: 
+\code{\link{floss_cac}()},
+\code{\link{floss_extract}()},
+\code{\link{floss}()},
+\code{\link{fluss_extract}()},
+\code{\link{fluss_score}()},
+\code{\link{fluss}()}
 }
 \concept{Semantic Segmentations}

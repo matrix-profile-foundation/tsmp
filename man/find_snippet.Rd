@@ -4,7 +4,7 @@
 \alias{find_snippet}
 \title{Time Series Snippets: A New Primitive for Time Series Data Mining}
 \usage{
-find_snippet(data, s_size, n_snippets = 2, window_size = s_size/2)
+find_snippet(data, s_size, n_snippets = 2L, window_size = s_size/2L)
 }
 \arguments{
 \item{data}{a \code{matrix} or a \code{vector}.}

@@ -20,7 +20,7 @@ Returns a \code{list} with \code{f_score}, \code{precision} and \code{recall}.
 Computes the F-Score of a SDTS prediction.
 }
 \details{
-\code{beta} is used to balance F-score towards recall (\code{>1}) or precision (\code{<1}).
+\code{beta} is used to balance F-score towards recall (\verb{>1}) or precision (\verb{<1}).
 }
 \examples{
 # This is a fast toy example and results are useless. For a complete result, run the code inside
@@ -51,7 +51,8 @@ to Predict Outcomes. Proc VLDB Endow. 2017 Aug 1;10(12):1802-12.
 Website: \url{https://sites.google.com/view/weaklylabeled}
 }
 \seealso{
-Other Scalable Dictionaries: \code{\link{sdts_predict}},
-  \code{\link{sdts_train}}
+Other Scalable Dictionaries: 
+\code{\link{sdts_predict}()},
+\code{\link{sdts_train}()}
 }
 \concept{Scalable Dictionaries}

@@ -4,10 +4,20 @@
 \alias{tsmp}
 \title{Computes the Matrix Profile and Profile Index}
 \usage{
-tsmp(..., window_size, exclusion_zone = 1/2, mode = c("stomp", "stamp",
-  "simple", "mstomp", "scrimp", "valmod"), verbose = 2, n_workers = 1,
-  s_size = Inf, must_dim = NULL, exc_dim = NULL, heap_size = 50,
-  paa = 1, .keep_data = TRUE)
+tsmp(
+  ...,
+  window_size,
+  exclusion_zone = getOption("tsmp.exclusion_zone", 1/2),
+  mode = c("stomp", "stamp", "simple", "mstomp", "scrimp", "valmod", "pmp"),
+  verbose = getOption("tsmp.verbose", 2),
+  n_workers = 1,
+  s_size = Inf,
+  must_dim = NULL,
+  exc_dim = NULL,
+  heap_size = 50,
+  paa = 1,
+  .keep_data = TRUE
+)
 }
 \arguments{
 \item{\dots}{a \code{matrix} or a \code{vector}. If a second time series is supplied it will be a join matrix
@@ -66,7 +76,7 @@ dot products do not need to be recalculated from scratch for each subsequence. I
 reuse the values calculated for the first subsequence to make a faster calculation in the next
 iterations. The idea is to make use of the intersections between the required products in
 consecutive iterations. This approach reduced the time to compute the Matrix Profile to about
-3% compared to \code{\link[=stamp]{stamp()}}, but on the other hand, we lost the Anytime property.
+3\% compared to \code{\link[=stamp]{stamp()}}, but on the other hand, we lost the Anytime property.
 
 Currently there is a new algorithm that I'll not explain further here. It is called \code{\link[=scrimp]{scrimp()}},
 and is as fast as \code{\link[=stomp]{stomp()}}, and have the Anytime property. This algorithm is implemented in
@@ -78,6 +88,8 @@ Multivariate Time Series, but focused in Music Analysis and Exploration.
 
 The \code{\link[=valmod]{valmod()}} uses a new pruning algorithm allowing a similarity search with a range of sliding
 window sizes.
+
+The \code{\link[=pmp]{pmp()}} is a new concept that creates several profiles from a range of windows.
 
 Some parameters are global across the algorithms:
 \describe{
@@ -94,14 +106,11 @@ If the value is 2 or more, the '_par' version of the algorithm will be used.}
 \code{s_size} is used only in Anytime algorithms: \code{\link[=stamp]{stamp()}} and \code{\link[=scrimp]{scrimp()}}.
 \code{must_dim} and \code{exc_dim} are used only in \code{\link[=mstomp]{mstomp()}}.
 \code{heap_size} is used only for \code{\link[=valmod]{valmod()}}
-\code{mode} can be any of the following: \code{stomp}, \code{stamp}, \code{simple}, \code{mstomp}, \code{scrimp}, \code{valmod}.
+\code{mode} can be any of the following: \code{stomp}, \code{stamp}, \code{simple}, \code{mstomp}, \code{scrimp}, \code{valmod}, \code{pmp}.
 }
 \examples{
 # default with [stomp()]
 mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
-
-# parallel with [stomp_par()]
-mp <- tsmp(mp_test_data$train$data[1:1000, 1], window_size = 30, n_workers = 2, verbose = 0)
 
 # Anytime STAMP
 mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, mode = "stamp", s_size = 50, verbose = 0)
@@ -111,6 +120,10 @@ mp <- tsmp(mp_toy_data$data[1:200, ], window_size = 30, mode = "mstomp", verbose
 
 # [simple_fast()]
 mp <- tsmp(mp_toy_data$data[1:200, ], window_size = 30, mode = "simple", verbose = 0)
+\dontrun{
+# parallel with [stomp_par()]
+mp <- tsmp(mp_test_data$train$data[1:1000, 1], window_size = 30, n_workers = 2, verbose = 0)
+}
 }
 \references{
 \itemize{
@@ -152,8 +165,11 @@ Website: \url{https://sites.google.com/site/ismir2016simple/home}
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other matrix profile computations: \code{\link{mstomp_par}},
-  \code{\link{scrimp}}, \code{\link{stamp_par}},
-  \code{\link{stomp_par}}, \code{\link{valmod}}
+Other matrix profile computations: 
+\code{\link{mstomp_par}()},
+\code{\link{scrimp}()},
+\code{\link{stamp_par}()},
+\code{\link{stomp_par}()},
+\code{\link{valmod}()}
 }
 \concept{matrix profile computations}

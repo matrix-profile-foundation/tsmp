@@ -44,7 +44,7 @@
 #' plot(snippets)
 #' }
 #'
-find_snippet <- function(data, s_size, n_snippets = 2, window_size = s_size / 2) {
+find_snippet <- function(data, s_size, n_snippets = 2L, window_size = s_size / 2L) {
 
   # currently is about 3x slower than MATLAB. Not bad for R.
   # transform data into matrix
@@ -59,7 +59,7 @@ find_snippet <- function(data, s_size, n_snippets = 2, window_size = s_size / 2)
     stop("Unknown type of data. Must be: a column matrix or a vector.", call. = FALSE)
   }
 
-  if (s_size < 4) {
+  if (s_size < 4.0) {
     stop("`s_size` must be at least 4.", call. = FALSE)
   }
 

@@ -4,19 +4,44 @@
 \alias{find_motif}
 \alias{find_motif.MatrixProfile}
 \alias{find_motif.MultiMatrixProfile}
+\alias{find_motif.PMP}
 \title{Search for Motifs}
 \usage{
 find_motif(.mp, ...)
 
-\method{find_motif}{MatrixProfile}(.mp, data, n_motifs = 3,
-  n_neighbors = 10, radius = 3, exclusion_zone = NULL, ...)
+\method{find_motif}{MatrixProfile}(
+  .mp,
+  data,
+  n_motifs = 3,
+  n_neighbors = 10,
+  radius = 3,
+  exclusion_zone = NULL,
+  ...
+)
 
-\method{find_motif}{MultiMatrixProfile}(.mp, data, n_motifs = 3,
-  mode = c("guided", "unconstrained"), n_bit = 4,
-  exclusion_zone = NULL, n_dim = NULL, ...)
+\method{find_motif}{MultiMatrixProfile}(
+  .mp,
+  data,
+  n_motifs = 3,
+  mode = c("guided", "unconstrained"),
+  n_bit = 4,
+  exclusion_zone = NULL,
+  n_dim = NULL,
+  ...
+)
+
+\method{find_motif}{PMP}(
+  .mp,
+  data,
+  n_motifs = 3,
+  n_neighbors = 10,
+  radius = 3,
+  exclusion_zone = NULL,
+  ...
+)
 }
 \arguments{
-\item{.mp}{a TSMP object of class \code{MatrixProfile} or \code{MultiMatrixProfile}.}
+\item{.mp}{a \code{MatrixProfile} or \code{MultiMatrixProfile} object.}
 
 \item{\dots}{further arguments to be passed to class specific function.}
 
@@ -43,6 +68,9 @@ of motif pairs found and \code{motif_neighbor} a \code{list} with respective mot
 
 For class \code{MultiMatrixProfile}, returns the input \code{.mp} object with a new name \code{motif}. It contains: \code{motif_idx}, a \code{vector}
 of motifs found and \code{motif_dim} a \code{list} the dimensions where the motifs were found
+
+For class \code{PMP}, returns the input \code{.mp} object with a new name \code{motif}. It contains: \code{motif_idx}, a \code{list}
+of motif pairs found and \code{motif_neighbor} a \code{list} with respective motif's neighbors.
 }
 \description{
 Search for Motifs
@@ -59,4 +87,6 @@ w <- mp_toy_data$sub_len
 data <- mp_toy_data$data[1:200, ]
 mp <- tsmp(data, window_size = w, mode = "mstomp", verbose = 0)
 mp <- find_motif(mp)
+pan <- tsmp(mp_gait_data, window_size = 20:30, mode = "pmp")
+mp <- find_motif(pan)
 }

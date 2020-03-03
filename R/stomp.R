@@ -35,10 +35,10 @@
 #'
 #' @examples
 #' mp <- stomp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
-#'
-#' # using threads
-#' mp <- stomp_par(mp_toy_data$data[1:400, 1], window_size = 30, verbose = 0)
 #' \dontrun{
+#' #' # using threads
+#' mp <- stomp_par(mp_toy_data$data[1:400, 1], window_size = 30, verbose = 0)
+#'
 #' ref_data <- mp_toy_data$data[, 1]
 #' query_data <- mp_toy_data$data[, 2]
 #' # self similarity
@@ -46,7 +46,8 @@
 #' # join similarity
 #' mp2 <- stomp(ref_data, query_data, window_size = 30)
 #' }
-stomp <- function(..., window_size, exclusion_zone = 1 / 2, verbose = 2) {
+stomp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zone", 1 / 2),
+                  verbose = getOption("tsmp.verbose", 2)) {
   argv <- list(...)
   argc <- length(argv)
   data <- argv[[1]]

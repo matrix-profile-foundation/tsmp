@@ -11,13 +11,8 @@
 // movmin          Unk     Unk      No
 // movmax          Unk     Unk      No
 
-#include <Rcpp.h>
-using namespace Rcpp;
-
-#define MIN(y,x) ((x)<(y) && (x)==(x) ? (x) : (y))
-#define MAX(y,x) ((x)>(y) && (x)==(x) ? (x) : (y))
-
-// [[Rcpp::plugins(cpp11)]]
+#include "math.h" // math first to fix OSX error
+#include "windowfunc.h"
 
 //[[Rcpp::export]]
 NumericVector movmin(NumericVector data, uint32_t window_size) {

@@ -20,7 +20,7 @@
 #' @return Returns the `distance_profile` for the given query and the `last_product` for STOMP
 #'   algorithm.
 #'
-#' @keywords internal
+#' @export
 #'
 #' @seealso [mass_pre()] to precomputation of input values.
 #'

@@ -298,6 +298,15 @@
 #' @noRd
 #'
 
+`[.PMP` <- function(x, ..., drop = FALSE) {
+  stop("Subsetting PMP is not implemented yet")
+}
+
+#' @export
+#' @keywords internal
+#' @noRd
+#'
+
 `[.MatrixProfile` <- function(x, ..., drop = FALSE) {
   # str(...)
   # y <- NextMethod("[")
@@ -512,7 +521,6 @@
 #---- Subset MPdist ----
 
 `[.MPdistProfile` <- function(x, ..., drop = FALSE) {
-
   subset <- c(...)
   sub_size <- length(subset)
 
@@ -555,7 +563,7 @@
     }
 
     if (!is.null(x$data)) {
-        x$data[[1]] <- x$data[[1]][subset, , drop = drop]
+      x$data[[1]] <- x$data[[1]][subset, , drop = drop]
     }
 
     mp_size <- sub_size - attr$query_size + 1

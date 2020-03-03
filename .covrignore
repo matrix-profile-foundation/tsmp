@@ -1,3 +1,6 @@
 R/tsmp-defunct.R
 R/tsmp-deprecated.R
 R/mass.R
+R/deprec-*.R
+R/compat-*.R
+R/zzz.R

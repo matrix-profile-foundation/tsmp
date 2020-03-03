@@ -4,8 +4,15 @@
 \alias{valmod}
 \title{Variable Length Motif Discovery}
 \usage{
-valmod(..., window_min, window_max, heap_size = 50,
-  exclusion_zone = 1/2, lb = TRUE, verbose = 2)
+valmod(
+  ...,
+  window_min,
+  window_max,
+  heap_size = 50,
+  exclusion_zone = getOption("tsmp.exclusion_zone", 1/2),
+  lb = TRUE,
+  verbose = getOption("tsmp.verbose", 2)
+)
 }
 \arguments{
 \item{\dots}{a \code{matrix} or a \code{vector}. If a second time series is supplied it will be a join matrix
@@ -45,7 +52,7 @@ Paper that implements \code{skimp()} suggests that window_max / window_min > tha
 weakening pruning in \code{valmod()}.
 }
 \examples{
-mp <- valmod(mp_toy_data$data[1:200, 1], window_min = 30, window_max = 40)
+mp <- valmod(mp_toy_data$data[1:200, 1], window_min = 30, window_max = 40, verbose = 0)
 \dontrun{
 ref_data <- mp_toy_data$data[, 1]
 query_data <- mp_toy_data$data[, 2]
@@ -66,8 +73,11 @@ on Management of Data - SIGMOD '18. New York, New York, USA: ACM Press; 2018. p.
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other matrix profile computations: \code{\link{mstomp_par}},
-  \code{\link{scrimp}}, \code{\link{stamp_par}},
-  \code{\link{stomp_par}}, \code{\link{tsmp}}
+Other matrix profile computations: 
+\code{\link{mstomp_par}()},
+\code{\link{scrimp}()},
+\code{\link{stamp_par}()},
+\code{\link{stomp_par}()},
+\code{\link{tsmp}()}
 }
 \concept{matrix profile computations}

@@ -4,8 +4,17 @@
 \alias{mass_weighted}
 \title{Calculates the distance profile using MASS_WEIGHTED algorithm}
 \usage{
-mass_weighted(query_window, window_size, data_fft, data_size, data_mean,
-  data_sd, data_pre, weight, ...)
+mass_weighted(
+  query_window,
+  window_size,
+  data_fft,
+  data_size,
+  data_mean,
+  data_sd,
+  data_pre,
+  weight,
+  ...
+)
 }
 \arguments{
 \item{query_window}{a \code{vector} of \code{numeric}. Query window.}

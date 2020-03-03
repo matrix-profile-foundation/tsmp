@@ -46,17 +46,19 @@
 #' @examples
 #' # using all dimensions
 #' mp <- mstomp(mp_toy_data$data[1:150, ], 30, verbose = 0)
-#'
-#' # using threads
-#' mp <- mstomp_par(mp_toy_data$data[1:150, ], 30, verbose = 0)
 #' \dontrun{
+#' #' # using threads
+#' mp <- mstomp_par(mp_toy_data$data[1:150, ], 30, verbose = 0)
+#'
 #' # force using dimensions 1 and 2
 #' mp <- mstomp(mp_toy_data$data[1:200, ], 30, must_dim = c(1, 2))
 #' # exclude dimensions 2 and 3
 #' mp2 <- mstomp(mp_toy_data$data[1:200, ], 30, exc_dim = c(2, 3))
 #' }
 #'
-mstomp <- function(data, window_size, exclusion_zone = 1 / 2, verbose = 2, must_dim = NULL, exc_dim = NULL) {
+mstomp <- function(data, window_size, exclusion_zone = getOption("tsmp.exclusion_zone", 1 / 2),
+                   verbose = getOption("tsmp.verbose", 2),
+                   must_dim = NULL, exc_dim = NULL) {
   # get various length
   ez <- exclusion_zone # store original
   exclusion_zone <- round(window_size * exclusion_zone + vars()$eps)

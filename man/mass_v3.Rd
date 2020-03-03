@@ -4,8 +4,18 @@
 \alias{mass_v3}
 \title{Calculates the distance profile using MASS_V3 algorithm}
 \usage{
-mass_v3(query_window, data, window_size, data_size, data_mean, data_sd,
-  query_mean, query_sd, k = NULL, ...)
+mass_v3(
+  query_window,
+  data,
+  window_size,
+  data_size,
+  data_mean,
+  data_sd,
+  query_mean,
+  query_sd,
+  k = NULL,
+  ...
+)
 }
 \arguments{
 \item{query_window}{a \code{vector} of \code{numeric}. Query window.}
@@ -70,4 +80,3 @@ Website: \url{https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html}
 \seealso{
 \code{\link[=mass_pre]{mass_pre()}} to precomputation of input values.
 }
-\keyword{internal}

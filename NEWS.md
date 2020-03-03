@@ -1,14 +1,24 @@
 NEWS
 ================
 Francisco Bischoff
-\- 07 Jul 2019
+\- 03 Mar 2020
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
-# tsmp 0.4.0
+# tsmp 0.4.9
+
+  - Fixed MacOSX build.
+
+# tsmp 0.4.8
 
   - Added MPdist algorithm to compare two time series.
   - Added `find_snippet()` that uses MPdist to show representative data.
+  - Added `mpx()` algorithm that doesn’t depends on FFT.
+  - Added `pmp()` pan-matrix profile.
+  - Improvement with several implementations in Rcpp. Computation speed
+    is much faster.
+  - Added `compute()`, `analyze()` and `visualize()`. Starting point in
+    the unified API from MPF.
 
 # tsmp 0.3.5
 

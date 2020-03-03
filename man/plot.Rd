@@ -15,51 +15,140 @@
 \alias{plot.Motif}
 \alias{plot.MultiMotif}
 \alias{plot.Salient}
+\alias{plot.PMP}
 \title{Plot a TSMP object}
 \usage{
-\method{plot}{ArcCount}(x, data, type = c("data", "matrix"),
-  exclusion_zone = NULL, edge_limit = NULL,
-  threshold = stats::quantile(x$cac, 0.1), main = "Arcs Discover",
-  xlab = "index", ylab = "", ...)
+\method{plot}{ArcCount}(
+  x,
+  data,
+  type = c("data", "matrix"),
+  exclusion_zone = NULL,
+  edge_limit = NULL,
+  threshold = stats::quantile(x$cac, 0.1),
+  main = "Arcs Discover",
+  xlab = "index",
+  ylab = "",
+  ...
+)
 
-\method{plot}{Valmod}(x, ylab = "distance", xlab = "index",
-  main = "Valmod Matrix Profile", data = FALSE, ...)
+\method{plot}{Valmod}(
+  x,
+  ylab = "distance",
+  xlab = "index",
+  main = "Valmod Matrix Profile",
+  data = FALSE,
+  ...
+)
 
-\method{plot}{MatrixProfile}(x, ylab = "distance", xlab = "index",
-  main = "Unidimensional Matrix Profile", data = FALSE, ...)
+\method{plot}{MatrixProfile}(
+  x,
+  ylab = "distance",
+  xlab = "index",
+  main = "Unidimensional Matrix Profile",
+  data = FALSE,
+  ...
+)
 
-\method{plot}{MultiMatrixProfile}(x, ylab = "distance", xlab = "index",
-  main = "Multidimensional Matrix Profile", ...)
+\method{plot}{MultiMatrixProfile}(
+  x,
+  ylab = "distance",
+  xlab = "index",
+  main = "Multidimensional Matrix Profile",
+  ...
+)
 
-\method{plot}{SimpleMatrixProfile}(x, ylab = "distance",
-  xlab = "index", main = "SiMPle Matrix Profile", data = FALSE, ...)
+\method{plot}{SimpleMatrixProfile}(
+  x,
+  ylab = "distance",
+  xlab = "index",
+  main = "SiMPle Matrix Profile",
+  data = FALSE,
+  ...
+)
 
-\method{plot}{Fluss}(x, data, type = c("data", "matrix"),
+\method{plot}{Fluss}(
+  x,
+  data,
+  type = c("data", "matrix"),
   main = "Fast Low-cost Unipotent Semantic Segmentation",
-  xlab = "index", ylab = "", ...)
+  xlab = "index",
+  ylab = "",
+  ...
+)
 
-\method{plot}{Floss}(x, data, type = c("data", "matrix"),
-  main = "Fast Low-cost Online Semantic Segmentation", xlab = "index",
-  ylab = "", ...)
+\method{plot}{Floss}(
+  x,
+  data,
+  type = c("data", "matrix"),
+  main = "Fast Low-cost Online Semantic Segmentation",
+  xlab = "index",
+  ylab = "",
+  ...
+)
 
-\method{plot}{Chain}(x, data, type = c("data", "matrix"),
-  main = "Chain Discover", xlab = "index", ylab = "", ...)
+\method{plot}{Chain}(
+  x,
+  data,
+  type = c("data", "matrix"),
+  main = "Chain Discover",
+  xlab = "index",
+  ylab = "",
+  ...
+)
 
-\method{plot}{Discord}(x, data, type = c("data", "matrix"), ncol = 3,
-  main = "Discord Discover", xlab = "index", ylab = "", ...)
+\method{plot}{Discord}(
+  x,
+  data,
+  type = c("data", "matrix"),
+  ncol = 3,
+  main = "Discord Discover",
+  xlab = "index",
+  ylab = "",
+  ...
+)
 
-\method{plot}{Snippet}(x, data, ncol = 3, main = "Snippet Finder",
-  xlab = "index", ylab = "", ...)
+\method{plot}{Snippet}(
+  x,
+  data,
+  ncol = 3,
+  main = "Snippet Finder",
+  xlab = "index",
+  ylab = "",
+  ...
+)
 
-\method{plot}{Motif}(x, data, type = c("data", "matrix"), ncol = 3,
-  main = "MOTIF Discover", xlab = "index", ylab = "", ...)
+\method{plot}{Motif}(
+  x,
+  data,
+  type = c("data", "matrix"),
+  ncol = 3,
+  main = "MOTIF Discover",
+  xlab = "index",
+  ylab = "",
+  ...
+)
 
-\method{plot}{MultiMotif}(x, data, type = c("data", "matrix"),
-  ncol = 3, main = "Multidimensional MOTIF Discover", xlab = "index",
-  ylab = "", ...)
+\method{plot}{MultiMotif}(
+  x,
+  data,
+  type = c("data", "matrix"),
+  ncol = 3,
+  main = "Multidimensional MOTIF Discover",
+  xlab = "index",
+  ylab = "",
+  ...
+)
 
-\method{plot}{Salient}(x, data, main = "Salient Subsections",
-  xlab = "index", ylab = "", ...)
+\method{plot}{Salient}(x, data, main = "Salient Subsections", xlab = "index", ylab = "", ...)
+
+\method{plot}{PMP}(
+  x,
+  ylab = "distance",
+  xlab = "index",
+  main = "Unidimensional Matrix Profile",
+  data = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{a Matrix Profile}

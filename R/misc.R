@@ -8,35 +8,47 @@
 # fast_movavg     No      Unk      No   No
 # fast_avg_sd     No      Unk      No   No
 
-#' Fast implementation of moving standard deviation using filter
+#' Fast implementation of moving standard deviation
+#'
+#' This function does not handle NA values
 #'
 #' @param data a `vector` or a column `matrix` of `numeric`.
 #' @param window_size moving sd window size
+#' @param rcpp a `logical`. Uses rcpp implementation.
 #'
 #' @return Returns a `vector` with the moving standard deviation
 #' @export
 #'
 #' @examples
 #' data_sd <- fast_movsd(mp_toy_data$data[, 1], mp_toy_data$sub_len)
-
-# DO NOT Handles NA's
-fast_movsd <- function(data, window_size) {
-
+fast_movsd <- function(data, window_size, rcpp = FALSE) {
   if (window_size < 2) {
     stop("'window_size' must be at least 2.")
   }
 
+  # Rcpp is slower
+  if (rcpp) {
+    return(fast_movsd_rcpp(data, window_size))
+  }
+
+  # Improve the numerical analysis by subtracting off the series mean
+  # this has no effect on the standard deviation.
+  data <- data - mean(data)
+
   data_sum <- cumsum(c(sum(data[1:window_size]), diff(data, window_size)))
   data_mean <- data_sum / window_size
+
   data2 <- data^2
   data2_sum <- cumsum(c(sum(data2[1:window_size]), diff(data2, window_size)))
-  data_sd2 <- (data2_sum / window_size) - (data_mean^2)
+  data_sd2 <- (data2_sum / window_size) - (data_mean^2) # variance
   data_sd <- sqrt(data_sd2)
 
   return(data_sd)
 }
 
-#' Fast implementation of moving average and
+#' Fast implementation of moving average
+#'
+#' This function does not handle NA values
 #'
 #' @inheritParams fast_movsd
 #'
@@ -45,7 +57,6 @@ fast_movsd <- function(data, window_size) {
 #'
 #' @examples
 #' data_avg <- fast_movavg(mp_toy_data$data[, 1], mp_toy_data$sub_len)
-# DO NOT Handles NA's
 fast_movavg <- function(data, window_size) {
   if (window_size < 2) {
     stop("'window_size' must be at least 2.")
@@ -54,34 +65,75 @@ fast_movavg <- function(data, window_size) {
   return(cumsum(c(sum(data[1:window_size]), diff(data, window_size))) / window_size)
 }
 
+#' Converts euclidean distances into correlation values
+#'
+#' @param x a `vector` or a column `matrix` of `numeric`.
+#' @param w the window size
+#'
+#' @return Returns the converted values
+#'
+#' @keywords internal
+#' @noRd
+ed_corr <- function(x, w) {
+  (2 * w - x^2) / (2 * w)
+}
 
-#' Fast implementation of moving average and moving standard deviation using cumsum
+#' Converts correlation values into euclidean distances
+#'
+#' @inheritParams ed_corr
+#'
+#' @return Returns the converted values
+#'
+#' @keywords internal
+#' @noRd
+corr_ed <- function(x, w) {
+  sqrt(2 * w * (1 - ifelse(x > 1, 1, x)))
+}
+
+#' Fast implementation of moving average and moving standard deviation
+#'
+#' This function does not handle NA values
 #'
 #' @inheritParams fast_movsd
 #'
 #' @return Returns a `list` with `avg` and `sd` `vector`s
-#' @keywords internal
-#' @noRd
+#' @export
 
-# DO NOT Handles NA's
-fast_avg_sd <- function(data, window_size) {
+fast_avg_sd <- function(data, window_size, rcpp = FALSE) {
   if (window_size < 2) {
     stop("'window_size' must be at least 2.")
   }
+
+  # Rcpp is slower
+  if (rcpp) {
+    return(fast_avg_sd_rcpp(data, window_size))
+  }
+
+  mov_sum <- cumsum(c(sum(data[1:window_size]), diff(data, window_size)))
+  data2 <- data^2
+  mov2_sum <- cumsum(c(sum(data2[1:window_size]), diff(data2, window_size)))
+  mov_mean <- mov_sum / window_size
+
+
+  # Improve the numerical analysis by subtracting off the series mean
+  # this has no effect on the standard deviation.
+  dmean <- mean(data)
+  data <- data - dmean
 
   data_sum <- cumsum(c(sum(data[1:window_size]), diff(data, window_size)))
   data_mean <- data_sum / window_size
   data2 <- data^2
   data2_sum <- cumsum(c(sum(data2[1:window_size]), diff(data2, window_size)))
-  data_sd2 <- (data2_sum / window_size) - (data_mean^2)
-  data_sd <- sqrt(data_sd2)
+  data_sd2 <- (data2_sum / window_size) - (data_mean^2) # variance
+  data_sd2[data_sd2 < 0] <- 0
+  data_sd <- sqrt(data_sd2) # std deviation
+  data_sig <- sqrt(1 / (data_sd2 * window_size))
 
-  return(list(avg = data_mean, sd = data_sd, sum = data_sum, sqrsum = data2_sum))
+  return(list(avg = mov_mean, sd = data_sd, sig = data_sig, sum = mov_sum, sqrsum = mov2_sum))
 }
 
 # DO NOT Handles NA's
 fast_muinvn <- function(data, window_size) {
-
   if (window_size < 2) {
     stop("'window_size' must be at least 2.")
   }
@@ -90,28 +142,9 @@ fast_muinvn <- function(data, window_size) {
   data_mean <- data_sum / window_size
   data2 <- data^2
   data2_sum <- cumsum(c(sum(data2[1:window_size]), diff(data2, window_size)))
-  data_dp2 <- sqrt(data2_sum - data_mean^2 * window_size)
-  data_dp <- 1/data_dp2
+  data_dp <- 1 / sqrt(data2_sum - data_mean^2 * window_size)
 
-  return(list(mu = data_mean, sig = data_dp))
-}
-
-# DO NOT Handles NA's
-muinvn <- function(a, w) {
-  # Functions here are based on the work in
-  # Ogita et al, Accurate Sum and Dot Product
-  # results here are a moving average and stable inverse centered norm based
-  # on Accurate Sum and Dot Product, Ogita et al
-
-  mu <- sum2s_v3(a, w) / w
-  sig <- rep(0, length(a) - w + 1)
-
-  for (i in 1:length(mu)) {
-    sig[i] <- sum((a[i:(i + w - 1)] - mu[i])^2)
-  }
-
-  sig <- 1 / sqrt(sig)
-  return(list(mu = mu, sig = sig))
+  return(list(avg = data_mean, isd = data_dp))
 }
 
 # Handles NA's
@@ -162,6 +195,7 @@ old_fast_movavg <- function(data, window_size) {
 }
 
 # DO NOT Handles NA's
+# catastrophic cancellation
 old_fast_avg_sd <- function(data, window_size) {
   if (window_size < 2) {
     stop("'window_size' must be at least 2.")
@@ -207,7 +241,6 @@ old_fast_avg_sd <- function(data, window_size) {
 #' @return Returns the corrected standard deviation from sample to population
 #' @keywords internal
 #' @noRd
-#'
 #'
 std <- function(data, na.rm = FALSE, rcpp = TRUE) {
 
@@ -269,6 +302,31 @@ znorm <- function(data, rcpp = TRUE) {
   }
 }
 
+#' Normalizes data to be between min and max
+#'
+#'
+#' @param data a `vector` or a column `matrix` of `numeric`.
+#' @param min the minimum value
+#' @param max the maximum value
+#'
+#' @return Returns the normalized data
+#' @keywords internal
+#' @noRd
+#'
+normalize <- function(data, min = 0, max = 1) {
+  min_val <- min(data, na.rm = TRUE)
+  max_val <- max(data, na.rm = TRUE)
+
+  a <- (max - min) / (max_val - min_val)
+  b <- max - a * max_val
+  data <- a * data + b
+
+  data[data < min] <- min
+  data[data > max] <- max
+
+  return(data)
+}
+
 #' Distance between two matrices
 #'
 #' Computes the Euclidean distance between rows of two matrices.
@@ -302,6 +360,71 @@ diff2 <- function(x, y) {
   sqrt(pmax(xx + yy - 2 * xy, 0))
 }
 
+#' Binary Split algorithm
+#'
+#' Creates a vector with the indexes of binary split.
+#'
+#' @param n size of the vector
+#'
+#' @return Returns a `vector` with the binary split indexes
+#' @keywords internal
+#' @noRd
+
+binary_split <- function(n, rcpp = TRUE) {
+  if (rcpp) {
+    return(binary_split_rcpp(as.integer(n)))
+  }
+
+  if (n < 2) {
+    return(1)
+  }
+
+  split <- function(lb, ub, m) {
+    if (lb == m) {
+      l <- NULL
+      r <- c(m + 1, ub)
+    } else if (ub == m) {
+      l <- c(lb, m - 1)
+      r <- NULL
+    } else {
+      l <- c(lb, m - 1)
+      r <- c(m + 1, ub)
+    }
+
+    return(list(l = l, r = r))
+  }
+
+  idxs <- vector(mode = "numeric", length = n)
+  intervals <- list()
+
+  idxs[1] <- 1 # We always begin by explore the first integer
+  intervals[[1]] <- c(2, n) # After exploring the first integer, we begin splitting the interval 2:n
+  i <- 2
+
+  while (length(intervals) > 0) {
+    lb <- intervals[[1]][1]
+    ub <- intervals[[1]][2]
+    mid <- floor((lb + ub) / 2)
+    intervals[[1]] <- NULL
+
+    idxs[i] <- mid
+    i <- i + 1
+
+    if (lb == ub) {
+      next
+    } else {
+      lr <- split(lb, ub, mid)
+      if (!is.null(lr$l)) {
+        intervals[[length(intervals) + 1]] <- lr$l
+      }
+      if (!is.null(lr$r)) {
+        intervals[[length(intervals) + 1]] <- lr$r
+      }
+    }
+  }
+  return(idxs)
+}
+
 #' Bubble up algorithm
 #'
 #' Bubble up algorithm.
@@ -309,7 +432,7 @@ diff2 <- function(x, y) {
 #' @param data a vector of values
 #' @param len size of data
 #'
-#' @return
+#' @return Doesnt return. Not used for now
 #' @keywords internal
 #' @noRd
 
@@ -401,11 +524,11 @@ ipaa <- function(data, p) {
 
 #' Get index of the minimum value from a matrix profile and its nearest neighbor
 #'
-#' @param .mp a TSMP object of class `MatrixProfile`.
+#' @param .mp a `MatrixProfile` object.
 #' @param n_dim number of dimensions of the matrix profile
 #' @param valid check for valid numbers
 #'
-#' @return returns the minimum and the nearest neighbor
+#' @return returns a `matrix` with two columns: the minimum and the nearest neighbor
 #' @export
 #'
 #' @examples
@@ -646,25 +769,25 @@ compute_f_meas <- function(label, pos_st, pos_ed, dist_pro, thold, window_size, 
     anno[anno_st[i]:anno_ed[i]] <- 1
   }
 
-  is.tp <- rep(FALSE, length(anno_st))
+  is_tp <- rep(FALSE, length(anno_st))
 
   for (i in seq_len(length(anno_st))) {
     if (anno_ed[i] > length(label)) {
       anno_ed[i] <- length(label)
     }
     if (sum(label[anno_st[i]:anno_ed[i]]) > (0.8 * window_size)) {
-      is.tp[i] <- TRUE
+      is_tp[i] <- TRUE
     }
   }
-  tp_pre <- sum(is.tp)
+  tp_pre <- sum(is_tp)
 
-  is.tp <- rep(FALSE, length(pos_st))
+  is_tp <- rep(FALSE, length(pos_st))
   for (i in seq_len(length(pos_st))) {
     if (sum(anno[pos_st[i]:pos_ed[i]]) > (0.8 * window_size)) {
-      is.tp[i] <- TRUE
+      is_tp[i] <- TRUE
     }
   }
-  tp_rec <- sum(is.tp)
+  tp_rec <- sum(is_tp)
 
   pre <- tp_pre / length(anno_st)
   rec <- tp_rec / length(pos_st)
@@ -679,7 +802,7 @@ compute_f_meas <- function(label, pos_st, pos_ed, dist_pro, thold, window_size, 
 
 # Salient Aux functions --------------------------------------------------------------------------
 
-#' Retrieve the index of a number of candidates from the lowest points of a MP
+#' Retrieve the index of a number of candidates from the lowest points of a Matrix Profile
 #'
 #' @param matrix_profile the matrix profile
 #' @param n_cand number of candidates to extract
@@ -1032,9 +1155,9 @@ set_data <- function(.mp, data) {
 #' get_data(mp)
 get_data <- function(.mp) {
   if (length(.mp$data) == 1) {
-    return(as.matrix(.mp$data[[1]]))
+    return(invisible(as.matrix(.mp$data[[1]])))
   } else {
-    return(as.matrix(.mp$data))
+    return(invisible(as.matrix(.mp$data)))
   }
 }
 
@@ -1147,6 +1270,20 @@ as.multimatrixprofile <- function(.mp) {
   }
 
   class(.mp) <- update_class(class(.mp), "MultiMatrixProfile")
+
+  return(.mp)
+}
+
+#' @describeIn as.matrixprofile Cast an object changed by another function back to `PMP`.
+#' @export
+#'
+
+as.pmp <- function(.mp) {
+  if (!("PMP" %in% class(.mp))) {
+    stop("This object cannot be a `PMP`.")
+  }
+
+  class(.mp) <- update_class(class(.mp), "PMP")
 
   return(.mp)
 }
@@ -1269,17 +1406,18 @@ as.salient <- function(.mp) {
 #'
 beep <- function(data) {
   if (!(is.null(audio::audio.drivers()) || nrow(audio::audio.drivers()) == 0)) {
-    tryCatch({
-      audio::play(data)
-    },
-    error = function(cond) {
-      message("Warning: Failed to play audio alert")
-      message(cond)
-    },
-    warning = function(cond) {
-      message("Warning: Something went wrong playing audio alert")
-      message(cond)
-    }
+    tryCatch(
+      {
+        audio::play(data)
+      },
+      error = function(cond) {
+        message("Warning: Failed to play audio alert")
+        message(cond)
+      },
+      warning = function(cond) {
+        message("Warning: Something went wrong playing audio alert")
+        message(cond)
+      }
     )
   }
   Sys.sleep(1)
