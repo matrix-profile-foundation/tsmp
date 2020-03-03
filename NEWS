@@ -1,5 +1,10 @@
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
+tsmp 0.4.9
+==========
+
+-   Fixed MacOSX build.
+
 tsmp 0.4.8
 ==========
 

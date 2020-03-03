@@ -21,6 +21,9 @@ knitr::opts_chunk$set(
 )
 ```
 
+# tsmp 0.4.9
+* Fixed MacOSX build.
+
 # tsmp 0.4.8
 * Added MPdist algorithm to compare two time series.
 * Added `find_snippet()` that uses MPdist to show representative data.

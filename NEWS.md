@@ -1,11 +1,13 @@
-# tsmp (development version)
-
 NEWS
 ================
 Francisco Bischoff
-\- 28 Feb 2020
+\- 03 Mar 2020
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
+
+# tsmp 0.4.9
+
+  - Fixed MacOSX build.
 
 # tsmp 0.4.8
 
