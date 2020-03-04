@@ -1,6 +1,6 @@
 # Getting help with tsmp
 
-Thanks for using tsmp. Before filing an issue, there are a few places
+Thanks for using `tsmp`. Before filing an issue, there are a few places
 to explore and pieces to put together to make the process as smooth as possible.
 
 Start by making a minimal **repr**oducible **ex**ample using the 

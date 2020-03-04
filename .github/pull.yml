@@ -1,8 +1,8 @@
 version: "1"
 rules:
   - base: master
-    upstream: franzbischoff:master
+    upstream: matrix-profile-foundation:master
     mergeMethod: hardreset
   - base: develop
-    upstream: franzbischoff:develop
+    upstream: matrix-profile-foundation:develop
     mergeMethod: hardreset
