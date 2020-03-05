@@ -1,4 +1,3 @@
-^.*\.rda$
 ^.*\.Rout$
 ^.*\.Rproj$
 ^.*\.yml$
@@ -25,3 +24,4 @@
 ^tsmp.*\.tar\.gz$
 ^tsmp.*\.tgz$
 ^tsmp\.Rcheck$
+^API$

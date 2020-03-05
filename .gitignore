@@ -28,6 +28,7 @@
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
+vignettes/*.R
 
 # OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
 .httr-oauth
@@ -52,4 +53,13 @@ LOCAL_APPDATA_FONTCONFIG_CACHE/
 src-*/
 packrat/lib*/
 packrat/src/
-tests/*/*.pdf
+Rplots.pdf
+/src/*.o
+/src/*.so
+/src/*.dll
+/revdep/checks
+/revdep/library
+/revdep/checks.noindex
+/revdep/library.noindex
+/revdep/data.sqlite
+/revdep/*.html
