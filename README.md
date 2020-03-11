@@ -1,7 +1,7 @@
 README
 ================
 Francisco Bischoff
-\- 03 Mar 2020
+\- 06 Mar 2020
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -153,6 +153,10 @@ Our next step unifying the Matrix Profile implementation in several
 programming languages.
 
 Visit: [Matrix Profile Foundation](https://matrixprofile.org)
+
+## Package dependencies
+
+![](man/figures/dependency_plot-1.png)<!-- -->
 
 ## Code of Conduct
 

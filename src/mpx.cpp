@@ -27,7 +27,7 @@ List mpx_rcpp(NumericVector a, uint16_t w, uint16_t minlag, bool idxs = false, b
     IntegerVector seq_diag = Range(minlag, profile_len - 1);
 
     NumericVector mmp(profile_len, -1.0);
-    IntegerVector mmpi(profile_len, R_NaN);
+    IntegerVector mmpi(profile_len, R_NaN); // TODO: SANITIZE?
 
     double *mp = &mmp[0];
     int *mpi = &mmpi[0];
@@ -152,7 +152,7 @@ List mpxab_rcpp(NumericVector a, NumericVector b, uint16_t w, bool idxs = false,
     ddg_a.push_front(0);
     NumericVector ddf_b = 0.5 * (b[Range(w, b_len - 1)] - b[Range(0, b_len - w - 1)]);
     ddf_b.push_front(0);
-    NumericVector ddg_b = (b[Range(w, a_len - 1)] - mmu_b[Range(1, profile_len_b - 1)]) + (b[Range(0, b_len - w - 1)] - mmu_b[Range(0, b_len - w - 1)]);
+    NumericVector ddg_b = (b[Range(w, b_len - 1)] - mmu_b[Range(1, profile_len_b - 1)]) + (b[Range(0, b_len - w - 1)] - mmu_b[Range(0, b_len - w - 1)]);
     ddg_b.push_front(0);
 
     double *df_a = &ddf_a[0];
@@ -523,7 +523,7 @@ List mpxab_rcpp_parallel(NumericVector a, NumericVector b, uint16_t w, bool idxs
     dg_a.push_front(0);
     NumericVector df_b = 0.5 * (b[Range(w, b_len - 1)] - b[Range(0, b_len - w - 1)]);
     df_b.push_front(0);
-    NumericVector dg_b = (b[Range(w, a_len - 1)] - mu_b[Range(1, profile_len_b - 1)]) + (b[Range(0, b_len - w - 1)] - mu_b[Range(0, b_len - w - 1)]);
+    NumericVector dg_b = (b[Range(w, b_len - 1)] - mu_b[Range(1, profile_len_b - 1)]) + (b[Range(0, b_len - w - 1)] - mu_b[Range(0, b_len - w - 1)]);
     dg_b.push_front(0);
 
     NumericVector ww_a = (a[Range(0, w - 1)] - mu_a[0]);

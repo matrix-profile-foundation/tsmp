@@ -95,7 +95,7 @@ mbm_stamp_par <- round(median(microbenchmark::microbenchmark(tsmp(data, window_s
 ```{r bench_dataset, echo = FALSE, message=FALSE, warnings=FALSE}
 bench_data <- data.frame("Elapsed Time(s)" = c(mbm_stamp, mbm_stamp_par, mbm_stomp, mbm_stomp_par, mbm_scrimp, mbm_mpx, mbm_mpx_par), "Data Size" = data_size, "Window Size" = w, Threads = c(1, workers, 1, workers, 1, 1, workers), Lang = c("R", "R", "R", "R", "R", "Rcpp", "Rcpp"), row.names = c("`stamp`", "`stamp_par`", "`stomp`", "`stomp_par`", "`scrimp`", "`mpx`", "`mpx_par`"), check.names = FALSE)
 
-knitr::kable(bench_data[order(bench_data$`Elapsed Time(s)`),])
+knitr::kable(bench_data[order(bench_data$`Elapsed Time(s)`), ])
 ```
 
 ## Installation
@@ -164,6 +164,13 @@ devtools::install_github("matrix-profile-foundation/tsmp")
 Our next step unifying the Matrix Profile implementation in several programming languages.
 
 Visit: [Matrix Profile Foundation](https://matrixprofile.org)
+
+## Package dependencies
+
+```{r dependency_plot, echo = FALSE, fig.width = 10, fig.height = 5, message = FALSE, warning = FALSE, fig.path = "man/figures/"}
+source("https://gist.githubusercontent.com/franzbischoff/3b83243dfdfa73e459935112f3f783e3/raw/239548243f984843b3a87d8cc82f99395a8ed26e/plot_dependencies.R")
+plot_dependencies()
+```
 
 ## Code of Conduct
 
