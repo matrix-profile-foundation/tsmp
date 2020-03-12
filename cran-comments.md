@@ -1,7 +1,6 @@
 ## Comments
-quick-fix: checkmate package was in suggests but is imports.
-This version added Rcpp implementations and RcppParallel to allow multi-threading.
-Progressivelly I'll convert the bottlenecks to Rcpp and hope to get rid of `doSNOW` for parallelization.
+Current code has fixed the last sanitize error (I hope so).
+It has passed on rhub: Debian Linux, R-devel, GCC ASAN/UBSAN
 
 ## Test environments
 * Rhub

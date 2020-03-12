@@ -21,6 +21,9 @@ knitr::opts_chunk$set(
 )
 ```
 
+# tsmp 0.4.10
+* Fix in `mpx()`.
+
 # tsmp 0.4.9
 * Fixed MacOSX build.
 

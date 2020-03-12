@@ -1,9 +1,13 @@
 NEWS
 ================
 Francisco Bischoff
-\- 03 Mar 2020
+\- 12 Mar 2020
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
+
+# tsmp 0.4.10
+
+  - Fix in `mpx()`.
 
 # tsmp 0.4.9
 
