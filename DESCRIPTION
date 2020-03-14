@@ -1,7 +1,7 @@
 Type: Package
 Package: tsmp
 Title: Time Series with Matrix Profile
-Version: 0.4.10.9000
+Version: 0.4.11
 Authors@R: 
     c(person(given = "Francisco",
              family = "Bischoff",
@@ -73,5 +73,5 @@ Language: en-US
 LazyData: true
 NeedsCompilation: no
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 SystemRequirements: GNU make

@@ -73,7 +73,7 @@ List mpx_rcpp(NumericVector a, uint16_t w, uint16_t minlag, bool idxs = false, b
           }
         }
       }
-    } catch (internal::InterruptedException &ex) {
+    } catch (Rcpp::internal::InterruptedException &ex) {
       partial = true;
       Rcout << "Process terminated.\n";
     }
@@ -217,7 +217,7 @@ List mpxab_rcpp(NumericVector a, NumericVector b, uint16_t w, bool idxs = false,
           }
         }
       }
-    } catch (internal::InterruptedException &ex) {
+    } catch (Rcpp::internal::InterruptedException &ex) {
       partial = true;
       Rcout  << "Process terminated.\n";
     }
@@ -340,7 +340,7 @@ List mpx_rcpp_parallel(NumericVector a, uint16_t w, uint16_t minlag, bool idxs =
 
     try {
       parallelFor(minlag, profile_len, matrix_profile, 100);
-    } catch (internal::InterruptedException &ex) {
+    } catch (Rcpp::internal::InterruptedException &ex) {
       partial = true;
       Rcout << "Process terminated.\n";
     }
@@ -404,15 +404,15 @@ struct MatrixProfilePAB : public Worker {
                    const NumericVector ww_a, const NumericVector ww_b,
                    NumericVector mp_a, NumericVector mp_b,
                    IntegerVector mpi_a, IntegerVector mpi_b) :
-                    a(a), b(b), w(w),
-                    df_a(df_a), df_b(df_b),
-                    dg_a(dg_a), dg_b(dg_b),
-                    mu_a(mu_a), mu_b(mu_b),
-                    sig_a(sig_a), sig_b(sig_b),
-                    ww_a(ww_a), ww_b(ww_b),
-                    mp_a(mp_a), mp_b(mp_b),
-                    mpi_a(mpi_a), mpi_b(mpi_b),
-                    ab_ba(0) {}
+    a(a), b(b), w(w),
+    df_a(df_a), df_b(df_b),
+    dg_a(dg_a), dg_b(dg_b),
+    mu_a(mu_a), mu_b(mu_b),
+    sig_a(sig_a), sig_b(sig_b),
+    ww_a(ww_a), ww_b(ww_b),
+    mp_a(mp_a), mp_b(mp_b),
+    mpi_a(mpi_a), mpi_b(mpi_b),
+    ab_ba(0) {}
 
 
 
@@ -540,7 +540,7 @@ List mpxab_rcpp_parallel(NumericVector a, NumericVector b, uint16_t w, bool idxs
 
     try {
       parallelFor(0, profile_len_a, matrix_profile);
-    } catch (internal::InterruptedException &ex) {
+    } catch (Rcpp::internal::InterruptedException &ex) {
       partial = true;
       Rcout << "Process AB terminated.\n";
     }
@@ -552,7 +552,7 @@ List mpxab_rcpp_parallel(NumericVector a, NumericVector b, uint16_t w, bool idxs
 
     try {
       parallelFor(0, profile_len_b, matrix_profile);
-    } catch (internal::InterruptedException &ex) {
+    } catch (Rcpp::internal::InterruptedException &ex) {
       partial = true;
       Rcout << "Process BA terminated.\n";
     }

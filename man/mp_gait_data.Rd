@@ -4,7 +4,9 @@
 \name{mp_gait_data}
 \alias{mp_gait_data}
 \title{Original data used in the Time Series Chain demo}
-\format{A \code{matrix} with 904 rows and 1 column with the Y data from an accelerometer}
+\format{
+A \code{matrix} with 904 rows and 1 column with the Y data from an accelerometer
+}
 \source{
 \url{https://sites.google.com/site/timeserieschain/}
 }

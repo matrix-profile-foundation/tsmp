@@ -4,7 +4,9 @@
 \name{motifs_discords_small}
 \alias{motifs_discords_small}
 \title{Just a synthetic dataset for testing}
-\format{A \code{vector} with 875 observations}
+\format{
+A \code{vector} with 875 observations
+}
 \usage{
 motifs_discords_small
 }

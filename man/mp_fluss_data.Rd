@@ -4,12 +4,14 @@
 \name{mp_fluss_data}
 \alias{mp_fluss_data}
 \title{Original data used in the FLUSS paper}
-\format{A list containing:
+\format{
+A list containing:
 \describe{
 \item{data}{one column matrix with the dataset's data}
 \item{gtruth}{a vector with the ground truth of semantic change according to provided dataset}
 \item{window}{window size used in original paper}
-}}
+}
+}
 \source{
 \url{https://sites.google.com/site/onlinesemanticsegmentation/}
 

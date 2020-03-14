@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# tsmp 0.4.10
+# tsmp 0.4.11
 * Fix in `mpx()`.
 
 # tsmp 0.4.9

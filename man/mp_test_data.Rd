@@ -4,13 +4,15 @@
 \name{mp_test_data}
 \alias{mp_test_data}
 \title{Original data used in the STDS demo}
-\format{A list of matrices with 215010 rows and 1 dimension:
+\format{
+A list of matrices with 215010 rows and 1 dimension:
 \describe{
 \item{train$data}{training data}
 \item{train$label}{label for training data}
 \item{test$data}{test data}
 \item{test$label}{label for test data}
-}}
+}
+}
 \source{
 \url{https://sites.google.com/view/weaklylabeled}
 

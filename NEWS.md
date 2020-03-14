@@ -5,7 +5,7 @@ Francisco Bischoff
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
-# tsmp 0.4.10
+# tsmp 0.4.11
 
   - Fix in `mpx()`.
 

@@ -4,7 +4,8 @@
 \name{mp_meat_data}
 \alias{mp_meat_data}
 \title{Original data used in the Salient Subsequences demo}
-\format{\code{original} is the original dataset with 60+60 observations mixed with 120 random walks:
+\format{
+\code{original} is the original dataset with 60+60 observations mixed with 120 random walks:
 \describe{
 \item{data}{240 time series with length of 448 each.}
 \item{labels}{label of each time series, \code{-666} means a random walk.}
@@ -18,7 +19,8 @@
 \item{labels}{label of each original data.}
 \item{labels_idx}{starting point where the original data was placed.}
 \item{sub_len}{size of sliding window.}
-}}
+}
+}
 \source{
 \url{http://www.cs.ucr.edu/~eamonn/time_series_data/}
 }

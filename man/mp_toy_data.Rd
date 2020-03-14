@@ -4,11 +4,13 @@
 \name{mp_toy_data}
 \alias{mp_toy_data}
 \title{Original data used in the mSTAMP demo}
-\format{A \code{list} with a \code{matrix} with 550 rows and 3 dimensions and an \code{int}:
+\format{
+A \code{list} with a \code{matrix} with 550 rows and 3 dimensions and an \code{int}:
 \describe{
 \item{data}{data with embedded MOTIFs}
 \item{sub_len}{size of sliding window}
-}}
+}
+}
 \source{
 \url{https://sites.google.com/view/mstamp/}
 }
