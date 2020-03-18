@@ -1,6 +1,5 @@
 ## Comments
-Current code has fixed the last sanitize error (I hope so).
-It has passed on rhub: Debian Linux, R-devel, GCC ASAN/UBSAN
+ASAN/UBSAN errors fixed from RcppParallel
 
 ## Test environments
 * Rhub

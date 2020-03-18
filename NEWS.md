@@ -1,9 +1,13 @@
 NEWS
 ================
 Francisco Bischoff
-\- 12 Mar 2020
+\- 18 Mar 2020
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
+
+# tsmp 0.4.12
+
+  - Fix ASAN/UBSAN errors using RcppParallel
 
 # tsmp 0.4.11
 

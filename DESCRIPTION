@@ -1,7 +1,7 @@
 Type: Package
 Package: tsmp
 Title: Time Series with Matrix Profile
-Version: 0.4.11
+Version: 0.4.12
 Authors@R: 
     c(person(given = "Francisco",
              family = "Bischoff",
@@ -52,7 +52,7 @@ Imports:
     parallel,
     progress,
     Rcpp,
-    RcppParallel,
+    RcppParallel (>= 5.0.0),
     RJSONIO
 Suggests:
     covr,

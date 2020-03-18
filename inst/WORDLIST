@@ -5,6 +5,7 @@ Actionability
 al
 AppVeyor
 APSS
+ASAN
 Bagnall
 beepr
 benchmarked
@@ -65,6 +66,7 @@ Kumar
 lifecycle
 LMP
 Lonardi
+MacOSX
 matlab
 matrixprofile
 MatrixProfile
@@ -104,6 +106,7 @@ QwG
 Rakthanmanon
 rcpp
 Rcpp
+RcppParallel
 README
 Reiss
 restructuration
@@ -136,6 +139,7 @@ Syst
 th
 TiltABP
 tsmp’
+UBSAN
 ucr
 UCR
 Ulanova

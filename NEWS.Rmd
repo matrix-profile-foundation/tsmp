@@ -21,6 +21,9 @@ knitr::opts_chunk$set(
 )
 ```
 
+# tsmp 0.4.12
+* Fix ASAN/UBSAN errors using RcppParallel
+
 # tsmp 0.4.11
 * Fix in `mpx()`.
 
