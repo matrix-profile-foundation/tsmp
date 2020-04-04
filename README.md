@@ -7,6 +7,10 @@ Francisco Bischoff
 
 <img src="man/figures/logo.png" align="right" style="float:right;" />
 
+# Package removed from CRAN temporarely
+
+Due to pandemic issues, I wasn't able to finish a patch (for MacOSX) in time, so their policy was to remove the package. You can use the Github version meanwhile. [#Issue](https://github.com/matrix-profile-foundation/tsmp/issues/78)
+
 # Time Series with Matrix Profile
 
 <!-- badges: start -->
