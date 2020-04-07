@@ -1,15 +1,11 @@
 README
 ================
 Francisco Bischoff
-\- 04 Apr 2020
+\- 05 Apr 2020
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 <img src="man/figures/logo.png" align="right" style="float:right;" />
-
-# Package removed from CRAN temporarily
-
-Due to pandemic issues, I wasn't able to finish a patch (for MacOSX) in time, so their policy was to remove the package. You can use the Github version meanwhile. [#Issue](https://github.com/matrix-profile-foundation/tsmp/issues/78)
 
 # Time Series with Matrix Profile
 
