@@ -37,7 +37,7 @@
 #'
 #' # Matrix Profile
 #' result <- analyze(mp_toy_data$data[, 1], 80)
-#' \dontrun{
+#' \donttest{
 #' # Pan Matrix Profile
 #' result <- analyze(mp_toy_data$data[, 1])
 #' }

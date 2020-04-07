@@ -120,7 +120,7 @@ mp <- tsmp(mp_toy_data$data[1:200, ], window_size = 30, mode = "mstomp", verbose
 
 # [simple_fast()]
 mp <- tsmp(mp_toy_data$data[1:200, ], window_size = 30, mode = "simple", verbose = 0)
-\dontrun{
+\donttest{
 # parallel with [stomp_par()]
 mp <- tsmp(mp_test_data$train$data[1:1000, 1], window_size = 30, n_workers = 2, verbose = 0)
 }

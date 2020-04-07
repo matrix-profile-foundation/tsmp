@@ -1,5 +1,8 @@
 ## Comments
-ASAN/UBSAN errors fixed from RcppParallel
+Fixed CRAN issues:
+- Please replace `\dontrun{}` by `\donttest{}` in your Rd-files.
+- Using `tempdir()` in test functions
+- Added `on.exit(par(old_par))` and similar
 
 ## Test environments
 * Rhub

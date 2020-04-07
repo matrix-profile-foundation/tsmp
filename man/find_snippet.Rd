@@ -42,7 +42,7 @@ the "flavor" of the time series.
 \examples{
 
 snippets <- find_snippet(mp_fluss_data$walkjogrun$data[1:300], 40, n_snippets = 2)
-\dontrun{
+\donttest{
 snippets <- find_snippet(mp_fluss_data$walkjogrun$data, 120, n_snippets = 3)
 plot(snippets)
 }

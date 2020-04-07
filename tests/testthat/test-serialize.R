@@ -3,9 +3,9 @@ if (!testthat:::on_cran()) {
   library(tsmp)
 
   result <- compute(mp_toy_data$data[, 1], 80)
-  write(result, file = "output.json")
-  result2 <- read("output.json")
-  unlink("output.json")
+  write(result, file = file.path(tempdir(), "output.json"))
+  result2 <- read(file.path(tempdir(), "output.json"))
+  unlink(file.path(tempdir(), "output.json"))
 
   test_that(
     "Reserializing MP",
@@ -14,9 +14,9 @@ if (!testthat:::on_cran()) {
 
   result <- compute(mp_toy_data$data[, 1])
 
-  write(result, file = "output.json")
-  result2 <- read("output.json")
-  unlink("output.json")
+  write(result, file = file.path(tempdir(), "output.json"))
+  result2 <- read(file.path(tempdir(), "output.json"))
+  unlink(file.path(tempdir(), "output.json"))
 
   test_that(
     "Reserializing PMP",

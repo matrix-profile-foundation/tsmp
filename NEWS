@@ -1,6 +1,6 @@
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
-tsmp 0.4.12
+tsmp 0.4.14
 ===========
 
 -   Fix ASAN/UBSAN errors using RcppParallel

@@ -43,7 +43,7 @@
 #'
 #' @examples
 #' mp <- stamp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
-#' \dontrun{
+#' \donttest{
 #'
 #' #' # using threads
 #' mp <- stamp_par(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)

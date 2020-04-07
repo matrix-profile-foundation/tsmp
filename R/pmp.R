@@ -42,9 +42,9 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' # Just compute
 #' pan <- pmp(mp_gait_data)
-#' \dontrun{
 #' # Compute the upper bound, than add new profiles
 #' pan <- pmp_upper_bound(mp_gait_data)
 #' pan <- pmp(mp_gait_data, pmp_obj = pan)

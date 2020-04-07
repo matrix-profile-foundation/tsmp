@@ -32,3 +32,8 @@ Returns MP and MPI
 \description{
 Fast implementation of MP and MPI for internal purposes, without FFT
 }
+\examples{
+\donttest{
+mp <- mpx(mp_toy_data$data[1:200, 1], window_size = 30)
+}
+}

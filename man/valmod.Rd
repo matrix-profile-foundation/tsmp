@@ -53,7 +53,7 @@ weakening pruning in \code{valmod()}.
 }
 \examples{
 mp <- valmod(mp_toy_data$data[1:200, 1], window_min = 30, window_max = 40, verbose = 0)
-\dontrun{
+\donttest{
 ref_data <- mp_toy_data$data[, 1]
 query_data <- mp_toy_data$data[, 2]
 # self similarity

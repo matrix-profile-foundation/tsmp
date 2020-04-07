@@ -46,7 +46,7 @@
 #' @examples
 #' # using all dimensions
 #' mp <- mstomp(mp_toy_data$data[1:150, ], 30, verbose = 0)
-#' \dontrun{
+#' \donttest{
 #' #' # using threads
 #' mp <- mstomp_par(mp_toy_data$data[1:150, ], 30, verbose = 0)
 #'

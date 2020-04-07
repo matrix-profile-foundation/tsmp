@@ -9,8 +9,8 @@
 #' @examples
 #'
 #' result <- compute(mp_toy_data$data[, 1], 80)
-#' \dontrun{
-#' write(result, file = "output.json")
+#' \donttest{
+#' write(result, file = file.path(tempdir(), "output.json"))
 #' }
 write <- function(x, ...) {
   UseMethod("write")
@@ -64,7 +64,7 @@ write.MatrixProfile <- function(x, file, ...) {
     .withNames = TRUE, # default length(x) > 0 && length(names(x)) > 0
     asIs = NA # default NA
   ), file = file)
-  options(digits = dgtz)
+  on.exit(options(digits = dgtz))
 }
 
 #' @name write
@@ -106,7 +106,7 @@ write.PMP <- function(x, file, ...) {
     .withNames = TRUE, # default length(x) > 0 && length(names(x)) > 0
     asIs = NA # default NA
   ), file = file)
-  options(digits = dgtz)
+  on.exit(options(digits = dgtz))
 }
 
 #' Read TSMP object from JSON file.
@@ -119,7 +119,7 @@ write.PMP <- function(x, file, ...) {
 #'
 #' @examples
 #'
-#' \dontrun{
+#' \donttest{
 #' result <- read("input.json")
 #' }
 read <- function(x, ...) {
