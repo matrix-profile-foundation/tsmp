@@ -16,7 +16,7 @@ Read TSMP object from JSON file.
 }
 \examples{
 
-\dontrun{
+\donttest{
 result <- read("input.json")
 }
 }

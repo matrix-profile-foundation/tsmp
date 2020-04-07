@@ -10,6 +10,11 @@
 #'
 #' @return Returns MP and MPI
 #' @export
+#'
+#' @examples
+#' \donttest{
+#' mp <- mpx(mp_toy_data$data[1:200, 1], window_size = 30)
+#' }
 
 mpx <- function(data, window_size, query = NULL, idx = TRUE, dist = c("euclidean", "pearson"), n_workers = 1) {
 

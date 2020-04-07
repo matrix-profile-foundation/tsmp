@@ -25,7 +25,7 @@ Write a TSMP object to JSON file.
 \examples{
 
 result <- compute(mp_toy_data$data[, 1], 80)
-\dontrun{
-write(result, file = "output.json")
+\donttest{
+write(result, file = file.path(tempdir(), "output.json"))
 }
 }

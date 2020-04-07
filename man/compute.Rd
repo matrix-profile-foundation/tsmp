@@ -51,7 +51,7 @@ the upper bound will be computed.
 
 # Matrix Profile
 result <- compute(mp_toy_data$data[, 1], 80)
-\dontrun{
+\donttest{
 # Pan-Matrix Profile
 result <- compute(mp_toy_data$data[, 1])
 }

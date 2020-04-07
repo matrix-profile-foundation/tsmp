@@ -57,7 +57,7 @@ te_label <- mp_test_data$test$label[subs]
 model <- sdts_train(tr_data, tr_label, w, verbose = 0)
 predict <- sdts_predict(model, te_data, round(mean(w)))
 sdts_score(predict, te_label, 1)
-\dontrun{
+\donttest{
 windows <- c(110, 220, 330)
 model <- sdts_train(mp_test_data$train$data, mp_test_data$train$label, windows)
 predict <- sdts_predict(model, mp_test_data$test$data, round(mean(windows)))

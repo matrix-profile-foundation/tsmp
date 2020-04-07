@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -44,7 +48,6 @@
 
 <meta property="og:title" content="Changelog" />
 <meta property="og:image" content="/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -62,7 +65,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -76,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tsmp</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.14</span>
       </span>
     </div>
 
@@ -109,7 +112,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/matrix-profile-foundation/tsmp">
+  <a href="https://github.com/matrix-profile-foundation/tsmp/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -127,20 +130,20 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Changelog <small></small></h1>
+      <h1 data-toc-skip>Changelog <small></small></h1>
       <small>Source: <a href='https://github.com/matrix-profile-foundation/tsmp/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="tsmp-0412" class="section level1">
-<h1 class="page-header">
-<a href="#tsmp-0412" class="anchor"></a>tsmp 0.4.12<small> Unreleased </small>
+    <div id="tsmp-0414" class="section level1">
+<h1 class="page-header" data-toc-text="0.4.14">
+<a href="#tsmp-0414" class="anchor"></a>tsmp 0.4.14<small> 2020-04-06 </small>
 </h1>
 <ul>
 <li>Fix ASAN/UBSAN errors using RcppParallel</li>
 </ul>
 </div>
     <div id="tsmp-0411" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.4.11">
 <a href="#tsmp-0411" class="anchor"></a>tsmp 0.4.11<small> 2020-03-15 </small>
 </h1>
 <ul>
@@ -148,7 +151,7 @@
 </ul>
 </div>
     <div id="tsmp-049" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.4.9">
 <a href="#tsmp-049" class="anchor"></a>tsmp 0.4.9<small> Unreleased </small>
 </h1>
 <ul>
@@ -156,7 +159,7 @@
 </ul>
 </div>
     <div id="tsmp-048" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.4.8">
 <a href="#tsmp-048" class="anchor"></a>tsmp 0.4.8<small> 2020-02-28 </small>
 </h1>
 <ul>
@@ -169,7 +172,7 @@
 </ul>
 </div>
     <div id="tsmp-035" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.3.5">
 <a href="#tsmp-035" class="anchor"></a>tsmp 0.3.5<small> 2019-06-05 </small>
 </h1>
 <ul>
@@ -185,7 +188,7 @@
 </ul>
 </div>
     <div id="tsmp-034" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.3.4">
 <a href="#tsmp-034" class="anchor"></a>tsmp 0.3.4<small> 2019-02-24 </small>
 </h1>
 <ul>
@@ -196,7 +199,7 @@
 </ul>
 </div>
     <div id="tsmp-033" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.3.3">
 <a href="#tsmp-033" class="anchor"></a>tsmp 0.3.3<small> Unreleased </small>
 </h1>
 <ul>
@@ -204,7 +207,7 @@
 </ul>
 </div>
     <div id="tsmp-032" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.3.2">
 <a href="#tsmp-032" class="anchor"></a>tsmp 0.3.2<small> 2018-10-23 </small>
 </h1>
 <ul>
@@ -220,7 +223,7 @@
 </ul>
 </div>
     <div id="tsmp-031" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.3.1">
 <a href="#tsmp-031" class="anchor"></a>tsmp 0.3.1<small> 2018-09-10 </small>
 </h1>
 <div id="important" class="section level2">
@@ -248,7 +251,7 @@
 </div>
 </div>
     <div id="tsmp-0215" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.2.15">
 <a href="#tsmp-0215" class="anchor"></a>tsmp 0.2.15<small> Unreleased </small>
 </h1>
 <ul>
@@ -257,20 +260,20 @@
 </ul>
 </div>
     <div id="tsmp-0214" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.2.14">
 <a href="#tsmp-0214" class="anchor"></a>tsmp 0.2.14<small> Unreleased </small>
 </h1>
 <ul>
 <li>Added SiMPle (Fast Similarity Matrix Profile for Music Analysis and Exploration).</li>
 <li>Added FLUSS (Fast Low-cost Unipotent Semantic Segmentation).</li>
-<li>Added [find_chains()] to look for chains primitives.</li>
+<li>Added <br><span class="math display"><em>f</em><em>i</em><em>n</em><em>d</em>_<em>c</em><em>h</em><em>a</em><em>i</em><em>n</em><em>s</em>()</span><br> to look for chains primitives.</li>
 <li>Added Multivariate MOTIF Search (from mSTOMP)</li>
 <li>Changed dependency from beepr to audio (actually beepr depends on audio, so fewer dependencies).</li>
 <li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
 </ul>
 </div>
     <div id="tsmp-0212" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.2.12">
 <a href="#tsmp-0212" class="anchor"></a>tsmp 0.2.12<small> 2018-08-17 </small>
 </h1>
 <ul>
@@ -279,7 +282,7 @@
 </ul>
 </div>
     <div id="tsmp-010" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.1.0">
 <a href="#tsmp-010" class="anchor"></a>tsmp 0.1.0<small> Unreleased </small>
 </h1>
 <ul>
@@ -290,25 +293,10 @@
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-        <li><a href="#tsmp-0412">0.4.12</a></li>
-        <li><a href="#tsmp-0411">0.4.11</a></li>
-        <li><a href="#tsmp-049">0.4.9</a></li>
-        <li><a href="#tsmp-048">0.4.8</a></li>
-        <li><a href="#tsmp-035">0.3.5</a></li>
-        <li><a href="#tsmp-034">0.3.4</a></li>
-        <li><a href="#tsmp-033">0.3.3</a></li>
-        <li><a href="#tsmp-032">0.3.2</a></li>
-        <li><a href="#tsmp-031">0.3.1</a></li>
-        <li><a href="#tsmp-0215">0.2.15</a></li>
-        <li><a href="#tsmp-0214">0.2.14</a></li>
-        <li><a href="#tsmp-0212">0.2.12</a></li>
-        <li><a href="#tsmp-010">0.1.0</a></li>
-      </ul>
-    </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 
 </div>
@@ -320,7 +308,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>

@@ -45,7 +45,7 @@ retrieves the most relevant subsequences using Minimal Description Length (MDL) 
 data <- mp_toy_data$data[, 1]
 mp <- tsmp(data, window_size = 30, verbose = 0)
 mps <- salient_subsequences(mp, data, verbose = 0)
-\dontrun{
+\donttest{
 # full example
 data <- mp_meat_data$sub$data
 w <- mp_meat_data$sub$sub_len

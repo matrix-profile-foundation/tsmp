@@ -128,6 +128,7 @@ plot.ArcCount <- function(x, data, type = c("data", "matrix"), exclusion_zone = 
                           threshold = stats::quantile(x$cac, 0.1), main = "Arcs Discover", xlab = "index",
                           ylab = "", ...) {
   def_par <- graphics::par(no.readonly = TRUE)
+  on.exit(graphics::par(def_par))
 
   if (missing(data) && !is.null(x$data)) {
     data <- x$data[[1]]
@@ -214,8 +215,6 @@ plot.ArcCount <- function(x, data, type = c("data", "matrix"), exclusion_zone = 
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
   graphics::plot(xnum, c(cac, rep(NA, x$w - 1)), main = "Arc count", type = "l", xlab = xlab, ylab = "normalized count", xlim = xlim, ...)
   graphics::plot(xnum, plot_data, main = data_main, type = "l", xlab = xlab, ylab = data_lab, xlim = xlim, ...)
-
-  graphics::par(def_par)
 }
 
 #' @export
@@ -224,6 +223,7 @@ plot.ArcCount <- function(x, data, type = c("data", "matrix"), exclusion_zone = 
 #'
 plot.Valmod <- function(x, ylab = "distance", xlab = "index", main = "Valmod Matrix Profile", data = FALSE, ...) {
   def_par <- graphics::par(no.readonly = TRUE)
+  on.exit(graphics::par(def_par))
   allmatrix <- FALSE
   num_charts <- 1
 
@@ -257,8 +257,6 @@ plot.Valmod <- function(x, ylab = "distance", xlab = "index", main = "Valmod Mat
     graphics::plot(xnum, c(x$rmp, rep(NA, min(x$w) - 1)), type = "l", main = "Right Matrix Profile", ylab = ylab, xlab = xlab, ...)
     graphics::plot(xnum, c(x$lmp, rep(NA, min(x$w) - 1)), type = "l", main = "Left Matrix Profile", ylab = ylab, xlab = xlab, ...)
   }
-
-  graphics::par(def_par)
 }
 
 #' @export
@@ -267,6 +265,7 @@ plot.Valmod <- function(x, ylab = "distance", xlab = "index", main = "Valmod Mat
 #'
 plot.MatrixProfile <- function(x, ylab = "distance", xlab = "index", main = "Unidimensional Matrix Profile", data = FALSE, ...) {
   def_par <- graphics::par(no.readonly = TRUE)
+  on.exit(graphics::par(def_par))
   allmatrix <- FALSE
   num_charts <- 1
 
@@ -307,8 +306,6 @@ plot.MatrixProfile <- function(x, ylab = "distance", xlab = "index", main = "Uni
     graphics::plot(xnum, c(x$rmp, rep(NA, x$w - 1)), type = "l", main = "Right Matrix Profile", ylab = ylab, xlab = xlab, ...)
     graphics::plot(xnum, c(x$lmp, rep(NA, x$w - 1)), type = "l", main = "Left Matrix Profile", ylab = ylab, xlab = xlab, ...)
   }
-
-  graphics::par(def_par)
 }
 
 #' @export
@@ -317,6 +314,7 @@ plot.MatrixProfile <- function(x, ylab = "distance", xlab = "index", main = "Uni
 #'
 plot.MultiMatrixProfile <- function(x, ylab = "distance", xlab = "index", main = "Multidimensional Matrix Profile", ...) {
   def_par <- graphics::par(no.readonly = TRUE)
+  on.exit(graphics::par(def_par))
   allmatrix <- FALSE
   num_charts <- 1
   mask <- !is.na(x$mp[1, ])
@@ -357,8 +355,6 @@ plot.MultiMatrixProfile <- function(x, ylab = "distance", xlab = "index", main =
       graphics::plot(xnum, c(x$lmp[, i], rep(NA, min(x$w) - 1)), type = "l", main = "Left Matrix Profile", ylab = ylab, xlab = xlab, ...)
     }
   }
-
-  graphics::par(def_par)
 }
 
 #' @export
@@ -367,6 +363,7 @@ plot.MultiMatrixProfile <- function(x, ylab = "distance", xlab = "index", main =
 #'
 plot.SimpleMatrixProfile <- function(x, ylab = "distance", xlab = "index", main = "SiMPle Matrix Profile", data = FALSE, ...) {
   def_par <- graphics::par(no.readonly = TRUE)
+  on.exit(graphics::par(def_par))
   num_charts <- 1
 
   xnum <- seq_len(nrow(x$mp) + x$w - 1)
@@ -417,7 +414,6 @@ plot.SimpleMatrixProfile <- function(x, ylab = "distance", xlab = "index", main 
   graphics::plot(xnum, c(x$mp, rep(NA, min(x$w) - 1)), type = "l", main = paste0("Matrix Profile (w = ", x$w, "; ez = ", x$ez, ")"), ylab = ylab, xlab = xlab, ...)
 
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
-  graphics::par(def_par)
 }
 
 #' @export
@@ -428,6 +424,7 @@ plot.Fluss <- function(x, data, type = c("data", "matrix"),
                        main = "Fast Low-cost Unipotent Semantic Segmentation", xlab = "index",
                        ylab = "", ...) {
   def_par <- graphics::par(no.readonly = TRUE)
+  on.exit(graphics::par(def_par))
 
   if (missing(data) && !is.null(x$data)) {
     data <- x$data[[1]]
@@ -480,8 +477,6 @@ plot.Fluss <- function(x, data, type = c("data", "matrix"),
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
   graphics::plot(xnum, plot_data, main = data_main, type = "l", xlab = xlab, ylab = data_lab, xlim = xlim, ...)
   graphics::plot(xnum, c(x$cac, rep(NA, min(x$w) - 1)), main = "Arc count", type = "l", xlab = xlab, ylab = "normalized count", xlim = xlim, ylim = c(0, 1), ...)
-
-  graphics::par(def_par)
 }
 
 #' @export
@@ -492,6 +487,7 @@ plot.Floss <- function(x, data, type = c("data", "matrix"),
                        main = "Fast Low-cost Online Semantic Segmentation", xlab = "index",
                        ylab = "", ...) {
   def_par <- graphics::par(no.readonly = TRUE)
+  on.exit(graphics::par(def_par))
 
   if (missing(data) && !is.null(x$data)) {
     data <- x$data[[1]]
@@ -557,8 +553,6 @@ plot.Floss <- function(x, data, type = c("data", "matrix"),
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
   graphics::plot(xnum, plot_data, main = data_main, type = "l", xlab = xlab, ylab = data_lab, xlim = xlim, ...)
   graphics::plot(xnum, cac, main = "Arc count", type = "l", xlab = xlab, ylab = "normalized count", xlim = xlim, ylim = c(0, 1), ...)
-
-  graphics::par(def_par)
 }
 
 #' @export
@@ -567,6 +561,7 @@ plot.Floss <- function(x, data, type = c("data", "matrix"),
 #'
 plot.Chain <- function(x, data, type = c("data", "matrix"), main = "Chain Discover", xlab = "index", ylab = "", ...) {
   def_par <- graphics::par(no.readonly = TRUE)
+  on.exit(graphics::par(def_par))
 
   if (missing(data) && !is.null(x$data)) {
     data <- x$data[[1]]
@@ -624,8 +619,6 @@ plot.Chain <- function(x, data, type = c("data", "matrix"), main = "Chain Discov
 
     graphics::lines(motif - i / 2, col = i, ...)
   }
-
-  graphics::par(def_par)
 }
 
 #' @export
@@ -634,6 +627,7 @@ plot.Chain <- function(x, data, type = c("data", "matrix"), main = "Chain Discov
 #'
 plot.Discord <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "Discord Discover", xlab = "index", ylab = "", ...) {
   def_par <- graphics::par(no.readonly = TRUE)
+  on.exit(graphics::par(def_par))
 
   if (missing(data) && !is.null(x$data)) {
     data <- x$data[[1]]
@@ -701,8 +695,6 @@ plot.Discord <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "
 
     graphics::lines(discord1, col = i, lwd = 2)
   }
-
-  graphics::par(def_par)
 }
 
 
@@ -713,12 +705,12 @@ plot.Discord <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "
 
 plot.Snippet <- function(x, data, ncol = 3, main = "Snippet Finder", xlab = "index", ylab = "", ...) {
   def_par <- graphics::par(no.readonly = TRUE)
+  on.exit(graphics::par(def_par))
 
   snippets <- x$snippet_idx
   n_snippets <- length(x$snippet_idx)
 
   if (n_snippets == 0) {
-    graphics::par(def_par)
     stop("No Snippets found to plot.")
   }
 
@@ -772,9 +764,6 @@ plot.Snippet <- function(x, data, ncol = 3, main = "Snippet Finder", xlab = "ind
   }
 
   # obj <- list(snippet_idx = snippetidx, snippet_frac = fraction, snippet_size = s_size, regime = horizontal, data = list(data))
-
-
-  graphics::par(def_par)
 }
 
 
@@ -784,12 +773,12 @@ plot.Snippet <- function(x, data, ncol = 3, main = "Snippet Finder", xlab = "ind
 #'
 plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "MOTIF Discover", xlab = "index", ylab = "", ...) {
   def_par <- graphics::par(no.readonly = TRUE)
+  on.exit(graphics::par(def_par))
 
   motifs <- x$motif$motif_idx
   n_motifs <- length(x$motif$motif_idx)
 
   if (n_motifs == 0) {
-    graphics::par(def_par)
     stop("No Motifs found to plot.")
   }
 
@@ -894,8 +883,6 @@ plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "MO
       graphics::lines(motif1, col = i, lwd = 2)
     }
   }
-
-  graphics::par(def_par)
 }
 
 #' @export
@@ -904,12 +891,12 @@ plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "MO
 #'
 plot.MultiMotif <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "Multidimensional MOTIF Discover", xlab = "index", ylab = "", ...) {
   def_par <- graphics::par(no.readonly = TRUE)
+  on.exit(graphics::par(def_par))
 
   motifs <- x$motif$motif_idx
   n_motifs <- length(x$motif$motif_idx)
 
   if (n_motifs == 0) {
-    graphics::par(def_par)
     stop("No Motifs found to plot.")
   }
 
@@ -1012,8 +999,6 @@ plot.MultiMotif <- function(x, data, type = c("data", "matrix"), ncol = 3, main 
     graphics::lines(motif2[[1]], col = i, lwd = 1)
     graphics::lines(motif1[[1]], col = i, lwd = 2)
   }
-
-  graphics::par(def_par)
 }
 
 
@@ -1024,6 +1009,7 @@ plot.MultiMotif <- function(x, data, type = c("data", "matrix"), ncol = 3, main 
 
 plot.Salient <- function(x, data, main = "Salient Subsections", xlab = "index", ylab = "", ...) {
   def_par <- graphics::par(no.readonly = TRUE)
+  on.exit(graphics::par(def_par))
 
   if (missing(data) && !is.null(x$data)) {
     data <- x$data[[1]]
@@ -1061,8 +1047,6 @@ plot.Salient <- function(x, data, main = "Salient Subsections", xlab = "index", 
   )
 
   graphics::plot(mds, main = "MDS")
-
-  graphics::par(def_par)
 }
 
 skimp_plot_set_canvas <- function(..., pmp_obj = NULL) {
@@ -1249,6 +1233,7 @@ skimp_plot_add_raster <- function(layer, window, window_set = NULL, func = NULL)
 #'
 plot.PMP <- function(x, ylab = "distance", xlab = "index", main = "Unidimensional Matrix Profile", data = FALSE, ...) {
   def_par <- graphics::par(no.readonly = TRUE)
+  on.exit(graphics::par(def_par))
   # prepare plot using the values in `windows` vector.
   min_window <- min(x$w)
   max_window <- max(x$w)
@@ -1287,8 +1272,6 @@ plot.PMP <- function(x, ylab = "distance", xlab = "index", main = "Unidimensiona
       )
     }
   }
-
-  graphics::par(def_par)
 }
 
 #' @keywords internal
@@ -1296,6 +1279,7 @@ plot.PMP <- function(x, ylab = "distance", xlab = "index", main = "Unidimensiona
 #'
 plot_skimp <- function(pmp, func = NULL) {
   def_par <- graphics::par(no.readonly = TRUE)
+  on.exit(graphics::par(def_par))
   # prepare plot using the values in `windows` vector.
   min_window <- min(pmp$w)
   max_window <- max(pmp$w)
@@ -1329,6 +1313,4 @@ plot_skimp <- function(pmp, func = NULL) {
       skimp_plot_add_layer(layer, i, window_sizes, func)
     }
   }
-
-  graphics::par(def_par)
 }

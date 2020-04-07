@@ -37,7 +37,7 @@
 #'
 #' @examples
 #' mp <- scrimp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
-#' \dontrun{
+#' \donttest{
 #' ref_data <- mp_toy_data$data[, 1]
 #' query_data <- mp_toy_data$data[, 2]
 #' # self similarity
