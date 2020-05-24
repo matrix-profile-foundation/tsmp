@@ -164,3 +164,11 @@ Please note that the ‘tsmp’ project is released with a [Contributor Code
 of
 Conduct](https://github.com/matrix-profile-foundation/tsmp/blob/master/.github/CODE_OF_CONDUCT.md).
 By contributing to this project, you agree to abide by its terms.
+
+
+## Citing
+
+Please cite this work using our Journal of Open Source Software article
+
+Van Benschoten et al., (2020). MPA: a novel cross-language API for time series analysis. Journal of Open Source Software, 5(49), 2179, https://doi.org/10.21105/joss.02179
+
