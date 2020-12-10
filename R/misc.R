@@ -75,7 +75,7 @@ fast_movavg <- function(data, window_size) {
 #' @keywords internal
 #' @noRd
 ed_corr <- function(x, w) {
-  (2 * w - x^2) / (2 * w)
+  1 - x^2 / (2 * w)
 }
 
 #' Converts correlation values into euclidean distances
@@ -87,7 +87,23 @@ ed_corr <- function(x, w) {
 #' @keywords internal
 #' @noRd
 corr_ed <- function(x, w) {
-  sqrt(2 * w * (1 - ifelse(x > 1, 1, x)))
+  sqrt(2 * w * (1 - clip(x, 0, 1)))
+}
+
+#' Clip a value between min and max, fast R implementation
+#'
+#' For faster yet, use Rcpp::clamp
+#'
+#' @param x a `vector` or a column `matrix` of `numeric`.
+#' @param a a `numeric`, the min value.
+#' @param b a `numeric`, the max value.
+#'
+#' @return Returns the clipped values
+#'
+#' @keywords internal
+#' @noRd
+clip <- function(x, a, b) {
+  a + (x-a > 0)*(x-a) - (x-b > 0)*(x-b)
 }
 
 #' Fast implementation of moving average and moving standard deviation

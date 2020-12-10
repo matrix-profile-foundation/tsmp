@@ -1260,9 +1260,9 @@ plot.PMP <- function(x, ylab = "distance", xlab = "index", main = "Unidimensiona
   # now start to print all layers
   for (i in seq_along(all_profiles)) {
     if (!is.null(all_profiles[i])) {
-      # layer <- tsmp:::normalize(all_profiles[[i]])
-      layer <- all_profiles[[i]]
-      layer[layer > 1] <- 1
+      layer <- normalize(all_profiles[[i]])
+      # layer <- all_profiles[[i]]
+      # layer[layer > 1] <- 1
       curr_w <- as.numeric(names(all_profiles[i]))
       next_w <- as.numeric(names(all_profiles[i + 1]))
       next_w <- ifelse(is.na(next_w), curr_w, next_w)

@@ -1,15 +1,16 @@
 README
 ================
 Francisco Bischoff
-\- 07 Apr 2020
+- 10 Dec 2020
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-<img src="man/figures/logo.png" align="right" style="float:right;" />
+<img src="man/figures/logo.png" align="right" style="float:right;"/>
 
 # Time Series with Matrix Profile
 
 <!-- badges: start -->
+
 [![Packagist](https://img.shields.io/badge/License-Apache--2.0-brightgreen.svg)](https://choosealicense.com/licenses/apache-2.0/)
 [![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
 [![CRAN
@@ -18,14 +19,87 @@ version](http://www.r-pkg.org/badges/version/tsmp)](https://cran.r-project.org/p
 Downloads](https://cranlogs.r-pkg.org/badges/tsmp)](https://cran.r-project.org/package=tsmp)
 [![CircleCI build
 status](https://circleci.com/gh/matrix-profile-foundation/tsmp.svg?style=svg)](https://circleci.com/gh/matrix-profile-foundation/tsmp)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/matrix-profile-foundation/tsmp/master)
 <!-- badges: end -->
 
-|               | Build                                                                                                                                                                             | Dev                                                                                                                                                                                 |
-| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Linux x86\_64 | [![Build Status](https://travis-ci.com/matrix-profile-foundation/tsmp.svg?branch=master)](https://travis-ci.com/matrix-profile-foundation/tsmp)                                   | [![Build Status](https://travis-ci.com/matrix-profile-foundation/tsmp.svg?branch=develop)](https://travis-ci.com/matrix-profile-foundation/tsmp)                                    |
-| OSX           | [![Build Status](https://travis-ci.com/matrix-profile-foundation/tsmp.svg?branch=master)](https://travis-ci.com/matrix-profile-foundation/tsmp)                                   | [![Build Status](https://travis-ci.com/matrix-profile-foundation/tsmp.svg?branch=develop)](https://travis-ci.com/matrix-profile-foundation/tsmp)                                    |
-| Windows       | [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/byfyqncr60ten98g/branch/master?svg=true)](https://ci.appveyor.com/project/franzbischoff/tsmp/branch/master) | [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/byfyqncr60ten98g/branch/develop?svg=true)](https://ci.appveyor.com/project/franzbischoff/tsmp/branch/develop) |
-| Coverage      | [![codecov](https://codecov.io/gh/matrix-profile-foundation/tsmp/branch/master/graph/badge.svg)](https://codecov.io/gh/matrix-profile-foundation/tsmp)                            | [![codecov](https://codecov.io/gh/matrix-profile-foundation/tsmp/branch/develop/graph/badge.svg)](https://codecov.io/gh/matrix-profile-foundation/tsmp)                             |
+<table>
+<thead>
+<tr class="header">
+<th>
+<p>
+</p>
+</th>
+<th>
+<p>
+Build
+</p>
+<p>
+</p>
+</th>
+<th>
+<p>
+Dev
+</p>
+<p>
+</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>
+<p>
+Linux x86\_64
+</p>
+</td>
+<td>
+<p>
+</p>
+</td>
+<td>
+</td>
+</tr>
+<tr class="even">
+<td>
+<p>
+OSX
+</p>
+</td>
+<td>
+<p>
+</p>
+</td>
+<td>
+</td>
+</tr>
+<tr class="odd">
+<td>
+<p>
+Windows
+</p>
+</td>
+<td>
+<p>
+</p>
+</td>
+<td>
+</td>
+</tr>
+<tr class="even">
+<td>
+<p>
+Coverage
+</p>
+</td>
+<td>
+<p>
+</p>
+</td>
+<td>
+</td>
+</tr>
+</tbody>
+</table>
 
 ## Overview
 
@@ -36,18 +110,16 @@ This package allows you to use the Matrix Profile concept as a toolkit.
 
 This package provides:
 
-  - Algorithms to build a Matrix Profile: STAMP, STOMP, SCRIMP++,
+-   Algorithms to build a Matrix Profile: STAMP, STOMP, SCRIMP++,
     SIMPLE, MSTOMP and VALMOD.
-  - Algorithms for MOTIF search for Unidimensional and Multidimensional
+-   Algorithms for MOTIF search for Unidimensional and Multidimensional
     Matrix Profiles.
-  - Algorithm for Chains search for Unidimensional Matrix Profile.
-  - Algorithms for Semantic Segmentation (FLUSS) and Weakly Labeled data
+-   Algorithm for Chains search for Unidimensional Matrix Profile.
+-   Algorithms for Semantic Segmentation (FLUSS) and Weakly Labeled data
     (SDTS).
-  - Algorithm for Salient Subsections detection allowing MDS plotting.
-  - Basic plotting for all outputs generated here.
-  - Sequencial workflow, see below.
-
-<!-- end list -->
+-   Algorithm for Salient Subsections detection allowing MDS plotting.
+-   Basic plotting for all outputs generated here.
+-   Sequencial workflow, see below.
 
 ``` r
 # Basic workflow:
@@ -76,7 +148,7 @@ data <- cumsum(sample(c(-1, 1), 40000, TRUE))
 #### Current version benchmark
 
 |             | Elapsed Time(s) | Data Size | Window Size | Threads | Lang |
-| ----------- | --------------: | --------: | ----------: | ------: | :--- |
+|:------------|----------------:|----------:|------------:|--------:|:-----|
 | `mpx_par`   |            0.59 |     40000 |        1000 |       8 | Rcpp |
 | `mpx`       |            1.94 |     40000 |        1000 |       1 | Rcpp |
 | `stomp_par` |           38.90 |     40000 |        1000 |       8 | R    |
@@ -98,54 +170,73 @@ devtools::install_github("matrix-profile-foundation/tsmp")
 
 ## Currently available Features
 
-  - STAMP (single and multi-thread versions)
-  - STOMP (single and multi-thread versions)
-  - STOMPi (On-line version)
-  - SCRIMP (single-thread, not for AB-joins yet)
-  - Time Series Chains
-  - Multivariate STOMP (mSTOMP)
-  - Multivariate MOTIF Search (from mSTOMP)
-  - Salient Subsequences search for Multidimensional Space
-  - Scalable Dictionary learning for Time Series (SDTS) prediction
-  - FLUSS (Fast Low-cost Unipotent Semantic Segmentation)
-  - FLOSS (Fast Low-cost On-line Unipotent Semantic Segmentation)
-  - SiMPle-Fast (Fast Similarity Matrix Profile for Music Analysis and
+-   STAMP (single and multi-thread versions)
+
+-   STOMP (single and multi-thread versions)
+
+-   STOMPi (On-line version)
+
+-   SCRIMP (single-thread, not for AB-joins yet)
+
+-   Time Series Chains
+
+-   Multivariate STOMP (mSTOMP)
+
+-   Multivariate MOTIF Search (from mSTOMP)
+
+-   Salient Subsequences search for Multidimensional Space
+
+-   Scalable Dictionary learning for Time Series (SDTS) prediction
+
+-   FLUSS (Fast Low-cost Unipotent Semantic Segmentation)
+
+-   FLOSS (Fast Low-cost On-line Unipotent Semantic Segmentation)
+
+-   SiMPle-Fast (Fast Similarity Matrix Profile for Music Analysis and
     Exploration)
-  - Annotation vectors (e.g., Stop-word MOTIF bias, Actionability bias)
-  - FLUSS Arc Plot and SiMPle Arc Plot
-  - Exact Detection of Variable Length Motifs (VALMOD)
-  - MPdist: Matrix Profile Distance
-  - Time Series Snippets
-  - Subsetting Matrix Profiles (`head()`, `tail()`, `[`, etc.)
-  - Misc:
-      - MASS v2.0
-      - MASS v3.0
-      - MASS extensions: ADP (Approximate Distance Profile, with PAA)
-      - MASS extensions: WQ (Weighted Query)
-      - MASS extensions: QwG (Query with Gap)
-      - Fast moving average
-      - Fast moving SD
+
+-   Annotation vectors (e.g., Stop-word MOTIF bias, Actionability bias)
+
+-   FLUSS Arc Plot and SiMPle Arc Plot
+
+-   Exact Detection of Variable Length Motifs (VALMOD)
+
+-   MPdist: Matrix Profile Distance
+
+-   Time Series Snippets
+
+-   Subsetting Matrix Profiles (`head()`, `tail()`, `[`, etc.)
+
+-   Misc:
+
+    -   MASS v2.0
+    -   MASS v3.0
+    -   MASS extensions: ADP (Approximate Distance Profile, with PAA)
+    -   MASS extensions: WQ (Weighted Query)
+    -   MASS extensions: QwG (Query with Gap)
+    -   Fast moving average
+    -   Fast moving SD
 
 ## Roadmap
 
-  - Profile-Based Shapelet Discovery
-  - GPU-STOMP
+-   Profile-Based Shapelet Discovery
+-   GPU-STOMP
 
 ## Other projects with Matrix Profile
 
-  - Python: <https://github.com/target/matrixprofile-ts>
-  - Python: <https://github.com/ZiyaoWei/pyMatrixProfile>
-  - Python: <https://github.com/jbeleno/owlpy>
-  - Python: <https://github.com/javidlakha/matrix-profile>
-  - Python: <https://github.com/shapelets/khiva-python>
-  - R: <https://github.com/shapelets/khiva-r>
-  - Matlab: <https://github.com/shapelets/khiva-matlab>
-  - Java: <https://github.com/shapelets/khiva-java>
-  - Java: <https://github.com/ensozos/Matrix-Profile>
-  - Kotlin: <https://github.com/shapelets/khiva-kotlin>
-  - C++ (CUDA and OPENCL): <https://github.com/shapelets/khiva>
-  - CUDA: <https://github.com/zpzim/STOMPSelfJoin>
-  - CUDA: <https://github.com/zpzim/SCAMP>
+-   Python: <https://github.com/target/matrixprofile-ts>
+-   Python: <https://github.com/ZiyaoWei/pyMatrixProfile>
+-   Python: <https://github.com/jbeleno/owlpy>
+-   Python: <https://github.com/javidlakha/matrix-profile>
+-   Python: <https://github.com/shapelets/khiva-python>
+-   R: <https://github.com/shapelets/khiva-r>
+-   Matlab: <https://github.com/shapelets/khiva-matlab>
+-   Java: <https://github.com/shapelets/khiva-java>
+-   Java: <https://github.com/ensozos/Matrix-Profile>
+-   Kotlin: <https://github.com/shapelets/khiva-kotlin>
+-   C++ (CUDA and OPENCL): <https://github.com/shapelets/khiva>
+-   CUDA: <https://github.com/zpzim/STOMPSelfJoin>
+-   CUDA: <https://github.com/zpzim/SCAMP>
 
 ## Matrix Profile Foundation
 
