@@ -50,6 +50,10 @@ jobs:
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 https://git.io/JvXDl
 
+    - name: Setup R
+      uses: r-lib/actions/setup-r@v1
+      with:
+        r-version: '3.6.1'
     - run: |
        Rscript -e "if (!require('devtools')) install.packages('devtools')"
        Rscript -e "devtools::install_deps(dep = TRUE)"
