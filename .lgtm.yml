@@ -1,0 +1,26 @@
+extraction:
+  cpp:
+    prepare:    # Customizable step used by all languages.
+      packages:
+        - g++-6
+        - r-base
+        - r-base-core
+        - libssh2-1-dev
+        - libgit2-dev
+        - libcurl4-openssl-dev
+    after_prepare:    # Customizable step used by all languages.
+      - export GNU_MAKE=make
+      - export GIT=true
+    configure:    # Customizable step used only by C/C++ extraction.
+      command:
+        - Rscript -e "if (!require('devtools')) install.packages('devtools')"
+        - Rscript -e "devtools::install_deps()"
+        - Rscript -e "devtools::install_github('jimhester/covr')"
+    before_index:    # Customizable step used by all languages.
+      - export BOOST_DIR=$LGTM_SRC/boost
+      - export GTEST_DIR=$LGTM_SRC/googletest
+      - export HUNSPELL_DIR=$LGTM_SRC/hunspell
+      - export CRYPTOPP_DIR=$LGTM_SRC/cryptopp
+    index:    # Customizable step used by all languages.
+      build_command:
+        - R CMD build
