@@ -55,8 +55,11 @@ jobs:
       with:
         r-version: '3.6.1'
     - run: |
+       sudo add-apt-repository ppa:cran/libgit2
+       sudo apt-get update
+       sudo apt-get install libssh2-1-dev libgit2-dev
        Rscript -e "if (!require('devtools')) install.packages('devtools')"
-       Rscript -e "devtools::install_deps(dep = TRUE)"
+       Rscript -e "devtools::install_deps()"
        Rscript -e "devtools::install_github('jimhester/covr')"
        R CMD build  .
 
