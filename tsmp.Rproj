@@ -1,8 +1,8 @@
 Version: 1.0
 
 RestoreWorkspace: No
-SaveWorkspace: Ask
-AlwaysSaveHistory: Yes
+SaveWorkspace: No
+AlwaysSaveHistory: Default
 
 EnableCodeIndexing: Yes
 UseSpacesForTab: Yes
@@ -17,8 +17,8 @@ StripTrailingWhitespace: Yes
 
 BuildType: Package
 PackageUseDevtools: Yes
-PackageInstallArgs: --with-keep.source
-PackageCheckArgs: --as-cran
+PackageInstallArgs: --no-multiarch --with-keep.source
+PackageCheckArgs: --no-multiarch
 PackageRoxygenize: rd,collate,namespace,vignette
 
 QuitChildProcessesOnExit: Yes

@@ -1,0 +1,13 @@
+extraction:
+  cpp:
+    prepare:
+      packages:
+      - "r-base"
+      - "libgit2-dev"
+    configure:
+      command:
+      - "Rscript -e \"install.packages(c('remotes', 'devtools'))\""
+      - "Rscript -e \"remotes::install_deps(dependencies = TRUE)\""
+      - "Rscript -e \"Rcpp::compileAttributes()\""
+    index:
+      build_command: "Rscript -e \"pkgbuild::compile_dll()\""

@@ -41,6 +41,9 @@ vignettes/*.R
 *.utf8.md
 *.knit.md
 
+# VSCode
+#.vscode/
+
 ### R.Bookdown Stack ###
 # R package: bookdown caching files
 /*_files/
@@ -48,12 +51,18 @@ vignettes/*.R
 # End of https://www.gitignore.io/api/r
 
 # Personalized
+
+# use github-actions to build the webpage
+/pkgdown/
+/docs/
+
 dev/
 LOCAL_APPDATA_FONTCONFIG_CACHE/
 src-*/
 packrat/lib*/
 packrat/src/
 Rplots.pdf
+/src/RcppExports.cpp
 /src/*.o
 /src/*.so
 /src/*.dll
@@ -63,4 +72,6 @@ Rplots.pdf
 /revdep/library.noindex
 /revdep/data.sqlite
 /revdep/*.html
-/CRAN-RELEASE
+README.html
+
+workspace.RData

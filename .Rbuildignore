@@ -1,3 +1,8 @@
+^renv$
+^renv\.lock$
+^\.vscode$
+^\.editorconfig$
+^.*\.code-workspace$
 ^.*\.Rout$
 ^.*\.Rproj$
 ^.*\.yml$
@@ -25,3 +30,8 @@
 ^tsmp.*\.tgz$
 ^tsmp\.Rcheck$
 ^API$
+^\.github$
+^codecov\.yml$
+\.clang-format
+^Makefile$
+^docs/_pkgdown\.yml$

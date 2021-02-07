@@ -1,0 +1,105 @@
+/// debugger settings
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "R-Debugger",
+      "name": "R: Debug File",
+      "request": "launch",
+      "debugMode": "file",
+      "workingDirectory": "",
+      "file": ""
+    },
+    {
+      "type": "R-Debugger",
+      "name": "R: Debug Function",
+      "request": "launch",
+      "debugMode": "function",
+      "workingDirectory": "",
+      "file": "",
+      "mainFunction": "main",
+      "allowGlobalDebugging": false
+    },
+    {
+      "type": "R-Debugger",
+      "name": "R: Launch Workspace",
+      "request": "launch",
+      "debugMode": "workspace",
+      "workingDirectory": ""
+    },
+    {
+      "type": "R-Debugger",
+      "name": "R: Attach to R process",
+      "request": "attach",
+      "splitOverwrittenOutput": true
+    },
+    {
+      "type": "R-Debugger",
+      "name": "R: Debug Package",
+      "request": "launch",
+      "debugMode": "workspace",
+      "includePackageScopes": true,
+      "loadPackages": [
+        "."
+      ]
+    },
+
+    {
+      "name": "(gdb) Bash on Windows Attach",
+      "type": "cppdbg",
+      "request": "attach",
+      "program": "C:/Program Files/R/R-4.0.3/bin/x64/R.exe",
+      "processId": "${command:pickRemoteProcess}",
+      "pipeTransport": {
+        "debuggerPath": "/usr/bin/gdb",
+        "pipeProgram": "${env:windir}\\system32\\bash.exe",
+        "pipeArgs": [
+          "-c"
+        ],
+        "pipeCwd": ""
+      },
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    },
+    {
+      "name": "(gdb) Attach",
+      "type": "cppdbg",
+      "request": "attach",
+      "program": "Rsession.exe",
+      "processId": "${command:pickMatchedProcess}",
+      "MIMode": "gdb",
+      "miDebuggerPath": "C:/rtools40/mingw64/bin/gdb.exe",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    },
+    {
+      "name": "g++.exe - Build and debug active file",
+      "type": "cppdbg",
+      "request": "attach",
+      "program": "C:/Program Files/R/R-4.0.3/bin/x64/R.exe",
+      "processId": "20984",
+      "MIMode": "gdb",
+      "miDebuggerPath": "C:/rtools40/mingw64/bin/gdb.exe",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    }
+  ]
+}

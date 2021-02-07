@@ -3,6 +3,9 @@ rules:
   - base: master
     upstream: matrix-profile-foundation:master
     mergeMethod: hardreset
+  - base: main
+    upstream: matrix-profile-foundation:main
+    mergeMethod: hardreset
   - base: develop
     upstream: matrix-profile-foundation:develop
     mergeMethod: hardreset

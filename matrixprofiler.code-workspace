@@ -1,0 +1,139 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "auto-run-command.rules": [
+      {
+        "condition": "always",
+        "command": "r.createRTerm",
+        "message": "Starting R Terminal"
+      }
+    ],
+    "C_Cpp.default.defines": [
+      "RC_INVOKED"
+    ],
+    "C_Cpp.default.browse.path": [
+      "${workspaceRoot}/src"
+    ],
+    "C_Cpp.intelliSenseEngineFallback": "Enabled",
+    "cmake.configureOnOpen": false,
+    "spellright.language": [
+      "en"
+    ],
+    "spellright.documentTypes": [
+      "markdown",
+      "latex"
+    ],
+    "files.watcherExclude": {
+      "**/.git/objects/**": true,
+      "**/.git/subtree-cache/**": true,
+      "**/renv/library/**": true
+    },
+    "files.associations": {
+      "array": "cpp",
+      "atomic": "cpp",
+      "strstream": "cpp",
+      "bit": "cpp",
+      "*.tcc": "cpp",
+      "bitset": "cpp",
+      "cctype": "cpp",
+      "chrono": "cpp",
+      "clocale": "cpp",
+      "cmath": "cpp",
+      "codecvt": "cpp",
+      "complex": "cpp",
+      "condition_variable": "cpp",
+      "csetjmp": "cpp",
+      "csignal": "cpp",
+      "cstdarg": "cpp",
+      "cstddef": "cpp",
+      "cstdint": "cpp",
+      "cstdio": "cpp",
+      "cstdlib": "cpp",
+      "cstring": "cpp",
+      "ctime": "cpp",
+      "cwchar": "cpp",
+      "cwctype": "cpp",
+      "deque": "cpp",
+      "list": "cpp",
+      "map": "cpp",
+      "set": "cpp",
+      "unordered_map": "cpp",
+      "unordered_set": "cpp",
+      "vector": "cpp",
+      "exception": "cpp",
+      "algorithm": "cpp",
+      "functional": "cpp",
+      "iterator": "cpp",
+      "memory": "cpp",
+      "memory_resource": "cpp",
+      "numeric": "cpp",
+      "optional": "cpp",
+      "random": "cpp",
+      "ratio": "cpp",
+      "string": "cpp",
+      "string_view": "cpp",
+      "system_error": "cpp",
+      "tuple": "cpp",
+      "type_traits": "cpp",
+      "utility": "cpp",
+      "rope": "cpp",
+      "slist": "cpp",
+      "fstream": "cpp",
+      "future": "cpp",
+      "initializer_list": "cpp",
+      "iomanip": "cpp",
+      "iosfwd": "cpp",
+      "iostream": "cpp",
+      "istream": "cpp",
+      "limits": "cpp",
+      "mutex": "cpp",
+      "new": "cpp",
+      "ostream": "cpp",
+      "scoped_allocator": "cpp",
+      "shared_mutex": "cpp",
+      "sstream": "cpp",
+      "stdexcept": "cpp",
+      "streambuf": "cpp",
+      "thread": "cpp",
+      "cfenv": "cpp",
+      "cinttypes": "cpp",
+      "typeindex": "cpp",
+      "typeinfo": "cpp",
+      "valarray": "cpp",
+      "variant": "cpp",
+      "*.ipp": "cpp",
+      "ios": "cpp",
+      "locale": "cpp",
+      "cassert": "cpp"
+    },
+    "r.debugger.timeouts.startup": 5000,
+    "r.debugger.trackTerminals": true,
+    "r.debugger.timeouts.terminate": 1000,
+    "files.exclude": {
+      "**/.Rproj.user": true,
+      "**/R/RcppExports.R": true
+    },
+    "editor.tabSize": 2,
+    "editor.tabCompletion": "on",
+    "editor.wordWrapColumn": 120,
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true,
+    "r.alwaysUseActiveTerminal": true,
+    "r.bracketedPaste": true,
+    "r.rpath.windows": "C:/Program Files/R/R-4.0.3/bin/x64/R.exe",
+    "r.rterm.option": [
+      "--no-save",
+      "--no-restore",
+      "--encoding=UTF8"
+    ],
+    "r.rterm.windows": "C:/Program Files/R/R-4.0.3/bin/x64/R.exe",
+    "r.rpath.linux": "/usr/bin/R",
+    "r.rterm.linux": "/usr/bin/R",
+    "taskExplorer.exclude": "**/renv/**",
+    "spellright.notificationClass": "warning",
+  }
+}
