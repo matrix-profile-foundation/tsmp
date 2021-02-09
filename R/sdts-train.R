@@ -46,7 +46,7 @@
 #' sdts_score(predict, mp_test_data$test$label, 1)
 #' }
 sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, n_workers = 1,
- verbose = getOption("tsmp.verbose", 2)) {
+                       verbose = getOption("tsmp.verbose", 2)) {
 
   # transform data list into matrix ----
   if (is.matrix(data) || is.data.frame(data)) {
@@ -127,7 +127,7 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, n_work
 
     for (j in 1:n_pos) {
       temp <- mat_pro[[i]][pos_alt_st[[i]][j]:max(pos_alt_st[[i]][j], (pos_alt_ed[j] -
-      window_size[i] + 1), na.rm = TRUE)]
+        window_size[i] + 1), na.rm = TRUE)]
       rlt_idx <- which.min(temp)
       if (length(temp[rlt_idx]) == 0) {
         print("Zero")
@@ -220,8 +220,10 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, n_work
   # check max pattern allowed ----
   pat_max <- min(pat_max, floor(n_pos * 0.5))
   if (pat_max < 2) {
-    return(list(score = candi_score[1], score_hist = candi_score[1], pattern = list(candi[[1]]),
-    thold = candi_thold[1]))
+    return(list(
+      score = candi_score[1], score_hist = candi_score[1], pattern = list(candi[[1]]),
+      thold = candi_thold[1]
+    ))
   }
   # CHECK OK
   # check combined pattern ----

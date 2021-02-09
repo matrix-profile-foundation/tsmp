@@ -3,7 +3,7 @@ tsmp_default_options <- list(
   tsmp.exclusion_zone = 1 / 2
 )
 
-.onLoad <- function(libname, pkgname) {
+.onLoad <- function(libname, pkgname) { # nolint
   op <- options()
   toset <- !(names(tsmp_default_options) %in% names(op))
   if (any(toset)) {
@@ -13,7 +13,7 @@ tsmp_default_options <- list(
   invisible()
 }
 
-.onAttach <- function(libname, pkgname) {
+.onAttach <- function(libname, pkgname) { # nolint
   if (!identical(Sys.getenv("NOT_CRAN"), "true")) {
     Sys.setenv(RCPP_PARALLEL_BACKEND = "tinythread")
   }

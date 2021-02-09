@@ -18,8 +18,8 @@
 #' @param window_sizes a `vector` of the window sizes that will be evaluated. They will be rounded to the lower integer
 #' and sorted. (Default is a sequence of 20 values from 10 to half data size).
 #' @param plot a `logical`. If `TRUE`, every new computation will be plotted. (Default is `FALSE`).
-#' @param pmp_obj a `PMP` object that may or not contain an upper bound value, and previous computed profiles. The function will
-#' add new profiles, not replace. (Default is `NULL`).
+#' @param pmp_obj a `PMP` object that may or not contain an upper bound value, and previous computed profiles.
+#' The function will add new profiles, not replace. (Default is `NULL`).
 #' @param n_workers an `int`. Number of workers for parallel. (Default is `1`).
 #' @param verbose an `int`. See details. (Default is `2`).
 #'
@@ -36,7 +36,8 @@
 #' 1.1. upper_window will also be used for plot, and for discovery, it must not remove any existing data from the object
 #' 2. window_sizes is used for plot, it must not remove any mp inside the object
 #' 2.1. window_sizes tells the function what mp are stored, it may be updated with as.numeric(names(pmp))
-#' 3. the functions must be capable to handle the data without need to sort by window_size, but sort may be useful later(?)
+#' 3. the functions must be capable to handle the data without need to sort by window_size, but sort may be useful
+#' later(?)
 #'
 #' @return Returns a `PMP` object.
 #' @export
@@ -296,7 +297,8 @@ pmp_upper_bound <- function(data,
   while (window_size <= max_window) {
     # message("window: ", window_size)
 
-    result <- matrixprofiler::mpx(data = data, window_size = window_size, idx = do_idxs, dist = "pearson", n_workers = n_workers)
+    result <- matrixprofiler::mpx(data = data, window_size = window_size, idx = do_idxs, dist = "pearson",
+     n_workers = n_workers)
     if (is.null(result) || result$partial) {
       warning("The computation was terminated prematurely. The results are partial.")
       return()
@@ -326,7 +328,8 @@ pmp_upper_bound <- function(data,
     for (window_size in test_windows) {
       # message("refine window: ", window_size)
 
-      result <- matrixprofiler::mpx(data = data, window_size = window_size, idx = do_idxs, dist = "pearson", n_workers = n_workers)
+      result <- matrixprofiler::mpx(data = data, window_size = window_size, idx = do_idxs, dist = "pearson",
+      n_workers = n_workers)
       if (is.null(result) || result$partial) {
         warning("The computation was terminated prematurely. The results are partial.")
         return()

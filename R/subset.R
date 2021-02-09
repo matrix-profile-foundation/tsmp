@@ -597,7 +597,7 @@
 
 #---- Tails ----
 
-tail.MatrixProfile <- function(x, n = 2 * max(x$w), ...) {
+tail.MatrixProfile <- function(x, n = 2 * max(x$w), ...) { # nolint
   data_size <- nrow(x$mp) + min(x$w) - 1
 
   if (n > 0) {
@@ -608,17 +608,17 @@ tail.MatrixProfile <- function(x, n = 2 * max(x$w), ...) {
   return(x[st_idx:data_size])
 }
 
-tail.MultiMatrixProfile <- function(x, n = 2 * max(x$w), ...) {
+tail.MultiMatrixProfile <- function(x, n = 2 * max(x$w), ...) { # nolint
   return(tail.MatrixProfile(x, n, ...))
 }
 
-tail.SimpleMatrixProfile <- function(x, n = 2 * max(x$w), ...) {
+tail.SimpleMatrixProfile <- function(x, n = 2 * max(x$w), ...) { # nolint
   return(tail.MatrixProfile(x, n, ...))
 }
 
 #---- Heads ----
 
-head.MatrixProfile <- function(x, n = 2 * max(x$w), ...) {
+head.MatrixProfile <- function(x, n = 2 * max(x$w), ...) { # nolint
   data_size <- nrow(x$mp) + min(x$w) - 1
 
   if (n > 0) {
@@ -630,11 +630,11 @@ head.MatrixProfile <- function(x, n = 2 * max(x$w), ...) {
 }
 
 
-head.MultiMatrixProfile <- function(x, n = 2 * max(x$w), ...) {
+head.MultiMatrixProfile <- function(x, n = 2 * max(x$w), ...) { # nolint
   return(head.MatrixProfile(x, n, ...))
 }
 
 
-head.SimpleMatrixProfile <- function(x, n = 2 * max(x$w), ...) {
+head.SimpleMatrixProfile <- function(x, n = 2 * max(x$w), ...) { # nolint
   return(head.MatrixProfile(x, n, ...))
 }

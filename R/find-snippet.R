@@ -135,8 +135,10 @@ find_snippet <- function(data, s_size, n_snippets = 2L, window_size = s_size / 2
     message("DEBUG: ", round(sum(fraction), 3))
   }
 
-  obj <- list(snippet_idx = snippetidx, snippet_frac = fraction, snippet_size = s_size,
-   regime = horizontal, data = list(data))
+  obj <- list(
+    snippet_idx = snippetidx, snippet_frac = fraction, snippet_size = s_size,
+    regime = horizontal, data = list(data)
+  )
   class(obj) <- "Snippet"
 
   return(obj)

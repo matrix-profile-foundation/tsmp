@@ -192,7 +192,7 @@ mstomp_par <- function(data, window_size, exclusion_zone = getOption("tsmp.exclu
         last_product[1, ] <- first_product[idx, ]
 
         dist_pro <- 2 * (window_size - (last_product - window_size * data_mean *
-        kronecker(matrix(1, matrix_profile_size, 1), t(data_mean[idx, ]))) /
+          kronecker(matrix(1, matrix_profile_size, 1), t(data_mean[idx, ]))) /
           (data_sd * kronecker(matrix(1, matrix_profile_size, 1), t(data_sd[idx, ]))))
       }
 
@@ -263,8 +263,10 @@ mstomp_par <- function(data, window_size, exclusion_zone = getOption("tsmp.exclu
     pro_muls_left <- sqrt(pro_muls_left)
     pro_muls_right <- sqrt(pro_muls_right)
 
-    res <- list(pro_muls = pro_muls, pro_idxs = pro_idxs, pro_muls_left = pro_muls_left, pro_idxs_left = pro_idxs_left,
-    pro_muls_right = pro_muls_right, pro_idxs_right = pro_idxs_right, idx = i)
+    res <- list(
+      pro_muls = pro_muls, pro_idxs = pro_idxs, pro_muls_left = pro_muls_left, pro_idxs_left = pro_idxs_left,
+      pro_muls_right = pro_muls_right, pro_idxs_right = pro_idxs_right, idx = i
+    )
 
     res
   }

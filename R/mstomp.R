@@ -123,7 +123,7 @@ mstomp <- function(data, window_size, exclusion_zone = getOption("tsmp.exclusion
 
   for (i in 1:matrix_profile_size) {
     if (any(is.na(data[i:(i + window_size - 1), !mask_exc])) ||
-    any(is.infinite(data[i:(i + window_size - 1), !mask_exc]))) {
+      any(is.infinite(data[i:(i + window_size - 1), !mask_exc]))) {
       skip_location[i] <- TRUE
     }
   }
@@ -189,7 +189,7 @@ mstomp <- function(data, window_size, exclusion_zone = getOption("tsmp.exclusion
       last_product[1, ] <- first_product[i, ]
 
       distance_profile <- 2 * (window_size - (last_product - window_size * data_mean *
-       kronecker(matrix(1, matrix_profile_size, 1), t(data_mean[i, ]))) /
+        kronecker(matrix(1, matrix_profile_size, 1), t(data_mean[i, ]))) /
         (data_sd * kronecker(matrix(1, matrix_profile_size, 1), t(data_sd[i, ]))))
     }
 
