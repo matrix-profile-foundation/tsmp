@@ -1,4 +1,4 @@
 library(testthat)
-library(matrixprofiler)
+library(tsmp)
 
-test_check("matrixprofiler")
+test_check("tsmp")

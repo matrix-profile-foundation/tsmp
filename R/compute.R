@@ -50,7 +50,7 @@ compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
   checkmate::qassert(query, c("0", "N>=4"))
   checkmate::qassert(sample_pct, "N1(0,1]")
   checkmate::qassert(threshold, c("0", "N1(0,1]"))
-  n_jobs <- as.integer(checkmate::qassert(n_jobs, paste0("X1[1,", parallel::detectCores(), "]")))
+  n_jobs <- as.integer(checkmate::qassert(n_jobs, paste0("X1[1,", 4, "]")))
 
   res <- NULL
   algorithm <- NULL
@@ -65,21 +65,21 @@ compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
       ### Self-join #############################
 
       if (sample_pct >= 1) {
-        res <- mpx(data = ts, window_size = windows, idx = TRUE, dist = metric, n_workers = n_jobs)
+        res <- matrixprofiler::mpx(data = ts, window_size = windows, n_workers = n_jobs, progress = TRUE)
         algorithm <- "mpx"
       } else {
-        res <- scrimp(ts, window_size = windows, s_size = floor(sample_pct * length(ts))) # n_jobs
+        res <- matrixprofiler::scrimp(data = ts, window_size = windows, n_workers =  n_jobs, progress = TRUE) # s_size = floor(sample_pct * length(ts)),
         algorithm <- "scrimp"
       }
     } else {
       ### AB join #############################
       join <- TRUE
       if (sample_pct >= 1) {
-        res <- mpx(data = ts, query = query, window_size = windows, idx = TRUE, dist = metric, n_workers = n_jobs)
+        res <- matrixprofiler::mpx(data = ts, query = query, window_size = windows, n_workers = n_jobs, progress = TRUE)
         algorithm <- "mpx"
       } else {
         # TODO: add scrimp AB-join
-        res <- scrimp(ts, window_size = windows, s_size = floor(sample_pct * length(ts))) # n_jobs # AB
+        res <- matrixprofiler::scrimp(data = ts, window_size = windows, n_workers = n_jobs, progress = TRUE) # AB , s_size = floor(sample_pct * length(ts)
         algorithm <- "scrimp"
       }
     }
@@ -111,8 +111,8 @@ compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
   # Main fields, easily accessible by the user
   if (length(windows) == 1) {
     result <- list(
-      mp = as.matrix(res$mp),
-      pi = as.matrix(res$pi),
+      mp = as.matrix(res$matrix_profile),
+      pi = as.matrix(res$profile_index),
       # mpb = NULL,
       # pib = NULL,
       rmp = NULL,

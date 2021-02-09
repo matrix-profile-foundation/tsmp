@@ -168,12 +168,12 @@ tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zo
   result <- switch(algo,
     "stomp" = {
       if (n_workers > 1) {
-        stomp_par(data, query,
+        matrixprofiler::stomp_par(data, query,
           window_size = min(window_size), exclusion_zone = exclusion_zone,
           verbose = verbose, n_workers = n_workers
         )
       } else {
-        stomp(data, query,
+        matrixprofiler::stomp(data, query,
           window_size = min(window_size), exclusion_zone = exclusion_zone,
           verbose = verbose
         )
@@ -181,12 +181,12 @@ tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zo
     },
     "stamp" = {
       if (n_workers > 1) {
-        stamp_par(data, query,
+        matrixprofiler::stamp_par(data, query,
           window_size = min(window_size), exclusion_zone = exclusion_zone,
           verbose = verbose, s_size = s_size, n_workers = n_workers
         )
       } else {
-        stamp(data, query,
+        matrixprofiler::stamp(data, query,
           window_size = min(window_size), exclusion_zone = exclusion_zone,
           verbose = verbose, s_size = s_size
         )
@@ -216,7 +216,7 @@ tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zo
       }
     },
     "scrimp" = {
-      scrimp(data, query,
+      matrixprofiler::scrimp(data, query,
         window_size = min(window_size), exclusion_zone = exclusion_zone,
         verbose = verbose, s_size = s_size
       )

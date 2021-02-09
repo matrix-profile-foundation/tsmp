@@ -23,8 +23,8 @@ if (interactive()) {
     warnPartialMatchArgs = FALSE,
     warnPartialMatchDollar = FALSE,
     warnPartialMatchAttr = FALSE,
-    usethis.protocol = "https"
-    # error = recover
+    usethis.protocol = "https",
+    error = recover
   )
 
 

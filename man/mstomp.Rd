@@ -102,9 +102,6 @@ Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
 Other matrix profile computations: 
-\code{\link{scrimp}()},
-\code{\link{stamp_par}()},
-\code{\link{stomp_par}()},
 \code{\link{tsmp}()},
 \code{\link{valmod}()}
 }

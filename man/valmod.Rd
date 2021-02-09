@@ -75,9 +75,6 @@ Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 \seealso{
 Other matrix profile computations: 
 \code{\link{mstomp_par}()},
-\code{\link{scrimp}()},
-\code{\link{stamp_par}()},
-\code{\link{stomp_par}()},
 \code{\link{tsmp}()}
 }
 \concept{matrix profile computations}

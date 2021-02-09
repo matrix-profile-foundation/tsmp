@@ -1,6 +1,6 @@
-# Contributing to matrixprofiler
+# Contributing to tsmp
 
-This outlines how to propose a change to matrixprofiler.
+This outlines how to propose a change to tsmp.
 For more detailed info about contributing to this, and other tidyverse packages, please see the
 [**development contributing guide**](https://rstd.io/tidy-contrib).
 
@@ -18,7 +18,7 @@ If you’ve found a bug, please file an issue that illustrates the bug with a mi
 
 ### Pull request process
 
-- Fork the package and clone onto your computer. If you haven't done this before, we recommend using `usethis::create_from_github("matrix-profile-foundation/matrixprofiler", fork = TRUE)`.
+- Fork the package and clone onto your computer. If you haven't done this before, we recommend using `usethis::create_from_github("matrix-profile-foundation/tsmp", fork = TRUE)`.
 
 - Install all development dependences with `devtools::install_dev_deps()`, and then make sure the package passes R CMD check by running `devtools::check()`.
   If R CMD check doesn't pass cleanly, it's a good idea to ask for help before continuing.
@@ -42,6 +42,6 @@ If you’ve found a bug, please file an issue that illustrates the bug with a mi
 
 ## Code of Conduct
 
-Please note that the matrixprofiler project is released with a
+Please note that the tsmp project is released with a
 [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By contributing to this
 project you agree to abide by its terms.

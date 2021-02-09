@@ -10,7 +10,7 @@ sdts_train(
   window_size,
   beta = 1,
   pat_max = Inf,
-  parallel = FALSE,
+  n_workers = 1,
   verbose = getOption("tsmp.verbose", 2)
 )
 }
@@ -25,9 +25,9 @@ sdts_train(
 
 \item{pat_max}{an \code{int}. Max number of shape features captured. (default is \code{Inf}).}
 
-\item{parallel}{a \code{logical}. Use parallel computation inside (default is \code{FALSE}).}
-
 \item{verbose}{an \code{int}. See details. (Default is \code{2}).}
+
+\item{parallel}{a \code{logical}. Use parallel computation inside (default is \code{FALSE}).}
 }
 \value{
 Returns a list with the learned dictionary \code{score} (estimated score), \code{score_hist}

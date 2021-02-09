@@ -19,14 +19,6 @@
       "${workspaceRoot}/src"
     ],
     "C_Cpp.intelliSenseEngineFallback": "Enabled",
-    "cmake.configureOnOpen": false,
-    "spellright.language": [
-      "en"
-    ],
-    "spellright.documentTypes": [
-      "markdown",
-      "latex"
-    ],
     "files.watcherExclude": {
       "**/.git/objects/**": true,
       "**/.git/subtree-cache/**": true,
@@ -134,6 +126,16 @@
     "r.rpath.linux": "/usr/bin/R",
     "r.rterm.linux": "/usr/bin/R",
     "taskExplorer.exclude": "**/renv/**",
-    "spellright.notificationClass": "warning",
+    "todo-tree.tree.showScanModeButton": true,
+    "todo-tree.general.enableFileWatcher": true,
+    "todo-tree.general.statusBar": "tags",
+    "todo-tree.highlights.useColourScheme": true,
+    "todo-tree.ripgrep.ripgrep": "C:\\ProgramData\\chocolatey\\bin\\rg",
+    "todo-tree.tree.buttons.export": true,
+    "todo-tree.tree.scanMode": "workspace",
+    "todo-tree.tree.disableCompactFolders": true,
+    "todo-tree.filtering.excludeGlobs": [
+      "**/renv/library/**"
+    ]
   }
 }

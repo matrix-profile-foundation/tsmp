@@ -45,7 +45,7 @@
 #' predict <- sdts_predict(model, mp_test_data$test$data, round(mean(windows)))
 #' sdts_score(predict, mp_test_data$test$label, 1)
 #' }
-sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parallel = FALSE, verbose = getOption("tsmp.verbose", 2)) {
+sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, n_workers = 1, verbose = getOption("tsmp.verbose", 2)) {
 
   # transform data list into matrix ----
   if (is.matrix(data) || is.data.frame(data)) {
@@ -111,11 +111,7 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
   mat_pro <- list()
 
   for (i in 1:n_window_size) {
-    if (parallel == TRUE) {
-      mp <- stomp_par(pos, window_size = window_size[i], verbose = verbose)
-    } else {
-      mp <- stomp(pos, window_size = window_size[i], verbose = verbose)
-    }
+    mp <- matrixprofiler::stomp(pos, window_size = window_size[i], n_workers = n_workers, progress = verbose > 1)
     mat_pro[[i]] <- mp$mp
   }
 
