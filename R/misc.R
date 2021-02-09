@@ -1,95 +1,3 @@
-# Window functions ----------------------------------------------------------------------------
-
-# Supports:
-#               NA/NaN  -Inf/Inf  Edge  Rcpp
-# movmin          Unk     Unk      No   Yes
-# movmax          Unk     Unk      No   Yes
-# fast_movsd      No      Unk      No   No
-# fast_movavg     No      Unk      No   No
-# fast_avg_sd     No      Unk      No   No
-
-#' Fast implementation of moving standard deviation
-#'
-#' This function does not handle NA values
-#'
-#' @param data a `vector` or a column `matrix` of `numeric`.
-#' @param window_size moving sd window size
-#' @param rcpp a `logical`. Uses rcpp implementation.
-#'
-#' @return Returns a `vector` with the moving standard deviation
-#' @export
-#'
-#' @examples
-#' data_sd <- fast_movsd(mp_toy_data$data[, 1], mp_toy_data$sub_len)
-fast_movsd <- function(data, window_size, rcpp = FALSE) {
-  if (window_size < 2) {
-    stop("'window_size' must be at least 2.")
-  }
-
-  # Rcpp is slower
-  if (rcpp) {
-    return(fast_movsd_rcpp(data, window_size))
-  }
-
-  # Improve the numerical analysis by subtracting off the series mean
-  # this has no effect on the standard deviation.
-  data <- data - mean(data)
-
-  data_sum <- cumsum(c(sum(data[1:window_size]), diff(data, window_size)))
-  data_mean <- data_sum / window_size
-
-  data2 <- data^2
-  data2_sum <- cumsum(c(sum(data2[1:window_size]), diff(data2, window_size)))
-  data_sd2 <- (data2_sum / window_size) - (data_mean^2) # variance
-  data_sd <- sqrt(data_sd2)
-
-  return(data_sd)
-}
-
-#' Fast implementation of moving average
-#'
-#' This function does not handle NA values
-#'
-#' @inheritParams fast_movsd
-#'
-#' @return Returns a `vector` with the moving average
-#' @export
-#'
-#' @examples
-#' data_avg <- fast_movavg(mp_toy_data$data[, 1], mp_toy_data$sub_len)
-fast_movavg <- function(data, window_size) {
-  if (window_size < 2) {
-    stop("'window_size' must be at least 2.")
-  }
-
-  return(cumsum(c(sum(data[1:window_size]), diff(data, window_size))) / window_size)
-}
-
-#' Converts euclidean distances into correlation values
-#'
-#' @param x a `vector` or a column `matrix` of `numeric`.
-#' @param w the window size
-#'
-#' @return Returns the converted values
-#'
-#' @keywords internal
-#' @noRd
-ed_corr <- function(x, w) {
-  1 - x^2 / (2 * w)
-}
-
-#' Converts correlation values into euclidean distances
-#'
-#' @inheritParams ed_corr
-#'
-#' @return Returns the converted values
-#'
-#' @keywords internal
-#' @noRd
-corr_ed <- function(x, w) {
-  sqrt(2 * w * (1 - clip(x, 0, 1)))
-}
-
 #' Clip a value between min and max, fast R implementation
 #'
 #' For faster yet, use Rcpp::clamp
@@ -103,244 +11,7 @@ corr_ed <- function(x, w) {
 #' @keywords internal
 #' @noRd
 clip <- function(x, a, b) {
-  a + (x-a > 0)*(x-a) - (x-b > 0)*(x-b)
-}
-
-#' Fast implementation of moving average and moving standard deviation
-#'
-#' This function does not handle NA values
-#'
-#' @inheritParams fast_movsd
-#'
-#' @return Returns a `list` with `avg` and `sd` `vector`s
-#' @export
-
-fast_avg_sd <- function(data, window_size, rcpp = FALSE) {
-  if (window_size < 2) {
-    stop("'window_size' must be at least 2.")
-  }
-
-  # Rcpp is slower
-  if (rcpp) {
-    return(fast_avg_sd_rcpp(data, window_size))
-  }
-
-  mov_sum <- cumsum(c(sum(data[1:window_size]), diff(data, window_size)))
-  data2 <- data^2
-  mov2_sum <- cumsum(c(sum(data2[1:window_size]), diff(data2, window_size)))
-  mov_mean <- mov_sum / window_size
-
-
-  # Improve the numerical analysis by subtracting off the series mean
-  # this has no effect on the standard deviation.
-  dmean <- mean(data)
-  data <- data - dmean
-
-  data_sum <- cumsum(c(sum(data[1:window_size]), diff(data, window_size)))
-  data_mean <- data_sum / window_size
-  data2 <- data^2
-  data2_sum <- cumsum(c(sum(data2[1:window_size]), diff(data2, window_size)))
-  data_sd2 <- (data2_sum / window_size) - (data_mean^2) # variance
-  data_sd2[data_sd2 < 0] <- 0
-  data_sd <- sqrt(data_sd2) # std deviation
-  data_sig <- sqrt(1 / (data_sd2 * window_size))
-
-  return(list(avg = mov_mean, sd = data_sd, sig = data_sig, sum = mov_sum, sqrsum = mov2_sum))
-}
-
-# DO NOT Handles NA's
-fast_muinvn <- function(data, window_size) {
-  if (window_size < 2) {
-    stop("'window_size' must be at least 2.")
-  }
-
-  data_sum <- cumsum(c(sum(data[1:window_size]), diff(data, window_size)))
-  data_mean <- data_sum / window_size
-  data2 <- data^2
-  data2_sum <- cumsum(c(sum(data2[1:window_size]), diff(data2, window_size)))
-  data_dp <- 1 / sqrt(data2_sum - data_mean^2 * window_size)
-
-  return(list(avg = data_mean, isd = data_dp))
-}
-
-# Handles NA's
-old_fast_movsd <- function(data, window_size) {
-
-  # length of the time series
-  data_size <- length(data)
-
-  if (window_size < 2) {
-    stop("'window_size' must be at least 2.")
-  }
-
-  if (data_size < window_size) {
-    stop("'window_size' is too large for this series.")
-  }
-
-  # Improve the numerical analysis by subtracting off the series mean
-  # this has no effect on the standard deviation.
-  data <- data - mean(data, na.rm = TRUE)
-
-  # scale the data to have unit variance too. will put that
-  # scale factor back into the result at the end
-  data_sd <- std(data, na.rm = TRUE)
-  data <- data / data_sd
-
-  # we will need the squared elements
-  data_sqr <- data^2
-
-  b <- rep(1, window_size)
-  s <- sqrt((stats::filter(data_sqr, b, sides = 1) - (stats::filter(data, b, sides = 1)^2) * (1 / window_size)) / (window_size - 1))
-
-  # restore the scale factor that was used before to normalize the data
-  s <- s * data_sd
-  s <- Re(s)
-  s <- s * sqrt((window_size - 1) / window_size)
-
-  return(s[window_size:data_size])
-}
-
-# Handles NA's
-old_fast_movavg <- function(data, window_size) {
-  if (window_size < 2) {
-    stop("'window_size' must be at least 2.")
-  }
-
-  data_mean <- stats::filter(data, rep(1 / window_size, window_size), sides = 2)
-  return(data_mean[!is.na(data_mean)])
-}
-
-# DO NOT Handles NA's
-# catastrophic cancellation
-old_fast_avg_sd <- function(data, window_size) {
-  if (window_size < 2) {
-    stop("'window_size' must be at least 2.")
-  }
-
-  data_len <- length(data)
-
-  data[(data_len + 1):(window_size + data_len)] <- 0
-
-  data_cum <- cumsum(data)
-  data2_cum <- cumsum(data^2)
-  data2_sum <- data2_cum[window_size:data_len] - c(0, data2_cum[1:(data_len - window_size)])
-  data_sum <- data_cum[window_size:data_len] - c(0, data_cum[1:(data_len - window_size)])
-
-  data_mean <- data_sum / window_size
-
-  data_sd2 <- (data2_sum / window_size) - (data_mean^2)
-  data_sd2 <- pmax(data_sd2, 0)
-  data_sd <- sqrt(data_sd2)
-
-  return(list(avg = data_mean, sd = data_sd, sum = data_sum, sqrsum = data2_sum))
-}
-
-
-# Math functions ------------------------------------------------------------------------------
-#
-# Supports:
-#               NA/NaN  -Inf/Inf
-# std             Unk      Unk
-# mode            Unk      Unk
-# znorm           Unk      Unk
-# diff2           Unk      Unk
-# bubble_up       Unk      Unk
-# paa             Unk      Unk
-# ipaa            Unk      Unk
-# min_mp_idx      Unk      Unk
-
-
-#' Population SD, as R always calculate with n-1 (sample), here we fix it
-#'
-#' @inheritParams fast_movsd
-#'
-#' @return Returns the corrected standard deviation from sample to population
-#' @keywords internal
-#' @noRd
-#'
-std <- function(data, na.rm = FALSE, rcpp = TRUE) {
-
-  # Rcpp is faster
-  if (rcpp) {
-    return(std_rcpp(data, na.rm))
-  }
-
-  sdx <- stats::sd(data, na.rm)
-
-  if (is.na(sdx)) {
-    return(NA)
-  }
-
-  return(sqrt((length(data) - 1) / length(data)) * sdx)
-}
-
-#' Calculates the mode of a vector
-#'
-#' @param x
-#'
-#' @return the mode
-#' @keywords internal
-#' @noRd
-
-mode <- function(x, rcpp = FALSE) {
-
-  # Rcpp is not faster
-  if (rcpp) {
-    return(mode_rcpp(x))
-  }
-
-  ux <- unique(x)
-  ux[which.max(tabulate(match(x, ux)))]
-}
-
-#' Normalizes data for mean Zero and Standard Deviation One
-#'
-#' @inheritParams fast_movsd
-#'
-#' @return Returns the normalized data
-#' @keywords internal
-#' @noRd
-#'
-znorm <- function(data, rcpp = TRUE) {
-  # Rcpp is faster
-  if (rcpp) {
-    return(as.matrix(znorm_rcpp(data)))
-  }
-
-  data_mean <- mean(data)
-  data_dev <- std(data)
-
-  if (is.na(data_dev) || data_dev <= 0.01) {
-    return(data - data_mean)
-  }
-  else {
-    (data - data_mean) / (data_dev)
-  }
-}
-
-#' Normalizes data to be between min and max
-#'
-#'
-#' @param data a `vector` or a column `matrix` of `numeric`.
-#' @param min the minimum value
-#' @param max the maximum value
-#'
-#' @return Returns the normalized data
-#' @keywords internal
-#' @noRd
-#'
-normalize <- function(data, min = 0, max = 1) {
-  min_val <- min(data, na.rm = TRUE)
-  max_val <- max(data, na.rm = TRUE)
-
-  a <- (max - min) / (max_val - min_val)
-  b <- max - a * max_val
-  data <- a * data + b
-
-  data[data < min] <- min
-  data[data > max] <- max
-
-  return(data)
+  a + (x - a > 0) * (x - a) - (x - b > 0) * (x - b)
 }
 
 #' Distance between two matrices
@@ -376,71 +47,6 @@ diff2 <- function(x, y) {
   sqrt(pmax(xx + yy - 2 * xy, 0))
 }
 
-#' Binary Split algorithm
-#'
-#' Creates a vector with the indexes of binary split.
-#'
-#' @param n size of the vector
-#'
-#' @return Returns a `vector` with the binary split indexes
-#' @keywords internal
-#' @noRd
-
-binary_split <- function(n, rcpp = TRUE) {
-  if (rcpp) {
-    return(binary_split_rcpp(as.integer(n)))
-  }
-
-  if (n < 2) {
-    return(1)
-  }
-
-  split <- function(lb, ub, m) {
-    if (lb == m) {
-      l <- NULL
-      r <- c(m + 1, ub)
-    } else if (ub == m) {
-      l <- c(lb, m - 1)
-      r <- NULL
-    } else {
-      l <- c(lb, m - 1)
-      r <- c(m + 1, ub)
-    }
-
-    return(list(l = l, r = r))
-  }
-
-  idxs <- vector(mode = "numeric", length = n)
-  intervals <- list()
-
-  idxs[1] <- 1 # We always begin by explore the first integer
-  intervals[[1]] <- c(2, n) # After exploring the first integer, we begin splitting the interval 2:n
-  i <- 2
-
-  while (length(intervals) > 0) {
-    lb <- intervals[[1]][1]
-    ub <- intervals[[1]][2]
-    mid <- floor((lb + ub) / 2)
-    intervals[[1]] <- NULL
-
-    idxs[i] <- mid
-    i <- i + 1
-
-    if (lb == ub) {
-      next
-    } else {
-      lr <- split(lb, ub, mid)
-      if (!is.null(lr$l)) {
-        intervals[[length(intervals) + 1]] <- lr$l
-      }
-      if (!is.null(lr$r)) {
-        intervals[[length(intervals) + 1]] <- lr$r
-      }
-    }
-  }
-  return(idxs)
-}
-
 #' Bubble up algorithm
 #'
 #' Bubble up algorithm.
@@ -451,6 +57,8 @@ binary_split <- function(n, rcpp = TRUE) {
 #' @return Doesnt return. Not used for now
 #' @keywords internal
 #' @noRd
+
+# TODO: Revise this algorithm at source
 
 bubble_up <- function(data, len) {
   # Rcpp ?
@@ -475,6 +83,8 @@ bubble_up <- function(data, len) {
 #' @return PAA result
 #' @keywords internal
 #' @noRd
+
+# TODO: try to find an implementation of this paa
 
 paa <- function(data, p) {
   # Rcpp ?
@@ -508,6 +118,8 @@ paa <- function(data, p) {
 #'
 #' @keywords internal
 #' @noRd
+
+# TODO: try to find an implementation of this ipaa
 
 ipaa <- function(data, p) {
   # Rcpp ?
@@ -552,6 +164,9 @@ ipaa <- function(data, p) {
 #' data <- mp_gait_data
 #' mp <- tsmp(data, window_size = w, exclusion_zone = 1 / 4, verbose = 0)
 #' min_val <- min_mp_idx(mp)
+#' #
+#' # TODO: Refactor
+#' #
 min_mp_idx <- function(.mp, n_dim = NULL, valid = TRUE) {
   if (!is.null(n_dim)) {
     .mp$mp <- .mp$mp[, n_dim, drop = FALSE]
@@ -629,6 +244,9 @@ min_mp_idx <- function(.mp, n_dim = NULL, valid = TRUE) {
 #' @keywords internal
 #' @noRd
 #'
+#
+# TODO: Refactor
+#
 golden_section <- function(dist_pro, label, pos_st, pos_ed, beta, window_size) {
   # Rcpp ?
   golden_ratio <- (1 + sqrt(5)) / 2
@@ -677,7 +295,9 @@ golden_section <- function(dist_pro, label, pos_st, pos_ed, beta, window_size) {
 #'
 #' @keywords internal
 #' @noRd
-
+#
+# TODO: Refactor
+#
 golden_section_2 <- function(dist_pro, thold, label, pos_st, pos_ed, beta, window_size, fit_idx) {
   # Rcpp ?
   golden_ratio <- (1 + sqrt(5)) / 2
@@ -731,7 +351,9 @@ golden_section_2 <- function(dist_pro, thold, label, pos_st, pos_ed, beta, windo
 #'
 #' @keywords internal
 #' @noRd
-
+#
+# TODO: Refactor
+#
 compute_f_meas <- function(label, pos_st, pos_ed, dist_pro, thold, window_size, beta) {
   # Rcpp ?
   # generate annotation curve for each pattern
@@ -828,7 +450,9 @@ compute_f_meas <- function(label, pos_st, pos_ed, dist_pro, thold, window_size, 
 #'
 #' @keywords internal
 #' @noRd
-#'
+#
+# TODO: Refactor
+#
 get_sorted_idx <- function(matrix_profile, n_cand, exclusion_zone = 0) {
   # Rcpp ?
   idx <- sort(matrix_profile, index.return = TRUE)$ix
@@ -863,7 +487,9 @@ get_sorted_idx <- function(matrix_profile, n_cand, exclusion_zone = 0) {
 #' @return Returns the bit_size cost of compressing the time series
 #' @keywords internal
 #' @noRd
-
+#
+# TODO: Refactor
+#
 get_bitsize <- function(x, mismatch_bit) {
   bit_size <- sum(x != 0) * mismatch_bit
 
@@ -879,6 +505,9 @@ get_bitsize <- function(x, mismatch_bit) {
 #' @keywords internal
 #' @noRd
 #'
+#
+# TODO: Refactor
+#
 discrete_norm_pre <- function(data, window_size = 1) {
   if (is.vector(data)) {
     data <- as.matrix(data)
@@ -927,7 +556,9 @@ discrete_norm_pre <- function(data, window_size = 1) {
 #' @return Returns the data after discrete normalization.
 #' @keywords internal
 #' @noRd
-
+#
+# TODO: Refactor
+#
 discrete_norm <- function(data, n_bits, max, min) {
   # normalize magnitude
   data_mean <- mean(data)
@@ -947,83 +578,6 @@ discrete_norm <- function(data, n_bits, max, min) {
   return(data)
 }
 
-# AV Aux functions --------------------------------------------------------------------------------
-
-#' Counts number of zero-crossings
-#'
-#' Count the number of zero-crossings from the supplied time-domain input vector. A simple method is
-#' applied here that can be easily ported to a real-time system that would minimize the number of
-#' if-else conditionals.
-#'
-#' @param data is the input time-domain signal (one dimensional).
-#'
-#' @return Returns the amount of zero-crossings in the input signal.
-#' @author sparafucile17 06/27/04
-#' @references <https://www.dsprelated.com/showcode/179.php>
-#' @keywords internal
-#' @noRd
-#'
-zero_crossings <- function(data) {
-  # initial value
-  count <- 0
-
-  data <- as.matrix(data)
-
-  # error checks
-  if (length(data) == 1) {
-    stop("Input signal must have more than one element.")
-  }
-
-  if ((ncol(data) != 1) && (nrow(data) != 1)) {
-    stop("Input must be one-dimensional.")
-  }
-
-  # force signal to be a vector oriented in the same direction
-  data <- as.vector(data)
-
-  num_samples <- length(data)
-
-  for (i in 2:num_samples) {
-    # Any time you multiply to adjacent values that have a sign difference
-    # the result will always be negative.  When the signs are identical,
-    # the product will always be positive.
-    if ((data[i] * data[i - 1]) < 0) {
-      count <- count + 1
-    }
-  }
-
-  return(count)
-}
-
-#' Normalizes data between Zero and One
-#'
-#' @param data a `vector` or a column `matrix` of `numeric`.
-#'
-#' @return Returns the normalized data.
-#' @keywords internal
-#' @noRd
-#'
-zero_one_norm <- function(data) {
-  data <- round(data, 10)
-
-  data <- data - min(data[!is.infinite(data) & !is.na(data)])
-  data <- data / max(data[!is.infinite(data) & !is.na(data)])
-
-  return(data)
-}
-
-#' Computes the complexity index of the data
-#'
-#' @param data a `vector` or a column `matrix` of `numeric`.
-#'
-#' @return Returns the complexity index of the data provided (normally a subset)
-#' @keywords internal
-#' @noRd
-#'
-complexity <- function(data) {
-  return(sqrt(sum(diff(data)^2)))
-}
-
 # Find Motif Ung Aux Functions -------------------------------------------------------------
 
 #' Computes the bits saved using basic compactation algorithm
@@ -1037,6 +591,9 @@ complexity <- function(data) {
 #' @keywords internal
 #' @noRd
 #'
+#
+# TODO: Refactor
+#
 get_bit_save <- function(motif_1, motif_2, n_dim, n_bit) {
   if (is.vector(motif_1)) {
     motif_1 <- as.matrix(motif_1)
@@ -1072,6 +629,9 @@ get_bit_save <- function(motif_1, motif_2, n_dim, n_bit) {
 #' @keywords internal
 #' @noRd
 #'
+#
+# TODO: Refactor
+#
 discretization <- function(motif, split_pt) {
   if (is.vector(motif)) {
     motif <- as.matrix(motif)
@@ -1102,6 +662,9 @@ discretization <- function(motif, split_pt) {
 #' @keywords internal
 #' @noRd
 #'
+#
+# TODO: Refactor
+#
 get_desc_split_pt <- function(n_bit) {
   split_pt <- stats::qnorm((1:((2^n_bit) - 1)) / (2^n_bit), 0, 1)
   return(split_pt)
@@ -1115,6 +678,9 @@ get_desc_split_pt <- function(n_bit) {
 #' @keywords internal
 #' @noRd
 #'
+#
+# TODO: Revisit
+#
 vars <- function() {
   eps <- .Machine$double.eps^0.5
   kmode <- 0.6311142 # mode is ((a-1) / (a*b-1))^(1/a) ==> 0.6311142
@@ -1136,6 +702,9 @@ vars <- function() {
 #' @examples
 #' mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
 #' mp <- set_data(mp, NULL)
+#' #
+#' # TODO: Refactor
+#' #
 set_data <- function(.mp, data) {
   if (!is.null(data)) {
     if (!is.list(data)) {
@@ -1169,6 +738,9 @@ set_data <- function(.mp, data) {
 #' @examples
 #' mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
 #' get_data(mp)
+#' #
+#' # TODO: Refactor
+#' #
 get_data <- function(.mp) {
   if (length(.mp$data) == 1) {
     return(invisible(as.matrix(.mp$data[[1]])))
@@ -1186,7 +758,9 @@ get_data <- function(.mp) {
 #' @keywords internal
 #' @noRd
 #'
-
+#
+# TODO: Refactor
+#
 update_class <- function(classes, new_class) {
   classes <- classes[!(classes == new_class)]
   classes <- c(new_class, classes)
@@ -1209,6 +783,9 @@ update_class <- function(classes, new_class) {
 #' mp <- find_chains(mp)
 #' # Remove the "Chain" class information
 #' mp <- remove_class(mp, "Chain")
+#' #
+#' # TODO: Refactor
+#' #
 remove_class <- function(x, class) {
   switch(class,
     "Chain" = {
@@ -1266,7 +843,10 @@ remove_class <- function(x, class) {
 #' plot(mp) # plots a motif plot
 #'
 #' plot(as.matrixprofile(mp)) # plots a matrix profile plot
-as.matrixprofile <- function(.mp) {
+#' #
+#' # TODO: Refactor
+#' #
+as.matrixprofile <- function(.mp) { # nolint
   if (!("MatrixProfile" %in% class(.mp))) {
     stop("This object cannot be a `MatrixProfile`.")
   }
@@ -1280,7 +860,7 @@ as.matrixprofile <- function(.mp) {
 #' @export
 #'
 
-as.multimatrixprofile <- function(.mp) {
+as.multimatrixprofile <- function(.mp) { # nolint
   if (!("MultiMatrixProfile" %in% class(.mp))) {
     stop("This object cannot be a `MultiMatrixProfile`.")
   }
@@ -1294,7 +874,7 @@ as.multimatrixprofile <- function(.mp) {
 #' @export
 #'
 
-as.pmp <- function(.mp) {
+as.pmp <- function(.mp) { # nolint
   if (!("PMP" %in% class(.mp))) {
     stop("This object cannot be a `PMP`.")
   }
@@ -1308,7 +888,7 @@ as.pmp <- function(.mp) {
 #' @export
 #'
 
-as.valmod <- function(.mp) {
+as.valmod <- function(.mp) { # nolint
   if (!("Valmod" %in% class(.mp))) {
     stop("This object cannot be a `Valmod`.")
   }
@@ -1322,7 +902,7 @@ as.valmod <- function(.mp) {
 #' @describeIn as.matrixprofile Cast an object changed by another function back to `Fluss`.
 #' @export
 
-as.fluss <- function(.mp) {
+as.fluss <- function(.mp) { # nolint
   if (!("Fluss" %in% class(.mp))) {
     stop("This object cannot be a `Fluss`.")
   }
@@ -1336,7 +916,7 @@ as.fluss <- function(.mp) {
 #' @describeIn as.matrixprofile Cast an object changed by another function back to `Chain`.
 #' @export
 
-as.chain <- function(.mp) {
+as.chain <- function(.mp) { # nolint
   if (!("Chain" %in% class(.mp))) {
     stop("This object cannot be a `Chain`.")
   }
@@ -1349,7 +929,7 @@ as.chain <- function(.mp) {
 #' @describeIn as.matrixprofile Cast an object changed by another function back to `Discord`.
 #' @export
 
-as.discord <- function(.mp) {
+as.discord <- function(.mp) { # nolint
   if (!("Discord" %in% class(.mp))) {
     stop("This object cannot be a `Discord`.")
   }
@@ -1362,7 +942,7 @@ as.discord <- function(.mp) {
 #' @describeIn as.matrixprofile Cast an object changed by another function back to `Motif`.
 #' @export
 
-as.motif <- function(.mp) {
+as.motif <- function(.mp) { # nolint
   if (!("Motif" %in% class(.mp))) {
     stop("This object cannot be a `Motif`.")
   }
@@ -1376,7 +956,7 @@ as.motif <- function(.mp) {
 #' @describeIn as.matrixprofile Cast an object changed by another function back to `MultiMotif`.
 #' @export
 
-as.multimotif <- function(.mp) {
+as.multimotif <- function(.mp) { # nolint
   if (!("MultiMotif" %in% class(.mp))) {
     stop("This object cannot be a `MultiMotif`.")
   }
@@ -1390,7 +970,7 @@ as.multimotif <- function(.mp) {
 #' @describeIn as.matrixprofile Cast an object changed by another function back to `ArcCount`.
 #' @export
 
-as.arccount <- function(.mp) {
+as.arccount <- function(.mp) { # nolint
   if (!("ArcCount" %in% class(.mp))) {
     stop("This object cannot be a `ArcCount`.")
   }
@@ -1403,7 +983,7 @@ as.arccount <- function(.mp) {
 #' @describeIn as.matrixprofile Cast an object changed by another function back to `Salient`.
 #' @export
 
-as.salient <- function(.mp) {
+as.salient <- function(.mp) { # nolint
   if (!("Salient" %in% class(.mp))) {
     stop("This object cannot be a `Salient`.")
   }
@@ -1411,31 +991,4 @@ as.salient <- function(.mp) {
   class(.mp) <- update_class(class(.mp), "Salient")
 
   return(.mp)
-}
-
-#' Play sound with `audio`
-#'
-#' @param data sound data provided by this package
-#'
-#' @keywords internal
-#' @noRd
-#'
-beep <- function(data) {
-  if (!(is.null(audio::audio.drivers()) || nrow(audio::audio.drivers()) == 0)) {
-    tryCatch(
-      {
-        audio::play(data)
-      },
-      error = function(cond) {
-        message("Warning: Failed to play audio alert")
-        message(cond)
-      },
-      warning = function(cond) {
-        message("Warning: Something went wrong playing audio alert")
-        message(cond)
-      }
-    )
-  }
-  Sys.sleep(1)
-  invisible()
 }

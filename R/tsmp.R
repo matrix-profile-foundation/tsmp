@@ -223,7 +223,8 @@ tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zo
     },
     "valmod" = {
       valmod(data, query,
-        window_min = min(window_size), window_max = max(window_size), heap_size = heap_size, exclusion_zone = exclusion_zone,
+        window_min = min(window_size), window_max = max(window_size), heap_size = heap_size,
+        exclusion_zone = exclusion_zone,
         verbose = verbose
       )
     },

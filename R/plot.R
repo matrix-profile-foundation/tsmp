@@ -185,7 +185,10 @@ plot.ArcCount <- function(x, data, type = c("data", "matrix"), exclusion_zone = 
   pairs[, 2] <- profile_index + offset
 
   if (threshold < min(cac)) {
-    stop(paste0("`threshold` is too small for this Arc Count. Min: ", round(min(cac), 2), ", Max: ", round(max(cac), 2)))
+    stop(paste0(
+      "`threshold` is too small for this Arc Count. Min: ",
+      round(min(cac), 2), ", Max: ", round(max(cac), 2)
+    ))
   }
 
   # remove excess of arcs
@@ -213,8 +216,14 @@ plot.ArcCount <- function(x, data, type = c("data", "matrix"), exclusion_zone = 
   graphics::par(oma = c(1, 1, 3, 0), cex.lab = 1.5)
   plot_arcs(pairs, xlab = xlab, xmin = xmin, xmax = xmax, ...)
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
-  graphics::plot(xnum, c(cac, rep(NA, x$w - 1)), main = "Arc count", type = "l", xlab = xlab, ylab = "normalized count", xlim = xlim, ...)
-  graphics::plot(xnum, plot_data, main = data_main, type = "l", xlab = xlab, ylab = data_lab, xlim = xlim, ...)
+  graphics::plot(xnum, c(cac, rep(NA, x$w - 1)),
+    main = "Arc count", type = "l",
+    xlab = xlab, ylab = "normalized count", xlim = xlim, ...
+  )
+  graphics::plot(xnum, plot_data,
+    main = data_main, type = "l", xlab = xlab,
+    ylab = data_lab, xlim = xlim, ...
+  )
 }
 
 #' @export
@@ -250,12 +259,22 @@ plot.Valmod <- function(x, ylab = "distance", xlab = "index", main = "Valmod Mat
     graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
   }
 
-  graphics::plot(xnum, c(x$mp, rep(NA, min(x$w) - 1)), type = "l", main = paste0("Matrix Profile (w = ", min(x$w), "-", max(x$w), "; ez = ", x$ez, ")"), ylab = ylab, xlab = xlab, ...)
+  graphics::plot(xnum, c(x$mp, rep(NA, min(x$w) - 1)),
+    type = "l",
+    main = paste0("Matrix Profile (w = ", min(x$w), "-", max(x$w), "; ez = ", x$ez, ")"),
+    ylab = ylab, xlab = xlab, ...
+  )
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
 
   if (allmatrix == TRUE) {
-    graphics::plot(xnum, c(x$rmp, rep(NA, min(x$w) - 1)), type = "l", main = "Right Matrix Profile", ylab = ylab, xlab = xlab, ...)
-    graphics::plot(xnum, c(x$lmp, rep(NA, min(x$w) - 1)), type = "l", main = "Left Matrix Profile", ylab = ylab, xlab = xlab, ...)
+    graphics::plot(xnum, c(x$rmp, rep(NA, min(x$w) - 1)),
+      type = "l",
+      main = "Right Matrix Profile", ylab = ylab, xlab = xlab, ...
+    )
+    graphics::plot(xnum, c(x$lmp, rep(NA, min(x$w) - 1)),
+      type = "l",
+      main = "Left Matrix Profile", ylab = ylab, xlab = xlab, ...
+    )
   }
 }
 
@@ -263,7 +282,8 @@ plot.Valmod <- function(x, ylab = "distance", xlab = "index", main = "Valmod Mat
 #' @keywords hplot
 #' @name plot
 #'
-plot.MatrixProfile <- function(x, ylab = "distance", xlab = "index", main = "Unidimensional Matrix Profile", data = FALSE, ...) {
+plot.MatrixProfile <- function(x, ylab = "distance", xlab = "index",
+                               main = "Unidimensional Matrix Profile", data = FALSE, ...) {
   def_par <- graphics::par(no.readonly = TRUE)
   on.exit(graphics::par(def_par))
   allmatrix <- FALSE
@@ -299,12 +319,21 @@ plot.MatrixProfile <- function(x, ylab = "distance", xlab = "index", main = "Uni
     graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
   }
 
-  graphics::plot(xnum, c(x$mp, rep(NA, x$w - 1)), type = "l", main = paste0("Matrix Profile (w = ", x$w, "; ez = ", x$ez, ")"), ylab = ylab, xlab = xlab, ...)
+  graphics::plot(xnum, c(x$mp, rep(NA, x$w - 1)),
+    type = "l",
+    main = paste0("Matrix Profile (w = ", x$w, "; ez = ", x$ez, ")"), ylab = ylab, xlab = xlab, ...
+  )
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
 
   if (allmatrix == TRUE) {
-    graphics::plot(xnum, c(x$rmp, rep(NA, x$w - 1)), type = "l", main = "Right Matrix Profile", ylab = ylab, xlab = xlab, ...)
-    graphics::plot(xnum, c(x$lmp, rep(NA, x$w - 1)), type = "l", main = "Left Matrix Profile", ylab = ylab, xlab = xlab, ...)
+    graphics::plot(xnum, c(x$rmp, rep(NA, x$w - 1)),
+      type = "l",
+      main = "Right Matrix Profile", ylab = ylab, xlab = xlab, ...
+    )
+    graphics::plot(xnum, c(x$lmp, rep(NA, x$w - 1)),
+      type = "l",
+      main = "Left Matrix Profile", ylab = ylab, xlab = xlab, ...
+    )
   }
 }
 
@@ -312,7 +341,8 @@ plot.MatrixProfile <- function(x, ylab = "distance", xlab = "index", main = "Uni
 #' @keywords hplot
 #' @name plot
 #'
-plot.MultiMatrixProfile <- function(x, ylab = "distance", xlab = "index", main = "Multidimensional Matrix Profile", ...) {
+plot.MultiMatrixProfile <- function(x, ylab = "distance", xlab = "index",
+                                    main = "Multidimensional Matrix Profile", ...) {
   def_par <- graphics::par(no.readonly = TRUE)
   on.exit(graphics::par(def_par))
   allmatrix <- FALSE
@@ -343,16 +373,25 @@ plot.MultiMatrixProfile <- function(x, ylab = "distance", xlab = "index", main =
     oma = c(1, 1, 3, 0), cex.lab = 1.5
   )
   for (i in seq_len(n_dim)) {
-    graphics::plot(xnum, c(x$mp[, i], rep(NA, min(x$w) - 1)), type = "l", main = paste0("Matrix Profile (w = ", x$w, "; ez = ", x$ez, ")"), ylab = ylab, xlab = xlab, ...)
+    graphics::plot(xnum, c(x$mp[, i], rep(NA, min(x$w) - 1)),
+      type = "l",
+      main = paste0("Matrix Profile (w = ", x$w, "; ez = ", x$ez, ")"), ylab = ylab, xlab = xlab, ...
+    )
   }
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
 
   if (allmatrix == TRUE) {
     for (i in seq_len(n_dim)) {
-      graphics::plot(xnum, c(x$rmp[, i], rep(NA, min(x$w) - 1)), type = "l", main = "Right Matrix Profile", ylab = ylab, xlab = xlab, ...)
+      graphics::plot(xnum, c(x$rmp[, i], rep(NA, min(x$w) - 1)),
+        type = "l",
+        main = "Right Matrix Profile", ylab = ylab, xlab = xlab, ...
+      )
     }
     for (i in seq_len(n_dim)) {
-      graphics::plot(xnum, c(x$lmp[, i], rep(NA, min(x$w) - 1)), type = "l", main = "Left Matrix Profile", ylab = ylab, xlab = xlab, ...)
+      graphics::plot(xnum, c(x$lmp[, i], rep(NA, min(x$w) - 1)),
+        type = "l",
+        main = "Left Matrix Profile", ylab = ylab, xlab = xlab, ...
+      )
     }
   }
 }
@@ -361,7 +400,8 @@ plot.MultiMatrixProfile <- function(x, ylab = "distance", xlab = "index", main =
 #' @keywords hplot
 #' @name plot
 #'
-plot.SimpleMatrixProfile <- function(x, ylab = "distance", xlab = "index", main = "SiMPle Matrix Profile", data = FALSE, ...) {
+plot.SimpleMatrixProfile <- function(x, ylab = "distance", xlab = "index",
+                                     main = "SiMPle Matrix Profile", data = FALSE, ...) {
   def_par <- graphics::par(no.readonly = TRUE)
   on.exit(graphics::par(def_par))
   num_charts <- 1
@@ -411,7 +451,10 @@ plot.SimpleMatrixProfile <- function(x, ylab = "distance", xlab = "index", main 
     }
   }
 
-  graphics::plot(xnum, c(x$mp, rep(NA, min(x$w) - 1)), type = "l", main = paste0("Matrix Profile (w = ", x$w, "; ez = ", x$ez, ")"), ylab = ylab, xlab = xlab, ...)
+  graphics::plot(xnum, c(x$mp, rep(NA, min(x$w) - 1)),
+    type = "l",
+    main = paste0("Matrix Profile (w = ", x$w, "; ez = ", x$ez, ")"), ylab = ylab, xlab = xlab, ...
+  )
 
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
 }
@@ -476,7 +519,9 @@ plot.Fluss <- function(x, data, type = c("data", "matrix"),
   plot_arcs(pairs, xlab = xlab, xmin = xmin, xmax = xmax, ...)
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
   graphics::plot(xnum, plot_data, main = data_main, type = "l", xlab = xlab, ylab = data_lab, xlim = xlim, ...)
-  graphics::plot(xnum, c(x$cac, rep(NA, min(x$w) - 1)), main = "Arc count", type = "l", xlab = xlab, ylab = "normalized count", xlim = xlim, ylim = c(0, 1), ...)
+  graphics::plot(xnum, c(x$cac, rep(NA, min(x$w) - 1)),
+    main = "Arc count", type = "l", xlab = xlab, ylab = "normalized count", xlim = xlim, ylim = c(0, 1), ...
+  )
 }
 
 #' @export
@@ -551,8 +596,14 @@ plot.Floss <- function(x, data, type = c("data", "matrix"),
   graphics::par(oma = c(1, 1, 3, 0), cex.lab = 1.5)
   plot_arcs(pairs, xlab = xlab, xmin = xmin, xmax = xmax, ...)
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
-  graphics::plot(xnum, plot_data, main = data_main, type = "l", xlab = xlab, ylab = data_lab, xlim = xlim, ...)
-  graphics::plot(xnum, cac, main = "Arc count", type = "l", xlab = xlab, ylab = "normalized count", xlim = xlim, ylim = c(0, 1), ...)
+  graphics::plot(xnum, plot_data,
+    main = data_main, type = "l",
+    xlab = xlab, ylab = data_lab, xlim = xlim, ...
+  )
+  graphics::plot(xnum, cac,
+    main = "Arc count", type = "l",
+    xlab = xlab, ylab = "normalized count", xlim = xlim, ylim = c(0, 1), ...
+  )
 }
 
 #' @export
@@ -625,7 +676,8 @@ plot.Chain <- function(x, data, type = c("data", "matrix"), main = "Chain Discov
 #' @keywords hplot
 #' @name plot
 #'
-plot.Discord <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "Discord Discover", xlab = "index", ylab = "", ...) {
+plot.Discord <- function(x, data, type = c("data", "matrix"), ncol = 3,
+                         main = "Discord Discover", xlab = "index", ylab = "", ...) {
   def_par <- graphics::par(no.readonly = TRUE)
   on.exit(graphics::par(def_par))
 
@@ -677,7 +729,10 @@ plot.Discord <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "
   graphics::plot(xnum, plot_data, type = "l", main = plot_subtitle, xlab = xlab, ylab = ylab)
   graphics::mtext(text = main, font = 2, cex = 1.5, outer = TRUE)
   graphics::abline(v = unlist(discords) + offset, col = seq_len(n_discords), lwd = 3)
-  graphics::abline(v = unlist(neighbors) + offset, col = rep(seq_len(n_discords), sapply(neighbors, length)), lwd = 1, lty = 2)
+  graphics::abline(
+    v = unlist(neighbors) + offset,
+    col = rep(seq_len(n_discords), sapply(neighbors, length)), lwd = 1, lty = 2
+  )
   # plot discords
   for (i in 1:n_discords) {
     discord1 <- znorm(data[discords[[i]]:min((discords[[i]] + x$w - 1), matrix_profile_size)])
@@ -763,7 +818,8 @@ plot.Snippet <- function(x, data, ncol = 3, main = "Snippet Finder", xlab = "ind
     graphics::lines(snip, col = i + 1, lwd = 2)
   }
 
-  # obj <- list(snippet_idx = snippetidx, snippet_frac = fraction, snippet_size = s_size, regime = horizontal, data = list(data))
+  # obj <- list(snippet_idx = snippetidx, snippet_frac = fraction,
+  # snippet_size = s_size, regime = horizontal, data = list(data))
 }
 
 
@@ -771,7 +827,8 @@ plot.Snippet <- function(x, data, ncol = 3, main = "Snippet Finder", xlab = "ind
 #' @keywords hplot
 #' @name plot
 #'
-plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "MOTIF Discover", xlab = "index", ylab = "", ...) {
+plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3,
+                       main = "MOTIF Discover", xlab = "index", ylab = "", ...) {
   def_par <- graphics::par(no.readonly = TRUE)
   on.exit(graphics::par(def_par))
 
@@ -889,7 +946,8 @@ plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "MO
 #' @keywords hplot
 #' @name plot
 #'
-plot.MultiMotif <- function(x, data, type = c("data", "matrix"), ncol = 3, main = "Multidimensional MOTIF Discover", xlab = "index", ylab = "", ...) {
+plot.MultiMotif <- function(x, data, type = c("data", "matrix"), ncol = 3,
+                            main = "Multidimensional MOTIF Discover", xlab = "index", ylab = "", ...) {
   def_par <- graphics::par(no.readonly = TRUE)
   on.exit(graphics::par(def_par))
 
@@ -986,7 +1044,10 @@ plot.MultiMotif <- function(x, data, type = c("data", "matrix"), ncol = 3, main 
     # blank plot
     graphics::plot(0.5, 0.5,
       type = "n", main = paste("Motif", i), xlab = "length", ylab = "normalized data",
-      xlim = c(0, length(motif1[[1]])), ylim = c(min(unlist(motif1), unlist(motif2)), max(unlist(motif1), unlist(motif2)))
+      xlim = c(0, length(motif1[[1]])), ylim = c(min(
+        unlist(motif1),
+        unlist(motif2)
+      ), max(unlist(motif1), unlist(motif2)))
     )
 
     if (length(motif2) > 1) {
@@ -1246,7 +1307,7 @@ plot.PMP <- function(x, ylab = "distance", xlab = "index", main = "Unidimensiona
 
   # sort pmp
   idxs <- as.numeric(names(x$pmp))
-  idxs <- sort(idxs, index.return = T)$ix
+  idxs <- sort(idxs, index.return = TRUE)$ix
   all_profiles <- x$pmp[idxs]
 
   skimp_plot_set_canvas(

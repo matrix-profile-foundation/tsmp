@@ -1,5 +1,5 @@
 linters: with_defaults(open_curly_linter = NULL, T_and_F_symbol_linter, assignment_linter, closed_curly_linter = NULL, commas_linter,
-      commented_code_linter = NULL, todo_comment_linter(c("todo", "fixme")), cyclocomp_linter(50),
+      commented_code_linter = NULL, cyclocomp_linter(50),
       object_name_linter(styles = "snake_case"), object_length_linter(30),
       equals_na_linter, function_left_parentheses_linter, infix_spaces_linter,
       line_length_linter(120), no_tab_linter, object_usage_linter = NULL, paren_brace_linter,

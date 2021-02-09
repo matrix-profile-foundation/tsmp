@@ -19,15 +19,17 @@ find_motif <- function(.mp, ...) {
 #'
 #' @name find_motif
 #' @export
-#' @return For class `MatrixProfile`, returns the input `.mp` object with a new name `motif`. It contains: `motif_idx`, a `list`
-#' of motif pairs found and `motif_neighbor` a `list` with respective motif's neighbors.
+#' @return For class `MatrixProfile`, returns the input `.mp` object with a new name `motif`.
+#' It contains: `motif_idx`, a `list`of motif pairs found and `motif_neighbor` a `list` with
+#' respective motif's neighbors.
 #' @examples
 #' # Single dimension data
 #' w <- 50
 #' data <- mp_gait_data
 #' mp <- tsmp(data, window_size = w, exclusion_zone = 1 / 4, verbose = 0)
 #' mp <- find_motif(mp)
-find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, radius = 3, exclusion_zone = NULL, ...) {
+find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, radius = 3,
+                                     exclusion_zone = NULL, ...) {
   if (!("MatrixProfile" %in% class(.mp))) {
     stop("First argument must be an object of class `MatrixProfile`.")
   }
@@ -171,8 +173,8 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
 #' @param n_bit an `int`. Bit size for discretization. Ignored on Guided search. (Default is `4`).
 #' @param n_dim an `int`. Number of dimensions to use on Guided search instead of embedded value. (Default is `NULL`).
 #'
-#' @return For class `MultiMatrixProfile`, returns the input `.mp` object with a new name `motif`. It contains: `motif_idx`, a `vector`
-#' of motifs found and `motif_dim` a `list` the dimensions where the motifs were found
+#' @return For class `MultiMatrixProfile`, returns the input `.mp` object with a new name `motif`. It contains:
+#' motif_idx`, a `vector`of motifs found and `motif_dim` a `list` the dimensions where the motifs were found
 #'
 #' @name find_motif
 #' @export

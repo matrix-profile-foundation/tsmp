@@ -11,7 +11,6 @@ if (!testthat:::on_cran()) {
   test_that("Errors", {
     # big window size
     expect_error(fast_movsd(mp_toy_data$data[, 1], 1), "must be at least 2")
-    expect_error(expect_message(beep(audio::close.audioInstance(99)), "Failed"))
     expect_error(tsmp:::diff2(data.frame(1:10), as.matrix(10:1)), "matrices")
     expect_error(tsmp:::diff2(as.matrix(1:10), matrix(10:1, ncol = 2)), "columns")
   })

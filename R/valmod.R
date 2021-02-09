@@ -49,7 +49,9 @@
 #' mp <- valmod(ref_data, query_data, window_min = 30, window_max = 40)
 #' }
 #'
-valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone = getOption("tsmp.exclusion_zone", 1 / 2), lb = TRUE, verbose = getOption("tsmp.verbose", 2)) {
+valmod <- function(..., window_min, window_max, heap_size = 50,
+                   exclusion_zone = getOption("tsmp.exclusion_zone", 1 / 2),
+                   lb = TRUE, verbose = getOption("tsmp.verbose", 2)) {
   argv <- list(...)
   argc <- length(argv)
   data <- argv[[1]]
@@ -182,10 +184,6 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
         )
       }
 
-      if (verbose > 2) {
-        on.exit(beep(sounds[[1]]), TRUE)
-      }
-
       first_product <- matrix(0, num_queries, 1)
 
       # forward
@@ -224,13 +222,15 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
             data[(window_size + 1):data_size, 1] * query_window[window_size, 1]
 
           last_product[1, 1] <- first_product[i, 1]
-          distance_profile <- 2 * (window_size - (last_product - window_size * nn$par$data_mean * nn$par$query_mean[i]) /
-            (nn$par$data_sd * nn$par$query_sd[i]))
+          distance_profile <- 2 * (window_size -
+            (last_product - window_size * nn$par$data_mean * nn$par$query_mean[i]) /
+              (nn$par$data_sd * nn$par$query_sd[i]))
         }
 
         distance_profile[distance_profile < 0] <- 0
 
-        new_lb_profile <- ((last_product / window_size) - (nn$par$query_mean[i] * nn$par$data_mean)) / (nn$par$query_sd[i] * nn$par$data_sd)
+        new_lb_profile <- ((last_product / window_size) - (nn$par$query_mean[i] * nn$par$data_mean)) /
+          (nn$par$query_sd[i] * nn$par$data_sd)
         new_lb_profile[new_lb_profile < 0] <- 0
         new_lb_profile_len <- length(new_lb_profile)
 
@@ -360,7 +360,8 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
       min_entry_lb <- -1
 
       list_motifs_profile[i_v, "sum_query", ] <- list_motifs_profile[i_v, "sum_query", ] + query[new_index_query_v]
-      list_motifs_profile[i_v, "sqrsum_query", ] <- list_motifs_profile[i_v, "sqrsum_query", ] + (query[new_index_query_v] * query[new_index_query_v])
+      list_motifs_profile[i_v, "sqrsum_query", ] <- list_motifs_profile[i_v, "sqrsum_query", ] +
+        (query[new_index_query_v] * query[new_index_query_v])
       query_mean_v <- matrix(rep(curr_query_mean, heap_size), ncol = heap_size)
       query_sd_v <- matrix(rep(curr_query_sd, heap_size), ncol = heap_size)
 
@@ -369,8 +370,10 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
 
       # apply exclusion zone
       # !ezx_v contains all trival matches to recompute the DP
-      ezx_v <- (((list_motifs_profile[i_v, "indexes_data", j_v]) < (list_motifs_profile[i_v, "index_query", j_v] - exclusion_zone)) |
-        ((list_motifs_profile[i_v, "indexes_data", j_v]) > (list_motifs_profile[i_v, "index_query", j_v] + exclusion_zone)))
+      ezx_v <- (((list_motifs_profile[i_v, "indexes_data", j_v]) < (list_motifs_profile[i_v, "index_query", j_v] -
+        exclusion_zone)) |
+        ((list_motifs_profile[i_v, "indexes_data", j_v]) > (list_motifs_profile[i_v, "index_query", j_v] +
+          exclusion_zone)))
 
       ez_v <- ezx_v & (list_motifs_profile[i_v, "indexes_data", j_v] + window_size - 1 <= data_size)
 
@@ -378,9 +381,13 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
 
       # --- Compute true distance entry heapentry ----
       # TODO: check NA from data
-      list_motifs_profile[i_v, "dps", j_v][ez_v] <- (list_motifs_profile[i_v, "dps", j_v] + matrix(query[new_index_query_v] * data[new_index_data_v], ncol = ncol(new_index_data_v)))[ez_v]
-      list_motifs_profile[i_v, "sum_data", j_v][ez_v] <- (list_motifs_profile[i_v, "sum_data", j_v] + data[new_index_data_v])[ez_v]
-      list_motifs_profile[i_v, "sqrsum_data", j_v][ez_v] <- (list_motifs_profile[i_v, "sqrsum_data", j_v] + (data[new_index_data_v] * data[new_index_data_v]))[ez_v]
+      list_motifs_profile[i_v, "dps", j_v][ez_v] <- (list_motifs_profile[i_v, "dps", j_v] +
+        matrix(query[new_index_query_v] * data[new_index_data_v], ncol = ncol(new_index_data_v)))[ez_v]
+      list_motifs_profile[i_v, "sum_data", j_v][ez_v] <- (list_motifs_profile[i_v, "sum_data", j_v] +
+        data[new_index_data_v])[ez_v]
+      list_motifs_profile[i_v, "sqrsum_data", j_v][ez_v] <- (list_motifs_profile[i_v, "sqrsum_data", j_v] +
+        (data[new_index_data_v] *
+          data[new_index_data_v]))[ez_v]
 
       data_mean_v <- list_motifs_profile[i_v, "sum_data", ] / window_size
       data_sd_v <- (list_motifs_profile[i_v, "sqrsum_data", ] / window_size) - (data_mean_v * data_mean_v)
@@ -412,7 +419,10 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
 
       #### Pruning is effective global min found ####
       # update the min OOOOONLYYYY IF it is a correct min of the distance profile
-      min_distances <- list_motifs_profile[i_v, "distances", , drop = FALSE][cbind(seq_along(min_entry_idx), 1, min_entry_idx)]
+      min_distances <- list_motifs_profile[i_v, "distances", , drop = FALSE][cbind(
+        seq_along(min_entry_idx), 1,
+        min_entry_idx
+      )]
       valid_entries <- min_distances < lower_bound
 
       if (any(valid_entries)) {
@@ -445,7 +455,10 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
       best_motif <- NULL
 
       # --- Second Outer Loop ----
-      m <- (list_motifs_profile[list_valid_entries, "distances", , drop = FALSE][cbind(seq_along(index_valid_entries), 1, index_valid_entries)] < non_valid_smaller)
+      m <- (list_motifs_profile[list_valid_entries, "distances", , drop = FALSE][cbind(
+        seq_along(index_valid_entries),
+        1, index_valid_entries
+      )] < non_valid_smaller)
       motifs_per_size <- sum(m)
 
       if (motifs_per_size > 0) {
@@ -538,7 +551,8 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
                   data[(window_size + 1):data_size] * query_window[window_size]
 
                 last_product[1] <- first_product[seq[i]]
-                distance_profile <- 2 * (window_size - (last_product - window_size * nn$par$data_mean * nn$par$query_mean[seq[i]]) /
+                distance_profile <- 2 * (window_size - (last_product - window_size * nn$par$data_mean *
+                  nn$par$query_mean[seq[i]]) /
                   (nn$par$data_sd * nn$par$query_sd[seq[i]]))
               }
 
@@ -613,7 +627,10 @@ valmod <- function(..., window_min, window_max, heap_size = 50, exclusion_zone =
         }
 
         # Re-check
-        m <- (list_motifs_profile[list_valid_entries, "distances", , drop = FALSE][cbind(seq_along(index_valid_entries), 1, index_valid_entries)] < non_valid_smaller)
+        m <- (list_motifs_profile[list_valid_entries, "distances", , drop = FALSE][cbind(
+          seq_along(index_valid_entries),
+          1, index_valid_entries
+        )] < non_valid_smaller)
         motifs_per_size <- sum(m)
 
         if (motifs_per_size > 0) {

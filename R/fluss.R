@@ -63,7 +63,8 @@ fluss <- function(.mp, num_segments = 1, exclusion_zone = NULL) {
 #' data_window <- 1000
 #' mp <- floss(mp, new_data, data_window)
 #' mp <- floss(mp, new_data2, data_window)
-floss <- function(.mp, new_data, data_window, threshold = 1, exclusion_zone = NULL, chunk_size = NULL, keep_cac = TRUE) {
+floss <- function(.mp, new_data, data_window, threshold = 1, exclusion_zone = NULL, chunk_size = NULL,
+                  keep_cac = TRUE) {
   if (missing(data_window)) {
     stop("argument 'data_window' is missing, looking for fluss() instead?")
   }
@@ -103,7 +104,8 @@ floss <- function(.mp, new_data, data_window, threshold = 1, exclusion_zone = NU
 
     .mp$cac_final <- c(
       rep(NA, chunk_size + mp_offset - chunk_size),
-      utils::head(.mp$cac, -(round(data_window * (1 - vars()$kmode) - (1 - vars()$kmode) * .mp$w) - 0.5 * chunk_size + ifelse(mp_offset > 0, 1, 2)))
+      utils::head(.mp$cac, -(round(data_window * (1 - vars()$kmode) - (1 - vars()$kmode) * .mp$w) - 0.5 * chunk_size +
+        ifelse(mp_offset > 0, 1, 2)))
     )
 
     na_head <- round(vars()$kmode * data_window + (0.5 * chunk_size - vars()$kmode * .mp$w)) + mp_offset
@@ -296,7 +298,9 @@ fluss_extract <- function(.mpac, num_segments = 1, exclusion_zone = NULL) {
 #'
 #' @export
 #' @family Semantic Segmentations
-#' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International Conference on Data Mining (ICDM). IEEE; 2017. p. 117-26.
+#' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain Agnostic
+#' Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International Conference on Data
+#' Mining (ICDM). IEEE; 2017. p. 117-26.
 #' @references Website: <https://sites.google.com/site/onlinesemanticsegmentation/>
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #' @examples
@@ -371,7 +375,9 @@ fluss_cac <- function(.mp, exclusion_zone = NULL) {
 #' the combination of `cac` after repeated calls of `floss()`.
 #' @export
 #' @family Semantic Segmentations
-#' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International Conference on Data Mining (ICDM). IEEE; 2017. p. 117-26.
+#' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain
+#' Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International
+#' Conference on Data Mining (ICDM). IEEE; 2017. p. 117-26.
 #' @references Website: <https://sites.google.com/site/onlinesemanticsegmentation/>
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #' @examples
@@ -462,7 +468,9 @@ floss_cac <- function(.mp, data_window, exclusion_zone = NULL) {
 #' Zero is the best, One is the worst.
 #' @export
 #' @family Semantic Segmentations
-#' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International Conference on Data Mining (ICDM). IEEE; 2017. p. 117-26.
+#' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain
+#' Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International
+#' Conference on Data Mining (ICDM). IEEE; 2017. p. 117-26.
 #' @references Website: <https://sites.google.com/site/onlinesemanticsegmentation/>
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #' @examples

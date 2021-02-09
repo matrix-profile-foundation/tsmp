@@ -41,7 +41,8 @@
 #' mps <- salient_subsequences(mp, data, n_bits = c(4, 6, 8), verbose = 2)
 #' }
 #'
-salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_zone = NULL, verbose = getOption("tsmp.verbose", 2)) {
+salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_zone = NULL,
+                                 verbose = getOption("tsmp.verbose", 2)) {
   if (!("MatrixProfile" %in% class(.mp))) {
     stop("First argument must be an object of class `MatrixProfile`.")
   }
@@ -126,15 +127,15 @@ salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_z
     indexes <- rep(0, max_index_num)
     idx_bit_size <- rep(0, max_index_num)
     hypothesis_idx <- rep(0, max_index_num)
-    compressible_idx <- rep(0, max_index_num)
+    compr_idx <- rep(0, max_index_num)
     hypothesis <- matrix(0, max_index_num, .mp$w)
-    compressible <- matrix(0, max_index_num, .mp$w)
+    compr <- matrix(0, max_index_num, .mp$w)
 
     # initialization count related variables
     hypothesis_count <- 0
-    compressible_count <- 0
+    compr_count <- 0
     indexes_count <- 0
-    compressible_count_old <- 0
+    compr_count_old <- 0
     hypothesis_count_old <- 0
 
     # initialization bit size related variables
@@ -155,10 +156,6 @@ salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_z
       )
     }
 
-    if (verbose > 2) {
-      on.exit(beep(sounds[[1]]), TRUE)
-    }
-
     tictac <- Sys.time()
 
     # iteartivly expend list of hypothesis and compressiable
@@ -168,19 +165,20 @@ salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_z
         if (n_dim > 1) {
           hypothesis[hypothesis_count, ] <- data[, hypothesis_idx[hypothesis_count]]
         } else {
-          hypothesis[hypothesis_count, ] <- data[hypothesis_idx[hypothesis_count]:(hypothesis_idx[hypothesis_count] + .mp$w - 1), ]
+          hypothesis[hypothesis_count, ] <- data[hypothesis_idx[hypothesis_count]:(hypothesis_idx[hypothesis_count] +
+            .mp$w - 1), ]
         }
         hypothesis[hypothesis_count, ] <- discrete_norm(hypothesis[hypothesis_count, ], n_bits[b], data_max, data_min)
       }
 
       # get the newest compressiable
-      if (compressible_count_old != compressible_count) {
+      if (compr_count_old != compr_count) {
         if (n_dim > 1) {
-          compressible[compressible_count, ] <- data[, compressible_idx[compressible_count]]
+          compr[compr_count, ] <- data[, compr_idx[compr_count]]
         } else {
-          compressible[compressible_count, ] <- data[compressible_idx[compressible_count]:(compressible_idx[compressible_count] + .mp$w - 1), ]
+          compr[compr_count, ] <- data[compr_idx[compr_count]:(compr_idx[compr_count] + .mp$w - 1), ]
         }
-        compressible[compressible_count, ] <- discrete_norm(compressible[compressible_count, ], n_bits[b], data_max, data_min)
+        compr[compr_count, ] <- discrete_norm(compr[compr_count, ], n_bits[b], data_max, data_min)
       }
 
       # remove newest hypothesis from the matrix_profile
@@ -195,40 +193,40 @@ salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_z
       }
 
       # remove newest compressiable from the matrix_profile
-      if (compressible_count_old != compressible_count) {
+      if (compr_count_old != compr_count) {
         if (n_dim > 1) {
-          matrix_profile[compressible_idx[compressible_count]] <- Inf
+          matrix_profile[compr_idx[compr_count]] <- Inf
         } else {
-          exc_idx_st <- max(1, compressible_idx[compressible_count] - exclusion_zone)
-          exc_idx_ed <- min(matrix_profile_size, compressible_idx[compressible_count] + exclusion_zone)
+          exc_idx_st <- max(1, compr_idx[compr_count] - exclusion_zone)
+          exc_idx_ed <- min(matrix_profile_size, compr_idx[compr_count] + exclusion_zone)
           matrix_profile[exc_idx_st:exc_idx_ed] <- Inf
         }
       }
 
       # get current bitsave
-      if (compressible_count_old != compressible_count) {
+      if (compr_count_old != compr_count) {
         new_descr_length <- Inf
         if (hypothesis_count > 0) {
           for (j in 1:hypothesis_count) {
-            new_descr_length_temp <- get_bitsize(compressible[compressible_count, ] - hypothesis[j, ], mismatch_bit)
+            new_descr_length_temp <- get_bitsize(compr[compr_count, ] - hypothesis[j, ], mismatch_bit)
             if (new_descr_length_temp < new_descr_length) {
               new_descr_length <- new_descr_length_temp
             }
           }
         }
         compress_cost <- compress_cost + new_descr_length
-        hypothesis_cost <- uncompressed_bit * hypothesis_count + compressible_count * log2(hypothesis_count)
+        hypothesis_cost <- uncompressed_bit * hypothesis_count + compr_count * log2(hypothesis_count)
         if (n_dim > 1) {
-          other_cost <- uncompressed_bit * (n_dim - hypothesis_count - compressible_count)
+          other_cost <- uncompressed_bit * (n_dim - hypothesis_count - compr_count)
         } else {
-          other_cost <- uncompressed_bit * (matrix_profile_size - hypothesis_count - compressible_count)
+          other_cost <- uncompressed_bit * (matrix_profile_size - hypothesis_count - compr_count)
         }
         idx_bit_size[indexes_count] <- compress_cost + hypothesis_cost + other_cost
       } else if (indexes_count > 1) {
         idx_bit_size[indexes_count] <- idx_bit_size[indexes_count - 1]
       }
 
-      compressible_count_old <- compressible_count
+      compr_count_old <- compr_count
       hypothesis_count_old <- hypothesis_count
 
       # stop criteria
@@ -246,7 +244,7 @@ salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_z
       }
 
       # testing each candidate
-      candidate_bitsave <- matrix(-Inf, candidate_n_temp, 2) # 2nd column (1:hypothesis, 2:compressible)
+      candidate_bitsave <- matrix(-Inf, candidate_n_temp, 2) # 2nd column (1:hypothesis, 2:compr)
 
       for (i in 1:candidate_n_temp) {
         if (n_dim > 1) {
@@ -308,8 +306,8 @@ salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_z
         hypothesis_count <- hypothesis_count + 1
         hypothesis_idx[hypothesis_count] <- candidate_idx[best_candidate]
       } else if (candidate_bitsave[best_candidate, 2] == 2) {
-        compressible_count <- compressible_count + 1
-        compressible_idx[compressible_count] <- candidate_idx[best_candidate]
+        compr_count <- compr_count + 1
+        compr_idx[compr_count] <- candidate_idx[best_candidate]
       }
     }
 

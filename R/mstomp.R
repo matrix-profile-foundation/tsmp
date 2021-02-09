@@ -122,7 +122,8 @@ mstomp <- function(data, window_size, exclusion_zone = getOption("tsmp.exclusion
   skip_location <- rep(FALSE, matrix_profile_size)
 
   for (i in 1:matrix_profile_size) {
-    if (any(is.na(data[i:(i + window_size - 1), !mask_exc])) || any(is.infinite(data[i:(i + window_size - 1), !mask_exc]))) {
+    if (any(is.na(data[i:(i + window_size - 1), !mask_exc])) ||
+    any(is.infinite(data[i:(i + window_size - 1), !mask_exc]))) {
       skip_location[i] <- TRUE
     }
   }
@@ -135,9 +136,6 @@ mstomp <- function(data, window_size, exclusion_zone = getOption("tsmp.exclusion
       format = "mSTOMP [:bar] :percent at :tick_rate it/s, elapsed: :elapsed, eta: :eta",
       clear = FALSE, total = matrix_profile_size, width = 80
     )
-  }
-  if (verbose > 2) {
-    on.exit(beep(sounds[[1]]), TRUE)
   }
 
   # initialization
@@ -190,7 +188,8 @@ mstomp <- function(data, window_size, exclusion_zone = getOption("tsmp.exclusion
 
       last_product[1, ] <- first_product[i, ]
 
-      distance_profile <- 2 * (window_size - (last_product - window_size * data_mean * kronecker(matrix(1, matrix_profile_size, 1), t(data_mean[i, ]))) /
+      distance_profile <- 2 * (window_size - (last_product - window_size * data_mean *
+       kronecker(matrix(1, matrix_profile_size, 1), t(data_mean[i, ]))) /
         (data_sd * kronecker(matrix(1, matrix_profile_size, 1), t(data_sd[i, ]))))
     }
 

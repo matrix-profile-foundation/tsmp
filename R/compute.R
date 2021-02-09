@@ -68,7 +68,8 @@ compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
         res <- matrixprofiler::mpx(data = ts, window_size = windows, n_workers = n_jobs, progress = TRUE)
         algorithm <- "mpx"
       } else {
-        res <- matrixprofiler::scrimp(data = ts, window_size = windows, n_workers =  n_jobs, progress = TRUE) # s_size = floor(sample_pct * length(ts)),
+        res <- matrixprofiler::scrimp(data = ts, window_size = windows, n_workers = n_jobs, progress = TRUE)
+        # s_size = floor(sample_pct * length(ts)),
         algorithm <- "scrimp"
       }
     } else {
@@ -79,7 +80,8 @@ compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
         algorithm <- "mpx"
       } else {
         # TODO: add scrimp AB-join
-        res <- matrixprofiler::scrimp(data = ts, window_size = windows, n_workers = n_jobs, progress = TRUE) # AB , s_size = floor(sample_pct * length(ts)
+        res <- matrixprofiler::scrimp(data = ts, window_size = windows, n_workers = n_jobs, progress = TRUE)
+        # AB , s_size = floor(sample_pct * length(ts)
         algorithm <- "scrimp"
       }
     }
