@@ -3,6 +3,73 @@
   "tasks": [
     {
       "type": "process",
+      "label": "R: ASAN/USBAN",
+      "command": "C:/Program Files/R/R-4.0.3/bin/x64/Rscript.exe",
+      "linux": {
+        "command": "/usr/lib/R/bin/Rscript"
+      },
+      "args": [
+        "dev/check_asan.R"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": [
+        {
+          "owner": "R",
+          "fileLocation": [
+            "relative",
+            "${workspaceFolder}/src"
+          ],
+          "pattern": {
+            "regexp": "^\\**(.*):(\\d+):(\\d+):\\s+runtime (warning|error):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "severity": 4,
+            "message": 5
+          }
+        },
+        {
+          "owner": "R",
+          "severity": "warning",
+          "pattern": [
+            {
+              "kind": "file",
+              "regexp": ".*(NOTE|WARNING)",
+              "file": 1
+            },
+            {
+              "regexp": "(.*)",
+              "message": 1,
+            }
+          ]
+        },
+        {
+          "owner": "R",
+          "severity": "error",
+          "pattern": [
+            {
+              "kind": "file",
+              "regexp": ".*(ERROR)",
+              "file": 1
+            },
+            {
+              "regexp": "(.*)",
+              "message": 1,
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "process",
       "label": "R: lint package",
       "command": "C:/Program Files/R/R-4.0.3/bin/x64/Rscript.exe",
       "linux": {

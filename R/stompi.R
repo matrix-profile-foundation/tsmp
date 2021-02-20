@@ -45,7 +45,7 @@ stompi_update <- function(.mp, new_data, history_size = FALSE) {
   if (new_data_size > 1) {
     rnn <- dist_profile(data_upd, data_upd[1:.mp$w])
     first_product <- rnn$last_product
-    query_stats <- fast_avg_sd(data_upd[q1_idx:data_upd_size], .mp$w)
+    query_stats <- matrixprofiler::movmean_std(data_upd[q1_idx:data_upd_size], .mp$w)
     drop_value <- 0
   }
 

@@ -46,7 +46,6 @@
         "."
       ]
     },
-
     {
       "name": "(gdb) Bash on Windows Attach",
       "type": "cppdbg",

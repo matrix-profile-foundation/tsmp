@@ -10,7 +10,7 @@ if (!testthat:::on_cran()) {
 
   test_that("Errors", {
     # big window size
-    expect_error(fast_movsd(mp_toy_data$data[, 1], 1), "must be at least 2")
+    expect_error(matrixprofiler::mov_std(mp_toy_data$data[, 1], 1), "must be at least 2")
     expect_error(tsmp:::diff2(data.frame(1:10), as.matrix(10:1)), "matrices")
     expect_error(tsmp:::diff2(as.matrix(1:10), matrix(10:1, ncol = 2)), "columns")
   })
@@ -37,8 +37,8 @@ if (!testthat:::on_cran()) {
     pre$data_mean, pre$data_sd, pre$query_mean, pre$query_sd
   )
 
-  movsd <- fast_movsd(mp_toy_data$data[, 1], 30)
-  movavg <- fast_movavg(mp_toy_data$data[, 1], 30)
+  movsd <- matrixprofiler::mov_std(mp_toy_data$data[, 1], 30)
+  movavg <- matrixprofiler::mov_mean(mp_toy_data$data[, 1], 30)
 
   prew <- mass_pre_w(ref_data, query_data, w, c(rep(1, 15), rep(0.5, 15)))
   resw <- do.call("mass_weighted", (c(list(query_data[1:w]), prew)))

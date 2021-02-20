@@ -112,7 +112,7 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, n_work
   mat_pro <- list()
 
   for (i in 1:n_window_size) {
-    mp <- matrixprofiler::stomp(pos, window_size = window_size[i], n_workers = n_workers, progress = verbose > 1)
+    mp <- matrixprofiler::stomp(pos, window_size = window_size[i], n_workers = n_workers, progress = (verbose > 1))
     mat_pro[[i]] <- mp$mp
   }
 

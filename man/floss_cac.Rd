@@ -36,7 +36,9 @@ mp <- floss_cac(mp, data_window)
 }
 \references{
 \itemize{
-\item Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International Conference on Data Mining (ICDM). IEEE; 2017. p. 117-26.
+\item Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain
+Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International
+Conference on Data Mining (ICDM). IEEE; 2017. p. 117-26.
 }
 
 Website: \url{https://sites.google.com/site/onlinesemanticsegmentation/}

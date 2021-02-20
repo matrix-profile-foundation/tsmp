@@ -142,8 +142,8 @@ valmod <- function(..., window_min, window_max, heap_size = 50,
   query_stats <- vector(mode = "list", length = range_size)
   for (i in seq_len(range_size)) {
     window_size <- window_min + i - 1
-    data_stats[[i]] <- fast_avg_sd(data, window_size)
-    query_stats[[i]] <- fast_avg_sd(query, window_size)
+    data_stats[[i]] <- matrixprofiler::movmean_std(data, window_size)
+    query_stats[[i]] <- matrixprofiler::movmean_std(query, window_size)
   }
 
   if (verbose > 1) {

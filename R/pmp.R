@@ -193,7 +193,7 @@ pmp <- function(data,
 
     if (verbose > 0) {
       message(
-        "step: ", i, "/", length(split_idx), " binary idx: ", idx, " window: ", w
+        "step: ", i, "of", length(split_idx), " binary idx: ", idx, " window: ", w
       )
     }
 
