@@ -21,6 +21,9 @@ knitr::opts_chunk$set(
 )
 ```
 
+# tsmp 0.5.0
+-   Dropped PAA code. This must be handled by the user.
+
 # tsmp 0.4.14
 
 -   Fix ASAN/UBSAN errors using RcppParallel

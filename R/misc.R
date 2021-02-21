@@ -1,3 +1,33 @@
+
+convert_data <- function(data) {
+  # TODO: get the name of the variable before data.
+  if (!is.null(data)) {
+    ts_class <- class(data)
+
+    if (ts_class[[1]] == "numeric") {
+      return(invisible(data)) # fast track
+    }
+
+    result <- FALSE
+    for (class in ts_class) {
+      if (class %in% c("data.frame", "list")) {
+        result <- TRUE
+      } else if (class == "array") {
+        if (length(dim(data)) > 1) {
+          result <- TRUE
+        }
+      }
+    }
+    if (result) {
+      var_name <- substitute(data)
+      stop(glue::glue("Argument `{var_name}` cannot be `{ts_class}` and must have a single dimension."))
+    }
+  }
+
+  return(invisible(as.numeric(data)))
+}
+
+
 #' Clip a value between min and max, fast R implementation
 #'
 #' For faster yet, use Rcpp::clamp
@@ -72,81 +102,6 @@ bubble_up <- function(data, len) {
     data[pos] <- data[pos / 2]
     data[pos / 2] <- t
     pos <- pos / 2
-  }
-}
-
-#' Piecewise Aggregate Approximation of time series
-#'
-#' @param data time series
-#' @param p factor of PAA reduction (2 == half of size)
-#'
-#' @return PAA result
-#' @keywords internal
-#' @noRd
-
-# TODO: try to find an implementation of this paa
-
-paa <- function(data, p) {
-  # Rcpp ?
-  paa_data <- as.vector(data)
-  len <- length(paa_data)
-
-  p <- round(abs(p))
-  paa_size <- len / p
-
-  if (len == paa_size) {
-    return(data)
-  } else {
-    if (len %% paa_size == 0) {
-      res <- colMeans(matrix(paa_data, nrow = len %/% paa_size, byrow = FALSE))
-    } else {
-      stop("Invalid paa_size")
-    }
-  }
-
-  if (is.matrix(data)) {
-    return(as.matrix(res))
-  } else {
-    return(res)
-  }
-}
-
-#' Resample data to the original size, with interpolation
-#'
-#' @param data time series
-#' @param p factor of PAA reduction (2 == half of size)
-#'
-#' @keywords internal
-#' @noRd
-
-# TODO: try to find an implementation of this ipaa
-
-ipaa <- function(data, p) {
-  # Rcpp ?
-  if (is.null(data)) {
-    return(NULL)
-  }
-
-  paa_data <- as.vector(data)
-  paa_size <- length(paa_data)
-  size <- paa_size * p
-
-  res <- rep.int(NA, size)
-
-  j <- 1
-  for (i in seq_len(size)) {
-    if (((i - 1) %% p) == 0) {
-      res[i] <- data[j]
-      j <- j + 1
-    } else {
-      res[i] <- res[i - 1]
-    }
-  }
-
-  if (is.matrix(data)) {
-    return(as.matrix(res))
-  } else {
-    return(res)
   }
 }
 

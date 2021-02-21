@@ -67,7 +67,6 @@
 #' @param exc_dim an `int` or `vector` of which dimensions to exclude (default is `NULL`). See
 #'   details.
 #' @param heap_size an `int`. (Default is `50`). Size of the distance profile heap buffer.
-#' @param paa an `int`. (Default is `1`). Factor of PAA reduction (2 == half of size)
 #' @param .keep_data a `logical`. (Default is `TRUE`). Keeps the data embedded to resultant object.
 #'
 #' @return Returns the matrix profile `mp` and profile index `pi`. It also returns the left and
@@ -111,7 +110,7 @@
 tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zone", 1 / 2),
                  mode = c("stomp", "stamp", "simple", "mstomp", "scrimp", "valmod", "pmp"),
                  verbose = getOption("tsmp.verbose", 2), n_workers = 1, s_size = Inf, must_dim = NULL, exc_dim = NULL,
-                 heap_size = 50, paa = 1, .keep_data = TRUE) {
+                 heap_size = 50, .keep_data = TRUE) {
   algo <- match.arg(mode)
 
   argv <- list(...)
@@ -131,26 +130,6 @@ tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zo
 
     data <- argv[[1]]
     query <- argv[[2]]
-  }
-
-  paa <- round(paa)
-
-  if (paa > 1) {
-    if (is.matrix(data)) {
-      data <- apply(data, 2, paa, paa)
-    } else {
-      data <- paa(data, paa)
-    }
-
-    if (!is.null(query)) {
-      if (is.matrix(query)) {
-        query <- apply(query, 2, paa, paa)
-      } else {
-        query <- paa(query, paa)
-      }
-    }
-
-    window_size <- window_size / paa
   }
 
   if (n_workers > 1) {
@@ -233,31 +212,6 @@ tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zo
     },
     stop("`mode` must be ", mode)
   )
-
-  # if (paa > 1) {
-  #   result$mp <- ipaa(result$mp * sqrt(paa), paa)
-  #   result$rmp <- ipaa(result$rmp * sqrt(paa), paa)
-  #   result$lmp <- ipaa(result$lmp * sqrt(paa), paa)
-  #   result$pi <- ipaa(result$pi, paa) * paa
-  #   result$rpi <- ipaa(result$rpi, paa) * paa
-  #   result$lpi <- ipaa(result$lpi, paa) * paa
-  #   result$w <- result$w * paa
-  #   result$paa <- paa
-  #
-  #   if (is.matrix(data)) {
-  #     data <- apply(data, 2, ipaa, paa)
-  #   } else {
-  #     data <- ipaa(data, paa)
-  #   }
-  #
-  #   if (!is.null(query)) {
-  #     if (is.matrix(query)) {
-  #       query <- apply(query, 2, ipaa, paa)
-  #     } else {
-  #       query <- ipaa(query, paa)
-  #     }
-  #   }
-  # }
 
   attr(result, "origin") <- list(
     data_size = nrow(data),

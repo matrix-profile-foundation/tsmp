@@ -203,6 +203,7 @@
       "Rversion",
       "SDTS",
       "SHLIB",
+      "SIGKDD",
       "STOMPSelfJoin",
       "STOMPi",
       "STRSXP",
@@ -342,7 +343,6 @@
       "ini",
       "log",
       "makefile",
-      "r",
       "rmd",
       "xml"
     ],

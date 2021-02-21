@@ -22,12 +22,8 @@
 #' @param window_size an `int` or `NULL`. Sliding window size. See details.
 #' @param method method that will be used to calculate the distance profile. See details.
 #' @param index an `int`. Index of query window. See details.
-#' @param k an `int` or `NULL`. Default is `NULL`. Defines the size of batch for MASS V3. Prefer to
-#' use a power of 2. If `NULL`, it will be set automatically.
 #' @param weight a `vector` of `numeric` or `NULL` with the same length of the `window_size`. This is
 #' a MASS extension to weight the query.
-#' @param paa a `numeric`. Default is `1`. Factor of PAA reduction (2 == half of size). This is a
-#' MASS extension.
 #'
 #' @return Returns the `distance_profile` for the given query and the `last_product` for STOMP
 #'   algorithm and the parameters for recursive call. See details.
@@ -66,115 +62,80 @@
 #'   weight = weight
 #' )
 #' distance_profile <- sqrt(nn$distance_profile)
-dist_profile <- function(data, query, ..., window_size = NULL, method = "v3", index = 1, k = NULL,
-                         weight = NULL, paa = 1) {
+dist_profile <- function(data, window_size, query = data, index = 1, params = NULL,
+                         type = c("normalized", "non_normalized", "absolute", "weighted"), weights = NULL) {
 
-  ## ---- Verify if method exists ----
-  # set as v3 if no method is entered
-  if (!is.na(pmatch(method, "v3"))) {
-    method <- "v3"
-  }
-  valid_methods <- c(
-    "v2", "v3", "weighted"
-  )
-  method <- pmatch(method, valid_methods)
+  # Check time series classes -----------------------
+  data <- convert_data(data)
+  query <- convert_data(query)
 
-  method <- paste0("mass_", valid_methods[method])
-
-  if (is.na(method)) {
-    stop("invalid similarity search method")
-  }
-  if (method == -1) {
-    stop("ambiguous similarity search method")
-  }
-
-  # Grab parameters
-  if (!missing(...) && is.list(...)) {
-    params <- c(...)
-  } else {
-    params <- NULL
+  # Parse arguments ---------------------------------
+  "!!!DEBUG Parsing data"
+  checkmate::qassert(data, "N+")
+  window_size <- checkmate::qassert(window_size, "x+[4,)")
+  checkmate::qassert(query, "n+")
+  checkmate::qassert(index, glue::glue("X1[1,{length(data) - window_size + 1}]"))
+  "!!!DEBUG Parsing type"
+  type <- match.arg(type)
+  if (type == "weighted") {
+    if (is.null(weights)) {
+      stop("The `weights` argument must be provided.", call. = FALSE)
+    }
+    if (length(weights) != window_size) {
+      stop("The `weights` must be the same size as the `window_size`.", call. = FALSE)
+    }
+    checkmate::qassert(weights, "N+")
   }
 
-  data <- as.vector(data)
-  query <- as.vector(query)
+  # Register anytime exit point ----------------------
 
-  if (anyNA(query)) {
-    ## ---- Query with Gap ----
-    q1 <- NULL
-    q2 <- NULL
+  result <- NULL
 
-    min_idx <- min(which(is.na(query))) - 1
-    max_idx <- max(which(is.na(query))) + 1
-
-    if (min_idx >= 4L) {
-      q1 <- query[1:min_idx]
-    }
-
-    if (max_idx <= (window_size - 4)) {
-      q2 <- query[max_idx:window_size]
-    }
-
-    if (anyNA(q1) || anyNA(q2)) {
-      stop("Querying with gap only supports one gap.")
-    }
-
-    q1_len <- length(q1)
-    q2_len <- length(q2)
-
-    if (q1_len != q2_len) {
-      warning("Warning: Result may be inconsistent if the size of the queries are different.")
-    }
-
-    pre1 <- mass_pre(data, window_size = q1_len)
-    pre2 <- mass_pre(data, window_size = q2_len)
-
-    result1 <- mass_v3(q1, data, pre1$window_size, pre1$data_size, pre1$data_mean, pre1$data_sd, mean(q1), std(q1))
-    result2 <- mass_v3(q2, data, pre2$window_size, pre2$data_size, pre2$data_mean, pre2$data_sd, mean(q2), std(q2))
-    result1 <- sqrt(result1$distance_profile)
-    result2 <- sqrt(result2$distance_profile)
-
-    pad <- rep(Inf, max_idx - 1)
-    result2 <- c(pad, result2)
-    result1 <- c(result1, rep(Inf, length(result2) - length(result1)))
-
-    result <- list(distance_profile = (result1 + result2)^2)
-  } else {
-    ## ---- Non-GAP ----
-    # set window_size
-    window_size <- ifelse(is.null(window_size), length(query), window_size)
-
-    if (paa > 1) {
-      data <- paa(data, paa)
-      query <- paa(query, paa)
-      window_size <- floor(window_size / paa)
-    }
-
-    ## ---- First iteration with MASS ----
+  "!DEBUG Register anytime exit point"
+  on.exit(
     if (is.null(params)) {
-      params <- switch(method,
-        mass_v2 = mass_pre(data, query, window_size),
-        mass_v3 = c(mass_pre(data, query, window_size), list(data = data, k = k)),
-        mass_weighted = mass_pre_w(data, query, window_size, weight)
-      )
+      return(invisible(NULL))
     } else {
-      if (!is.null(params$par)) {
-        params <- params$par
-      }
-      window_size <- params$window_size
-    }
+      return(c(result, list(params = params)))
+    },
+    TRUE
+  )
 
-    pars <- params
-    pars$query_mean <- pars$query_mean[index]
-    pars$query_sd <- pars$query_sd[index]
-    q_w <- query[index:(window_size + index - 1)]
+  if (is.null(query)) {
+    "!!!DEBUG query is null"
+    query <- data
+  }
 
-    result <- do.call(method, c(list(q_w), pars))
-
-    if (paa > 1) {
-      result$distance_profile <- result$distance_profile * paa
-      result$last_product <- result$last_product * paa
+  # Computation ------------------------------------
+  "!DEBUG Computation"
+  if (is.null(params)) {
+    "!!!DEBUG params is null"
+    ## First iteration with MASS ----
+    tryCatch(
+      {
+        pre <- matrixprofiler::mass_pre(data, window_size, query, type, weights)
+      },
+      error = print
+    )
+    "!!!DEBUG params is a list with par and window_size"
+    params <- pre
+    params$window_size <- window_size
+  } else {
+    "!!!DEBUG params is not null"
+    ## Following iterations with MASS ----
+    if (!is.null(params$par)) {
+      params <- params$par
     }
   }
 
-  return(c(result, list(par = params)))
+  ## Do the search --------
+  tryCatch(
+    {
+      result <- matrixprofiler::mass(params, data, query, index)
+    },
+    error = print
+  )
+
+  checkmate::qassert(params, "L+")
+  checkmate::qassert(result, "L+")
 }

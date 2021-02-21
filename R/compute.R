@@ -45,29 +45,13 @@
 compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshold = 0.98, n_jobs = 1L) {
 
   # Check time series classes -----------------------
-  ## ts ----
-  ts_class <- class(ts)
-  if (ts_class %in% c("data.frame", "list")) {
-    stop(glue::glue("Time Series cannot be `{ts_class}` and must have a single dimension."))
-  }
-  ts_attr <- attributes(ts)
-  ts_names <- names(ts)
-  ts <- as.vector(ts)
-
-  if (!is.null(query)) {
-    query_class <- class(query)
-    if (query_class %in% c("data.frame", "list")) {
-      stop(glue::glue("Query cannot be `{query_class}` and must have a single dimension."))
-    }
-    query_attr <- attributes(query)
-    query_names <- names(query)
-    query <- as.vector(query)
-  }
+  data_ref <- convert_data(ts)
+  query_ref <- convert_data(query)
 
   # Parse arguments ---------------------------------
-  checkmate::qassert(ts, "N+")
+  checkmate::qassert(data_ref, "N+")
   windows <- checkmate::qassert(windows, c("0", "X+[4,)"))
-  checkmate::qassert(query, c("0", "N>=4"))
+  checkmate::qassert(query_ref, c("0", "N>=4"))
   checkmate::qassert(sample_pct, "N1(0,1]")
   checkmate::qassert(threshold, c("0", "N1(0,1]"))
   n_jobs <- as.integer(checkmate::qassert(n_jobs, paste0("X1[1,", 4, "]")))
@@ -103,16 +87,6 @@ compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
       result$partial <- res$partial
       result$sample_pct <- sample_pct
 
-      class(ts) <- ts_class
-      attributes(ts) <- ts_attr
-      names(ts) <- ts_names
-
-      if (!is.null(query)) {
-        class(query) <- query_class
-        attributes(query) <- query_attr
-        names(query) <- query_names
-      }
-
       result$data <- list(
         ts = ts,
         query = query
@@ -137,11 +111,11 @@ compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
 
       if (sample_pct >= 1) {
         algorithm <- "mpx"
-        res <- matrixprofiler::mpx(data = ts, window_size = windows, n_workers = n_jobs, progress = TRUE)
+        res <- matrixprofiler::mpx(data = data_ref, window_size = windows, n_workers = n_jobs, progress = TRUE)
       } else {
         algorithm <- "mpx" # former was scrimp
         res <- matrixprofiler::mpx(
-          data = ts, window_size = windows, s_size = sample_pct,
+          data = data_ref, window_size = windows, s_size = sample_pct,
           n_workers = n_jobs, progress = TRUE
         )
       }
@@ -150,11 +124,14 @@ compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
       join <- TRUE
       if (sample_pct >= 1) {
         algorithm <- "mpx"
-        res <- matrixprofiler::mpx(data = ts, query = query, window_size = windows, n_workers = n_jobs, progress = TRUE)
+        res <- matrixprofiler::mpx(
+          data = data_ref, query = query_ref, window_size = windows,
+          n_workers = n_jobs, progress = TRUE
+        )
       } else {
         algorithm <- "scrimp"
         res <- matrixprofiler::mpx(
-          data = ts, window_size = windows, s_size = sample_pct,
+          data = data_ref, window_size = windows, s_size = sample_pct,
           n_workers = n_jobs, progress = TRUE
         )
       }
@@ -165,18 +142,18 @@ compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
 
     if (!is.null(threshold)) {
       # when a threshold is passed, we compute the upper bound
-      res <- pmp_upper_bound(data = ts, threshold = threshold, n_workers = n_jobs)
+      res <- pmp_upper_bound(data = data_ref, threshold = threshold, n_workers = n_jobs)
     }
 
     if (is.null(windows)) {
       # when no windows are passed, create an array from 10 to upper bound or half ts size
-      windows <- seq.int(from = 10, to = min(length(ts) / 2, res$upper_window), length.out = 20)
+      windows <- seq.int(from = 10, to = min(length(data_ref) / 2, res$upper_window), length.out = 20)
     } else {
       # otherwise, remove windows that are above upper bound or half ts size
-      windows <- windows[windows <= min(length(ts) / 2, res$upper_window)]
+      windows <- windows[windows <= min(length(data_ref) / 2, res$upper_window)]
     }
 
     windows <- floor(windows)
-    res <- pmp(data = ts, window_sizes = windows, plot = FALSE, pmp_obj = res, n_workers = n_jobs)
+    res <- pmp(data = data_ref, window_sizes = windows, plot = FALSE, pmp_obj = res, n_workers = n_jobs)
   }
 }

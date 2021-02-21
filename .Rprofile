@@ -13,10 +13,10 @@ silent = TRUE
 source("renv/activate.R") # nolint
 
 if (interactive()) {
-  suppressMessages(require(testthat))
-  suppressMessages(require(devtools))
-  suppressMessages(require(usethis))
-  suppressMessages(require(conflicted))
+  suppressMessages(suppressWarnings(require(testthat)))
+  suppressMessages(suppressWarnings(require(devtools)))
+  suppressMessages(suppressWarnings(require(usethis)))
+  suppressMessages(suppressWarnings(require(conflicted)))
   # suppressMessages(prettycode::prettycode())
 
   options(
@@ -27,6 +27,9 @@ if (interactive()) {
     # error = recover
   )
 
+  suppressMessages(if (requireNamespace("devtools")) {
+    devtools::load_all()
+  })
 
   suppressMessages(if (requireNamespace("prompt")) {
     prompt::set_prompt(function(...) {
