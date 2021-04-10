@@ -30,22 +30,32 @@ if (!testthat:::on_cran()) {
     expect_warning(tsmp(data, data, data, window_size = w, verbose = 0, mode = "simple"), "Only the first two")
   })
 
-  if (!testthat:::on_cran()) {
-    result_self <- simple_fast(list(data[, 1], data[, 2], data[, 3]), window_size = w, verbose = 2)
-    result_join <- simple_fast(as.data.frame(t(data)), as.data.frame(t(query)), window_size = w, verbose = 2)
-  } else {
-    result_self <- simple_fast(data, window_size = w, verbose = 0)
-    result_join <- simple_fast(data, query, window_size = w, verbose = 0)
-  }
+  result_self <- simple_fast(data, window_size = w, verbose = 2)
+  result_join <- simple_fast(data, query, window_size = w, verbose = 2)
 
   test_that("SiMPle Results", {
+    expect_equal(result_self$n_dim, 3)
     expect_equal(round(sum(result_self$mp), 3), 419.509)
     expect_equal(round(sd(result_self$mp), 3), 0.841)
     expect_equal(sum(result_self$pi), 23878)
     expect_equal(round(sd(result_self$pi), 3), 64.977)
+
+    expect_equal(result_join$n_dim, 3)
     expect_equal(round(sum(result_join$mp), 3), 908.248)
     expect_equal(round(sd(result_join$mp), 3), 2.263)
     expect_equal(sum(result_join$pi), 24981)
     expect_equal(round(sd(result_join$pi), 3), 61.021)
+  })
+
+  test_that("Find Motif", {
+    result <- find_motif(result_self, data)
+    expect_equal(result$motif$motif_idx, list(c(73, 89), c(160, 181), c(1, 16)))
+    expect_equal(result$motif$motif_neighbor, list(numeric(), numeric(), c(120, 183, 594, 389)))
+  })
+
+  test_that("Find Discord", {
+    result <- find_discord(result_self, data)
+    expect_equal(result$discord$discord_idx, list((142)))
+    expect_equal(result$discord$discord_neighbor, list(c(414, 378, 85)))
   })
 }

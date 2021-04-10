@@ -226,7 +226,7 @@ simple_fast <- function(..., window_size, exclusion_zone = getOption("tsmp.exclu
     w = window_size,
     ez = ez
   )
-  class(obj) <- "SimpleMatrixProfile"
+  class(obj) <- c("SimpleMatrixProfile", "MatrixProfile")
   attr(obj, "join") <- join
   return(obj)
 }
