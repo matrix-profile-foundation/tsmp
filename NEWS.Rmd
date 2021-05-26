@@ -1,9 +1,10 @@
 ---
 title: "NEWS"
-author: "Francisco Bischoff"
-date: "`r format(Sys.Date(), '- %d %b %Y')`"
+author: "Francisco Bischoff\n"
+date: "`r format(Sys.Date(), '%d %b %Y')`"
 output:
   github_document:
+    md_extension: +blank_before_header
     html_preview: false
   md_document:
     pandoc_args: [
@@ -17,9 +18,10 @@ output:
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "man/figures/NEWS-"
+  fig.path = "man/figures/NEWS-" # nolint
 )
 ```
+
 
 # tsmp 0.5.0
 -   Dropped PAA code. This must be handled by the user.

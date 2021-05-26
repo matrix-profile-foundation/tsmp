@@ -46,11 +46,12 @@
         "."
       ]
     },
+
     {
       "name": "(gdb) Bash on Windows Attach",
       "type": "cppdbg",
       "request": "attach",
-      "program": "C:/Program Files/R/R-4.0.3/bin/x64/R.exe",
+      "program": "C:/Program Files/R/R-4.1.0/bin/x64/R.exe",
       "processId": "${command:pickRemoteProcess}",
       "pipeTransport": {
         "debuggerPath": "/usr/bin/gdb",
@@ -88,7 +89,7 @@
       "name": "g++.exe - Build and debug active file",
       "type": "cppdbg",
       "request": "attach",
-      "program": "C:/Program Files/R/R-4.0.3/bin/x64/R.exe",
+      "program": "C:/Program Files/R/R-4.1.0/bin/x64/R.exe",
       "processId": "20984",
       "MIMode": "gdb",
       "miDebuggerPath": "C:/rtools40/mingw64/bin/gdb.exe",

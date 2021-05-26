@@ -1,107 +1,44 @@
 README
 ================
 Francisco Bischoff
-- 10 Dec 2020
+
+26 mai 2021
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 <img src="man/figures/logo.png" align="right" style="float:right;"/>
 
-# Time Series with Matrix Profile
+## Time Series with Matrix Profile
 
 <!-- badges: start -->
 
-[![Packagist](https://img.shields.io/badge/License-Apache--2.0-brightgreen.svg)](https://choosealicense.com/licenses/apache-2.0/)
-[![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
+[![License](https://img.shields.io/badge/License-GPL--3.0-green.svg)](https://choosealicense.com/licenses/gpl-3.0/)
+[![lifecycle](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://lifecycle.r-lib.org/articles/stages.html)
+
+[![Lint](https://github.com/matrix-profile-foundation/tsmp/workflows/Lint/badge.svg?branch=main)](https://github.com/jimhester/lintr)
+[![R-CMD-check](https://github.com/matrix-profile-foundation/tsmp/workflows/R-CMD-check/badge.svg?branch=main)](https://r-pkgs.org/r-cmd-check.html)
+
+[![codecov](https://codecov.io/gh/matrix-profile-foundation/tsmp/branch/main/graph/badge.svg?token=w7AmbwhNvn)](https://codecov.io/gh/matrix-profile-foundation/tsmp)
+
 [![CRAN
-version](http://www.r-pkg.org/badges/version/tsmp)](https://cran.r-project.org/package=tsmp)
+version](https://www.r-pkg.org/badges/version/tsmp)](https://cran.r-project.org/package=tsmp)
 [![CRAN
 Downloads](https://cranlogs.r-pkg.org/badges/tsmp)](https://cran.r-project.org/package=tsmp)
-[![CircleCI build
-status](https://circleci.com/gh/matrix-profile-foundation/tsmp.svg?style=svg)](https://circleci.com/gh/matrix-profile-foundation/tsmp)
+
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/matrix-profile-foundation/tsmp/master)
+
 <!-- badges: end -->
 
-<table>
-<thead>
-<tr class="header">
-<th>
-<p>
-</p>
-</th>
-<th>
-<p>
-Build
-</p>
-<p>
-</p>
-</th>
-<th>
-<p>
-Dev
-</p>
-<p>
-</p>
-</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>
-<p>
-Linux x86\_64
-</p>
-</td>
-<td>
-<p>
-</p>
-</td>
-<td>
-</td>
-</tr>
-<tr class="even">
-<td>
-<p>
-OSX
-</p>
-</td>
-<td>
-<p>
-</p>
-</td>
-<td>
-</td>
-</tr>
-<tr class="odd">
-<td>
-<p>
-Windows
-</p>
-</td>
-<td>
-<p>
-</p>
-</td>
-<td>
-</td>
-</tr>
-<tr class="even">
-<td>
-<p>
-Coverage
-</p>
-</td>
-<td>
-<p>
-</p>
-</td>
-<td>
-</td>
-</tr>
-</tbody>
-</table>
+## Important News!!!
 
-## Overview
+The `tsmp` package is being modified to allow a great change in speed
+using the `matrixprofiler` package. We will make all efforts to keep it
+back compatible.
+
+A slightly more explained text is available
+[here](https://franzbischoff.rbind.io/posts/presenting-matrixprofiler-a-fast-matrix-profile-implementation-in-r/).
+
+### Overview
 
 R Functions implementing UCR Matrix Profile Algorithm
 (<http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>).
@@ -138,26 +75,7 @@ more details.
 
 Please be welcome to suggest improvements.
 
-### Performance on an Intel(R) Core(TM) i7-7700 CPU @ 3.60GHz using a random walk dataset
-
-``` r
-set.seed(2018)
-data <- cumsum(sample(c(-1, 1), 40000, TRUE))
-```
-
-#### Current version benchmark
-
-|             | Elapsed Time(s) | Data Size | Window Size | Threads | Lang |
-|:------------|----------------:|----------:|------------:|--------:|:-----|
-| `mpx_par`   |            0.59 |     40000 |        1000 |       8 | Rcpp |
-| `mpx`       |            1.94 |     40000 |        1000 |       1 | Rcpp |
-| `stomp_par` |           38.90 |     40000 |        1000 |       8 | R    |
-| `stomp`     |           85.13 |     40000 |        1000 |       1 | R    |
-| `scrimp`    |          123.07 |     40000 |        1000 |       1 | R    |
-| `stamp_par` |          925.45 |     40000 |        1000 |       8 | R    |
-| `stamp`     |         3776.86 |     40000 |        1000 |       1 | R    |
-
-## Installation
+### Installation
 
 ``` r
 # Install the released version from CRAN
@@ -168,7 +86,7 @@ install.packages("tsmp")
 devtools::install_github("matrix-profile-foundation/tsmp")
 ```
 
-## Currently available Features
+### Currently available Features
 
 -   STAMP (single and multi-thread versions)
 
@@ -217,12 +135,12 @@ devtools::install_github("matrix-profile-foundation/tsmp")
     -   Fast moving average
     -   Fast moving SD
 
-## Roadmap
+### Roadmap
 
 -   Profile-Based Shapelet Discovery
 -   GPU-STOMP
 
-## Other projects with Matrix Profile
+### Other projects with Matrix Profile
 
 -   Python: <https://github.com/target/matrixprofile-ts>
 -   Python: <https://github.com/ZiyaoWei/pyMatrixProfile>
@@ -238,20 +156,28 @@ devtools::install_github("matrix-profile-foundation/tsmp")
 -   CUDA: <https://github.com/zpzim/STOMPSelfJoin>
 -   CUDA: <https://github.com/zpzim/SCAMP>
 
-## Matrix Profile Foundation
+### Matrix Profile Foundation
 
 Our next step unifying the Matrix Profile implementation in several
 programming languages.
 
 Visit: [Matrix Profile Foundation](https://matrixprofile.org)
 
-## Package dependencies
+### Benchmarks
+
+New benchmarks for the new package
+[matrixprofiler](https://CRAN.R-project.org/package=matrixprofiler) is
+available at [RPubs](https://rpubs.com/franzbischoff/matrixprofiler).
+
+### Package dependencies
+
+<center>
 
 ![](man/figures/dependency_plot-1.png)<!-- -->
 
-## Code of Conduct
+### Code of Conduct
 
-Please note that the ‘tsmp’ project is released with a [Contributor Code
+Please note that the tsmp project is released with a [Contributor Code
 of
-Conduct](https://github.com/matrix-profile-foundation/tsmp/blob/master/.github/CODE_OF_CONDUCT.md).
+Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html).
 By contributing to this project, you agree to abide by its terms.

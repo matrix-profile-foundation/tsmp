@@ -42,7 +42,7 @@ vignettes/*.R
 *.knit.md
 
 # VSCode
-#.vscode/
+.vscode/
 
 ### R.Bookdown Stack ###
 # R package: bookdown caching files
@@ -62,7 +62,6 @@ src-*/
 packrat/lib*/
 packrat/src/
 Rplots.pdf
-/src/RcppExports.cpp
 /src/*.o
 /src/*.so
 /src/*.dll
@@ -75,3 +74,4 @@ Rplots.pdf
 README.html
 
 workspace.RData
+.history

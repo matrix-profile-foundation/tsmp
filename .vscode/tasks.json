@@ -2,15 +2,16 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "type": "process",
+      "type": "shell",
       "label": "R: ASAN/USBAN",
-      "command": "C:/Program Files/R/R-4.0.3/bin/x64/Rscript.exe",
+      "command": "echo 'MingW does not support ASAN/UBSAN'",
       "linux": {
-        "command": "/usr/lib/R/bin/Rscript"
+        "type": "process",
+        "command": "/usr/lib/R/bin/Rscript",
+        "args": [
+          "dev/check_asan.R"
+        ]
       },
-      "args": [
-        "dev/check_asan.R"
-      ],
       "options": {
         "cwd": "${workspaceFolder}"
       },
@@ -71,7 +72,7 @@
     {
       "type": "process",
       "label": "R: lint package",
-      "command": "C:/Program Files/R/R-4.0.3/bin/x64/Rscript.exe",
+      "command": "C:/Program Files/R/R-4.1.0/bin/x64/Rscript.exe",
       "linux": {
         "command": "/usr/lib/R/bin/Rscript"
       },
@@ -113,7 +114,7 @@
     {
       "type": "process",
       "label": "R: test units",
-      "command": "C:/Program Files/R/R-4.0.3/bin/x64/Rscript.exe",
+      "command": "C:/Program Files/R/R-4.1.0/bin/x64/Rscript.exe",
       "linux": {
         "command": "/usr/lib/R/bin/Rscript"
       },
@@ -139,7 +140,7 @@
       "type": "process",
       "label": "R: test coverage",
       "dependsOn": "R: test units",
-      "command": "C:/Program Files/R/R-4.0.3/bin/x64/Rscript.exe",
+      "command": "C:/Program Files/R/R-4.1.0/bin/x64/Rscript.exe",
       "linux": {
         "command": "/usr/lib/R/bin/Rscript"
       },
@@ -161,7 +162,7 @@
     {
       "type": "shell",
       "label": "R: build current package",
-      "command": "C:/Program Files/R/R-4.0.3/bin/x64/Rscript.exe",
+      "command": "C:/Program Files/R/R-4.1.0/bin/x64/Rscript.exe",
       "linux": {
         "command": "/usr/lib/R/bin/Rscript"
       },
@@ -180,6 +181,62 @@
         "kind": "build",
         "isDefault": true
       }
+    },
+    {
+      "type": "shell",
+      "label": "R: build current file",
+      "command": "C:/rtools40/${input:compiler}/bin/g++.exe",
+      "linux": {
+        "command": "/usr/bin/g++"
+      },
+      "osx": {
+        "command": "/usr/bin/clang++"
+      },
+      "detail": "compiler: g++/clang++",
+      "args": [
+        "-std=gnu++11",
+        "-DNDEBUG",
+        "-I\"C:/PROGRA~1/R/R-40~1.3/include\"",
+        "-I\"${workspaceFolder}/renv/library/R-4.0/${input:renv_arch}/Rcpp/include\"",
+        "-I\"${workspaceFolder}/renv/library/R-4.0/${input:renv_arch}/RcppParallel/include\"",
+        "-I\"${workspaceFolder}/renv/library/R-4.0/${input:renv_arch}/RcppProgress/include\"",
+        "-I\"${workspaceFolder}/renv/library/R-4.0/${input:renv_arch}/RcppThread/include\"",
+        "-DRCPP_PARALLEL_USE_TBB=1",
+        "-DSTRICT_R_HEADERS",
+        "-O2",
+        "-Wall",
+        "-mfpmath=sse",
+        "-msse2",
+        "-mstackrealign",
+        "-c",
+        "${fileBasename}",
+        "-o",
+        "${fileBasenameNoExtension}.o"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/src"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "renv_arch",
+      "type": "command",
+      "command": "cpptools.activeConfigCustomVariable",
+      "args": "renv_arch"
+    },
+    {
+      "id": "compiler",
+      "type": "command",
+      "command": "cpptools.activeConfigCustomVariable",
+      "args": "compiler"
     }
   ]
 }

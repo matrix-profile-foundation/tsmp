@@ -1,8 +1,11 @@
 ---
 title: "README"
-author: "Francisco Bischoff"
-date: "`r format(Sys.Date(), '- %d %b %Y')`"
-output: github_document
+author: "Francisco Bischoff\n"
+date: "`r format(Sys.Date(), '%d %b %Y')`"
+output:
+  github_document:
+    md_extension: +blank_before_header
+    html_preview: false
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -13,27 +16,38 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.path = "man/figures/README-"
 )
-library(tsmp)
+devtools::load_all()
 ```
 
 <img src="man/figures/logo.png" align="right" style="float:right;"/>
 
-# Time Series with Matrix Profile
+## Time Series with Matrix Profile
 
 <!-- badges: start -->
 
-[![Packagist](https://img.shields.io/badge/License-Apache--2.0-brightgreen.svg)](https://choosealicense.com/licenses/apache-2.0/) [![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable) [![CRAN version](http://www.r-pkg.org/badges/version/tsmp)](https://cran.r-project.org/package=tsmp) [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/tsmp)](https://cran.r-project.org/package=tsmp) [![CircleCI build status](https://circleci.com/gh/matrix-profile-foundation/tsmp.svg?style=svg)](https://circleci.com/gh/matrix-profile-foundation/tsmp)
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/matrix-profile-foundation/tsmp/master) <!-- badges: end -->
+[![License](https://img.shields.io/badge/License-GPL--3.0-green.svg)](https://choosealicense.com/licenses/gpl-3.0/)
+[![lifecycle](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 
-<table><thead><tr class="header"><th><p></p></th><th><p>Build</p><p>
-</p></th><th><p>Dev</p><p>
-</p></th></tr></thead><tbody><tr class="odd"><td><p>Linux x86_64</p></td><td><p>
-</p></td><td></td></tr><tr class="even"><td><p>OSX</p></td><td><p>
-</p></td><td></td></tr><tr class="odd"><td><p>Windows</p></td><td><p>
-</p></td><td></td></tr><tr class="even"><td><p>Coverage</p></td><td><p>
-</p></td><td></td></tr></tbody></table>
+[![Lint](https://github.com/matrix-profile-foundation/tsmp/workflows/Lint/badge.svg?branch=main)](https://github.com/jimhester/lintr)
+[![R-CMD-check](https://github.com/matrix-profile-foundation/tsmp/workflows/R-CMD-check/badge.svg?branch=main)](https://r-pkgs.org/r-cmd-check.html)
 
-## Overview
+[![codecov](https://codecov.io/gh/matrix-profile-foundation/tsmp/branch/main/graph/badge.svg?token=w7AmbwhNvn)](https://codecov.io/gh/matrix-profile-foundation/tsmp)
+
+[![CRAN version](https://www.r-pkg.org/badges/version/tsmp)](https://cran.r-project.org/package=tsmp)
+[![CRAN Downloads](https://cranlogs.r-pkg.org/badges/tsmp)](https://cran.r-project.org/package=tsmp)
+
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/matrix-profile-foundation/tsmp/master)
+
+<!-- badges: end -->
+
+## Important News!!!
+
+The `tsmp` package is being modified to allow a great change in speed using the `matrixprofiler` package.
+We will make all efforts to keep it back compatible.
+
+A slightly more explained text is available [here](https://franzbischoff.rbind.io/posts/presenting-matrixprofiler-a-fast-matrix-profile-implementation-in-r/).
+
+### Overview
 
 R Functions implementing UCR Matrix Profile Algorithm (<http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>).
 
@@ -64,39 +78,7 @@ Please refer to the [User Manual](https://matrix-profile-foundation.github.io/ts
 
 Please be welcome to suggest improvements.
 
-### Performance on an Intel(R) Core(TM) i7-7700 CPU \@ 3.60GHz using a random walk dataset
-
-```{r bench_data, eval=FALSE, include=TRUE}
-set.seed(2018)
-data <- cumsum(sample(c(-1, 1), 40000, TRUE))
-```
-
-#### Current version benchmark
-
-```{r benchmark, cache=TRUE, include=FALSE}
-w <- 1000
-workers <- 8
-data_size <- 40000
-set.seed(2018)
-times <- 5L
-mbm_stomp <- round(median(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "stomp", verbose = 0), times = times, setup = (data <- cumsum(sample(c(-1, 1), data_size, TRUE))))$time) / 10^9, 2)
-mbm_stomp_par <- round(median(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "stomp", n_workers = workers, verbose = 0), times = times, setup = (data <- cumsum(sample(c(-1, 1), data_size, TRUE))))$time) / 10^9, 2)
-mbm_scrimp <- round(median(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "scrimp", verbose = 0), times = times, setup = (data <- cumsum(sample(c(-1, 1), data_size, TRUE))))$time) / 10^9, 2)
-times <- 10L
-mbm_mpx <- round(median(microbenchmark::microbenchmark(mpx(data, window_size = w), times = times, setup = (data <- cumsum(sample(c(-1, 1), data_size, TRUE))))$time) / 10^9, 2)
-mbm_mpx_par <- round(median(microbenchmark::microbenchmark(mpx(data, window_size = w, n_workers = workers), times = times, setup = (data <- cumsum(sample(c(-1, 1), data_size, TRUE))))$time) / 10^9, 2)
-times <- 3L
-mbm_stamp <- round(median(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "stamp", verbose = 0), times = times, setup = (data <- cumsum(sample(c(-1, 1), data_size, TRUE))))$time) / 10^9, 2)
-mbm_stamp_par <- round(median(microbenchmark::microbenchmark(tsmp(data, window_size = w, mode = "stamp", n_workers = workers, verbose = 0), times = times, setup = (data <- cumsum(sample(c(-1, 1), data_size, TRUE))))$time) / 10^9, 2)
-```
-
-```{r bench_dataset, echo = FALSE, message=FALSE, warnings=FALSE}
-bench_data <- data.frame("Elapsed Time(s)" = c(mbm_stamp, mbm_stamp_par, mbm_stomp, mbm_stomp_par, mbm_scrimp, mbm_mpx, mbm_mpx_par), "Data Size" = data_size, "Window Size" = w, Threads = c(1, workers, 1, workers, 1, 1, workers), Lang = c("R", "R", "R", "R", "R", "Rcpp", "Rcpp"), row.names = c("`stamp`", "`stamp_par`", "`stomp`", "`stomp_par`", "`scrimp`", "`mpx`", "`mpx_par`"), check.names = FALSE)
-
-knitr::kable(bench_data[order(bench_data$`Elapsed Time(s)`), ])
-```
-
-## Installation
+### Installation
 
 ```{r installation, gh-installation, eval = FALSE}
 # Install the released version from CRAN
@@ -107,7 +89,7 @@ install.packages("tsmp")
 devtools::install_github("matrix-profile-foundation/tsmp")
 ```
 
-## Currently available Features
+### Currently available Features
 
 -   STAMP (single and multi-thread versions)
 
@@ -155,12 +137,12 @@ devtools::install_github("matrix-profile-foundation/tsmp")
     -   Fast moving average
     -   Fast moving SD
 
-## Roadmap
+### Roadmap
 
 -   Profile-Based Shapelet Discovery
 -   GPU-STOMP
 
-## Other projects with Matrix Profile
+### Other projects with Matrix Profile
 
 -   Python: <https://github.com/target/matrixprofile-ts>
 -   Python: <https://github.com/ZiyaoWei/pyMatrixProfile>
@@ -176,20 +158,28 @@ devtools::install_github("matrix-profile-foundation/tsmp")
 -   CUDA: <https://github.com/zpzim/STOMPSelfJoin>
 -   CUDA: <https://github.com/zpzim/SCAMP>
 
-## Matrix Profile Foundation
+### Matrix Profile Foundation
 
 Our next step unifying the Matrix Profile implementation in several programming languages.
 
 Visit: [Matrix Profile Foundation](https://matrixprofile.org)
 
-## Package dependencies
+
+### Benchmarks
+
+New benchmarks for the new package [matrixprofiler](https://CRAN.R-project.org/package=matrixprofiler)
+is available at [RPubs](https://rpubs.com/franzbischoff/matrixprofiler).
+
+### Package dependencies
+
+<center>
 
 ```{r dependency_plot, echo = FALSE, fig.width = 10, fig.height = 5, message = FALSE, warning = FALSE, fig.path = "man/figures/"}
 source("https://gist.githubusercontent.com/franzbischoff/3b83243dfdfa73e459935112f3f783e3/raw/239548243f984843b3a87d8cc82f99395a8ed26e/plot_dependencies.R")
 plot_dependencies()
 ```
 
-## Code of Conduct
+### Code of Conduct
 
-Please note that the 'tsmp' project is released with a [Contributor Code of Conduct](https://github.com/matrix-profile-foundation/tsmp/blob/master/.github/CODE_OF_CONDUCT.md).
+Please note that the tsmp project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html).
 By contributing to this project, you agree to abide by its terms.

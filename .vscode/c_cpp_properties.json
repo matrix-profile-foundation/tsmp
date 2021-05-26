@@ -1,69 +1,134 @@
 {
   "configurations": [
     {
-      "name": "Windows64-Rtools40",
+      "name": "Rtools40-x64",
+      "intelliSenseMode": "gcc-x64",
       "includePath": [
-        "C:/Program Files/R/R-4.0.3/include/**",
-        "${workspaceFolder}/src/**",
-        "${workspaceFolder}/renv/library/R-4.0/x86_64-w64-mingw32/Rcpp/include/**",
-        "${workspaceFolder}/renv/library/R-4.0/x86_64-w64-mingw32/RcppParallel/include/**",
-        "${workspaceFolder}/renv/library/R-4.0/x86_64-w64-mingw32/RcppProgress/include/**",
-        "${workspaceFolder}/renv/library/R-4.0/x86_64-w64-mingw32/RcppThread/include/**"
+        "C:/Program Files/R/R-4.1.0/include",
+        "${workspaceFolder}/src",
+        "${workspaceFolder}/renv/library/R-4.1/x86_64-w64-mingw32/Rcpp/include",
+        "${workspaceFolder}/renv/library/R-4.1/x86_64-w64-mingw32/RcppParallel/include",
+        "${workspaceFolder}/renv/library/R-4.1/x86_64-w64-mingw32/RcppProgress/include",
+        "${workspaceFolder}/renv/library/R-4.1/x86_64-w64-mingw32/RcppThread/include"
       ],
-      "defines": ["UNICODE", "_UNICODE", "RCPP_PARALLEL_USE_TBB=1"],
+      "defines": [
+        "UNICODE",
+        "_UNICODE",
+        "RCPP_PARALLEL_USE_TBB=1",
+        "STRICT_R_HEADERS",
+        "NDEBUG"
+      ],
       "compilerPath": "C:/rtools40/mingw64/bin/g++.exe",
-      "windowsSdkVersion": "10.0.18362.0",
       "cStandard": "gnu11",
       "cppStandard": "gnu++11",
-      "intelliSenseMode": "gcc-x64"
+      "customConfigurationVariables": {
+        "renv_arch": "x86_64-w64-mingw32",
+        "compiler": "mingw64"
+      }
+    },
+    {
+      "name": "Rtools40-x86",
+      "intelliSenseMode": "gcc-x86",
+      "includePath": [ // renv might be on i386-w64-mingw32 if R-32bits
+        "C:/Program Files/R/R-4.1.0/include",
+        "${workspaceFolder}/src",
+        "${workspaceFolder}/renv/library/R-4.1/x86_64-w64-mingw32/Rcpp/include",
+        "${workspaceFolder}/renv/library/R-4.1/x86_64-w64-mingw32/RcppParallel/include",
+        "${workspaceFolder}/renv/library/R-4.1/x86_64-w64-mingw32/RcppProgress/include",
+        "${workspaceFolder}/renv/library/R-4.1/x86_64-w64-mingw32/RcppThread/include"
+      ],
+      "defines": [
+        "UNICODE",
+        "_UNICODE",
+        "RCPP_PARALLEL_USE_TBB=1",
+        "STRICT_R_HEADERS",
+        "NDEBUG"
+      ],
+      "compilerPath": "C:/rtools40/mingw32/bin/g++.exe",
+      "compilerArgs": [
+        "-m32"
+      ], // redundant, but...
+      "cStandard": "gnu11",
+      "cppStandard": "gnu++11",
+      "customConfigurationVariables": {
+        "renv_arch": "x86_64-w64-mingw32",
+        "compiler": "mingw32"
+      }
     },
     {
       "name": "Ubuntu16+",
-      "includePath": [
+      "includePath": [ // renv might be on i386-pc-linux-gnu if R-32bits
         "/usr/share/R/include",
         "${workspaceFolder}/src",
-        "${workspaceFolder}/renv/library/R-4.0/x86_64-pc-linux-gnu/Rcpp/include",
-        "${workspaceFolder}/renv/library/R-4.0/x86_64-pc-linux-gnu/RcppParallel/include",
-        "${workspaceFolder}/renv/library/R-4.0/x86_64-pc-linux-gnu/RcppProgress/include",
-        "${workspaceFolder}/renv/library/R-4.0/x86_64-pc-linux-gnu/RcppThread/include"
+        "${workspaceFolder}/renv/library/R-4.1/x86_64-pc-linux-gnu/Rcpp/include",
+        "${workspaceFolder}/renv/library/R-4.1/x86_64-pc-linux-gnu/RcppParallel/include",
+        "${workspaceFolder}/renv/library/R-4.1/x86_64-pc-linux-gnu/RcppProgress/include",
+        "${workspaceFolder}/renv/library/R-4.1/x86_64-pc-linux-gnu/RcppThread/include"
       ],
-      "defines": ["UNICODE", "_UNICODE", "RCPP_PARALLEL_USE_TBB=1"],
+      "defines": [
+        "UNICODE",
+        "_UNICODE",
+        "RCPP_PARALLEL_USE_TBB=1",
+        "STRICT_R_HEADERS"
+      ],
       "compilerPath": "/usr/bin/g++",
       "cStandard": "gnu11",
       "cppStandard": "gnu++11",
-      "intelliSenseMode": "linux-gcc-x64"
+      "intelliSenseMode": "linux-gcc-x64",
+      "customConfigurationVariables": {
+        "renv_arch": "x86_64-pc-linux-gnu"
+      }
     },
     {
       "name": "Raspian",
-      "includePath": [
+      "includePath": [ // this is for 32-bits (armv7l)
         "/usr/local/lib/R/include",
         "${workspaceFolder}/src",
-        "${workspaceFolder}/renv/library/R-4.0/armv7l-unknown-linux-gnueabihf/Rcpp/include",
-        "${workspaceFolder}/renv/library/R-4.0/armv7l-unknown-linux-gnueabihf/RcppParallel/include",
-        "${workspaceFolder}/renv/library/R-4.0/armv7l-unknown-linux-gnueabihf/RcppProgress/include",
-        "${workspaceFolder}/renv/library/R-4.0/armv7l-unknown-linux-gnueabihf/RcppThread/include"
+        "${workspaceFolder}/renv/library/R-4.1/armv7l-unknown-linux-gnueabihf/Rcpp/include",
+        "${workspaceFolder}/renv/library/R-4.1/armv7l-unknown-linux-gnueabihf/RcppParallel/include",
+        "${workspaceFolder}/renv/library/R-4.1/armv7l-unknown-linux-gnueabihf/RcppProgress/include",
+        "${workspaceFolder}/renv/library/R-4.1/armv7l-unknown-linux-gnueabihf/RcppThread/include"
       ],
-      "defines": ["UNICODE", "_UNICODE", "RCPP_PARALLEL_USE_TBB=1"],
+      "defines": [
+        "UNICODE",
+        "_UNICODE",
+        "RCPP_PARALLEL_USE_TBB=1",
+        "STRICT_R_HEADERS"
+      ],
       "compilerPath": "/usr/bin/g++",
+      "compilerArgs": [
+        "-m32"
+      ], // redundant, but...
       "cStandard": "gnu11",
       "cppStandard": "gnu++11",
-      "intelliSenseMode": "linux-gcc-arm"
+      "intelliSenseMode": "linux-gcc-arm",
+      "customConfigurationVariables": {
+        "renv_arch": "armv7l-unknown-linux-gnueabihf"
+      }
     },
     {
       "name": "MacOS-clang++",
-      "includePath": [
+      "includePath": [ // renv might be on i386-pc-linux-gnu if R-32bits
         "/usr/share/R/include",
         "${workspaceFolder}/src",
-        "${workspaceFolder}/renv/library/R-4.0/x86_64-pc-linux-gnu/Rcpp/include",
-        "${workspaceFolder}/renv/library/R-4.0/x86_64-pc-linux-gnu/RcppParallel/include",
-        "${workspaceFolder}/renv/library/R-4.0/x86_64-pc-linux-gnu/RcppProgress/include",
-        "${workspaceFolder}/renv/library/R-4.0/x86_64-pc-linux-gnu/RcppThread/include"
+        "${workspaceFolder}/renv/library/R-4.1/x86_64-pc-linux-gnu/Rcpp/include",
+        "${workspaceFolder}/renv/library/R-4.1/x86_64-pc-linux-gnu/RcppParallel/include",
+        "${workspaceFolder}/renv/library/R-4.1/x86_64-pc-linux-gnu/RcppProgress/include",
+        "${workspaceFolder}/renv/library/R-4.1/x86_64-pc-linux-gnu/RcppThread/include"
       ],
-      "defines": ["UNICODE", "_UNICODE", "RCPP_PARALLEL_USE_TBB=1"],
+      "defines": [
+        "UNICODE",
+        "_UNICODE",
+        "RCPP_PARALLEL_USE_TBB=1",
+        "STRICT_R_HEADERS"
+      ],
       "compilerPath": "/usr/bin/clang++",
       "cStandard": "c11",
       "cppStandard": "c++11",
-      "intelliSenseMode": "macos-clang-x64"
+      "intelliSenseMode": "macos-clang-x64",
+      "customConfigurationVariables": {
+        "renv_arch": "x86_64-pc-linux-gnu"
+      }
     }
   ],
   "version": 4

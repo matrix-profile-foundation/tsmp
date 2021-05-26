@@ -1,5 +1,6 @@
 ^renv$
 ^renv\.lock$
+^\.history$
 ^\.vscode$
 ^\.editorconfig$
 ^.*\.code-workspace$
@@ -35,3 +36,4 @@
 \.clang-format
 ^Makefile$
 ^docs/_pkgdown\.yml$
+^.*\.tex$

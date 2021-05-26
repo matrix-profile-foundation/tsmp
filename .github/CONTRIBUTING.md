@@ -1,8 +1,9 @@
 # Contributing to tsmp
 
 This outlines how to propose a change to tsmp.
-For more detailed info about contributing to this, and other tidyverse packages, please see the
-[**development contributing guide**](https://rstd.io/tidy-contrib).
+For more detailed info about contributing, please see the
+[**development contributing guide**](https://rstd.io/tidy-contrib) from tidyverse as we pretty sure
+align with that.
 
 ## Fixing typos
 
@@ -18,26 +19,26 @@ If you’ve found a bug, please file an issue that illustrates the bug with a mi
 
 ### Pull request process
 
-- Fork the package and clone onto your computer. If you haven't done this before, we recommend using `usethis::create_from_github("matrix-profile-foundation/tsmp", fork = TRUE)`.
+-   Fork the package and clone onto your computer. If you haven't done this before, we recommend using `usethis::create_from_github("matrix-profile-foundation/tsmp", fork = TRUE)`.
 
-- Install all development dependences with `devtools::install_dev_deps()`, and then make sure the package passes R CMD check by running `devtools::check()`.
+-   Install all development dependences with `devtools::install_dev_deps()`, and then make sure the package passes R CMD check by running `devtools::check()`.
   If R CMD check doesn't pass cleanly, it's a good idea to ask for help before continuing.
-- Create a Git branch for your pull request (PR). We recommend using `usethis::pr_init("brief-description-of-change")`.
+-   Create a Git branch for your pull request (PR). We recommend using `usethis::pr_init("brief-description-of-change")`.
 
-- Make your changes, commit to git, and then create a PR by running `usethis::pr_push()`, and following the prompts in your browser.
+-   Make your changes, commit to git, and then create a PR by running `usethis::pr_push()`, and following the prompts in your browser.
   The title of your PR should briefly describe the change.
   The body of your PR should contain `Fixes #issue-number`.
 
-- For user-facing changes, add a bullet to the top of `NEWS.md` (i.e. just below the first header). Follow the style described in <https://style.tidyverse.org/news.html>.
+-   For user-facing changes, add a bullet to the top of `NEWS.md` (i.e. just below the first header). Follow the style described in <https://style.tidyverse.org/news.html>.
 
 ### Code style
 
-- New code should follow the tidyverse [style guide](https://style.tidyverse.org).
+-   New code should follow the tidyverse [style guide](https://style.tidyverse.org).
   You can use the [styler](https://CRAN.R-project.org/package=styler) package to apply these styles, but please don't restyle code that has nothing to do with your PR.
 
-- We use [roxygen2](https://cran.r-project.org/package=roxygen2), with [Markdown syntax](https://cran.r-project.org/web/packages/roxygen2/vignettes/rd-formatting.html), for documentation.
+-   We use [roxygen2](https://cran.r-project.org/package=roxygen2), with [Markdown syntax](https://cran.r-project.org/web/packages/roxygen2/vignettes/rd-formatting.html), for documentation.
 
-- We use [testthat](https://cran.r-project.org/package=testthat) for unit tests.
+-   We use [testthat](https://cran.r-project.org/package=testthat) for unit tests.
   Contributions with test cases included are easier to accept.
 
 ## Code of Conduct
