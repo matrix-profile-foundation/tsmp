@@ -208,19 +208,21 @@ Conference on Data Mining. IEEE; 2011. p. 1086-91.</p></li>
 <p>Website: <a href='https://sites.google.com/site/salientsubs/'>https://sites.google.com/site/salientsubs/</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># toy example</span>
-<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>mp_toy_data</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[</span>, <span class='fl'>1</span><span class='op'>]</span>
-<span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span><span class='op'>(</span><span class='va'>data</span>, window_size <span class='op'>=</span> <span class='fl'>30</span>, verbose <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
-<span class='va'>mps</span> <span class='op'>&lt;-</span> <span class='fu'>salient_subsequences</span><span class='op'>(</span><span class='va'>mp</span>, <span class='va'>data</span>, verbose <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in salient_subsequences(mp, data, verbose = 0): First argument must be an object of class `MatrixProfile`.</span></div><div class='input'><span class='co'># \donttest{</span>
-<span class='co'># full example</span>
-<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>mp_meat_data</span><span class='op'>$</span><span class='va'>sub</span><span class='op'>$</span><span class='va'>data</span>
-<span class='va'>w</span> <span class='op'>&lt;-</span> <span class='va'>mp_meat_data</span><span class='op'>$</span><span class='va'>sub</span><span class='op'>$</span><span class='va'>sub_len</span>
-<span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span><span class='op'>(</span><span class='va'>data</span>, window_size <span class='op'>=</span> <span class='va'>w</span>, verbose <span class='op'>=</span> <span class='fl'>2</span>, n_workers <span class='op'>=</span> <span class='fl'>6</span><span class='op'>)</span>
-<span class='va'>mps</span> <span class='op'>&lt;-</span> <span class='fu'>salient_subsequences</span><span class='op'>(</span><span class='va'>mp</span>, <span class='va'>data</span>, n_bits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>4</span>, <span class='fl'>6</span>, <span class='fl'>8</span><span class='op'>)</span>, verbose <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in salient_subsequences(mp, data, n_bits = c(4, 6, 8), verbose = 2): First argument must be an object of class `MatrixProfile`.</span></div><div class='input'><span class='co'># }</span>
-
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># toy example</span></span>
+<span class='r-in'><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>mp_toy_data</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[</span>, <span class='fl'>1</span><span class='op'>]</span></span>
+<span class='r-in'><span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span><span class='op'>(</span><span class='va'>data</span>, window_size <span class='op'>=</span> <span class='fl'>30</span>, verbose <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>mps</span> <span class='op'>&lt;-</span> <span class='fu'>salient_subsequences</span><span class='op'>(</span><span class='va'>mp</span>, <span class='va'>data</span>, verbose <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in salient_subsequences(mp, data, verbose = 0):</span> First argument must be an object of class `MatrixProfile`.</span>
+<span class='r-in'><span class='co'># \donttest{</span></span>
+<span class='r-in'><span class='co'># full example</span></span>
+<span class='r-in'><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>mp_meat_data</span><span class='op'>$</span><span class='va'>sub</span><span class='op'>$</span><span class='va'>data</span></span>
+<span class='r-in'><span class='va'>w</span> <span class='op'>&lt;-</span> <span class='va'>mp_meat_data</span><span class='op'>$</span><span class='va'>sub</span><span class='op'>$</span><span class='va'>sub_len</span></span>
+<span class='r-in'><span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span><span class='op'>(</span><span class='va'>data</span>, window_size <span class='op'>=</span> <span class='va'>w</span>, verbose <span class='op'>=</span> <span class='fl'>2</span>, n_workers <span class='op'>=</span> <span class='fl'>6</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>mps</span> <span class='op'>&lt;-</span> <span class='fu'>salient_subsequences</span><span class='op'>(</span><span class='va'>mp</span>, <span class='va'>data</span>, n_bits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>4</span>, <span class='fl'>6</span>, <span class='fl'>8</span><span class='op'>)</span>, verbose <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in salient_subsequences(mp, data, n_bits = c(4, 6, 8), verbose = 2):</span> First argument must be an object of class `MatrixProfile`.</span>
+<span class='r-in'><span class='co'># }</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

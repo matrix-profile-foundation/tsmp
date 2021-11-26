@@ -218,17 +218,20 @@ on Management of Data - SIGMOD '18. New York, New York, USA: ACM Press; 2018. p.
 <code><a href='tsmp.html'>tsmp</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'>valmod</span><span class='op'>(</span><span class='va'>mp_toy_data</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>200</span>, <span class='fl'>1</span><span class='op'>]</span>, window_min <span class='op'>=</span> <span class='fl'>30</span>, window_max <span class='op'>=</span> <span class='fl'>40</span>, verbose <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in convert_data(data): Argument `data` cannot be `matrix` and must have a single dimension.Argument `data` cannot be `array` and must have a single dimension.</span></div><div class='input'><span class='co'># \donttest{</span>
-<span class='va'>ref_data</span> <span class='op'>&lt;-</span> <span class='va'>mp_toy_data</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[</span>, <span class='fl'>1</span><span class='op'>]</span>
-<span class='va'>query_data</span> <span class='op'>&lt;-</span> <span class='va'>mp_toy_data</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[</span>, <span class='fl'>2</span><span class='op'>]</span>
-<span class='co'># self similarity</span>
-<span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'>valmod</span><span class='op'>(</span><span class='va'>ref_data</span>, window_min <span class='op'>=</span> <span class='fl'>30</span>, window_max <span class='op'>=</span> <span class='fl'>40</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in convert_data(data): Argument `data` cannot be `matrix` and must have a single dimension.Argument `data` cannot be `array` and must have a single dimension.</span></div><div class='input'><span class='co'># join similarity</span>
-<span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'>valmod</span><span class='op'>(</span><span class='va'>ref_data</span>, <span class='va'>query_data</span>, window_min <span class='op'>=</span> <span class='fl'>30</span>, window_max <span class='op'>=</span> <span class='fl'>40</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in convert_data(data): Argument `data` cannot be `matrix` and must have a single dimension.Argument `data` cannot be `array` and must have a single dimension.</span></div><div class='input'><span class='co'># }</span>
-
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'>valmod</span><span class='op'>(</span><span class='va'>mp_toy_data</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>200</span>, <span class='fl'>1</span><span class='op'>]</span>, window_min <span class='op'>=</span> <span class='fl'>30</span>, window_max <span class='op'>=</span> <span class='fl'>40</span>, verbose <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in convert_data(data):</span> Argument `data` cannot be `matrix` and must have a single dimension.Argument `data` cannot be `array` and must have a single dimension.</span>
+<span class='r-in'><span class='co'># \donttest{</span></span>
+<span class='r-in'><span class='va'>ref_data</span> <span class='op'>&lt;-</span> <span class='va'>mp_toy_data</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[</span>, <span class='fl'>1</span><span class='op'>]</span></span>
+<span class='r-in'><span class='va'>query_data</span> <span class='op'>&lt;-</span> <span class='va'>mp_toy_data</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[</span>, <span class='fl'>2</span><span class='op'>]</span></span>
+<span class='r-in'><span class='co'># self similarity</span></span>
+<span class='r-in'><span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'>valmod</span><span class='op'>(</span><span class='va'>ref_data</span>, window_min <span class='op'>=</span> <span class='fl'>30</span>, window_max <span class='op'>=</span> <span class='fl'>40</span><span class='op'>)</span></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in convert_data(data):</span> Argument `data` cannot be `matrix` and must have a single dimension.Argument `data` cannot be `array` and must have a single dimension.</span>
+<span class='r-in'><span class='co'># join similarity</span></span>
+<span class='r-in'><span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'>valmod</span><span class='op'>(</span><span class='va'>ref_data</span>, <span class='va'>query_data</span>, window_min <span class='op'>=</span> <span class='fl'>30</span>, window_max <span class='op'>=</span> <span class='fl'>40</span><span class='op'>)</span></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in convert_data(data):</span> Argument `data` cannot be `matrix` and must have a single dimension.Argument `data` cannot be `array` and must have a single dimension.</span>
+<span class='r-in'><span class='co'># }</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

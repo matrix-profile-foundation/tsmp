@@ -130,8 +130,8 @@
 </ul>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Basic workflow:</span>
-<span class="va">matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/tsmp.html">tsmp</a></span><span class="op">(</span><span class="va">data</span>, window_size <span class="op">=</span> <span class="fl">30</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="reference/find_motif.html">find_motif</a></span><span class="op">(</span>n_motifs <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">%T&gt;%</span>
+<span class="va">matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/tsmp.html">tsmp</a></span><span class="op">(</span><span class="va">data</span>, window_size <span class="op">=</span> <span class="fl">30</span><span class="op">)</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="reference/find_motif.html">find_motif</a></span><span class="op">(</span>n_motifs <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op"><a href="reference/%&gt;%.html">%T&gt;%</a></span>
   <span class="fu"><a href="reference/plot.html">plot</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="co"># SDTS still have a unique way to work:</span>
@@ -172,7 +172,7 @@
 <li><p>Exact Detection of Variable Length Motifs (VALMOD)</p></li>
 <li><p>MPdist: Matrix Profile Distance</p></li>
 <li><p>Time Series Snippets</p></li>
-<li><p>Subsetting Matrix Profiles (<code><a href="https://rdrr.io/r/utils/head.html">head()</a></code>, <code><a href="https://rdrr.io/r/utils/head.html">tail()</a></code>, <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code>, etc.)</p></li>
+<li><p>Subsetting Matrix Profiles (<code><a href="https://rdrr.io/r/utils/head.html">head()</a></code>, <code><a href="https://rdrr.io/r/utils/head.html">tail()</a></code>, <code>[</code>, etc.)</p></li>
 <li>
 <p>Misc:</p>
 <ul>
@@ -262,8 +262,7 @@
 </li>
 <li>Browse source code at <br><a href="https://github.com/matrix-profile-foundation/tsmp/">https://​github.com/​matrix-profile-foundation/​tsmp/​</a>
 </li>
-<li>Report a bug at <br><a href="https://github.com/matrix-profile-foundation/tsmp/issues">
-    https://​github.com/​matrix-profile-foundation/​tsmp/​issues</a>
+<li>Report a bug at <br><a href="https://github.com/matrix-profile-foundation/tsmp/issues">https://​github.com/​matrix-profile-foundation/​tsmp/​issues</a>
 </li>
 </ul>
 </div>

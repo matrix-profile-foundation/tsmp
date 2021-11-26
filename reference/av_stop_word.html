@@ -207,11 +207,12 @@ on Knowledge Discovery and Data Mining - KDD '17. New York, New York, USA: ACM P
 <code><a href='av_zerocrossing.html'>av_zerocrossing</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>mp_test_data</span><span class='op'>$</span><span class='va'>train</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>1000</span><span class='op'>]</span>
-<span class='va'>w</span> <span class='op'>&lt;-</span> <span class='fl'>50</span>
-<span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span><span class='op'>(</span><span class='va'>data</span>, window_size <span class='op'>=</span> <span class='va'>w</span>, verbose <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
-<span class='va'>av</span> <span class='op'>&lt;-</span> <span class='fu'>av_stop_word</span><span class='op'>(</span><span class='va'>mp</span>, stop_word_loc <span class='op'>=</span> <span class='fl'>150</span>, apply <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error: Variables must be length 1 or 3</span></div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>mp_test_data</span><span class='op'>$</span><span class='va'>train</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>1000</span><span class='op'>]</span></span>
+<span class='r-in'><span class='va'>w</span> <span class='op'>&lt;-</span> <span class='fl'>50</span></span>
+<span class='r-in'><span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span><span class='op'>(</span><span class='va'>data</span>, window_size <span class='op'>=</span> <span class='va'>w</span>, verbose <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>av</span> <span class='op'>&lt;-</span> <span class='fu'>av_stop_word</span><span class='op'>(</span><span class='va'>mp</span>, stop_word_loc <span class='op'>=</span> <span class='fl'>150</span>, apply <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error:</span> Variables must be length 1 or 3</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

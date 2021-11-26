@@ -163,11 +163,13 @@
 <code><a href='motifs.html'>motifs</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>result</span> <span class='op'>&lt;-</span> <span class='fu'><a href='compute.html'>compute</a></span><span class='op'>(</span><span class='va'>mp_toy_data</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[</span>, <span class='fl'>1</span><span class='op'>]</span>, <span class='fl'>80</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in compute(mp_toy_data$data[, 1], 80): Assertion on 'query_ref' failed. One of the following must apply:</span>
-#&gt; <span class='error'> * Must be of class 'NULL', not 'double'</span>
-#&gt; <span class='error'> * Must be of length &gt;= 4, but has length 0.</span></div><div class='input'><span class='fu'>visualize</span><span class='op'>(</span><span class='va'>result</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in visualize(result): object 'result' not found</span></div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>result</span> <span class='op'>&lt;-</span> <span class='fu'><a href='compute.html'>compute</a></span><span class='op'>(</span><span class='va'>mp_toy_data</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[</span>, <span class='fl'>1</span><span class='op'>]</span>, <span class='fl'>80</span><span class='op'>)</span></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in compute(mp_toy_data$data[, 1], 80):</span> Assertion on 'query_ref' failed. One of the following must apply:</span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span>  * Must be of class 'NULL', not 'double'</span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span>  * Must be of length &gt;= 4, but has length 0.</span>
+<span class='r-in'><span class='fu'>visualize</span><span class='op'>(</span><span class='va'>result</span><span class='op'>)</span></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in visualize(result):</span> object 'result' not found</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

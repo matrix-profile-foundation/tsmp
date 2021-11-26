@@ -205,14 +205,17 @@ In: 2018 IEEE International Conference on Data Mining (ICDM). 2018.</p></li>
 <p>Website: <a href='https://sites.google.com/site/snippetfinder/'>https://sites.google.com/site/snippetfinder/</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='va'>snippets</span> <span class='op'>&lt;-</span> <span class='fu'>find_snippet</span><span class='op'>(</span><span class='va'>mp_fluss_data</span><span class='op'>$</span><span class='va'>walkjogrun</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>300</span><span class='op'>]</span>, <span class='fl'>40</span>, n_snippets <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in convert_data(data): Argument `data` cannot be `matrix` and must have a single dimension.Argument `data` cannot be `array` and must have a single dimension.</span></div><div class='input'><span class='co'># \donttest{</span>
-<span class='va'>snippets</span> <span class='op'>&lt;-</span> <span class='fu'>find_snippet</span><span class='op'>(</span><span class='va'>mp_fluss_data</span><span class='op'>$</span><span class='va'>walkjogrun</span><span class='op'>$</span><span class='va'>data</span>, <span class='fl'>120</span>, n_snippets <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in convert_data(data): Argument `data` cannot be `matrix` and must have a single dimension.Argument `data` cannot be `array` and must have a single dimension.</span></div><div class='input'><span class='fu'><a href='plot.html'>plot</a></span><span class='op'>(</span><span class='va'>snippets</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in plot(snippets): object 'snippets' not found</span></div><div class='input'><span class='co'># }</span>
-
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='va'>snippets</span> <span class='op'>&lt;-</span> <span class='fu'>find_snippet</span><span class='op'>(</span><span class='va'>mp_fluss_data</span><span class='op'>$</span><span class='va'>walkjogrun</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>300</span><span class='op'>]</span>, <span class='fl'>40</span>, n_snippets <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in convert_data(data):</span> Argument `data` cannot be `matrix` and must have a single dimension.Argument `data` cannot be `array` and must have a single dimension.</span>
+<span class='r-in'><span class='co'># \donttest{</span></span>
+<span class='r-in'><span class='va'>snippets</span> <span class='op'>&lt;-</span> <span class='fu'>find_snippet</span><span class='op'>(</span><span class='va'>mp_fluss_data</span><span class='op'>$</span><span class='va'>walkjogrun</span><span class='op'>$</span><span class='va'>data</span>, <span class='fl'>120</span>, n_snippets <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in convert_data(data):</span> Argument `data` cannot be `matrix` and must have a single dimension.Argument `data` cannot be `array` and must have a single dimension.</span>
+<span class='r-in'><span class='fu'><a href='plot.html'>plot</a></span><span class='op'>(</span><span class='va'>snippets</span><span class='op'>)</span></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in plot(snippets):</span> object 'snippets' not found</span>
+<span class='r-in'><span class='co'># }</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

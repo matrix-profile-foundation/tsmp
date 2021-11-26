@@ -213,14 +213,22 @@ later(?)</p></li>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='co'># Just compute</span>
-<span class='va'>pan</span> <span class='op'>&lt;-</span> <span class='fu'>pmp</span><span class='op'>(</span><span class='va'>mp_gait_data</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in binary_split(length(window_sizes)): could not find function "binary_split"</span></div><div class='input'><span class='co'># Compute the upper bound, than add new profiles</span>
-<span class='va'>pan</span> <span class='op'>&lt;-</span> <span class='fu'><a href='pmp_upper_bound.html'>pmp_upper_bound</a></span><span class='op'>(</span><span class='va'>mp_gait_data</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='error'>Error in corr_ed(result$mp, window_size): could not find function "corr_ed"</span></div><div class='input'><span class='va'>pan</span> <span class='op'>&lt;-</span> <span class='fu'>pmp</span><span class='op'>(</span><span class='va'>mp_gait_data</span>, pmp_obj <span class='op'>=</span> <span class='va'>pan</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='error'>Error in binary_split(length(window_sizes)): could not find function "binary_split"</span></div><div class='output co'>#&gt; <span class='warning'>Warning: `windows` contains values not computed in `pmp`</span></div><div class='input'><span class='co'># }</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># \donttest{</span></span>
+<span class='r-in'><span class='co'># Just compute</span></span>
+<span class='r-in'><span class='va'>pan</span> <span class='op'>&lt;-</span> <span class='fu'>pmp</span><span class='op'>(</span><span class='va'>mp_gait_data</span><span class='op'>)</span></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in binary_split(length(window_sizes)):</span> could not find function "binary_split"</span>
+<span class='r-in'><span class='co'># Compute the upper bound, than add new profiles</span></span>
+<span class='r-in'><span class='va'>pan</span> <span class='op'>&lt;-</span> <span class='fu'><a href='pmp_upper_bound.html'>pmp_upper_bound</a></span><span class='op'>(</span><span class='va'>mp_gait_data</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>no non-missing arguments to max; returning -Inf</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>no non-missing arguments to max; returning -Inf</span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in corr_ed(result$mp, window_size):</span> could not find function "corr_ed"</span>
+<span class='r-in'><span class='va'>pan</span> <span class='op'>&lt;-</span> <span class='fu'>pmp</span><span class='op'>(</span><span class='va'>mp_gait_data</span>, pmp_obj <span class='op'>=</span> <span class='va'>pan</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>no non-missing arguments to min; returning Inf</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>no non-missing arguments to max; returning -Inf</span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in binary_split(length(window_sizes)):</span> could not find function "binary_split"</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>`windows` contains values not computed in `pmp`</span>
+<span class='r-in'><span class='co'># }</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

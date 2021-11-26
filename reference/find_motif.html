@@ -233,37 +233,41 @@ motif_idx<code>, a </code>vector<code>of motifs found and </code>motif_dim<code>
 of motif pairs found and <code>motif_neighbor</code> a <code>list</code> with respective motif's neighbors.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Single dimension data</span>
-<span class='va'>w</span> <span class='op'>&lt;-</span> <span class='fl'>50</span>
-<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>mp_gait_data</span>
-<span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span><span class='op'>(</span><span class='va'>data</span>, window_size <span class='op'>=</span> <span class='va'>w</span>, exclusion_zone <span class='op'>=</span> <span class='fl'>1</span> <span class='op'>/</span> <span class='fl'>4</span>, verbose <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
-<span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'>find_motif</span><span class='op'>(</span><span class='va'>mp</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in UseMethod("find_motif", .mp): no applicable method for 'find_motif' applied to an object of class "list"</span></div><div class='input'>
-<span class='co'># Multidimension data</span>
-<span class='va'>w</span> <span class='op'>&lt;-</span> <span class='va'>mp_toy_data</span><span class='op'>$</span><span class='va'>sub_len</span>
-<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>mp_toy_data</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>200</span>, <span class='op'>]</span>
-<span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span><span class='op'>(</span><span class='va'>data</span>, window_size <span class='op'>=</span> <span class='va'>w</span>, mode <span class='op'>=</span> <span class='st'>"mstomp"</span>, verbose <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #00BB00;'>tsmp Parsing data +634ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing type +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Computation +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is null +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing data +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing type +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Computation +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is null +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing data +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing type +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Computation +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is null +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span></div><div class='input'><span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'>find_motif</span><span class='op'>(</span><span class='va'>mp</span><span class='op'>)</span>
-<span class='va'>pan</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span><span class='op'>(</span><span class='va'>mp_gait_data</span>, window_size <span class='op'>=</span> <span class='fl'>20</span><span class='op'>:</span><span class='fl'>30</span>, mode <span class='op'>=</span> <span class='st'>"pmp"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in binary_split(length(window_sizes)): could not find function "binary_split"</span></div><div class='input'><span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'>find_motif</span><span class='op'>(</span><span class='va'>pan</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in matrix_profile$pmp[[row]]: subscript out of bounds</span></div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># Single dimension data</span></span>
+<span class='r-in'><span class='va'>w</span> <span class='op'>&lt;-</span> <span class='fl'>50</span></span>
+<span class='r-in'><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>mp_gait_data</span></span>
+<span class='r-in'><span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span><span class='op'>(</span><span class='va'>data</span>, window_size <span class='op'>=</span> <span class='va'>w</span>, exclusion_zone <span class='op'>=</span> <span class='fl'>1</span> <span class='op'>/</span> <span class='fl'>4</span>, verbose <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'>find_motif</span><span class='op'>(</span><span class='va'>mp</span><span class='op'>)</span></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in UseMethod("find_motif", .mp):</span> no applicable method for 'find_motif' applied to an object of class "list"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Multidimension data</span></span>
+<span class='r-in'><span class='va'>w</span> <span class='op'>&lt;-</span> <span class='va'>mp_toy_data</span><span class='op'>$</span><span class='va'>sub_len</span></span>
+<span class='r-in'><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>mp_toy_data</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>200</span>, <span class='op'>]</span></span>
+<span class='r-in'><span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span><span class='op'>(</span><span class='va'>data</span>, window_size <span class='op'>=</span> <span class='va'>w</span>, mode <span class='op'>=</span> <span class='st'>"mstomp"</span>, verbose <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing data +1029ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing type +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Computation +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is null +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing data +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing type +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Computation +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is null +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing data +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing type +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Computation +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is null +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span></span>
+<span class='r-in'><span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'>find_motif</span><span class='op'>(</span><span class='va'>mp</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>pan</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span><span class='op'>(</span><span class='va'>mp_gait_data</span>, window_size <span class='op'>=</span> <span class='fl'>20</span><span class='op'>:</span><span class='fl'>30</span>, mode <span class='op'>=</span> <span class='st'>"pmp"</span><span class='op'>)</span></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in binary_split(length(window_sizes)):</span> could not find function "binary_split"</span>
+<span class='r-in'><span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'>find_motif</span><span class='op'>(</span><span class='va'>pan</span><span class='op'>)</span></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in matrix_profile$pmp[[row]]:</span> subscript out of bounds</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

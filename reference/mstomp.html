@@ -241,87 +241,94 @@ New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1-27.</p><
 <code><a href='valmod.html'>valmod</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># using all dimensions</span>
-<span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'>mstomp</span><span class='op'>(</span><span class='va'>mp_toy_data</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>150</span>, <span class='op'>]</span>, <span class='fl'>30</span>, verbose <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #00BB00;'>tsmp Parsing data +2352ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing type +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Computation +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is null +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing data +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing type +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Computation +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is null +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing data +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing type +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Computation +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is null +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is a list with par and window_size +19ms </span></div><div class='input'><span class='co'># \donttest{</span>
-<span class='co'>#' # using threads</span>
-<span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'>mstomp_par</span><span class='op'>(</span><span class='va'>mp_toy_data</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>150</span>, <span class='op'>]</span>, <span class='fl'>30</span>, verbose <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #00BB00;'>tsmp Parsing data +939ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing type +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Computation +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is null +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing data +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing type +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Computation +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is null +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing data +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing type +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Computation +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is null +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span></div><div class='output co'>#&gt; <span class='error'>Error in loadNamespace(x): there is no package called ‘doSNOW’</span></div><div class='input'>
-<span class='co'># force using dimensions 1 and 2</span>
-<span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'>mstomp</span><span class='op'>(</span><span class='va'>mp_toy_data</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>200</span>, <span class='op'>]</span>, <span class='fl'>30</span>, must_dim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #00BB00;'>tsmp Parsing data +268ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing type +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Computation +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is null +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing data +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing type +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Computation +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is null +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing data +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing type +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Computation +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is null +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span></div><div class='output co'>#&gt; <span class='message'>Finished in 1.84 secs</span></div><div class='input'><span class='co'># exclude dimensions 2 and 3</span>
-<span class='va'>mp2</span> <span class='op'>&lt;-</span> <span class='fu'>mstomp</span><span class='op'>(</span><span class='va'>mp_toy_data</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>200</span>, <span class='op'>]</span>, <span class='fl'>30</span>, exc_dim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #00BB00;'>tsmp Parsing data +1841ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing type +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Computation +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is null +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing data +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing type +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Computation +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is null +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing data +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing type +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Computation +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is null +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span></div><div class='output co'>#&gt; <span class='message'>Finished in 1.84 secs</span></div><div class='input'><span class='co'># }</span>
-
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># using all dimensions</span></span>
+<span class='r-in'><span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'>mstomp</span><span class='op'>(</span><span class='va'>mp_toy_data</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>150</span>, <span class='op'>]</span>, <span class='fl'>30</span>, verbose <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing data +3691ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing type +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Register anytime exit point +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Computation +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is null +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing data +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing type +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Computation +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is null +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing data +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing type +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Computation +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is null +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span></span>
+<span class='r-in'><span class='co'># \donttest{</span></span>
+<span class='r-in'><span class='co'>#' # using threads</span></span>
+<span class='r-in'><span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'>mstomp_par</span><span class='op'>(</span><span class='va'>mp_toy_data</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>150</span>, <span class='op'>]</span>, <span class='fl'>30</span>, verbose <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing data +976ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing type +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Computation +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is null +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing data +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing type +2ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Computation +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is null +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing data +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing type +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Computation +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is null +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in loadNamespace(x):</span> there is no package called ‘doSNOW’</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># force using dimensions 1 and 2</span></span>
+<span class='r-in'><span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'>mstomp</span><span class='op'>(</span><span class='va'>mp_toy_data</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>200</span>, <span class='op'>]</span>, <span class='fl'>30</span>, must_dim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing data +312ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing type +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Computation +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is null +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing data +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing type +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Computation +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is null +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing data +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing type +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Register anytime exit point +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Computation +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is null +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Finished in 2.01 secs</span>
+<span class='r-in'><span class='co'># exclude dimensions 2 and 3</span></span>
+<span class='r-in'><span class='va'>mp2</span> <span class='op'>&lt;-</span> <span class='fu'>mstomp</span><span class='op'>(</span><span class='va'>mp_toy_data</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>200</span>, <span class='op'>]</span>, <span class='fl'>30</span>, exc_dim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing data +2014ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing type +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Computation +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is null +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing data +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing type +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Computation +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is null +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing data +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing type +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Computation +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is null +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Finished in 1.96 secs</span>
+<span class='r-in'><span class='co'># }</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

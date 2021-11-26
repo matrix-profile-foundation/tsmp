@@ -224,88 +224,94 @@ Series Subsequences under Euclidean Distance</p></li>
 <p>Website: <a href='https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html'>https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='va'>w</span> <span class='op'>&lt;-</span> <span class='va'>mp_toy_data</span><span class='op'>$</span><span class='va'>sub_len</span>
-<span class='va'>ref_data</span> <span class='op'>&lt;-</span> <span class='va'>mp_toy_data</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[</span>, <span class='fl'>1</span><span class='op'>]</span>
-<span class='co'># minimum example, data and query</span>
-<span class='va'>nn</span> <span class='op'>&lt;-</span> <span class='fu'>dist_profile</span><span class='op'>(</span><span class='va'>ref_data</span>, <span class='va'>ref_data</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='va'>w</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #00BB00;'>tsmp Parsing data </span></div><div class='output co'>#&gt; <span class='error'>Error in dist_profile(ref_data, ref_data[1:w]): Assertion on 'window_size' failed. Must be of class 'integerish', not 'double'.</span></div><div class='input'><span class='va'>distance_profile</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='va'>nn</span><span class='op'>$</span><span class='va'>distance_profile</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'nn' not found</span></div><div class='input'>
-<span class='co'># data and indexed query</span>
-<span class='va'>nn</span> <span class='op'>&lt;-</span> <span class='fu'>dist_profile</span><span class='op'>(</span><span class='va'>ref_data</span>, <span class='va'>ref_data</span>, window_size <span class='op'>=</span> <span class='va'>w</span>, index <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #00BB00;'>tsmp Parsing data +28ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing type +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Computation +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is null +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span></div><div class='input'><span class='va'>distance_profile</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='va'>nn</span><span class='op'>$</span><span class='va'>distance_profile</span><span class='op'>)</span>
-
-<span class='co'># recursive</span>
-<span class='va'>nn</span> <span class='op'>&lt;-</span> <span class='cn'>NULL</span>
-
-<span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='va'>nn</span> <span class='op'>&lt;-</span> <span class='fu'>dist_profile</span><span class='op'>(</span><span class='va'>ref_data</span>, <span class='va'>ref_data</span>, <span class='va'>nn</span>, window_size <span class='op'>=</span> <span class='va'>w</span>, index <span class='op'>=</span> <span class='va'>i</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div><div class='output co'>#&gt; <span style='color: #00BB00;'>tsmp Parsing data +5ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing type +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Computation +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is null +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing data +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing type +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Computation +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is not null +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing data +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing type +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Computation +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is not null +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing data +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing type +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Computation +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is not null +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing data +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing type +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Computation +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is not null +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing data +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing type +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Computation +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is not null +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing data +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing type +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Computation +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is not null +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing data +2ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing type +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Computation +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is not null +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing data +2ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing type +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Computation +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is not null +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing data +2ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Parsing type +1ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp Computation +0ms </span>
-#&gt; <span style='color: #00BB00;'>tsmp params is not null +0ms </span></div><div class='input'>
-<span class='co'># weighted</span>
-<span class='va'>weight</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='va'>w</span> <span class='op'>/</span> <span class='fl'>3</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0.5</span>, <span class='va'>w</span> <span class='op'>/</span> <span class='fl'>3</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0.8</span>, <span class='va'>w</span> <span class='op'>/</span> <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># just an example</span>
-
-<span class='va'>nn</span> <span class='op'>&lt;-</span> <span class='fu'>dist_profile</span><span class='op'>(</span><span class='va'>ref_data</span>, <span class='va'>ref_data</span>,
-  window_size <span class='op'>=</span> <span class='va'>w</span>, index <span class='op'>=</span> <span class='fl'>1</span>, method <span class='op'>=</span> <span class='st'>"weighted"</span>,
-  weight <span class='op'>=</span> <span class='va'>weight</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in dist_profile(ref_data, ref_data, window_size = w, index = 1,     method = "weighted", weight = weight): unused argument (method = "weighted")</span></div><div class='input'><span class='va'>distance_profile</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='va'>nn</span><span class='op'>$</span><span class='va'>distance_profile</span><span class='op'>)</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='va'>w</span> <span class='op'>&lt;-</span> <span class='va'>mp_toy_data</span><span class='op'>$</span><span class='va'>sub_len</span></span>
+<span class='r-in'><span class='va'>ref_data</span> <span class='op'>&lt;-</span> <span class='va'>mp_toy_data</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[</span>, <span class='fl'>1</span><span class='op'>]</span></span>
+<span class='r-in'><span class='co'># minimum example, data and query</span></span>
+<span class='r-in'><span class='va'>nn</span> <span class='op'>&lt;-</span> <span class='fu'>dist_profile</span><span class='op'>(</span><span class='va'>ref_data</span>, <span class='va'>ref_data</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='va'>w</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing data </span></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in dist_profile(ref_data, ref_data[1:w]):</span> Assertion on 'window_size' failed. Must be of class 'integerish', not 'double'.</span>
+<span class='r-in'><span class='va'>distance_profile</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='va'>nn</span><span class='op'>$</span><span class='va'>distance_profile</span><span class='op'>)</span></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(expr, envir, enclos):</span> object 'nn' not found</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># data and indexed query</span></span>
+<span class='r-in'><span class='va'>nn</span> <span class='op'>&lt;-</span> <span class='fu'>dist_profile</span><span class='op'>(</span><span class='va'>ref_data</span>, <span class='va'>ref_data</span>, window_size <span class='op'>=</span> <span class='va'>w</span>, index <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing data +29ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing type +2ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Register anytime exit point +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Computation +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is null +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span></span>
+<span class='r-in'><span class='va'>distance_profile</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='va'>nn</span><span class='op'>$</span><span class='va'>distance_profile</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># recursive</span></span>
+<span class='r-in'><span class='va'>nn</span> <span class='op'>&lt;-</span> <span class='cn'>NULL</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>  <span class='va'>nn</span> <span class='op'>&lt;-</span> <span class='fu'>dist_profile</span><span class='op'>(</span><span class='va'>ref_data</span>, <span class='va'>ref_data</span>, <span class='va'>nn</span>, window_size <span class='op'>=</span> <span class='va'>w</span>, index <span class='op'>=</span> <span class='va'>i</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing data +6ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing type +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Register anytime exit point +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Computation +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is null +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is a list with par and window_size +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing data +2ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing type +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Computation +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is not null +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing data +2ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing type +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Computation +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is not null +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing data +2ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing type +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Computation +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is not null +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing data +2ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing type +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Computation +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is not null +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing data +2ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing type +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Register anytime exit point +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Computation +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is not null +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing data +2ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing type +6ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Register anytime exit point +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Computation +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is not null +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing data +2ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing type +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Register anytime exit point +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Computation +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is not null +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing data +2ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing type +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Register anytime exit point +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Computation +0ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is not null +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing data +2ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Parsing type +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Register anytime exit point +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp Computation +1ms </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>tsmp params is not null +0ms </span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># weighted</span></span>
+<span class='r-in'><span class='va'>weight</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='va'>w</span> <span class='op'>/</span> <span class='fl'>3</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0.5</span>, <span class='va'>w</span> <span class='op'>/</span> <span class='fl'>3</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0.8</span>, <span class='va'>w</span> <span class='op'>/</span> <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># just an example</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>nn</span> <span class='op'>&lt;-</span> <span class='fu'>dist_profile</span><span class='op'>(</span><span class='va'>ref_data</span>, <span class='va'>ref_data</span>,</span>
+<span class='r-in'>  window_size <span class='op'>=</span> <span class='va'>w</span>, index <span class='op'>=</span> <span class='fl'>1</span>, method <span class='op'>=</span> <span class='st'>"weighted"</span>,</span>
+<span class='r-in'>  weight <span class='op'>=</span> <span class='va'>weight</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in dist_profile(ref_data, ref_data, window_size = w, index = 1,     method = "weighted", weight = weight):</span> unused argument (method = "weighted")</span>
+<span class='r-in'><span class='va'>distance_profile</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='va'>nn</span><span class='op'>$</span><span class='va'>distance_profile</span><span class='op'>)</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

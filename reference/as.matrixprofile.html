@@ -198,20 +198,24 @@ to cast it back.</p>
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='va'>w</span> <span class='op'>&lt;-</span> <span class='fl'>50</span>
-<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>mp_gait_data</span>
-<span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span><span class='op'>(</span><span class='va'>data</span>, window_size <span class='op'>=</span> <span class='va'>w</span>, exclusion_zone <span class='op'>=</span> <span class='fl'>1</span> <span class='op'>/</span> <span class='fl'>4</span>, verbose <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
-<span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='find_motif.html'>find_motif</a></span><span class='op'>(</span><span class='va'>mp</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in UseMethod("find_motif", .mp): no applicable method for 'find_motif' applied to an object of class "list"</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>mp</span><span class='op'>)</span> <span class='co'># first class will be "Motif"</span>
-</div><div class='output co'>#&gt; [1] "list"</div><div class='input'>
-<span class='fu'><a href='plot.html'>plot</a></span><span class='op'>(</span><span class='va'>mp</span><span class='op'>)</span> <span class='co'># plots a motif plot</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in xy.coords(x, y, xlabel, ylabel, log): 'x' is a list, but does not have components 'x' and 'y'</span></div><div class='input'>
-<span class='fu'><a href='plot.html'>plot</a></span><span class='op'>(</span><span class='fu'>as.matrixprofile</span><span class='op'>(</span><span class='va'>mp</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># plots a matrix profile plot</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in as.matrixprofile(mp): This object cannot be a `MatrixProfile`.</span></div><div class='input'><span class='co'>#</span>
-<span class='co'># TODO: Refactor</span>
-<span class='co'>#</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='va'>w</span> <span class='op'>&lt;-</span> <span class='fl'>50</span></span>
+<span class='r-in'><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>mp_gait_data</span></span>
+<span class='r-in'><span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tsmp.html'>tsmp</a></span><span class='op'>(</span><span class='va'>data</span>, window_size <span class='op'>=</span> <span class='va'>w</span>, exclusion_zone <span class='op'>=</span> <span class='fl'>1</span> <span class='op'>/</span> <span class='fl'>4</span>, verbose <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>mp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='find_motif.html'>find_motif</a></span><span class='op'>(</span><span class='va'>mp</span><span class='op'>)</span></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in UseMethod("find_motif", .mp):</span> no applicable method for 'find_motif' applied to an object of class "list"</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>mp</span><span class='op'>)</span> <span class='co'># first class will be "Motif"</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "list"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='plot.html'>plot</a></span><span class='op'>(</span><span class='va'>mp</span><span class='op'>)</span> <span class='co'># plots a motif plot</span></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in xy.coords(x, y, xlabel, ylabel, log):</span> 'x' is a list, but does not have components 'x' and 'y'</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='plot.html'>plot</a></span><span class='op'>(</span><span class='fu'>as.matrixprofile</span><span class='op'>(</span><span class='va'>mp</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># plots a matrix profile plot</span></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in as.matrixprofile(mp):</span> This object cannot be a `MatrixProfile`.</span>
+<span class='r-in'><span class='co'>#</span></span>
+<span class='r-in'><span class='co'># TODO: Refactor</span></span>
+<span class='r-in'><span class='co'>#</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
