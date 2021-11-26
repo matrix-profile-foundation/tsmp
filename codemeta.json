@@ -1,0 +1,179 @@
+{
+  "@context": ["https://doi.org/10.5063/schema/codemeta-2.0", "http://schema.org"],
+  "@type": "SoftwareSourceCode",
+  "identifier": "tsmp",
+  "description": "A toolkit implementing the Matrix Profile concept that was created by CS-UCR <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>.",
+  "name": "tsmp: Time Series with Matrix Profile",
+  "codeRepository": "https://github.com/matrix-profile-foundation/tsmp",
+  "issueTracker": "https://github.com/matrix-profile-foundation/tsmp/issues",
+  "license": "https://spdx.org/licenses/GPL-3.0",
+  "version": "0.5.0.9000",
+  "programmingLanguage": {
+    "@type": "ComputerLanguage",
+    "name": "R",
+    "url": "https://r-project.org"
+  },
+  "runtimePlatform": "R version 4.1.1 (2021-08-10)",
+  "provider": {
+    "@id": "https://cran.r-project.org",
+    "@type": "Organization",
+    "name": "Comprehensive R Archive Network (CRAN)",
+    "url": "https://cran.r-project.org"
+  },
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Francisco",
+      "familyName": "Bischoff",
+      "email": "fbischoff@med.up.pt",
+      "@id": "https://orcid.org/0000-0002-5301-8672"
+    }
+  ],
+  "contributor": [
+    {
+      "@type": "Person",
+      "givenName": "Michael",
+      "familyName": "Yeh",
+      "email": "myeh003@ucr.edu",
+      "@id": "https://orcid.org/0000-0002-9807-2963"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Diego",
+      "familyName": "Silva",
+      "email": "diegofs@ufscar.br",
+      "@id": "https://orcid.org/0000-0002-5184-9413"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Yan",
+      "familyName": "Zhu",
+      "email": "yzhu015@ucr.edu",
+      "@id": "https://orcid.org/0000-0002-5952-2108"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Hoang",
+      "familyName": "Dau",
+      "email": "hdau001@ucr.edu",
+      "@id": "https://orcid.org/0000-0003-2439-5185"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Michele",
+      "familyName": "Linardi",
+      "email": "michele.linardi@orange.fr",
+      "@id": "https://orcid.org/0000-0002-3249-2068"
+    }
+  ],
+  "copyrightHolder": {},
+  "funder": {},
+  "maintainer": [
+    {
+      "@type": "Person",
+      "givenName": "Francisco",
+      "familyName": "Bischoff",
+      "email": "fbischoff@med.up.pt",
+      "@id": "https://orcid.org/0000-0002-5301-8672"
+    }
+  ],
+  "softwareSuggestions": [
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "testthat",
+      "name": "testthat",
+      "version": ">= 3.0.2",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=testthat"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "debugme",
+      "name": "debugme",
+      "version": ">= 1.1.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=debugme"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "spelling",
+      "name": "spelling",
+      "version": ">= 2.2.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=spelling"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "progress",
+      "name": "progress",
+      "version": ">= 1.2.2",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=progress"
+    }
+  ],
+  "softwareRequirements": [
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "R",
+      "name": "R",
+      "version": ">= 4.0"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "matrixprofiler",
+      "name": "matrixprofiler",
+      "version": ">= 0.1.5",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=matrixprofiler"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "checkmate",
+      "name": "checkmate",
+      "version": ">= 2.0.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=checkmate"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "https://sysreqs.r-hub.io/get/gnumake"
+    }
+  ],
+  "releaseNotes": "https://github.com/matrix-profile-foundation/tsmp/blob/master/NEWS.md",
+  "readme": "https://github.com/matrix-profile-foundation/tsmp/blob/master/README.md",
+  "fileSize": "533457.814KB",
+  "contIntegration": "https://codecov.io/gh/matrix-profile-foundation/tsmp",
+  "developmentStatus": "https://lifecycle.r-lib.org/articles/stages.html",
+  "keywords": ["r-package", "matrix-profile", "time-series", "r", "motif-search", "algorithm"],
+  "relatedLink": "https://CRAN.R-project.org/package=tsmp"
+}

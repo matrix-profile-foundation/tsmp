@@ -1,22 +1,22 @@
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
-# tsmp 0.5.0
+## tsmp 0.5.0
 
 -   Dropped PAA code. This must be handled by the user.
 
-# tsmp 0.4.14
+## tsmp 0.4.14
 
 -   Fix ASAN/UBSAN errors using RcppParallel
 
-# tsmp 0.4.11
+## tsmp 0.4.11
 
 -   Fix in `mpx()`.
 
-# tsmp 0.4.9
+## tsmp 0.4.9
 
 -   Fixed MacOSX build.
 
-# tsmp 0.4.8
+## tsmp 0.4.8
 
 -   Added MPdist algorithm to compare two time series.
 -   Added `find_snippet()` that uses MPdist to show representative data.
@@ -27,7 +27,7 @@
 -   Added `compute()`, `analyze()` and `visualize()`. Starting point in
     the unified API from MPF.
 
-# tsmp 0.3.5
+## tsmp 0.3.5
 
 -   Changed `mass()` to `dist_profile()`, including options to different
     algorithms.
@@ -44,7 +44,7 @@
 -   Changed `find_motif()` for `MultiMatrixProfile` to report Motifs
     correctly.
 
-# tsmp 0.3.4
+## tsmp 0.3.4
 
 -   Added `find_discord()` and its `print()` and `plot()` functions.
 -   Changed `plot()` for motifs to show where are the neighbors. Same
@@ -52,11 +52,11 @@
 -   Added `valmod()` for Variable Length Motif Discovery.
 -   Changed `find_motif()` for compatibility with `valmod()`.
 
-# tsmp 0.3.3
+## tsmp 0.3.3
 
 -   Fixed `find_chains()` not returning the longest chain. Issue \#33
 
-# tsmp 0.3.2
+## tsmp 0.3.2
 
 -   Fixed Matrix Profile print, dimensions are now reported correctly.
 -   Fixed pipe imports. Issue \#22
@@ -70,15 +70,15 @@
 -   Added Print and Plot to SiMPle. Issue \#24
 -   Added Print and Plot to Salient.
 
-# tsmp 0.3.1
+## tsmp 0.3.1
 
-## IMPORTANT
+### IMPORTANT
 
 -   This version is a complete restructuration. The API has changed, and
     the workflow is more friendly. This API is intended to be stable,
     and from now on any change will pass through the “Deprecated” stage.
 
-## Added Features
+### Added Features
 
 -   Outputs have a prettier print format.
 -   Outputs have a plot function. Try to plot a `tsmp()` output for
@@ -97,12 +97,12 @@
 -   Added support to query &lt; data in Joins.
 -   SCRIMP (experimental).
 
-# tsmp 0.2.15
+## tsmp 0.2.15
 
 -   Code linting.
 -   Added Salient Subsequences search.
 
-# tsmp 0.2.14
+## tsmp 0.2.14
 
 -   Added SiMPle (Fast Similarity Matrix Profile for Music Analysis and
     Exploration).
@@ -113,12 +113,12 @@
     audio, so fewer dependencies).
 -   Added a `NEWS.md` file to track changes to the package.
 
-# tsmp 0.2.12
+## tsmp 0.2.12
 
 -   Added Multivariate STOMP parallel version.
 -   Added SDTS algorithm (Scalable Dictionary learning for Time Series).
 
-# tsmp 0.1.0
+## tsmp 0.1.0
 
 -   STAMP and STAMP parallel Algorithm.
 -   Multivariate STOMP algorithm.

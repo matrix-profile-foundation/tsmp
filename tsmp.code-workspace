@@ -5,13 +5,6 @@
     }
   ],
   "settings": {
-    "auto-run-command.rules": [
-      {
-        "command": "r.createRTerm",
-        "condition": "always",
-        "message": "Starting R Terminal"
-      }
-    ],
     "C_Cpp.default.browse.path": [
       "${workspaceRoot}/src"
     ],

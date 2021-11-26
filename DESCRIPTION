@@ -39,8 +39,7 @@ Description: A toolkit implementing the Matrix Profile concept
     <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>.
 License: GPL-3
 URL: https://github.com/matrix-profile-foundation/tsmp
-BugReports:
-    https://github.com/matrix-profile-foundation/tsmp/issues
+BugReports: https://github.com/matrix-profile-foundation/tsmp/issues
 Depends:
     R (>= 4.0)
 Imports:
