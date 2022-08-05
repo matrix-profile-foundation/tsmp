@@ -7,7 +7,7 @@
       "command": "echo 'MingW does not support ASAN/UBSAN'",
       "linux": {
         "type": "process",
-        "command": "/usr/lib/R/bin/Rscript",
+        "command": "/usr/bin/Rscript",
         "args": [
           "dev/check_asan.R"
         ]
@@ -72,9 +72,9 @@
     {
       "type": "process",
       "label": "R: lint package",
-      "command": "C:/Program Files/R/R-4.1.0/bin/x64/Rscript.exe",
+      "command": "C:/Program Files/R/R-4.2.1/bin/x64/Rscript.exe",
       "linux": {
-        "command": "/usr/lib/R/bin/Rscript"
+        "command": "/usr/bin/Rscript"
       },
       "args": [
         "-e",
@@ -100,8 +100,8 @@
       "args": [
         "-i",
         "--style=file",
-        "src/*.cpp",
-        "src/*.h"
+        "*.cpp",
+        "*.h"
       ],
       "dependsOn": "R: lint package",
       "group": "none",
@@ -114,9 +114,9 @@
     {
       "type": "process",
       "label": "R: test units",
-      "command": "C:/Program Files/R/R-4.1.0/bin/x64/Rscript.exe",
+      "command": "C:/Program Files/R/R-4.2.1/bin/x64/Rscript.exe",
       "linux": {
-        "command": "/usr/lib/R/bin/Rscript"
+        "command": "/usr/bin/Rscript"
       },
       "args": [
         "-e",
@@ -140,9 +140,9 @@
       "type": "process",
       "label": "R: test coverage",
       "dependsOn": "R: test units",
-      "command": "C:/Program Files/R/R-4.1.0/bin/x64/Rscript.exe",
+      "command": "C:/Program Files/R/R-4.2.1/bin/x64/Rscript.exe",
       "linux": {
-        "command": "/usr/lib/R/bin/Rscript"
+        "command": "/usr/bin/Rscript"
       },
       "args": [
         "-e",
@@ -161,37 +161,41 @@
     },
     {
       "type": "process",
-      "label": "R: Watch targets",
-      "command": "C:/Program Files/R/R-4.1.0/bin/x64/Rscript.exe",
+      "label": "R: update codemeta",
+      "command": "C:/Program Files/R/R-4.2.1/bin/x64/Rscript.exe",
       "linux": {
-        "command": "/usr/lib/R/bin/Rscript"
+        "type": "process",
+        "command": "/usr/bin/Rscript",
+        "args": [
+          "-e",
+          "codemetar::write_codemeta(write_minimeta = TRUE); codemetar::give_opinions()"
+        ],
       },
-      "args": [
-        "-e",
-        "targets::tar_watch()"
-      ],
       "options": {
         "cwd": "${workspaceFolder}"
       },
-      "group": "test",
+      "group": "none",
       "presentation": {
+        "clear": true,
+        "group": "R",
         "reveal": "always",
-        "panel": "dedicated",
-        "clear": true
+        "panel": "shared"
       },
-      "problemMatcher": []
+      "problemMatcher": [
+        "$gcc"
+      ]
     },
     {
       "type": "shell",
       "label": "R: build current package",
-      "command": "C:/Program Files/R/R-4.1.0/bin/x64/Rscript.exe",
+      "command": "C:/Program Files/R/R-4.2.1/bin/x64/Rscript.exe",
       "linux": {
-        "command": "/usr/lib/R/bin/Rscript"
+        "command": "/usr/bin/Rscript"
       },
       "detail": "compiler: Rcmd",
       "args": [
         "-e",
-        "devtools::load_all()"
+        "'devtools::load_all()'"
       ],
       "options": {
         "cwd": "${workspaceFolder}"
@@ -219,10 +223,10 @@
         "-std=gnu++11",
         "-DNDEBUG",
         "-I\"C:/PROGRA~1/R/R-40~1.3/include\"",
-        "-I\"${workspaceFolder}/renv/library/R-4.0/${input:renv_arch}/Rcpp/include\"",
-        "-I\"${workspaceFolder}/renv/library/R-4.0/${input:renv_arch}/RcppParallel/include\"",
-        "-I\"${workspaceFolder}/renv/library/R-4.0/${input:renv_arch}/RcppProgress/include\"",
-        "-I\"${workspaceFolder}/renv/library/R-4.0/${input:renv_arch}/RcppThread/include\"",
+        "-I\"${workspaceFolder}/renv/library/R-4.2/${input:renv_arch}/Rcpp/include\"",
+        "-I\"${workspaceFolder}/renv/library/R-4.2/${input:renv_arch}/RcppParallel/include\"",
+        "-I\"${workspaceFolder}/renv/library/R-4.2/${input:renv_arch}/RcppProgress/include\"",
+        "-I\"${workspaceFolder}/renv/library/R-4.2/${input:renv_arch}/RcppThread/include\"",
         "-DRCPP_PARALLEL_USE_TBB=1",
         "-DSTRICT_R_HEADERS",
         "-O2",

@@ -34,6 +34,10 @@
 ^\.github$
 ^codecov\.yml$
 \.clang-format
+\.clang-tidy
+\.clangd
 ^Makefile$
 ^docs/_pkgdown\.yml$
 ^.*\.tex$
+^codemeta\.json$
+^_pkgdown\.yml$

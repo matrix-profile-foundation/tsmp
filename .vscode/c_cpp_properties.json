@@ -1,69 +1,14 @@
 {
   "configurations": [
     {
-      "name": "Rtools40-x64",
-      "intelliSenseMode": "gcc-x64",
-      "includePath": [
-        "C:/Program Files/R/R-4.1.0/include",
-        "${workspaceFolder}/src",
-        "${workspaceFolder}/renv/library/R-4.1/x86_64-w64-mingw32/Rcpp/include",
-        "${workspaceFolder}/renv/library/R-4.1/x86_64-w64-mingw32/RcppParallel/include",
-        "${workspaceFolder}/renv/library/R-4.1/x86_64-w64-mingw32/RcppProgress/include",
-        "${workspaceFolder}/renv/library/R-4.1/x86_64-w64-mingw32/RcppThread/include"
-      ],
-      "defines": [
-        "UNICODE",
-        "_UNICODE",
-        "RCPP_PARALLEL_USE_TBB=1",
-        "STRICT_R_HEADERS",
-        "NDEBUG"
-      ],
-      "compilerPath": "C:/rtools40/mingw64/bin/g++.exe",
-      "cStandard": "gnu11",
-      "cppStandard": "gnu++11",
-      "customConfigurationVariables": {
-        "renv_arch": "x86_64-w64-mingw32",
-        "compiler": "mingw64"
-      }
-    },
-    {
-      "name": "Rtools40-x86",
-      "intelliSenseMode": "gcc-x86",
-      "includePath": [ // renv might be on i386-w64-mingw32 if R-32bits
-        "C:/Program Files/R/R-4.1.0/include",
-        "${workspaceFolder}/src",
-        "${workspaceFolder}/renv/library/R-4.1/x86_64-w64-mingw32/Rcpp/include",
-        "${workspaceFolder}/renv/library/R-4.1/x86_64-w64-mingw32/RcppParallel/include",
-        "${workspaceFolder}/renv/library/R-4.1/x86_64-w64-mingw32/RcppProgress/include",
-        "${workspaceFolder}/renv/library/R-4.1/x86_64-w64-mingw32/RcppThread/include"
-      ],
-      "defines": [
-        "UNICODE",
-        "_UNICODE",
-        "RCPP_PARALLEL_USE_TBB=1",
-        "STRICT_R_HEADERS",
-        "NDEBUG"
-      ],
-      "compilerPath": "C:/rtools40/mingw32/bin/g++.exe",
-      "compilerArgs": [
-        "-m32"
-      ], // redundant, but...
-      "cStandard": "gnu11",
-      "cppStandard": "gnu++11",
-      "customConfigurationVariables": {
-        "renv_arch": "x86_64-w64-mingw32",
-        "compiler": "mingw32"
-      }
-    },
-    {
       "name": "Ubuntu16+",
-      "includePath": [ // renv might be on i386-pc-linux-gnu if R-32bits
-        "/usr/share/R/include",
-        "${workspaceFolder}/src",
-        "${workspaceFolder}/renv/library/R-4.1/x86_64-pc-linux-gnu/Rcpp/include",
-        "${workspaceFolder}/renv/library/R-4.1/x86_64-pc-linux-gnu/RcppParallel/include",
-        "${workspaceFolder}/renv/library/R-4.1/x86_64-pc-linux-gnu/RcppProgress/include",
-        "${workspaceFolder}/renv/library/R-4.1/x86_64-pc-linux-gnu/RcppThread/include"
+      "includePath": [
+        "/usr/share/R/include/**",
+        "${workspaceFolder}/src/**",
+        "/usr/lib/R/library/Rcpp/include/**",
+        "/usr/lib/R/library/RcppParallel/include/**",
+        "/usr/lib/R/library/RcppThread/include/**",
+        "/usr/lib/R/library/RcppProgress/include/**"
       ],
       "defines": [
         "UNICODE",
@@ -80,14 +25,57 @@
       }
     },
     {
+      "name": "Rtools40-x64",
+      "intelliSenseMode": "gcc-x64",
+      "includePath": [
+        "C:/Program Files/R/R-4.2.1/include",
+        "${workspaceFolder}/src"
+      ],
+      "defines": [
+        "UNICODE",
+        "_UNICODE",
+        "RCPP_PARALLEL_USE_TBB=1",
+        "STRICT_R_HEADERS",
+        "NDEBUG"
+      ],
+      "compilerPath": "D:/rtools40/mingw64/bin/g++.exe",
+      "cStandard": "gnu11",
+      "cppStandard": "gnu++11",
+      "customConfigurationVariables": {
+        "renv_arch": "x86_64-w64-mingw32",
+        "compiler": "mingw64"
+      }
+    },
+    {
+      "name": "Rtools40-x86",
+      "intelliSenseMode": "gcc-x86",
+      "includePath": [ // renv might be on i386-w64-mingw32 if R-32bits
+        "C:/Program Files/R/R-4.2.1/include",
+        "${workspaceFolder}/src"
+      ],
+      "defines": [
+        "UNICODE",
+        "_UNICODE",
+        "RCPP_PARALLEL_USE_TBB=1",
+        "STRICT_R_HEADERS",
+        "NDEBUG"
+      ],
+      "compilerPath": "D:/rtools40/mingw32/bin/g++.exe",
+      "compilerArgs": [
+        "-m32"
+      ], // redundant, but...
+      "cStandard": "gnu11",
+      "cppStandard": "gnu++11",
+      "customConfigurationVariables": {
+        "renv_arch": "x86_64-w64-mingw32",
+        "compiler": "mingw32"
+      }
+    },
+    {
       "name": "Raspian",
       "includePath": [ // this is for 32-bits (armv7l)
         "/usr/local/lib/R/include",
-        "${workspaceFolder}/src",
-        "${workspaceFolder}/renv/library/R-4.1/armv7l-unknown-linux-gnueabihf/Rcpp/include",
-        "${workspaceFolder}/renv/library/R-4.1/armv7l-unknown-linux-gnueabihf/RcppParallel/include",
-        "${workspaceFolder}/renv/library/R-4.1/armv7l-unknown-linux-gnueabihf/RcppProgress/include",
-        "${workspaceFolder}/renv/library/R-4.1/armv7l-unknown-linux-gnueabihf/RcppThread/include"
+        "${workspaceFolder}/src"
       ],
       "defines": [
         "UNICODE",
@@ -110,11 +98,7 @@
       "name": "MacOS-clang++",
       "includePath": [ // renv might be on i386-pc-linux-gnu if R-32bits
         "/usr/share/R/include",
-        "${workspaceFolder}/src",
-        "${workspaceFolder}/renv/library/R-4.1/x86_64-pc-linux-gnu/Rcpp/include",
-        "${workspaceFolder}/renv/library/R-4.1/x86_64-pc-linux-gnu/RcppParallel/include",
-        "${workspaceFolder}/renv/library/R-4.1/x86_64-pc-linux-gnu/RcppProgress/include",
-        "${workspaceFolder}/renv/library/R-4.1/x86_64-pc-linux-gnu/RcppThread/include"
+        "${workspaceFolder}/src"
       ],
       "defines": [
         "UNICODE",

@@ -1,5 +1,5 @@
 {
-  "@context": ["https://doi.org/10.5063/schema/codemeta-2.0", "http://schema.org"],
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "identifier": "tsmp",
   "description": "A toolkit implementing the Matrix Profile concept that was created by CS-UCR <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>.",
@@ -7,13 +7,13 @@
   "codeRepository": "https://github.com/matrix-profile-foundation/tsmp",
   "issueTracker": "https://github.com/matrix-profile-foundation/tsmp/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.5.0.9000",
+  "version": "0.5.1.9000",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.1.1 (2021-08-10)",
+  "runtimePlatform": "R version 4.2.1 (2022-06-23)",
   "provider": {
     "@id": "https://cran.r-project.org",
     "@type": "Organization",
@@ -66,8 +66,6 @@
       "@id": "https://orcid.org/0000-0002-3249-2068"
     }
   ],
-  "copyrightHolder": {},
-  "funder": {},
   "maintainer": [
     {
       "@type": "Person",
@@ -82,7 +80,7 @@
       "@type": "SoftwareApplication",
       "identifier": "testthat",
       "name": "testthat",
-      "version": ">= 3.0.2",
+      "version": ">= 3.1.4",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -129,20 +127,46 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=progress"
-    }
-  ],
-  "softwareRequirements": [
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "R",
-      "name": "R",
-      "version": ">= 4.0"
     },
     {
       "@type": "SoftwareApplication",
+      "identifier": "knitr",
+      "name": "knitr",
+      "version": ">= 1.3.9",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=knitr"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "xml2",
+      "name": "xml2",
+      "version": ">= 1.3.3",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=xml2"
+    }
+  ],
+  "softwareRequirements": {
+    "1": {
+      "@type": "SoftwareApplication",
+      "identifier": "R",
+      "name": "R",
+      "version": ">= 4.2"
+    },
+    "2": {
+      "@type": "SoftwareApplication",
       "identifier": "matrixprofiler",
       "name": "matrixprofiler",
-      "version": ">= 0.1.5",
+      "version": ">= 0.1.8",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -151,11 +175,11 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=matrixprofiler"
     },
-    {
+    "3": {
       "@type": "SoftwareApplication",
       "identifier": "checkmate",
       "name": "checkmate",
-      "version": ">= 2.0.0",
+      "version": ">= 2.1.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -164,14 +188,24 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=checkmate"
     },
-    {
+    "4": {
       "@type": "SoftwareApplication",
-      "identifier": "https://sysreqs.r-hub.io/get/gnumake"
-    }
-  ],
+      "identifier": "magrittr",
+      "name": "magrittr",
+      "version": ">= 2.0.3",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=magrittr"
+    },
+    "SystemRequirements": null
+  },
+  "fileSize": "5516.688KB",
   "releaseNotes": "https://github.com/matrix-profile-foundation/tsmp/blob/master/NEWS.md",
   "readme": "https://github.com/matrix-profile-foundation/tsmp/blob/master/README.md",
-  "fileSize": "533457.814KB",
   "contIntegration": "https://codecov.io/gh/matrix-profile-foundation/tsmp",
   "developmentStatus": "https://lifecycle.r-lib.org/articles/stages.html",
   "keywords": ["r-package", "matrix-profile", "time-series", "r", "motif-search", "algorithm"],

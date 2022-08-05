@@ -1,1 +1,15 @@
-DEBUGME=tsmp
+NOT_CRAN=true
+PROFFER_PPROF_BIN=/home/workspace/go/pkg/tool/linux_amd64/pprof
+PROFFER_GO_BIN=/home/workspace/go/bin/go
+PROFFER_GRAPHVIZ_BIN=/usr/bin/dot
+RETICULATE_PYTHON=/home/franz/.platformio/penv/bin/python
+RENV_CONFIG_AUTO_SNAPSHOT=true
+RENV_CONFIG_CACHE_SYMLINKS=false
+RENV_CONFIG_EXPORTED_FUNCTIONS=false
+RENV_CONFIG_UPDATES_CHECK=true
+RENV_CONFIG_UPDATES_PARALLEL=4
+RENV_PATHS_ROOT=/workspace/.cache/R/renv
+RENV_PATHS_LIBRARY_ROOT=/workspace/.cache/R/renv/proj_libs
+RMARKDOWN_MATHJAX_PATH=/usr/lib/rstudio-server/resources/mathjax-27
+TZ=Europe/Lisbon
+_R_CHECK_LENGTH_1_CONDITION_=true

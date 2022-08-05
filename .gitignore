@@ -42,7 +42,7 @@ vignettes/*.R
 *.knit.md
 
 # VSCode
-.vscode/
+# .vscode/
 
 ### R.Bookdown Stack ###
 # R package: bookdown caching files
@@ -52,11 +52,13 @@ vignettes/*.R
 
 # Personalized
 
+desktop.ini
+
 # use github-actions to build the webpage
 /pkgdown/
 /docs/
-
-dev/
+.DS_Store
+/dev/*
 LOCAL_APPDATA_FONTCONFIG_CACHE/
 src-*/
 packrat/lib*/
@@ -75,3 +77,4 @@ README.html
 
 workspace.RData
 .history
+docs
