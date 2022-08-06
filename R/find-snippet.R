@@ -50,8 +50,7 @@ find_snippet <- function(data, s_size, n_snippets = 2L, window_size = s_size / 2
   # transform data into matrix
   if (is.vector(data)) {
     data <- as.matrix(data)
-  }
-  else if (is.matrix(data)) {
+  } else if (is.matrix(data)) {
     if (ncol(data) > nrow(data)) {
       data <- t(data)
     }

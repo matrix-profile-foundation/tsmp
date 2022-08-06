@@ -297,8 +297,10 @@ pmp_upper_bound <- function(data,
   while (window_size <= max_window) {
     # message("window: ", window_size)
 
-    result <- matrixprofiler::mpx(data = data, window_size = window_size, idx = do_idxs, dist = "pearson",
-     n_workers = n_workers)
+    result <- matrixprofiler::mpx(
+      data = data, window_size = window_size, idx = do_idxs, dist = "pearson",
+      n_workers = n_workers
+    )
     if (is.null(result) || result$partial) {
       warning("The computation was terminated prematurely. The results are partial.")
       return()
@@ -328,8 +330,10 @@ pmp_upper_bound <- function(data,
     for (window_size in test_windows) {
       # message("refine window: ", window_size)
 
-      result <- matrixprofiler::mpx(data = data, window_size = window_size, idx = do_idxs, dist = "pearson",
-      n_workers = n_workers)
+      result <- matrixprofiler::mpx(
+        data = data, window_size = window_size, idx = do_idxs, dist = "pearson",
+        n_workers = n_workers
+      )
       if (is.null(result) || result$partial) {
         warning("The computation was terminated prematurely. The results are partial.")
         return()

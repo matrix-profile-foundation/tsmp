@@ -137,8 +137,7 @@ mstomp_par <- function(data, window_size, exclusion_zone = getOption("tsmp.exclu
         pb$tick(per_work)
       }
     }
-  }
-  else {
+  } else {
     prog <- function(n) {
       return(invisible(TRUE))
     }

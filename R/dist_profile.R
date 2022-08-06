@@ -20,9 +20,10 @@
 #' @param query a `matrix` or a `vector`. See details.
 #' @param \dots Precomputed values from the first iteration. If not supplied, these values will be computed.
 #' @param window_size an `int` or `NULL`. Sliding window size. See details.
-#' @param method method that will be used to calculate the distance profile. See details.
 #' @param index an `int`. Index of query window. See details.
-#' @param weight a `vector` of `numeric` or `NULL` with the same length of the `window_size`. This is
+#' @param params an `int`. Index of query window. See details.
+#' @param type an `int`. Index of query window. See details.
+#' @param weights a `vector` of `numeric` or `NULL` with the same length of the `window_size`. This is
 #' a MASS extension to weight the query.
 #'
 #' @return Returns the `distance_profile` for the given query and the `last_product` for STOMP
@@ -58,8 +59,8 @@
 #' weight <- c(rep(1, w / 3), rep(0.5, w / 3), rep(0.8, w / 3)) # just an example
 #'
 #' nn <- dist_profile(ref_data, ref_data,
-#'   window_size = w, index = 1, method = "weighted",
-#'   weight = weight
+#'   window_size = w, index = 1, type = "weighted",
+#'   weights = weight
 #' )
 #' distance_profile <- sqrt(nn$distance_profile)
 dist_profile <- function(data, window_size, query = data, index = 1, params = NULL,

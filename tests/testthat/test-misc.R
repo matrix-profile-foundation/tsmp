@@ -1,7 +1,3 @@
-if (!testthat:::on_cran()) {
-  context("Testing Class Functions")
-  library(tsmp)
-
   data <- mp_toy_data$data[1:100, ]
   w <- 10
   nseg <- 3
@@ -47,4 +43,3 @@ if (!testthat:::on_cran()) {
     expect_equal(round(sum(paa_t) / sd(paa_t), 3), 155.269)
     expect_equal(round(sum(paa_i) / sd(paa_i), 3), 312.118)
   })
-}

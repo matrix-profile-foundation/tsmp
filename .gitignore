@@ -59,6 +59,7 @@ desktop.ini
 /docs/
 .DS_Store
 /dev/*
+dev
 LOCAL_APPDATA_FONTCONFIG_CACHE/
 src-*/
 packrat/lib*/

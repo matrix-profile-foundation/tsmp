@@ -46,8 +46,7 @@ mpdist <- function(ref_data, query_data, window_size, type = c("simple", "vector
   # transform data into matrix
   if (is.vector(ref_data)) {
     ref_data <- as.matrix(ref_data)
-  }
-  else if (is.matrix(ref_data)) {
+  } else if (is.matrix(ref_data)) {
     if (ncol(ref_data) > nrow(ref_data)) {
       ref_data <- t(ref_data)
     }

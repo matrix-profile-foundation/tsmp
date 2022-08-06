@@ -41,13 +41,14 @@ License: GPL-3
 URL: https://github.com/matrix-profile-foundation/tsmp
 BugReports: https://github.com/matrix-profile-foundation/tsmp/issues
 Depends:
-    R (>= 4.2)
+    R (>= 4.1)
 Imports:
     matrixprofiler (>= 0.1.8),
     checkmate (>= 2.1.0),
     magrittr (>= 2.0.3)
 Suggests:
     testthat (>= 3.1.4),
+    vdiffr (>= 1.0.4),
     debugme (>= 1.1.0),
     spelling (>= 2.2.0),
     progress (>= 1.2.2),

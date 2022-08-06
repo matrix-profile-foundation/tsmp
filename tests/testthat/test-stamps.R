@@ -1,11 +1,4 @@
-if (!testthat:::on_cran()
-  # && identical(Sys.getenv("R_LOCAL_DEV"), "true")
-) {
-
   # Stamps and Stomps agree ----
-
-  context("Testing if Stamps and Stomps algorithms agree")
-  library(tsmp)
 
   ## Test errors ----
 
@@ -197,4 +190,3 @@ if (!testthat:::on_cran()
   test_that("mStomp exc equals to mStomp_par exc", {
     expect_equal(mstomp_test_exc, mstomp_par_test_exc)
   })
-}

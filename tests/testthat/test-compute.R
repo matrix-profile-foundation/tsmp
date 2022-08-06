@@ -1,7 +1,3 @@
-if (!testthat:::on_cran()) {
-  library(tsmp)
-  context("Testing API compute")
-
   ts <- mp_toy_data$data[, 1]
   query <- mp_toy_data$data[, 2]
   window <- NULL
@@ -65,4 +61,3 @@ if (!testthat:::on_cran()) {
     expect_equal(round(mean(unlist(result_multiple$pmpi)), 4), 266.6235)
     expect_equal(round(sd(unlist(result_multiple$pmpi)), 4), 151.8338)
   })
-}

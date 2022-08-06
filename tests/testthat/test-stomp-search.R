@@ -1,7 +1,3 @@
-if (!testthat:::on_cran()) {
-  context("Testing STOMP Search")
-  library(tsmp)
-
   data <- mp_toy_data$data[1:200, 1]
   w <- mp_toy_data$sub_len
   mp <- tsmp(data, window_size = w, mode = "stomp", verbose = 0)
@@ -30,4 +26,3 @@ if (!testthat:::on_cran()) {
     mpe$data[[1]] <- as.vector(mp$data[[1]])
     expect_silent(find_motif(mpe, n_motifs = 2))
   })
-}

@@ -1,3 +1,6 @@
+# [ ]: rlang::check_installed
+# [ ]: cli::cli_abort
+
 
 convert_data <- function(data) {
   # TODO: get the name of the variable before data.

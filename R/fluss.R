@@ -97,8 +97,7 @@ floss <- function(.mp, new_data, data_window, threshold = 1, exclusion_zone = NU
     if (mp_offset > 0) {
       attr(.mp, "new_data") <- 0
       .mp <- floss_cac(.mp, data_size, 0)
-    }
-    else {
+    } else {
       .mp <- fluss_cac(.mp, 0)
     }
 

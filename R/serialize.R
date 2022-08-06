@@ -118,7 +118,6 @@ write.PMP <- function(x, file, ...) {
 #' @export
 #'
 #' @examples
-#'
 #' \donttest{
 #' result <- read("input.json")
 #' }

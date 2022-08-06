@@ -1,7 +1,3 @@
-if (!testthat:::on_cran()) {
-  context("Testing SiMPle Fast")
-  library(tsmp)
-
   w <- 30
   data <- mp_toy_data$data[1:250, ] # 3 dimensions matrix
   query <- mp_toy_data$data[251:500, ] # 3 dimensions matrix
@@ -48,4 +44,3 @@ if (!testthat:::on_cran()) {
     expect_equal(sum(result_join$pi), 24981)
     expect_equal(round(sd(result_join$pi), 3), 61.021)
   })
-}

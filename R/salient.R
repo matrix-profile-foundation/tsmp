@@ -100,8 +100,7 @@ salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_z
 
   if (n_dim > 1) {
     max_index_num <- n_dim
-  }
-  else {
+  } else {
     # get data size
     matrix_profile_size <- nrow(.mp$mp)
     max_index_num <- round(data_size / .mp$w + vars()$eps)

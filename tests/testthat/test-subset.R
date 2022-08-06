@@ -1,7 +1,3 @@
-if (!testthat:::on_cran()) {
-  context("Testing Subset functions")
-  library(tsmp)
-
   data <- mp_fluss_data$tilt_abp$data[20000L:30000L]
   mpd_query <- mp_fluss_data$tilt_abp$data[25001L:25210L]
   data_new <- mp_fluss_data$tilt_abp$data[30001L:31000L]
@@ -107,4 +103,3 @@ if (!testthat:::on_cran()) {
     t_segment <- utils::tail(segments, offset)
     expect_equal(t_segment$fluss, 1643.0)
   })
-}
