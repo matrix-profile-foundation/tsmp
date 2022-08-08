@@ -1,5 +1,7 @@
 # [ ]: rlang::check_installed
-# [ ]: cli::cli_abort
+# [ ]: rlang::abort(); rlang::warn(); https://rlang.r-lib.org/reference/local_use_cli.html
+# [ ]: https://cli.r-lib.org/reference/cli-config.html
+# [ ]: https://rlang.r-lib.org/reference/topic-error-call.html
 
 
 convert_data <- function(data) {
