@@ -64,11 +64,11 @@ avoid  trivial matches; if a query data is provided (join similarity), this para
 }
 \section{Functions}{
 \itemize{
-\item \code{stamp_par}: Parallel version.
+\item \code{stamp_par()}: Parallel version.
 
-\item \code{stamp}: Single thread version.
+\item \code{stamp()}: Single thread version.
+
 }}
-
 \examples{
 mp <- stamp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
 \donttest{

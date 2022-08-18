@@ -48,6 +48,12 @@ vignettes/*.R
 # End of https://www.gitignore.io/api/r
 
 # Personalized
+.Renviron
+.Rprofile
+workspace.RData
+.history
+docs
+dev
 dev/
 LOCAL_APPDATA_FONTCONFIG_CACHE/
 src-*/
@@ -64,3 +70,5 @@ Rplots.pdf
 /revdep/data.sqlite
 /revdep/*.html
 /CRAN-RELEASE
+/doc/
+/Meta/

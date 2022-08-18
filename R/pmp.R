@@ -68,7 +68,7 @@ pmp <- function(data,
 
   # checks if the given object is actualy a skimp object
   if (!is.null(pmp_obj)) {
-    if (class(pmp_obj) != "PMP") {
+    if (!inherits(pmp_obj, "PMP")) {
       stop("`pmp_obj` must be of class `PMP`")
     }
   }

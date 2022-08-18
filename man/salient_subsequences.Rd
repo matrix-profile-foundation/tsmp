@@ -49,7 +49,7 @@ mps <- salient_subsequences(mp, data, verbose = 0)
 # full example
 data <- mp_meat_data$sub$data
 w <- mp_meat_data$sub$sub_len
-mp <- tsmp(data, window_size = w, verbose = 2, n_workers = 6)
+mp <- tsmp(data, window_size = w, verbose = 2, n_workers = 2)
 mps <- salient_subsequences(mp, data, n_bits = c(4, 6, 8), verbose = 2)
 }
 

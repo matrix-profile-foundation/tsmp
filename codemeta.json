@@ -1,0 +1,307 @@
+{
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "identifier": "tsmp",
+  "description": "A toolkit implementing the Matrix Profile concept that was created by CS-UCR <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>.",
+  "name": "tsmp: Time Series with Matrix Profile",
+  "codeRepository": "https://github.com/matrix-profile-foundation/tsmp",
+  "issueTracker": "https://github.com/matrix-profile-foundation/tsmp/issues",
+  "license": "https://spdx.org/licenses/Apache-2.0",
+  "version": "0.4.15",
+  "programmingLanguage": {
+    "@type": "ComputerLanguage",
+    "name": "R",
+    "url": "https://r-project.org"
+  },
+  "runtimePlatform": "R version 4.2.1 (2022-06-23)",
+  "provider": {
+    "@id": "https://cran.r-project.org",
+    "@type": "Organization",
+    "name": "Comprehensive R Archive Network (CRAN)",
+    "url": "https://cran.r-project.org"
+  },
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Francisco",
+      "familyName": "Bischoff",
+      "email": "fbischoff@med.up.pt",
+      "@id": "https://orcid.org/0000-0002-5301-8672"
+    }
+  ],
+  "contributor": [
+    {
+      "@type": "Person",
+      "givenName": "Michael",
+      "familyName": "Yeh",
+      "email": "myeh003@ucr.edu",
+      "@id": "https://orcid.org/0000-0002-9807-2963"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Diego",
+      "familyName": "Silva",
+      "email": "diegofs@ufscar.br",
+      "@id": "https://orcid.org/0000-0002-5184-9413"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Yan",
+      "familyName": "Zhu",
+      "email": "yzhu015@ucr.edu",
+      "@id": "https://orcid.org/0000-0002-5952-2108"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Hoang",
+      "familyName": "Dau",
+      "email": "hdau001@ucr.edu",
+      "@id": "https://orcid.org/0000-0003-2439-5185"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Michele",
+      "familyName": "Linardi",
+      "email": "michele.linardi@orange.fr",
+      "@id": "https://orcid.org/0000-0002-3249-2068"
+    }
+  ],
+  "maintainer": [
+    {
+      "@type": "Person",
+      "givenName": "Francisco",
+      "familyName": "Bischoff",
+      "email": "fbischoff@med.up.pt",
+      "@id": "https://orcid.org/0000-0002-5301-8672"
+    }
+  ],
+  "softwareSuggestions": [
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "covr",
+      "name": "covr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=covr"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "gdtools",
+      "name": "gdtools",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=gdtools"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "knitr",
+      "name": "knitr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=knitr"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "rmarkdown",
+      "name": "rmarkdown",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=rmarkdown"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "raster",
+      "name": "raster",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=raster"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "spelling",
+      "name": "spelling",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=spelling"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "testthat",
+      "name": "testthat",
+      "version": ">= 2.1.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=testthat"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "vdiffr",
+      "name": "vdiffr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=vdiffr"
+    }
+  ],
+  "softwareRequirements": {
+    "1": {
+      "@type": "SoftwareApplication",
+      "identifier": "R",
+      "name": "R",
+      "version": ">= 4.0"
+    },
+    "2": {
+      "@type": "SoftwareApplication",
+      "identifier": "audio",
+      "name": "audio",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=audio"
+    },
+    "3": {
+      "@type": "SoftwareApplication",
+      "identifier": "checkmate",
+      "name": "checkmate",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=checkmate"
+    },
+    "4": {
+      "@type": "SoftwareApplication",
+      "identifier": "doSNOW",
+      "name": "doSNOW",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=doSNOW"
+    },
+    "5": {
+      "@type": "SoftwareApplication",
+      "identifier": "foreach",
+      "name": "foreach",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=foreach"
+    },
+    "6": {
+      "@type": "SoftwareApplication",
+      "identifier": "magrittr",
+      "name": "magrittr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=magrittr"
+    },
+    "7": {
+      "@type": "SoftwareApplication",
+      "identifier": "parallel",
+      "name": "parallel"
+    },
+    "8": {
+      "@type": "SoftwareApplication",
+      "identifier": "progress",
+      "name": "progress",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=progress"
+    },
+    "9": {
+      "@type": "SoftwareApplication",
+      "identifier": "Rcpp",
+      "name": "Rcpp",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=Rcpp"
+    },
+    "10": {
+      "@type": "SoftwareApplication",
+      "identifier": "RcppParallel",
+      "name": "RcppParallel",
+      "version": ">= 5.0.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=RcppParallel"
+    },
+    "11": {
+      "@type": "SoftwareApplication",
+      "identifier": "RJSONIO",
+      "name": "RJSONIO",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=RJSONIO"
+    },
+    "SystemRequirements": "GNU make"
+  },
+  "fileSize": "24720.401KB",
+  "releaseNotes": "https://github.com/matrix-profile-foundation/tsmp/blob/master/NEWS.md",
+  "readme": "https://github.com/matrix-profile-foundation/tsmp/blob/master/README.md",
+  "contIntegration": ["https://app.circleci.com/pipelines/github/matrix-profile-foundation/tsmp", "https://ci.appveyor.com/project/franzbischoff/tsmp/branch/master", "https://ci.appveyor.com/project/franzbischoff/tsmp/branch/develop", "https://app.codecov.io/gh/matrix-profile-foundation/tsmp", "https://app.codecov.io/gh/matrix-profile-foundation/tsmp"],
+  "developmentStatus": "https://lifecycle.r-lib.org/articles/stages.html#stable",
+  "keywords": ["r-package", "matrix-profile", "time-series", "r", "motif-search", "algorithm"],
+  "relatedLink": "https://CRAN.R-project.org/package=tsmp"
+}

@@ -27,7 +27,7 @@ List mpx_rcpp(NumericVector a, uint16_t w, uint16_t minlag, bool idxs = false, b
     IntegerVector seq_diag = Range(minlag, profile_len - 1);
 
     NumericVector mmp(profile_len, -1.0);
-    IntegerVector mmpi(profile_len, R_NaN); // TODO: SANITIZE?
+    IntegerVector mmpi(profile_len, NA_INTEGER);
 
     double *mp = &mmp[0];
     int *mpi = &mmpi[0];
@@ -129,7 +129,7 @@ List mpxab_rcpp(NumericVector a, NumericVector b, uint16_t w, bool idxs = false,
     IntegerVector seq_diag = Range(0, profile_len_a - 1);
 
     NumericVector mmp_a(profile_len_a, -1.0);
-    IntegerVector mmpi_a(profile_len_a, R_NaN);
+    IntegerVector mmpi_a(profile_len_a, NA_INTEGER);
 
     double *mp_a = &mmp_a[0];
     int *mpi_a = &mmpi_a[0];
@@ -137,7 +137,7 @@ List mpxab_rcpp(NumericVector a, NumericVector b, uint16_t w, bool idxs = false,
     uint32_t profile_len_b = b_len - w + 1;
 
     NumericVector mmp_b(profile_len_b, -1.0);
-    IntegerVector mmpi_b(profile_len_b, R_NaN);
+    IntegerVector mmpi_b(profile_len_b, NA_INTEGER);
 
     double *mp_b = &mmp_b[0];
     int *mpi_b = &mmpi_b[0];
@@ -323,7 +323,7 @@ List mpx_rcpp_parallel(NumericVector a, uint16_t w, uint16_t minlag, bool idxs =
 
     uint32_t profile_len = n - w + 1;
     NumericVector mp(profile_len, -1.0);
-    IntegerVector mpi(profile_len, R_NaN);
+    IntegerVector mpi(profile_len, NA_INTEGER);
 
     // differentials have 0 as their first entry. This simplifies index
     // calculations slightly and allows us to avoid special "first line"
@@ -511,8 +511,8 @@ List mpxab_rcpp_parallel(NumericVector a, NumericVector b, uint16_t w, bool idxs
     NumericVector mp_a(profile_len_a, -1.0);
     NumericVector mp_b(profile_len_b, -1.0);
 
-    IntegerVector mpi_a(profile_len_a, R_NaN);
-    IntegerVector mpi_b(profile_len_b, R_NaN);
+    IntegerVector mpi_a(profile_len_a, NA_INTEGER);
+    IntegerVector mpi_b(profile_len_b, NA_INTEGER);
 
     // differentials have 0 as their first entry. This simplifies index
     // calculations slightly and allows us to avoid special "first line"

@@ -50,29 +50,29 @@ to cast it back.
 }
 \section{Functions}{
 \itemize{
-\item \code{as.matrixprofile}: Cast an object changed by another function back to \code{MatrixProfile}.
+\item \code{as.matrixprofile()}: Cast an object changed by another function back to \code{MatrixProfile}.
 
-\item \code{as.multimatrixprofile}: Cast an object changed by another function back to \code{MultiMatrixProfile}.
+\item \code{as.multimatrixprofile()}: Cast an object changed by another function back to \code{MultiMatrixProfile}.
 
-\item \code{as.pmp}: Cast an object changed by another function back to \code{PMP}.
+\item \code{as.pmp()}: Cast an object changed by another function back to \code{PMP}.
 
-\item \code{as.valmod}: Cast an object changed by another function back to \code{MultiMatrixProfile}.
+\item \code{as.valmod()}: Cast an object changed by another function back to \code{MultiMatrixProfile}.
 
-\item \code{as.fluss}: Cast an object changed by another function back to \code{Fluss}.
+\item \code{as.fluss()}: Cast an object changed by another function back to \code{Fluss}.
 
-\item \code{as.chain}: Cast an object changed by another function back to \code{Chain}.
+\item \code{as.chain()}: Cast an object changed by another function back to \code{Chain}.
 
-\item \code{as.discord}: Cast an object changed by another function back to \code{Discord}.
+\item \code{as.discord()}: Cast an object changed by another function back to \code{Discord}.
 
-\item \code{as.motif}: Cast an object changed by another function back to \code{Motif}.
+\item \code{as.motif()}: Cast an object changed by another function back to \code{Motif}.
 
-\item \code{as.multimotif}: Cast an object changed by another function back to \code{MultiMotif}.
+\item \code{as.multimotif()}: Cast an object changed by another function back to \code{MultiMotif}.
 
-\item \code{as.arccount}: Cast an object changed by another function back to \code{ArcCount}.
+\item \code{as.arccount()}: Cast an object changed by another function back to \code{ArcCount}.
 
-\item \code{as.salient}: Cast an object changed by another function back to \code{Salient}.
+\item \code{as.salient()}: Cast an object changed by another function back to \code{Salient}.
+
 }}
-
 \examples{
 
 w <- 50

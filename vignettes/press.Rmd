@@ -2,7 +2,7 @@
 title: "Time Series with Matrix Profile"
 author: "Francisco Bischoff"
 date: "`r Sys.Date()`"
-output: 
+output:
   rmarkdown::html_vignette:
     fig_caption: yes
 vignette: >
@@ -36,7 +36,7 @@ And is this good?
 
 ## Why should you care?
 
-DM usually stores redundant information, useless for most TS applications. The Matrix Profile has a host of interesting and exploitable properties. For example, the highest point on the Matrix Profile corresponds to the TS discord, the (tied) lowest points correspond to the locations of the best TS motif pair, and the variance can be seen as a measure of the TS complexity. Moreover, the histogram of the values in the Matrix Profile is the exact answer to the TS density estimation. Particularly, it has implications for TS motif discovery, TS joins, shapelet discovery (classification), density estimation, semantic segmentation, visualization, rule discovery, clustering etc.^[For pure [similarity search](https://en.wikipedia.org/wiki/Similarity_search), it is suggested you see [MASS](http://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html) for Euclidean Distance, and the [UCR Suite](http://www.cs.ucr.edu/~eamonn/UCRsuite.html) for DTW]
+DM usually stores redundant information, useless for most TS applications. The Matrix Profile has a host of interesting and exploitable properties. For example, the highest point on the Matrix Profile corresponds to the TS discord, the (tied) lowest points correspond to the locations of the best TS motif pair, and the variance can be seen as a measure of the TS complexity. Moreover, the histogram of the values in the Matrix Profile is the exact answer to the TS density estimation. Particularly, it has implications for TS motif discovery, TS joins, shapelet discovery (classification), density estimation, semantic segmentation, visualization, rule discovery, clustering etc.^[For pure [similarity search](https://en.wikipedia.org/wiki/Similarity_search), it is suggested you see [MASS](https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html) for Euclidean Distance, and the [UCR Suite](http://www.cs.ucr.edu/~eamonn/UCRsuite.html) for DTW]
 
 This method has the following advantages/features:
 

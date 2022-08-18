@@ -66,11 +66,11 @@ means nothing, \code{1} means text, \code{2} adds the progress bar, \code{3} add
 }
 \section{Functions}{
 \itemize{
-\item \code{mstomp_par}: Parallel version.
+\item \code{mstomp_par()}: Parallel version.
 
-\item \code{mstomp}: Single thread version.
+\item \code{mstomp()}: Single thread version.
+
 }}
-
 \examples{
 # using all dimensions
 mp <- mstomp(mp_toy_data$data[1:150, ], 30, verbose = 0)
