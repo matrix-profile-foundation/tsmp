@@ -36,8 +36,7 @@
 #' 1.1. upper_window will also be used for plot, and for discovery, it must not remove any existing data from the object
 #' 2. window_sizes is used for plot, it must not remove any mp inside the object
 #' 2.1. window_sizes tells the function what mp are stored, it may be updated with as.numeric(names(pmp))
-#' 3. the functions must be capable to handle the data without need to sort by window_size, but sort may be useful
-#' later(?)
+#' 3. the functions must be capable to handle the data without need to sort by window_size, but sort may be useful later(?)
 #'
 #' @return Returns a `PMP` object.
 #' @export
@@ -69,7 +68,7 @@ pmp <- function(data,
 
   # checks if the given object is actualy a skimp object
   if (!is.null(pmp_obj)) {
-    if (class(pmp_obj) != "PMP") {
+    if (!inherits(pmp_obj, "PMP")) {
       stop("`pmp_obj` must be of class `PMP`")
     }
   }

@@ -520,6 +520,11 @@
 
 #---- Subset MPdist ----
 
+#' @export
+#' @keywords internal
+#' @noRd
+#'
+
 `[.MPdistProfile` <- function(x, ..., drop = FALSE) {
   subset <- c(...)
   sub_size <- length(subset)
@@ -585,6 +590,11 @@
   }
 }
 
+#' @export
+#' @keywords internal
+#' @noRd
+#'
+
 `[.Snippet` <- function(x, ..., drop = FALSE) {
   attr(x, "subsetting") <- "Snippet"
 
@@ -597,6 +607,12 @@
 
 #---- Tails ----
 
+#' @export
+#' @importFrom utils tail
+#' @keywords internal
+#' @noRd
+#'
+
 tail.MatrixProfile <- function(x, n = 2 * max(x$w), ...) { # nolint
   data_size <- nrow(x$mp) + min(x$w) - 1
 
@@ -608,15 +624,32 @@ tail.MatrixProfile <- function(x, n = 2 * max(x$w), ...) { # nolint
   return(x[st_idx:data_size])
 }
 
+#' @export
+#' @importFrom utils tail
+#' @keywords internal
+#' @noRd
+
 tail.MultiMatrixProfile <- function(x, n = 2 * max(x$w), ...) { # nolint
   return(tail.MatrixProfile(x, n, ...))
 }
+
+#' @export
+#' @importFrom utils tail
+#' @keywords internal
+#' @noRd
+#'
 
 tail.SimpleMatrixProfile <- function(x, n = 2 * max(x$w), ...) { # nolint
   return(tail.MatrixProfile(x, n, ...))
 }
 
 #---- Heads ----
+
+#' @export
+#' @importFrom utils head
+#' @keywords internal
+#' @noRd
+#'
 
 head.MatrixProfile <- function(x, n = 2 * max(x$w), ...) { # nolint
   data_size <- nrow(x$mp) + min(x$w) - 1
@@ -629,11 +662,21 @@ head.MatrixProfile <- function(x, n = 2 * max(x$w), ...) { # nolint
   return(x[1:ed_idx])
 }
 
+#' @export
+#' @importFrom utils head
+#' @keywords internal
+#' @noRd
+#'
 
 head.MultiMatrixProfile <- function(x, n = 2 * max(x$w), ...) { # nolint
   return(head.MatrixProfile(x, n, ...))
 }
 
+#' @export
+#' @importFrom utils head
+#' @keywords internal
+#' @noRd
+#'
 
 head.SimpleMatrixProfile <- function(x, n = 2 * max(x$w), ...) { # nolint
   return(head.MatrixProfile(x, n, ...))

@@ -16,7 +16,6 @@
 ^examples_.*$
 ^LICENSE\.md$
 ^LOCAL_APPDATA_FONTCONFIG_CACHE$
-^NEWS\.md$
 ^NEWS\.Rmd$
 ^packrat$
 ^pkgdown$
@@ -41,3 +40,7 @@
 ^.*\.tex$
 ^codemeta\.json$
 ^_pkgdown\.yml$
+^lastMiKTeXException$
+^doc$
+^Meta$
+^CRAN-SUBMISSION$
