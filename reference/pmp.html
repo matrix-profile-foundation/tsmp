@@ -63,14 +63,14 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">pmp</span><span class="op">(</span></span>
-<span>  <span class="va">data</span>,</span>
-<span>  window_sizes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq.int</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">10</span>, to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span>, length.out <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>,</span>
-<span>  plot <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  pmp_obj <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  n_workers <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  verbose <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"tsmp.verbose"</span>, <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">pmp</span><span class="op">(</span>
+  <span class="va">data</span>,
+  window_sizes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq.int</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">10</span>, to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span>, length.out <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>,
+  plot <span class="op">=</span> <span class="cn">FALSE</span>,
+  pmp_obj <span class="op">=</span> <span class="cn">NULL</span>,
+  n_workers <span class="op">=</span> <span class="fl">1</span>,
+  verbose <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"tsmp.verbose"</span>, <span class="fl">2</span><span class="op">)</span>
+<span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -135,13 +135,44 @@ adds the progress bar, <code>3</code> adds the finish sound.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="co"># Just compute</span></span></span>
-<span class="r-in"><span><span class="va">pan</span> <span class="op">&lt;-</span> <span class="fu">pmp</span><span class="op">(</span><span class="va">mp_gait_data</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># Compute the upper bound, than add new profiles</span></span></span>
-<span class="r-in"><span><span class="va">pan</span> <span class="op">&lt;-</span> <span class="fu"><a href="pmp_upper_bound.html">pmp_upper_bound</a></span><span class="op">(</span><span class="va">mp_gait_data</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">pan</span> <span class="op">&lt;-</span> <span class="fu">pmp</span><span class="op">(</span><span class="va">mp_gait_data</span>, pmp_obj <span class="op">=</span> <span class="va">pan</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># \donttest{</span></span>
+<span class="r-in"><span class="co"># Just compute</span></span>
+<span class="r-in"><span class="va">pan</span> <span class="op">&lt;-</span> <span class="fu">pmp</span><span class="op">(</span><span class="va">mp_gait_data</span><span class="op">)</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 1/20 binary idx: 1 window: 10</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 2/20 binary idx: 11 window: 242</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 3/20 binary idx: 6 window: 126</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 4/20 binary idx: 16 window: 358</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 5/20 binary idx: 3 window: 56</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 6/20 binary idx: 8 window: 172</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 7/20 binary idx: 13 window: 289</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 8/20 binary idx: 18 window: 405</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 9/20 binary idx: 2 window: 33</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 10/20 binary idx: 4 window: 79</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 11/20 binary idx: 7 window: 149</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 12/20 binary idx: 9 window: 196</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 13/20 binary idx: 12 window: 265</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 14/20 binary idx: 14 window: 312</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 15/20 binary idx: 17 window: 382</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 16/20 binary idx: 19 window: 428</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 17/20 binary idx: 5 window: 103</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 18/20 binary idx: 10 window: 219</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 19/20 binary idx: 15 window: 335</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 20/20 binary idx: 20 window: 452</span>
+<span class="r-in"><span class="co"># Compute the upper bound, than add new profiles</span></span>
+<span class="r-in"><span class="va">pan</span> <span class="op">&lt;-</span> <span class="fu"><a href="pmp_upper_bound.html">pmp_upper_bound</a></span><span class="op">(</span><span class="va">mp_gait_data</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">pan</span> <span class="op">&lt;-</span> <span class="fu">pmp</span><span class="op">(</span><span class="va">mp_gait_data</span>, pmp_obj <span class="op">=</span> <span class="va">pan</span><span class="op">)</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 1/11 binary idx: 1 window: 10</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 2/11 binary idx: 6 window: 126</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 3/11 binary idx: 3 window: 56</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 4/11 binary idx: 9 window: 196</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 5/11 binary idx: 2 window: 33</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 6/11 binary idx: 4 window: 79</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 7/11 binary idx: 7 window: 149</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 8/11 binary idx: 10 window: 219</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 9/11 binary idx: 5 window: 103</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 10/11 binary idx: 8 window: 172</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> step: 11/11 binary idx: 11 window: 242</span>
+<span class="r-in"><span class="co"># }</span></span>
 </code></pre></div>
     </div>
   </div>

@@ -63,24 +63,24 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">mstomp_par</span><span class="op">(</span></span>
-<span>  <span class="va">data</span>,</span>
-<span>  <span class="va">window_size</span>,</span>
-<span>  exclusion_zone <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"tsmp.exclusion_zone"</span>, <span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>,</span>
-<span>  verbose <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"tsmp.verbose"</span>, <span class="fl">2</span><span class="op">)</span>,</span>
-<span>  must_dim <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  exc_dim <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  n_workers <span class="op">=</span> <span class="fl">2</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">mstomp</span><span class="op">(</span></span>
-<span>  <span class="va">data</span>,</span>
-<span>  <span class="va">window_size</span>,</span>
-<span>  exclusion_zone <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"tsmp.exclusion_zone"</span>, <span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>,</span>
-<span>  verbose <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"tsmp.verbose"</span>, <span class="fl">2</span><span class="op">)</span>,</span>
-<span>  must_dim <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  exc_dim <span class="op">=</span> <span class="cn">NULL</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">mstomp_par</span><span class="op">(</span>
+  <span class="va">data</span>,
+  <span class="va">window_size</span>,
+  exclusion_zone <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"tsmp.exclusion_zone"</span>, <span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>,
+  verbose <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"tsmp.verbose"</span>, <span class="fl">2</span><span class="op">)</span>,
+  must_dim <span class="op">=</span> <span class="cn">NULL</span>,
+  exc_dim <span class="op">=</span> <span class="cn">NULL</span>,
+  n_workers <span class="op">=</span> <span class="fl">2</span>
+<span class="op">)</span>
+
+<span class="fu">mstomp</span><span class="op">(</span>
+  <span class="va">data</span>,
+  <span class="va">window_size</span>,
+  exclusion_zone <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"tsmp.exclusion_zone"</span>, <span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>,
+  verbose <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"tsmp.verbose"</span>, <span class="fl">2</span><span class="op">)</span>,
+  must_dim <span class="op">=</span> <span class="cn">NULL</span>,
+  exc_dim <span class="op">=</span> <span class="cn">NULL</span>
+<span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -169,18 +169,481 @@ New Primitive for Time Series Data Mining. Knowl Inf Syst. 2018 Jun 2;1-27.</p><
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># using all dimensions</span></span></span>
-<span class="r-in"><span><span class="va">mp</span> <span class="op">&lt;-</span> <span class="fu">mstomp</span><span class="op">(</span><span class="va">mp_toy_data</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">150</span>, <span class="op">]</span>, <span class="fl">30</span>, verbose <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="co">#' # using threads</span></span></span>
-<span class="r-in"><span><span class="va">mp</span> <span class="op">&lt;-</span> <span class="fu">mstomp_par</span><span class="op">(</span><span class="va">mp_toy_data</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">150</span>, <span class="op">]</span>, <span class="fl">30</span>, verbose <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># force using dimensions 1 and 2</span></span></span>
-<span class="r-in"><span><span class="va">mp</span> <span class="op">&lt;-</span> <span class="fu">mstomp</span><span class="op">(</span><span class="va">mp_toy_data</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span>, <span class="op">]</span>, <span class="fl">30</span>, must_dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># exclude dimensions 2 and 3</span></span></span>
-<span class="r-in"><span><span class="va">mp2</span> <span class="op">&lt;-</span> <span class="fu">mstomp</span><span class="op">(</span><span class="va">mp_toy_data</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span>, <span class="op">]</span>, <span class="fl">30</span>, exc_dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># using all dimensions</span></span>
+<span class="r-in"><span class="va">mp</span> <span class="op">&lt;-</span> <span class="fu">mstomp</span><span class="op">(</span><span class="va">mp_toy_data</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">150</span>, <span class="op">]</span>, <span class="fl">30</span>, verbose <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span class="r-in"><span class="co"># \donttest{</span></span>
+<span class="r-in"><span class="co">#' # using threads</span></span>
+<span class="r-in"><span class="va">mp</span> <span class="op">&lt;-</span> <span class="fu">mstomp_par</span><span class="op">(</span><span class="va">mp_toy_data</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">150</span>, <span class="op">]</span>, <span class="fl">30</span>, verbose <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in {    pro_muls &lt;- matrix(Inf, length(idx_work[[i]]), n_dim)    pro_idxs &lt;- matrix(-Inf, length(idx_work[[i]]), n_dim)    pro_muls_right &lt;- matrix(Inf, length(idx_work[[i]]), n_dim)    pro_idxs_right &lt;- matrix(-Inf, length(idx_work[[i]]), n_dim)    pro_muls_left &lt;- matrix(Inf, length(idx_work[[i]]), n_dim)    pro_idxs_left &lt;- matrix(-Inf, length(idx_work[[i]]), n_dim)    dist_pro &lt;- matrix(0, matrix_profile_size, n_dim)    last_product &lt;- matrix(0, matrix_profile_size, n_dim)    drop_value &lt;- matrix(0, 1, n_dim)    for (j in seq_len(length(idx_work[[i]]))) {        idx &lt;- idx_work[[i]][j]        query_window &lt;- as.matrix(data[idx:(idx + window_size -             1), ])        if (j == 1) {            for (k in 1:n_dim) {                nni &lt;- dist_profile(data[, k], data[, k], nn[[k]],                   index = idx)                dist_pro[, k] &lt;- nni$distance_profile                last_product[, k] &lt;- nni$last_product            }        }        else {            rep_drop_value &lt;- kronecker(matrix(1, matrix_profile_size -                 1, 1), t(drop_value))            rep_query &lt;- kronecker(matrix(1, matrix_profile_size -                 1, 1), t(query_window[window_size, ]))            last_product[2:(data_size - window_size + 1), ] &lt;- last_product[1:(data_size -                 window_size), ] - data[1:(data_size - window_size),                 ] * rep_drop_value + data[(window_size + 1):data_size,                 ] * rep_query            last_product[1, ] &lt;- first_product[idx, ]            dist_pro &lt;- 2 * (window_size - (last_product - window_size *                 data_mean * kronecker(matrix(1, matrix_profile_size,                 1), t(data_mean[idx, ])))/(data_sd * kronecker(matrix(1,                 matrix_profile_size, 1), t(data_sd[idx, ]))))        }        drop_value &lt;- query_window[1, ]        exc_zone_st &lt;- max(1, idx - exclusion_zone)        exc_zone_ed &lt;- min(matrix_profile_size, idx + exclusion_zone)        dist_pro[exc_zone_st:exc_zone_ed, ] &lt;- Inf        dist_pro[data_sd &lt; vars()$eps] &lt;- Inf        if (skip_location[idx] || any(data_sd[idx, !mask_exc] &lt;             vars()$eps)) {            dist_pro[] &lt;- Inf        }        dist_pro[skip_location, ] &lt;- Inf        dist_pro[, exc_dim] &lt;- Inf        if (n_must &gt; 0) {            mask_must &lt;- rep(FALSE, n_dim)            mask_must[must_dim] &lt;- TRUE            dist_pro_must &lt;- dist_pro[, mask_must]            dist_pro[, mask_must] &lt;- -Inf        }        if (n_dim &gt; 1) {            dist_pro_sort &lt;- t(apply(dist_pro, 1, sort))        }        else {            dist_pro_sort &lt;- dist_pro        }        if (n_must &gt; 0) {            dist_pro_sort[, 1:n_must] &lt;- dist_pro_must        }        dist_pro_cum &lt;- rep(0, matrix_profile_size)        dist_pro_merg &lt;- rep(0, matrix_profile_size)        for (k in (max(1, n_must):(n_dim - n_exc))) {            dist_pro_cum &lt;- dist_pro_cum + dist_pro_sort[, k]            dist_pro_merg[] &lt;- dist_pro_cum/k            if (idx &gt; (exclusion_zone + 1)) {                min_idx &lt;- which.min(dist_pro_merg[1:(idx - exclusion_zone)])                min_val &lt;- dist_pro_merg[min_idx]                pro_muls_left[j, k] &lt;- min_val                pro_idxs_left[j, k] &lt;- min_idx            }            if (idx &lt; (matrix_profile_size - exclusion_zone)) {                min_idx &lt;- which.min(dist_pro_merg[(idx + exclusion_zone):matrix_profile_size]) +                   idx + exclusion_zone - 1                min_val &lt;- dist_pro_merg[min_idx]                pro_muls_right[j, k] &lt;- min_val                pro_idxs_right[j, k] &lt;- min_idx            }            min_idx &lt;- which.min(dist_pro_merg)            min_val &lt;- dist_pro_merg[min_idx]            pro_muls[j, k] &lt;- min_val            pro_idxs[j, k] &lt;- min_idx        }    }    pro_muls &lt;- sqrt(pro_muls)    pro_muls_left &lt;- sqrt(pro_muls_left)    pro_muls_right &lt;- sqrt(pro_muls_right)    res &lt;- list(pro_muls = pro_muls, pro_idxs = pro_idxs, pro_muls_left = pro_muls_left,         pro_idxs_left = pro_idxs_left, pro_muls_right = pro_muls_right,         pro_idxs_right = pro_idxs_right, idx = i)    res}:</span> task 1 failed - "could not find function "mass_v3""</span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># force using dimensions 1 and 2</span></span>
+<span class="r-in"><span class="va">mp</span> <span class="op">&lt;-</span> <span class="fu">mstomp</span><span class="op">(</span><span class="va">mp_toy_data</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span>, <span class="op">]</span>, <span class="fl">30</span>, must_dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===&gt;--------------------------]  14% at 117 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===&gt;--------------------------]  15% at 119 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [====&gt;-------------------------]  15% at 120 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [====&gt;-------------------------]  16% at 120 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [====&gt;-------------------------]  16% at 121 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [====&gt;-------------------------]  17% at 122 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [====&gt;-------------------------]  18% at 123 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [====&gt;-------------------------]  18% at 124 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=====&gt;------------------------]  19% at 124 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=====&gt;------------------------]  19% at 125 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=====&gt;------------------------]  20% at 126 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=====&gt;------------------------]  20% at 123 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=====&gt;------------------------]  21% at 124 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=====&gt;------------------------]  22% at 123 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [======&gt;-----------------------]  22% at 124 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [======&gt;-----------------------]  23% at 124 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [======&gt;-----------------------]  23% at 125 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [======&gt;-----------------------]  24% at 126 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [======&gt;-----------------------]  25% at 126 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=======&gt;----------------------]  25% at 127 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=======&gt;----------------------]  26% at 128 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=======&gt;----------------------]  27% at 127 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=======&gt;----------------------]  28% at 128 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [========&gt;---------------------]  29% at 128 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [========&gt;---------------------]  29% at 129 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [========&gt;---------------------]  30% at 129 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [========&gt;---------------------]  30% at 130 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [========&gt;---------------------]  31% at 130 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [========&gt;---------------------]  32% at 131 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=========&gt;--------------------]  32% at 131 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=========&gt;--------------------]  33% at 132 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=========&gt;--------------------]  34% at 130 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=========&gt;--------------------]  35% at 129 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==========&gt;-------------------]  35% at 130 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==========&gt;-------------------]  36% at 130 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==========&gt;-------------------]  37% at 131 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==========&gt;-------------------]  38% at 131 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===========&gt;------------------]  39% at 132 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===========&gt;------------------]  40% at 132 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===========&gt;------------------]  40% at 131 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===========&gt;------------------]  41% at 131 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===========&gt;------------------]  42% at 131 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [============&gt;-----------------]  42% at 131 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [============&gt;-----------------]  43% at 132 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [============&gt;-----------------]  44% at 132 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=============&gt;----------------]  45% at 133 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=============&gt;----------------]  46% at 133 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=============&gt;----------------]  47% at 133 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=============&gt;----------------]  48% at 133 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==============&gt;---------------]  49% at 133 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==============&gt;---------------]  49% at 134 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==============&gt;---------------]  50% at 134 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==============&gt;---------------]  51% at 135 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===============&gt;--------------]  52% at 135 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===============&gt;--------------]  53% at 135 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===============&gt;--------------]  54% at 135 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===============&gt;--------------]  55% at 135 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [================&gt;-------------]  56% at 135 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [================&gt;-------------]  57% at 135 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [================&gt;-------------]  58% at 135 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=================&gt;------------]  58% at 135 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=================&gt;------------]  59% at 135 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=================&gt;------------]  60% at 135 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=================&gt;------------]  60% at 134 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=================&gt;------------]  61% at 134 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=================&gt;------------]  61% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==================&gt;-----------]  62% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==================&gt;-----------]  63% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==================&gt;-----------]  64% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==================&gt;-----------]  65% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===================&gt;----------]  65% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===================&gt;----------]  66% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===================&gt;----------]  67% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===================&gt;----------]  68% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [====================&gt;---------]  68% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [====================&gt;---------]  69% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [====================&gt;---------]  70% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [====================&gt;---------]  70% at 136 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [====================&gt;---------]  71% at 136 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=====================&gt;--------]  72% at 136 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=====================&gt;--------]  73% at 136 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=====================&gt;--------]  74% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=====================&gt;--------]  75% at 136 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [======================&gt;-------]  75% at 136 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [======================&gt;-------]  76% at 136 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [======================&gt;-------]  77% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [======================&gt;-------]  78% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=======================&gt;------]  78% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=======================&gt;------]  79% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=======================&gt;------]  80% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=======================&gt;------]  80% at 134 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=======================&gt;------]  81% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [========================&gt;-----]  82% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [========================&gt;-----]  83% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [========================&gt;-----]  84% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [========================&gt;-----]  85% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=========================&gt;----]  85% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=========================&gt;----]  86% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=========================&gt;----]  87% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=========================&gt;----]  88% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==========================&gt;---]  89% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==========================&gt;---]  90% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==========================&gt;---]  91% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===========================&gt;--]  92% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===========================&gt;--]  93% at 136 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===========================&gt;--]  94% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===========================&gt;--]  95% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [============================&gt;-]  95% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [============================&gt;-]  96% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [============================&gt;-]  97% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [============================&gt;-]  98% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=============================&gt;]  99% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==============================] 100% at 134 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Finished in 1.28 secs</span>
+<span class="r-in"><span class="co"># exclude dimensions 2 and 3</span></span>
+<span class="r-in"><span class="va">mp2</span> <span class="op">&lt;-</span> <span class="fu">mstomp</span><span class="op">(</span><span class="va">mp_toy_data</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span>, <span class="op">]</span>, <span class="fl">30</span>, exc_dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [====&gt;-------------------------]  16% at 137 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [====&gt;-------------------------]  17% at 138 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [====&gt;-------------------------]  18% at 139 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [====&gt;-------------------------]  18% at 140 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=====&gt;------------------------]  19% at 140 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=====&gt;------------------------]  20% at 140 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=====&gt;------------------------]  20% at 138 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=====&gt;------------------------]  21% at 137 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=====&gt;------------------------]  22% at 137 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [======&gt;-----------------------]  22% at 138 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [======&gt;-----------------------]  23% at 138 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [======&gt;-----------------------]  23% at 139 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [======&gt;-----------------------]  24% at 139 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [======&gt;-----------------------]  25% at 139 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=======&gt;----------------------]  25% at 140 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=======&gt;----------------------]  26% at 140 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=======&gt;----------------------]  27% at 135 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=======&gt;----------------------]  28% at 135 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [========&gt;---------------------]  29% at 136 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [========&gt;---------------------]  30% at 136 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [========&gt;---------------------]  30% at 137 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [========&gt;---------------------]  31% at 137 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [========&gt;---------------------]  32% at 137 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=========&gt;--------------------]  32% at 138 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=========&gt;--------------------]  33% at 138 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=========&gt;--------------------]  33% at 136 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=========&gt;--------------------]  34% at 136 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=========&gt;--------------------]  35% at 136 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==========&gt;-------------------]  35% at 136 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==========&gt;-------------------]  36% at 136 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==========&gt;-------------------]  36% at 137 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==========&gt;-------------------]  37% at 137 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==========&gt;-------------------]  37% at 138 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==========&gt;-------------------]  38% at 138 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===========&gt;------------------]  39% at 138 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===========&gt;------------------]  40% at 137 it/s, elapsed:  0s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===========&gt;------------------]  40% at 135 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===========&gt;------------------]  41% at 135 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===========&gt;------------------]  42% at 135 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [============&gt;-----------------]  42% at 135 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [============&gt;-----------------]  43% at 135 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [============&gt;-----------------]  44% at 135 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [============&gt;-----------------]  44% at 136 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=============&gt;----------------]  45% at 136 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=============&gt;----------------]  46% at 136 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=============&gt;----------------]  47% at 135 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=============&gt;----------------]  48% at 135 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==============&gt;---------------]  49% at 135 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==============&gt;---------------]  49% at 136 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==============&gt;---------------]  50% at 136 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==============&gt;---------------]  51% at 136 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===============&gt;--------------]  52% at 137 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===============&gt;--------------]  53% at 137 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===============&gt;--------------]  53% at 136 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===============&gt;--------------]  54% at 136 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===============&gt;--------------]  55% at 136 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [================&gt;-------------]  56% at 136 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [================&gt;-------------]  56% at 137 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [================&gt;-------------]  57% at 137 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [================&gt;-------------]  58% at 137 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=================&gt;------------]  58% at 137 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=================&gt;------------]  59% at 138 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=================&gt;------------]  60% at 138 it/s, elapsed:  1s, eta:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=================&gt;------------]  60% at 136 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=================&gt;------------]  61% at 137 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=================&gt;------------]  61% at 136 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==================&gt;-----------]  62% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==================&gt;-----------]  63% at 134 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==================&gt;-----------]  64% at 134 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==================&gt;-----------]  65% at 134 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===================&gt;----------]  65% at 134 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===================&gt;----------]  66% at 134 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===================&gt;----------]  67% at 133 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===================&gt;----------]  68% at 133 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [====================&gt;---------]  68% at 133 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [====================&gt;---------]  69% at 134 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [====================&gt;---------]  70% at 134 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [====================&gt;---------]  71% at 134 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=====================&gt;--------]  72% at 134 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=====================&gt;--------]  73% at 134 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=====================&gt;--------]  73% at 133 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=====================&gt;--------]  74% at 133 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=====================&gt;--------]  75% at 133 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [======================&gt;-------]  75% at 133 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [======================&gt;-------]  76% at 134 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [======================&gt;-------]  77% at 134 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [======================&gt;-------]  78% at 134 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=======================&gt;------]  78% at 134 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=======================&gt;------]  79% at 134 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=======================&gt;------]  80% at 134 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=======================&gt;------]  81% at 134 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [========================&gt;-----]  82% at 134 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [========================&gt;-----]  83% at 134 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [========================&gt;-----]  84% at 134 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [========================&gt;-----]  84% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [========================&gt;-----]  85% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=========================&gt;----]  85% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=========================&gt;----]  86% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=========================&gt;----]  87% at 134 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=========================&gt;----]  87% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=========================&gt;----]  88% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==========================&gt;---]  89% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==========================&gt;---]  90% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==========================&gt;---]  91% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==========================&gt;---]  91% at 136 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===========================&gt;--]  92% at 136 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===========================&gt;--]  93% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===========================&gt;--]  94% at 135 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===========================&gt;--]  94% at 136 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [===========================&gt;--]  95% at 136 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [============================&gt;-]  95% at 136 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [============================&gt;-]  96% at 136 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [============================&gt;-]  97% at 136 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [============================&gt;-]  98% at 136 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [=============================&gt;]  99% at 136 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mSTOMP [==============================] 100% at 136 it/s, elapsed:  1s, eta:  0s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Finished in 1.26 secs</span>
+<span class="r-in"><span class="co"># }</span></span>
+<span class="r-in"></span>
 </code></pre></div>
     </div>
   </div>

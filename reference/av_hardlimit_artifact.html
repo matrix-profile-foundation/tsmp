@@ -63,7 +63,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">av_hardlimit_artifact</span><span class="op">(</span><span class="va">.mp</span>, <span class="va">data</span>, apply <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">av_hardlimit_artifact</span><span class="op">(</span><span class="va">.mp</span>, <span class="va">data</span>, apply <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -107,10 +107,10 @@ on Knowledge Discovery and Data Mining - KDD '17. New York, New York, USA: ACM P
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">mp_test_data</span><span class="op">$</span><span class="va">train</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">1000</span><span class="op">]</span></span></span>
-<span class="r-in"><span><span class="va">w</span> <span class="op">&lt;-</span> <span class="fl">50</span></span></span>
-<span class="r-in"><span><span class="va">mp</span> <span class="op">&lt;-</span> <span class="fu"><a href="tsmp.html">tsmp</a></span><span class="op">(</span><span class="va">data</span>, window_size <span class="op">=</span> <span class="va">w</span>, verbose <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">av</span> <span class="op">&lt;-</span> <span class="fu">av_hardlimit_artifact</span><span class="op">(</span><span class="va">mp</span>, apply <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">mp_test_data</span><span class="op">$</span><span class="va">train</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">1000</span><span class="op">]</span></span>
+<span class="r-in"><span class="va">w</span> <span class="op">&lt;-</span> <span class="fl">50</span></span>
+<span class="r-in"><span class="va">mp</span> <span class="op">&lt;-</span> <span class="fu"><a href="tsmp.html">tsmp</a></span><span class="op">(</span><span class="va">data</span>, window_size <span class="op">=</span> <span class="va">w</span>, verbose <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">av</span> <span class="op">&lt;-</span> <span class="fu">av_hardlimit_artifact</span><span class="op">(</span><span class="va">mp</span>, apply <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 </code></pre></div>
     </div>
   </div>

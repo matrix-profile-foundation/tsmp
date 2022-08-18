@@ -101,8 +101,8 @@
 
 <table class="table">
 <colgroup>
-<col width="3%">
-<col width="47%">
+<col width="2%">
+<col width="48%">
 <col width="48%">
 </colgroup>
 <thead><tr class="header">
@@ -111,16 +111,6 @@
 <th>Dev</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
-<td>Linux x86_64</td>
-<td><a href="https://www.travis-ci.com/matrix-profile-foundation/tsmp" class="external-link"><img src="https://www.travis-ci.com/matrix-profile-foundation/tsmp.svg?branch=master" alt="Build Status"></a></td>
-<td><a href="https://www.travis-ci.com/matrix-profile-foundation/tsmp" class="external-link"><img src="https://www.travis-ci.com/matrix-profile-foundation/tsmp.svg?branch=develop" alt="Build Status"></a></td>
-</tr>
-<tr class="even">
-<td>OSX</td>
-<td><a href="https://www.travis-ci.com/matrix-profile-foundation/tsmp" class="external-link"><img src="https://www.travis-ci.com/matrix-profile-foundation/tsmp.svg?branch=master" alt="Build Status"></a></td>
-<td><a href="https://www.travis-ci.com/matrix-profile-foundation/tsmp" class="external-link"><img src="https://www.travis-ci.com/matrix-profile-foundation/tsmp.svg?branch=develop" alt="Build Status"></a></td>
-</tr>
 <tr class="odd">
 <td>Windows</td>
 <td><a href="https://ci.appveyor.com/project/franzbischoff/tsmp/branch/master" class="external-link"><img src="https://ci.appveyor.com/api/projects/status/byfyqncr60ten98g/branch/master?svg=true" alt="AppVeyor build status"></a></td>
@@ -133,6 +123,11 @@
 </tr>
 </tbody>
 </table>
+<div class="section level2">
+<h2 id="notice">Notice<a class="anchor" aria-label="anchor" href="#notice"></a>
+</h2>
+<p>This version is being maintained to keep up with CRAN standards. As soon as possible a new version (with possible breaking changes) with less dependencies will be released later in 2022 or beginning of 2023.</p>
+</div>
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
@@ -149,22 +144,22 @@
 <li>Sequencial workflow, see below.</li>
 </ul>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Basic workflow:</span></span>
-<span><span class="va">matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/tsmp.html">tsmp</a></span><span class="op">(</span><span class="va">data</span>, window_size <span class="op">=</span> <span class="fl">30</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="reference/find_motif.html">find_motif</a></span><span class="op">(</span>n_motifs <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%T&gt;%</a></span></span>
-<span>  <span class="fu"><a href="reference/plot.html">plot</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># SDTS still have a unique way to work:</span></span>
-<span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sdts_train.html">sdts_train</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">labels</span>, <span class="va">windows</span><span class="op">)</span></span>
-<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sdts_predict.html">sdts_predict</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">data</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">windows</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span class="co"># Basic workflow:</span>
+<span class="va">matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/tsmp.html">tsmp</a></span><span class="op">(</span><span class="va">data</span>, window_size <span class="op">=</span> <span class="fl">30</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="reference/find_motif.html">find_motif</a></span><span class="op">(</span>n_motifs <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%T&gt;%</a></span>
+  <span class="fu"><a href="reference/plot.html">plot</a></span><span class="op">(</span><span class="op">)</span>
+
+<span class="co"># SDTS still have a unique way to work:</span>
+<span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sdts_train.html">sdts_train</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">labels</span>, <span class="va">windows</span><span class="op">)</span>
+<span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sdts_predict.html">sdts_predict</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">data</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">windows</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Please refer to the <a href="https://matrixprofile.org/tsmp/reference/">User Manual</a> for more details.</p>
 <p>Please be welcome to suggest improvements.</p>
 <div class="section level3">
 <h3 id="performance-on-an-intelr-coretm-i7-7700-cpu--360ghz-using-a-random-walk-dataset">Performance on an Intel(R) Core(TM) i7-7700 CPU @ 3.60GHz using a random walk dataset<a class="anchor" aria-label="anchor" href="#performance-on-an-intelr-coretm-i7-7700-cpu--360ghz-using-a-random-walk-dataset"></a>
 </h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2018</span><span class="op">)</span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html" class="external-link">cumsum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">40000</span>, <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2018</span><span class="op">)</span>
+<span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html" class="external-link">cumsum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">40000</span>, <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="section level4">
 <h4 id="current-version-benchmark">Current version benchmark<a class="anchor" aria-label="anchor" href="#current-version-benchmark"></a>
 </h4>
@@ -176,12 +171,12 @@
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Install the released version from CRAN</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"tsmp"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Or the development version from GitHub:</span></span>
-<span><span class="co"># install.packages("devtools")</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"matrix-profile-foundation/tsmp"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span class="co"># Install the released version from CRAN</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"tsmp"</span><span class="op">)</span>
+
+<span class="co"># Or the development version from GitHub:</span>
+<span class="co"># install.packages("devtools")</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"matrix-profile-foundation/tsmp"</span><span class="op">)</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="currently-available-features">Currently available Features<a class="anchor" aria-label="anchor" href="#currently-available-features"></a>

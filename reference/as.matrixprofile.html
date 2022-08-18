@@ -69,27 +69,27 @@ to cast it back.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">as.matrixprofile</span><span class="op">(</span><span class="va">.mp</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">as.multimatrixprofile</span><span class="op">(</span><span class="va">.mp</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">as.pmp</span><span class="op">(</span><span class="va">.mp</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">as.valmod</span><span class="op">(</span><span class="va">.mp</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">as.fluss</span><span class="op">(</span><span class="va">.mp</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">as.chain</span><span class="op">(</span><span class="va">.mp</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">as.discord</span><span class="op">(</span><span class="va">.mp</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">as.motif</span><span class="op">(</span><span class="va">.mp</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">as.multimotif</span><span class="op">(</span><span class="va">.mp</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">as.arccount</span><span class="op">(</span><span class="va">.mp</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">as.salient</span><span class="op">(</span><span class="va">.mp</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">as.matrixprofile</span><span class="op">(</span><span class="va">.mp</span><span class="op">)</span>
+
+<span class="fu">as.multimatrixprofile</span><span class="op">(</span><span class="va">.mp</span><span class="op">)</span>
+
+<span class="fu">as.pmp</span><span class="op">(</span><span class="va">.mp</span><span class="op">)</span>
+
+<span class="fu">as.valmod</span><span class="op">(</span><span class="va">.mp</span><span class="op">)</span>
+
+<span class="fu">as.fluss</span><span class="op">(</span><span class="va">.mp</span><span class="op">)</span>
+
+<span class="fu">as.chain</span><span class="op">(</span><span class="va">.mp</span><span class="op">)</span>
+
+<span class="fu">as.discord</span><span class="op">(</span><span class="va">.mp</span><span class="op">)</span>
+
+<span class="fu">as.motif</span><span class="op">(</span><span class="va">.mp</span><span class="op">)</span>
+
+<span class="fu">as.multimotif</span><span class="op">(</span><span class="va">.mp</span><span class="op">)</span>
+
+<span class="fu">as.arccount</span><span class="op">(</span><span class="va">.mp</span><span class="op">)</span>
+
+<span class="fu">as.salient</span><span class="op">(</span><span class="va">.mp</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -122,18 +122,18 @@ to cast it back.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">w</span> <span class="op">&lt;-</span> <span class="fl">50</span></span></span>
-<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">mp_gait_data</span></span></span>
-<span class="r-in"><span><span class="va">mp</span> <span class="op">&lt;-</span> <span class="fu"><a href="tsmp.html">tsmp</a></span><span class="op">(</span><span class="va">data</span>, window_size <span class="op">=</span> <span class="va">w</span>, exclusion_zone <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">4</span>, verbose <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">mp</span> <span class="op">&lt;-</span> <span class="fu"><a href="find_motif.html">find_motif</a></span><span class="op">(</span><span class="va">mp</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">mp</span><span class="op">)</span> <span class="co"># first class will be "Motif"</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
+<span class="r-in"><span class="va">w</span> <span class="op">&lt;-</span> <span class="fl">50</span></span>
+<span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">mp_gait_data</span></span>
+<span class="r-in"><span class="va">mp</span> <span class="op">&lt;-</span> <span class="fu"><a href="tsmp.html">tsmp</a></span><span class="op">(</span><span class="va">data</span>, window_size <span class="op">=</span> <span class="va">w</span>, exclusion_zone <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">4</span>, verbose <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">mp</span> <span class="op">&lt;-</span> <span class="fu"><a href="find_motif.html">find_motif</a></span><span class="op">(</span><span class="va">mp</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">mp</span><span class="op">)</span> <span class="co"># first class will be "Motif"</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Motif"         "MatrixProfile"</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="plot.html">plot</a></span><span class="op">(</span><span class="va">mp</span><span class="op">)</span> <span class="co"># plots a motif plot</span></span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="fu"><a href="plot.html">plot</a></span><span class="op">(</span><span class="va">mp</span><span class="op">)</span> <span class="co"># plots a motif plot</span></span>
 <span class="r-plt img"><img src="as.matrixprofile-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="plot.html">plot</a></span><span class="op">(</span><span class="fu">as.matrixprofile</span><span class="op">(</span><span class="va">mp</span><span class="op">)</span><span class="op">)</span> <span class="co"># plots a matrix profile plot</span></span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="fu"><a href="plot.html">plot</a></span><span class="op">(</span><span class="fu">as.matrixprofile</span><span class="op">(</span><span class="va">mp</span><span class="op">)</span><span class="op">)</span> <span class="co"># plots a matrix profile plot</span></span>
 <span class="r-plt img"><img src="as.matrixprofile-2.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>

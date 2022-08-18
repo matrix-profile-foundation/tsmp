@@ -65,17 +65,17 @@ Series Subsequences under Euclidean Distance and Correlation Coefficient.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">mass_v2</span><span class="op">(</span></span>
-<span>  <span class="va">query_window</span>,</span>
-<span>  <span class="va">window_size</span>,</span>
-<span>  <span class="va">data_fft</span>,</span>
-<span>  <span class="va">data_size</span>,</span>
-<span>  <span class="va">data_mean</span>,</span>
-<span>  <span class="va">data_sd</span>,</span>
-<span>  <span class="va">query_mean</span>,</span>
-<span>  <span class="va">query_sd</span>,</span>
-<span>  <span class="va">...</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">mass_v2</span><span class="op">(</span>
+  <span class="va">query_window</span>,
+  <span class="va">window_size</span>,
+  <span class="va">data_fft</span>,
+  <span class="va">data_size</span>,
+  <span class="va">data_mean</span>,
+  <span class="va">data_sd</span>,
+  <span class="va">query_mean</span>,
+  <span class="va">query_sd</span>,
+  <span class="va">...</span>
+<span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -138,22 +138,22 @@ Series Subsequences under Euclidean Distance</p></li>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">w</span> <span class="op">&lt;-</span> <span class="va">mp_toy_data</span><span class="op">$</span><span class="va">sub_len</span></span></span>
-<span class="r-in"><span><span class="va">ref_data</span> <span class="op">&lt;-</span> <span class="va">mp_toy_data</span><span class="op">$</span><span class="va">data</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span></span></span>
-<span class="r-in"><span><span class="va">query_data</span> <span class="op">&lt;-</span> <span class="va">mp_toy_data</span><span class="op">$</span><span class="va">data</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span></span></span>
-<span class="r-in"><span><span class="va">d_size</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">ref_data</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">q_size</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">query_data</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">pre</span> <span class="op">&lt;-</span> <span class="fu">tsmp</span><span class="fu">:::</span><span class="fu"><a href="mass_pre.html">mass_pre</a></span><span class="op">(</span><span class="va">ref_data</span>, <span class="va">query_data</span>, <span class="va">w</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">dp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="va">d_size</span> <span class="op">-</span> <span class="va">w</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="va">dp</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">tsmp</span><span class="fu">:::</span><span class="fu">mass_v2</span><span class="op">(</span></span></span>
-<span class="r-in"><span>    <span class="va">query_data</span><span class="op">[</span><span class="va">i</span><span class="op">:</span><span class="op">(</span><span class="va">i</span> <span class="op">-</span> <span class="fl">1</span> <span class="op">+</span> <span class="va">w</span><span class="op">)</span><span class="op">]</span>, <span class="va">pre</span><span class="op">$</span><span class="va">window_size</span>,</span></span>
-<span class="r-in"><span>    <span class="va">pre</span><span class="op">$</span><span class="va">data_fft</span>, <span class="va">pre</span><span class="op">$</span><span class="va">data_size</span>, <span class="va">pre</span><span class="op">$</span><span class="va">data_mean</span>, <span class="va">pre</span><span class="op">$</span><span class="va">data_sd</span>,</span></span>
-<span class="r-in"><span>    <span class="va">pre</span><span class="op">$</span><span class="va">query_mean</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="va">pre</span><span class="op">$</span><span class="va">query_sd</span><span class="op">[</span><span class="va">i</span><span class="op">]</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">w</span> <span class="op">&lt;-</span> <span class="va">mp_toy_data</span><span class="op">$</span><span class="va">sub_len</span></span>
+<span class="r-in"><span class="va">ref_data</span> <span class="op">&lt;-</span> <span class="va">mp_toy_data</span><span class="op">$</span><span class="va">data</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span></span>
+<span class="r-in"><span class="va">query_data</span> <span class="op">&lt;-</span> <span class="va">mp_toy_data</span><span class="op">$</span><span class="va">data</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span></span>
+<span class="r-in"><span class="va">d_size</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">ref_data</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">q_size</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">query_data</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">pre</span> <span class="op">&lt;-</span> <span class="fu">tsmp</span><span class="fu">:::</span><span class="fu"><a href="mass_pre.html">mass_pre</a></span><span class="op">(</span><span class="va">ref_data</span>, <span class="va">query_data</span>, <span class="va">w</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">dp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="va">d_size</span> <span class="op">-</span> <span class="va">w</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span class="r-in">  <span class="va">dp</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">tsmp</span><span class="fu">:::</span><span class="fu">mass_v2</span><span class="op">(</span></span>
+<span class="r-in">    <span class="va">query_data</span><span class="op">[</span><span class="va">i</span><span class="op">:</span><span class="op">(</span><span class="va">i</span> <span class="op">-</span> <span class="fl">1</span> <span class="op">+</span> <span class="va">w</span><span class="op">)</span><span class="op">]</span>, <span class="va">pre</span><span class="op">$</span><span class="va">window_size</span>,</span>
+<span class="r-in">    <span class="va">pre</span><span class="op">$</span><span class="va">data_fft</span>, <span class="va">pre</span><span class="op">$</span><span class="va">data_size</span>, <span class="va">pre</span><span class="op">$</span><span class="va">data_mean</span>, <span class="va">pre</span><span class="op">$</span><span class="va">data_sd</span>,</span>
+<span class="r-in">    <span class="va">pre</span><span class="op">$</span><span class="va">query_mean</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="va">pre</span><span class="op">$</span><span class="va">query_sd</span><span class="op">[</span><span class="va">i</span><span class="op">]</span></span>
+<span class="r-in">  <span class="op">)</span></span>
+<span class="r-in"><span class="op">}</span></span>
 </code></pre></div>
     </div>
   </div>
