@@ -1,20 +1,57 @@
 # [ ]: rlang::check_installed
-# [ ]: rlang::abort(); rlang::warn(); https://rlang.r-lib.org/reference/local_use_cli.html
 # [ ]: https://cli.r-lib.org/reference/cli-config.html
 # [ ]: https://rlang.r-lib.org/reference/topic-error-call.html
 
 
 convert_data <- function(data) {
-  # TODO: get the name of the variable before data.
   if (!is.null(data)) {
-    ts_class <- class(data)
 
-    if (ts_class[[1]] == "numeric") {
+    try_fetch({
+      data_class <- class(data)
+
+      if(is.list(data)) { # tbl_df, data.frame, data.table, list, irts, etc
+        if (inherits(data, "irts")) {
+          # tseries package
+          # data[["time"]]
+          # data[["value"]]
+        }
+
+      } else if (is.array(data)) { # matrix, array, mts; timeSeries
+        if(inherits(data, "timeSeries")) {
+          thedata <- timeSeries::getDataPart(data)
+          thetime <- timeSeries::getTime(data)
+          colnames <- getUnits(data) # same as names(data)
+        }
+
+        tspx <- tsp(data)
+
+      } else if (is.ts(data)) {
+        tspx <- tsp(data)
+      } else if (inherits(data, "xts")) { # matrix, array if unclassed
+      # check if irregular time series
+        tspx <- xts::xtsAttributes(data)
+      } else if (inherits(data, "zoo")) { # matrix, array if unclassed
+        tspx <- zoo::index(data)
+      }
+
+      # timeSeries, stats::ts, irts (tseries), fts, matrix, data.frame, and zoo::zoo. its
+
+      # if(inherits(data, c("tbl_df", "tbl", "data.frame", "list"))) {
+      # } else if(inherits(data, c("matrix", "array"))) {
+      # }
+    },
+     error = function(cnd) {cli::cli_abort("Something went wrong:", parent = cnd)}
+     )
+
+
+    switch()
+
+    if (data_class[[1]] == "numeric") {
       return(invisible(data)) # fast track
     }
 
     result <- FALSE
-    for (class in ts_class) {
+    for (class in data_class) {
       if (class %in% c("data.frame", "list")) {
         result <- TRUE
       } else if (class == "array") {
@@ -24,8 +61,21 @@ convert_data <- function(data) {
       }
     }
     if (result) {
-      var_name <- substitute(data)
-      stop(glue::glue("Argument `{var_name}` cannot be `{ts_class}` and must have a single dimension."))
+      fn <- rlang::caller_fn() # retrieve the caller function
+      if (is.null(fn)) {
+        # here this function was called directly
+        arg <- rlang::caller_arg(data)
+        parenv <- rlang::current_env()
+        arg_name <- rlang::fn_fmls_names()[1]
+      } else {
+        args <- rlang::fn_fmls_names(fn)
+        arg_name <- rlang::caller_arg(data)
+        i <- which(arg_name == args) + 1
+        arg <- rlang::caller_call()[[i]]
+        arg <- rlang::as_label(arg)
+        parenv <- rlang::caller_env()
+      }
+      cli::cli_abort("{.arg {arg_name}} = {.var {arg}} cannot be {.cls {class(data)}} and must have a single dimension.", call = parenv)
     }
   }
 
@@ -63,7 +113,7 @@ clip <- function(x, a, b) {
 diff2 <- function(x, y) {
   # Rcpp ?
   if (!is.numeric(x) || !is.numeric(y)) {
-    stop("`x` and `y` must be numeric vectors or matrices.")
+    cli::cli_abort("`x` and `y` must be numeric vectors or matrices.")
   }
   if (is.vector(x)) {
     dim(x) <- c(1, length(x))
@@ -72,7 +122,7 @@ diff2 <- function(x, y) {
     dim(y) <- c(1, length(y))
   }
   if (ncol(x) != ncol(y)) {
-    stop("`x` and `y` must have the same number of columns.")
+    cli::cli_abort("`x` and `y` must have the same number of columns.")
   }
   m <- nrow(x)
   n <- nrow(y)
@@ -678,7 +728,7 @@ set_data <- function(.mp, data) {
 
     for (i in seq_len(length(data))) {
       if (nrow(data[[i]]) != data_size) {
-        warning("Warning: data size is ", nrow(data[[i]]), ", but should be ", data_size, " for this matrix profile.")
+        cli::cli_warn("data size is {nrow(data[[i]])}, but should be {data_size} for this matrix profile.")
       }
     }
   }
@@ -808,7 +858,7 @@ remove_class <- function(x, class) {
 #' #
 as.matrixprofile <- function(.mp) { # nolint
   if (!("MatrixProfile" %in% class(.mp))) {
-    stop("This object cannot be a `MatrixProfile`.")
+    cli::cli_abort("This object cannot be a `MatrixProfile`.")
   }
 
   class(.mp) <- update_class(class(.mp), "MatrixProfile")
@@ -822,7 +872,7 @@ as.matrixprofile <- function(.mp) { # nolint
 
 as.multimatrixprofile <- function(.mp) { # nolint
   if (!("MultiMatrixProfile" %in% class(.mp))) {
-    stop("This object cannot be a `MultiMatrixProfile`.")
+    cli::cli_abort("This object cannot be a `MultiMatrixProfile`.")
   }
 
   class(.mp) <- update_class(class(.mp), "MultiMatrixProfile")
@@ -836,7 +886,7 @@ as.multimatrixprofile <- function(.mp) { # nolint
 
 as.pmp <- function(.mp) { # nolint
   if (!("PMP" %in% class(.mp))) {
-    stop("This object cannot be a `PMP`.")
+    cli::cli_abort("This object cannot be a `PMP`.")
   }
 
   class(.mp) <- update_class(class(.mp), "PMP")
@@ -850,7 +900,7 @@ as.pmp <- function(.mp) { # nolint
 
 as.valmod <- function(.mp) { # nolint
   if (!("Valmod" %in% class(.mp))) {
-    stop("This object cannot be a `Valmod`.")
+    cli::cli_abort("This object cannot be a `Valmod`.")
   }
 
   class(.mp) <- update_class(class(.mp), "Valmod")
@@ -864,7 +914,7 @@ as.valmod <- function(.mp) { # nolint
 
 as.fluss <- function(.mp) { # nolint
   if (!("Fluss" %in% class(.mp))) {
-    stop("This object cannot be a `Fluss`.")
+    cli::cli_abort("This object cannot be a `Fluss`.")
   }
 
   class(.mp) <- update_class(class(.mp), "Fluss")
@@ -878,7 +928,7 @@ as.fluss <- function(.mp) { # nolint
 
 as.chain <- function(.mp) { # nolint
   if (!("Chain" %in% class(.mp))) {
-    stop("This object cannot be a `Chain`.")
+    cli::cli_abort("This object cannot be a `Chain`.")
   }
 
   class(.mp) <- update_class(class(.mp), "Chain")
@@ -891,7 +941,7 @@ as.chain <- function(.mp) { # nolint
 
 as.discord <- function(.mp) { # nolint
   if (!("Discord" %in% class(.mp))) {
-    stop("This object cannot be a `Discord`.")
+    cli::cli_abort("This object cannot be a `Discord`.")
   }
 
   class(.mp) <- update_class(class(.mp), "Discord")
@@ -904,7 +954,7 @@ as.discord <- function(.mp) { # nolint
 
 as.motif <- function(.mp) { # nolint
   if (!("Motif" %in% class(.mp))) {
-    stop("This object cannot be a `Motif`.")
+    cli::cli_abort("This object cannot be a `Motif`.")
   }
 
   class(.mp) <- update_class(class(.mp), "Motif")
@@ -918,7 +968,7 @@ as.motif <- function(.mp) { # nolint
 
 as.multimotif <- function(.mp) { # nolint
   if (!("MultiMotif" %in% class(.mp))) {
-    stop("This object cannot be a `MultiMotif`.")
+    cli::cli_abort("This object cannot be a `MultiMotif`.")
   }
 
   class(.mp) <- update_class(class(.mp), "MultiMotif")
@@ -932,7 +982,7 @@ as.multimotif <- function(.mp) { # nolint
 
 as.arccount <- function(.mp) { # nolint
   if (!("ArcCount" %in% class(.mp))) {
-    stop("This object cannot be a `ArcCount`.")
+    cli::cli_abort("This object cannot be a `ArcCount`.")
   }
 
   class(.mp) <- update_class(class(.mp), "ArcCount")
@@ -945,7 +995,7 @@ as.arccount <- function(.mp) { # nolint
 
 as.salient <- function(.mp) { # nolint
   if (!("Salient" %in% class(.mp))) {
-    stop("This object cannot be a `Salient`.")
+    cli::cli_abort("This object cannot be a `Salient`.")
   }
 
   class(.mp) <- update_class(class(.mp), "Salient")

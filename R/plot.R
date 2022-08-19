@@ -41,7 +41,7 @@
 plot_arcs <- function(pairs, alpha = NULL, quality = 30, lwd = 15, col = c("blue", "orange"),
                       main = "Arc Plot", ylab = "", xlab = "Profile Index", xmin = NULL, xmax = NULL, ...) {
   if (length(pairs) == 0) {
-    warning("No arc to plot.")
+    cli::cli_warn("No arc to plot.")
     return(NULL)
   }
 
@@ -165,7 +165,7 @@ plot.ArcCount <- function(x, data, type = c("data", "matrix"), exclusion_zone = 
   profile_index <- x$pi
 
   if (cac_size < nrow(profile_index)) {
-    warning("cac_size < profile_index")
+    cli::cli_warn("cac_size < profile_index")
     cac_offset <- nrow(profile_index) - cac_size
     plot_data <- as.matrix(utils::tail(plot_data, cac_size))
     profile_index <- as.matrix(utils::tail(profile_index, cac_size) - cac_offset)
@@ -766,7 +766,7 @@ plot.Snippet <- function(x, data, ncol = 3, main = "Snippet Finder", xlab = "ind
   n_snippets <- length(x$snippet_idx)
 
   if (n_snippets == 0) {
-    stop("No Snippets found to plot.")
+    cli::cli_abort("No Snippets found to plot.")
   }
 
   if (missing(data) && !is.null(x$data)) {
@@ -836,7 +836,7 @@ plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3,
   n_motifs <- length(x$motif$motif_idx)
 
   if (n_motifs == 0) {
-    stop("No Motifs found to plot.")
+    cli::cli_abort("No Motifs found to plot.")
   }
 
   if ("PMP" %in% class(x)) {
@@ -955,7 +955,7 @@ plot.MultiMotif <- function(x, data, type = c("data", "matrix"), ncol = 3,
   n_motifs <- length(x$motif$motif_idx)
 
   if (n_motifs == 0) {
-    stop("No Motifs found to plot.")
+    cli::cli_abort("No Motifs found to plot.")
   }
 
   if (missing(data) && !is.null(x$data)) {
@@ -1144,7 +1144,7 @@ skimp_plot_add_layer <- function(layer, window, window_set = NULL, func = NULL) 
 
   # assert
   if (data_size != (coords[[2]] + coords[[1]] - xmin)) {
-    stop("data_size calc is wrong")
+    cli::cli_abort("data_size calc is wrong")
   }
 
   if (is.null(window_set)) {
@@ -1162,7 +1162,7 @@ skimp_plot_add_layer <- function(layer, window, window_set = NULL, func = NULL) 
     #     min_window = min(window_set),
     #     result = (max(window_set) + floor((max(window_set) - min(window_set)) / 24))
     #   ))
-    #   stop("ymax calc is wrong.")
+    #   cli::cli_abort("ymax calc is wrong.")
     #   print(str(ymax = ymax, window_set = window_set, max_window = max(window_set), min_window = min(window_set)))
     # }
 
@@ -1193,7 +1193,7 @@ skimp_plot_add_layer <- function(layer, window, window_set = NULL, func = NULL) 
   #   ymin = ymin, ymax = ymax, ytop = ytop, w_min = w_min
   # ))
   #
-  message("layer: ", ymin, "-", ytop)
+  cli::cli_info("layer: {ymin}-{ytop}")
 
   graphics::image(matrix(layer, nrow = 1),
     xlim = c(xmin, xmax), ylim = c(ymin, ytop)
@@ -1220,7 +1220,7 @@ skimp_plot_add_raster <- function(layer, window, window_set = NULL, func = NULL)
 
   # assert
   if (data_size != (coords[[2]] + coords[[1]] - xmin)) {
-    stop("data_size calc is wrong")
+    cli::cli_abort("data_size calc is wrong")
   }
 
   if (is.null(window_set)) {
@@ -1238,7 +1238,7 @@ skimp_plot_add_raster <- function(layer, window, window_set = NULL, func = NULL)
     #     min_window = min(window_set),
     #     result = (max(window_set) + floor((max(window_set) - min(window_set)) / 24))
     #   ))
-    #   stop("ymax calc is wrong.")
+    #   cli::cli_abort("ymax calc is wrong.")
     #   print(str(ymax = ymax, window_set = window_set, max_window = max(window_set), min_window = min(window_set)))
     # }
 
@@ -1269,7 +1269,7 @@ skimp_plot_add_raster <- function(layer, window, window_set = NULL, func = NULL)
   #   ymin = ymin, ymax = ymax, ytop = ytop, w_min = w_min
   # ))
   #
-  message("layer: ", ymin, "-", ytop)
+  cli::cli_info("layer: {ymin}-{ytop}")
 
   # graphics::rasterImage(matrix(layer, nrow = 1),
   #   xleft = xmin, xright = xmax,
@@ -1302,7 +1302,7 @@ plot.PMP <- function(x, ylab = "distance", xlab = "index", main = "Unidimensiona
   data_size <- max_len + min_window - 1
 
   if (!(max_len > 0)) {
-    stop("matrix profile with window size ", min_window, " is not in the object. Cannot go further.")
+    cli::cli_abort("matrix profile with window size {min_window} is not in the object. Cannot go further.")
   }
 
   # sort pmp
@@ -1347,7 +1347,7 @@ plot_skimp <- function(pmp, func = NULL) {
   mp_len <- length(pmp$pmp[[as.character(min_window)]])
 
   if (!(mp_len > 0)) {
-    stop("matrix profile with window size ", min_window, " is not in the object. Cannot go further.")
+    cli::cli_abort("matrix profile with window size {min_window} is not in the object. Cannot go further.")
   }
 
   data_size <- mp_len + min_window - 1

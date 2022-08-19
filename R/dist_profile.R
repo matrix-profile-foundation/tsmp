@@ -80,10 +80,10 @@ dist_profile <- function(data, window_size, query = data, index = 1, params = NU
   type <- match.arg(type)
   if (type == "weighted") {
     if (is.null(weights)) {
-      stop("The `weights` argument must be provided.", call. = FALSE)
+      cli::cli_abort("The `weights` argument must be provided.")
     }
     if (length(weights) != window_size) {
-      stop("The `weights` must be the same size as the `window_size`.", call. = FALSE)
+      cli::cli_abort("The `weights` must be the same size as the `window_size`.")
     }
     checkmate::qassert(weights, "N+")
   }

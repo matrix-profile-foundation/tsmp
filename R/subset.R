@@ -299,7 +299,7 @@
 #'
 
 `[.PMP` <- function(x, ..., drop = FALSE) {
-  stop("Subsetting PMP is not implemented yet")
+  cli::cli_abort("Subsetting PMP is not implemented yet")
 }
 
 #' @export
@@ -318,11 +318,11 @@
     attr(x, "subsetting") <- "MatrixProfile"
 
     if (!all(diff(subset) == 1)) {
-      stop("Indexes must be continuous and ascending.")
+      cli::cli_abort("Indexes must be continuous and ascending.")
     }
 
     if (sub_size < (2 * max(x$w))) {
-      stop("Subset must be larger than twice the window size: 2 * ", max(x$w))
+      cli::cli_abort("Subset must be larger than twice the window size: 2 * {max(x$w)}")
     }
 
     if (!is.null(x$data)) {
@@ -332,7 +332,7 @@
     }
 
     if (max(subset) > max_valid_idx) {
-      stop("Index is larger than data size.")
+      cli::cli_abort("Index is larger than data size.")
     } else if (max(subset) < max_valid_idx) {
       attr(x, "subset") <- TRUE
       new_data <- attr(x, "new_data")
@@ -403,11 +403,11 @@
     attr(x, "subsetting") <- "MultiMatrixProfile"
 
     if (!all(diff(subset) == 1)) {
-      stop("Indexes must be continuous and ascending.")
+      cli::cli_abort("Indexes must be continuous and ascending.")
     }
 
     if (sub_size < (2 * max(x$w))) {
-      stop("Subset must be larger than twice the window size: 2 * ", max(x$w))
+      cli::cli_abort("Subset must be larger than twice the window size: 2 * {max(x$w)}")
     }
 
     if (!is.null(x$data)) {
@@ -417,7 +417,7 @@
     }
 
     if (max(subset) > max_valid_idx) {
-      stop("Index is larger than data size.")
+      cli::cli_abort("Index is larger than data size.")
     } else if (max(subset) < max_valid_idx) {
       attr(x, "subset") <- TRUE
     }
@@ -471,11 +471,11 @@
     attr(x, "subsetting") <- "SimpleMatrixProfile"
 
     if (!all(diff(subset) == 1)) {
-      stop("Indexes must be continuous and ascending.")
+      cli::cli_abort("Indexes must be continuous and ascending.")
     }
 
     if (sub_size < (2 * max(x$w))) {
-      stop("Subset must be larger than twice the window size: 2 * ", max(x$w))
+      cli::cli_abort("Subset must be larger than twice the window size: 2 * {max(x$w)}")
     }
 
     if (!is.null(x$data)) {
@@ -485,7 +485,7 @@
     }
 
     if (max(subset) > max_valid_idx) {
-      stop("Index is larger than data size.")
+      cli::cli_abort("Index is larger than data size.")
     } else if (max(subset) < max_valid_idx) {
       attr(x, "subset") <- TRUE
     }
@@ -533,13 +533,13 @@
     attr(x, "subsetting") <- "MPdistProfile"
 
     if (!all(diff(subset) == 1)) {
-      stop("Indexes must be continuous and ascending.")
+      cli::cli_abort("Indexes must be continuous and ascending.")
     }
 
     attr <- attr(x, "origin")
 
     if (sub_size < attr$query_size) {
-      stop("Subset must be at least the size of query data", attr$query_size)
+      cli::cli_abort("Subset must be at least the size of query data {attr$query_size}")
     }
 
     if (!is.null(x$data)) {
@@ -549,7 +549,7 @@
     }
 
     if (max(subset) > max_valid_idx) {
-      stop("Index is larger than data size.")
+      cli::cli_abort("Index is larger than data size.")
     } else if (max(subset) < max_valid_idx) {
       attr(x, "subset") <- TRUE
 
@@ -598,7 +598,7 @@
 `[.Snippet` <- function(x, ..., drop = FALSE) {
   attr(x, "subsetting") <- "Snippet"
 
-  message("Not implemented yet.")
+  cli::cli_info("Not implemented yet.")
 
   attr(x, "subsetting") <- NULL
 

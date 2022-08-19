@@ -51,7 +51,7 @@ mpdist <- function(ref_data, query_data, window_size, type = c("simple", "vector
       ref_data <- t(ref_data)
     }
   } else {
-    stop("Unknown type of data. Must be: a column matrix or a vector.", call. = FALSE)
+    cli::cli_abort("Unknown type of data. Must be: a column matrix or a vector.")
   }
 
   if (is.vector(query_data)) {
@@ -61,11 +61,11 @@ mpdist <- function(ref_data, query_data, window_size, type = c("simple", "vector
       query_data <- t(query_data)
     }
   } else {
-    stop("Unknown type of query. Must be: a column matrix or a vector.", call. = FALSE)
+    cli::cli_abort("Unknown type of query. Must be: a column matrix or a vector.")
   }
 
   if (window_size < 4) {
-    stop("`window_size` must be at least 4.", call. = FALSE)
+    cli::cli_abort("`window_size` must be at least 4.")
   }
 
   if (nrow(ref_data) < nrow(query_data)) {
@@ -76,7 +76,7 @@ mpdist <- function(ref_data, query_data, window_size, type = c("simple", "vector
 
   if (type == "simple" || nrow(ref_data) == nrow(query_data)) {
     if (nrow(query_data) == window_size) {
-      warning("Distance profile is being used since window_size equals to query size")
+      cli::cli_warn("Distance profile is being used since window_size equals to query size")
       dist <- dist_profile(ref_data, query_data)$distance_profile
       dist <- sqrt(cal_mp_dist(dist, thr, nrow(ref_data)))
     } else {
@@ -85,7 +85,7 @@ mpdist <- function(ref_data, query_data, window_size, type = c("simple", "vector
   } else {
     obj <- list()
     if (nrow(query_data) == window_size) {
-      warning("Distance profile is being used since window_size equals to query size")
+      cli::cli_warn("Distance profile is being used since window_size equals to query size")
       obj$mpdist <- sqrt(dist_profile(ref_data, query_data)$distance_profile)
     } else {
       obj$mpdist <- mpdist_vect(ref_data, query_data, window_size, thr)

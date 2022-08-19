@@ -6,37 +6,42 @@
 \usage{
 dist_profile(
   data,
-  query,
-  ...,
-  window_size = NULL,
-  method = "v3",
+  window_size,
+  query = data,
   index = 1,
-  k = NULL,
-  weight = NULL,
-  paa = 1
+  params = NULL,
+  type = c("normalized", "non_normalized", "absolute", "weighted"),
+  weights = NULL,
+  arg = rlang::caller_arg(data),
+  call = rlang::caller_env()
 )
 }
 \arguments{
 \item{data}{a \code{matrix} or a \code{vector}.}
 
-\item{query}{a \code{matrix} or a \code{vector}. See details.}
-
-\item{\dots}{Precomputed values from the first iteration. If not supplied, these values will be computed.}
-
 \item{window_size}{an \code{int} or \code{NULL}. Sliding window size. See details.}
 
-\item{method}{method that will be used to calculate the distance profile. See details.}
+\item{query}{a \code{matrix} or a \code{vector}. See details.}
 
 \item{index}{an \code{int}. Index of query window. See details.}
 
-\item{k}{an \code{int} or \code{NULL}. Default is \code{NULL}. Defines the size of batch for MASS V3. Prefer to
-use a power of 2. If \code{NULL}, it will be set automatically.}
+\item{params}{an \code{int}. Index of query window. See details.}
 
-\item{weight}{a \code{vector} of \code{numeric} or \code{NULL} with the same length of the \code{window_size}. This is
+\item{type}{an \code{int}. Index of query window. See details.}
+
+\item{weights}{a \code{vector} of \code{numeric} or \code{NULL} with the same length of the \code{window_size}. This is
 a MASS extension to weight the query.}
 
-\item{paa}{a \code{numeric}. Default is \code{1}. Factor of PAA reduction (2 == half of size). This is a
-MASS extension.}
+\item{arg}{An argument name as a string. This argument
+will be mentioned in error messages as the input that is at the
+origin of a problem.}
+
+\item{call}{The execution environment of a currently
+running function, e.g. \code{caller_env()}. The function will be
+mentioned in error messages as the source of the error. See the
+\code{call} argument of \code{\link[rlang:abort]{abort()}} for more information.}
+
+\item{\dots}{Precomputed values from the first iteration. If not supplied, these values will be computed.}
 }
 \value{
 Returns the \code{distance_profile} for the given query and the \code{last_product} for STOMP
@@ -82,8 +87,8 @@ for (i in seq_len(10)) {
 weight <- c(rep(1, w / 3), rep(0.5, w / 3), rep(0.8, w / 3)) # just an example
 
 nn <- dist_profile(ref_data, ref_data,
-  window_size = w, index = 1, method = "weighted",
-  weight = weight
+  window_size = w, index = 1, type = "weighted",
+  weights = weight
 )
 distance_profile <- sqrt(nn$distance_profile)
 }

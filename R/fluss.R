@@ -24,7 +24,7 @@
 #' mp <- fluss(mp, 2)
 fluss <- function(.mp, num_segments = 1, exclusion_zone = NULL) {
   if ("Valmod" %in% class(.mp)) {
-    stop("Function not implemented for objects of class `Valmod`.")
+    cli::cli_abort("Function not implemented for objects of class `Valmod`.")
   }
 
   fluss_extract(fluss_cac(.mp, exclusion_zone), num_segments = num_segments, exclusion_zone = exclusion_zone)
@@ -66,11 +66,11 @@ fluss <- function(.mp, num_segments = 1, exclusion_zone = NULL) {
 floss <- function(.mp, new_data, data_window, threshold = 1, exclusion_zone = NULL, chunk_size = NULL,
                   keep_cac = TRUE) {
   if (missing(data_window)) {
-    stop("argument 'data_window' is missing, looking for fluss() instead?")
+    cli::cli_abort("argument 'data_window' is missing, looking for fluss() instead?")
   }
 
   if ("Valmod" %in% class(.mp)) {
-    stop("Function not implemented for objects of class `Valmod`.")
+    cli::cli_abort("Function not implemented for objects of class `Valmod`.")
   }
 
   mp_offset <- ifelse(!is.null(attr(.mp, "offset")), attr(.mp, "offset"), 0)
@@ -163,11 +163,11 @@ floss <- function(.mp, new_data, data_window, threshold = 1, exclusion_zone = NU
 #' mp <- fluss_extract(mp, 2)
 floss_extract <- function(.mpac, threshold = 1, exclusion_zone = NULL) {
   if (!any(class(.mpac) %in% "ArcCount")) {
-    stop("First argument must be an object of class `ArcCount`.")
+    cli::cli_abort("First argument must be an object of class `ArcCount`.")
   }
 
   if (is.null(.mpac$cac_final)) {
-    stop("There is no real-time information to extract. Looking for fluss_extract() instead?")
+    cli::cli_abort("There is no real-time information to extract. Looking for fluss_extract() instead?")
   }
 
   if (is.null(exclusion_zone)) {
@@ -254,7 +254,7 @@ floss_extract <- function(.mpac, threshold = 1, exclusion_zone = NULL) {
 #' mp <- fluss_extract(mp, 2)
 fluss_extract <- function(.mpac, num_segments = 1, exclusion_zone = NULL) {
   if (!any(class(.mpac) %in% "ArcCount")) {
-    stop("First argument must be an object of class `ArcCount`.")
+    cli::cli_abort("First argument must be an object of class `ArcCount`.")
   }
 
   if (is.null(exclusion_zone)) {
@@ -309,11 +309,11 @@ fluss_extract <- function(.mpac, num_segments = 1, exclusion_zone = NULL) {
 #' mp <- fluss_cac(mp)
 fluss_cac <- function(.mp, exclusion_zone = NULL) {
   if (!("MatrixProfile" %in% class(.mp))) {
-    stop("First argument must be an object of class `MatrixProfile`.")
+    cli::cli_abort("First argument must be an object of class `MatrixProfile`.")
   }
 
   if ("Valmod" %in% class(.mp)) {
-    stop("Function not implemented for objects of class `Valmod`.")
+    cli::cli_abort("Function not implemented for objects of class `Valmod`.")
   }
 
   if (is.null(exclusion_zone)) {
@@ -389,15 +389,15 @@ fluss_cac <- function(.mp, exclusion_zone = NULL) {
 #' mp <- floss_cac(mp, data_window)
 floss_cac <- function(.mp, data_window, exclusion_zone = NULL) {
   if (!("MatrixProfile" %in% class(.mp))) {
-    stop("First argument must be an object of class `MatrixProfile`.")
+    cli::cli_abort("First argument must be an object of class `MatrixProfile`.")
   }
 
   if ("Valmod" %in% class(.mp)) {
-    stop("Function not implemented for objects of class `Valmod`.")
+    cli::cli_abort("Function not implemented for objects of class `Valmod`.")
   }
 
   if (data_window <= .mp$w) {
-    stop("data_window must be larger than matrix profile's window_size: ", .mp$w)
+    cli::cli_abort("data_window must be larger than matrix profile's window_size: {.mp$w}")
   }
 
   profile_size <- nrow(.mp$mp)

@@ -15,7 +15,6 @@ tsmp(
   must_dim = NULL,
   exc_dim = NULL,
   heap_size = 50,
-  paa = 1,
   .keep_data = TRUE
 )
 }
@@ -45,8 +44,6 @@ See details.}
 details.}
 
 \item{heap_size}{an \code{int}. (Default is \code{50}). Size of the distance profile heap buffer.}
-
-\item{paa}{an \code{int}. (Default is \code{1}). Factor of PAA reduction (2 == half of size)}
 
 \item{.keep_data}{a \code{logical}. (Default is \code{TRUE}). Keeps the data embedded to resultant object.}
 }
@@ -110,10 +107,10 @@ If the value is 2 or more, the '_par' version of the algorithm will be used.}
 }
 \examples{
 # default with [stomp()]
-mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+mp <- tsmp(mp_toy_data$data[[1]][1:200], window_size = 30, verbose = 0)
 
 # Anytime STAMP
-mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, mode = "stamp", s_size = 50, verbose = 0)
+mp <- tsmp(mp_toy_data$data[[1]][1:200], window_size = 30, mode = "stamp", s_size = 50, verbose = 0)
 
 # [mstomp()]
 mp <- tsmp(mp_toy_data$data[1:200, ], window_size = 30, mode = "mstomp", verbose = 0)

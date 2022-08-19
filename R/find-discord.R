@@ -30,11 +30,11 @@ find_discord <- function(.mp, ...) {
 find_discord.MatrixProfile <- function(.mp, data, n_discords = 1, n_neighbors = 3, radius = 3,
                                        exclusion_zone = NULL, ...) {
   if (!("MatrixProfile" %in% class(.mp))) {
-    stop("First argument must be an object of class `MatrixProfile`.")
+    cli::cli_abort("First argument must be an object of class `MatrixProfile`.")
   }
 
   if ("Valmod" %in% class(.mp)) {
-    stop("Function not implemented for objects of class `Valmod`.")
+    cli::cli_abort("Function not implemented for objects of class `Valmod`.")
   }
 
   if (missing(data) && !is.null(.mp$data)) {
@@ -70,7 +70,7 @@ find_discord.MatrixProfile <- function(.mp, data, n_discords = 1, n_neighbors = 
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("`data` must be `matrix`, `data.frame`, `vector` or `list`.")
+    cli::cli_abort("`data` must be `matrix`, `data.frame`, `vector` or `list`.")
   }
 
   matrix_profile <- .mp$mp # keep mp intact
@@ -148,7 +148,7 @@ find_discord.MatrixProfile <- function(.mp, data, n_discords = 1, n_neighbors = 
 #' mp <- find_discord(pan)
 find_discord.PMP <- function(.mp, data, n_discords = 1, n_neighbors = 3, radius = 3, exclusion_zone = NULL, ...) {
   if (!("PMP" %in% class(.mp))) {
-    stop("First argument must be an object of class `MatrixProfile`.")
+    cli::cli_abort("First argument must be an object of class `MatrixProfile`.")
   }
 
   if (missing(data) && !is.null(.mp$data)) {
@@ -184,7 +184,7 @@ find_discord.PMP <- function(.mp, data, n_discords = 1, n_neighbors = 3, radius 
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("`data` must be `matrix`, `data.frame`, `vector` or `list`.")
+    cli::cli_abort("`data` must be `matrix`, `data.frame`, `vector` or `list`.")
   }
 
   # TODO: for now, computes only for the first window:

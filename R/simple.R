@@ -29,7 +29,7 @@
 simple_fast <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zone", 1 / 2),
                         verbose = getOption("tsmp.verbose", 2)) {
   if (!is.numeric(window_size) || length(window_size) > 1) {
-    stop("Unknown type of `window_size`. Must be an `int` or `numeric`")
+    cli::cli_abort("Unknown type of `window_size`. Must be an `int` or `numeric`")
   }
   argv <- list(...)
   argc <- length(argv)
@@ -74,7 +74,7 @@ simple_fast <- function(..., window_size, exclusion_zone = getOption("tsmp.exclu
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Unknown type of data. Must be: matrix, data.frame, vector or list.")
+    cli::cli_abort("Unknown type of data. Must be: matrix, data.frame, vector or list.")
   }
 
   # transform query list into matrix
@@ -106,21 +106,21 @@ simple_fast <- function(..., window_size, exclusion_zone = getOption("tsmp.exclu
     # transform query into 1-col matrix
     query <- as.matrix(query) # just to be uniform
   } else {
-    stop("Unknown type of query. Must be: matrix, data.frame, vector or list.")
+    cli::cli_abort("Unknown type of query. Must be: matrix, data.frame, vector or list.")
   }
 
   # check input
   if (q_dim != n_dim) {
-    stop("Data and query dimensions must be the same.")
+    cli::cli_abort("Data and query dimensions must be the same.")
   }
   if (window_size > data_size / 2) {
-    stop("Reference Time series is too short relative to desired window size.")
+    cli::cli_abort("Reference Time series is too short relative to desired window size.")
   }
   if (window_size > query_size / 2) {
-    stop("Query Time series is too short relative to desired window size.")
+    cli::cli_abort("Query Time series is too short relative to desired window size.")
   }
   if (window_size < 4) {
-    stop("`window_size` must be at least 4.")
+    cli::cli_abort("`window_size` must be at least 4.")
   }
 
   ez <- exclusion_zone # store original

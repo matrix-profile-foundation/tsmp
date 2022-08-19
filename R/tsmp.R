@@ -93,10 +93,10 @@
 #' @family matrix profile computations
 #' @examples
 #' # default with [stomp()]
-#' mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
+#' mp <- tsmp(mp_toy_data$data[[1]][1:200], window_size = 30, verbose = 0)
 #'
 #' # Anytime STAMP
-#' mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, mode = "stamp", s_size = 50, verbose = 0)
+#' mp <- tsmp(mp_toy_data$data[[1]][1:200], window_size = 30, mode = "stamp", s_size = 50, verbose = 0)
 #'
 #' # [mstomp()]
 #' mp <- tsmp(mp_toy_data$data[1:200, ], window_size = 30, mode = "mstomp", verbose = 0)
@@ -117,7 +117,7 @@ tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zo
   argc <- length(argv)
 
   if (argc == 0) {
-    stop("You must supply at least one time series.")
+    cli::cli_abort("You must supply at least one time series.")
   }
 
   if (argc == 1) {
@@ -125,7 +125,7 @@ tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zo
     query <- NULL
   } else {
     if (argc > 2) {
-      warning("Warning: Only the first two time series will be used.")
+      cli::cli_warn("Only the first two time series will be used.")
     }
 
     data <- argv[[1]]
@@ -136,7 +136,7 @@ tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zo
     min_size <- length(data)
 
     if (min_size < 1000) {
-      message("Notice: data is smaller than 1000. Single-thread mode will be used.")
+      cli::cli_info("Notice: data is smaller than 1000. Single-thread mode will be used.")
       n_workers <- 1
     }
   }
@@ -179,7 +179,7 @@ tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zo
     },
     "mstomp" = {
       if (argc > 1) {
-        warning("Warning: Only the first time series will be used in `mstomp`.")
+        cli::cli_warn("Only the first time series will be used in `mstomp`.")
       }
 
       if (n_workers > 1) {
@@ -210,7 +210,7 @@ tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zo
     "pmp" = {
       pmp(data, window_sizes = window_size, n_workers = n_workers, verbose = verbose)
     },
-    stop("`mode` must be ", mode)
+    cli::cli_abort("`mode` must be {mode}")
   )
 
   attr(result, "origin") <- list(

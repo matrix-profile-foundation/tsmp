@@ -8,19 +8,19 @@ if (identical(Sys.getenv("STRESS_TEST"), "true") &&
 
   set.seed(2018)
   windows <- c(4, sample(50:4000, (ssize - 1)))
-  message("Windows: ", windows)
+  cli::cli_info("Windows: {windows}")
 
   for (w in windows) {
     min_data_size <- 2 * w + 1
     max_data_size <- 10000
 
     data_sizes <- sample(seq(min_data_size, max_data_size), ssize)
-    message("Window: ", w)
-    message("Sizes: ", data_sizes)
+    cli::cli_info("Window: {w}")
+    cli::cli_info("Sizes: {data_sizes}")
 
     for (ds in data_sizes) {
-      message("Window: ", w)
-      message("Size: ", ds)
+      cli::cli_info("Window: {w}")
+      cli::cli_info("Size: {ds}")
 
       data1 <- mp_fluss_data$tilt_abp$data[1:ds] # 40000
       data2 <- mp_fluss_data$walkjogrun$data[1:ds] # 10000

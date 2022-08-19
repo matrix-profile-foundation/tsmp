@@ -17,11 +17,11 @@
 #' mp <- find_chains(mp)
 find_chains <- function(.mp) {
   if (!("MatrixProfile" %in% class(.mp))) {
-    stop("First argument must be an object of class `MatrixProfile`.")
+    cli::cli_abort("First argument must be an object of class `MatrixProfile`.")
   }
 
   if ("Valmod" %in% class(.mp)) {
-    stop("Function not implemented for objects of class `Valmod`.")
+    cli::cli_abort("Function not implemented for objects of class `Valmod`.")
   }
 
   mp_size <- nrow(.mp$rpi)
@@ -51,7 +51,7 @@ find_chains <- function(.mp) {
   l <- max(chain_length)
 
   if (length(chain_set) == 0) {
-    message("No valid chain found.")
+    rlang::warn("No valid chain found.")
     .mp <- remove_class(.mp, "Chain")
     return(.mp)
   }

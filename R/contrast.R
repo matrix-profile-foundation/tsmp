@@ -45,7 +45,7 @@ contrast <- function(negative_data, positive_data, window_size, positive_matrix 
 
   if (!is.null(positive_matrix)) {
     if (!("MatrixProfile" %in% class(positive_matrix))) {
-      stop("`positive_matrix` argument must be an object of class `MatrixProfile`.")
+      cli::cli_abort("`positive_matrix` argument must be an object of class `MatrixProfile`.")
     }
   } else {
     positive_matrix <- list()
@@ -66,9 +66,7 @@ contrast <- function(negative_data, positive_data, window_size, positive_matrix 
 
   smaller_size <- min(length(negative_data), length(positive_data))
   if (window_size > ceiling(smaller_size / 2)) {
-    stop("The smaller time series is too short relative to desired window size.",
-      call. = FALSE
-    )
+    cli::cli_abort("The smaller time series is too short relative to desired window size.")
   }
 
   "!DEBUG Register anytime exit point"

@@ -43,26 +43,26 @@ mstomp_par <- function(data, window_size, exclusion_zone = getOption("tsmp.exclu
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    stop("Unknown type of data. Must be: matrix, data.frame, vector or list.")
+    cli::cli_abort("Unknown type of data. Must be: matrix, data.frame, vector or list.")
   }
 
   matrix_profile_size <- data_size - window_size + 1
 
   # check input
   if (window_size > data_size / 2) {
-    stop("Time series is too short relative to desired window size.")
+    cli::cli_abort("Time series is too short relative to desired window size.")
   }
   if (window_size < 4) {
-    stop("`window_size` must be at least 4.")
+    cli::cli_abort("`window_size` must be at least 4.")
   }
   if (any(must_dim > n_dim)) {
-    stop("`must_dim` must be less then the total dimension.")
+    cli::cli_abort("`must_dim` must be less then the total dimension.")
   }
   if (any(exc_dim > n_dim)) {
-    stop("`exc_dim` must be less then the total dimension.")
+    cli::cli_abort("`exc_dim` must be less then the total dimension.")
   }
   if (length(intersect(must_dim, exc_dim)) > 0) {
-    stop("The same dimension is presented in both the exclusion dimension and must have dimension.")
+    cli::cli_abort("The same dimension is presented in both the exclusion dimension and must have dimension.")
   }
 
   # check skip position
@@ -98,7 +98,7 @@ mstomp_par <- function(data, window_size, exclusion_zone = getOption("tsmp.exclu
   cores <- min(max(2, n_workers), parallel::detectCores())
 
   if (verbose > 0) {
-    message("Warming up parallel with ", cores, " cores.")
+    cli::cli_info("Warming up parallel with {cores} cores.")
   }
 
   cl <- parallel::makeCluster(cores)

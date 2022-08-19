@@ -15,8 +15,10 @@ read(x, ...)
 Read TSMP object from JSON file.
 }
 \examples{
-
+result <- compute(mp_toy_data$data[, 1], 80)
 \donttest{
-result <- read("input.json")
+tempfile <- file.path(tempdir(), "output.json")
+write(result, file = tempfile)
+result <- read(tempfile)
 }
 }

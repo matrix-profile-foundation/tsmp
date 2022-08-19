@@ -55,22 +55,22 @@ find_snippet <- function(data, s_size, n_snippets = 2L, window_size = s_size / 2
       data <- t(data)
     }
   } else {
-    stop("Unknown type of data. Must be: a column matrix or a vector.", call. = FALSE)
+    cli::cli_abort("Unknown type of data. Must be: a column matrix or a vector.")
   }
 
   if (s_size < 4.0) {
-    stop("`s_size` must be at least 4.", call. = FALSE)
+    cli::cli_abort("`s_size` must be at least 4.")
   }
 
   ## check input
   if (nrow(data) < (2 * s_size)) {
-    stop("Error: Time series is too short relative to desired snippet Length", call. = FALSE)
+    cli::cli_abort("Error: Time series is too short relative to desired snippet Length")
   }
 
   window_size <- floor(window_size)
 
   if (window_size >= s_size) {
-    stop("Error: `window_size` must be smaller than `s_size`.", call. = FALSE)
+    cli::cli_abort("Error: `window_size` must be smaller than `s_size`.")
   }
 
   #### padding zeros to the end of the time series. ####
@@ -131,7 +131,7 @@ find_snippet <- function(data, s_size, n_snippets = 2L, window_size = s_size / 2
 
   ## assert percentages
   if (round(sum(fraction), 3) != 1) {
-    message("DEBUG: ", round(sum(fraction), 3))
+    cli::cli_info("DEBUG: {round(sum(fraction), 3)}")
   }
 
   obj <- list(

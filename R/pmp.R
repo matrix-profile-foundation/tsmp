@@ -69,7 +69,7 @@ pmp <- function(data,
   # checks if the given object is actualy a skimp object
   if (!is.null(pmp_obj)) {
     if (!inherits(pmp_obj, "PMP")) {
-      stop("`pmp_obj` must be of class `PMP`")
+      cli::cli_abort("`pmp_obj` must be of class `PMP`")
     }
   }
 
@@ -130,17 +130,17 @@ pmp <- function(data,
 
         # check if the windows vector contains any uncomputed matrix profile
         if (any(!(pmp_obj$w %in% expected_profiles))) {
-          warning("`windows` contains values not computed in `pmp`")
+          cli::cli_warn("`windows` contains values not computed in `pmp`")
         }
 
         # check if there is any matrix profile without a profile index
         if (any(!(expected_profiles %in% expected_indexes))) {
-          warning("`pmp` contains values without respective `pmpi")
+          cli::cli_warn("`pmp` contains values without respective `pmpi")
         }
 
         # check if there is any profile index without a matrix profile
         if (any(!(expected_indexes %in% expected_profiles))) {
-          warning("`pmpi` contains values without respective `pmp")
+          cli::cli_warn("`pmpi` contains values without respective `pmp")
         }
 
 
@@ -183,7 +183,7 @@ pmp <- function(data,
     w <- window_sizes[idx]
 
     if (is.na(w) || w == 0) {
-      warning("Invalid window size ", w)
+      cli::cli_warn("Invalid window size ", w)
       next
     }
 
@@ -294,21 +294,21 @@ pmp_upper_bound <- function(data,
 
   # first perform a wide search by increasing window by 2 in each iteration
   while (window_size <= max_window) {
-    # message("window: ", window_size)
+    # cli::cli_info("window: ", window_size)
 
     result <- matrixprofiler::mpx(
       data = data, window_size = window_size, idx = do_idxs, dist = "pearson",
       n_workers = n_workers
     )
     if (is.null(result) || result$partial) {
-      warning("The computation was terminated prematurely. The results are partial.")
+      cli::cli_warn("The computation was terminated prematurely. The results are partial.")
       return()
     }
 
     correlation_max <- max(result$mp[!is.infinite(result$mp)], na.rm = TRUE)
 
     if (correlation_max < threshold) {
-      # message("break at ", window_size)
+      # cli::cli_info("break at ", window_size)
       break
     }
 
@@ -327,14 +327,14 @@ pmp_upper_bound <- function(data,
     test_windows <- 2 * round(((seq(refine_stepsize, 1 - 1e-5, refine_stepsize) + 1) * window_size / 2) / 2)
 
     for (window_size in test_windows) {
-      # message("refine window: ", window_size)
+      # cli::cli_info("refine window: ", window_size)
 
       result <- matrixprofiler::mpx(
         data = data, window_size = window_size, idx = do_idxs, dist = "pearson",
         n_workers = n_workers
       )
       if (is.null(result) || result$partial) {
-        warning("The computation was terminated prematurely. The results are partial.")
+        cli::cli_warn("The computation was terminated prematurely. The results are partial.")
         return()
       }
 
@@ -348,7 +348,7 @@ pmp_upper_bound <- function(data,
       }
 
       if (correlation_max < threshold) {
-        # message("break refine at ", window_size)
+        # cli::cli_info("break refine at ", window_size)
         break
       }
     }
