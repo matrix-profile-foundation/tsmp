@@ -3,15 +3,20 @@
 \name{\%>\%}
 \alias{\%>\%}
 \alias{\%T>\%}
+\alias{\%||\%}
 \title{Pipe operator}
 \usage{
 lhs \%>\% rhs
 
 lhs \%T>\% rhs
+
+x \%||\% y
 }
 \description{
 See \code{magrittr::\link[magrittr:pipe]{\%>\%}} for details.
 
 See \code{magrittr::\link[magrittr:pipe]{\%T>\%}} for details.
+
+See \code{rlang::\link[rlang:op-null-default]{\%||\%}} for details.
 }
 \keyword{internal}

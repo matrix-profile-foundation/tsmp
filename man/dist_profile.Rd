@@ -11,9 +11,7 @@ dist_profile(
   index = 1,
   params = NULL,
   type = c("normalized", "non_normalized", "absolute", "weighted"),
-  weights = NULL,
-  arg = rlang::caller_arg(data),
-  call = rlang::caller_env()
+  weights = NULL
 )
 }
 \arguments{
@@ -31,15 +29,6 @@ dist_profile(
 
 \item{weights}{a \code{vector} of \code{numeric} or \code{NULL} with the same length of the \code{window_size}. This is
 a MASS extension to weight the query.}
-
-\item{arg}{An argument name as a string. This argument
-will be mentioned in error messages as the input that is at the
-origin of a problem.}
-
-\item{call}{The execution environment of a currently
-running function, e.g. \code{caller_env()}. The function will be
-mentioned in error messages as the source of the error. See the
-\code{call} argument of \code{\link[rlang:abort]{abort()}} for more information.}
 
 \item{\dots}{Precomputed values from the first iteration. If not supplied, these values will be computed.}
 }

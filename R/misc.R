@@ -3,80 +3,128 @@
 # [ ]: https://rlang.r-lib.org/reference/topic-error-call.html
 
 
+# This handles only one dimentional data
+
 convert_data <- function(data) {
+  # handles: tibble, data.frame, data.table, list, matrix, array, stats::ts, stats::mts
+  # timeSeries, tseries::irts, xts, zoo
   if (!is.null(data)) {
-
-    try_fetch({
-      data_class <- class(data)
-
-      if(is.list(data)) { # tbl_df, data.frame, data.table, list, irts, etc
-        if (inherits(data, "irts")) {
-          # tseries package
-          # data[["time"]]
-          # data[["value"]]
-        }
-
-      } else if (is.array(data)) { # matrix, array, mts; timeSeries
-        if(inherits(data, "timeSeries")) {
-          thedata <- timeSeries::getDataPart(data)
-          thetime <- timeSeries::getTime(data)
-          colnames <- getUnits(data) # same as names(data)
-        }
-
-        tspx <- tsp(data)
-
-      } else if (is.ts(data)) {
-        tspx <- tsp(data)
-      } else if (inherits(data, "xts")) { # matrix, array if unclassed
-      # check if irregular time series
-        tspx <- xts::xtsAttributes(data)
-      } else if (inherits(data, "zoo")) { # matrix, array if unclassed
-        tspx <- zoo::index(data)
-      }
-
-      # timeSeries, stats::ts, irts (tseries), fts, matrix, data.frame, and zoo::zoo. its
-
-      # if(inherits(data, c("tbl_df", "tbl", "data.frame", "list"))) {
-      # } else if(inherits(data, c("matrix", "array"))) {
-      # }
-    },
-     error = function(cnd) {cli::cli_abort("Something went wrong:", parent = cnd)}
-     )
-
-
-    switch()
-
-    if (data_class[[1]] == "numeric") {
+    if (checkmate::qtest(data, "v")) {
       return(invisible(data)) # fast track
     }
 
-    result <- FALSE
-    for (class in data_class) {
-      if (class %in% c("data.frame", "list")) {
-        result <- TRUE
-      } else if (class == "array") {
-        if (length(dim(data)) > 1) {
-          result <- TRUE
+    result <- rlang::try_fetch(
+      {
+        data_dup <- data
+        warn_dim <- FALSE
+        cant_handle <- FALSE
+        data_type <- NULL
+
+        # First check if this is any special class
+        if (inherits(data_dup, "irts")) {
+          data_type <- "irts"
+          cant_handle <- TRUE
+          # data_dup[["time"]]
+          # data_dup[["value"]]
+          # if (rlang::check_installed("tseries")) {
+          #   result <- data_dup[["value"]]
+          #   if ((ncol(result) %||% 1) > 1) {
+          #     warn_dim <- TRUE
+          #   }
+          # }
+        } else if (inherits(data, "xts")) { # matrix, array if unclassed
+          data_type <- "xts"
+          # xts::xtsAttributes()
+          if (is.null(rlang::check_installed("xts"))) {
+            if ((ncol(data_dup) %||% 1) > 1) {
+              warn_dim <- TRUE
+            }
+          }
+        } else if (inherits(data, "zoo")) { # matrix, array if unclassed
+          data_type <- "zoo"
+          # zoo::index(data_dup)
+          if (is.null(rlang::check_installed("zoo"))) {
+            data_dup <- zoo::coredata(data_dup)
+            if ((ncol(data_dup) %||% 1) > 1) {
+              warn_dim <- TRUE
+            }
+          }
+        } else if (inherits(data, "timeSeries")) {
+          data_type <- "timeSeries"
+          #  data_dup <- methods::getDataPart(data_dup)
+          #  time <- timeSeries::getTime(data_dup)
+          #  colnames <- timeSeries::getUnits(data_dup) # same as names(data_dup)
+          if (is.null(rlang::check_installed("timeSeries"))) {
+            data_dup <- methods::getDataPart(data_dup)
+            if ((ncol(data_dup) %||% 1) > 1) {
+              warn_dim <- TRUE
+            }
+          }
         }
+
+        if (is.null(data_type)) {
+          # Now the usual
+          if (is.list(data)) { # tbl_df, data.frame, data.table, list
+            data_type <- "frame"
+            if (length(data_dup) > 1) {
+              warn_dim <- TRUE
+            }
+            data_dup <- as.matrix(data_dup[[1]])
+          } else if (is.array(data)) { # matrix, array, mts
+            data_type <- "matrix"
+            # tspx <- stats::tsp(data_dup)
+            data_dup <- as.matrix(data_dup)
+            if ((ncol(data_dup) %||% 1) > 1) {
+              warn_dim <- TRUE
+            }
+          } else if (stats::is.ts(data)) {
+            data_type <- "ts"
+            # tspx <- stats::tsp(data_dup)
+            data_dup <- as.matrix(data_dup)
+            if ((ncol(data_dup) %||% 1) > 1) {
+              warn_dim <- TRUE
+            }
+          }
+        }
+
+        if (warn_dim || cant_handle || is.null(data_type)) {
+          fn <- rlang::caller_fn() # retrieve the caller function
+          if (is.null(fn)) {
+            # here this function was called directly
+            arg <- rlang::caller_arg(data)
+            parenv <- rlang::current_env()
+            arg_name <- rlang::fn_fmls_names()[1]
+          } else {
+            args <- rlang::fn_fmls_names(fn)
+            arg_name <- rlang::caller_arg(data)
+            i <- which(arg_name == args) + 1
+            arg <- rlang::caller_call()[[i]]
+            arg <- rlang::as_label(arg)
+            parenv <- rlang::caller_env()
+          }
+
+          if (warn_dim) {
+            cli::cli_warn("{.arg {arg_name}} = {.var {arg}} have more than one series, only the first will be used.", call = parenv)
+          }
+
+          if (cant_handle) {
+            cli::cli_abort("{.arg {arg_name}} = {.var {arg}} cannot be of class {.cls {data_type}}.", call = parenv)
+          }
+
+          if (is.null(data_type)) {
+            cli::cli_abort("{.arg {arg_name}} = {.var {arg}} unknown data type: {.cls {class(data)}}.", call = parenv)
+          }
+        }
+
+        checkmate::qassert(data_dup, "m")
+        data_dup[, 1]
+      },
+      error = function(cnd) {
+        cli::cli_abort("Something went wrong:", parent = cnd)
       }
-    }
-    if (result) {
-      fn <- rlang::caller_fn() # retrieve the caller function
-      if (is.null(fn)) {
-        # here this function was called directly
-        arg <- rlang::caller_arg(data)
-        parenv <- rlang::current_env()
-        arg_name <- rlang::fn_fmls_names()[1]
-      } else {
-        args <- rlang::fn_fmls_names(fn)
-        arg_name <- rlang::caller_arg(data)
-        i <- which(arg_name == args) + 1
-        arg <- rlang::caller_call()[[i]]
-        arg <- rlang::as_label(arg)
-        parenv <- rlang::caller_env()
-      }
-      cli::cli_abort("{.arg {arg_name}} = {.var {arg}} cannot be {.cls {class(data)}} and must have a single dimension.", call = parenv)
-    }
+    )
+
+    return(invisible(as.numeric(result)))
   }
 
   return(invisible(as.numeric(data)))
