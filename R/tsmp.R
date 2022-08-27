@@ -117,7 +117,7 @@ tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zo
   argc <- length(argv)
 
   if (argc == 0) {
-    cli::cli_abort("You must supply at least one time series.")
+    cli_abort("You must supply at least one time series.")
   }
 
   if (argc == 1) {
@@ -125,7 +125,7 @@ tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zo
     query <- NULL
   } else {
     if (argc > 2) {
-      cli::cli_warn("Only the first two time series will be used.")
+      cli_warn("Only the first two time series will be used.")
     }
 
     data <- argv[[1]]
@@ -136,7 +136,7 @@ tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zo
     min_size <- length(data)
 
     if (min_size < 1000) {
-      cli::cli_info("Notice: data is smaller than 1000. Single-thread mode will be used.")
+      cli_inform("Notice: data is smaller than 1000. Single-thread mode will be used.")
       n_workers <- 1
     }
   }
@@ -179,7 +179,7 @@ tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zo
     },
     "mstomp" = {
       if (argc > 1) {
-        cli::cli_warn("Only the first time series will be used in `mstomp`.")
+        cli_warn("Only the first time series will be used in {.fun mstomp}.")
       }
 
       if (n_workers > 1) {
@@ -210,7 +210,7 @@ tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zo
     "pmp" = {
       pmp(data, window_sizes = window_size, n_workers = n_workers, verbose = verbose)
     },
-    cli::cli_abort("`mode` must be {mode}")
+    cli_abort("{.arg mode} must be {mode}")
   )
 
   attr(result, "origin") <- list(

@@ -72,7 +72,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50,
       data <- t(data)
     }
   } else {
-    cli::cli_abort("Unknown type of data. Must be: a column matrix or a vector.")
+    cli_abort("Unknown type of data. Must be: a {.cls matrix} or a {.cls vector}.")
   }
 
   if (is.vector(query)) {
@@ -82,7 +82,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50,
       query <- t(query)
     }
   } else {
-    cli::cli_abort("Unknown type of query. Must be: a column matrix or a vector.")
+    cli_abort("Unknown type of query. Must be: a {.cls matrix} or a {.cls vector}.")
   }
 
   ez <- exclusion_zone # store original
@@ -90,17 +90,17 @@ valmod <- function(..., window_min, window_max, heap_size = 50,
   query_size <- nrow(query)
 
   if (data_size != query_size) {
-    cli::cli_abort("Join similarity for different sizes not implemented yet")
+    cli_abort("Join similarity for different sizes not implemented yet")
   }
 
   range_size <- window_max - window_min + 1
   max_profile_size <- data_size - window_min + 1
 
   if (window_min > query_size / 2) {
-    cli::cli_abort("Time series is too short relative to desired window size.")
+    cli_abort("Time series is too short relative to desired window size.")
   }
   if (window_min < 4) {
-    cli::cli_abort("`window_size` must be at least 4.")
+    cli_abort("{.arg window_size} must be at least `4`.")
   }
 
   # check skip position
@@ -173,7 +173,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50,
       # ==== STOMP ====
 
       if (verbose == 1) {
-        cli::cli_info("=== STOMP ===")
+        cli_inform("=== STOMP ===")
       }
 
       if (verbose > 1) {
@@ -235,7 +235,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50,
         new_lb_profile_len <- length(new_lb_profile)
 
         if (new_lb_profile_len != matrix_profile_size) {
-          cli::cli_abort("new_lb_profile_len != matrix_profile_size")
+          cli_abort("{.var new_lb_profile_len} != {.var matrix_profile_size}")
         }
 
         lb_profile <- new_lb_profile
@@ -270,7 +270,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50,
         lb_idxs <- sort.int(lb_profile, index.return = TRUE)$ix[1:heap_size]
 
         if (any(lb_idxs > matrix_profile_size)) {
-          cli::cli_abort("lb_idxs > matrix_profile_size")
+          cli_abort("{.var lb_idxs} > {.var matrix_profile_size}")
         }
 
         list_motifs_profile[i, "distances", ] <- distance_profile[lb_idxs]
@@ -322,7 +322,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50,
       }
 
       if (verbose == 1) {
-        cli::cli_info("=== PRUNING ===")
+        cli_inform("=== PRUNING ===")
       }
     } else {
       #### LB Pruning ####
@@ -332,7 +332,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50,
       }
 
       if (offset == 0) {
-        cli::cli_warn("OFFSET ZERO?")
+        cli_warn("OFFSET ZERO?")
       }
       # offset never gets zero in this block, why check offset == 0 ?
       motifs_per_size <- 0
@@ -445,7 +445,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50,
 
       if (length(all_trivial) > 0) {
         if (length(i_v[!(i_v[all_trivial] %in% i_v[!valid_entries])]) > 0) {
-          cli::cli_warn("Some trivial matches might not have been recomputed")
+          cli_warn("Some trivial matches might not have been recomputed")
         }
       }
 
@@ -566,7 +566,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50,
               new_lb_profile_len <- length(new_lb_profile)
 
               if (new_lb_profile_len != matrix_profile_size) {
-                cli::cli_abort("new_lb_profile_len != matrix_profile_size")
+                cli_abort("new_lb_profile_len != matrix_profile_size")
               }
 
               lb_profile <- new_lb_profile
@@ -596,7 +596,7 @@ valmod <- function(..., window_min, window_max, heap_size = 50,
               lb_idxs <- sort.int(lb_profile, index.return = TRUE)$ix[1:heap_size]
 
               if (any(lb_idxs > matrix_profile_size)) {
-                cli::cli_abort("lb_idxs > matrix_profile_size")
+                cli_abort("{.var lb_idxs} > {.var matrix_profile_size}")
               }
 
               list_motifs_profile[seq[i], "distances", ] <- distance_profile[lb_idxs]

@@ -131,11 +131,11 @@ sdts_score <- function(pred, gtruth, beta = 1) {
   }
 
   if (anyNA(gtruth)) {
-    cli::cli_abort("`gtruth` contains NA values.")
+    cli_abort("{.arg gtruth} contains NA values.")
   }
 
   if (anyNA(pred)) {
-    cli::cli_abort("`pred` contains NA values.")
+    cli_abort("{.arg pred} contains NA values.")
   }
 
   pred_pad <- c(0, pred, 0)

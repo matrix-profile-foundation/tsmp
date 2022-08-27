@@ -75,15 +75,15 @@ dist_profile <- function(data, window_size, query = data, index = 1, params = NU
   checkmate::qassert(data, "N+")
   window_size <- checkmate::qassert(window_size, "x+[4,)")
   checkmate::qassert(query, "n+")
-  checkmate::qassert(index, glue::glue("X1[1,{length(data) - window_size + 1}]"))
+  checkmate::qassert(index, glue("X1[1,{length(data) - window_size + 1}]"))
   "!!!DEBUG Parsing type"
-  type <- match.arg(type)
+  type <- arg_match(type)
   if (type == "weighted") {
     if (is.null(weights)) {
-      cli::cli_abort("The `weights` argument must be provided.")
+      cli_abort("The {.arg weights} argument must be provided.")
     }
     if (length(weights) != window_size) {
-      cli::cli_abort("The `weights` must be the same size as the `window_size`.")
+      cli_abort("The {.var weights} must be the same size as the {.var window_size}.")
     }
     checkmate::qassert(weights, "N+")
   }
@@ -112,11 +112,13 @@ dist_profile <- function(data, window_size, query = data, index = 1, params = NU
   if (is.null(params)) {
     "!!!DEBUG params is null"
     ## First iteration with MASS ----
-    tryCatch(
+    pre <- try_fetch(
       {
-        pre <- matrixprofiler::mass_pre(data, window_size, query, type, weights)
+        matrixprofiler::mass_pre(data, window_size, query, type, weights)
       },
-      error = print
+      error = function(cnd) {
+        cli_abort("Error precomputing MASS.", parent = cnd)
+      }
     )
     "!!!DEBUG params is a list with par and window_size"
     params <- pre
@@ -130,11 +132,13 @@ dist_profile <- function(data, window_size, query = data, index = 1, params = NU
   }
 
   ## Do the search --------
-  tryCatch(
+  result <- try_fetch(
     {
-      result <- matrixprofiler::mass(params, data, query, index)
+      matrixprofiler::mass(params, data, query, index)
     },
-    error = print
+    error = function(cnd) {
+      cli_abort("Error on MASS. Some data may be returned.", parent = cnd)
+    }
   )
 
   checkmate::qassert(params, "L+")

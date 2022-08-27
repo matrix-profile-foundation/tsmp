@@ -17,13 +17,13 @@
 #' all.equal(mp, mpi, check.attributes = FALSE)
 stompi_update <- function(.mp, new_data, history_size = FALSE) {
   if (!is.null(attr(.mp, "join")) && attr(.mp, "join")) {
-    cli::cli_abort("Update not implemented in Join similarity")
+    cli_abort("Update not implemented in Join similarity")
   }
 
   new_data_size <- length(new_data)
 
   if (new_data_size == 0) {
-    cli::cli_abort("No new data")
+    cli_abort("No new data")
   }
 
   data_upd <- c(as.vector(.mp$data[[1]]), new_data)

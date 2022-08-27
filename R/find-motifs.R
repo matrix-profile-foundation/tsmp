@@ -31,7 +31,7 @@ find_motif <- function(.mp, ...) {
 find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, radius = 3,
                                      exclusion_zone = NULL, ...) {
   if (!("MatrixProfile" %in% class(.mp))) {
-    cli::cli_abort("First argument must be an object of class `MatrixProfile`.")
+    cli_abort("First argument must be an object of class {.cls MatrixProfile}.")
   }
 
   if (inherits(.mp, "Valmod")) {
@@ -73,7 +73,7 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    cli::cli_abort("`data` must be `matrix`, `data.frame`, `vector` or `list`.")
+    cli_abort("{.arg data} must be {.cls matrix}, {.cls data.frame}, {.cls vector} or {.cls list}.")
   }
 
 
@@ -159,7 +159,7 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
   }
 
   if (is.null(motif_idxs[[1]][[1]])) {
-    cli::cli_info("No valid motif found.")
+    cli_inform("No valid motif found.")
     .mp <- remove_class(.mp, "Motif")
     return(.mp)
   }
@@ -188,7 +188,7 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
 find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("guided", "unconstrained"),
                                           n_bit = 4, exclusion_zone = NULL, n_dim = NULL, ...) {
   if (!("MultiMatrixProfile" %in% class(.mp))) {
-    cli::cli_abort("First argument must be an object of class `MultiMatrixProfile`.")
+    cli_abort("First argument must be an object of class {.cls MultiMatrixProfile}.")
   }
 
   if (missing(data) && !is.null(.mp$data)) {
@@ -226,14 +226,14 @@ find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("gui
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    cli::cli_abort("`data` must be `matrix`, `data.frame`, `vector` or `list`.")
+    cli_abort("{.arg data} must be {.cls matrix}, {.cls data.frame}, {.cls vector} or {.cls list}.")
   }
 
   # Guided Search ------------------------------------------------------------------------
   if (algo == "guided") {
     if (is.null(n_dim)) {
       if (.mp$n_dim != data_dim) {
-        cli::cli_warn("`data` dimensions are different from matrix profile.")
+        cli_warn("{.arg data} dimensions are different from matrix profile.")
       }
       n_dim <- .mp$n_dim
     }
@@ -259,7 +259,7 @@ find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("gui
   } else {
     # Unguided Search -------------------------------------------------------------------
     if (n_bit < 2) {
-      cli::cli_abort("`nbit` must be at least `2`.")
+      cli_abort("{.arg nbit} must be at least `2`.")
     }
 
     if (is.null(exclusion_zone)) {
@@ -269,7 +269,7 @@ find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("gui
     matrix_profile <- .mp # keep mp intact
 
     if (.mp$n_dim != data_dim) {
-      cli::cli_warn("`data` dimensions are different from matrix profile.")
+      cli_warn("{.arg data} dimensions are different from matrix profile.")
     }
 
     tot_dim <- .mp$n_dim
@@ -317,7 +317,7 @@ find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("gui
 
       if (best_bit > (base_bit)) {
         if (i == 1) {
-          cli::cli_info("No valid motif found.")
+          cli_inform("No valid motif found.")
           .mp <- remove_class(.mp, "MultiMotif")
           return(.mp)
         }
@@ -370,7 +370,7 @@ find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("gui
 #' mp <- find_motif(pan)
 find_motif.PMP <- function(.mp, data, n_motifs = 3, n_neighbors = 10, radius = 3, exclusion_zone = NULL, ...) {
   if (!("PMP" %in% class(.mp))) {
-    cli::cli_abort("First argument must be an object of class `PMP`.")
+    cli_abort("First argument must be an object of class {.cls PMP}.")
   }
 
   if (missing(data) && !is.null(.mp$data)) {
@@ -406,7 +406,7 @@ find_motif.PMP <- function(.mp, data, n_motifs = 3, n_neighbors = 10, radius = 3
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    cli::cli_abort("`data` must be `matrix`, `data.frame`, `vector` or `list`.")
+    cli_abort("{.arg data} must be {.cls matrix}, {.cls data.frame}, {.cls vector} or {.cls list}.")
   }
 
   # TODO: for now, computes only for the first window:
@@ -487,7 +487,7 @@ find_motif.PMP <- function(.mp, data, n_motifs = 3, n_neighbors = 10, radius = 3
   }
 
   if (is.null(motif_idxs[[1]][[1]])) {
-    cli::cli_info("No valid motif found.")
+    cli_inform("No valid motif found.")
     .mp <- remove_class(.mp, "Motif")
     return(.mp)
   }

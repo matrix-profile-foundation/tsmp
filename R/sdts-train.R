@@ -62,7 +62,7 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, n_work
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    cli::cli_abort("Unknown type of data. Must be: matrix, data.frame, vector or list.")
+    cli_abort("Unknown type of data. Must be: {.cls matrix}, {.cls data.frame}, {.cls vector} or {.cls list}.")
   }
 
   n_window_size <- length(window_size)
@@ -70,10 +70,10 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, n_work
   # check input ----
   for (i in 1:n_window_size) {
     if (window_size[i] > (data_size / 2)) {
-      cli::cli_abort("Time series is too short relative to desired window size.")
+      cli_abort("Time series is too short relative to desired window size.")
     }
     if (window_size[i] < 4) {
-      cli::cli_abort("`window_size` must be at least 4.")
+      cli_abort("{.arg window_size} must be at least 4.")
     }
   }
 
@@ -106,7 +106,7 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, n_work
 
   # run matrix profile on concatenated positive segment ----
   if (verbose > 0) {
-    cli::cli_info("Stage 1 of 3, compute matrix profile...")
+    cli_inform("Stage 1 of 3, compute matrix profile...")
   }
 
   mat_pro <- list()
@@ -153,7 +153,7 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, n_work
   tictac <- Sys.time()
 
   if (verbose > 0) {
-    cli::cli_info("Stage 2 of 3, evaluate individual candidates...")
+    cli_inform("Stage 2 of 3, evaluate individual candidates...")
   }
 
   if (verbose > 1) {
@@ -236,7 +236,7 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, n_work
   tictac <- Sys.time()
 
   if (verbose > 0) {
-    cli::cli_info("Stage 3 of 3, evaluate combination of candidates...")
+    cli_inform("Stage 3 of 3, evaluate combination of candidates...")
   }
 
   if (verbose > 1) {

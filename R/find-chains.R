@@ -17,11 +17,11 @@
 #' mp <- find_chains(mp)
 find_chains <- function(.mp) {
   if (!("MatrixProfile" %in% class(.mp))) {
-    cli::cli_abort("First argument must be an object of class `MatrixProfile`.")
+    cli_abort("First argument must be an object of class {.cls MatrixProfile}.")
   }
 
   if ("Valmod" %in% class(.mp)) {
-    cli::cli_abort("Function not implemented for objects of class `Valmod`.")
+    cli_abort("Function not implemented for objects of class {.cls Valmod}.")
   }
 
   mp_size <- nrow(.mp$rpi)

@@ -29,7 +29,7 @@
 simple_fast <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zone", 1 / 2),
                         verbose = getOption("tsmp.verbose", 2)) {
   if (!is.numeric(window_size) || length(window_size) > 1) {
-    cli::cli_abort("Unknown type of `window_size`. Must be an `int` or `numeric`")
+    cli_abort("Unknown type of {.arg window_size}. Must be an {.cls int} or {.cls numeric}")
   }
   argv <- list(...)
   argc <- length(argv)
@@ -74,7 +74,7 @@ simple_fast <- function(..., window_size, exclusion_zone = getOption("tsmp.exclu
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    cli::cli_abort("Unknown type of data. Must be: matrix, data.frame, vector or list.")
+    cli_abort("Unknown type of data. Must be: {.cls matrix}, {.cls data.frame}, {.cls vector} or {.cls list}.")
   }
 
   # transform query list into matrix
@@ -106,21 +106,21 @@ simple_fast <- function(..., window_size, exclusion_zone = getOption("tsmp.exclu
     # transform query into 1-col matrix
     query <- as.matrix(query) # just to be uniform
   } else {
-    cli::cli_abort("Unknown type of query. Must be: matrix, data.frame, vector or list.")
+    cli_abort("Unknown type of query. Must be: {.cls matrix}, {.cls data.frame}, {.cls vector} or {.cls list}.")
   }
 
   # check input
   if (q_dim != n_dim) {
-    cli::cli_abort("Data and query dimensions must be the same.")
+    cli_abort("Data and query dimensions must be the same.")
   }
   if (window_size > data_size / 2) {
-    cli::cli_abort("Reference Time series is too short relative to desired window size.")
+    cli_abort("Reference Time series is too short relative to desired window size.")
   }
   if (window_size > query_size / 2) {
-    cli::cli_abort("Query Time series is too short relative to desired window size.")
+    cli_abort("Query Time series is too short relative to desired window size.")
   }
   if (window_size < 4) {
-    cli::cli_abort("`window_size` must be at least 4.")
+    cli_abort("{.arg window_size} must be at least `4`.")
   }
 
   ez <- exclusion_zone # store original

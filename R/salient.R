@@ -44,11 +44,11 @@
 salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_zone = NULL,
                                  verbose = getOption("tsmp.verbose", 2)) {
   if (!("MatrixProfile" %in% class(.mp))) {
-    cli::cli_abort("First argument must be an object of class `MatrixProfile`.")
+    cli_abort("First argument must be an object of class {.cls MatrixProfile}.")
   }
 
   if ("Valmod" %in% class(.mp)) {
-    cli::cli_abort("Function not implemented for objects of class `Valmod`.")
+    cli_abort("Function not implemented for objects of class {.cls Valmod}.")
   }
 
   if (missing(data) && !is.null(.mp$data)) {
@@ -84,7 +84,7 @@ salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_z
     # transform data into 1-col matrix
     data <- as.matrix(data) # just to be uniform
   } else {
-    cli::cli_abort("Unknown type of data. Must be: matrix, data.frame, vector or list.")
+    cli_abort("Unknown type of data. Must be: {.cls matrix}, {.cls data.frame}, {.cls vector} or {.cls list}.")
   }
 
   if (n_dim > 1) {
@@ -354,7 +354,7 @@ salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_z
 #' plot(mds_data, main = "Multi dimensional scale")
 salient_mds <- function(.mp, data, bit_idx = 1) {
   if (!("Salient" %in% class(.mp))) {
-    cli::cli_abort("First argument must be an object of class `Salient`.")
+    cli_abort("First argument must be an object of class {.cls Salient}.")
   }
 
   if (missing(data) && !is.null(.mp$data)) {
@@ -406,7 +406,7 @@ salient_mds <- function(.mp, data, bit_idx = 1) {
 #' salient_score(mps, label_idx, verbose = 0)
 salient_score <- function(.mp, gtruth, verbose = getOption("tsmp.verbose", 2)) {
   if (!("Salient" %in% class(.mp))) {
-    cli::cli_abort("First argument must be an object of class `Salient`.")
+    cli_abort("First argument must be an object of class {.cls Salient}.")
   }
 
   f_score <- 0
@@ -418,7 +418,7 @@ salient_score <- function(.mp, gtruth, verbose = getOption("tsmp.verbose", 2)) {
 
   for (b in seq_len(length(.mp$salient$bits))) {
     if (verbose > 0) {
-      cli::cli_info("Bits: ", .mp$salient$bits[b])
+      cli_inform("Bits: ", .mp$salient$bits[b])
     }
 
     hit_miss <- rep(FALSE, length(.mp$salient$indexes))
@@ -456,20 +456,20 @@ salient_score <- function(.mp, gtruth, verbose = getOption("tsmp.verbose", 2)) {
       }
 
       if (verbose > 0) {
-        cli::cli_info("Precision: {round(precision, 4)}")
-        cli::cli_info("Recall: {round(recall, 4)}")
-        cli::cli_info("F_1 Score: {round(f_score, 4)}")
-        cli::cli_info("-----------------")
+        cli_inform("Precision: {round(precision, 4)}")
+        cli_inform("Recall: {round(recall, 4)}")
+        cli_inform("F_1 Score: {round(f_score, 4)}")
+        cli_inform("-----------------")
       }
     } else {
       if (verbose > 0) {
-        cli::cli_info("Nothing to do")
+        cli_inform("Nothing to do")
       }
     }
   }
 
   if (verbose > 0) {
-    cli::cli_info("Best F_1 Score: {round(best_f, 4)} Bits: {best_bit}")
+    cli_inform("Best F_1 Score: {round(best_f, 4)} Bits: {best_bit}")
   }
 
   return(invisible(list(fscore = f_score, precision = best_p, recall = best_r, bits = best_bit)))

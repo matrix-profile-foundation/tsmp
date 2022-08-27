@@ -21,15 +21,3 @@ NULL
 #' @importFrom magrittr %T>%
 #' @usage lhs \%T>\% rhs
 NULL
-
-#' NULL default operator
-#'
-#' See \code{rlang::\link[rlang:op-null-default]{\%||\%}} for details.
-#'
-#' @name %||%
-#' @rdname operators
-#' @keywords internal
-#' @export
-#' @importFrom rlang %||%
-#' @usage x \%||\% y
-NULL
