@@ -52,7 +52,7 @@ contrast <- function(negative_data, positive_data, window_size, positive_matrix 
   }
 
   checkmate::qassert(exclusion_zone, "N+")
-  distance <- match.arg(distance)
+  distance <- arg_match(distance)
   if (distance == "euclidean") {
     dist <- TRUE
   } else {

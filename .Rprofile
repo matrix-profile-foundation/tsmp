@@ -3,6 +3,7 @@ options(repos = c(CRAN = "https://cran.rstudio.org"))
 if (.Platform$OS.type == "windows") {
   Sys.setenv(LC_CTYPE = "C")
 }
+
 source("renv/activate.R")
 
 if (Sys.getenv("CI") == "") { # not CI
@@ -61,7 +62,7 @@ if (Sys.getenv("CI") == "") { # not CI
       }
     }
   } else { # in RStudio
-        suppressMessages(
+    suppressMessages(
       suppressWarnings({
         require("testthat", quietly = TRUE)
         require("devtools", quietly = TRUE)

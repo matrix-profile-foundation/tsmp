@@ -12,44 +12,6 @@ test_that("Query with Gap", {
   expect_equal(sum(round(Re(gap$distance_profile[21:541]), 2)), 38257.03)
 })
 
-pre <- mass_pre(ref_data, query_data, w)
-pre$query_mean <- pre$query_mean[1]
-pre$query_sd <- pre$query_sd[1]
-
-pre3 <- c(pre, list(data = ref_data, k = NULL))
-pre3$k <- 1 # fix hash later
-
-res <- mass_v2(
-  query_data[1:w], pre$window_size, pre$data_fft, pre$data_size,
-  pre$data_mean, pre$data_sd, pre$query_mean, pre$query_sd
-)
-res3 <- mass_v3(
-  query_data[1:w], ref_data, pre$window_size, pre$data_size,
-  pre$data_mean, pre$data_sd, pre$query_mean, pre$query_sd
-)
-
-movsd <- matrixprofiler::mov_std(mp_toy_data$data[, 1], 30)
-movavg <- matrixprofiler::mov_mean(mp_toy_data$data[, 1], 30)
-
-prew <- mass_pre_w(ref_data, query_data, w, c(rep(1, 15), rep(0.5, 15)))
-resw <- do.call("mass_weighted", (c(list(query_data[1:w]), prew)))
-
-
-
-test_that("Fast Moving SD is ok", {
-  # FIXME: expect_known_hash(round(movsd, 3), "ffda40fd35")
-})
-
-test_that("Fast Moving Average is ok", {
-  # FIXME: expect_known_hash(round(movavg, 3), "601febe569")
-})
-
-test_that("MASS Pre is ok", {
-  expect_equal(sum(Re(unlist(lapply(pre, round, 3)))), 1657.461)
-  expect_equal(sum(Re(unlist(lapply(pre3, round, 3)))), 1951.483)
-  expect_equal(sum(Re(unlist(lapply(prew, round, 2)))), 13147.42)
-})
-
 test_that("MASS is ok", {
   expect_equal(sum(round(Re(res$distance_profile), 2)), 30737.17)
   expect_equal(sum(round(Re(res$last_product), 2)), 5965.13)

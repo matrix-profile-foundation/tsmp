@@ -44,6 +44,8 @@ Depends:
     R (>= 4.1)
 Imports:
     matrixprofiler (>= 0.1.8),
+    cli,
+    rlang (>= 0.3.1),
     checkmate (>= 2.1.0),
     magrittr (>= 2.0.3)
 Suggests:
@@ -64,4 +66,5 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
 Config/testthat/edition: 3
 Config/testthat/parallel: false
+Config/rcmdcheck/ignore-inconsequential-notes: true
 Remotes: matrix-profile-foundation/matrixprofiler@feature/reviewforcran

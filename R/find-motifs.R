@@ -195,7 +195,7 @@ find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("gui
     data <- .mp$data[[1]]
   }
 
-  algo <- match.arg(mode)
+  algo <- arg_match(mode)
 
   # transform data list into matrix
   if (is.matrix(data) || is.data.frame(data)) {

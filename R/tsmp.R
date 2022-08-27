@@ -111,7 +111,7 @@ tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zo
                  mode = c("stomp", "stamp", "simple", "mstomp", "scrimp", "valmod", "pmp"),
                  verbose = getOption("tsmp.verbose", 2), n_workers = 1, s_size = Inf, must_dim = NULL, exc_dim = NULL,
                  heap_size = 50, .keep_data = TRUE) {
-  algo <- match.arg(mode)
+  algo <- arg_match(mode)
 
   argv <- list(...)
   argc <- length(argv)

@@ -126,8 +126,8 @@ dist_profile <- function(data, window_size, query = data, index = 1, params = NU
   } else {
     "!!!DEBUG params is not null"
     ## Following iterations with MASS ----
-    if (!is.null(params$par)) {
-      params <- params$par
+    if (!is.null(params$params)) {
+      params <- params$params
     }
   }
 

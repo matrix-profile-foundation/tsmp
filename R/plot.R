@@ -136,7 +136,7 @@ plot.ArcCount <- function(x, data, type = c("data", "matrix"), exclusion_zone = 
     is.null(data) # check data presence before plotting anything
   }
 
-  type <- match.arg(type)
+  type <- arg_match(type)
 
   if (is.null(exclusion_zone)) {
     if (floor(x$ez * 10) < (length(x$mp) / 3)) {
@@ -475,7 +475,7 @@ plot.Fluss <- function(x, data, type = c("data", "matrix"),
     is.null(data) # check data presence before plotting anything
   }
 
-  type <- match.arg(type)
+  type <- arg_match(type)
 
   if (type == "data") {
     plot_data <- data
@@ -540,7 +540,7 @@ plot.Floss <- function(x, data, type = c("data", "matrix"),
     is.null(data) # check data presence before plotting anything
   }
 
-  type <- match.arg(type)
+  type <- arg_match(type)
 
   if (type == "data") {
     plot_data <- data
@@ -620,7 +620,7 @@ plot.Chain <- function(x, data, type = c("data", "matrix"), main = "Chain Discov
     is.null(data) # check data presence before plotting anything
   }
 
-  type <- match.arg(type)
+  type <- arg_match(type)
 
   if (type == "data") {
     plot_data <- data
@@ -692,7 +692,7 @@ plot.Discord <- function(x, data, type = c("data", "matrix"), ncol = 3,
     x$pi <- as.matrix(x$pmpi[[1]])
   }
 
-  type <- match.arg(type)
+  type <- arg_match(type)
 
   if (type == "data") {
     plot_data <- data
@@ -860,7 +860,7 @@ plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3,
     is.null(data) # check data presence before plotting anything
   }
 
-  type <- match.arg(type)
+  type <- arg_match(type)
 
   if (type == "data") {
     plot_data <- data
@@ -964,7 +964,7 @@ plot.MultiMotif <- function(x, data, type = c("data", "matrix"), ncol = 3,
     is.null(data) # check data presence before plotting anything
   }
 
-  type <- match.arg(type)
+  type <- arg_match(type)
 
   if (type == "data") {
     plot_data <- data

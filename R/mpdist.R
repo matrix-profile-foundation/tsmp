@@ -41,7 +41,7 @@
 #' # distance vector between data of different sizes
 #' ddvect <- mpdist(ref_data, qd_data, w, type = "vector")
 mpdist <- function(ref_data, query_data, window_size, type = c("simple", "vector"), thr = 0.05) {
-  type <- match.arg(type)
+  type <- arg_match(type)
 
   # transform data into matrix
   if (is.vector(ref_data)) {
