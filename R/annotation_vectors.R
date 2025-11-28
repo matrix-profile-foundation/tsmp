@@ -18,7 +18,7 @@
 #' mp <- tsmp(data, window_size = w, verbose = 0)
 #' av <- av_zerocrossing(mp, apply = TRUE)
 av_zerocrossing <- function(.mp, data, apply = FALSE) {
-  if ("Valmod" %in% class(.mp)) {
+  if (inherits(.mp, "Valmod")) {
     cli_abort("Function not implemented for objects of class {.cls Valmod}.")
   }
 
@@ -65,7 +65,7 @@ av_zerocrossing <- function(.mp, data, apply = FALSE) {
 #' mp <- tsmp(data, window_size = w, verbose = 0)
 #' av <- av_complexity(mp, apply = TRUE)
 av_complexity <- function(.mp, data, dilution_factor = 0, apply = FALSE) {
-  if ("Valmod" %in% class(.mp)) {
+  if (inherits(.mp, "Valmod")) {
     cli_abort("Function not implemented for objects of class {.cls Valmod}.")
   }
 
@@ -126,7 +126,7 @@ av_complexity <- function(.mp, data, dilution_factor = 0, apply = FALSE) {
 #' mp <- tsmp(data, window_size = w, verbose = 0)
 #' av <- av_motion_artifact(mp, apply = TRUE)
 av_motion_artifact <- function(.mp, data, apply = FALSE) {
-  if ("Valmod" %in% class(.mp)) {
+  if (inherits(.mp, "Valmod")) {
     cli_abort("Function not implemented for objects of class {.cls Valmod}.")
   }
 
@@ -195,7 +195,7 @@ av_motion_artifact <- function(.mp, data, apply = FALSE) {
 #' mp <- tsmp(data, window_size = w, verbose = 0)
 #' av <- av_stop_word(mp, stop_word_loc = 150, apply = TRUE)
 av_stop_word <- function(.mp, data, stop_word_loc, exclusion_zone = NULL, threshold = 0.1, apply = FALSE) {
-  if ("Valmod" %in% class(.mp)) {
+  if (inherits(.mp, "Valmod")) {
     cli_abort("Function not implemented for objects of class {.cls Valmod}.")
   }
 
@@ -271,7 +271,7 @@ av_stop_word <- function(.mp, data, stop_word_loc, exclusion_zone = NULL, thresh
 #' mp <- tsmp(data, window_size = w, verbose = 0)
 #' av <- av_hardlimit_artifact(mp, apply = TRUE)
 av_hardlimit_artifact <- function(.mp, data, apply = FALSE) {
-  if ("Valmod" %in% class(.mp)) {
+  if (inherits(.mp, "Valmod")) {
     cli_abort("Function not implemented for objects of class {.cls Valmod}.")
   }
 
@@ -335,11 +335,11 @@ av_hardlimit_artifact <- function(.mp, data, apply = FALSE) {
 #' mp <- av_complexity(mp)
 #' av <- av_apply(mp)
 av_apply <- function(.mp) {
-  if (!("MatrixProfile" %in% class(.mp))) {
+  if (!(inherits(.mp, "MatrixProfile"))) {
     cli_abort("First argument must be an object of class {.cls MatrixProfile}.")
   }
 
-  if (!("AnnotationVector" %in% class(.mp))) {
+  if (!(inherits(.mp, "AnnotationVector"))) {
     cli_abort("First argument must be an object of class {.cls AnnotationVector}.")
   }
 

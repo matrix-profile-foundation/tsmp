@@ -905,7 +905,7 @@ remove_class <- function(x, class) {
 #' # TODO: Refactor
 #' #
 as.matrixprofile <- function(.mp) { # nolint
-  if (!("MatrixProfile" %in% class(.mp))) {
+  if (!(inherits(.mp, "MatrixProfile"))) {
     cli_abort("This object cannot be a {.cls MatrixProfile}.")
   }
 
@@ -919,7 +919,7 @@ as.matrixprofile <- function(.mp) { # nolint
 #'
 
 as.multimatrixprofile <- function(.mp) { # nolint
-  if (!("MultiMatrixProfile" %in% class(.mp))) {
+  if (!(inherits(.mp, "MultiMatrixProfile"))) {
     cli_abort("This object cannot be a {.cls MultiMatrixProfile}.")
   }
 
@@ -933,7 +933,7 @@ as.multimatrixprofile <- function(.mp) { # nolint
 #'
 
 as.pmp <- function(.mp) { # nolint
-  if (!("PMP" %in% class(.mp))) {
+  if (!(inherits(.mp, "PMP"))) {
     cli_abort("This object cannot be a {.cls PMP}.")
   }
 
@@ -947,7 +947,7 @@ as.pmp <- function(.mp) { # nolint
 #'
 
 as.valmod <- function(.mp) { # nolint
-  if (!("Valmod" %in% class(.mp))) {
+  if (!(inherits(.mp, "Valmod"))) {
     cli_abort("This object cannot be a {.cls Valmod}.")
   }
 
@@ -961,7 +961,7 @@ as.valmod <- function(.mp) { # nolint
 #' @export
 
 as.fluss <- function(.mp) { # nolint
-  if (!("Fluss" %in% class(.mp))) {
+  if (!(inherits(.mp, "Fluss"))) {
     cli_abort("This object cannot be a {.cls Fluss}.")
   }
 
@@ -975,7 +975,7 @@ as.fluss <- function(.mp) { # nolint
 #' @export
 
 as.chain <- function(.mp) { # nolint
-  if (!("Chain" %in% class(.mp))) {
+  if (!(inherits(.mp, "Chain"))) {
     cli_abort("This object cannot be a {.cls Chain}.")
   }
 
@@ -988,7 +988,7 @@ as.chain <- function(.mp) { # nolint
 #' @export
 
 as.discord <- function(.mp) { # nolint
-  if (!("Discord" %in% class(.mp))) {
+  if (!(inherits(.mp, "Discord"))) {
     cli_abort("This object cannot be a {.cls Discord}.")
   }
 
@@ -1001,7 +1001,7 @@ as.discord <- function(.mp) { # nolint
 #' @export
 
 as.motif <- function(.mp) { # nolint
-  if (!("Motif" %in% class(.mp))) {
+  if (!(inherits(.mp, "Motif"))) {
     cli_abort("This object cannot be a {.cls Motif}.")
   }
 
@@ -1015,7 +1015,7 @@ as.motif <- function(.mp) { # nolint
 #' @export
 
 as.multimotif <- function(.mp) { # nolint
-  if (!("MultiMotif" %in% class(.mp))) {
+  if (!(inherits(.mp, "MultiMotif"))) {
     cli_abort("This object cannot be a {.cls MultiMotif}.")
   }
 
@@ -1029,7 +1029,7 @@ as.multimotif <- function(.mp) { # nolint
 #' @export
 
 as.arccount <- function(.mp) { # nolint
-  if (!("ArcCount" %in% class(.mp))) {
+  if (!(inherits(.mp, "ArcCount"))) {
     cli_abort("This object cannot be a {.cls ArcCount}.")
   }
 
@@ -1042,7 +1042,7 @@ as.arccount <- function(.mp) { # nolint
 #' @export
 
 as.salient <- function(.mp) { # nolint
-  if (!("Salient" %in% class(.mp))) {
+  if (!(inherits(.mp, "Salient"))) {
     cli_abort("This object cannot be a {.cls Salient}.")
   }
 

@@ -23,7 +23,7 @@
 #' mp <- tsmp(data, window_size = w, verbose = 0)
 #' mp <- fluss(mp, 2)
 fluss <- function(.mp, num_segments = 1, exclusion_zone = NULL) {
-  if ("Valmod" %in% class(.mp)) {
+  if (inherits(.mp, "Valmod")) {
     cli_abort("Function not implemented for objects of class {.cls Valmod}.")
   }
 
@@ -69,7 +69,7 @@ floss <- function(.mp, new_data, data_window, threshold = 1, exclusion_zone = NU
     cli_abort("Argument {.arg data_window} is missing, looking for {.fun fluss} instead?")
   }
 
-  if ("Valmod" %in% class(.mp)) {
+  if (inherits(.mp, "Valmod")) {
     cli_abort("Function not implemented for objects of class {.cls Valmod}.")
   }
 
@@ -308,11 +308,11 @@ fluss_extract <- function(.mpac, num_segments = 1, exclusion_zone = NULL) {
 #' mp <- tsmp(data, window_size = w, verbose = 0)
 #' mp <- fluss_cac(mp)
 fluss_cac <- function(.mp, exclusion_zone = NULL) {
-  if (!("MatrixProfile" %in% class(.mp))) {
+  if (!inherits(.mp, "MatrixProfile")) {
     cli_abort("First argument must be an object of class {.cls MatrixProfile}.")
   }
 
-  if ("Valmod" %in% class(.mp)) {
+  if (inherits(.mp, "Valmod")) {
     cli_abort("Function not implemented for objects of class {.cls Valmod}.")
   }
 
@@ -388,11 +388,11 @@ fluss_cac <- function(.mp, exclusion_zone = NULL) {
 #' mp <- stompi_update(mp, new_data, data_window)
 #' mp <- floss_cac(mp, data_window)
 floss_cac <- function(.mp, data_window, exclusion_zone = NULL) {
-  if (!("MatrixProfile" %in% class(.mp))) {
+  if (!(inherits(.mp, "MatrixProfile"))) {
     cli_abort("First argument must be an object of class {.cls MatrixProfile}.")
   }
 
-  if ("Valmod" %in% class(.mp)) {
+  if (inherits(.mp, "Valmod")) {
     cli_abort("Function not implemented for objects of class {.cls Valmod}.")
   }
 

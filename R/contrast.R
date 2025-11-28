@@ -44,7 +44,7 @@ contrast <- function(negative_data, positive_data, window_size, positive_matrix 
   checkmate::qassert(positive_matrix, c("0", "L"))
 
   if (!is.null(positive_matrix)) {
-    if (!("MatrixProfile" %in% class(positive_matrix))) {
+    if (!(inherits(positive_matrix, "MatrixProfile"))) {
       cli_abort("{.arg positive_matrix} argument must be an object of class {.cls MatrixProfile}.")
     }
   } else {

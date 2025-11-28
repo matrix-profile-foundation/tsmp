@@ -29,11 +29,11 @@ find_discord <- function(.mp, ...) {
 #' mp <- find_discord(mp)
 find_discord.MatrixProfile <- function(.mp, data, n_discords = 1, n_neighbors = 3, radius = 3,
                                        exclusion_zone = NULL, ...) {
-  if (!("MatrixProfile" %in% class(.mp))) {
+  if (!(inherits(.mp, "MatrixProfile"))) {
     cli_abort("First argument must be an object of class {.cls MatrixProfile}.")
   }
 
-  if ("Valmod" %in% class(.mp)) {
+  if (inherits(.mp, "Valmod")) {
     cli_abort("Function not implemented for objects of class {.cls Valmod}.")
   }
 
@@ -147,7 +147,7 @@ find_discord.MatrixProfile <- function(.mp, data, n_discords = 1, n_neighbors = 
 #' pan <- tsmp(mp_gait_data, window_size = 20:30, mode = "pmp")
 #' mp <- find_discord(pan)
 find_discord.PMP <- function(.mp, data, n_discords = 1, n_neighbors = 3, radius = 3, exclusion_zone = NULL, ...) {
-  if (!("PMP" %in% class(.mp))) {
+  if (!(inherits(.mp, "PMP"))) {
     cli_abort("First argument must be an object of class {.cls MatrixProfile}.")
   }
 

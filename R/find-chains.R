@@ -16,11 +16,11 @@
 #' mp <- tsmp(data, window_size = w, exclusion_zone = 1 / 4, verbose = 0)
 #' mp <- find_chains(mp)
 find_chains <- function(.mp) {
-  if (!("MatrixProfile" %in% class(.mp))) {
+  if (!(inherits(.mp, "MatrixProfile"))) {
     cli_abort("First argument must be an object of class {.cls MatrixProfile}.")
   }
 
-  if ("Valmod" %in% class(.mp)) {
+  if (inherits(.mp, "Valmod")) {
     cli_abort("Function not implemented for objects of class {.cls Valmod}.")
   }
 

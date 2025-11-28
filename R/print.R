@@ -287,12 +287,12 @@ print.Snippet <- function(x, ...) {
 print.Motif <- function(x, ...) {
   valmod <- FALSE
 
-  if ("Valmod" %in% class(x)) {
+  if (inherits(x, "Valmod")) {
     valmod <- TRUE
     print.Valmod(x, ...)
-  } else if ("MatrixProfile" %in% class(x)) {
+  } else if (inherits(x, "MatrixProfile")) {
     print.MatrixProfile(x, ...)
-  } else if ("MultiMatrixProfile" %in% class(x)) {
+  } else if (inherits(x, "MultiMatrixProfile")) {
     print.MultiMatrixProfile(x, ...)
   } else if (any(class(x) %in% "PMP")) {
     print.PMP(x, ...)

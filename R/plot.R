@@ -687,7 +687,7 @@ plot.Discord <- function(x, data, type = c("data", "matrix"), ncol = 3,
     is.null(data) # check data presence before plotting anything
   }
 
-  if ("PMP" %in% class(x)) {
+  if (inherits(x, "PMP")) {
     x$mp <- as.matrix(x$pmp[[1]])
     x$pi <- as.matrix(x$pmpi[[1]])
   }
@@ -839,12 +839,12 @@ plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3,
     cli_abort("No Motifs found to plot.")
   }
 
-  if ("PMP" %in% class(x)) {
+  if (inherits(x, "PMP")) {
     x$mp <- as.matrix(x$pmp[[1]])
     x$pi <- as.matrix(x$pmpi[[1]])
   }
 
-  if ("Valmod" %in% class(x)) {
+  if (inherits(x, "Valmod")) {
     valmod <- TRUE
 
     if (main == "MOTIF Discover") {

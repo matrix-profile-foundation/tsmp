@@ -30,7 +30,7 @@ find_motif <- function(.mp, ...) {
 #' mp <- find_motif(mp)
 find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, radius = 3,
                                      exclusion_zone = NULL, ...) {
-  if (!("MatrixProfile" %in% class(.mp))) {
+  if (!(inherits(.mp, "MatrixProfile"))) {
     cli_abort("First argument must be an object of class {.cls MatrixProfile}.")
   }
 
@@ -187,7 +187,7 @@ find_motif.MatrixProfile <- function(.mp, data, n_motifs = 3, n_neighbors = 10, 
 #' mp <- find_motif(mp)
 find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("guided", "unconstrained"),
                                           n_bit = 4, exclusion_zone = NULL, n_dim = NULL, ...) {
-  if (!("MultiMatrixProfile" %in% class(.mp))) {
+  if (!(inherits(.mp, "MultiMatrixProfile"))) {
     cli_abort("First argument must be an object of class {.cls MultiMatrixProfile}.")
   }
 
@@ -369,7 +369,7 @@ find_motif.MultiMatrixProfile <- function(.mp, data, n_motifs = 3, mode = c("gui
 #' pan <- tsmp(mp_gait_data, window_size = 20:30, mode = "pmp")
 #' mp <- find_motif(pan)
 find_motif.PMP <- function(.mp, data, n_motifs = 3, n_neighbors = 10, radius = 3, exclusion_zone = NULL, ...) {
-  if (!("PMP" %in% class(.mp))) {
+  if (!(inherits(.mp, "PMP"))) {
     cli_abort("First argument must be an object of class {.cls PMP}.")
   }
 

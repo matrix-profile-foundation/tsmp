@@ -120,29 +120,39 @@ tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zo
     cli_abort("You must supply at least one time series.")
   }
 
+  ### Check parameters
   if (argc == 1) {
-    data <- argv[[1]]
+    data <- convert_data(argv[[1]])
     query <- NULL
   } else {
     if (argc > 2) {
       cli_warn("Only the first two time series will be used.")
     }
 
-    data <- argv[[1]]
-    query <- argv[[2]]
+    data <- convert_data(argv[[1]])
+    query <- convert_data(argv[[2]])
   }
+
+  checkmate::qassert(data, "v")
+  checkmate::qassert(query, c("0", "v"))
+  checkmate::qassert(window_size, "X+")
+  checkmate::qassert(exclusion_zone, "N1[0.001,10]")
+  checkmate::qassert(verbose, "X1[0,2]")
+  checkmate::qassert(n_workers, "X[1,)")
+  checkmate::qassert(s_size, "N1")
+  checkmate::qassert(must_dim, c("0", "X+"))
+  checkmate::qassert(exc_dim, c("0", "X+"))
+  checkmate::qassert(heap_size, "X1[10,)")
+  checkmate::qassert(.keep_data, "B1")
 
   if (n_workers > 1) {
     min_size <- length(data)
 
     if (min_size < 1000) {
-      cli_inform("Notice: data is smaller than 1000. Single-thread mode will be used.")
+      cli_inform("Data is smaller than 1000. Single-thread mode will be used.")
       n_workers <- 1
     }
   }
-
-  data <- as.matrix(data)
-  query <- if (is.null(query)) NULL else as.matrix(query)
 
   result <- switch(algo,
     "stomp" = {

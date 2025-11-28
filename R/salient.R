@@ -43,11 +43,11 @@
 #'
 salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_zone = NULL,
                                  verbose = getOption("tsmp.verbose", 2)) {
-  if (!("MatrixProfile" %in% class(.mp))) {
+  if (!(inherits(.mp, "MatrixProfile"))) {
     cli_abort("First argument must be an object of class {.cls MatrixProfile}.")
   }
 
-  if ("Valmod" %in% class(.mp)) {
+  if (inherits(.mp, "Valmod")) {
     cli_abort("Function not implemented for objects of class {.cls Valmod}.")
   }
 
@@ -353,7 +353,7 @@ salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_z
 #' mds_data <- salient_mds(mps)
 #' plot(mds_data, main = "Multi dimensional scale")
 salient_mds <- function(.mp, data, bit_idx = 1) {
-  if (!("Salient" %in% class(.mp))) {
+  if (!(inherits(.mp, "Salient"))) {
     cli_abort("First argument must be an object of class {.cls Salient}.")
   }
 
@@ -405,7 +405,7 @@ salient_mds <- function(.mp, data, bit_idx = 1) {
 #' label_idx <- seq(2, 500, by = 110) # fake data
 #' salient_score(mps, label_idx, verbose = 0)
 salient_score <- function(.mp, gtruth, verbose = getOption("tsmp.verbose", 2)) {
-  if (!("Salient" %in% class(.mp))) {
+  if (!(inherits(.mp, "Salient"))) {
     cli_abort("First argument must be an object of class {.cls Salient}.")
   }
 

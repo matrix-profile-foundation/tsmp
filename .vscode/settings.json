@@ -130,7 +130,7 @@
     "**/tmp/**": true
   },
   "git.enableCommitSigning": true,
-  "git.inputValidation": "always",
+  "git.inputValidation": true,
   "github-actions.workflows.pinned.refresh.enabled": true,
   "github-actions.workflows.pinned.refresh.interval": 500,
   "github-actions.workflows.pinned.workflows": [
@@ -198,9 +198,7 @@
   "r.lsp.diagnostics": false,
   "r.rmarkdown.knit.focusOutputChannel": false,
   "r.rpath.linux": "/usr/bin/R",
-  "r.rpath.windows": "C:\\Program Files\\R\\R-4.2.1\\bin\\R.exe",
   "r.rterm.linux": "/usr/bin/R",
-  "r.rterm.windows": "C:\\Program Files\\R\\R-4.2.1\\bin\\R.exe",
   "r.session.levelOfObjectDetail": "Detailed",
   "reflowMarkdown.preferredLineLength": 120,
   "search.exclude": {
