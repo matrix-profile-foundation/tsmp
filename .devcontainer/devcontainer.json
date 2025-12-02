@@ -45,7 +45,11 @@
     }
   },
   "containerEnv": {
-    "TZ": "Europe/Lisbon"
+    "TZ": "Europe/Lisbon",
+    "GIT_AUTHOR_NAME": "Francisco Bischoff",
+    "GIT_AUTHOR_EMAIL": "franzbischoff@gmail.com",
+    "GIT_COMMITTER_NAME": "Francisco Bischoff",
+    "GIT_COMMITTER_EMAIL": "franzbischoff@gmail.com"
   },
   "customizations": {
     "vscode": {

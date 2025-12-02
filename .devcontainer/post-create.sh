@@ -42,4 +42,19 @@ R -q -e 'renv::install("nx10/httpgd")'
 echo "[devcontainer] Running renv::install() to install project dependencies"
 R -q -e 'renv::install()'
 
+echo "[devcontainer] Configuring Git for SSH commit signing"
+git config --global user.name "Francisco Bischoff"
+git config --global user.email "franzbischoff@gmail.com"
+git config --global gpg.format ssh
+git config --global commit.gpgsign true
+
+# Get the SSH key from the forwarded agent and set it as signing key
+SSH_KEY=$(ssh-add -L 2>/dev/null | head -1)
+if [ -n "$SSH_KEY" ]; then
+  git config --global user.signingkey "$SSH_KEY"
+  echo "[devcontainer] SSH signing key configured: ${SSH_KEY:0:50}..."
+else
+  echo "[devcontainer] WARNING: No SSH key found in agent. Signing may not work."
+fi
+
 echo "[devcontainer] post-create steps completed"
