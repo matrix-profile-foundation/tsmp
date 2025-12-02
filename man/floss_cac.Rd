@@ -45,11 +45,11 @@ Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
 Other Semantic Segmentations: 
-\code{\link{floss_extract}()},
 \code{\link{floss}()},
+\code{\link{floss_extract}()},
+\code{\link{fluss}()},
 \code{\link{fluss_cac}()},
 \code{\link{fluss_extract}()},
-\code{\link{fluss_score}()},
-\code{\link{fluss}()}
+\code{\link{fluss_score}()}
 }
 \concept{Semantic Segmentations}

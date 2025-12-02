@@ -1,35 +1,45 @@
-## Comments
-Fixed CRAN issues:
-- CRAN packages with clang-UBSAN errors (mail from Prof.  Brian Ripley on 1st August)
+# CRAN Comments
+
+## Comments for this version (0.4.16)
+
+C++11 flags are deprecated and defaults to C++17, so this requirement was removed from the package.
+Also, some old links were fixed.
+
+The new NOTE "‘-Wdate-time’ ‘-Werror=format-security’ ‘-Wformat’" appears only in my devcontainer,
+not on tested environments below, nevertheless seems ok
 
 ## Test environments
-* Rhub
-  * Windows Server 2022, R-devel, 64 bit - all ok
-  * Ubuntu Linux 20.04.1 LTS, R-release, GCC - all ok
-  * Ubuntu Linux 20.04.1 LTS, R-devel, GCC - all ok
-  * Fedora Linux, R-devel, GCC - all ok
-  * Fedora Linux, R-devel, clang, gfortran - all ok
-  * Debian Linux, R-release, GCC ASAN/UBSAN - all ok
-  * Debian Linux, R-patched, GCC - all ok
-  * Debian Linux, R-devel, GCC, no long double - all ok
-  * Debian Linux, R-devel, GCC ASAN/UBSAN - all ok
-  * Debian Linux, R-devel, clang, ISO-8859-15 locale - all ok
-  * Apple Silicon (M1), macOS 11.6 Big Sur, R-release - all ok
-  * macOS 10.13.6 High Sierra, R-release, brew - all ok
-  * Oracle Solaris 10, x86, 32 bit, R release, Oracle Developer Studio 12.6 - all ok (except for `testthat` not
-    available)
-* Win-builder
-  * R-release, R-oldrelease, R-devel - all ok
+
+- rhub:
+  -  3 [VM] macos          R-* (any version)                     macos-13 on GitHub
+  -  9 [CT] clang-ubsan    R-devel (2025-11-30 r89082)           Ubuntu 22.04.5 LTS
+  - 10 [CT] clang16        R-devel (2025-11-29 r89077)           Ubuntu 22.04.5 LTS
+  - 16 [CT] gcc-asan       R-devel (2025-11-30 r89082)           Fedora Linux 40 (Container Image)
+  - 27 [CT] ubuntu-clang   R-devel (2025-11-30 r89082)           Ubuntu 22.04.5 LTS
+  - 30 [CT] ubuntu-release R-4.5.2 (2025-10-31)                  Ubuntu 24.04.3 LTS
+  - 31 [CT] valgrind       R-devel (2025-11-30 r89082)           Fedora Linux 38 (Container Image)
+
+- win-builder: devel, release, oldrel
 
 ## R CMD check results
 
-`0 errors | 0 warnings | 2 notes`
+── R CMD check results ──────────────── tsmp 0.4.16 ────
+Duration: 2m 3.1s
 
-* GNU make is a SystemRequirements.
-  * Requirement of package RcppParallel.  I haven't find a workaround to solve this NOTE.
+❯ checking installed package size ... NOTE
+    installed size is  9.7Mb
+    sub-directories of 1Mb or more:
+      data   4.6Mb
+      libs   3.7Mb
 
-* Installed size is X Mb.
-  * This is due to datasets in this package.  I believe they are essential to learning all the features of this package.
+❯ checking for GNU extensions in Makefiles ... NOTE
+  GNU make is a SystemRequirements.
+
+❯ checking compilation flags used ... NOTE
+  Compilation used the following non-portable flag(s):
+    ‘-Wdate-time’ ‘-Werror=format-security’ ‘-Wformat’
+
+0 errors ✔ | 0 warnings ✔ | 3 notes ✖
 
 ## Downstream dependencies
 
@@ -45,7 +55,7 @@ Fixed CRAN issues:
 * GNU make is a SystemRequirements.
   * Requirement of package RcppParallel.  I haven't find a workaround to solve this NOTE.
 
-* Installed size is 7.5Mb.
+* Installed size is X Mb.
   * This is due to datasets in this package.  I believe they are essential to learning all the features of this package.
 
 * Uses the superseded package: `doSNOW`
@@ -59,3 +69,8 @@ Fixed CRAN issues:
   * These non-standard roles where appropriately chosen using
     [MARC Code List for Relators](https://www.loc.gov/marc/relators/relaterm.html)
 
+## Old comments
+
+## Comments for this version (0.4.15)
+
+- [x] Fixed CRAN issues; CRAN packages with clang-UBSAN errors (mail from Prof.  Brian Ripley on 1st August):

@@ -1,2 +1,2 @@
-CXX_STD = CXX11
+# CXX_STD = CXX11 # CRAN removed the support for C++11/C++14, and defaults to the latest C++17, this comment stays here to help anyone
 PKG_LIBS += $(shell ${R_HOME}/bin/Rscript -e "RcppParallel::RcppParallelLibs()")

@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.1",
+    "Version": "4.2.3",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -11,972 +11,773 @@
   "Packages": {
     "R6": {
       "Package": "R6",
-      "Version": "2.5.1",
+      "Version": "2.6.1",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "470851b6d5d0ac559e9d01bb352b4021",
-      "Requirements": []
+      "Title": "Encapsulated Classes with Reference Semantics",
+      "Authors@R": "c( person(\"Winston\", \"Chang\", , \"winston@posit.co\", role = c(\"aut\", \"cre\")), person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\")) )",
+      "Description": "Creates classes with reference semantics, similar to R's built-in reference classes. Compared to reference classes, R6 classes are simpler and lighter-weight, and they are not built on S4 classes so they do not require the methods package. These classes allow public and private members, and they support inheritance, even when the classes are defined in different packages.",
+      "License": "MIT + file LICENSE",
+      "URL": "https://r6.r-lib.org, https://github.com/r-lib/R6",
+      "BugReports": "https://github.com/r-lib/R6/issues",
+      "Depends": [
+        "R (>= 3.6)"
+      ],
+      "Suggests": [
+        "lobstr",
+        "testthat (>= 3.0.0)"
+      ],
+      "Config/Needs/website": "tidyverse/tidytemplate, ggplot2, microbenchmark, scales",
+      "Config/testthat/edition": "3",
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.3.2",
+      "NeedsCompilation": "no",
+      "Author": "Winston Chang [aut, cre], Posit Software, PBC [cph, fnd]",
+      "Maintainer": "Winston Chang <winston@posit.co>",
+      "Repository": "CRAN"
     },
     "RJSONIO": {
       "Package": "RJSONIO",
-      "Version": "1.3-1.6",
+      "Version": "2.0.0",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "0c7658433758cea5bcae50edd02b55b7",
-      "Requirements": []
+      "Title": "Serialize R Objects to JSON, JavaScript Object Notation",
+      "Description": "This is a package that allows conversion to and from  data in Javascript object notation (JSON) format. This allows R objects to be inserted into Javascript/ECMAScript/ActionScript code and allows R programmers to read and convert JSON content to R objects. This is an alternative to rjson package. Originally, that was too slow for converting large R objects to JSON and was not extensible.  rjson's performance is now similar to this package, and perhaps slightly faster in some cases. This package uses methods and is readily extensible by defining methods for different classes,  vectorized operations, and C code and callbacks to R functions for deserializing JSON objects to R.  The two packages intentionally share the same basic interface. This package (RJSONIO) has many additional options to allow customizing the generation and processing of JSON content. This package uses libjson rather than implementing yet another JSON parser. The aim is to support other general projects by building on their work, providing feedback and benefit from their ongoing development.",
+      "Note": "See http://www.json.org/JSON_checker/test.zip for tests. We now use code from the libjson project (http://libjson.sourceforge.net).",
+      "License": "BSD_3_clause + file LICENSE",
+      "Imports": [
+        "methods"
+      ],
+      "Authors@R": "c(person(\"Yaoxiang Li\", role = c(\"aut\", 'ctb', 'cre'), email = \"liyaoxiang@outlook.com\", comment = c(ORCID = \"0000-0001-9200-1016\")), person(\"CRAN Team\", role = \"aut\", email = \"CRAN@r-project.org\"), person(\"Duncan\", \"Temple Lang\", role = \"aut\", email = \"duncan@r-project.org\", comment = c(ORCID = \"0000-0003-0159-1546\")), person(\"Jonathan\", \"Wallace\", role = \"aut\", comment = \"aka ninja9578, author of included libjson sources\"))",
+      "Collate": "readJSON.R asVars.R isValid.R json.R simpleHandler.R stream.R",
+      "Biarch": "true",
+      "NeedsCompilation": "yes",
+      "RoxygenNote": "7.3.2",
+      "Encoding": "UTF-8",
+      "Author": "Yaoxiang Li [aut, ctb, cre] (<https://orcid.org/0000-0001-9200-1016>), CRAN Team [aut], Duncan Temple Lang [aut] (<https://orcid.org/0000-0003-0159-1546>), Jonathan Wallace [aut] (aka ninja9578, author of included libjson sources)",
+      "Maintainer": "Yaoxiang Li <liyaoxiang@outlook.com>",
+      "Repository": "CRAN"
     },
     "Rcpp": {
       "Package": "Rcpp",
-      "Version": "1.0.9",
+      "Version": "1.1.0",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "e9c08b94391e9f3f97355841229124f2",
-      "Requirements": []
+      "Title": "Seamless R and C++ Integration",
+      "Date": "2025-07-01",
+      "Authors@R": "c(person(\"Dirk\", \"Eddelbuettel\", role = c(\"aut\", \"cre\"), email = \"edd@debian.org\", comment = c(ORCID = \"0000-0001-6419-907X\")), person(\"Romain\", \"Francois\", role = \"aut\", comment = c(ORCID = \"0000-0002-2444-4226\")), person(\"JJ\", \"Allaire\", role = \"aut\", comment = c(ORCID = \"0000-0003-0174-9868\")), person(\"Kevin\", \"Ushey\", role = \"aut\", comment = c(ORCID = \"0000-0003-2880-7407\")), person(\"Qiang\", \"Kou\", role = \"aut\", comment = c(ORCID = \"0000-0001-6786-5453\")), person(\"Nathan\", \"Russell\", role = \"aut\"), person(\"Iñaki\", \"Ucar\", role = \"aut\", comment = c(ORCID = \"0000-0001-6403-5550\")), person(\"Doug\", \"Bates\", role = \"aut\", comment = c(ORCID = \"0000-0001-8316-9503\")), person(\"John\", \"Chambers\", role = \"aut\"))",
+      "Description": "The 'Rcpp' package provides R functions as well as C++ classes which offer a seamless integration of R and C++. Many R data types and objects can be mapped back and forth to C++ equivalents which facilitates both writing of new code as well as easier integration of third-party libraries. Documentation about 'Rcpp' is provided by several vignettes included in this package, via the 'Rcpp Gallery' site at <https://gallery.rcpp.org>, the paper by Eddelbuettel and Francois (2011, <doi:10.18637/jss.v040.i08>), the book by Eddelbuettel (2013, <doi:10.1007/978-1-4614-6868-4>) and the paper by Eddelbuettel and Balamuta (2018, <doi:10.1080/00031305.2017.1375990>); see 'citation(\"Rcpp\")' for details.",
+      "Imports": [
+        "methods",
+        "utils"
+      ],
+      "Suggests": [
+        "tinytest",
+        "inline",
+        "rbenchmark",
+        "pkgKitten (>= 0.1.2)"
+      ],
+      "URL": "https://www.rcpp.org, https://dirk.eddelbuettel.com/code/rcpp.html, https://github.com/RcppCore/Rcpp",
+      "License": "GPL (>= 2)",
+      "BugReports": "https://github.com/RcppCore/Rcpp/issues",
+      "MailingList": "rcpp-devel@lists.r-forge.r-project.org",
+      "RoxygenNote": "6.1.1",
+      "Encoding": "UTF-8",
+      "NeedsCompilation": "yes",
+      "Author": "Dirk Eddelbuettel [aut, cre] (ORCID: <https://orcid.org/0000-0001-6419-907X>), Romain Francois [aut] (ORCID: <https://orcid.org/0000-0002-2444-4226>), JJ Allaire [aut] (ORCID: <https://orcid.org/0000-0003-0174-9868>), Kevin Ushey [aut] (ORCID: <https://orcid.org/0000-0003-2880-7407>), Qiang Kou [aut] (ORCID: <https://orcid.org/0000-0001-6786-5453>), Nathan Russell [aut], Iñaki Ucar [aut] (ORCID: <https://orcid.org/0000-0001-6403-5550>), Doug Bates [aut] (ORCID: <https://orcid.org/0000-0001-8316-9503>), John Chambers [aut]",
+      "Maintainer": "Dirk Eddelbuettel <edd@debian.org>",
+      "Repository": "CRAN"
     },
     "RcppParallel": {
       "Package": "RcppParallel",
-      "Version": "5.1.5",
+      "Version": "5.1.11-1",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "f3e94e34ff656a7c8336ce01207bc2b8",
-      "Requirements": []
-    },
-    "askpass": {
-      "Package": "askpass",
-      "Version": "1.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "e8a22846fff485f0be3770c2da758713",
-      "Requirements": [
-        "sys"
-      ]
+      "Type": "Package",
+      "Title": "Parallel Programming Tools for 'Rcpp'",
+      "Authors@R": "c( person(\"JJ\", \"Allaire\", role = c(\"aut\"), email = \"jj@rstudio.com\"), person(\"Romain\", \"Francois\", role = c(\"aut\", \"cph\")), person(\"Kevin\", \"Ushey\", role = c(\"aut\", \"cre\"), email = \"kevin@rstudio.com\"), person(\"Gregory\", \"Vandenbrouck\", role = \"aut\"), person(\"Marcus\", \"Geelnard\", role = c(\"aut\", \"cph\"), comment = \"TinyThread library, https://tinythreadpp.bitsnbites.eu/\"), person(\"Hamada S.\", \"Badr\", email = \"badr@jhu.edu\", role = c(\"ctb\"), comment = c(ORCID = \"0000-0002-9808-2344\")), person(family = \"Posit, PBC\", role = \"cph\"), person(family = \"Intel\", role = c(\"aut\", \"cph\"), comment = \"Intel TBB library, https://www.threadingbuildingblocks.org/\"), person(family = \"Microsoft\", role = \"cph\") )",
+      "Description": "High level functions for parallel programming with 'Rcpp'. For example, the 'parallelFor()' function can be used to convert the work of a standard serial \"for\" loop into a parallel one and the 'parallelReduce()' function can be used for accumulating aggregate or other values.",
+      "Depends": [
+        "R (>= 3.0.2)"
+      ],
+      "Suggests": [
+        "Rcpp",
+        "RUnit",
+        "knitr",
+        "rmarkdown"
+      ],
+      "SystemRequirements": "GNU make, Intel TBB, Windows: cmd.exe and cscript.exe, Solaris: g++ is required",
+      "License": "GPL (>= 3)",
+      "URL": "https://rcppcore.github.io/RcppParallel/, https://github.com/RcppCore/RcppParallel",
+      "BugReports": "https://github.com/RcppCore/RcppParallel/issues",
+      "Biarch": "TRUE",
+      "RoxygenNote": "7.1.1",
+      "Encoding": "UTF-8",
+      "NeedsCompilation": "yes",
+      "Author": "JJ Allaire [aut], Romain Francois [aut, cph], Kevin Ushey [aut, cre], Gregory Vandenbrouck [aut], Marcus Geelnard [aut, cph] (TinyThread library, https://tinythreadpp.bitsnbites.eu/), Hamada S. Badr [ctb] (ORCID: <https://orcid.org/0000-0002-9808-2344>), Posit, PBC [cph], Intel [aut, cph] (Intel TBB library, https://www.threadingbuildingblocks.org/), Microsoft [cph]",
+      "Maintainer": "Kevin Ushey <kevin@rstudio.com>",
+      "Repository": "CRAN"
     },
     "audio": {
       "Package": "audio",
-      "Version": "0.1-10",
+      "Version": "0.1-11",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "d0c2f6b09c666cc84cd64813f43a54fc",
-      "Requirements": []
+      "Title": "Audio Interface for R",
+      "Author": "Simon Urbanek <simon.urbanek@r-project.org>",
+      "Maintainer": "Simon Urbanek <simon.urbanek@r-project.org>",
+      "Depends": [
+        "R (>= 2.0.0)"
+      ],
+      "Description": "Interfaces to audio devices (mainly sample-based) from R to allow recording and playback of audio. Built-in devices include Windows MM, Mac OS X AudioUnits and PortAudio (the last one is very experimental).",
+      "License": "MIT + file LICENSE",
+      "URL": "http://www.rforge.net/audio/",
+      "NeedsCompilation": "yes",
+      "Repository": "CRAN"
     },
     "backports": {
       "Package": "backports",
-      "Version": "1.4.1",
+      "Version": "1.5.0",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "c39fbec8a30d23e721980b8afb31984c",
-      "Requirements": []
-    },
-    "base64enc": {
-      "Package": "base64enc",
-      "Version": "0.1-3",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "543776ae6848fde2f48ff3816d0628bc",
-      "Requirements": []
-    },
-    "brio": {
-      "Package": "brio",
-      "Version": "1.1.3",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "976cf154dfb043c012d87cddd8bca363",
-      "Requirements": []
-    },
-    "bslib": {
-      "Package": "bslib",
-      "Version": "0.4.0",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "be5ee090716ce1671be6cd5d7c34d091",
-      "Requirements": [
-        "cachem",
-        "htmltools",
-        "jquerylib",
-        "jsonlite",
-        "memoise",
-        "rlang",
-        "sass"
-      ]
-    },
-    "cachem": {
-      "Package": "cachem",
-      "Version": "1.0.6",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "648c5b3d71e6a37e3043617489a0a0e9",
-      "Requirements": [
-        "fastmap",
-        "rlang"
-      ]
-    },
-    "callr": {
-      "Package": "callr",
-      "Version": "3.7.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "2fda237f24bc56508f31394beaa56877",
-      "Requirements": [
-        "R6",
-        "processx"
-      ]
+      "Type": "Package",
+      "Title": "Reimplementations of Functions Introduced Since R-3.0.0",
+      "Authors@R": "c( person(\"Michel\", \"Lang\", NULL, \"michellang@gmail.com\", role = c(\"cre\", \"aut\"), comment = c(ORCID = \"0000-0001-9754-0393\")), person(\"Duncan\", \"Murdoch\", NULL, \"murdoch.duncan@gmail.com\", role = c(\"aut\")), person(\"R Core Team\", role = \"aut\"))",
+      "Maintainer": "Michel Lang <michellang@gmail.com>",
+      "Description": "Functions introduced or changed since R v3.0.0 are re-implemented in this package. The backports are conditionally exported in order to let R resolve the function name to either the implemented backport, or the respective base version, if available. Package developers can make use of new functions or arguments by selectively importing specific backports to support older installations.",
+      "URL": "https://github.com/r-lib/backports",
+      "BugReports": "https://github.com/r-lib/backports/issues",
+      "License": "GPL-2 | GPL-3",
+      "NeedsCompilation": "yes",
+      "ByteCompile": "yes",
+      "Depends": [
+        "R (>= 3.0.0)"
+      ],
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.3.1",
+      "Author": "Michel Lang [cre, aut] (<https://orcid.org/0000-0001-9754-0393>), Duncan Murdoch [aut], R Core Team [aut]",
+      "Repository": "CRAN"
     },
     "checkmate": {
       "Package": "checkmate",
-      "Version": "2.1.0",
+      "Version": "2.3.3",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "147e4db6909d8814bb30f671b49d7e06",
-      "Requirements": [
-        "backports"
-      ]
+      "Type": "Package",
+      "Title": "Fast and Versatile Argument Checks",
+      "Description": "Tests and assertions to perform frequent argument checks. A substantial part of the package was written in C to minimize any worries about execution time overhead.",
+      "Authors@R": "c( person(\"Michel\", \"Lang\", NULL, \"michellang@gmail.com\", role = c(\"cre\", \"aut\"), comment = c(ORCID = \"0000-0001-9754-0393\")), person(\"Bernd\", \"Bischl\", NULL, \"bernd_bischl@gmx.net\", role = \"ctb\"), person(\"Dénes\", \"Tóth\", NULL, \"toth.denes@kogentum.hu\", role = \"ctb\", comment = c(ORCID = \"0000-0003-4262-3217\")) )",
+      "URL": "https://mllg.github.io/checkmate/, https://github.com/mllg/checkmate",
+      "URLNote": "https://github.com/mllg/checkmate",
+      "BugReports": "https://github.com/mllg/checkmate/issues",
+      "NeedsCompilation": "yes",
+      "ByteCompile": "yes",
+      "Encoding": "UTF-8",
+      "Depends": [
+        "R (>= 3.0.0)"
+      ],
+      "Imports": [
+        "backports (>= 1.1.0)",
+        "utils"
+      ],
+      "Suggests": [
+        "R6",
+        "fastmatch",
+        "data.table (>= 1.9.8)",
+        "devtools",
+        "ggplot2",
+        "knitr",
+        "magrittr",
+        "microbenchmark",
+        "rmarkdown",
+        "testthat (>= 3.0.4)",
+        "tinytest (>= 1.1.0)",
+        "tibble"
+      ],
+      "License": "BSD_3_clause + file LICENSE",
+      "VignetteBuilder": "knitr",
+      "RoxygenNote": "7.3.2",
+      "Collate": "'AssertCollection.R' 'allMissing.R' 'anyInfinite.R' 'anyMissing.R' 'anyNaN.R' 'asInteger.R' 'assert.R' 'helper.R' 'makeExpectation.R' 'makeTest.R' 'makeAssertion.R' 'checkAccess.R' 'checkArray.R' 'checkAtomic.R' 'checkAtomicVector.R' 'checkCharacter.R' 'checkChoice.R' 'checkClass.R' 'checkComplex.R' 'checkCount.R' 'checkDataFrame.R' 'checkDataTable.R' 'checkDate.R' 'checkDirectoryExists.R' 'checkDisjunct.R' 'checkDouble.R' 'checkEnvironment.R' 'checkFALSE.R' 'checkFactor.R' 'checkFileExists.R' 'checkFlag.R' 'checkFormula.R' 'checkFunction.R' 'checkInt.R' 'checkInteger.R' 'checkIntegerish.R' 'checkList.R' 'checkLogical.R' 'checkMatrix.R' 'checkMultiClass.R' 'checkNamed.R' 'checkNames.R' 'checkNull.R' 'checkNumber.R' 'checkNumeric.R' 'checkOS.R' 'checkPOSIXct.R' 'checkPathForOutput.R' 'checkPermutation.R' 'checkR6.R' 'checkRaw.R' 'checkScalar.R' 'checkScalarNA.R' 'checkSetEqual.R' 'checkString.R' 'checkSubset.R' 'checkTRUE.R' 'checkTibble.R' 'checkVector.R' 'coalesce.R' 'isIntegerish.R' 'matchArg.R' 'qassert.R' 'qassertr.R' 'vname.R' 'wfwl.R' 'zzz.R'",
+      "Author": "Michel Lang [cre, aut] (ORCID: <https://orcid.org/0000-0001-9754-0393>), Bernd Bischl [ctb], Dénes Tóth [ctb] (ORCID: <https://orcid.org/0000-0003-4262-3217>)",
+      "Maintainer": "Michel Lang <michellang@gmail.com>",
+      "Repository": "CRAN"
     },
     "cli": {
       "Package": "cli",
-      "Version": "3.3.0",
+      "Version": "3.6.5",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "23abf173c2b783dcc43379ab9bba00ee",
-      "Requirements": [
-        "glue"
-      ]
+      "Title": "Helpers for Developing Command Line Interfaces",
+      "Authors@R": "c( person(\"Gábor\", \"Csárdi\", , \"gabor@posit.co\", role = c(\"aut\", \"cre\")), person(\"Hadley\", \"Wickham\", role = \"ctb\"), person(\"Kirill\", \"Müller\", role = \"ctb\"), person(\"Salim\", \"Brüggemann\", , \"salim-b@pm.me\", role = \"ctb\", comment = c(ORCID = \"0000-0002-5329-5987\")), person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\")) )",
+      "Description": "A suite of tools to build attractive command line interfaces ('CLIs'), from semantic elements: headings, lists, alerts, paragraphs, etc. Supports custom themes via a 'CSS'-like language. It also contains a number of lower level 'CLI' elements: rules, boxes, trees, and 'Unicode' symbols with 'ASCII' alternatives. It support ANSI colors and text styles as well.",
+      "License": "MIT + file LICENSE",
+      "URL": "https://cli.r-lib.org, https://github.com/r-lib/cli",
+      "BugReports": "https://github.com/r-lib/cli/issues",
+      "Depends": [
+        "R (>= 3.4)"
+      ],
+      "Imports": [
+        "utils"
+      ],
+      "Suggests": [
+        "callr",
+        "covr",
+        "crayon",
+        "digest",
+        "glue (>= 1.6.0)",
+        "grDevices",
+        "htmltools",
+        "htmlwidgets",
+        "knitr",
+        "methods",
+        "processx",
+        "ps (>= 1.3.4.9000)",
+        "rlang (>= 1.0.2.9003)",
+        "rmarkdown",
+        "rprojroot",
+        "rstudioapi",
+        "testthat (>= 3.2.0)",
+        "tibble",
+        "whoami",
+        "withr"
+      ],
+      "Config/Needs/website": "r-lib/asciicast, bench, brio, cpp11, decor, desc, fansi, prettyunits, sessioninfo, tidyverse/tidytemplate, usethis, vctrs",
+      "Config/testthat/edition": "3",
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.3.2",
+      "NeedsCompilation": "yes",
+      "Author": "Gábor Csárdi [aut, cre], Hadley Wickham [ctb], Kirill Müller [ctb], Salim Brüggemann [ctb] (<https://orcid.org/0000-0002-5329-5987>), Posit Software, PBC [cph, fnd]",
+      "Maintainer": "Gábor Csárdi <gabor@posit.co>",
+      "Repository": "CRAN"
     },
     "codetools": {
       "Package": "codetools",
-      "Version": "0.2-18",
+      "Version": "0.2-19",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "019388fc48e48b3da0d3a76ff94608a8",
-      "Requirements": []
-    },
-    "commonmark": {
-      "Package": "commonmark",
-      "Version": "1.8.0",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "2ba81b120c1655ab696c935ef33ea716",
-      "Requirements": []
-    },
-    "covr": {
-      "Package": "covr",
-      "Version": "3.5.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "6d80a9fc3c0c8473153b54fa54719dfd",
-      "Requirements": [
-        "crayon",
-        "digest",
-        "httr",
-        "jsonlite",
-        "rex",
-        "withr",
-        "yaml"
-      ]
-    },
-    "cpp11": {
-      "Package": "cpp11",
-      "Version": "0.4.2",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "fa53ce256cd280f468c080a58ea5ba8c",
-      "Requirements": []
+      "Priority": "recommended",
+      "Author": "Luke Tierney <luke-tierney@uiowa.edu>",
+      "Description": "Code analysis tools for R.",
+      "Title": "Code Analysis Tools for R",
+      "Depends": [
+        "R (>= 2.1)"
+      ],
+      "Maintainer": "Luke Tierney <luke-tierney@uiowa.edu>",
+      "URL": "https://gitlab.com/luke-tierney/codetools",
+      "License": "GPL",
+      "NeedsCompilation": "no",
+      "Repository": "CRAN"
     },
     "crayon": {
       "Package": "crayon",
-      "Version": "1.5.1",
+      "Version": "1.5.3",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "8dc45fd8a1ee067a92b85ef274e66d6a",
-      "Requirements": []
-    },
-    "curl": {
-      "Package": "curl",
-      "Version": "4.3.2",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "022c42d49c28e95d69ca60446dbabf88",
-      "Requirements": []
-    },
-    "desc": {
-      "Package": "desc",
-      "Version": "1.4.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "eebd27ee58fcc58714eedb7aa07d8ad1",
-      "Requirements": [
-        "R6",
-        "cli",
-        "rprojroot"
-      ]
-    },
-    "diffobj": {
-      "Package": "diffobj",
-      "Version": "0.3.5",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "bcaa8b95f8d7d01a5dedfd959ce88ab8",
-      "Requirements": [
-        "crayon"
-      ]
-    },
-    "digest": {
-      "Package": "digest",
-      "Version": "0.6.29",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "cf6b206a045a684728c3267ef7596190",
-      "Requirements": []
+      "Title": "Colored Terminal Output",
+      "Authors@R": "c( person(\"Gábor\", \"Csárdi\", , \"csardi.gabor@gmail.com\", role = c(\"aut\", \"cre\")), person(\"Brodie\", \"Gaslam\", , \"brodie.gaslam@yahoo.com\", role = \"ctb\"), person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\")) )",
+      "Description": "The crayon package is now superseded. Please use the 'cli' package for new projects.  Colored terminal output on terminals that support 'ANSI' color and highlight codes. It also works in 'Emacs' 'ESS'. 'ANSI' color support is automatically detected. Colors and highlighting can be combined and nested. New styles can also be created easily.  This package was inspired by the 'chalk' 'JavaScript' project.",
+      "License": "MIT + file LICENSE",
+      "URL": "https://r-lib.github.io/crayon/, https://github.com/r-lib/crayon",
+      "BugReports": "https://github.com/r-lib/crayon/issues",
+      "Imports": [
+        "grDevices",
+        "methods",
+        "utils"
+      ],
+      "Suggests": [
+        "mockery",
+        "rstudioapi",
+        "testthat",
+        "withr"
+      ],
+      "Config/Needs/website": "tidyverse/tidytemplate",
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.3.1",
+      "Collate": "'aaa-rstudio-detect.R' 'aaaa-rematch2.R' 'aab-num-ansi-colors.R' 'aac-num-ansi-colors.R' 'ansi-256.R' 'ansi-palette.R' 'combine.R' 'string.R' 'utils.R' 'crayon-package.R' 'disposable.R' 'enc-utils.R' 'has_ansi.R' 'has_color.R' 'link.R' 'styles.R' 'machinery.R' 'parts.R' 'print.R' 'style-var.R' 'show.R' 'string_operations.R'",
+      "NeedsCompilation": "no",
+      "Author": "Gábor Csárdi [aut, cre], Brodie Gaslam [ctb], Posit Software, PBC [cph, fnd]",
+      "Maintainer": "Gábor Csárdi <csardi.gabor@gmail.com>",
+      "Repository": "CRAN"
     },
     "doSNOW": {
       "Package": "doSNOW",
       "Version": "1.0.20",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "4bf4423d2c8b68c93b47e32ec554c2f1",
-      "Requirements": [
-        "foreach",
-        "iterators",
-        "snow"
-      ]
-    },
-    "downlit": {
-      "Package": "downlit",
-      "Version": "0.4.2",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "79bf3f66590752ffbba20f8d2da94c7c",
-      "Requirements": [
-        "brio",
-        "desc",
-        "digest",
-        "evaluate",
-        "fansi",
-        "memoise",
-        "rlang",
-        "vctrs",
-        "withr",
-        "yaml"
-      ]
-    },
-    "ellipsis": {
-      "Package": "ellipsis",
-      "Version": "0.3.2",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "bb0eec2fe32e88d9e2836c2f73ea2077",
-      "Requirements": [
-        "rlang"
-      ]
-    },
-    "evaluate": {
-      "Package": "evaluate",
-      "Version": "0.16",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "9a3d3c345f8a5648abe61608aaa29518",
-      "Requirements": []
-    },
-    "fansi": {
-      "Package": "fansi",
-      "Version": "1.0.3",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "83a8afdbe71839506baa9f90eebad7ec",
-      "Requirements": []
-    },
-    "fastmap": {
-      "Package": "fastmap",
-      "Version": "1.1.0",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "77bd60a6157420d4ffa93b27cf6a58b8",
-      "Requirements": []
+      "Type": "Package",
+      "Title": "Foreach Parallel Adaptor for the 'snow' Package",
+      "Authors@R": "c(person(\"Folashade\", \"Daniel\", role=\"cre\", email = \"fdaniel@microsoft.com\"),  person(\"Microsoft\", \"Corporation\", role=c(\"aut\",\"cph\")), person(\"Stephen\", \"Weston\", role=\"aut\"))",
+      "Description": "Provides a parallel backend for the %dopar% function using the snow package of Tierney, Rossini, Li, and Sevcikova.",
+      "Depends": [
+        "R (>= 2.5.0)",
+        "foreach(>= 1.2.0)",
+        "iterators(>= 1.0.0)",
+        "snow(>= 0.3.0)",
+        "utils"
+      ],
+      "Suggests": [
+        "compiler",
+        "RUnit",
+        "caret",
+        "mlbench",
+        "rpart",
+        "parallel"
+      ],
+      "License": "GPL-2",
+      "NeedsCompilation": "no",
+      "Author": "Folashade Daniel [cre], Microsoft Corporation [aut, cph], Stephen Weston [aut]",
+      "Maintainer": "Folashade Daniel <fdaniel@microsoft.com>",
+      "Repository": "CRAN"
     },
     "foreach": {
       "Package": "foreach",
       "Version": "1.5.2",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "618609b42c9406731ead03adf5379850",
-      "Requirements": [
+      "Type": "Package",
+      "Title": "Provides Foreach Looping Construct",
+      "Authors@R": "c(person(\"Folashade\", \"Daniel\", role=\"cre\", email=\"fdaniel@microsoft.com\"), person(\"Hong\", \"Ooi\", role=\"ctb\"), person(\"Rich\", \"Calaway\", role=\"ctb\"), person(\"Microsoft\", role=c(\"aut\", \"cph\")), person(\"Steve\", \"Weston\", role=\"aut\"))",
+      "Description": "Support for the foreach looping construct.  Foreach is an idiom that allows for iterating over elements in a collection, without the use of an explicit loop counter.  This package in particular is intended to be used for its return value, rather than for its side effects.  In that sense, it is similar to the standard lapply function, but doesn't require the evaluation of a function.  Using foreach without side effects also facilitates executing the loop in parallel.",
+      "License": "Apache License (== 2.0)",
+      "URL": "https://github.com/RevolutionAnalytics/foreach",
+      "BugReports": "https://github.com/RevolutionAnalytics/foreach/issues",
+      "Depends": [
+        "R (>= 2.5.0)"
+      ],
+      "Imports": [
         "codetools",
+        "utils",
         "iterators"
-      ]
-    },
-    "fs": {
-      "Package": "fs",
-      "Version": "1.5.2",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "7c89603d81793f0d5486d91ab1fc6f1d",
-      "Requirements": []
-    },
-    "gdtools": {
-      "Package": "gdtools",
-      "Version": "0.2.4",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "bdfa7431687797edff8c9b0eb9271cc8",
-      "Requirements": [
-        "Rcpp",
-        "systemfonts"
-      ]
+      ],
+      "Suggests": [
+        "randomForest",
+        "doMC",
+        "doParallel",
+        "testthat",
+        "knitr",
+        "rmarkdown"
+      ],
+      "VignetteBuilder": "knitr",
+      "RoxygenNote": "7.1.1",
+      "Collate": "'callCombine.R' 'foreach.R' 'do.R' 'foreach-ext.R' 'foreach-pkg.R' 'getDoPar.R' 'getDoSeq.R' 'getsyms.R' 'iter.R' 'nextElem.R' 'onLoad.R' 'setDoPar.R' 'setDoSeq.R' 'times.R' 'utils.R'",
+      "NeedsCompilation": "no",
+      "Author": "Folashade Daniel [cre], Hong Ooi [ctb], Rich Calaway [ctb], Microsoft [aut, cph], Steve Weston [aut]",
+      "Maintainer": "Folashade Daniel <fdaniel@microsoft.com>",
+      "Repository": "CRAN"
     },
     "glue": {
       "Package": "glue",
-      "Version": "1.6.2",
+      "Version": "1.8.0",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "4f2596dfb05dac67b9dc558e5c6fba2e",
-      "Requirements": []
-    },
-    "highr": {
-      "Package": "highr",
-      "Version": "0.9",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "8eb36c8125038e648e5d111c0d7b2ed4",
-      "Requirements": [
-        "xfun"
-      ]
+      "Title": "Interpreted String Literals",
+      "Authors@R": "c( person(\"Jim\", \"Hester\", role = \"aut\", comment = c(ORCID = \"0000-0002-2739-7082\")), person(\"Jennifer\", \"Bryan\", , \"jenny@posit.co\", role = c(\"aut\", \"cre\"), comment = c(ORCID = \"0000-0002-6983-2759\")), person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\")) )",
+      "Description": "An implementation of interpreted string literals, inspired by Python's Literal String Interpolation <https://www.python.org/dev/peps/pep-0498/> and Docstrings <https://www.python.org/dev/peps/pep-0257/> and Julia's Triple-Quoted String Literals <https://docs.julialang.org/en/v1.3/manual/strings/#Triple-Quoted-String-Literals-1>.",
+      "License": "MIT + file LICENSE",
+      "URL": "https://glue.tidyverse.org/, https://github.com/tidyverse/glue",
+      "BugReports": "https://github.com/tidyverse/glue/issues",
+      "Depends": [
+        "R (>= 3.6)"
+      ],
+      "Imports": [
+        "methods"
+      ],
+      "Suggests": [
+        "crayon",
+        "DBI (>= 1.2.0)",
+        "dplyr",
+        "knitr",
+        "magrittr",
+        "rlang",
+        "rmarkdown",
+        "RSQLite",
+        "testthat (>= 3.2.0)",
+        "vctrs (>= 0.3.0)",
+        "waldo (>= 0.5.3)",
+        "withr"
+      ],
+      "VignetteBuilder": "knitr",
+      "ByteCompile": "true",
+      "Config/Needs/website": "bench, forcats, ggbeeswarm, ggplot2, R.utils, rprintf, tidyr, tidyverse/tidytemplate",
+      "Config/testthat/edition": "3",
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.3.2",
+      "NeedsCompilation": "yes",
+      "Author": "Jim Hester [aut] (<https://orcid.org/0000-0002-2739-7082>), Jennifer Bryan [aut, cre] (<https://orcid.org/0000-0002-6983-2759>), Posit Software, PBC [cph, fnd]",
+      "Maintainer": "Jennifer Bryan <jenny@posit.co>",
+      "Repository": "CRAN"
     },
     "hms": {
       "Package": "hms",
-      "Version": "1.1.1",
+      "Version": "1.1.4",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "5b8a2dd0fdbe2ab4f6081e6c7be6dfca",
-      "Requirements": [
-        "ellipsis",
+      "Title": "Pretty Time of Day",
+      "Date": "2025-10-11",
+      "Authors@R": "c( person(\"Kirill\", \"Müller\", , \"kirill@cynkra.com\", role = c(\"aut\", \"cre\"), comment = c(ORCID = \"0000-0002-1416-3412\")), person(\"R Consortium\", role = \"fnd\"), person(\"Posit Software, PBC\", role = \"fnd\", comment = c(ROR = \"03wc8by49\")) )",
+      "Description": "Implements an S3 class for storing and formatting time-of-day values, based on the 'difftime' class.",
+      "License": "MIT + file LICENSE",
+      "URL": "https://hms.tidyverse.org/, https://github.com/tidyverse/hms",
+      "BugReports": "https://github.com/tidyverse/hms/issues",
+      "Imports": [
+        "cli",
         "lifecycle",
+        "methods",
         "pkgconfig",
-        "rlang",
-        "vctrs"
-      ]
-    },
-    "htmltools": {
-      "Package": "htmltools",
-      "Version": "0.5.3",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "6496090a9e00f8354b811d1a2d47b566",
-      "Requirements": [
-        "base64enc",
-        "digest",
-        "fastmap",
-        "rlang"
-      ]
-    },
-    "httr": {
-      "Package": "httr",
-      "Version": "1.4.4",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "57557fac46471f0dbbf44705cc6a5c8c",
-      "Requirements": [
-        "R6",
-        "curl",
-        "jsonlite",
-        "mime",
-        "openssl"
-      ]
-    },
-    "hunspell": {
-      "Package": "hunspell",
-      "Version": "3.0.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "3987784c19192ad0f2261c456d936df1",
-      "Requirements": [
-        "Rcpp",
-        "digest"
-      ]
+        "rlang (>= 1.0.2)",
+        "vctrs (>= 0.3.8)"
+      ],
+      "Suggests": [
+        "crayon",
+        "lubridate",
+        "pillar (>= 1.1.0)",
+        "testthat (>= 3.0.0)"
+      ],
+      "Config/Needs/website": "tidyverse/tidytemplate",
+      "Config/testthat/edition": "3",
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.3.3.9000",
+      "NeedsCompilation": "no",
+      "Author": "Kirill Müller [aut, cre] (ORCID: <https://orcid.org/0000-0002-1416-3412>), R Consortium [fnd], Posit Software, PBC [fnd] (ROR: <https://ror.org/03wc8by49>)",
+      "Maintainer": "Kirill Müller <kirill@cynkra.com>",
+      "Repository": "CRAN"
     },
     "iterators": {
       "Package": "iterators",
       "Version": "1.0.14",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "8954069286b4b2b0d023d1b288dce978",
-      "Requirements": []
-    },
-    "jquerylib": {
-      "Package": "jquerylib",
-      "Version": "0.1.4",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "5aab57a3bd297eee1c1d862735972182",
-      "Requirements": [
-        "htmltools"
-      ]
-    },
-    "jsonlite": {
-      "Package": "jsonlite",
-      "Version": "1.8.0",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "d07e729b27b372429d42d24d503613a0",
-      "Requirements": []
-    },
-    "knitr": {
-      "Package": "knitr",
-      "Version": "1.39",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "029ab7c4badd3cf8af69016b2ba27493",
-      "Requirements": [
-        "evaluate",
-        "highr",
-        "stringr",
-        "xfun",
-        "yaml"
-      ]
-    },
-    "lattice": {
-      "Package": "lattice",
-      "Version": "0.20-45",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "b64cdbb2b340437c4ee047a1f4c4377b",
-      "Requirements": []
-    },
-    "lazyeval": {
-      "Package": "lazyeval",
-      "Version": "0.2.2",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "d908914ae53b04d4c0c0fd72ecc35370",
-      "Requirements": []
+      "Type": "Package",
+      "Title": "Provides Iterator Construct",
+      "Authors@R": "c(person(\"Folashade\", \"Daniel\", role=\"cre\", email=\"fdaniel@microsoft.com\"), person(\"Revolution\", \"Analytics\", role=c(\"aut\", \"cph\")), person(\"Steve\", \"Weston\", role=\"aut\"))",
+      "Description": "Support for iterators, which allow a programmer to traverse through all the elements of a vector, list, or other collection of data.",
+      "URL": "https://github.com/RevolutionAnalytics/iterators",
+      "Depends": [
+        "R (>= 2.5.0)",
+        "utils"
+      ],
+      "Suggests": [
+        "RUnit",
+        "foreach"
+      ],
+      "License": "Apache License (== 2.0)",
+      "NeedsCompilation": "no",
+      "Author": "Folashade Daniel [cre], Revolution Analytics [aut, cph], Steve Weston [aut]",
+      "Maintainer": "Folashade Daniel <fdaniel@microsoft.com>",
+      "Repository": "CRAN"
     },
     "lifecycle": {
       "Package": "lifecycle",
-      "Version": "1.0.1",
+      "Version": "1.0.4",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "a6b6d352e3ed897373ab19d8395c98d0",
-      "Requirements": [
+      "Title": "Manage the Life Cycle of your Package Functions",
+      "Authors@R": "c( person(\"Lionel\", \"Henry\", , \"lionel@posit.co\", role = c(\"aut\", \"cre\")), person(\"Hadley\", \"Wickham\", , \"hadley@posit.co\", role = \"aut\", comment = c(ORCID = \"0000-0003-4757-117X\")), person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\")) )",
+      "Description": "Manage the life cycle of your exported functions with shared conventions, documentation badges, and user-friendly deprecation warnings.",
+      "License": "MIT + file LICENSE",
+      "URL": "https://lifecycle.r-lib.org/, https://github.com/r-lib/lifecycle",
+      "BugReports": "https://github.com/r-lib/lifecycle/issues",
+      "Depends": [
+        "R (>= 3.6)"
+      ],
+      "Imports": [
+        "cli (>= 3.4.0)",
         "glue",
-        "rlang"
-      ]
+        "rlang (>= 1.1.0)"
+      ],
+      "Suggests": [
+        "covr",
+        "crayon",
+        "knitr",
+        "lintr",
+        "rmarkdown",
+        "testthat (>= 3.0.1)",
+        "tibble",
+        "tidyverse",
+        "tools",
+        "vctrs",
+        "withr"
+      ],
+      "VignetteBuilder": "knitr",
+      "Config/Needs/website": "tidyverse/tidytemplate, usethis",
+      "Config/testthat/edition": "3",
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.2.1",
+      "NeedsCompilation": "no",
+      "Author": "Lionel Henry [aut, cre], Hadley Wickham [aut] (<https://orcid.org/0000-0003-4757-117X>), Posit Software, PBC [cph, fnd]",
+      "Maintainer": "Lionel Henry <lionel@posit.co>",
+      "Repository": "CRAN"
     },
     "magrittr": {
       "Package": "magrittr",
-      "Version": "2.0.3",
+      "Version": "2.0.4",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "7ce2733a9826b3aeb1775d56fd305472",
-      "Requirements": []
-    },
-    "memoise": {
-      "Package": "memoise",
-      "Version": "2.0.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "e2817ccf4a065c5d9d7f2cfbe7c1d78c",
-      "Requirements": [
-        "cachem",
-        "rlang"
-      ]
-    },
-    "microbenchmark": {
-      "Package": "microbenchmark",
-      "Version": "1.4.9",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "7001412b0204877d34dd8f46b04fde62",
-      "Requirements": []
-    },
-    "mime": {
-      "Package": "mime",
-      "Version": "0.12",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "18e9c28c1d3ca1560ce30658b22ce104",
-      "Requirements": []
-    },
-    "openssl": {
-      "Package": "openssl",
-      "Version": "2.0.2",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "6d3bef2e305f55c705c674653c7d7d3d",
-      "Requirements": [
-        "askpass"
-      ]
-    },
-    "pillar": {
-      "Package": "pillar",
-      "Version": "1.8.0",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "f95cf85794546c4ac2b9a6ca42e671ff",
-      "Requirements": [
-        "cli",
-        "fansi",
-        "glue",
-        "lifecycle",
+      "Type": "Package",
+      "Title": "A Forward-Pipe Operator for R",
+      "Authors@R": "c( person(\"Stefan Milton\", \"Bache\", , \"stefan@stefanbache.dk\", role = c(\"aut\", \"cph\"), comment = \"Original author and creator of magrittr\"), person(\"Hadley\", \"Wickham\", , \"hadley@posit.co\", role = \"aut\"), person(\"Lionel\", \"Henry\", , \"lionel@posit.co\", role = \"cre\"), person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"), comment = c(ROR = \"03wc8by49\")) )",
+      "Description": "Provides a mechanism for chaining commands with a new forward-pipe operator, %>%. This operator will forward a value, or the result of an expression, into the next function call/expression. There is flexible support for the type of right-hand side expressions. For more information, see package vignette.  To quote Rene Magritte, \"Ceci n'est pas un pipe.\"",
+      "License": "MIT + file LICENSE",
+      "URL": "https://magrittr.tidyverse.org, https://github.com/tidyverse/magrittr",
+      "BugReports": "https://github.com/tidyverse/magrittr/issues",
+      "Depends": [
+        "R (>= 3.4.0)"
+      ],
+      "Suggests": [
+        "covr",
+        "knitr",
         "rlang",
-        "utf8",
-        "vctrs"
-      ]
+        "rmarkdown",
+        "testthat"
+      ],
+      "VignetteBuilder": "knitr",
+      "ByteCompile": "Yes",
+      "Config/Needs/website": "tidyverse/tidytemplate",
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.3.3",
+      "NeedsCompilation": "yes",
+      "Author": "Stefan Milton Bache [aut, cph] (Original author and creator of magrittr), Hadley Wickham [aut], Lionel Henry [cre], Posit Software, PBC [cph, fnd] (ROR: <https://ror.org/03wc8by49>)",
+      "Maintainer": "Lionel Henry <lionel@posit.co>",
+      "Repository": "CRAN"
     },
     "pkgconfig": {
       "Package": "pkgconfig",
       "Version": "2.0.3",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "01f28d4278f15c76cddbea05899c5d6f",
-      "Requirements": []
+      "Title": "Private Configuration for 'R' Packages",
+      "Author": "Gábor Csárdi",
+      "Maintainer": "Gábor Csárdi <csardi.gabor@gmail.com>",
+      "Description": "Set configuration options on a per-package basis. Options set by a given package only apply to that package, other packages are unaffected.",
+      "License": "MIT + file LICENSE",
+      "LazyData": "true",
+      "Imports": [
+        "utils"
+      ],
+      "Suggests": [
+        "covr",
+        "testthat",
+        "disposables (>= 1.0.3)"
+      ],
+      "URL": "https://github.com/r-lib/pkgconfig#readme",
+      "BugReports": "https://github.com/r-lib/pkgconfig/issues",
+      "Encoding": "UTF-8",
+      "NeedsCompilation": "no",
+      "Repository": "CRAN"
     },
-    "pkgdown": {
-      "Package": "pkgdown",
-      "Version": "2.0.6",
+    "prettyunits": {
+      "Package": "prettyunits",
+      "Version": "1.2.0",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "f958d0b2a5dabc5ffd414f062b1ffbe7",
-      "Requirements": [
-        "bslib",
-        "callr",
+      "Title": "Pretty, Human Readable Formatting of Quantities",
+      "Authors@R": "c( person(\"Gabor\", \"Csardi\", email=\"csardi.gabor@gmail.com\", role=c(\"aut\", \"cre\")), person(\"Bill\", \"Denney\", email=\"wdenney@humanpredictions.com\", role=c(\"ctb\"), comment=c(ORCID=\"0000-0002-5759-428X\")), person(\"Christophe\", \"Regouby\", email=\"christophe.regouby@free.fr\", role=c(\"ctb\")) )",
+      "Description": "Pretty, human readable formatting of quantities. Time intervals: '1337000' -> '15d 11h 23m 20s'. Vague time intervals: '2674000' -> 'about a month ago'. Bytes: '1337' -> '1.34 kB'. Rounding: '99' with 3 significant digits -> '99.0' p-values: '0.00001' -> '<0.0001'. Colors: '#FF0000' -> 'red'. Quantities: '1239437' -> '1.24 M'.",
+      "License": "MIT + file LICENSE",
+      "URL": "https://github.com/r-lib/prettyunits",
+      "BugReports": "https://github.com/r-lib/prettyunits/issues",
+      "Depends": [
+        "R(>= 2.10)"
+      ],
+      "Suggests": [
+        "codetools",
+        "covr",
+        "testthat"
+      ],
+      "RoxygenNote": "7.2.3",
+      "Encoding": "UTF-8",
+      "NeedsCompilation": "no",
+      "Author": "Gabor Csardi [aut, cre], Bill Denney [ctb] (<https://orcid.org/0000-0002-5759-428X>), Christophe Regouby [ctb]",
+      "Maintainer": "Gabor Csardi <csardi.gabor@gmail.com>",
+      "Repository": "CRAN"
+    },
+    "progress": {
+      "Package": "progress",
+      "Version": "1.2.3",
+      "Source": "Repository",
+      "Title": "Terminal Progress Bars",
+      "Authors@R": "c( person(\"Gábor\", \"Csárdi\", , \"csardi.gabor@gmail.com\", role = c(\"aut\", \"cre\")), person(\"Rich\", \"FitzJohn\", role = \"aut\"), person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\")) )",
+      "Description": "Configurable Progress bars, they may include percentage, elapsed time, and/or the estimated completion time. They work in terminals, in 'Emacs' 'ESS', 'RStudio', 'Windows' 'Rgui' and the 'macOS' 'R.app'. The package also provides a 'C++' 'API', that works with or without 'Rcpp'.",
+      "License": "MIT + file LICENSE",
+      "URL": "https://github.com/r-lib/progress#readme, http://r-lib.github.io/progress/",
+      "BugReports": "https://github.com/r-lib/progress/issues",
+      "Depends": [
+        "R (>= 3.6)"
+      ],
+      "Imports": [
+        "crayon",
+        "hms",
+        "prettyunits",
+        "R6"
+      ],
+      "Suggests": [
+        "Rcpp",
+        "testthat (>= 3.0.0)",
+        "withr"
+      ],
+      "Config/Needs/website": "tidyverse/tidytemplate",
+      "Config/testthat/edition": "3",
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.2.3",
+      "NeedsCompilation": "no",
+      "Author": "Gábor Csárdi [aut, cre], Rich FitzJohn [aut], Posit Software, PBC [cph, fnd]",
+      "Maintainer": "Gábor Csárdi <csardi.gabor@gmail.com>",
+      "Repository": "CRAN"
+    },
+    "renv": {
+      "Package": "renv",
+      "Version": "1.1.5",
+      "Source": "Repository",
+      "Type": "Package",
+      "Title": "Project Environments",
+      "Authors@R": "c( person(\"Kevin\", \"Ushey\", role = c(\"aut\", \"cre\"), email = \"kevin@rstudio.com\", comment = c(ORCID = \"0000-0003-2880-7407\")), person(\"Hadley\", \"Wickham\", role = c(\"aut\"), email = \"hadley@rstudio.com\", comment = c(ORCID = \"0000-0003-4757-117X\")), person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\")) )",
+      "Description": "A dependency management toolkit for R. Using 'renv', you can create and manage project-local R libraries, save the state of these libraries to a 'lockfile', and later restore your library as required. Together, these tools can help make your projects more isolated, portable, and reproducible.",
+      "License": "MIT + file LICENSE",
+      "URL": "https://rstudio.github.io/renv/, https://github.com/rstudio/renv",
+      "BugReports": "https://github.com/rstudio/renv/issues",
+      "Imports": [
+        "utils"
+      ],
+      "Suggests": [
+        "BiocManager",
         "cli",
-        "desc",
-        "digest",
-        "downlit",
-        "fs",
-        "httr",
+        "compiler",
+        "covr",
+        "cpp11",
+        "devtools",
+        "generics",
+        "gitcreds",
         "jsonlite",
-        "magrittr",
-        "memoise",
-        "purrr",
-        "ragg",
-        "rlang",
+        "jsonvalidate",
+        "knitr",
+        "miniUI",
+        "modules",
+        "packrat",
+        "pak",
+        "R6",
+        "remotes",
+        "reticulate",
         "rmarkdown",
-        "tibble",
-        "whisker",
-        "withr",
-        "xml2",
-        "yaml"
-      ]
+        "rstudioapi",
+        "shiny",
+        "testthat",
+        "uuid",
+        "waldo",
+        "yaml",
+        "webfakes"
+      ],
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.3.2",
+      "VignetteBuilder": "knitr",
+      "Config/Needs/website": "tidyverse/tidytemplate",
+      "Config/testthat/edition": "3",
+      "Config/testthat/parallel": "true",
+      "Config/testthat/start-first": "bioconductor,python,install,restore,snapshot,retrieve,remotes",
+      "NeedsCompilation": "no",
+      "Author": "Kevin Ushey [aut, cre] (ORCID: <https://orcid.org/0000-0003-2880-7407>), Hadley Wickham [aut] (ORCID: <https://orcid.org/0000-0003-4757-117X>), Posit Software, PBC [cph, fnd]",
+      "Maintainer": "Kevin Ushey <kevin@rstudio.com>",
+      "Repository": "CRAN"
     },
-    "pkgload": {
-      "Package": "pkgload",
-      "Version": "1.3.0",
+    "rlang": {
+      "Package": "rlang",
+      "Version": "1.1.6",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "4b20f937a363c78a5730265c1925f54a",
-      "Requirements": [
-        "cli",
+      "Title": "Functions for Base Types and Core R and 'Tidyverse' Features",
+      "Description": "A toolbox for working with base types, core R features like the condition system, and core 'Tidyverse' features like tidy evaluation.",
+      "Authors@R": "c( person(\"Lionel\", \"Henry\", ,\"lionel@posit.co\", c(\"aut\", \"cre\")), person(\"Hadley\", \"Wickham\", ,\"hadley@posit.co\", \"aut\"), person(given = \"mikefc\", email = \"mikefc@coolbutuseless.com\", role = \"cph\", comment = \"Hash implementation based on Mike's xxhashlite\"), person(given = \"Yann\", family = \"Collet\", role = \"cph\", comment = \"Author of the embedded xxHash library\"), person(given = \"Posit, PBC\", role = c(\"cph\", \"fnd\")) )",
+      "License": "MIT + file LICENSE",
+      "ByteCompile": "true",
+      "Biarch": "true",
+      "Depends": [
+        "R (>= 3.5.0)"
+      ],
+      "Imports": [
+        "utils"
+      ],
+      "Suggests": [
+        "cli (>= 3.1.0)",
+        "covr",
         "crayon",
         "desc",
         "fs",
         "glue",
-        "rlang",
-        "rprojroot",
-        "withr"
-      ]
-    },
-    "praise": {
-      "Package": "praise",
-      "Version": "1.0.0",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "a555924add98c99d2f411e37e7d25e9f",
-      "Requirements": []
-    },
-    "prettyunits": {
-      "Package": "prettyunits",
-      "Version": "1.1.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "95ef9167b75dde9d2ccc3c7528393e7e",
-      "Requirements": []
-    },
-    "processx": {
-      "Package": "processx",
-      "Version": "3.7.0",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "f91df0f5f31ffdf88bc0b624f5ebab0f",
-      "Requirements": [
-        "R6",
-        "ps"
-      ]
-    },
-    "progress": {
-      "Package": "progress",
-      "Version": "1.2.2",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "14dc9f7a3c91ebb14ec5bb9208a07061",
-      "Requirements": [
-        "R6",
-        "crayon",
-        "hms",
-        "prettyunits"
-      ]
-    },
-    "ps": {
-      "Package": "ps",
-      "Version": "1.7.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "8b93531308c01ad0e56d9eadcc0c4fcd",
-      "Requirements": []
-    },
-    "purrr": {
-      "Package": "purrr",
-      "Version": "0.3.4",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "97def703420c8ab10d8f0e6c72101e02",
-      "Requirements": [
-        "magrittr",
-        "rlang"
-      ]
-    },
-    "ragg": {
-      "Package": "ragg",
-      "Version": "1.2.2",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "14932bb6f2739c771ca4ceaba6b4248e",
-      "Requirements": [
-        "systemfonts",
-        "textshaping"
-      ]
-    },
-    "rappdirs": {
-      "Package": "rappdirs",
-      "Version": "0.3.3",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "5e3c5dc0b071b21fa128676560dbe94d",
-      "Requirements": []
-    },
-    "raster": {
-      "Package": "raster",
-      "Version": "3.5-29",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "8d673c59e4140ee8631e61216dbe5887",
-      "Requirements": [
-        "Rcpp",
-        "sp",
-        "terra"
-      ]
-    },
-    "rematch2": {
-      "Package": "rematch2",
-      "Version": "2.1.2",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "76c9e04c712a05848ae7a23d2f170a40",
-      "Requirements": [
-        "tibble"
-      ]
-    },
-    "renv": {
-      "Package": "renv",
-      "Version": "0.15.5",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "6a38294e7d12f5d8e656b08c5bd8ae34",
-      "Requirements": []
-    },
-    "rex": {
-      "Package": "rex",
-      "Version": "1.2.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "ae34cd56890607370665bee5bd17812f",
-      "Requirements": [
-        "lazyeval"
-      ]
-    },
-    "rlang": {
-      "Package": "rlang",
-      "Version": "1.0.4",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "6539dd8c651e67e3b55b5ffea106362b",
-      "Requirements": []
-    },
-    "rmarkdown": {
-      "Package": "rmarkdown",
-      "Version": "2.15",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "71a4b51b6713a898059439f33c4f6a93",
-      "Requirements": [
-        "bslib",
-        "evaluate",
-        "htmltools",
-        "jquerylib",
-        "jsonlite",
         "knitr",
-        "stringr",
-        "tinytex",
-        "xfun",
-        "yaml"
-      ]
-    },
-    "rprojroot": {
-      "Package": "rprojroot",
-      "Version": "2.0.3",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "1de7ab598047a87bba48434ba35d497d",
-      "Requirements": []
-    },
-    "sass": {
-      "Package": "sass",
-      "Version": "0.4.2",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "1b191143d7d3444d504277843f3a95fe",
-      "Requirements": [
-        "R6",
-        "fs",
-        "htmltools",
-        "rappdirs",
-        "rlang"
-      ]
+        "magrittr",
+        "methods",
+        "pillar",
+        "pkgload",
+        "rmarkdown",
+        "stats",
+        "testthat (>= 3.2.0)",
+        "tibble",
+        "usethis",
+        "vctrs (>= 0.2.3)",
+        "withr"
+      ],
+      "Enhances": [
+        "winch"
+      ],
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.3.2",
+      "URL": "https://rlang.r-lib.org, https://github.com/r-lib/rlang",
+      "BugReports": "https://github.com/r-lib/rlang/issues",
+      "Config/build/compilation-database": "true",
+      "Config/testthat/edition": "3",
+      "Config/Needs/website": "dplyr, tidyverse/tidytemplate",
+      "NeedsCompilation": "yes",
+      "Author": "Lionel Henry [aut, cre], Hadley Wickham [aut], mikefc [cph] (Hash implementation based on Mike's xxhashlite), Yann Collet [cph] (Author of the embedded xxHash library), Posit, PBC [cph, fnd]",
+      "Maintainer": "Lionel Henry <lionel@posit.co>",
+      "Repository": "CRAN"
     },
     "snow": {
       "Package": "snow",
       "Version": "0.4-4",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "40b74690debd20c57d93d8c246b305d4",
-      "Requirements": []
-    },
-    "sp": {
-      "Package": "sp",
-      "Version": "1.5-0",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "2a118bdd2db0a301711e0a9e3e3206d5",
-      "Requirements": [
-        "lattice"
-      ]
-    },
-    "spelling": {
-      "Package": "spelling",
-      "Version": "2.2",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "b8c899a5c83f0d897286550481c91798",
-      "Requirements": [
-        "commonmark",
-        "hunspell",
-        "knitr",
-        "xml2"
-      ]
-    },
-    "stringi": {
-      "Package": "stringi",
-      "Version": "1.7.8",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "a68b980681bcbc84c7a67003fa796bfb",
-      "Requirements": []
-    },
-    "stringr": {
-      "Package": "stringr",
-      "Version": "1.4.0",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "0759e6b6c0957edb1311028a49a35e76",
-      "Requirements": [
-        "glue",
-        "magrittr",
-        "stringi"
-      ]
-    },
-    "sys": {
-      "Package": "sys",
-      "Version": "3.4",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "b227d13e29222b4574486cfcbde077fa",
-      "Requirements": []
-    },
-    "systemfonts": {
-      "Package": "systemfonts",
-      "Version": "1.0.4",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "90b28393209827327de889f49935140a",
-      "Requirements": [
-        "cpp11"
-      ]
-    },
-    "terra": {
-      "Package": "terra",
-      "Version": "1.6-7",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "5d0f75086235149ccfa42c3f3596a079",
-      "Requirements": [
-        "Rcpp"
-      ]
-    },
-    "testthat": {
-      "Package": "testthat",
-      "Version": "3.1.4",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "f76c2a02d0fdc24aa7a47ea34261a6e3",
-      "Requirements": [
-        "R6",
-        "brio",
-        "callr",
-        "cli",
-        "crayon",
-        "desc",
-        "digest",
-        "ellipsis",
-        "evaluate",
-        "jsonlite",
-        "lifecycle",
-        "magrittr",
-        "pkgload",
-        "praise",
-        "processx",
-        "ps",
-        "rlang",
-        "waldo",
-        "withr"
-      ]
-    },
-    "textshaping": {
-      "Package": "textshaping",
-      "Version": "0.3.6",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "1ab6223d3670fac7143202cb6a2d43d5",
-      "Requirements": [
-        "cpp11",
-        "systemfonts"
-      ]
-    },
-    "tibble": {
-      "Package": "tibble",
-      "Version": "3.1.8",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "56b6934ef0f8c68225949a8672fe1a8f",
-      "Requirements": [
-        "fansi",
-        "lifecycle",
-        "magrittr",
-        "pillar",
-        "pkgconfig",
-        "rlang",
-        "vctrs"
-      ]
-    },
-    "tinytex": {
-      "Package": "tinytex",
-      "Version": "0.41",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "6edfe5df6431a724b4254c0591e34ab3",
-      "Requirements": [
-        "xfun"
-      ]
-    },
-    "utf8": {
-      "Package": "utf8",
-      "Version": "1.2.2",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "c9c462b759a5cc844ae25b5942654d13",
-      "Requirements": []
+      "Title": "Simple Network of Workstations",
+      "Author": "Luke Tierney, A. J. Rossini, Na Li, H. Sevcikova",
+      "Description": "Support for simple parallel computing in R.",
+      "Maintainer": "Luke Tierney <luke-tierney@uiowa.edu>",
+      "Suggests": [
+        "rlecuyer"
+      ],
+      "Enhances": [
+        "Rmpi"
+      ],
+      "License": "GPL",
+      "Depends": [
+        "R (>= 2.13.1)",
+        "utils"
+      ],
+      "NeedsCompilation": "no",
+      "Repository": "CRAN"
     },
     "vctrs": {
       "Package": "vctrs",
-      "Version": "0.4.1",
+      "Version": "0.6.5",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "8b54f22e2a58c4f275479c92ce041a57",
-      "Requirements": [
-        "cli",
+      "Title": "Vector Helpers",
+      "Authors@R": "c( person(\"Hadley\", \"Wickham\", , \"hadley@posit.co\", role = \"aut\"), person(\"Lionel\", \"Henry\", , \"lionel@posit.co\", role = \"aut\"), person(\"Davis\", \"Vaughan\", , \"davis@posit.co\", role = c(\"aut\", \"cre\")), person(\"data.table team\", role = \"cph\", comment = \"Radix sort based on data.table's forder() and their contribution to R's order()\"), person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\")) )",
+      "Description": "Defines new notions of prototype and size that are used to provide tools for consistent and well-founded type-coercion and size-recycling, and are in turn connected to ideas of type- and size-stability useful for analysing function interfaces.",
+      "License": "MIT + file LICENSE",
+      "URL": "https://vctrs.r-lib.org/, https://github.com/r-lib/vctrs",
+      "BugReports": "https://github.com/r-lib/vctrs/issues",
+      "Depends": [
+        "R (>= 3.5.0)"
+      ],
+      "Imports": [
+        "cli (>= 3.4.0)",
         "glue",
-        "rlang"
-      ]
-    },
-    "vdiffr": {
-      "Package": "vdiffr",
-      "Version": "1.0.4",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "c45dc68b6ef4d784c5df6f5bbc5f7f39",
-      "Requirements": [
-        "cpp11",
-        "diffobj",
-        "glue",
-        "htmltools",
-        "lifecycle",
-        "rlang",
-        "testthat",
-        "xml2"
-      ]
-    },
-    "waldo": {
-      "Package": "waldo",
-      "Version": "0.4.0",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "035fba89d0c86e2113120f93301b98ad",
-      "Requirements": [
-        "cli",
-        "diffobj",
-        "fansi",
-        "glue",
-        "rematch2",
-        "rlang",
-        "tibble"
-      ]
-    },
-    "whisker": {
-      "Package": "whisker",
-      "Version": "0.4",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "ca970b96d894e90397ed20637a0c1bbe",
-      "Requirements": []
-    },
-    "withr": {
-      "Package": "withr",
-      "Version": "2.5.0",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "c0e49a9760983e81e55cdd9be92e7182",
-      "Requirements": []
-    },
-    "xfun": {
-      "Package": "xfun",
-      "Version": "0.32",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "0498af3034691dde715dcd86198efe75",
-      "Requirements": []
-    },
-    "xml2": {
-      "Package": "xml2",
-      "Version": "1.3.3",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "40682ed6a969ea5abfd351eb67833adc",
-      "Requirements": []
-    },
-    "yaml": {
-      "Package": "yaml",
-      "Version": "2.3.5",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "458bb38374d73bf83b1bb85e353da200",
-      "Requirements": []
+        "lifecycle (>= 1.0.3)",
+        "rlang (>= 1.1.0)"
+      ],
+      "Suggests": [
+        "bit64",
+        "covr",
+        "crayon",
+        "dplyr (>= 0.8.5)",
+        "generics",
+        "knitr",
+        "pillar (>= 1.4.4)",
+        "pkgdown (>= 2.0.1)",
+        "rmarkdown",
+        "testthat (>= 3.0.0)",
+        "tibble (>= 3.1.3)",
+        "waldo (>= 0.2.0)",
+        "withr",
+        "xml2",
+        "zeallot"
+      ],
+      "VignetteBuilder": "knitr",
+      "Config/Needs/website": "tidyverse/tidytemplate",
+      "Config/testthat/edition": "3",
+      "Encoding": "UTF-8",
+      "Language": "en-GB",
+      "RoxygenNote": "7.2.3",
+      "NeedsCompilation": "yes",
+      "Author": "Hadley Wickham [aut], Lionel Henry [aut], Davis Vaughan [aut, cre], data.table team [cph] (Radix sort based on data.table's forder() and their contribution to R's order()), Posit Software, PBC [cph, fnd]",
+      "Maintainer": "Davis Vaughan <davis@posit.co>",
+      "Repository": "CRAN"
     }
   }
 }

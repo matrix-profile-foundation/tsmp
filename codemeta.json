@@ -7,13 +7,13 @@
   "codeRepository": "https://github.com/matrix-profile-foundation/tsmp",
   "issueTracker": "https://github.com/matrix-profile-foundation/tsmp/issues",
   "license": "https://spdx.org/licenses/Apache-2.0",
-  "version": "0.4.15",
+  "version": "0.4.16",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.2.1 (2022-06-23)",
+  "runtimePlatform": "R version 4.2.3 (2023-03-15)",
   "provider": {
     "@id": "https://cran.r-project.org",
     "@type": "Organization",
@@ -297,8 +297,8 @@
     },
     "SystemRequirements": "GNU make"
   },
-  "fileSize": "24720.401KB",
-  "releaseNotes": "https://github.com/matrix-profile-foundation/tsmp/blob/master/NEWS.md",
+  "fileSize": "6508.065KB",
+  "releaseNotes": "https://github.com/matrix-profile-foundation/tsmp/blob/main/NEWS.md",
   "readme": "https://github.com/matrix-profile-foundation/tsmp/blob/master/README.md",
   "contIntegration": ["https://app.circleci.com/pipelines/github/matrix-profile-foundation/tsmp", "https://ci.appveyor.com/project/franzbischoff/tsmp/branch/master", "https://ci.appveyor.com/project/franzbischoff/tsmp/branch/develop", "https://app.codecov.io/gh/matrix-profile-foundation/tsmp", "https://app.codecov.io/gh/matrix-profile-foundation/tsmp"],
   "developmentStatus": "https://lifecycle.r-lib.org/articles/stages.html#stable",
