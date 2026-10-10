@@ -56,7 +56,8 @@ vignettes/*.R
 /pkgdown/
 /docs/
 
-dev/
+dev/*
+!dev/plano_modernizacao_tsmp.md
 LOCAL_APPDATA_FONTCONFIG_CACHE/
 src-*/
 packrat/lib*/
