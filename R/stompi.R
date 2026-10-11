@@ -30,11 +30,11 @@ stompi_update <- function(.mp, new_data, history_size = FALSE) {
   data_upd_size <- length(data_upd)
 
   mp_new <- c(.mp$mp, rep(Inf, new_data_size))
-  pi_new <- c(.mp$pi, rep(-Inf, new_data_size))
+  pi_new <- c(.mp$pi, rep(NA_integer_, new_data_size))
   lmp_new <- c(.mp$lmp, rep(Inf, new_data_size))
-  lpi_new <- c(.mp$lpi, rep(-Inf, new_data_size))
+  lpi_new <- c(.mp$lpi, rep(NA_integer_, new_data_size))
   rmp_new <- c(.mp$rmp, rep(Inf, new_data_size))
-  rpi_new <- c(.mp$rpi, rep(-Inf, new_data_size))
+  rpi_new <- c(.mp$rpi, rep(NA_integer_, new_data_size))
 
   q1_idx <- (data_upd_size - .mp$w + 1 - new_data_size + 1)
 
@@ -116,12 +116,16 @@ stompi_update <- function(.mp, new_data, history_size = FALSE) {
     # pi_new <- utils::tail(pi_new - attr(.mp, "offset"), mp_new_size)
   }
 
+  lpi_new[is.infinite(lmp_new)] <- NA_integer_
+  rpi_new[is.infinite(rmp_new)] <- NA_integer_
+  pi_new[is.infinite(mp_new)] <- NA_integer_
+
   .mp$mp <- as.numeric(mp_new)
-  .mp$pi <- as.numeric(pi_new)
+  .mp$pi <- as.integer(pi_new)
   .mp$lmp <- as.numeric(lmp_new)
-  .mp$lpi <- as.numeric(lpi_new)
+  .mp$lpi <- as.integer(lpi_new)
   .mp$rmp <- as.numeric(rmp_new)
-  .mp$rpi <- as.numeric(rpi_new)
+  .mp$rpi <- as.integer(rpi_new)
   .mp$data[[1]] <- as.matrix(data_upd)
   attr(.mp, "new_data") <- new_data_size
 

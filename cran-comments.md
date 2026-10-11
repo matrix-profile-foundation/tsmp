@@ -1,5 +1,16 @@
 # CRAN Comments
 
+## Comments for this version (0.5.0)
+
+- Architectural modernization: `tsmp` is now a pure R package (`NeedsCompilation: no`).
+  All core computational algorithms (MPX, STOMP, STAMP, SCRIMP, MASS, mSTOMP) are delegated to
+  the dedicated high-performance engine package `matrixprofiler`.
+- Eradicated superseded dependencies: `doSNOW` and `foreach` have been completely removed.
+- Removed all compiled C++ code and GNU Make requirements (`RcppParallel`/TBB eliminated).
+- Standardized invalid index conventions to `NA_integer_`.
+- All 345 unit tests passed cleanly with 0 failures under `R_LOCAL_DEV=true`.
+- Fixed moved/broken URLs in README.md.
+
 ## Comments for this version (0.4.16)
 
 C++11 flags are deprecated and defaults to C++17, so this requirement was removed from the package.
@@ -52,15 +63,14 @@ Duration: 2m 3.1s
   From: README.md
   * This is ok.
 
-* GNU make is a SystemRequirements.
-  * Requirement of package RcppParallel.  I haven't find a workaround to solve this NOTE.
+* GNU make is a SystemRequirements:
+  * Solved! GNU make and RcppParallel removed; package is now pure R.
 
-* Installed size is X Mb.
-  * This is due to datasets in this package.  I believe they are essential to learning all the features of this package.
+* Installed size is ~5.3 Mb.
+  * This is due to datasets in this package. They are essential to learning all features of this package.
 
-* Uses the superseded package: `doSNOW`
-  * `doSNOW` has a property that allows to use progress bar that `parallel` does not.
-  * Working in finding a better solution to drop this dependency.  Not found yet.
+* Uses the superseded package: `doSNOW`:
+  * Solved! `doSNOW` and `foreach` have been completely removed. Multithreading is now handled by `matrixprofiler`.
 
 * (possibly) invalid URLs: https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html
   * Debian: libcurl throws an error on certificate check.  Nothing to do about this.

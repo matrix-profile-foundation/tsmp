@@ -152,6 +152,8 @@ tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zo
     max(0.0, s_size)
   }
 
+  tictac <- Sys.time()
+
   result <- switch(algo,
     "mpx" = {
       matrixprofiler::mpx(data, query,
@@ -230,6 +232,11 @@ tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zo
     },
     stop("`mode` must be ", mode)
   )
+
+  tictac <- Sys.time() - tictac
+  if (verbose > 0 && !(algo %in% c("mstomp", "simple", "valmod", "pmp"))) {
+    message(sprintf("Finished in %.2f %s", tictac, units(tictac)))
+  }
 
   if (algo %in% c("mpx", "stomp", "stamp", "scrimp")) {
     mp_out <- as.numeric(result$matrix_profile)

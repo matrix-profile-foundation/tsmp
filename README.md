@@ -15,10 +15,10 @@ Francisco Bischoff
 [![License](https://img.shields.io/badge/License-GPL--3.0-green.svg)](https://choosealicense.com/licenses/gpl-3.0/)
 [![lifecycle](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 
-[![Lint](https://github.com/matrix-profile-foundation/tsmp/workflows/Lint/badge.svg?branch=main)](https://github.com/jimhester/lintr)
-[![R-CMD-check](https://github.com/matrix-profile-foundation/tsmp/workflows/R-CMD-check/badge.svg?branch=main)](https://r-pkgs.org/r-cmd-check.html)
+[![Lint](https://github.com/matrix-profile-foundation/tsmp/workflows/Lint/badge.svg?branch=main)](https://github.com/r-lib/lintr)
+[![R-CMD-check](https://github.com/matrix-profile-foundation/tsmp/workflows/R-CMD-check/badge.svg?branch=main)](https://r-pkgs.org/check.html)
 
-[![codecov](https://codecov.io/gh/matrix-profile-foundation/tsmp/branch/main/graph/badge.svg?token=w7AmbwhNvn)](https://codecov.io/gh/matrix-profile-foundation/tsmp)
+[![codecov](https://codecov.io/gh/matrix-profile-foundation/tsmp/branch/main/graph/badge.svg?token=w7AmbwhNvn)](https://app.codecov.io/gh/matrix-profile-foundation/tsmp)
 
 [![CRAN
 version](https://www.r-pkg.org/badges/version/tsmp)](https://cran.r-project.org/package=tsmp)
@@ -144,7 +144,7 @@ devtools::install_github("matrix-profile-foundation/tsmp")
 
 -   Python: <https://github.com/target/matrixprofile-ts>
 -   Python: <https://github.com/ZiyaoWei/pyMatrixProfile>
--   Python: <https://github.com/jbeleno/owlpy>
+-   Python: <https://github.com/juanbeleno/owlpy>
 -   Python: <https://github.com/javidlakha/matrix-profile>
 -   Python: <https://github.com/shapelets/khiva-python>
 -   R: <https://github.com/shapelets/khiva-r>
@@ -161,7 +161,7 @@ devtools::install_github("matrix-profile-foundation/tsmp")
 Our next step unifying the Matrix Profile implementation in several
 programming languages.
 
-Visit: [Matrix Profile Foundation](https://matrixprofile.org)
+Visit: [Matrix Profile Foundation](https://github.com/matrix-profile-foundation)
 
 ### Benchmarks
 
