@@ -116,12 +116,12 @@ stompi_update <- function(.mp, new_data, history_size = FALSE) {
     # pi_new <- utils::tail(pi_new - attr(.mp, "offset"), mp_new_size)
   }
 
-  .mp$mp <- as.matrix(mp_new)
-  .mp$pi <- as.matrix(pi_new)
-  .mp$lmp <- as.matrix(lmp_new)
-  .mp$lpi <- as.matrix(lpi_new)
-  .mp$rmp <- as.matrix(rmp_new)
-  .mp$rpi <- as.matrix(rpi_new)
+  .mp$mp <- as.numeric(mp_new)
+  .mp$pi <- as.numeric(pi_new)
+  .mp$lmp <- as.numeric(lmp_new)
+  .mp$lpi <- as.numeric(lpi_new)
+  .mp$rmp <- as.numeric(rmp_new)
+  .mp$rpi <- as.numeric(rpi_new)
   .mp$data[[1]] <- as.matrix(data_upd)
   attr(.mp, "new_data") <- new_data_size
 

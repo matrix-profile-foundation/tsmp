@@ -24,7 +24,7 @@ find_chains <- function(.mp) {
     stop("Function not implemented for objects of class `Valmod`.")
   }
 
-  mp_size <- nrow(.mp$rpi)
+  mp_size <- NROW(.mp$rpi)
   chain_length <- rep(1, mp_size)
   chain_set <- list()
 
@@ -34,7 +34,8 @@ find_chains <- function(.mp) {
     if (chain_length[i] == 1) {
       chain <- j <- i
 
-      while (.mp$rpi[j] > 0 && .mp$rpi[j] <= mp_size && .mp$lpi[.mp$rpi[j]] == j) {
+      while (!is.na(.mp$rpi[j]) && .mp$rpi[j] > 0 && .mp$rpi[j] <= mp_size &&
+             !is.na(.mp$lpi[.mp$rpi[j]]) && .mp$lpi[.mp$rpi[j]] == j) {
         j <- .mp$rpi[j]
         chain_length[j] <- -1
         chain_length[i] <- chain_length[i] + 1
@@ -61,7 +62,7 @@ find_chains <- function(.mp) {
   for (i in seq_len(length(chain_set))) {
     if (length(chain_set[[i]]) == l) {
       vals <- .mp$rmp[chain_set[[i]]]
-      vals <- vals[!is.infinite(vals)]
+      vals <- vals[!is.infinite(vals) & !is.na(vals)]
       n <- mean(vals)
       if (n < mean) {
         mean <- n

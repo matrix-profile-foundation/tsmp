@@ -164,14 +164,14 @@ plot.ArcCount <- function(x, data, type = c("data", "matrix"), exclusion_zone = 
   cac_size <- length(cac)
   profile_index <- x$pi
 
-  if (cac_size < nrow(profile_index)) {
+  if (cac_size < NROW(profile_index)) {
     warning("cac_size < profile_index")
-    cac_offset <- nrow(profile_index) - cac_size
+    cac_offset <- NROW(profile_index) - cac_size
     plot_data <- as.matrix(utils::tail(plot_data, cac_size))
     profile_index <- as.matrix(utils::tail(profile_index, cac_size) - cac_offset)
   }
 
-  xnum <- seq_len(nrow(x$mp) + min(x$w) - 1)
+  xnum <- seq_len(NROW(x$mp) + min(x$w) - 1)
 
   offset <- attr(x, "offset")
   offset <- ifelse(is.null(offset), 0, offset)
@@ -192,7 +192,7 @@ plot.ArcCount <- function(x, data, type = c("data", "matrix"), exclusion_zone = 
   }
 
   # remove excess of arcs
-  if (floor(x$w * exclusion_zone) < nrow(x$mp) / 3) {
+  if (floor(x$w * exclusion_zone) < NROW(x$mp) / 3) {
     exclusion_zone <- floor(x$w * exclusion_zone)
   }
   if (floor(x$w * edge_limit) < length(x$mp) / 3) {
@@ -236,7 +236,7 @@ plot.Valmod <- function(x, ylab = "distance", xlab = "index", main = "Valmod Mat
   allmatrix <- FALSE
   num_charts <- 1
 
-  xnum <- seq_len(nrow(x$mp) + min(x$w) - 1)
+  xnum <- seq_len(NROW(x$mp) + min(x$w) - 1)
 
   if (!is.null(attr(x, "offset"))) {
     xnum <- xnum + attr(x, "offset")
@@ -289,7 +289,7 @@ plot.MatrixProfile <- function(x, ylab = "distance", xlab = "index",
   allmatrix <- FALSE
   num_charts <- 1
 
-  xnum <- seq_len(nrow(x$mp) + x$w - 1)
+  xnum <- seq_len(NROW(x$mp) + x$w - 1)
 
   if (!is.null(attr(x, "offset"))) {
     xnum <- xnum + attr(x, "offset")
@@ -351,7 +351,7 @@ plot.MultiMatrixProfile <- function(x, ylab = "distance", xlab = "index",
   x$mp <- x$mp[, mask, drop = FALSE]
   n_dim <- ncol(x$mp)
 
-  xnum <- seq_len(nrow(x$mp) + x$w - 1)
+  xnum <- seq_len(NROW(x$mp) + x$w - 1)
 
   if (!is.null(attr(x, "offset"))) {
     xnum <- xnum + attr(x, "offset")
@@ -406,7 +406,7 @@ plot.SimpleMatrixProfile <- function(x, ylab = "distance", xlab = "index",
   on.exit(graphics::par(def_par))
   num_charts <- 1
 
-  xnum <- seq_len(nrow(x$mp) + x$w - 1)
+  xnum <- seq_len(NROW(x$mp) + x$w - 1)
 
   if (!is.null(attr(x, "offset"))) {
     xnum <- xnum + attr(x, "offset")
@@ -503,13 +503,13 @@ plot.Fluss <- function(x, data, type = c("data", "matrix"),
     }
 
     if (i == fluss_size) {
-      pairs[i, 2] <- nrow(x$mp) + offset
+      pairs[i, 2] <- NROW(x$mp) + offset
     } else {
       pairs[i, 2] <- fluss_idx[i] + offset
     }
   }
 
-  xnum <- seq_len(nrow(x$mp) + min(x$w) - 1) + offset
+  xnum <- seq_len(NROW(x$mp) + min(x$w) - 1) + offset
   xmin <- min(xnum)
   xmax <- max(xnum)
   xlim <- c(xmin, xmax)
@@ -569,19 +569,19 @@ plot.Floss <- function(x, data, type = c("data", "matrix"),
     }
 
     if (i == floss_size) {
-      pairs[i, 2] <- nrow(x$mp) + offset
+      pairs[i, 2] <- NROW(x$mp) + offset
     } else {
       pairs[i, 2] <- floss_idx[i] + offset
     }
   }
 
-  xnum <- seq_len(nrow(x$mp) + min(x$w) - 1) + offset
+  xnum <- seq_len(NROW(x$mp) + min(x$w) - 1) + offset
   xmin <- min(xnum)
   xmax <- max(xnum)
   xlim <- c(xmin, xmax)
 
   cac_fin_len <- length(x$cac_final)
-  mp_len <- nrow(x$mp)
+  mp_len <- NROW(x$mp)
   new_data <- attr(x, "new_data")
 
   if (cac_fin_len == floor((mp_len * vars()$kmode + new_data / 2))) {
@@ -590,7 +590,7 @@ plot.Floss <- function(x, data, type = c("data", "matrix"),
     cac <- utils::tail(x$cac_final, -offset)
   }
   cac_size <- length(cac)
-  cac <- c(cac, rep(NA, nrow(x$mp) + min(x$w) - 1 - cac_size))
+  cac <- c(cac, rep(NA, NROW(x$mp) + min(x$w) - 1 - cac_size))
 
   graphics::layout(matrix(c(1, 2, 3), ncol = 1, byrow = TRUE))
   graphics::par(oma = c(1, 1, 3, 0), cex.lab = 1.5)
@@ -642,7 +642,7 @@ plot.Chain <- function(x, data, type = c("data", "matrix"), main = "Chain Discov
     pairs[i, 2] <- x$chain$best[i + 1] + offset
   }
 
-  xnum <- seq_len(nrow(x$mp) + min(x$w) - 1) + offset
+  xnum <- seq_len(NROW(x$mp) + min(x$w) - 1) + offset
   xmin <- min(xnum)
   xmax <- max(xnum)
   xlim <- c(xmin, xmax)
@@ -659,14 +659,14 @@ plot.Chain <- function(x, data, type = c("data", "matrix"), main = "Chain Discov
   graphics::abline(v = x$chain$best + offset, col = 1:chain_size, lwd = 2)
 
   # blank plot
-  motif <- znorm(data[x$chain$best[1]:min((x$chain$best[1] + x$w - 1), nrow(data))])
+  motif <- matrixprofiler::znorm(data[x$chain$best[1]:min((x$chain$best[1] + x$w - 1), NROW(data))])
   graphics::plot(motif,
     type = "l", main = "Motifs", xlab = "length", ylab = "normalized data",
     xlim = c(0, length(motif)), ylim = c(min(motif) - chain_size / 2, max(motif)), ...
   )
 
   for (i in 2:chain_size) {
-    motif <- znorm(data[x$chain$best[i]:min((x$chain$best[i] + x$w - 1), nrow(data))])
+    motif <- matrixprofiler::znorm(data[x$chain$best[i]:min((x$chain$best[i] + x$w - 1), NROW(data))])
 
     graphics::lines(motif - i / 2, col = i, ...)
   }
@@ -706,7 +706,7 @@ plot.Discord <- function(x, data, type = c("data", "matrix"), ncol = 3,
   discords <- x$discord$discord_idx
   n_discords <- length(x$discord$discord_idx)
   neighbors <- x$discord$discord_neighbor
-  matrix_profile_size <- nrow(x$mp)
+  matrix_profile_size <- NROW(x$mp)
 
   # layout: matrix profile on top, discords below.
   graphics::layout(matrix(
@@ -716,7 +716,7 @@ plot.Discord <- function(x, data, type = c("data", "matrix"), ncol = 3,
     byrow = TRUE
   ))
   # plot matrix profile
-  xnum <- seq_len(nrow(x$mp) + min(x$w) - 1)
+  xnum <- seq_len(NROW(x$mp) + min(x$w) - 1)
 
   offset <- attr(x, "offset")
   offset <- ifelse(is.null(offset), 0, offset)
@@ -735,7 +735,7 @@ plot.Discord <- function(x, data, type = c("data", "matrix"), ncol = 3,
   )
   # plot discords
   for (i in 1:n_discords) {
-    discord1 <- znorm(data[discords[[i]]:min((discords[[i]] + x$w - 1), matrix_profile_size)])
+    discord1 <- matrixprofiler::znorm(data[discords[[i]]:min((discords[[i]] + x$w - 1), matrix_profile_size)])
 
     # blank plot
     graphics::plot(0.5, 0.5,
@@ -744,7 +744,7 @@ plot.Discord <- function(x, data, type = c("data", "matrix"), ncol = 3,
     )
 
     for (j in seq_len(length(neighbors[[i]]))) {
-      neigh <- znorm(data[neighbors[[i]][j]:min((neighbors[[i]][j] + x$w - 1), matrix_profile_size)])
+      neigh <- matrixprofiler::znorm(data[neighbors[[i]][j]:min((neighbors[[i]][j] + x$w - 1), matrix_profile_size)])
       graphics::lines(neigh, col = "gray70", lty = 2)
     }
 
@@ -807,7 +807,7 @@ plot.Snippet <- function(x, data, ncol = 3, main = "Snippet Finder", xlab = "ind
   )
 
   for (i in 1:n_snippets) {
-    snip <- znorm(data[snippets[i]:min((snippets[i] + x$snippet_size - 1), nrow(data))])
+    snip <- matrixprofiler::znorm(data[snippets[i]:min((snippets[i] + x$snippet_size - 1), nrow(data))])
 
     # blank plot
     graphics::plot(0.5, 0.5,
@@ -886,7 +886,7 @@ plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3,
     byrow = TRUE
   ))
   # plot matrix profile
-  xnum <- seq_len(nrow(x$mp) + min(x$w) - 1)
+  xnum <- seq_len(NROW(x$mp) + min(x$w) - 1)
 
   offset <- attr(x, "offset")
   offset <- ifelse(is.null(offset), 0, offset)
@@ -903,8 +903,8 @@ plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3,
   # plot motifs
   if (valmod) {
     for (i in 1:n_motifs) {
-      motif1 <- znorm(data[motifs[[i]][1]:min((motifs[[i]][1] + windows[i] - 1), nrow(data))])
-      motif2 <- znorm(data[motifs[[i]][2]:min((motifs[[i]][2] + windows[i] - 1), nrow(data))])
+      motif1 <- matrixprofiler::znorm(data[motifs[[i]][1]:min((motifs[[i]][1] + windows[i] - 1), NROW(data))])
+      motif2 <- matrixprofiler::znorm(data[motifs[[i]][2]:min((motifs[[i]][2] + windows[i] - 1), NROW(data))])
 
       # blank plot
       graphics::plot(0.5, 0.5,
@@ -913,7 +913,7 @@ plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3,
       )
 
       for (j in seq_len(length(neighbors[[i]]))) {
-        neigh <- znorm(data[neighbors[[i]][j]:min((neighbors[[i]][j] + windows[i] - 1), nrow(data))])
+        neigh <- matrixprofiler::znorm(data[neighbors[[i]][j]:min((neighbors[[i]][j] + windows[i] - 1), NROW(data))])
         graphics::lines(neigh, col = "gray70", lty = 2)
       }
 
@@ -922,8 +922,8 @@ plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3,
     }
   } else {
     for (i in 1:n_motifs) {
-      motif1 <- znorm(data[motifs[[i]][1]:min((motifs[[i]][1] + x$w - 1), nrow(data))])
-      motif2 <- znorm(data[motifs[[i]][2]:min((motifs[[i]][2] + x$w - 1), nrow(data))])
+      motif1 <- matrixprofiler::znorm(data[motifs[[i]][1]:min((motifs[[i]][1] + x$w - 1), NROW(data))])
+      motif2 <- matrixprofiler::znorm(data[motifs[[i]][2]:min((motifs[[i]][2] + x$w - 1), NROW(data))])
 
       # blank plot
       graphics::plot(0.5, 0.5,
@@ -932,7 +932,7 @@ plot.Motif <- function(x, data, type = c("data", "matrix"), ncol = 3,
       )
 
       for (j in seq_len(length(neighbors[[i]]))) {
-        neigh <- znorm(data[neighbors[[i]][j]:min((neighbors[[i]][j] + x$w - 1), nrow(data))])
+        neigh <- matrixprofiler::znorm(data[neighbors[[i]][j]:min((neighbors[[i]][j] + x$w - 1), NROW(data))])
         graphics::lines(neigh, col = "gray70", lty = 2)
       }
 
@@ -996,7 +996,7 @@ plot.MultiMotif <- function(x, data, type = c("data", "matrix"), ncol = 3,
     byrow = TRUE
   ))
   # plot matrix profile
-  xnum <- seq_len(nrow(x$mp) + min(x$w) - 1)
+  xnum <- seq_len(NROW(x$mp) + min(x$w) - 1)
 
   offset <- attr(x, "offset")
   offset <- ifelse(is.null(offset), 0, offset)
@@ -1036,8 +1036,8 @@ plot.MultiMotif <- function(x, data, type = c("data", "matrix"), ncol = 3,
     motif2 <- list()
 
     for (j in seq_len(dim_len)) {
-      motif1[[j]] <- znorm(data[motifs[[i]][1]:min((motifs[[i]][1] + x$w - 1), nrow(data)), motifs_dim[[i]][j]])
-      motif2[[j]] <- znorm(data[motifs[[i]][2]:min((motifs[[i]][2] + x$w - 1), nrow(data)), motifs_dim[[i]][j]])
+      motif1[[j]] <- matrixprofiler::znorm(data[motifs[[i]][1]:min((motifs[[i]][1] + x$w - 1), nrow(data)), motifs_dim[[i]][j]])
+      motif2[[j]] <- matrixprofiler::znorm(data[motifs[[i]][2]:min((motifs[[i]][2] + x$w - 1), nrow(data)), motifs_dim[[i]][j]])
     }
 
 
@@ -1093,7 +1093,7 @@ plot.Salient <- function(x, data, main = "Salient Subsections", xlab = "index", 
   # layout: matrix profile on top, motifs below.
   graphics::layout(matrix(c(1, 1, 1, 0, 2, 0), ncol = 3, byrow = TRUE))
   # plot matrix profile
-  xnum <- seq_len(nrow(x$mp) + min(x$w) - 1)
+  xnum <- seq_len(NROW(x$mp) + min(x$w) - 1)
 
   if (!is.null(offset)) {
     xnum <- xnum + offset

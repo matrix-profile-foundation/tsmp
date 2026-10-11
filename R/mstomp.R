@@ -13,7 +13,7 @@
 #'
 #' Although this functions handles Multivariate Time Series, it can also be used to handle
 #' Univariate Time Series. `verbose` changes how much information is printed by this function; `0`
-#' means nothing, `1` means text, `2` adds the progress bar, `3` adds the finish sound.
+#' means nothing, `1` means text, `2` adds the progress bar.
 #'
 #' @param data a `matrix` of `numeric`, where each column is a time series. Accepts `vector` (see
 #'   details), `list` and `data.frame` too.

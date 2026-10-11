@@ -1,5 +1,5 @@
 if (!testthat:::on_cran()) {
-  context("Testing Serialization")
+  skip_if_not_installed("RJSONIO")
   library(tsmp)
 
   result <- compute(mp_toy_data$data[, 1], 80)

@@ -1,8 +1,6 @@
 if (!testthat:::on_cran()) {
-  library(vdiffr)
+  skip_if_not_installed("vdiffr")
   library(tsmp)
-
-  context("Testing Plots")
 
   data <- mp_fluss_data$tilt_abp$data[1:1000]
   w <- 10
@@ -56,7 +54,6 @@ if (!testthat:::on_cran()) {
     expect_doppelganger("plot Snippet", plot_snippet_test)
   })
 
-  context("Testing Print")
   upd <- FALSE
   if (is_testing()) {
     path <- "../prints/"

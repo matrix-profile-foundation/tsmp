@@ -56,90 +56,40 @@ compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
   checkmate::qassert(threshold, c("0", "N1(0,1]"))
   n_jobs <- as.integer(checkmate::qassert(n_jobs, paste0("X1[1,", 4, "]")))
 
-  res <- NULL
-  algorithm <- NULL
-  join <- FALSE
-  metric <- "euclidean"
-
-  on.exit({
-    if (!is.null(res)) {
-      # Build compute object --------------------------
-
-      # Main fields, easily accessible by the user
-      if (length(windows) == 1) {
-        result <- list(
-          mp = res$matrix_profile,
-          pi = res$profile_index,
-          # mpb = NULL,
-          # pib = NULL,
-          rmp = NULL,
-          rpi = NULL,
-          lmp = NULL,
-          lpi = NULL,
-          w = windows,
-          ez = res$ez
-        )
-        class(result) <- "MatrixProfile"
-      } else {
-        result <- res
-        class(result) <- "PMP"
-      }
-      result$partial <- res$partial
-      result$sample_pct <- sample_pct
-
-      result$data <- list(
-        ts = ts,
-        query = query
-      )
-
-      # Attributes
-      attr(result, "join") <- join
-      attr(result, "metric") <- metric
-      attr(result, "algorithm") <- algorithm
-
-      # End ---------------------------------
-      return(invisible(result))
-    }
-  })
-
-  # Start ---------------------------------
   if (length(windows) == 1) {
-    ## Matrix Profile =========================
-
+    ## Matrix Profile (delegated to tsmp) ======
     if (is.null(query)) {
-      ### Self-join #############################
-
-      if (sample_pct >= 1) {
-        algorithm <- "mpx"
-        res <- matrixprofiler::mpx(data = data_ref, window_size = windows, n_workers = n_jobs, progress = TRUE)
-      } else {
-        algorithm <- "mpx" # former was scrimp
-        res <- matrixprofiler::mpx(
-          data = data_ref, window_size = windows, s_size = sample_pct,
-          n_workers = n_jobs, progress = TRUE
-        )
-      }
+      result <- tsmp(ts,
+        window_size = windows,
+        mode = "mpx",
+        s_size = sample_pct,
+        n_workers = n_jobs,
+        verbose = 0,
+        .keep_data = FALSE
+      )
     } else {
-      ### AB join #############################
-      join <- TRUE
-      if (sample_pct >= 1) {
-        algorithm <- "mpx"
-        res <- matrixprofiler::mpx(
-          data = data_ref, query = query_ref, window_size = windows,
-          n_workers = n_jobs, progress = TRUE
-        )
-      } else {
-        algorithm <- "scrimp"
-        res <- matrixprofiler::mpx(
-          data = data_ref, window_size = windows, s_size = sample_pct,
-          n_workers = n_jobs, progress = TRUE
-        )
-      }
+      result <- tsmp(ts, query,
+        window_size = windows,
+        mode = "mpx",
+        s_size = sample_pct,
+        n_workers = n_jobs,
+        verbose = 0,
+        .keep_data = FALSE
+      )
     }
+
+    result$sample_pct <- sample_pct
+    result$data <- list(
+      ts = ts,
+      query = query
+    )
+    attr(result, "metric") <- "euclidean"
+    attr(result, "algorithm") <- "mpx"
+    attr(result, "join") <- !is.null(query)
+    class(result) <- "MatrixProfile"
+    return(invisible(result))
   } else {
     ## Pan Matrix Profile =========================
-    algorithm <- "pmp"
-
     if (!is.null(threshold)) {
       # when a threshold is passed, we compute the upper bound
       res <- pmp_upper_bound(data = data_ref, threshold = threshold, n_workers = n_jobs)
@@ -154,6 +104,16 @@ compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
     }
 
     windows <- floor(windows)
-    res <- pmp(data = data_ref, window_sizes = windows, plot = FALSE, pmp_obj = res, n_workers = n_jobs)
+    result <- pmp(data = data_ref, window_sizes = windows, plot = FALSE, pmp_obj = res, n_workers = n_jobs, verbose = 0)
+    result$sample_pct <- sample_pct
+    result$data <- list(
+      ts = ts,
+      query = query
+    )
+    attr(result, "join") <- FALSE
+    attr(result, "metric") <- "euclidean"
+    attr(result, "algorithm") <- "pmp"
+    class(result) <- "PMP"
+    return(invisible(result))
   }
 }

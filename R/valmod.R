@@ -5,8 +5,8 @@
 #' @details
 #' This algorithm uses an exact algorithm based on a novel lower bounding technique, which is
 #' specifically designed for the motif discovery problem. `verbose` changes how much information
-#' is printed by this function; `0` means nothing, `1` means text, `2` adds the progress bar,
-#' `3` adds the finish sound. `exclusion_zone` is used to avoid  trivial matches; if a query data
+#' is printed by this function; `0` means nothing, `1` means text, `2` adds the progress bar.
+#' `exclusion_zone` is used to avoid trivial matches; if a query data
 #' is provided (join similarity), this parameter is ignored.
 #'
 #' Paper that implements `skimp()` suggests that window_max / window_min > than 1.24 begins to

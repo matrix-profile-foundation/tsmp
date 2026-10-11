@@ -14,6 +14,8 @@
 #' @param type the type of result. (Default is `simple`). See details.
 #' @param thr threshold for MPdist. (Default is `0.05`). Don't change this unless you know what you are doing.
 #'
+#' @param n_workers an `int`. Number of threads for parallel computing. (Default is `1`).
+#'
 #' @return Returns the distance of two time series or a vector containing the distance
 #' between all sliding windows.
 #' @export
@@ -40,7 +42,7 @@
 #'
 #' # distance vector between data of different sizes
 #' ddvect <- mpdist(ref_data, qd_data, w, type = "vector")
-mpdist <- function(ref_data, query_data, window_size, type = c("simple", "vector"), thr = 0.05) {
+mpdist <- function(ref_data, query_data, window_size, type = c("simple", "vector"), thr = 0.05, n_workers = 1L) {
   type <- match.arg(type)
 
   # transform data into matrix
@@ -78,28 +80,23 @@ mpdist <- function(ref_data, query_data, window_size, type = c("simple", "vector
   if (type == "simple" || nrow(ref_data) == nrow(query_data)) {
     if (nrow(query_data) == window_size) {
       warning("Distance profile is being used since window_size equals to query size")
-      dist <- dist_profile(ref_data, query_data)$distance_profile
-      dist <- sqrt(cal_mp_dist(dist, thr, nrow(ref_data)))
-    } else {
-      dist <- mpdist_simple(ref_data, query_data, window_size, thr)
     }
+    dist <- mpdist_simple(ref_data, query_data, window_size, thr, n_workers)
   } else {
     obj <- list()
     if (nrow(query_data) == window_size) {
       warning("Distance profile is being used since window_size equals to query size")
-      obj$mpdist <- sqrt(dist_profile(ref_data, query_data)$distance_profile)
-    } else {
-      obj$mpdist <- mpdist_vect(ref_data, query_data, window_size, thr)
     }
+    obj$mpdist <- mpdist_vect(ref_data, query_data, window_size, thr, n_workers)
     obj$w <- window_size
     obj$data <- list(ref_data, query_data)
     class(obj) <- "MPdistProfile"
 
     attr(obj, "origin") <- list(
-      data_size = nrow(ref_data),
-      query_size = nrow(query_data),
+      data_size = NROW(ref_data),
+      query_size = NROW(query_data),
       window_size = window_size,
-      mp_size = nrow(obj$mpdist),
+      mp_size = NROW(obj$mpdist),
       algorithm = "MPdist",
       class = class(obj),
       version = 1.1
@@ -113,21 +110,18 @@ mpdist <- function(ref_data, query_data, window_size, type = c("simple", "vector
 
 #' MP Distance
 #'
-#' @param data reference data
-#' @param query query data
+#' @param ref_data reference data
+#' @param query_data query data
 #' @param window_size window size
 #' @param thr threshold for mpdist
+#' @param n_workers number of threads
 #'
-#' @return Returns the distance vector
+#' @return Returns the distance scalar
 #'
 #' @keywords internal
 #' @noRd
-mpdist_simple <- function(ref_data, query_data, window_size, thr = 0.05) {
-  mp <- matrixprofiler::mpx(data = ref_data, query = query_data, window_size = window_size, idx = FALSE)
-
-  dist <- cal_mp_dist(c(mp$mpa, mp$mpb), thr, nrow(ref_data) + nrow(query_data))
-
-  return(dist)
+mpdist_simple <- function(ref_data, query_data, window_size, thr = 0.05, n_workers = 1L) {
+  matrixprofiler::mpdist(ref_data, query_data, window_size, type = "simple", thr = thr, n_workers = n_workers)
 }
 
 #' MP Distance vector
@@ -136,49 +130,15 @@ mpdist_simple <- function(ref_data, query_data, window_size, thr = 0.05) {
 #' @param query query data
 #' @param window_size window size
 #' @param thr threshold for mpdist
+#' @param n_workers number of threads
 #'
 #' @return Returns the distance vector
 #'
 #' @keywords internal
 #' @noRd
-mpdist_vect <- function(data, query, window_size, thr = 0.05) {
-  nn <- NULL
-  query_size <- nrow(query)
-  data_size <- nrow(data)
-  num_subseqs <- query_size - window_size + 1
-  dist_profile_size <- data_size - window_size + 1
-  mat <- matrix(nrow = num_subseqs, ncol = dist_profile_size)
-
-  for (i in seq_len(num_subseqs)) {
-    nn <- dist_profile(data, query, nn, window_size = window_size, index = i)
-    mat[i, ] <- nn$distance_profile
-  }
-
-  all_right_histogram <- do.call(pmin, as.data.frame(t(mat))) # col min
-
-  mass_dist_slid_min <- matrix(nrow = num_subseqs, ncol = dist_profile_size - num_subseqs + 1)
-  # apply is not faster
-  for (i in seq_len(num_subseqs)) {
-    mass_dist_slid_min[i, ] <- movmin(mat[i, ], num_subseqs)
-  }
-
-  mp_dist_length <- data_size - query_size + 1
-  right_hist_length <- query_size - window_size + 1 # num_subseqs
-  mpdist_array <- vector(mode = "numeric", length = mp_dist_length)
-
-  for (i in seq_len(mp_dist_length)) {
-    right_hist <- all_right_histogram[i:(right_hist_length + i - 1)]
-    left_hist <- mass_dist_slid_min[, i]
-    recreated_mp <- c(left_hist, right_hist)
-    mpdist_array[i] <- cal_mp_dist(recreated_mp, thr, 2 * query_size)
-  }
-
-  mpdist_array[mpdist_array < vars()$eps] <- 0
-  mpdist_array <- sqrt(mpdist_array)
-
-  obj <- as.matrix(mpdist_array)
-
-  return(obj)
+mpdist_vect <- function(data, query, window_size, thr = 0.05, n_workers = 1L) {
+  res <- matrixprofiler::mpdist(data, query, window_size, type = "vector", thr = thr, n_workers = n_workers)
+  return(as.matrix(res))
 }
 
 #' Calculates the distance

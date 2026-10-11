@@ -32,10 +32,10 @@ Search for Discord
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other Main API: 
-\code{\link{analyze}()},
-\code{\link{compute}()},
-\code{\link{motifs}()},
-\code{\link{visualize}()}
+Other Main API:
+\code{\link[=analyze]{analyze()}},
+\code{\link[=compute]{compute()}},
+\code{\link[=motifs]{motifs()}},
+\code{\link[=visualize]{visualize()}}
 }
 \concept{Main API}

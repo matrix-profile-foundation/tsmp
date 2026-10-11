@@ -42,7 +42,9 @@ vignettes/*.R
 *.knit.md
 
 # VSCode
-.vscode/
+.vscode/*
+!.vscode/
+!.vscode/settings.json
 
 ### R.Bookdown Stack ###
 # R package: bookdown caching files

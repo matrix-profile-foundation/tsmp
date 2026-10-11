@@ -40,12 +40,12 @@ Website: \url{https://sites.google.com/site/onlinesemanticsegmentation/}
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other Semantic Segmentations: 
-\code{\link{floss_cac}()},
-\code{\link{floss_extract}()},
-\code{\link{floss}()},
-\code{\link{fluss_cac}()},
-\code{\link{fluss_extract}()},
-\code{\link{fluss_score}()}
+Other Semantic Segmentations:
+\code{\link[=floss]{floss()}},
+\code{\link[=floss_cac]{floss_cac()}},
+\code{\link[=floss_extract]{floss_extract()}},
+\code{\link[=fluss_cac]{fluss_cac()}},
+\code{\link[=fluss_extract]{fluss_extract()}},
+\code{\link[=fluss_score]{fluss_score()}}
 }
 \concept{Semantic Segmentations}

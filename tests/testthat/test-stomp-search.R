@@ -1,5 +1,4 @@
 if (!testthat:::on_cran()) {
-  context("Testing STOMP Search")
   library(tsmp)
 
   data <- mp_toy_data$data[1:200, 1]
@@ -11,7 +10,7 @@ if (!testthat:::on_cran()) {
     expect_equal(motifs$motif$motif_idx[[1]], c(33, 102))
     expect_equal(motifs$motif$motif_idx[[2]], c(9, 127))
     expect_equal(length(motifs$motif$motif_neighbor[[1]]), 1)
-    expect_equal(motifs$motif$motif_neighbor[[2]], c(148, 77))
+    expect_equal(motifs$motif$motif_neighbor[[2]], c(157, 83))
     expect_equal(motifs$motif$motif_window[[1]], 30)
   })
 

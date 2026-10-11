@@ -60,10 +60,10 @@ result <- compute(mp_toy_data$data[, 1])
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other Main API: 
-\code{\link{analyze}()},
-\code{\link{discords}()},
-\code{\link{motifs}()},
-\code{\link{visualize}()}
+Other Main API:
+\code{\link[=analyze]{analyze()}},
+\code{\link[=discords]{discords()}},
+\code{\link[=motifs]{motifs()}},
+\code{\link[=visualize]{visualize()}}
 }
 \concept{Main API}

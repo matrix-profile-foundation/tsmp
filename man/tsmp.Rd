@@ -8,14 +8,13 @@ tsmp(
   ...,
   window_size,
   exclusion_zone = getOption("tsmp.exclusion_zone", 1/2),
-  mode = c("stomp", "stamp", "simple", "mstomp", "scrimp", "valmod", "pmp"),
+  mode = c("stomp", "mpx", "stamp", "simple", "mstomp", "scrimp", "valmod", "pmp"),
   verbose = getOption("tsmp.verbose", 2),
   n_workers = 1,
   s_size = Inf,
   must_dim = NULL,
   exc_dim = NULL,
   heap_size = 50,
-  paa = 1,
   .keep_data = TRUE
 )
 }
@@ -29,7 +28,7 @@ profile (except for \code{\link[=mstomp]{mstomp()}}).}
 \code{1/2}). See details.}
 
 \item{mode}{the algorithm that will be used to compute the matrix profile. (Default is \code{stomp}).
-See details.}
+Can be \code{stomp}, \code{mpx}, \code{stamp}, \code{simple}, \code{mstomp}, \code{scrimp}, \code{valmod}, \code{pmp}. See details.}
 
 \item{verbose}{an \code{int}. (Default is \code{2}). See details.}
 
@@ -45,8 +44,6 @@ See details.}
 details.}
 
 \item{heap_size}{an \code{int}. (Default is \code{50}). Size of the distance profile heap buffer.}
-
-\item{paa}{an \code{int}. (Default is \code{1}). Factor of PAA reduction (2 == half of size)}
 
 \item{.keep_data}{a \code{logical}. (Default is \code{TRUE}). Keeps the data embedded to resultant object.}
 }
@@ -65,21 +62,21 @@ of its generality, versatility, simplicity and scalability. In particular it has
 for time series motif discovery, time series joins, shapelet discovery (classification),
 density estimation, semantic segmentation, visualization, rule discovery, clustering etc.
 
-The first algorithm invented was the \code{\link[=stamp]{stamp()}} that using \code{\link[=mass]{mass()}} as an ultra-fast Algorithm
+The first algorithm invented was the \code{\link[matrixprofiler:stamp]{stamp()}} that using \code{\link[matrixprofiler:mass]{mass()}} as an ultra-fast Algorithm
 for Similarity Search allowed to compute the Matrix Profile in reasonable time. One of its main
 feature was its Anytime property which using a randomized approach could return a "best-so-far"
 matrix that could give us the correct answer (using for example 1/10 of all iterations) almost
 every time.
 
-The next algorithm was \code{\link[=stomp]{stomp()}} that currently is the most used. Researchers noticed that the
+The next algorithm was \code{\link[matrixprofiler:stomp]{stomp()}} that currently is the most used. Researchers noticed that the
 dot products do not need to be recalculated from scratch for each subsequence. Instead, we can
 reuse the values calculated for the first subsequence to make a faster calculation in the next
 iterations. The idea is to make use of the intersections between the required products in
 consecutive iterations. This approach reduced the time to compute the Matrix Profile to about
-3\% compared to \code{\link[=stamp]{stamp()}}, but on the other hand, we lost the Anytime property.
+3\% compared to \code{\link[matrixprofiler:stamp]{stamp()}}, but on the other hand, we lost the Anytime property.
 
-Currently there is a new algorithm that I'll not explain further here. It is called \code{\link[=scrimp]{scrimp()}},
-and is as fast as \code{\link[=stomp]{stomp()}}, and have the Anytime property. This algorithm is implemented in
+Currently there is a new algorithm that I'll not explain further here. It is called \code{\link[matrixprofiler:scrimp]{scrimp()}},
+and is as fast as \code{\link[matrixprofiler:stomp]{stomp()}}, and have the Anytime property. This algorithm is implemented in
 this package, but still waiting for an article publication.
 
 Further, there is the \code{\link[=mstomp]{mstomp()}} that computes a multidimensional Matrix Profile that allows to
@@ -98,15 +95,15 @@ Some parameters are global across the algorithms:
 \item{exclusion_zone}{Is used to avoid trivial matches; if a query data is provided
 (join similarity), this parameter is ignored.}
 \item{verbose}{Changes how much information is printed by this function; \code{0} means nothing,
-\code{1} means text, \code{2} adds the progress bar, \code{3} adds the finish sound.}
+\code{1} means text, \code{2} adds the progress bar.}
 \item{n_workers}{number of threads for parallel computing (except \code{simple_fast}, \code{scrimp} and \code{valmod}).
 If the value is 2 or more, the '_par' version of the algorithm will be used.}
 }
 
-\code{s_size} is used only in Anytime algorithms: \code{\link[=stamp]{stamp()}} and \code{\link[=scrimp]{scrimp()}}.
+\code{s_size} is used only in Anytime algorithms: \code{\link[matrixprofiler:stamp]{stamp()}}, \code{\link[matrixprofiler:scrimp]{scrimp()}} and \code{\link[matrixprofiler:mpx]{mpx()}}.
 \code{must_dim} and \code{exc_dim} are used only in \code{\link[=mstomp]{mstomp()}}.
 \code{heap_size} is used only for \code{\link[=valmod]{valmod()}}
-\code{mode} can be any of the following: \code{stomp}, \code{stamp}, \code{simple}, \code{mstomp}, \code{scrimp}, \code{valmod}, \code{pmp}.
+\code{mode} can be any of the following: \code{stomp}, \code{mpx}, \code{stamp}, \code{simple}, \code{mstomp}, \code{scrimp}, \code{valmod}, \code{pmp}.
 }
 \examples{
 # default with [stomp()]
@@ -165,8 +162,8 @@ Website: \url{https://sites.google.com/site/ismir2016simple/home}
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other matrix profile computations: 
-\code{\link{mstomp_par}()},
-\code{\link{valmod}()}
+Other matrix profile computations:
+\code{\link[=mstomp_par]{mstomp_par()}},
+\code{\link[=valmod]{valmod()}}
 }
 \concept{matrix profile computations}

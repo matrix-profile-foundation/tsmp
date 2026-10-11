@@ -43,13 +43,29 @@ BugReports: https://github.com/matrix-profile-foundation/tsmp/issues
 Depends:
     R (>= 4.0)
 Imports:
+    checkmate (>= 2.0.0),
+    glue,
+    graphics,
+    grDevices,
+    magrittr,
     matrixprofiler (>= 0.1.5),
-    checkmate (>= 2.0.0)
+    stats,
+    utils
 Suggests:
-    testthat (>= 3.0.2),
+    covr,
     debugme (>= 1.1.0),
+    digest,
+    doSNOW,
+    foreach,
+    knitr,
+    parallel,
+    progress (>= 1.2.2),
+    raster,
+    RJSONIO,
+    rmarkdown,
     spelling (>= 2.2.0),
-    progress (>= 1.2.2)
+    testthat (>= 3.0.2),
+    vdiffr
 VignetteBuilder:
     knitr
 Encoding: UTF-8
@@ -57,6 +73,6 @@ Language: en-US
 LazyData: true
 NeedsCompilation: no
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
 Config/testthat/edition: 3
 Config/testthat/parallel: true
+Config/roxygen2/version: 8.1.0

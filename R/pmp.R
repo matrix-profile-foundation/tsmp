@@ -29,7 +29,7 @@
 #' If an object is provided by the argument `pmp_obj`, this function will add more information to the resulting object,
 #' never changing the values already computed.
 #' `verbose` changes how much information is printed by this function; `0` means nothing, `1` means text, `2`
-#' adds the progress bar, `3` adds the finish sound.
+#' adds the progress bar.
 #'
 #' Talk about upper bound and window sizes
 #' 1. upper_window will be set to Inf on new objects
@@ -170,7 +170,7 @@ pmp <- function(data,
   }
 
   # Determine the order in which we will explore the window_sizes
-  split_idx <- binary_split(length(window_sizes))
+  split_idx <- matrixprofiler::binary_split(length(window_sizes))
 
   ## Begin the main Loop ----
 
@@ -200,13 +200,13 @@ pmp <- function(data,
     # if pmp_obj is a new empty object, accessing windows will return NULL, so it's fine
     pmp_obj$w <- c(pmp_obj$w, w)
     # using character to create a tuple list. Numbers would create NULL's
-    pmp_obj$pmp[[as.character(w)]] <- result$mp
-    pmp_obj$pmpi[[as.character(w)]] <- result$pi
+    pmp_obj$pmp[[as.character(w)]] <- result$matrix_profile
+    pmp_obj$pmpi[[as.character(w)]] <- result$profile_index
 
     if (plot == TRUE) {
       # add a layer to the plot. `pmp_obj$w` is currently used to know the heigth of
       # the new layer. May be room to improve.
-      skimp_plot_add_layer(result$mp, w, pmp_obj$w)
+      skimp_plot_add_layer(result$matrix_profile, w, pmp_obj$w)
       Sys.sleep(1) # needed for plot update
     }
   }
@@ -246,7 +246,7 @@ pmp <- function(data,
 #' the `threshold` value is hit.
 #'
 #' `verbose` changes how much information is printed by this function; `0` means nothing, `1` means text, `2`
-#' adds the progress bar, `3` adds the finish sound.
+#' adds the progress bar.
 #'
 #' @return Returns a `PMP` object with computed data, or just the upper bound value if `return_pmp` is set to `FALSE`.
 #' @export
@@ -304,7 +304,7 @@ pmp_upper_bound <- function(data,
       return()
     }
 
-    correlation_max <- max(result$mp[!is.infinite(result$mp)], na.rm = TRUE)
+    correlation_max <- max(result$matrix_profile[!is.infinite(result$matrix_profile)], na.rm = TRUE)
 
     if (correlation_max < threshold) {
       # message("break at ", window_size)
@@ -312,8 +312,8 @@ pmp_upper_bound <- function(data,
     }
 
     if (return_pmp) {
-      pmp[[as.character(window_size)]] <- corr_ed(result$mp, window_size)
-      pmpi[[as.character(window_size)]] <- result$pi
+      pmp[[as.character(window_size)]] <- matrixprofiler::corr_ed(result$matrix_profile, window_size)
+      pmpi[[as.character(window_size)]] <- result$profile_index
     }
 
     windows <- c(windows, window_size)
@@ -337,11 +337,11 @@ pmp_upper_bound <- function(data,
 
       windows <- c(windows, window_size)
 
-      correlation_max <- max(result$mp[!is.infinite(result$mp)], na.rm = TRUE)
+      correlation_max <- max(result$matrix_profile[!is.infinite(result$matrix_profile)], na.rm = TRUE)
 
       if (return_pmp) {
-        pmp[[as.character(window_size)]] <- corr_ed(result$mp, window_size)
-        pmpi[[as.character(window_size)]] <- result$pi
+        pmp[[as.character(window_size)]] <- matrixprofiler::corr_ed(result$matrix_profile, window_size)
+        pmpi[[as.character(window_size)]] <- result$profile_index
       }
 
       if (correlation_max < threshold) {

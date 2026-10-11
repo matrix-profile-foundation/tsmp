@@ -1,0 +1,23 @@
+{
+  "bioconductor.version": [],
+  "external.libraries": [
+    "/home/franz/.cache/R/renv/library/matrixprofiler-b96a41f5/linux-ubuntu-noble/R-4.6/x86_64-pc-linux-gnu"
+  ],
+  "ignored.packages": [
+    "tsmp"
+  ],
+  "package.dependency.fields": [
+    "Imports",
+    "Depends",
+    "LinkingTo"
+  ],
+  "ppm.enabled": null,
+  "ppm.ignored.urls": [],
+  "r.version": null,
+  "snapshot.type": "explicit",
+  "use.cache": true,
+  "vcs.ignore.cellar": true,
+  "vcs.ignore.library": true,
+  "vcs.ignore.local": true,
+  "vcs.manage.ignores": true
+}

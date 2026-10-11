@@ -1,7 +1,6 @@
 if (!testthat:::on_cran()) {
-  context("Testing API visualize")
+  skip_if_not_installed("vdiffr")
   library(tsmp)
-  library(vdiffr)
 
   ts <- mp_toy_data$data[, 1]
 

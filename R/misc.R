@@ -1,30 +1,94 @@
-
-convert_data <- function(data) {
-  # TODO: get the name of the variable before data.
-  if (!is.null(data)) {
-    ts_class <- class(data)
-
-    if (ts_class[[1]] == "numeric") {
-      return(invisible(data)) # fast track
-    }
-
-    result <- FALSE
-    for (class in ts_class) {
-      if (class %in% c("data.frame", "list")) {
-        result <- TRUE
-      } else if (class == "array") {
-        if (length(dim(data)) > 1) {
-          result <- TRUE
-        }
-      }
-    }
-    if (result) {
-      var_name <- substitute(data)
-      stop(glue::glue("Argument `{var_name}` cannot be `{ts_class}` and must have a single dimension."))
-    }
+#' Standardize Time Series Input Data
+#'
+#' Converts various formats of input data (vectors, 1D matrices, 2D matrices,
+#' data frames, lists) into a standardized format: atomic 1D numeric vector for
+#' univariate time series, or numeric matrix with observations as rows and
+#' dimensions as columns for multivariate time series.
+#'
+#' @param data a `vector`, `matrix`, `data.frame`, or `list` of time series.
+#'
+#' @return An atomic `numeric` vector (for univariate) or a `matrix` of `numeric`
+#'   with dimensions \eqn{N \times D} (for multivariate). Returns `NULL` if `data` is `NULL`.
+#'
+#' @export
+as_ts_data <- function(data) {
+  if (is.null(data)) {
+    return(NULL)
   }
 
-  return(invisible(as.numeric(data)))
+  # Data frames:
+  if (is.data.frame(data)) {
+    if (ncol(data) == 1L) {
+      return(as.numeric(data[[1L]]))
+    }
+    mat <- data.matrix(data)
+    storage.mode(mat) <- "double"
+    return(mat)
+  }
+
+  # Lists (and not data frames):
+  if (is.list(data)) {
+    if (length(data) == 0L) {
+      return(numeric(0))
+    }
+    if (length(data) == 1L) {
+      return(as_ts_data(data[[1L]]))
+    }
+    # List of multiple time series:
+    converted <- lapply(data, as_ts_data)
+    if (any(vapply(converted, is.matrix, logical(1L)))) {
+      stop("Elements in a time series list must be univariate vectors or 1D matrices.")
+    }
+    lens <- vapply(converted, length, integer(1L))
+    if (length(unique(lens)) > 1L) {
+      stop(sprintf("All time series in list must have the same length (found lengths: %s).",
+                   paste(lens, collapse = ", ")))
+    }
+    mat <- do.call(cbind, converted)
+    storage.mode(mat) <- "double"
+    dimnames(mat) <- NULL
+    return(mat)
+  }
+
+  # Arrays / Matrices:
+  if (is.array(data)) {
+    dims <- dim(data)
+    if (length(dims) > 2L) {
+      stop(glue::glue("Time series data cannot have more than 2 dimensions (found {length(dims)})."))
+    }
+    if (length(dims) == 1L) {
+      return(as.numeric(data))
+    }
+    # 2D Matrix:
+    n_rows <- dims[1L]
+    n_cols <- dims[2L]
+    if (n_rows == 1L || n_cols == 1L) {
+      return(as.numeric(data))
+    }
+    # Multivariate 2D matrix:
+    # If horizontal (rows < cols), transpose so rows are observations and cols are dimensions
+    if (n_rows < n_cols) {
+      mat <- t(data)
+    } else {
+      mat <- data
+    }
+    storage.mode(mat) <- "double"
+    dimnames(mat) <- NULL
+    return(mat)
+  }
+
+  # Atomic vectors:
+  if (is.atomic(data)) {
+    return(as.numeric(data))
+  }
+
+  as.numeric(data)
+}
+
+#' @rdname as_ts_data
+#' @export
+convert_data <- function(data) {
+  as_ts_data(data)
 }
 
 
@@ -123,13 +187,19 @@ bubble_up <- function(data, len) {
 #' # TODO: Refactor
 #' #
 min_mp_idx <- function(.mp, n_dim = NULL, valid = TRUE) {
+  # Support both 1D atomic vectors and 2D matrices
+  if (is.null(dim(.mp$mp))) {
+    .mp$mp <- matrix(.mp$mp, ncol = 1L)
+    .mp$pi <- matrix(.mp$pi, ncol = 1L)
+  }
+
   if (!is.null(n_dim)) {
     .mp$mp <- .mp$mp[, n_dim, drop = FALSE]
     .mp$pi <- .mp$pi[, n_dim, drop = FALSE]
   }
 
   n_dim <- ncol(.mp$mp)
-  mp_size <- nrow(.mp$mp)
+  mp_size <- NROW(.mp$mp)
   min <- apply(.mp$mp, 2, which.min) # support for multidimensional matrix profile
 
   if (any(min == 1) && any(is.infinite(.mp$mp[1, (min == 1)]))) {
@@ -143,8 +213,10 @@ min_mp_idx <- function(.mp, n_dim = NULL, valid = TRUE) {
   }
 
   if (valid) {
-    if (all(nn_min > 0 & nn_min <= mp_size) &&
-      all(!is.infinite(diag(.mp$mp[nn_min, ], names = FALSE)))) {
+    valid_nn <- !is.na(nn_min) & nn_min > 0 & nn_min <= mp_size
+    valid_diag <- all(valid_nn) && all(!is.infinite(.mp$mp[cbind(nn_min, seq_len(n_dim))]))
+
+    if (valid_diag) {
       return(cbind(min, nn_min, deparse.level = 0))
     }
 
@@ -165,8 +237,10 @@ min_mp_idx <- function(.mp, n_dim = NULL, valid = TRUE) {
           nn_min <- c(nn_min, .mp$pi[min[i], i])
         }
 
-        if (all(nn_min > 0 & nn_min <= mp_size) &&
-          all(!is.infinite(diag(.mp$mp[nn_min, ], names = FALSE)))) {
+        valid_nn <- !is.na(nn_min) & nn_min > 0 & nn_min <= mp_size
+        valid_diag <- all(valid_nn) && all(!is.infinite(.mp$mp[cbind(nn_min, seq_len(n_dim))]))
+
+        if (valid_diag) {
           return(cbind(min, nn_min, deparse.level = 0))
         } else {
           for (i in seq_len(n_dim)) {
@@ -483,7 +557,7 @@ discrete_norm_pre <- function(data, window_size = 1) {
       window <- data[i:(i + window_size - 1), ]
     }
     window_mean <- mean(window)
-    window_sd <- std(window)
+    window_sd <- matrixprofiler::std(window)
     if (window_sd == 0) {
       window <- (window - window_mean)
     } else {
@@ -517,7 +591,7 @@ discrete_norm_pre <- function(data, window_size = 1) {
 discrete_norm <- function(data, n_bits, max, min) {
   # normalize magnitude
   data_mean <- mean(data)
-  data_sd <- std(data)
+  data_sd <- matrixprofiler::std(data)
 
   if (data_sd == 0) {
     data <- (data - data_mean)
@@ -595,7 +669,7 @@ discretization <- function(motif, split_pt) {
   dimmotif <- dim(motif)
 
   for (i in 1:dimmotif[2]) {
-    motif[, i] <- (motif[, i] - mean(motif[, i])) / std(motif[, i])
+    motif[, i] <- (motif[, i] - mean(motif[, i])) / matrixprofiler::std(motif[, i])
   }
 
   disc <- matrix(0, dimmotif[1], dimmotif[2])
@@ -669,7 +743,7 @@ set_data <- function(.mp, data) {
     data <- lapply(data, as.matrix)
 
     # data should be this size
-    data_size <- (nrow(.mp$mp) + .mp$w - 1)
+    data_size <- (NROW(.mp$mp) + .mp$w - 1)
 
     for (i in seq_len(length(data))) {
       if (nrow(data[[i]]) != data_size) {
@@ -946,4 +1020,30 @@ as.salient <- function(.mp) { # nolint
   class(.mp) <- update_class(class(.mp), "Salient")
 
   return(.mp)
+}
+
+#' Piecewise Aggregate Approximation
+#'
+#' @param data a `vector` or `matrix` of `numeric`.
+#' @param k an `integer`. Factor of PAA reduction.
+#' @return Returns the PAA reduced data.
+#' @export
+paa <- function(data, k) {
+  if (k <= 1) {
+    return(data)
+  }
+  colMeans(matrix(data, nrow = k))
+}
+
+#' Inverse Piecewise Aggregate Approximation
+#'
+#' @param data a `vector` or `matrix` of `numeric`.
+#' @param k an `integer`. Factor of inverse PAA expansion.
+#' @return Returns the expanded data.
+#' @export
+ipaa <- function(data, k) {
+  if (k <= 1) {
+    return(data)
+  }
+  rep(data, each = k)
 }

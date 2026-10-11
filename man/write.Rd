@@ -2,11 +2,12 @@
 % Please edit documentation in R/serialize.R
 \name{write}
 \alias{write}
+\alias{ensure_rjsonio}
 \alias{write.MatrixProfile}
 \alias{write.PMP}
 \title{Write a TSMP object to JSON file.}
 \usage{
-write(x, ...)
+ensure_rjsonio()
 
 \method{write}{MatrixProfile}(x, file, ...)
 
@@ -15,9 +16,9 @@ write(x, ...)
 \arguments{
 \item{x}{a \code{MatrixProfile} or \code{PMP} object. If not, the \code{base::write()} function will be called.}
 
-\item{...}{other arguments to be passed forward.}
-
 \item{file}{a \code{character} string with the output filename.}
+
+\item{...}{other arguments to be passed forward.}
 }
 \description{
 Write a TSMP object to JSON file.

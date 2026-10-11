@@ -1,5 +1,4 @@
 if (!testthat:::on_cran()) {
-  context("Testing API analyze")
   library(tsmp)
 
   ts <- mp_toy_data$data[, 1]
@@ -24,10 +23,10 @@ if (!testthat:::on_cran()) {
     expect_s3_class(result_single, "MatrixProfile")
     expect_length(result_single, 12)
     expect_false(attr(result_single, "join"))
-    expect_equal(round(mean(result_single$mp), 3), 2.817)
-    expect_equal(round(sd(result_single$mp), 4), 0.8975)
-    expect_equal(round(mean(result_single$pi), 4), 241.0192)
-    expect_equal(round(sd(result_single$pi), 4), 157.7044)
+    expect_equal(round(mean(result_single$mp), 3), 2.818)
+    expect_equal(round(sd(result_single$mp), 4), 0.8968)
+    expect_equal(round(mean(result_single$pi), 4), 243.1209)
+    expect_equal(round(sd(result_single$pi), 4), 157.5253)
   })
 
 
@@ -59,9 +58,9 @@ if (!testthat:::on_cran()) {
     expect_false(attr(result_multiple, "join"))
     expect_equal(result_multiple$ez, 0.5)
     expect_equal(result_multiple$upper_window, 20)
-    expect_equal(round(mean(unlist(result_multiple$pmp)), 4), 1.6873)
-    expect_equal(round(sd(unlist(result_multiple$pmp)), 3), 0.717)
-    expect_equal(round(mean(unlist(result_multiple$pmpi)), 4), 266.6235)
-    expect_equal(round(sd(unlist(result_multiple$pmpi)), 4), 151.8338)
+    expect_equal(round(mean(unlist(result_multiple$pmp)), 4), 1.6902)
+    expect_equal(round(sd(unlist(result_multiple$pmp)), 3), 0.716)
+    expect_equal(round(mean(unlist(result_multiple$pmpi)), 4), 267.4353)
+    expect_equal(round(sd(unlist(result_multiple$pmpi)), 4), 152.5967)
   })
 }

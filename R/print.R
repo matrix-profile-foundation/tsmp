@@ -10,14 +10,14 @@ print.Valmod <- function(x, ...) {
   cat("Valmod Matrix Profile\n")
   cat("---------------------\n")
 
-  cat("Profile size =", nrow(x$mp), "\n")
+  cat("Profile size =", NROW(x$mp), "\n")
   cat("Window size =", min(x$w), "-", max(x$w), "\n")
   cat("Exclusion zone =", x$ez, "times the windows size\n")
 
   if (!is.null(x$data)) {
     set <- length(x$data)
-    obs <- nrow(x$data[[1]])
-    dim <- ncol(x$data[[1]])
+    obs <- NROW(x$data[[1]])
+    dim <- NCOL(x$data[[1]])
     cat(
       "Contains", set, ifelse(set > 1, "sets", "set"), "of data with", obs, "observations and", dim,
       ifelse(dim > 1, "dimensions", "dimension"), "\n"
@@ -37,14 +37,14 @@ print.MatrixProfile <- function(x, ...) {
   cat("Matrix Profile\n")
   cat("--------------\n")
 
-  cat("Profile size =", nrow(x$mp), "\n")
+  cat("Profile size =", NROW(x$mp), "\n")
   cat("Window size =", x$w, "\n")
   cat("Exclusion zone =", round(x$w * x$ez + vars()$eps), "\n")
 
   if (!is.null(x$data)) {
     set <- length(x$data)
-    obs <- nrow(x$data[[1]])
-    dim <- ncol(x$data[[1]])
+    obs <- NROW(x$data[[1]])
+    dim <- NCOL(x$data[[1]])
     cat(
       "Contains", set, ifelse(set > 1, "sets", "set"), "of data with", obs, "observations and", dim,
       ifelse(dim > 1, "dimensions", "dimension"), "\n"
@@ -65,7 +65,7 @@ print.MultiMatrixProfile <- function(x, ...) {
   cat("Multidimensional Matrix Profile\n")
   cat("-------------------------------\n")
 
-  cat("Profile size =", nrow(x$mp), "\n")
+  cat("Profile size =", NROW(x$mp), "\n")
   cat("Dimensions =", x$n_dim, "\n")
   cat("Window size =", x$w, "\n")
   cat("Exclusion zone =", round(x$w * x$ez + vars()$eps), "\n")
@@ -74,8 +74,8 @@ print.MultiMatrixProfile <- function(x, ...) {
 
   if (!is.null(x$data)) {
     set <- length(x$data)
-    obs <- nrow(x$data[[1]])
-    dim <- ncol(x$data[[1]])
+    obs <- NROW(x$data[[1]])
+    dim <- NCOL(x$data[[1]])
     cat(
       "Contains", set, ifelse(set > 1, "sets", "set"), "of data with", obs, "observations and", dim,
       ifelse(dim > 1, "dimensions", "dimension"), "\n"
@@ -120,15 +120,15 @@ print.SimpleMatrixProfile <- function(x, ...) {
   cat("SiMPle Matrix Profile\n")
   cat("---------------------\n")
 
-  cat("Profile size =", nrow(x$mp), "\n")
+  cat("Profile size =", NROW(x$mp), "\n")
   cat("Dimensions =", x$n_dim, "\n")
   cat("Window size =", x$w, "\n")
   cat("Exclusion zone =", round(x$w * x$ez + vars()$eps), "\n")
 
   if (!is.null(x$data)) {
     set <- length(x$data)
-    obs <- nrow(x$data[[1]])
-    dim <- ncol(x$data[[1]])
+    obs <- NROW(x$data[[1]])
+    dim <- NCOL(x$data[[1]])
     cat(
       "Contains", set, ifelse(set > 1, "sets", "set"), "of data with", obs, "observations and", dim,
       ifelse(dim > 1, "dimensions", "dimension"), "\n"

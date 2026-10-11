@@ -5,7 +5,7 @@
 #'
 #' @details
 #' `verbose` changes how much information is printed by this function; `0` means nothing,
-#' `1` means text, `2` adds the progress bar, `3` adds the finish sound.
+#' `1` means text, `2` adds the progress bar.
 #'
 #' @param .mp a TSMP object of class `MatrixProfile`.
 #' @param data the data used to build the Matrix Profile, if not embedded.
@@ -103,7 +103,7 @@ salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_z
   }
   else {
     # get data size
-    matrix_profile_size <- nrow(.mp$mp)
+    matrix_profile_size <- NROW(.mp$mp)
     max_index_num <- round(data_size / .mp$w + vars()$eps)
   }
 
@@ -366,7 +366,7 @@ salient_mds <- function(.mp, data, bit_idx = 1) {
 
   for (i in seq_len(nrow(.mp$salient$indexes))) {
     subs[[i]] <- data[.mp$salient$indexes[i, bit_idx]:(.mp$salient$indexes[i, bit_idx] + .mp$w - 1), ]
-    subs[[i]] <- (subs[[i]] - mean(subs[[i]])) / std(subs[[i]]) # normalize
+    subs[[i]] <- (subs[[i]] - mean(subs[[i]])) / matrixprofiler::std(subs[[i]]) # normalize
   }
 
   subs <- t(sapply(subs, rbind, simplify = TRUE))

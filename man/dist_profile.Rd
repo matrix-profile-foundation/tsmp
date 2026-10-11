@@ -6,14 +6,15 @@
 \usage{
 dist_profile(
   data,
-  query,
-  ...,
+  query = data,
+  params = NULL,
   window_size = NULL,
-  method = "v3",
   index = 1,
-  k = NULL,
-  weight = NULL,
-  paa = 1
+  method = c("v3", "v2", "weighted"),
+  type = c("normalized", "non_normalized", "absolute", "weighted"),
+  weights = NULL,
+  weight = weights,
+  ...
 )
 }
 \arguments{
@@ -21,22 +22,20 @@ dist_profile(
 
 \item{query}{a \code{matrix} or a \code{vector}. See details.}
 
-\item{\dots}{Precomputed values from the first iteration. If not supplied, these values will be computed.}
+\item{params}{Precomputed values from the first iteration. If not supplied, these values will be computed.}
 
 \item{window_size}{an \code{int} or \code{NULL}. Sliding window size. See details.}
 
-\item{method}{method that will be used to calculate the distance profile. See details.}
-
 \item{index}{an \code{int}. Index of query window. See details.}
 
-\item{k}{an \code{int} or \code{NULL}. Default is \code{NULL}. Defines the size of batch for MASS V3. Prefer to
-use a power of 2. If \code{NULL}, it will be set automatically.}
+\item{method}{method that will be used to calculate the distance profile. See details.}
 
-\item{weight}{a \code{vector} of \code{numeric} or \code{NULL} with the same length of the \code{window_size}. This is
+\item{type}{comparison type used by MASS: \code{"normalized"}, \code{"non_normalized"}, \code{"absolute"}, or \code{"weighted"}.}
+
+\item{weights, weight}{a \code{vector} of \code{numeric} or \code{NULL} with the same length of the \code{window_size}. This is
 a MASS extension to weight the query.}
 
-\item{paa}{a \code{numeric}. Default is \code{1}. Factor of PAA reduction (2 == half of size). This is a
-MASS extension.}
+\item{\dots}{Placeholder for legacy arguments.}
 }
 \value{
 Returns the \code{distance_profile} for the given query and the \code{last_product} for STOMP

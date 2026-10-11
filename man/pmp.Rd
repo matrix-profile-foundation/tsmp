@@ -52,7 +52,7 @@ of 20 values between 10 and the half data size and the resulting object will hav
 If an object is provided by the argument \code{pmp_obj}, this function will add more information to the resulting object,
 never changing the values already computed.
 \code{verbose} changes how much information is printed by this function; \code{0} means nothing, \code{1} means text, \code{2}
-adds the progress bar, \code{3} adds the finish sound.
+adds the progress bar.
 
 Talk about upper bound and window sizes
 \enumerate{

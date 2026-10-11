@@ -1,5 +1,4 @@
 if (!testthat:::on_cran()) {
-  context("Testing if basic functions are ok")
   library(tsmp)
   w <- 30
   ref_data <- mp_toy_data$data[, 1]
@@ -46,11 +45,11 @@ if (!testthat:::on_cran()) {
 
 
   test_that("Fast Moving SD is ok", {
-    expect_known_hash(round(movsd, 3), "ffda40fd35")
+    expect_hash(round(movsd, 3), "ffda40fd35")
   })
 
   test_that("Fast Moving Average is ok", {
-    expect_known_hash(round(movavg, 3), "601febe569")
+    expect_hash(round(movavg, 3), "601febe569")
   })
 
   test_that("MASS Pre is ok", {
@@ -73,7 +72,7 @@ if (!testthat:::on_cran()) {
   fs2 <- sdts_score(pred, mp_test_data$train$label, 1)
 
   test_that("F-Score is ok", {
-    expect_known_hash(lapply(fs1, round, 3), "8241d8411e")
-    expect_known_hash(lapply(fs2, round, 3), "ad8b052f2c")
+    expect_hash(lapply(fs1, round, 3), "8241d8411e")
+    expect_hash(lapply(fs2, round, 3), "ad8b052f2c")
   })
 }

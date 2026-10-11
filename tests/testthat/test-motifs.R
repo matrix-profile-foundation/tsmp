@@ -1,5 +1,4 @@
 if (!testthat:::on_cran()) {
-  context("Testing API motifs")
   library(tsmp)
 
   ts <- mp_toy_data$data[, 1]

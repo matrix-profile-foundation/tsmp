@@ -1,5 +1,4 @@
 if (!testthat:::on_cran()) {
-  context("Testing SiMPle Fast")
   library(tsmp)
 
   w <- 30

@@ -12,6 +12,12 @@
 #' \donttest{
 #' write(result, file = file.path(tempdir(), "output.json"))
 #' }
+ensure_rjsonio <- function() {
+  if (!requireNamespace("RJSONIO", quietly = TRUE)) {
+    stop("Package 'RJSONIO' is required for JSON serialization. Please install it.", call. = FALSE)
+  }
+}
+
 write <- function(x, ...) {
   UseMethod("write")
 }
@@ -25,8 +31,8 @@ write.default <- function(x, ...) {
 
 #' @name write
 #' @export
-
 write.MatrixProfile <- function(x, file, ...) {
+  ensure_rjsonio()
 
   # Parse arguments ---------------------------------
   checkmate::qassert(file, "S+")
@@ -70,6 +76,7 @@ write.MatrixProfile <- function(x, file, ...) {
 #' @name write
 #' @export
 write.PMP <- function(x, file, ...) {
+  ensure_rjsonio()
 
   # Parse arguments ---------------------------------
   checkmate::qassert(file, "S+")
@@ -131,6 +138,7 @@ read <- function(x, ...) {
 
 #' @export
 read.default <- function(x, ...) {
+  ensure_rjsonio()
   mp <- RJSONIO::fromJSON(x, asText = FALSE, simplify = TRUE)
 
   if (mp$class == "MatrixProfile") {

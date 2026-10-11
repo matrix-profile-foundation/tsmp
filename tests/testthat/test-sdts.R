@@ -1,5 +1,4 @@
 if (!testthat:::on_cran()) {
-  context("Testing SDTS functions")
   library(tsmp)
 
   test_that("Errors", {
@@ -37,7 +36,7 @@ if (!testthat:::on_cran()) {
   })
 
   test_that("SDTS Predict", {
-    expect_known_hash(predict, "72ddd7b33b")
+    expect_hash(predict, "72ddd7b33b")
   })
 
   test_that("SDTS F Score", {

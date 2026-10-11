@@ -1,5 +1,4 @@
 if (!testthat:::on_cran()) {
-  context("Testing if mass v2 and mass v3 agrees")
   library(tsmp)
 
   ref_data <- mp_fluss_data$tilt_abp$data[1:1000]
@@ -9,7 +8,7 @@ if (!testthat:::on_cran()) {
   windows <- windows[windows > 4]
 
   for (w in windows) {
-    for (i in sample(length(ref_data), 10)) {
+    for (i in sample(length(ref_data) - w + 1, min(10, length(ref_data) - w + 1))) {
       nn2 <- dist_profile(ref_data, ref_data, window_size = w, index = i, method = "v2")
       nn3 <- dist_profile(ref_data, ref_data, window_size = w, index = i, method = "v3")
       alleq <- all(

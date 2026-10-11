@@ -210,10 +210,10 @@ av_stop_word <- function(.mp, data, stop_word_loc, exclusion_zone = NULL, thresh
   checkmate::qassert(threshold, "N1(0,1]")
   apply <- checkmate::qassert(apply, "B1")
 
-  checkmate::qassert(exclusion_zone, "n1[0,)")
-
   if (is.null(exclusion_zone)) {
     exclusion_zone <- checkmate::qassert(.mp$ez, "n1[0,)")
+  } else {
+    checkmate::qassert(exclusion_zone, "n1[0,)")
   }
 
   # Create the AV ----

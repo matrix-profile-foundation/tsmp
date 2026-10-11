@@ -1,5 +1,4 @@
 if (!testthat:::on_cran()) {
-  context("Testing mSTOMP Search")
   library(tsmp)
 
   data <- mp_toy_data$data[1:200, ]

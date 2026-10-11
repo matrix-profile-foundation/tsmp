@@ -208,7 +208,7 @@ find_discord.PMP <- function(.mp, data, n_discords = 1, n_neighbors = 3, radius 
     discord_idxs[[1L]][[i]] <- discord_idx
 
     # query using the discord to find its neighbors
-    nn <- dist_profile(data, data, nn, window_size = .mp$w, index = discord_idx)
+    nn <- dist_profile(data, data, nn, window_size = .mp$w[row], index = discord_idx)
 
     distance_profile <- nn$distance_profile
     distance_profile[distance_profile > (discord_distance * radius)^2] <- Inf

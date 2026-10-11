@@ -9,14 +9,14 @@
 #' @details
 #' `beta` is used to balance F-score towards recall (`>1`) or precision (`<1`). `verbose` changes
 #' how much information is printed by this function; `0` means nothing, `1` means text, `2` adds the
-#' progress bar, `3` adds the finish sound.
+#' progress bar.
 #'
 #' @param data a `vector` of `numeric`. Time series.
 #' @param label a `vector` of `logical`. Annotations.
 #' @param window_size an `int` or a `vector` of `int`. Sliding window sizes.
 #' @param beta a `numeric`. See details. (default is `1`).
 #' @param pat_max an `int`. Max number of shape features captured. (default is `Inf`).
-#' @param parallel a `logical`. Use parallel computation inside (default is `FALSE`).
+#' @param n_workers an `int`. Number of workers for parallel execution. (default is `1`).
 #' @param verbose an `int`. See details. (Default is `2`).
 #'
 #' @return Returns a list with the learned dictionary `score` (estimated score), `score_hist`
@@ -113,7 +113,7 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, n_work
 
   for (i in 1:n_window_size) {
     mp <- matrixprofiler::stomp(pos, window_size = window_size[i], n_workers = n_workers, progress = (verbose > 1))
-    mat_pro[[i]] <- mp$mp
+    mat_pro[[i]] <- as.numeric(mp$matrix_profile)
   }
 
   # extract candidate ----

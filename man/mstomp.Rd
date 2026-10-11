@@ -46,7 +46,7 @@ Returns a \code{MultiMatrixProfile} object, a \code{list} with the matrix profil
 left and right matrix profile \code{lmp}, \code{rmp} and profile index \code{lpi}, \code{rpi}, window size \code{w},
 number of dimensions \code{n_dim}, exclusion zone \code{ez}, must dimensions \code{must} and excluded dimensions \code{exc}.
 
-If the input has only one dimension, returns the same as \code{\link[=stomp]{stomp()}}.
+If the input has only one dimension, returns the same as \code{\link[matrixprofiler:stomp]{stomp()}}.
 }
 \description{
 Computes the Matrix Profile and Profile Index for Multivariate Time Series.
@@ -62,15 +62,15 @@ its anytime property.
 
 Although this functions handles Multivariate Time Series, it can also be used to handle
 Univariate Time Series. \code{verbose} changes how much information is printed by this function; \code{0}
-means nothing, \code{1} means text, \code{2} adds the progress bar, \code{3} adds the finish sound.
+means nothing, \code{1} means text, \code{2} adds the progress bar.
 }
 \section{Functions}{
 \itemize{
-\item \code{mstomp_par}: Parallel version.
+\item \code{mstomp_par()}: Parallel version.
 
-\item \code{mstomp}: Single thread version.
+\item \code{mstomp()}: Single thread version.
+
 }}
-
 \examples{
 # using all dimensions
 mp <- mstomp(mp_toy_data$data[1:150, ], 30, verbose = 0)
@@ -101,8 +101,8 @@ Website: \url{https://sites.google.com/view/mstamp/}
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other matrix profile computations: 
-\code{\link{tsmp}()},
-\code{\link{valmod}()}
+Other matrix profile computations:
+\code{\link[=tsmp]{tsmp()}},
+\code{\link[=valmod]{valmod()}}
 }
 \concept{matrix profile computations}

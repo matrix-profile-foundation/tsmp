@@ -74,7 +74,7 @@ floss <- function(.mp, new_data, data_window, threshold = 1, exclusion_zone = NU
   }
 
   mp_offset <- ifelse(!is.null(attr(.mp, "offset")), attr(.mp, "offset"), 0)
-  data_size <- nrow(.mp$data[[1]])
+  data_size <- NROW(.mp$data[[1]])
   new_data_size <- length(new_data)
 
   if (data_size < data_window) {
@@ -89,7 +89,7 @@ floss <- function(.mp, new_data, data_window, threshold = 1, exclusion_zone = NU
   }
 
   if (is.null(chunk_size)) {
-    chunk_size <- min(floor(nrow(.mp$data[[1]]) / 2), 50)
+    chunk_size <- min(floor(NROW(.mp$data[[1]]) / 2), 50)
     chunk_size <- min(chunk_size, floor(data_window / 2))
   }
 
@@ -177,7 +177,7 @@ floss_extract <- function(.mpac, threshold = 1, exclusion_zone = NULL) {
 
   offset <- ifelse(is.null(attr(.mpac, "offset")), 0, attr(.mpac, "offset"))
   cac_fin_len <- length(.mpac$cac_final)
-  mp_len <- nrow(.mpac$mp)
+  mp_len <- NROW(.mpac$mp)
   new_data <- ifelse(is.null(attr(.mpac, "new_data")), 0, attr(.mpac, "new_data"))
 
   if (offset == 0 || cac_fin_len == floor((mp_len * vars()$kmode + new_data * 1.5))) {
@@ -329,7 +329,7 @@ fluss_cac <- function(.mp, exclusion_zone = NULL) {
   for (i in 1:profile_index_size) {
     j <- .mp$pi[i]
 
-    if (j < 0 || j > profile_index_size) {
+    if (is.na(j) || j < 0 || j > profile_index_size) {
       next
     }
 
@@ -401,7 +401,7 @@ floss_cac <- function(.mp, data_window, exclusion_zone = NULL) {
     stop("data_window must be larger than matrix profile's window_size: ", .mp$w)
   }
 
-  profile_size <- nrow(.mp$mp)
+  profile_size <- NROW(.mp$mp)
   cac_size <- data_window - .mp$w + 1
   start_idx <- profile_size - cac_size + 1
   new_data_size <- attr(.mp, "new_data")
@@ -417,7 +417,7 @@ floss_cac <- function(.mp, data_window, exclusion_zone = NULL) {
 
   for (i in seq_along(pi)) {
     j <- pi[i]
-    if (j < 0 || j > cac_size) {
+    if (is.na(j) || j < 0 || j > cac_size) {
       next
     }
 
@@ -446,7 +446,7 @@ floss_cac <- function(.mp, data_window, exclusion_zone = NULL) {
   if (is.null(.mp$cac_final)) {
     # TODO: get a more reliable value than attr(.mp, "origin")$data_size
     .mp$cac_final <- rep(NA, round(data_window * (mode - 1) - new_data_size / 2 +
-      max(nrow(.mp$data[[1]]), attr(.mp, "origin")$data_size) -
+      max(NROW(.mp$data[[1]]), attr(.mp, "origin")$data_size) -
       (.mp$w * mode)) + mp_offset)
   }
 

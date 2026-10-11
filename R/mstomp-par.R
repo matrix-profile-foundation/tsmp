@@ -95,6 +95,10 @@ mstomp_par <- function(data, window_size, exclusion_zone = getOption("tsmp.exclu
     data_sd[, i] <- nn[[i]]$par$data_sd
   }
 
+  if (!requireNamespace("doSNOW", quietly = TRUE) || !requireNamespace("foreach", quietly = TRUE)) {
+    stop("Packages 'doSNOW' and 'foreach' are required for mstomp_par(). Please install them.", call. = FALSE)
+  }
+
   cores <- min(max(2, n_workers), parallel::detectCores())
 
   if (verbose > 0) {

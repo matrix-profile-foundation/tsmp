@@ -37,3 +37,4 @@
 ^Makefile$
 ^docs/_pkgdown\.yml$
 ^.*\.tex$
+^codemeta\.json$
