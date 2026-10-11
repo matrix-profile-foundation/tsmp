@@ -64,7 +64,7 @@ pmp <- function(data,
   checkmate::qassert(window_sizes, "X+")
   checkmate::qassert(plot, "B")
   checkmate::qassert(pmp_obj, c("0", "l"))
-  checkmate::qassert(n_workers, paste0("X1[1,", parallel::detectCores(), "]"))
+  checkmate::qassert(n_workers, "X1[1,)")
   checkmate::qassert(verbose, "X1")
 
   # checks if the given object is actualy a skimp object

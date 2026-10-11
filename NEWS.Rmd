@@ -28,6 +28,12 @@ knitr::opts_chunk$set(
 -   Added `mode = "mpx"` to `tsmp()` as a first-class citizen algorithm delegating to `matrixprofiler::mpx()`.
 -   Unified API refactoring: `compute()` now delegates internally to `tsmp(mode = "mpx")` and `pmp()`, preserving 100% compatibility with Matrix Profile Foundation unified API (Python/Go) and standard `MatrixProfile` / `PMP` S3 classes.
 -   High-performance MPdist: `mpdist()` now delegates to native C++ engine in `matrixprofiler::mpdist()`, delivering major speedups and lower memory footprint to `mpdist()` and `find_snippet()`.
+-   Vectorized `fluss_cac()` using `tabulate()`, eliminating slow $O(N)$ R loops.
+-   Added `n_workers` parameter to `find_snippet()`, enabling multithreaded MPdist computation.
+-   Fixed zero-padding bug in `find_snippet()` when time series length is an exact multiple of snippet size.
+-   Enhanced `dist_profile()`, `compute()`, `find_snippet()` and `pmp()` with hardened multi-worker validation against `detectCores() == NA`.
+-   Replaced internal `:::` calls in `dist_profile.R` with public API calls to `matrixprofiler::mass()`.
+-   Added `na_strategy = c("monolithic", "segmented", "segmented_native")` to `tsmp()` with end-to-end missing value protection for discords and motifs.
 -   PAA (`paa()` and `ipaa()`) implemented and maintained in pure R.
 -   Removed `audio` dependency and audio completion signals.
 -   Switched to pure R implementation (`NeedsCompilation: no`) delegating heavy computations to `matrixprofiler`.

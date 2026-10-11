@@ -51,6 +51,8 @@
 #'   `heap_size` is used only for [valmod()]
 #'   `mode` can be any of the following: `stomp`, `mpx`, `stamp`, `simple`, `mstomp`, `scrimp`, `valmod`, `pmp`.
 #'
+#' @param na_strategy the NA handling strategy for algorithms that support it (e.g. `mpx`):
+#'   `"monolithic"`, `"segmented"`, or `"segmented_native"`. (Default is `"monolithic"`).
 #' @param \dots a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix
 #'   profile (except for [mstomp()]).
 #' @param window_size an `int` with the size of the sliding window. Use a vector for Valmod.
@@ -110,8 +112,10 @@
 tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zone", 1 / 2),
                  mode = c("stomp", "mpx", "stamp", "simple", "mstomp", "scrimp", "valmod", "pmp"),
                  verbose = getOption("tsmp.verbose", 2), n_workers = 1, s_size = Inf, must_dim = NULL, exc_dim = NULL,
-                 heap_size = 50, .keep_data = TRUE) {
+                 heap_size = 50, .keep_data = TRUE,
+                 na_strategy = c("monolithic", "segmented", "segmented_native")) {
   algo <- match.arg(mode)
+  na_strat <- match.arg(na_strategy)
 
   argv <- list(...)
   argc <- length(argv)
@@ -160,7 +164,8 @@ tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zo
         window_size = min(window_size),
         s_size = s_size_val,
         n_workers = n_workers,
-        progress = (verbose > 1)
+        progress = (verbose > 1),
+        na_strategy = na_strat
       )
     },
     "stomp" = {

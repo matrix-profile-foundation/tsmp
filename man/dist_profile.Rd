@@ -14,6 +14,7 @@ dist_profile(
   type = c("normalized", "non_normalized", "absolute", "weighted"),
   weights = NULL,
   weight = weights,
+  n_workers = 1L,
   ...
 )
 }
@@ -34,6 +35,8 @@ dist_profile(
 
 \item{weights, weight}{a \code{vector} of \code{numeric} or \code{NULL} with the same length of the \code{window_size}. This is
 a MASS extension to weight the query.}
+
+\item{n_workers}{an \code{int}. Number of threads to use when computing with MASS. (Default is \code{1}).}
 
 \item{\dots}{Placeholder for legacy arguments.}
 }

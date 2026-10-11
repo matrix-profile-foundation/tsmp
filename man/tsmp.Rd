@@ -15,7 +15,8 @@ tsmp(
   must_dim = NULL,
   exc_dim = NULL,
   heap_size = 50,
-  .keep_data = TRUE
+  .keep_data = TRUE,
+  na_strategy = c("monolithic", "segmented", "segmented_native")
 )
 }
 \arguments{
@@ -46,6 +47,9 @@ details.}
 \item{heap_size}{an \code{int}. (Default is \code{50}). Size of the distance profile heap buffer.}
 
 \item{.keep_data}{a \code{logical}. (Default is \code{TRUE}). Keeps the data embedded to resultant object.}
+
+\item{na_strategy}{the NA handling strategy for algorithms that support it (e.g. \code{mpx}):
+\code{"monolithic"}, \code{"segmented"}, or \code{"segmented_native"}. (Default is \code{"monolithic"}).}
 }
 \value{
 Returns the matrix profile \code{mp} and profile index \code{pi}. It also returns the left and

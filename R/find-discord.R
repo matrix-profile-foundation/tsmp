@@ -74,6 +74,7 @@ find_discord.MatrixProfile <- function(.mp, data, n_discords = 1, n_neighbors = 
   }
 
   matrix_profile <- .mp$mp # keep mp intact
+  matrix_profile[!is.finite(matrix_profile)] <- -Inf
   matrix_profile_size <- length(matrix_profile)
   discord_idxs <- list(discords = list(NULL), neighbors = list(NULL))
 
@@ -87,6 +88,9 @@ find_discord.MatrixProfile <- function(.mp, data, n_discords = 1, n_neighbors = 
 
   for (i in seq_len(n_discords)) {
     discord_idx <- which.max(matrix_profile)
+    if (length(discord_idx) == 0 || is.infinite(matrix_profile[discord_idx])) {
+      break
+    }
     discord_distance <- matrix_profile[discord_idx]
     discord_idxs[[1L]][[i]] <- discord_idx
 
@@ -191,6 +195,7 @@ find_discord.PMP <- function(.mp, data, n_discords = 1, n_neighbors = 3, radius 
   row <- 1
 
   matrix_profile <- .mp$pmp[[row]] # keep mp intact
+  matrix_profile[!is.finite(matrix_profile)] <- -Inf
   matrix_profile_size <- length(matrix_profile)
   discord_idxs <- list(discords = list(NULL), neighbors = list(NULL))
 
@@ -204,6 +209,9 @@ find_discord.PMP <- function(.mp, data, n_discords = 1, n_neighbors = 3, radius 
 
   for (i in seq_len(n_discords)) {
     discord_idx <- which.max(matrix_profile)
+    if (length(discord_idx) == 0 || is.infinite(matrix_profile[discord_idx])) {
+      break
+    }
     discord_distance <- matrix_profile[discord_idx]
     discord_idxs[[1L]][[i]] <- discord_idx
 

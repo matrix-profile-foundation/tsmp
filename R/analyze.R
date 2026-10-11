@@ -49,7 +49,7 @@ analyze <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshol
   checkmate::qassert(query, c("0", "N>=4"))
   checkmate::qassert(sample_pct, "N1(0,1]")
   checkmate::qassert(threshold, c("0", "N1(0,1]"))
-  n_jobs <- as.integer(checkmate::qassert(n_jobs, paste0("X1[1,", parallel::detectCores(), "]")))
+  n_jobs <- as.integer(checkmate::qassert(n_jobs, "X1[1,)"))
 
   result <- NULL
 

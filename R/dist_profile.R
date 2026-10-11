@@ -25,6 +25,7 @@
 #' @param type comparison type used by MASS: `"normalized"`, `"non_normalized"`, `"absolute"`, or `"weighted"`.
 #' @param weights,weight a `vector` of `numeric` or `NULL` with the same length of the `window_size`. This is
 #' a MASS extension to weight the query.
+#' @param n_workers an `int`. Number of threads to use when computing with MASS. (Default is `1`).
 #' @param \dots Placeholder for legacy arguments.
 #'
 #' @return Returns the `distance_profile` for the given query and the `last_product` for STOMP
@@ -67,7 +68,7 @@
 dist_profile <- function(data, query = data, params = NULL, window_size = NULL, index = 1,
                          method = c("v3", "v2", "weighted"),
                          type = c("normalized", "non_normalized", "absolute", "weighted"),
-                         weights = NULL, weight = weights, ...) {
+                         weights = NULL, weight = weights, n_workers = 1L, ...) {
 
   # Handle window_size passed as 2nd positional argument (e.g. dist_profile(data, 50))
   if (is.numeric(query) && length(query) == 1L && is.null(window_size)) {
@@ -96,10 +97,11 @@ dist_profile <- function(data, query = data, params = NULL, window_size = NULL, 
 
   # Parse arguments ---------------------------------
   "!!!DEBUG Parsing data"
-  checkmate::qassert(data, "N+")
+  checkmate::qassert(data, "n+")
   window_size <- checkmate::qassert(window_size, "x+[4,)")
   checkmate::qassert(query, "n+")
   checkmate::qassert(index, glue::glue("X1[1,{length(data) - window_size + 1}]"))
+  n_workers <- as.integer(checkmate::qassert(n_workers, "X+"))
   if (!missing(weight) && is.null(weights)) {
     weights <- weight
   }
@@ -141,22 +143,28 @@ dist_profile <- function(data, query = data, params = NULL, window_size = NULL, 
     query <- data
   }
 
+  if (length(query) > window_size) {
+    query_sub <- query[index:(window_size + index - 1)]
+  } else {
+    query_sub <- query
+  }
+
   # Computation ------------------------------------
   "!DEBUG Computation"
-  if (anyNA(query)) {
+  if (anyNA(query_sub)) {
     ## ---- Query with Gap ----
     q1 <- NULL
     q2 <- NULL
 
-    min_idx <- min(which(is.na(query))) - 1
-    max_idx <- max(which(is.na(query))) + 1
+    min_idx <- min(which(is.na(query_sub))) - 1
+    max_idx <- max(which(is.na(query_sub))) + 1
 
     if (min_idx >= 4L) {
-      q1 <- query[1:min_idx]
+      q1 <- query_sub[1:min_idx]
     }
 
     if (max_idx <= (window_size - 4)) {
-      q2 <- query[max_idx:window_size]
+      q2 <- query_sub[max_idx:window_size]
     }
 
     if (anyNA(q1) || anyNA(q2)) {
@@ -170,11 +178,11 @@ dist_profile <- function(data, query = data, params = NULL, window_size = NULL, 
       warning("Warning: Result may be inconsistent if the size of the queries are different.")
     }
 
-    pre1 <- matrixprofiler::mass_pre(data, window_size = q1_len)
-    pre2 <- matrixprofiler::mass_pre(data, window_size = q2_len)
+    pre1 <- matrixprofiler::mass_pre(data, window_size = q1_len, query = q1)
+    pre2 <- matrixprofiler::mass_pre(data, window_size = q2_len, query = q2)
 
-    result1 <- mass_v3(q1, data, pre1$window_size, pre1$data_size, pre1$data_mean, pre1$data_sd, mean(q1), matrixprofiler::std(q1))
-    result2 <- mass_v3(q2, data, pre2$window_size, pre2$data_size, pre2$data_mean, pre2$data_sd, mean(q2), matrixprofiler::std(q2))
+    result1 <- matrixprofiler::mass(pre1, data, q1, 1, version = "v3", n_workers = n_workers)
+    result2 <- matrixprofiler::mass(pre2, data, q2, 1, version = "v3", n_workers = n_workers)
     result1 <- sqrt(result1$distance_profile)
     result2 <- sqrt(result2$distance_profile)
 
@@ -210,7 +218,7 @@ dist_profile <- function(data, query = data, params = NULL, window_size = NULL, 
   ## Do the search --------
   tryCatch(
     {
-      result <- matrixprofiler::mass(params, data, query, index, version = method)
+      result <- matrixprofiler::mass(params, data, query, index, version = method, n_workers = n_workers)
     },
     error = print
   )
@@ -220,30 +228,35 @@ dist_profile <- function(data, query = data, params = NULL, window_size = NULL, 
 }
 
 mass_v2 <- function(query, window_size, data_fft, data_size, data_mean, data_sd, query_mean, query_sd) {
-  matrixprofiler:::mass2_rcpp(
-    data_fft,
-    as.numeric(query),
-    as.integer(data_size),
-    as.integer(window_size),
-    as.numeric(data_mean),
-    as.numeric(data_sd),
-    as.numeric(query_mean)[1],
-    as.numeric(query_sd)[1]
+  pre_obj <- structure(
+    list(
+      data_size = as.integer(data_size),
+      window_size = as.integer(window_size),
+      data_fft = data_fft,
+      data_mean = as.numeric(data_mean),
+      data_sd = as.numeric(data_sd),
+      query_mean = as.numeric(query_mean)[1],
+      query_sd = as.numeric(query_sd)[1]
+    ),
+    type = "normalized"
   )
+  dummy_data <- rep(0, data_size)
+  matrixprofiler::mass(pre_obj, data = dummy_data, query = query, index = 1, version = "v2")
 }
 
 mass_v3 <- function(query, data, window_size, data_size, data_mean, data_sd, query_mean, query_sd) {
-  matrixprofiler:::mass3_rcpp(
-    as.numeric(query),
-    as.numeric(data),
-    as.integer(data_size),
-    as.integer(window_size),
-    as.numeric(data_mean),
-    as.numeric(data_sd),
-    as.numeric(query_mean)[1],
-    as.numeric(query_sd)[1],
-    grain = 4096
+  pre_obj <- structure(
+    list(
+      data_size = as.integer(data_size),
+      window_size = as.integer(window_size),
+      data_mean = as.numeric(data_mean),
+      data_sd = as.numeric(data_sd),
+      query_mean = as.numeric(query_mean)[1],
+      query_sd = as.numeric(query_sd)[1]
+    ),
+    type = "normalized"
   )
+  matrixprofiler::mass(pre_obj, data = data, query = query, index = 1, version = "v3")
 }
 
 mass_pre_w <- function(data, query = NULL, window_size, weight) {

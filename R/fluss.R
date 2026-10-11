@@ -321,22 +321,13 @@ fluss_cac <- function(.mp, exclusion_zone = NULL) {
     exclusion_zone <- .mp$ez * 10 # normally ez is 0.5, so ez here is 5
   }
 
-  arc_counts <- vector(mode = "numeric")
   profile_index_size <- length(.mp$pi)
-
-  nnmark <- matrix(0, profile_index_size, 1)
-
-  for (i in 1:profile_index_size) {
-    j <- .mp$pi[i]
-
-    if (is.na(j) || j < 0 || j > profile_index_size) {
-      next
-    }
-
-    nnmark[min(i, j)] <- nnmark[min(i, j)] + 1
-    nnmark[max(i, j)] <- nnmark[max(i, j)] - 1
-  }
-
+  i_seq <- seq_len(profile_index_size)
+  pi_vec <- .mp$pi
+  valid <- !is.na(pi_vec) & pi_vec >= 1L & pi_vec <= profile_index_size
+  min_ij <- pmin(i_seq[valid], pi_vec[valid])
+  max_ij <- pmax(i_seq[valid], pi_vec[valid])
+  nnmark <- as.numeric(tabulate(min_ij, nbins = profile_index_size) - tabulate(max_ij, nbins = profile_index_size))
   arc_counts <- cumsum(nnmark)
 
   x <- seq(0, 1, length.out = profile_index_size)

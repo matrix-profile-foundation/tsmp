@@ -8,7 +8,8 @@
 - Eradicated superseded dependencies: `doSNOW` and `foreach` have been completely removed.
 - Removed all compiled C++ code and GNU Make requirements (`RcppParallel`/TBB eliminated).
 - Standardized invalid index conventions to `NA_integer_`.
-- All 345 unit tests passed cleanly with 0 failures under `R_LOCAL_DEV=true`.
+- All 363 unit tests passed cleanly with 0 failures.
+- `R CMD check --as-cran` passed with 0 errors, 0 warnings, and 0 notes.
 - Fixed moved/broken URLs in README.md.
 
 ## Comments for this version (0.4.16)
