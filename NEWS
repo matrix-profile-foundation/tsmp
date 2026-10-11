@@ -2,6 +2,11 @@
 
 ## tsmp 0.5.0
 
+-   Multivariate STOMP (`mstomp()` and `mstomp_par()`): Delegated
+    computation to the high-performance native C++ engine in
+    `matrixprofiler::mstomp()`, providing massive speedups (~200x) and
+    native multi-threading while removing legacy dependencies on
+    `doSNOW` and `foreach`.
 -   Added `mode = "mpx"` to `tsmp()` as a first-class citizen algorithm
     delegating to `matrixprofiler::mpx()`.
 -   Unified API refactoring: `compute()` now delegates internally to

@@ -12,7 +12,7 @@ mstomp_par(
   verbose = getOption("tsmp.verbose", 2),
   must_dim = NULL,
   exc_dim = NULL,
-  n_workers = 2
+  n_workers = 2L
 )
 
 mstomp(
@@ -21,7 +21,8 @@ mstomp(
   exclusion_zone = getOption("tsmp.exclusion_zone", 1/2),
   verbose = getOption("tsmp.verbose", 2),
   must_dim = NULL,
-  exc_dim = NULL
+  exc_dim = NULL,
+  n_workers = 1L
 )
 }
 \arguments{
@@ -39,7 +40,7 @@ details), \code{list} and \code{data.frame} too.}
 
 \item{exc_dim}{an \code{int} or \code{vector} of which dimensions to exclude (default is \code{NULL}).}
 
-\item{n_workers}{an \code{int}. Number of workers for parallel. (Default is \code{2}).}
+\item{n_workers}{an \code{int}. Number of threads for parallel execution (default is \code{1}).}
 }
 \value{
 Returns a \code{MultiMatrixProfile} object, a \code{list} with the matrix profile \code{mp}, profile index \code{pi}
@@ -75,7 +76,7 @@ means nothing, \code{1} means text, \code{2} adds the progress bar.
 # using all dimensions
 mp <- mstomp(mp_toy_data$data[1:150, ], 30, verbose = 0)
 \donttest{
-#' # using threads
+# using threads
 mp <- mstomp_par(mp_toy_data$data[1:150, ], 30, verbose = 0)
 
 # force using dimensions 1 and 2
