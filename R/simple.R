@@ -173,7 +173,6 @@ simple_fast <- function(..., window_size, exclusion_zone = getOption("tsmp.exclu
 
   # compute the remainder of the matrix profile
   for (i in 2:matrix_profile_size) {
-
     # compute the distance profile
     if (verbose > 1) {
       pb$tick()

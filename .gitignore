@@ -4,6 +4,7 @@
 ### R ###
 # History files
 .Rhistory
+.Renviron*
 .Rapp.history
 
 # Session Data files

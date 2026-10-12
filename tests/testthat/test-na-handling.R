@@ -36,7 +36,7 @@ test_that("tsmp handles NA data with mpx and stomp", {
 test_that("dist_profile supports n_workers and compute supports multi-core", {
   data("mp_toy_data", package = "tsmp", envir = environment())
   ref_data <- mp_toy_data$data[1:200, 1]
-  
+
   # dist_profile with n_workers
   dp1 <- dist_profile(ref_data, ref_data, window_size = 30, index = 10, n_workers = 1)
   dp2 <- dist_profile(ref_data, ref_data, window_size = 30, index = 10, n_workers = 2)

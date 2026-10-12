@@ -33,7 +33,7 @@
 #' data <- mp_toy_data$data[, 1]
 #' mp <- tsmp(data, window_size = 30, verbose = 0)
 #' mps <- salient_subsequences(mp, data, verbose = 0)
-#' \donttest{
+#' \dontrun{
 #' # full example
 #' data <- mp_meat_data$sub$data
 #' w <- mp_meat_data$sub$sub_len
@@ -100,8 +100,7 @@ salient_subsequences <- function(.mp, data, n_bits = 8, n_cand = 10, exclusion_z
 
   if (n_dim > 1) {
     max_index_num <- n_dim
-  }
-  else {
+  } else {
     # get data size
     matrix_profile_size <- NROW(.mp$mp)
     max_index_num <- round(data_size / .mp$w + vars()$eps)

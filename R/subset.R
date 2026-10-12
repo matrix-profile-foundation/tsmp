@@ -1,5 +1,7 @@
 sub_vec_or_mat <- function(v, idx, drop = FALSE) {
-  if (is.null(v)) return(NULL)
+  if (is.null(v)) {
+    return(NULL)
+  }
   if (is.null(dim(v))) v[idx] else v[idx, , drop = drop]
 }
 

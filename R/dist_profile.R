@@ -69,7 +69,6 @@ dist_profile <- function(data, query = data, params = NULL, window_size = NULL, 
                          method = c("v3", "v2", "weighted"),
                          type = c("normalized", "non_normalized", "absolute", "weighted"),
                          weights = NULL, weight = weights, n_workers = 1L, ...) {
-
   # Handle window_size passed as 2nd positional argument (e.g. dist_profile(data, 50))
   if (is.numeric(query) && length(query) == 1L && is.null(window_size)) {
     window_size <- as.integer(query)

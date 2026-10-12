@@ -62,6 +62,11 @@ O objetivo desta modernização é transformar o `tsmp` em um **pacote de minera
   - Tratamento unificado de parâmetros (`window_size`, `n_workers`, `s_size`).
 - [ ] **Integração do `dist_profile()`:**
   - Delegar cálculo de perfis de distância para `matrixprofiler::mass()`.
+- [ ] **Despacho e Aceleração por GPU (`backend = c("auto", "cpu", "cuda")`):**
+  - Expor o parâmetro `backend` em `tsmp()` e `compute()`.
+  - Integrar checagem dinâmica via `matrixprofiler::has_cuda()`.
+  - Em modo `"auto"`: caso `matrixprofiler::has_cuda() == TRUE` e os requisitos do algoritmo sejam atendidos (ex.: `mode = "mpx"`, `s_size == 1.0`, `na_strategy == "monolithic"`), despachar para CUDA automaticamente; caso contrário, utilizar CPU.
+  - Validação defensiva com aviso/erro explicativo quando o usuário solicitar explicitamente `backend = "cuda"` em binário sem suporte CUDA compilado.
 - [ ] **Harmonização de Convenção de Índices (`NA_integer_` vs `-1L`):**
   - Garantir que o `tsmp` processe uniformemente `NA_integer_` para índices sem vizinho mais próximo, eliminando riscos de indexação acidental `data[-1]`.
 - [ ] **Suporte a Séries com Valores Ausentes (`NA`):**
@@ -77,6 +82,9 @@ O objetivo desta modernização é transformar o `tsmp` em um **pacote de minera
   - Revisar e garantir compatibilidade dos algoritmos de sumarização e cadeias de subsequências.
 - [ ] **Camada de Visualização (`plot()` e ggplot2):**
   - Assegurar renderização correta de perfis, anotações de motifs e arcos para objetos S3 gerados.
+- [ ] **Aceleração C++ de Rotinas de Pós-Processamento Intensivas (Opção B - Futuro):**
+  - **`salient_subsequences`**: O Matrix Profile é gerado rapidamente via `matrixprofiler`, mas as 720 iterações de busca gulosa MDL, discretização e cálculo de bitsize em puro R levam minutos em séries reais (100k+ pontos). Implementar `mdl_subsequences_cpp()` no `matrixprofiler`.
+  - **`sdts_train` / `sdts_predict`**: As etapas 2 e 3 (busca por Secção Dourada / `golden_section` e avaliação combinatória de padrões) em puro R demoram dezenas de minutos para centenas de milhares de observações. Implementar `golden_section_cpp()` e treino SDTS vetorizado em C++ no `matrixprofiler`.
 
 ### Fase 4: Suíte de Testes e Conformidade CRAN
 - [ ] Migrar testes unitários para a 3ª edição do `testthat` (`testthat::test_package()`).
@@ -87,13 +95,13 @@ O objetivo desta modernização é transformar o `tsmp` em um **pacote de minera
 
 ## 4. Matriz de Integração de Algoritmos
 
-| Função Analítica `tsmp` | Algoritmo Base `matrixprofiler` | Modo Suportado | Multithread | NA Support |
-| :--- | :--- | :---: | :---: | :---: |
-| `compute(..., algo = "mpx")` | `matrixprofiler::mpx` | Self / AB | ✅ Sim | ✅ Sim |
-| `compute(..., algo = "stomp")` | `matrixprofiler::stomp` | Self / AB | ✅ Sim | ⚠️ Validar skip |
-| `compute(..., algo = "stamp")` | `matrixprofiler::stamp` | Self / AB | ✅ Sim | ⚠️ Parcial |
-| `compute(..., algo = "scrimp")` | `matrixprofiler::scrimp` | Self / AB | ✅ Sim | ⚠️ Parcial |
-| `dist_profile()` | `matrixprofiler::mass` | Query Match | ✅ Sim (v3 norm) | ❌ Não |
-| `pmp()` | `matrixprofiler::mpx` / `stomp` | Multi-escala | ✅ Sim | Conforme motor |
-| `find_motif()`, `find_discord()` | *(Analítico interno `tsmp`)* | Pós-processamento | N/A | N/A |
-| `fluss()`, `floss()` | *(Analítico interno `tsmp`)* | Pós-processamento | N/A | N/A |
+| Função Analítica `tsmp` | Algoritmo Base `matrixprofiler` | Modo Suportado | Multithread CPU | Aceleração GPU (CUDA) | NA Support |
+| :--- | :--- | :---: | :---: | :---: | :---: |
+| `compute(..., algo = "mpx")` | `matrixprofiler::mpx` | Self / AB | ✅ Sim | ✅ Sim (`backend = "cuda"`) | ✅ Sim |
+| `compute(..., algo = "stomp")` | `matrixprofiler::stomp` | Self / AB | ✅ Sim | ❌ Não | ⚠️ Validar skip |
+| `compute(..., algo = "stamp")` | `matrixprofiler::stamp` | Self / AB | ✅ Sim | ❌ Não | ⚠️ Parcial |
+| `compute(..., algo = "scrimp")` | `matrixprofiler::scrimp` | Self / AB | ✅ Sim | ❌ Não | ⚠️ Parcial |
+| `dist_profile()` | `matrixprofiler::mass` | Query Match | ✅ Sim (v3 norm) | ❌ Não | ❌ Não |
+| `pmp()` | `matrixprofiler::mpx` / `stomp` | Multi-escala | ✅ Sim | ✅ Sim (quando MPX) | Conforme motor |
+| `find_motif()`, `find_discord()` | *(Analítico interno `tsmp`)* | Pós-processamento | N/A | N/A | N/A |
+| `fluss()`, `floss()` | *(Analítico interno `tsmp`)* | Pós-processamento | N/A | N/A | N/A |

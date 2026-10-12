@@ -1,4 +1,3 @@
-
 test_that("as_ts_data handles NULL and empty inputs", {
   expect_null(as_ts_data(NULL))
   expect_null(convert_data(NULL))

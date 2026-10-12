@@ -1,6 +1,5 @@
 if (!testthat:::on_cran() &&
-    identical(Sys.getenv("R_LOCAL_DEV"), "true")) {
-
+  identical(Sys.getenv("R_LOCAL_DEV"), "true")) {
   # Stamps and Stomps agree ----
 
   library(tsmp)

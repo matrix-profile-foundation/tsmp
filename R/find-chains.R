@@ -35,7 +35,7 @@ find_chains <- function(.mp) {
       chain <- j <- i
 
       while (!is.na(.mp$rpi[j]) && .mp$rpi[j] > 0 && .mp$rpi[j] <= mp_size &&
-             !is.na(.mp$lpi[.mp$rpi[j]]) && .mp$lpi[.mp$rpi[j]] == j) {
+        !is.na(.mp$lpi[.mp$rpi[j]]) && .mp$lpi[.mp$rpi[j]] == j) {
         j <- .mp$rpi[j]
         chain_length[j] <- -1
         chain_length[i] <- chain_length[i] + 1

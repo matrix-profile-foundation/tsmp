@@ -42,7 +42,6 @@
 #' result <- analyze(mp_toy_data$data[, 1])
 #' }
 analyze <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshold = 0.98, n_jobs = 1L) {
-
   # Parse arguments ---------------------------------
   checkmate::qassert(ts, "N+")
   windows <- checkmate::qassert(windows, c("0", "X+[4,)"))

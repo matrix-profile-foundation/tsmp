@@ -43,7 +43,6 @@ if (!testthat:::on_cran()) {
   resw <- do.call("mass_weighted", (c(list(query_data[1:w]), prew)))
 
 
-
   test_that("Fast Moving SD is ok", {
     expect_hash(round(movsd, 3), "ffda40fd35")
   })

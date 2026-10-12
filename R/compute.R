@@ -43,7 +43,6 @@
 #' result <- compute(mp_toy_data$data[, 1])
 #' }
 compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshold = 0.98, n_jobs = 1L) {
-
   # Check time series classes -----------------------
   data_ref <- convert_data(ts)
   query_ref <- convert_data(query)

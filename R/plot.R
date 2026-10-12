@@ -1366,7 +1366,6 @@ plot_skimp <- function(pmp, func = NULL) {
   # now start to print all layers
 
 
-
   for (i in window_sizes) {
     layer <- pmp$pmp[[as.character(i)]]
 

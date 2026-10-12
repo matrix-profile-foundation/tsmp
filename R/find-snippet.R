@@ -46,13 +46,11 @@
 #' }
 #'
 find_snippet <- function(data, s_size, n_snippets = 2L, window_size = s_size / 2L, n_workers = 1L) {
-
   # currently is about 3x slower than MATLAB. Not bad for R.
   # transform data into matrix
   if (is.vector(data)) {
     data <- as.matrix(data)
-  }
-  else if (is.matrix(data)) {
+  } else if (is.matrix(data)) {
     if (ncol(data) > nrow(data)) {
       data <- t(data)
     }

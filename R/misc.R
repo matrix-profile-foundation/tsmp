@@ -41,8 +41,10 @@ as_ts_data <- function(data) {
     }
     lens <- vapply(converted, length, integer(1L))
     if (length(unique(lens)) > 1L) {
-      stop(sprintf("All time series in list must have the same length (found lengths: %s).",
-                   paste(lens, collapse = ", ")))
+      stop(sprintf(
+        "All time series in list must have the same length (found lengths: %s).",
+        paste(lens, collapse = ", ")
+      ))
     }
     mat <- do.call(cbind, converted)
     storage.mode(mat) <- "double"

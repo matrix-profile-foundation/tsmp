@@ -39,7 +39,7 @@
 #' model <- sdts_train(tr_data, tr_label, w, verbose = 0)
 #' predict <- sdts_predict(model, te_data, round(mean(w)))
 #' sdts_score(predict, te_label, 1)
-#' \donttest{
+#' \dontrun{
 #' windows <- c(110, 220, 330)
 #' model <- sdts_train(mp_test_data$train$data, mp_test_data$train$label, windows)
 #' predict <- sdts_predict(model, mp_test_data$test$data, round(mean(windows)))
@@ -47,7 +47,6 @@
 #' }
 sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, n_workers = 1,
                        verbose = getOption("tsmp.verbose", 2)) {
-
   # transform data list into matrix ----
   if (is.matrix(data) || is.data.frame(data)) {
     if (is.data.frame(data)) {
@@ -101,7 +100,6 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, n_work
 
   pos_alt_ed <- which(is.infinite(pos)) - 1
   pos_alt_ed <- c(pos_alt_ed[-1], length(pos))
-
 
 
   # run matrix profile on concatenated positive segment ----

@@ -56,7 +56,6 @@ pmp <- function(data,
                 pmp_obj = NULL,
                 n_workers = 1,
                 verbose = getOption("tsmp.verbose", 2)) {
-
   # Parse arguments ---------------------------------
   window_sizes <- floor(window_sizes)
 
@@ -123,7 +122,6 @@ pmp <- function(data,
       if (is.null(pmp_obj)) {
         return(NULL)
       } else {
-
         # final arrangements to existing object
 
         expected_profiles <- as.numeric(names(pmp_obj$pmp))
@@ -175,7 +173,6 @@ pmp <- function(data,
   ## Begin the main Loop ----
 
   for (i in seq_along(split_idx)) {
-
     # i holds the sequence from 1 to ...length(split_idx)
     # idx holds the actual binary split index
     idx <- split_idx[i]
@@ -297,8 +294,10 @@ pmp_upper_bound <- function(data,
   while (window_size <= max_window) {
     # message("window: ", window_size)
 
-    result <- matrixprofiler::mpx(data = data, window_size = window_size, idx = do_idxs, dist = "pearson",
-     n_workers = n_workers)
+    result <- matrixprofiler::mpx(
+      data = data, window_size = window_size, idx = do_idxs, dist = "pearson",
+      n_workers = n_workers
+    )
     if (is.null(result) || result$partial) {
       warning("The computation was terminated prematurely. The results are partial.")
       return()
@@ -328,8 +327,10 @@ pmp_upper_bound <- function(data,
     for (window_size in test_windows) {
       # message("refine window: ", window_size)
 
-      result <- matrixprofiler::mpx(data = data, window_size = window_size, idx = do_idxs, dist = "pearson",
-      n_workers = n_workers)
+      result <- matrixprofiler::mpx(
+        data = data, window_size = window_size, idx = do_idxs, dist = "pearson",
+        n_workers = n_workers
+      )
       if (is.null(result) || result$partial) {
         warning("The computation was terminated prematurely. The results are partial.")
         return()
