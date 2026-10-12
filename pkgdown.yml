@@ -1,10 +1,6 @@
-pandoc: 2.17.0.1
-pkgdown: 2.0.6
+pandoc: 3.8.3
+pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   press: press.html
-last_built: 2022-08-18T17:09Z
-urls:
-  reference: https://matrixprofile.org/tsmp/reference
-  article: https://matrixprofile.org/tsmp/articles
-
+last_built: 2026-10-12T00:15Z
