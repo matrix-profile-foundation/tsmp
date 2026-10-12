@@ -82,7 +82,7 @@
 <div class="page-header"><h1 id="readme">README<a class="anchor" aria-label="anchor" href="#readme"></a>
 </h1></div>
 <p>Francisco Bischoff</p>
-<p>26 mai 2021</p>
+<p>12 Oct 2026</p>
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <p><img src="reference/figures/logo.png" align="right" style="float:right;"></p>
 <div class="section level2">
@@ -93,14 +93,26 @@
 
 
 
-
 <!-- badges: end -->
 </div>
 <div class="section level2">
-<h2 id="important-news">Important News!!!<a class="anchor" aria-label="anchor" href="#important-news"></a>
+<h2 id="whats-new--v050-october-2026">What’s New — v0.5.0 (October 2026)<a class="anchor" aria-label="anchor" href="#whats-new--v050-october-2026"></a>
 </h2>
-<p>The <code>tsmp</code> package is being modified to allow a great change in speed using the <code>matrixprofiler</code> package. We will make all efforts to keep it back compatible.</p>
-<p>A slightly more explained text is available <a href="https://franzbischoff.rbind.io/posts/presenting-matrixprofiler-a-fast-matrix-profile-implementation-in-r/" class="external-link">here</a>.</p>
+<blockquote>
+<p><strong><code>tsmp</code> is now a pure-R analytical layer</strong> (<code>NeedsCompilation: no</code>), delegating all high-performance computation to the <a href="https://CRAN.R-project.org/package=matrixprofiler" class="external-link"><code>matrixprofiler</code></a> C++ engine. This brings <strong>orders-of-magnitude speed gains</strong> and trivial cross-platform installation.</p>
+</blockquote>
+<p>Key highlights:</p>
+<ul>
+<li>🚀 <strong>Native multithreading</strong> via <code>n_workers</code> — no more <code>doSNOW</code>/<code>foreach</code> clusters.</li>
+<li>🗑️ <strong>Removed dependencies</strong>: <code>doSNOW</code>, <code>foreach</code>, <code>audio</code>.</li>
+<li>🔢 <strong>Standardised invalid indices</strong> — all profile index vectors now use <code>NA_integer_</code> (previously <code>-1L</code>).</li>
+<li>⚡ <strong>MPX</strong> is now a first-class algorithm: <code>tsmp(..., mode = "mpx")</code>.</li>
+<li>🛠️ <strong><code><a href="reference/find_snippet.html">find_snippet()</a></code></strong> gained <code>n_workers</code> and a long-standing edge-case fix.</li>
+</ul>
+<p>📄 Full API changes, breaking changes, and migration guide: <strong><a href="MIGRATION.html">MIGRATION.md</a></strong></p>
+<blockquote>
+<p><em>A broader introduction to the matrixprofiler backend is available <a href="https://franzbischoff.rbind.io/posts/presenting-matrixprofiler-a-fast-matrix-profile-implementation-in-r/" class="external-link">here</a>.</em></p>
+</blockquote>
 <div class="section level3">
 <h3 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h3>
@@ -143,34 +155,35 @@
 <h3 id="currently-available-features">Currently available Features<a class="anchor" aria-label="anchor" href="#currently-available-features"></a>
 </h3>
 <ul>
-<li><p>STAMP (single and multi-thread versions)</p></li>
-<li><p>STOMP (single and multi-thread versions)</p></li>
-<li><p>STOMPi (On-line version)</p></li>
-<li><p>SCRIMP (single-thread, not for AB-joins yet)</p></li>
-<li><p>Time Series Chains</p></li>
-<li><p>Multivariate STOMP (mSTOMP)</p></li>
-<li><p>Multivariate MOTIF Search (from mSTOMP)</p></li>
-<li><p>Salient Subsequences search for Multidimensional Space</p></li>
-<li><p>Scalable Dictionary learning for Time Series (SDTS) prediction</p></li>
-<li><p>FLUSS (Fast Low-cost Unipotent Semantic Segmentation)</p></li>
-<li><p>FLOSS (Fast Low-cost On-line Unipotent Semantic Segmentation)</p></li>
-<li><p>SiMPle-Fast (Fast Similarity Matrix Profile for Music Analysis and Exploration)</p></li>
-<li><p>Annotation vectors (e.g., Stop-word MOTIF bias, Actionability bias)</p></li>
-<li><p>FLUSS Arc Plot and SiMPle Arc Plot</p></li>
-<li><p>Exact Detection of Variable Length Motifs (VALMOD)</p></li>
-<li><p>MPdist: Matrix Profile Distance</p></li>
-<li><p>Time Series Snippets</p></li>
-<li><p>Subsetting Matrix Profiles (<code><a href="https://rdrr.io/r/utils/head.html" class="external-link">head()</a></code>, <code><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail()</a></code>, <code>[</code>, etc.)</p></li>
+<li>STAMP (single and multi-thread versions)</li>
+<li>STOMP (single and multi-thread versions)</li>
+<li>STOMPi (On-line version)</li>
+<li>SCRIMP (single-thread, not for AB-joins yet)</li>
 <li>
-<p>Misc:</p>
+<strong>MPX</strong> (single and multi-thread — native C++ via <code>matrixprofiler</code>)</li>
+<li>Time Series Chains</li>
+<li>Multivariate STOMP (mSTOMP) — <strong>native multithreading</strong> via <code>n_workers</code>
+</li>
+<li>Multivariate MOTIF Search (from mSTOMP)</li>
+<li>Salient Subsequences search for Multidimensional Space</li>
+<li>Scalable Dictionary learning for Time Series (SDTS) prediction</li>
+<li>FLUSS (Fast Low-cost Unipotent Semantic Segmentation)</li>
+<li>FLOSS (Fast Low-cost On-line Unipotent Semantic Segmentation)</li>
+<li>SiMPle-Fast (Fast Similarity Matrix Profile for Music Analysis and Exploration)</li>
+<li>Annotation vectors (e.g., Stop-word MOTIF bias, Actionability bias)</li>
+<li>FLUSS Arc Plot and SiMPle Arc Plot</li>
+<li>Exact Detection of Variable Length Motifs (VALMOD)</li>
+<li>MPdist: Matrix Profile Distance — <strong>native C++ and multi-core</strong>
+</li>
+<li>Time Series Snippets — <strong>parallel <code>n_workers</code> support</strong> and edge-case fix</li>
+<li>Subsetting Matrix Profiles (<code><a href="https://rdrr.io/r/utils/head.html" class="external-link">head()</a></code>, <code><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail()</a></code>, <code>[</code>, etc.)</li>
+<li>Misc:
 <ul>
-<li>MASS v2.0</li>
-<li>MASS v3.0</li>
+<li>MASS v2.0 / v3.0 (multi-variant, multi-thread)</li>
 <li>MASS extensions: ADP (Approximate Distance Profile, with PAA)</li>
 <li>MASS extensions: WQ (Weighted Query)</li>
 <li>MASS extensions: QwG (Query with Gap)</li>
-<li>Fast moving average</li>
-<li>Fast moving SD</li>
+<li>Fast moving statistics (<code>mov_mean</code>, <code>mov_std</code>, etc.) with <code>na_strategy</code> control</li>
 </ul>
 </li>
 </ul>
@@ -178,9 +191,16 @@
 <div class="section level3">
 <h3 id="roadmap">Roadmap<a class="anchor" aria-label="anchor" href="#roadmap"></a>
 </h3>
-<ul>
-<li>Profile-Based Shapelet Discovery</li>
-<li>GPU-STOMP</li>
+<ul class="task-list">
+<li><label><input type="checkbox" checked>Migrate computation to C++ engine (<code>matrixprofiler</code>)</label></li>
+<li><label><input type="checkbox" checked>Remove <code>doSNOW</code>/<code>foreach</code> — native multithreading via <code>n_workers</code></label></li>
+<li><label><input type="checkbox" checked>Standardise invalid-index convention to <code>NA_integer_</code></label></li>
+<li><label><input type="checkbox" checked>MPX as first-class algorithm in <code><a href="reference/tsmp.html">tsmp()</a></code></label></li>
+<li><label><input type="checkbox" checked>Parallel MPdist and Time Series Snippets</label></li>
+<li><label><input type="checkbox" checked>CRAN-compliant pure-R package (<code>NeedsCompilation: no</code>)</label></li>
+<li><label><input type="checkbox">Profile-Based Shapelet Discovery</label></li>
+<li><label><input type="checkbox">GPU-STOMP integration</label></li>
+<li><label><input type="checkbox">Extended <code><a href="reference/tsmp.html">tsmp()</a></code> NA strategies for irregular time series</label></li>
 </ul>
 </div>
 <div class="section level3">
@@ -290,11 +310,9 @@
 <li><a href="https://choosealicense.com/licenses/gpl-3.0/" class="external-link"><img src="https://img.shields.io/badge/License-GPL--3.0-green.svg" alt="License"></a></li>
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-green.svg" alt="lifecycle"></a></li>
 <li><a href="https://github.com/r-lib/lintr" class="external-link"><img src="https://github.com/matrix-profile-foundation/tsmp/workflows/Lint/badge.svg?branch=main" alt="Lint"></a></li>
-<li><a href="https://r-pkgs.org/check.html" class="external-link"><img src="https://github.com/matrix-profile-foundation/tsmp/workflows/R-CMD-check/badge.svg?branch=main" alt="R-CMD-check"></a></li>
 <li><a href="https://app.codecov.io/gh/matrix-profile-foundation/tsmp" class="external-link"><img src="https://codecov.io/gh/matrix-profile-foundation/tsmp/branch/main/graph/badge.svg?token=w7AmbwhNvn" alt="codecov"></a></li>
 <li><a href="https://cran.r-project.org/package=tsmp" class="external-link"><img src="https://www.r-pkg.org/badges/version/tsmp" alt="CRAN version"></a></li>
 <li><a href="https://cran.r-project.org/package=tsmp" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/tsmp" alt="CRAN Downloads"></a></li>
-<li><a href="https://mybinder.org/v2/gh/matrix-profile-foundation/tsmp/master" class="external-link"><img src="https://mybinder.org/badge_logo.svg" alt="Binder"></a></li>
 </ul>
 </div>
 

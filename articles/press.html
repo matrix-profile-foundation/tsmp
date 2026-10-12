@@ -162,8 +162,8 @@ domain.</li>
 multicore processors and in distributed systems.</li>
 </ul>
 <div class="section level3">
-<h3 id="performance-on-an-intelr-coretm-i7-7700-cpu-3-60ghz-using-a-random-walk-dataset">Performance on an Intel(R) Core(TM) i7-7700 CPU @ 3.60GHz using a
-random walk dataset<a class="anchor" aria-label="anchor" href="#performance-on-an-intelr-coretm-i7-7700-cpu-3-60ghz-using-a-random-walk-dataset"></a>
+<h3 id="performance-on-an-intelr-coretm-i9-13900k-using-a-random-walk-dataset">Performance on an Intel(R) Core(TM) i9-13900K using a random walk
+dataset<a class="anchor" aria-label="anchor" href="#performance-on-an-intelr-coretm-i9-13900k-using-a-random-walk-dataset"></a>
 </h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2018</span><span class="op">)</span></span>
@@ -186,36 +186,51 @@ random walk dataset<a class="anchor" aria-label="anchor" href="#performance-on-a
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td><code>scrimp()</code></td>
-<td align="center">45.30s</td>
-<td align="center">40000</td>
-<td align="center">1000</td>
-<td align="center">1</td>
-</tr>
-<tr class="even">
-<td><code>stomp_par()</code></td>
-<td align="center">52.72s</td>
+<td>
+<code>mpx</code> (parallel)</td>
+<td align="center">0.32s</td>
 <td align="center">40000</td>
 <td align="center">1000</td>
 <td align="center">8</td>
+</tr>
+<tr class="even">
+<td><code>mpx</code></td>
+<td align="center">1.02s</td>
+<td align="center">40000</td>
+<td align="center">1000</td>
+<td align="center">1</td>
 </tr>
 <tr class="odd">
-<td><code>stomp()</code></td>
-<td align="center">136.01s</td>
+<td><code>stomp_par()</code></td>
+<td align="center">2.45s</td>
+<td align="center">40000</td>
+<td align="center">1000</td>
+<td align="center">8</td>
+</tr>
+<tr class="even">
+<td><code>scrimp()</code></td>
+<td align="center">13.10s</td>
 <td align="center">40000</td>
 <td align="center">1000</td>
 <td align="center">1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>stamp_par()</code></td>
-<td align="center">140.25s</td>
+<td align="center">27.43s</td>
 <td align="center">40000</td>
 <td align="center">1000</td>
 <td align="center">8</td>
+</tr>
+<tr class="even">
+<td><code>stomp()</code></td>
+<td align="center">62.91s</td>
+<td align="center">40000</td>
+<td align="center">1000</td>
+<td align="center">1</td>
 </tr>
 <tr class="odd">
 <td><code>stamp()</code></td>
-<td align="center">262.03s</td>
+<td align="center">122.63s</td>
 <td align="center">40000</td>
 <td align="center">1000</td>
 <td align="center">1</td>
@@ -242,8 +257,8 @@ search</a>, it is suggested you see <a href="https://www.cs.unm.edu/~mueen/Faste
 for Euclidean Distance, and the <a href="http://www.cs.ucr.edu/~eamonn/UCRsuite.html" class="external-link">UCR Suite</a> for
 DTW<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
 <li id="fn2"><p>All Pairs Similarity Search<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
-<li id="fn3"><p>These are results using only R code, no low-level C code
-optimizations<a href="#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>Results powered by the high-performance ‘matrixprofiler’
+C++ engine<a href="#fnref3" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
   </div>
