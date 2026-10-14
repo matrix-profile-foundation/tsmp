@@ -12,46 +12,23 @@
 - `R CMD check --as-cran` passed with 0 errors, 0 warnings, and 0 notes.
 - Fixed moved/broken URLs in README.md.
 
-## Comments for this version (0.4.16)
-
-C++11 flags are deprecated and defaults to C++17, so this requirement was removed from the package.
-Also, some old links were fixed.
-
-The new NOTE "‘-Wdate-time’ ‘-Werror=format-security’ ‘-Wformat’" appears only in my devcontainer,
-not on tested environments below, nevertheless seems ok
-
 ## Test environments
 
-- rhub:
-  -  3 [VM] macos          R-* (any version)                     macos-13 on GitHub
-  -  9 [CT] clang-ubsan    R-devel (2025-11-30 r89082)           Ubuntu 22.04.5 LTS
-  - 10 [CT] clang16        R-devel (2025-11-29 r89077)           Ubuntu 22.04.5 LTS
-  - 16 [CT] gcc-asan       R-devel (2025-11-30 r89082)           Fedora Linux 40 (Container Image)
-  - 27 [CT] ubuntu-clang   R-devel (2025-11-30 r89082)           Ubuntu 22.04.5 LTS
-  - 30 [CT] ubuntu-release R-4.5.2 (2025-10-31)                  Ubuntu 24.04.3 LTS
-  - 31 [CT] valgrind       R-devel (2025-11-30 r89082)           Fedora Linux 38 (Container Image)
+- rhub: linux-devel, windows-devel, macos-devel, clang-ubsan, valgrind
 
-- win-builder: devel, release, oldrel
+- win-builder: devel, release
 
 ## R CMD check results
 
-── R CMD check results ──────────────── tsmp 0.4.16 ────
-Duration: 2m 3.1s
+─  checking installed package size ... INFO
+     installed size is  5.5Mb
+     sub-directories of 1Mb or more:
+       data   4.6Mb
 
-❯ checking installed package size ... NOTE
-    installed size is  9.7Mb
-    sub-directories of 1Mb or more:
-      data   4.6Mb
-      libs   3.7Mb
+── R CMD check results ────────────tsmp 0.5.0 ────
+Duration: 38.9s
 
-❯ checking for GNU extensions in Makefiles ... NOTE
-  GNU make is a SystemRequirements.
-
-❯ checking compilation flags used ... NOTE
-  Compilation used the following non-portable flag(s):
-    ‘-Wdate-time’ ‘-Werror=format-security’ ‘-Wformat’
-
-0 errors ✔ | 0 warnings ✔ | 3 notes ✖
+0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 
 ## Downstream dependencies
 
