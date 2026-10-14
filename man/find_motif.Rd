@@ -63,11 +63,12 @@ motif distance * \code{radius}. (Default is \code{3}).}
 \item{n_dim}{an \code{int}. Number of dimensions to use on Guided search instead of embedded value. (Default is \code{NULL}).}
 }
 \value{
-For class \code{MatrixProfile}, returns the input \code{.mp} object with a new name \code{motif}. It contains: \code{motif_idx}, a \code{list}
-of motif pairs found and \code{motif_neighbor} a \code{list} with respective motif's neighbors.
+For class \code{MatrixProfile}, returns the input \code{.mp} object with a new name \code{motif}.
+It contains: \code{motif_idx}, a \code{list}of motif pairs found and \code{motif_neighbor} a \code{list} with
+respective motif's neighbors.
 
-For class \code{MultiMatrixProfile}, returns the input \code{.mp} object with a new name \code{motif}. It contains: \code{motif_idx}, a \code{vector}
-of motifs found and \code{motif_dim} a \code{list} the dimensions where the motifs were found
+For class \code{MultiMatrixProfile}, returns the input \code{.mp} object with a new name \code{motif}. It contains:
+motif_idx\verb{, a }vector\verb{of motifs found and }motif_dim\code{a}list` the dimensions where the motifs were found
 
 For class \code{PMP}, returns the input \code{.mp} object with a new name \code{motif}. It contains: \code{motif_idx}, a \code{list}
 of motif pairs found and \code{motif_neighbor} a \code{list} with respective motif's neighbors.

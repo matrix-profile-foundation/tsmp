@@ -1,19 +1,48 @@
 NEWS
 ================
 Francisco Bischoff
-- 02 Dec 2025
+
+14 Oct 2026
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
-## tsmp 0.4.16
+## tsmp 0.5.0
 
-- C++11 flags are deprecated and defaults to C++17, so this requirement
-  was removed from the package.
-- Some old links were fixed.
+- Renamed JSON serialization functions to `write_json()` and `read_json()`
+  to avoid masking `base::write()`. JSON round trips now preserve profile
+  vectors and the `origin` and `partial` attributes.
 
-## tsmp 0.4.15
-
-- Fix UBSAN error
+- Multivariate STOMP (`mstomp()` and `mstomp_par()`): Delegated
+  computation to the high-performance native C++ engine in
+  `matrixprofiler::mstomp()`, providing massive speedups (~200x) and
+  native multi-threading while removing legacy dependencies on `doSNOW`
+  and `foreach`.
+- Added `mode = "mpx"` to `tsmp()` as a first-class citizen algorithm
+  delegating to `matrixprofiler::mpx()`.
+- Unified API refactoring: `compute()` now delegates internally to
+  `tsmp(mode = "mpx")` and `pmp()`, preserving 100% compatibility with
+  Matrix Profile Foundation unified API (Python/Go) and standard
+  `MatrixProfile` / `PMP` S3 classes.
+- High-performance MPdist: `mpdist()` now delegates to native C++ engine
+  in `matrixprofiler::mpdist()`, delivering major speedups and lower
+  memory footprint to `mpdist()` and `find_snippet()`.
+- Vectorized `fluss_cac()` using `tabulate()`, eliminating slow $O(N)$ R
+  loops.
+- Added `n_workers` parameter to `find_snippet()`, enabling
+  multithreaded MPdist computation.
+- Fixed zero-padding bug in `find_snippet()` when time series length is
+  an exact multiple of snippet size.
+- Enhanced `dist_profile()`, `compute()`, `find_snippet()` and `pmp()`
+  with hardened multi-worker validation against `detectCores() == NA`.
+- Replaced internal `:::` calls in `dist_profile.R` with public API
+  calls to `matrixprofiler::mass()`.
+- Added `na_strategy = c("monolithic", "segmented", "segmented_native")`
+  to `tsmp()` with end-to-end missing value protection for discords and
+  motifs.
+- PAA (`paa()` and `ipaa()`) implemented and maintained in pure R.
+- Removed `audio` dependency and audio completion signals.
+- Switched to pure R implementation (`NeedsCompilation: no`) delegating
+  heavy computations to `matrixprofiler`.
 
 ## tsmp 0.4.14
 
@@ -120,8 +149,8 @@ Francisco Bischoff
 - Added FLUSS (Fast Low-cost Unipotent Semantic Segmentation).
 - Added \[find_chains()\] to look for chains primitives.
 - Added Multivariate MOTIF Search (from mSTOMP)
-- Changed dependency from beepr to audio (actually beepr depends on
-  audio, so fewer dependencies).
+- Changed dependency from `beepr` to `audio` (actually `beepr` depends
+  on `audio`, so fewer dependencies).
 - Added a `NEWS.md` file to track changes to the package.
 
 ## tsmp 0.2.12

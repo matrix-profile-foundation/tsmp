@@ -12,7 +12,7 @@ mstomp_par(
   verbose = getOption("tsmp.verbose", 2),
   must_dim = NULL,
   exc_dim = NULL,
-  n_workers = 2
+  n_workers = 2L
 )
 
 mstomp(
@@ -21,7 +21,8 @@ mstomp(
   exclusion_zone = getOption("tsmp.exclusion_zone", 1/2),
   verbose = getOption("tsmp.verbose", 2),
   must_dim = NULL,
-  exc_dim = NULL
+  exc_dim = NULL,
+  n_workers = 1L
 )
 }
 \arguments{
@@ -39,14 +40,14 @@ details), \code{list} and \code{data.frame} too.}
 
 \item{exc_dim}{an \code{int} or \code{vector} of which dimensions to exclude (default is \code{NULL}).}
 
-\item{n_workers}{an \code{int}. Number of workers for parallel. (Default is \code{2}).}
+\item{n_workers}{an \code{int}. Number of threads for parallel execution (default is \code{1}).}
 }
 \value{
 Returns a \code{MultiMatrixProfile} object, a \code{list} with the matrix profile \code{mp}, profile index \code{pi}
 left and right matrix profile \code{lmp}, \code{rmp} and profile index \code{lpi}, \code{rpi}, window size \code{w},
 number of dimensions \code{n_dim}, exclusion zone \code{ez}, must dimensions \code{must} and excluded dimensions \code{exc}.
 
-If the input has only one dimension, returns the same as \code{\link[=stomp]{stomp()}}.
+If the input has only one dimension, returns the same as \code{\link[matrixprofiler:stomp]{stomp()}}.
 }
 \description{
 Computes the Matrix Profile and Profile Index for Multivariate Time Series.
@@ -62,7 +63,7 @@ its anytime property.
 
 Although this functions handles Multivariate Time Series, it can also be used to handle
 Univariate Time Series. \code{verbose} changes how much information is printed by this function; \code{0}
-means nothing, \code{1} means text, \code{2} adds the progress bar, \code{3} adds the finish sound.
+means nothing, \code{1} means text, \code{2} adds the progress bar.
 }
 \section{Functions}{
 \itemize{
@@ -75,7 +76,7 @@ means nothing, \code{1} means text, \code{2} adds the progress bar, \code{3} add
 # using all dimensions
 mp <- mstomp(mp_toy_data$data[1:150, ], 30, verbose = 0)
 \donttest{
-#' # using threads
+# using threads
 mp <- mstomp_par(mp_toy_data$data[1:150, ], 30, verbose = 0)
 
 # force using dimensions 1 and 2
@@ -101,11 +102,8 @@ Website: \url{https://sites.google.com/view/mstamp/}
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other matrix profile computations: 
-\code{\link{scrimp}()},
-\code{\link{stamp_par}()},
-\code{\link{stomp_par}()},
-\code{\link{tsmp}()},
-\code{\link{valmod}()}
+Other matrix profile computations:
+\code{\link[=tsmp]{tsmp()}},
+\code{\link[=valmod]{valmod()}}
 }
 \concept{matrix profile computations}

@@ -84,4 +84,7 @@ class(mp) # first class will be "Motif"
 plot(mp) # plots a motif plot
 
 plot(as.matrixprofile(mp)) # plots a matrix profile plot
+#
+# TODO: Refactor
+#
 }

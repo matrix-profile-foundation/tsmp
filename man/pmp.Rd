@@ -21,8 +21,8 @@ and sorted. (Default is a sequence of 20 values from 10 to half data size).}
 
 \item{plot}{a \code{logical}. If \code{TRUE}, every new computation will be plotted. (Default is \code{FALSE}).}
 
-\item{pmp_obj}{a \code{PMP} object that may or not contain an upper bound value, and previous computed profiles. The function will
-add new profiles, not replace. (Default is \code{NULL}).}
+\item{pmp_obj}{a \code{PMP} object that may or not contain an upper bound value, and previous computed profiles.
+The function will add new profiles, not replace. (Default is \code{NULL}).}
 
 \item{n_workers}{an \code{int}. Number of workers for parallel. (Default is \code{1}).}
 
@@ -52,7 +52,7 @@ of 20 values between 10 and the half data size and the resulting object will hav
 If an object is provided by the argument \code{pmp_obj}, this function will add more information to the resulting object,
 never changing the values already computed.
 \code{verbose} changes how much information is printed by this function; \code{0} means nothing, \code{1} means text, \code{2}
-adds the progress bar, \code{3} adds the finish sound.
+adds the progress bar.
 
 Talk about upper bound and window sizes
 \enumerate{
@@ -60,7 +60,8 @@ Talk about upper bound and window sizes
 1.1. upper_window will also be used for plot, and for discovery, it must not remove any existing data from the object
 \item window_sizes is used for plot, it must not remove any mp inside the object
 2.1. window_sizes tells the function what mp are stored, it may be updated with as.numeric(names(pmp))
-\item the functions must be capable to handle the data without need to sort by window_size, but sort may be useful later(?)
+\item the functions must be capable to handle the data without need to sort by window_size, but sort may be useful
+later(?)
 }
 }
 \examples{

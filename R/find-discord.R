@@ -19,15 +19,16 @@ find_discord <- function(.mp, ...) {
 #'
 #' @name find_discord
 #' @export
-#' @return For class `MatrixProfile`, returns the input `.mp` object with a new name `discord`. It contains: `discord_idx`, a `vector`
-#' of discords found
+#' @return For class `MatrixProfile`, returns the input `.mp` object with a new name `discord`.
+#' It contains: `discord_idx`, a `vector`of discords found
 #' @examples
 #' # Single dimension data
 #' w <- 50
 #' data <- mp_gait_data
 #' mp <- tsmp(data, window_size = w, exclusion_zone = 1 / 4, verbose = 0)
 #' mp <- find_discord(mp)
-find_discord.MatrixProfile <- function(.mp, data, n_discords = 1, n_neighbors = 3, radius = 3, exclusion_zone = NULL, ...) {
+find_discord.MatrixProfile <- function(.mp, data, n_discords = 1, n_neighbors = 3, radius = 3,
+                                       exclusion_zone = NULL, ...) {
   if (!("MatrixProfile" %in% class(.mp))) {
     stop("First argument must be an object of class `MatrixProfile`.")
   }
@@ -73,6 +74,7 @@ find_discord.MatrixProfile <- function(.mp, data, n_discords = 1, n_neighbors = 
   }
 
   matrix_profile <- .mp$mp # keep mp intact
+  matrix_profile[!is.finite(matrix_profile)] <- -Inf
   matrix_profile_size <- length(matrix_profile)
   discord_idxs <- list(discords = list(NULL), neighbors = list(NULL))
 
@@ -86,6 +88,9 @@ find_discord.MatrixProfile <- function(.mp, data, n_discords = 1, n_neighbors = 
 
   for (i in seq_len(n_discords)) {
     discord_idx <- which.max(matrix_profile)
+    if (length(discord_idx) == 0 || is.infinite(matrix_profile[discord_idx])) {
+      break
+    }
     discord_distance <- matrix_profile[discord_idx]
     discord_idxs[[1L]][[i]] <- discord_idx
 
@@ -140,8 +145,8 @@ find_discord.MatrixProfile <- function(.mp, data, n_discords = 1, n_neighbors = 
 #'
 #' @name find_discord
 #' @export
-#' @return For class `PMP`, returns the input `.mp` object with a new name `discord`. It contains: `discord_idx`, a `vector`
-#' of discords found
+#' @return For class `PMP`, returns the input `.mp` object with a new name `discord`. It contains:
+#' discord_idx`, a `vector` of discords found
 #' @examples
 #' pan <- tsmp(mp_gait_data, window_size = 20:30, mode = "pmp")
 #' mp <- find_discord(pan)
@@ -190,6 +195,7 @@ find_discord.PMP <- function(.mp, data, n_discords = 1, n_neighbors = 3, radius 
   row <- 1
 
   matrix_profile <- .mp$pmp[[row]] # keep mp intact
+  matrix_profile[!is.finite(matrix_profile)] <- -Inf
   matrix_profile_size <- length(matrix_profile)
   discord_idxs <- list(discords = list(NULL), neighbors = list(NULL))
 
@@ -203,11 +209,14 @@ find_discord.PMP <- function(.mp, data, n_discords = 1, n_neighbors = 3, radius 
 
   for (i in seq_len(n_discords)) {
     discord_idx <- which.max(matrix_profile)
+    if (length(discord_idx) == 0 || is.infinite(matrix_profile[discord_idx])) {
+      break
+    }
     discord_distance <- matrix_profile[discord_idx]
     discord_idxs[[1L]][[i]] <- discord_idx
 
     # query using the discord to find its neighbors
-    nn <- dist_profile(data, data, nn, window_size = .mp$w, index = discord_idx)
+    nn <- dist_profile(data, data, nn, window_size = .mp$w[row], index = discord_idx)
 
     distance_profile <- nn$distance_profile
     distance_profile[distance_profile > (discord_distance * radius)^2] <- Inf

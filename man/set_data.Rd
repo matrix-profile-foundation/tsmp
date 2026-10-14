@@ -20,4 +20,7 @@ This may be useful if you want to include the data lately or remove the included
 \examples{
 mp <- tsmp(mp_toy_data$data[1:200, 1], window_size = 30, verbose = 0)
 mp <- set_data(mp, NULL)
+#
+# TODO: Refactor
+#
 }

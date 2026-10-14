@@ -51,8 +51,8 @@ to Predict Outcomes. Proc VLDB Endow. 2017 Aug 1;10(12):1802-12.
 Website: \url{https://sites.google.com/view/weaklylabeled}
 }
 \seealso{
-Other Scalable Dictionaries: 
-\code{\link{sdts_predict}()},
-\code{\link{sdts_train}()}
+Other Scalable Dictionaries:
+\code{\link[=sdts_predict]{sdts_predict()}},
+\code{\link[=sdts_train]{sdts_train()}}
 }
 \concept{Scalable Dictionaries}

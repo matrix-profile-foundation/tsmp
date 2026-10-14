@@ -1,7 +1,7 @@
 Type: Package
 Package: tsmp
 Title: Time Series with Matrix Profile
-Version: 0.4.16
+Version: 0.5.0
 Authors@R:
     c(person(given = "Francisco",
              family = "Bischoff",
@@ -37,34 +37,33 @@ Maintainer: Francisco Bischoff <fbischoff@med.up.pt>
 Description: A toolkit implementing the Matrix Profile concept
     that was created by CS-UCR
     <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>.
-License: Apache License (>= 2.0)
+License: GPL-3
 URL: https://github.com/matrix-profile-foundation/tsmp
 BugReports: https://github.com/matrix-profile-foundation/tsmp/issues
 Depends:
     R (>= 4.0)
 Imports:
-    audio,
-    checkmate,
-    doSNOW,
-    foreach,
+    checkmate (>= 2.0.0),
+    glue,
+    graphics,
+    grDevices,
     magrittr,
-    parallel,
-    progress,
-    Rcpp,
-    RcppParallel (>= 5.0.0),
-    RJSONIO
+    matrixprofiler (>= 0.1.12),
+    stats,
+    utils
 Suggests:
     covr,
-    gdtools,
+    debugme (>= 1.1.0),
+    digest,
     knitr,
-    rmarkdown,
+    parallel,
+    progress (>= 1.2.2),
     raster,
-    spelling,
-    testthat (>= 2.1.0),
+    RJSONIO,
+    rmarkdown,
+    spelling (>= 2.2.0),
+    testthat (>= 3.0.2),
     vdiffr
-LinkingTo:
-    Rcpp (>= 1.0.3),
-    RcppParallel (>= 5.0.0)
 VignetteBuilder:
     knitr
 Encoding: UTF-8
@@ -72,5 +71,6 @@ Language: en-US
 LazyData: true
 NeedsCompilation: no
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
-SystemRequirements: GNU make
+Config/testthat/edition: 3
+Config/testthat/parallel: true
+Config/roxygen2/version: 8.1.0

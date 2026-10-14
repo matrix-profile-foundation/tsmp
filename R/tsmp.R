@@ -41,16 +41,18 @@
 #'     \item{exclusion_zone}{Is used to avoid trivial matches; if a query data is provided
 #'       (join similarity), this parameter is ignored.}
 #'     \item{verbose}{Changes how much information is printed by this function; `0` means nothing,
-#'     `1` means text, `2` adds the progress bar, `3` adds the finish sound.}
+#'     `1` means text, `2` adds the progress bar.}
 #'     \item{n_workers}{number of threads for parallel computing (except `simple_fast`, `scrimp` and `valmod`).
 #'     If the value is 2 or more, the '_par' version of the algorithm will be used.}
 #'   }
 #'
-#'   `s_size` is used only in Anytime algorithms: [stamp()] and [scrimp()].
+#'   `s_size` is used only in Anytime algorithms: [stamp()], [scrimp()] and [mpx()].
 #'   `must_dim` and `exc_dim` are used only in [mstomp()].
 #'   `heap_size` is used only for [valmod()]
-#'   `mode` can be any of the following: `stomp`, `stamp`, `simple`, `mstomp`, `scrimp`, `valmod`, `pmp`.
+#'   `mode` can be any of the following: `stomp`, `mpx`, `stamp`, `simple`, `mstomp`, `scrimp`, `valmod`, `pmp`.
 #'
+#' @param na_strategy the NA handling strategy for algorithms that support it (e.g. `mpx`):
+#'   `"monolithic"`, `"segmented"`, or `"segmented_native"`. (Default is `"monolithic"`).
 #' @param \dots a `matrix` or a `vector`. If a second time series is supplied it will be a join matrix
 #'   profile (except for [mstomp()]).
 #' @param window_size an `int` with the size of the sliding window. Use a vector for Valmod.
@@ -59,7 +61,7 @@
 #' @param verbose an `int`. (Default is `2`). See details.
 #' @param n_workers an `int`. Number of workers for parallel. (Default is `1`).
 #' @param mode the algorithm that will be used to compute the matrix profile. (Default is `stomp`).
-#'   See details.
+#'   Can be `stomp`, `mpx`, `stamp`, `simple`, `mstomp`, `scrimp`, `valmod`, `pmp`. See details.
 #' @param s_size a `numeric`. for anytime algorithm, represents the size (in observations) the
 #'   random calculation will occur (default is `Inf`). See details.
 #' @param must_dim an `int` or `vector` of which dimensions to forcibly include (default is `NULL`).
@@ -67,7 +69,6 @@
 #' @param exc_dim an `int` or `vector` of which dimensions to exclude (default is `NULL`). See
 #'   details.
 #' @param heap_size an `int`. (Default is `50`). Size of the distance profile heap buffer.
-#' @param paa an `int`. (Default is `1`). Factor of PAA reduction (2 == half of size)
 #' @param .keep_data a `logical`. (Default is `TRUE`). Keeps the data embedded to resultant object.
 #'
 #' @return Returns the matrix profile `mp` and profile index `pi`. It also returns the left and
@@ -109,10 +110,12 @@
 #' mp <- tsmp(mp_test_data$train$data[1:1000, 1], window_size = 30, n_workers = 2, verbose = 0)
 #' }
 tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zone", 1 / 2),
-                 mode = c("stomp", "stamp", "simple", "mstomp", "scrimp", "valmod", "pmp"),
+                 mode = c("stomp", "mpx", "stamp", "simple", "mstomp", "scrimp", "valmod", "pmp"),
                  verbose = getOption("tsmp.verbose", 2), n_workers = 1, s_size = Inf, must_dim = NULL, exc_dim = NULL,
-                 heap_size = 50, paa = 1, .keep_data = TRUE) {
+                 heap_size = 50, .keep_data = TRUE,
+                 na_strategy = c("monolithic", "segmented", "segmented_native")) {
   algo <- match.arg(mode)
+  na_strat <- match.arg(na_strategy)
 
   argv <- list(...)
   argc <- length(argv)
@@ -133,26 +136,6 @@ tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zo
     query <- argv[[2]]
   }
 
-  paa <- round(paa)
-
-  if (paa > 1) {
-    if (is.matrix(data)) {
-      data <- apply(data, 2, paa, paa)
-    } else {
-      data <- paa(data, paa)
-    }
-
-    if (!is.null(query)) {
-      if (is.matrix(query)) {
-        query <- apply(query, 2, paa, paa)
-      } else {
-        query <- paa(query, paa)
-      }
-    }
-
-    window_size <- window_size / paa
-  }
-
   if (n_workers > 1) {
     min_size <- length(data)
 
@@ -165,30 +148,51 @@ tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zo
   data <- as.matrix(data)
   query <- if (is.null(query)) NULL else as.matrix(query)
 
+  s_size_val <- if (is.infinite(s_size)) {
+    1.0
+  } else if (s_size > 1) {
+    min(1.0, s_size / max(1, NROW(data) - min(window_size) + 1))
+  } else {
+    max(0.0, s_size)
+  }
+
+  tictac <- Sys.time()
+
   result <- switch(algo,
+    "mpx" = {
+      matrixprofiler::mpx(data, query,
+        window_size = min(window_size),
+        s_size = s_size_val,
+        n_workers = n_workers,
+        progress = (verbose > 1),
+        na_strategy = na_strat
+      )
+    },
     "stomp" = {
       if (n_workers > 1) {
-        stomp_par(data, query,
+        matrixprofiler::stomp(data, query,
           window_size = min(window_size), exclusion_zone = exclusion_zone,
-          verbose = verbose, n_workers = n_workers
+          progress = (verbose > 1), n_workers = n_workers,
+          left_right_profile = is.null(query)
         )
       } else {
-        stomp(data, query,
+        matrixprofiler::stomp(data, query,
           window_size = min(window_size), exclusion_zone = exclusion_zone,
-          verbose = verbose
+          progress = (verbose > 1),
+          left_right_profile = is.null(query)
         )
       }
     },
     "stamp" = {
       if (n_workers > 1) {
-        stamp_par(data, query,
+        matrixprofiler::stamp(data, query,
           window_size = min(window_size), exclusion_zone = exclusion_zone,
-          verbose = verbose, s_size = s_size, n_workers = n_workers
+          s_size = s_size_val, n_workers = n_workers, progress = (verbose > 1)
         )
       } else {
-        stamp(data, query,
+        matrixprofiler::stamp(data, query,
           window_size = min(window_size), exclusion_zone = exclusion_zone,
-          verbose = verbose, s_size = s_size
+          s_size = s_size_val, progress = (verbose > 1)
         )
       }
     },
@@ -216,14 +220,15 @@ tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zo
       }
     },
     "scrimp" = {
-      scrimp(data, query,
+      matrixprofiler::scrimp(data, query,
         window_size = min(window_size), exclusion_zone = exclusion_zone,
-        verbose = verbose, s_size = s_size
+        progress = (verbose > 1), s_size = s_size_val
       )
     },
     "valmod" = {
       valmod(data, query,
-        window_min = min(window_size), window_max = max(window_size), heap_size = heap_size, exclusion_zone = exclusion_zone,
+        window_min = min(window_size), window_max = max(window_size), heap_size = heap_size,
+        exclusion_zone = exclusion_zone,
         verbose = verbose
       )
     },
@@ -233,37 +238,45 @@ tsmp <- function(..., window_size, exclusion_zone = getOption("tsmp.exclusion_zo
     stop("`mode` must be ", mode)
   )
 
-  # if (paa > 1) {
-  #   result$mp <- ipaa(result$mp * sqrt(paa), paa)
-  #   result$rmp <- ipaa(result$rmp * sqrt(paa), paa)
-  #   result$lmp <- ipaa(result$lmp * sqrt(paa), paa)
-  #   result$pi <- ipaa(result$pi, paa) * paa
-  #   result$rpi <- ipaa(result$rpi, paa) * paa
-  #   result$lpi <- ipaa(result$lpi, paa) * paa
-  #   result$w <- result$w * paa
-  #   result$paa <- paa
-  #
-  #   if (is.matrix(data)) {
-  #     data <- apply(data, 2, ipaa, paa)
-  #   } else {
-  #     data <- ipaa(data, paa)
-  #   }
-  #
-  #   if (!is.null(query)) {
-  #     if (is.matrix(query)) {
-  #       query <- apply(query, 2, ipaa, paa)
-  #     } else {
-  #       query <- ipaa(query, paa)
-  #     }
-  #   }
-  # }
+  tictac <- Sys.time() - tictac
+  if (verbose > 0 && !(algo %in% c("mstomp", "simple", "valmod", "pmp"))) {
+    message(sprintf("Finished in %.2f %s", tictac, units(tictac)))
+  }
+
+  if (algo %in% c("mpx", "stomp", "stamp", "scrimp")) {
+    mp_out <- as.numeric(result$matrix_profile)
+    pi_out <- as.integer(result$profile_index)
+    lmp_out <- if (!is.null(result$left_matrix_profile)) as.numeric(result$left_matrix_profile) else NULL
+    lpi_out <- if (!is.null(result$left_profile_index)) as.integer(result$left_profile_index) else NULL
+    rmp_out <- if (!is.null(result$right_matrix_profile)) as.numeric(result$right_matrix_profile) else NULL
+    rpi_out <- if (!is.null(result$right_profile_index)) as.integer(result$right_profile_index) else NULL
+
+    partial_val <- result$partial
+    ez_val <- result$ez
+
+    result <- list(
+      mp = mp_out,
+      pi = pi_out,
+      rmp = rmp_out,
+      rpi = rpi_out,
+      lmp = lmp_out,
+      lpi = lpi_out,
+      w = min(window_size),
+      ez = ez_val
+    )
+    if (!is.null(partial_val)) {
+      attr(result, "partial") <- partial_val
+    }
+    attr(result, "join") <- !is.null(query)
+    class(result) <- "MatrixProfile"
+  }
 
   attr(result, "origin") <- list(
-    data_size = nrow(data),
-    query_size = nrow(query),
+    data_size = NROW(data),
+    query_size = if (is.null(query)) 0L else NROW(query),
     window_size = window_size,
     exclusion_zone = result$ez,
-    mp_size = nrow(result$mp),
+    mp_size = NROW(result$mp),
     algorithm = algo,
     class = class(result),
     version = 1.1

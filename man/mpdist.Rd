@@ -9,7 +9,8 @@ mpdist(
   query_data,
   window_size,
   type = c("simple", "vector"),
-  thr = 0.05
+  thr = 0.05,
+  n_workers = 1L
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ mpdist(
 \item{type}{the type of result. (Default is \code{simple}). See details.}
 
 \item{thr}{threshold for MPdist. (Default is \code{0.05}). Don't change this unless you know what you are doing.}
+
+\item{n_workers}{an \code{int}. Number of threads for parallel computing. (Default is \code{1}).}
 }
 \value{
 Returns the distance of two time series or a vector containing the distance

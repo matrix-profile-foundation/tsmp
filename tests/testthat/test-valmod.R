@@ -1,6 +1,4 @@
 if (!testthat:::on_cran()) {
-  context("Testing Valmod function")
-
   ref_data <- tsmp::mp_toy_data$data[, 1L]
   query_data <- tsmp::mp_toy_data$data[, 2L]
   # self similarity

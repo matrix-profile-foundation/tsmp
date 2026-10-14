@@ -44,8 +44,8 @@ Computes the Matrix Profile and Profile Index for a range of query window sizes
 \details{
 This algorithm uses an exact algorithm based on a novel lower bounding technique, which is
 specifically designed for the motif discovery problem. \code{verbose} changes how much information
-is printed by this function; \code{0} means nothing, \code{1} means text, \code{2} adds the progress bar,
-\code{3} adds the finish sound. \code{exclusion_zone} is used to avoid  trivial matches; if a query data
+is printed by this function; \code{0} means nothing, \code{1} means text, \code{2} adds the progress bar.
+\code{exclusion_zone} is used to avoid trivial matches; if a query data
 is provided (join similarity), this parameter is ignored.
 
 Paper that implements \code{skimp()} suggests that window_max / window_min > than 1.24 begins to
@@ -73,11 +73,8 @@ on Management of Data - SIGMOD '18. New York, New York, USA: ACM Press; 2018. p.
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other matrix profile computations: 
-\code{\link{mstomp_par}()},
-\code{\link{scrimp}()},
-\code{\link{stamp_par}()},
-\code{\link{stomp_par}()},
-\code{\link{tsmp}()}
+Other matrix profile computations:
+\code{\link[=mstomp_par]{mstomp_par()}},
+\code{\link[=tsmp]{tsmp()}}
 }
 \concept{matrix profile computations}

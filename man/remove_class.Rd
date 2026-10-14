@@ -24,4 +24,7 @@ mp <- tsmp(data, window_size = w, exclusion_zone = 1 / 4, verbose = 0)
 mp <- find_chains(mp)
 # Remove the "Chain" class information
 mp <- remove_class(mp, "Chain")
+#
+# TODO: Refactor
+#
 }

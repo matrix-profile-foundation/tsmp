@@ -9,14 +9,14 @@
 #' @details
 #' `beta` is used to balance F-score towards recall (`>1`) or precision (`<1`). `verbose` changes
 #' how much information is printed by this function; `0` means nothing, `1` means text, `2` adds the
-#' progress bar, `3` adds the finish sound.
+#' progress bar.
 #'
 #' @param data a `vector` of `numeric`. Time series.
 #' @param label a `vector` of `logical`. Annotations.
 #' @param window_size an `int` or a `vector` of `int`. Sliding window sizes.
 #' @param beta a `numeric`. See details. (default is `1`).
 #' @param pat_max an `int`. Max number of shape features captured. (default is `Inf`).
-#' @param parallel a `logical`. Use parallel computation inside (default is `FALSE`).
+#' @param n_workers an `int`. Number of workers for parallel execution. (default is `1`).
 #' @param verbose an `int`. See details. (Default is `2`).
 #'
 #' @return Returns a list with the learned dictionary `score` (estimated score), `score_hist`
@@ -45,8 +45,8 @@
 #' predict <- sdts_predict(model, mp_test_data$test$data, round(mean(windows)))
 #' sdts_score(predict, mp_test_data$test$label, 1)
 #' }
-sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parallel = FALSE, verbose = getOption("tsmp.verbose", 2)) {
-
+sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, n_workers = 1,
+                       verbose = getOption("tsmp.verbose", 2)) {
   # transform data list into matrix ----
   if (is.matrix(data) || is.data.frame(data)) {
     if (is.data.frame(data)) {
@@ -102,7 +102,6 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
   pos_alt_ed <- c(pos_alt_ed[-1], length(pos))
 
 
-
   # run matrix profile on concatenated positive segment ----
   if (verbose > 0) {
     message("Stage 1 of 3, compute matrix profile...")
@@ -111,12 +110,8 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
   mat_pro <- list()
 
   for (i in 1:n_window_size) {
-    if (parallel == TRUE) {
-      mp <- stomp_par(pos, window_size = window_size[i], verbose = verbose)
-    } else {
-      mp <- stomp(pos, window_size = window_size[i], verbose = verbose)
-    }
-    mat_pro[[i]] <- mp$mp
+    mp <- matrixprofiler::stomp(pos, window_size = window_size[i], n_workers = n_workers, progress = (verbose > 1))
+    mat_pro[[i]] <- as.numeric(mp$matrix_profile)
   }
 
   # extract candidate ----
@@ -129,7 +124,8 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
     candi_dist <- rep(0, n_pos)
 
     for (j in 1:n_pos) {
-      temp <- mat_pro[[i]][pos_alt_st[[i]][j]:max(pos_alt_st[[i]][j], (pos_alt_ed[j] - window_size[i] + 1), na.rm = TRUE)]
+      temp <- mat_pro[[i]][pos_alt_st[[i]][j]:max(pos_alt_st[[i]][j], (pos_alt_ed[j] -
+        window_size[i] + 1), na.rm = TRUE)]
       rlt_idx <- which.min(temp)
       if (length(temp[rlt_idx]) == 0) {
         print("Zero")
@@ -163,9 +159,6 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
       format = "SDTS-Train [:bar] :percent at :tick_rate it/s, elapsed: :elapsed, eta: :eta",
       clear = FALSE, total = n_window_size * n_pos, width = 80
     )
-  }
-  if (verbose > 2) {
-    on.exit(beep(sounds[[1]]), TRUE)
   }
 
   for (i in 1:n_window_size) {
@@ -225,7 +218,10 @@ sdts_train <- function(data, label, window_size, beta = 1, pat_max = Inf, parall
   # check max pattern allowed ----
   pat_max <- min(pat_max, floor(n_pos * 0.5))
   if (pat_max < 2) {
-    return(list(score = candi_score[1], score_hist = candi_score[1], pattern = list(candi[[1]]), thold = candi_thold[1]))
+    return(list(
+      score = candi_score[1], score_hist = candi_score[1], pattern = list(candi[[1]]),
+      thold = candi_thold[1]
+    ))
   }
   # CHECK OK
   # check combined pattern ----

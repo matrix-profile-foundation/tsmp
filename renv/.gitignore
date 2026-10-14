@@ -1,7 +1,7 @@
-sandbox/
-library/
-local/
 cellar/
+sandbox/
+local/
 lock/
+library/
 python/
 staging/

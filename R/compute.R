@@ -43,102 +43,76 @@
 #' result <- compute(mp_toy_data$data[, 1])
 #' }
 compute <- function(ts, windows = NULL, query = NULL, sample_pct = 1.0, threshold = 0.98, n_jobs = 1L) {
+  # Check time series classes -----------------------
+  data_ref <- convert_data(ts)
+  query_ref <- convert_data(query)
 
   # Parse arguments ---------------------------------
-  checkmate::qassert(ts, "N+")
+  checkmate::qassert(data_ref, "N+")
   windows <- checkmate::qassert(windows, c("0", "X+[4,)"))
-  checkmate::qassert(query, c("0", "N>=4"))
+  checkmate::qassert(query_ref, c("0", "N>=4"))
   checkmate::qassert(sample_pct, "N1(0,1]")
   checkmate::qassert(threshold, c("0", "N1(0,1]"))
-  n_jobs <- as.integer(checkmate::qassert(n_jobs, paste0("X1[1,", parallel::detectCores(), "]")))
+  n_jobs <- as.integer(checkmate::qassert(n_jobs, "X1[1,)"))
 
-  res <- NULL
-  algorithm <- NULL
-  join <- FALSE
-  metric <- "euclidean"
-
-  # Start ---------------------------------
   if (length(windows) == 1) {
-    ## Matrix Profile =========================
-
+    ## Matrix Profile (delegated to tsmp) ======
     if (is.null(query)) {
-      ### Self-join #############################
-
-      if (sample_pct >= 1) {
-        res <- mpx(data = ts, window_size = windows, idx = TRUE, dist = metric, n_workers = n_jobs)
-        algorithm <- "mpx"
-      } else {
-        res <- scrimp(ts, window_size = windows, s_size = floor(sample_pct * length(ts))) # n_jobs
-        algorithm <- "scrimp"
-      }
+      result <- tsmp(ts,
+        window_size = windows,
+        mode = "mpx",
+        s_size = sample_pct,
+        n_workers = n_jobs,
+        verbose = 0,
+        .keep_data = FALSE
+      )
     } else {
-      ### AB join #############################
-      join <- TRUE
-      if (sample_pct >= 1) {
-        res <- mpx(data = ts, query = query, window_size = windows, idx = TRUE, dist = metric, n_workers = n_jobs)
-        algorithm <- "mpx"
-      } else {
-        # TODO: add scrimp AB-join
-        res <- scrimp(ts, window_size = windows, s_size = floor(sample_pct * length(ts))) # n_jobs # AB
-        algorithm <- "scrimp"
-      }
+      result <- tsmp(ts, query,
+        window_size = windows,
+        mode = "mpx",
+        s_size = sample_pct,
+        n_workers = n_jobs,
+        verbose = 0,
+        .keep_data = FALSE
+      )
     }
+
+    result$sample_pct <- sample_pct
+    result$data <- list(
+      ts = ts,
+      query = query
+    )
+    attr(result, "metric") <- "euclidean"
+    attr(result, "algorithm") <- "mpx"
+    attr(result, "join") <- !is.null(query)
+    class(result) <- "MatrixProfile"
+    return(invisible(result))
   } else {
     ## Pan Matrix Profile =========================
-
     if (!is.null(threshold)) {
       # when a threshold is passed, we compute the upper bound
-      res <- pmp_upper_bound(data = ts, threshold = threshold, n_workers = n_jobs)
+      res <- pmp_upper_bound(data = data_ref, threshold = threshold, n_workers = n_jobs)
     }
 
     if (is.null(windows)) {
       # when no windows are passed, create an array from 10 to upper bound or half ts size
-      windows <- seq.int(from = 10, to = min(length(ts) / 2, res$upper_window), length.out = 20)
+      windows <- seq.int(from = 10, to = min(length(data_ref) / 2, res$upper_window), length.out = 20)
     } else {
       # otherwise, remove windows that are above upper bound or half ts size
-      windows <- windows[windows <= min(length(ts) / 2, res$upper_window)]
+      windows <- windows[windows <= min(length(data_ref) / 2, res$upper_window)]
     }
 
     windows <- floor(windows)
-
-    res <- pmp(data = ts, window_sizes = windows, plot = FALSE, pmp_obj = res, n_workers = n_jobs)
-
-    algorithm <- "pmp"
-  }
-
-  # Build compute object --------------------------
-
-  # Main fields, easily accessible by the user
-  if (length(windows) == 1) {
-    result <- list(
-      mp = as.matrix(res$mp),
-      pi = as.matrix(res$pi),
-      # mpb = NULL,
-      # pib = NULL,
-      rmp = NULL,
-      rpi = NULL,
-      lmp = NULL,
-      lpi = NULL,
-      w = windows,
-      ez = res$ez
+    result <- pmp(data = data_ref, window_sizes = windows, plot = FALSE, pmp_obj = res, n_workers = n_jobs, verbose = 0)
+    result$sample_pct <- sample_pct
+    result$data <- list(
+      ts = ts,
+      query = query
     )
-    class(result) <- "MatrixProfile"
-  } else {
-    result <- res
+    attr(result, "join") <- FALSE
+    attr(result, "metric") <- "euclidean"
+    attr(result, "algorithm") <- "pmp"
     class(result) <- "PMP"
+    return(invisible(result))
   }
-  result$sample_pct <- sample_pct
-  result$data <- list(
-    ts = as.vector(ts),
-    query = as.vector(query)
-  )
-
-  # Attributes
-  attr(result, "join") <- join
-  attr(result, "metric") <- metric
-  attr(result, "algorithm") <- algorithm
-
-  # End ---------------------------------
-
-  return(invisible(result))
 }

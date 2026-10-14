@@ -1,5 +1,4 @@
 if (!testthat:::on_cran()) {
-  context("Testing Time Series Chains")
   library(tsmp)
 
   w <- 50
@@ -11,6 +10,6 @@ if (!testthat:::on_cran()) {
     expect_equal(length(res$chain), 2)
     expect_equal(length(res$chain$chains), 58)
     expect_equal(length(res$chain$best), 6)
-    expect_known_hash(res$chain$chains, "d7c3f43152")
+    expect_hash(res$chain$chains, "3936a906af")
   })
 }

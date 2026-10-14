@@ -4,7 +4,13 @@
 \alias{find_snippet}
 \title{Time Series Snippets: A New Primitive for Time Series Data Mining}
 \usage{
-find_snippet(data, s_size, n_snippets = 2L, window_size = s_size/2L)
+find_snippet(
+  data,
+  s_size,
+  n_snippets = 2L,
+  window_size = s_size/2L,
+  n_workers = 1L
+)
 }
 \arguments{
 \item{data}{a \code{matrix} or a \code{vector}.}
@@ -15,6 +21,8 @@ find_snippet(data, s_size, n_snippets = 2L, window_size = s_size/2L)
 
 \item{window_size}{an \code{int}. The size of the sliding window used to compare the data. Must be smaller
 than \code{s_size}. (Default is \code{s_size / 2}).}
+
+\item{n_workers}{an \code{int}. Number of threads to use when computing with MPdist. (Default is \code{1}).}
 }
 \value{
 Returns the snippet : a list of n_snippets snippets

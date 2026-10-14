@@ -6,14 +6,14 @@
   "name": "tsmp: Time Series with Matrix Profile",
   "codeRepository": "https://github.com/matrix-profile-foundation/tsmp",
   "issueTracker": "https://github.com/matrix-profile-foundation/tsmp/issues",
-  "license": "https://spdx.org/licenses/Apache-2.0",
-  "version": "0.4.16",
+  "license": "https://spdx.org/licenses/GPL-3.0",
+  "version": "0.5.0",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.2.3 (2023-03-15)",
+  "runtimePlatform": "R version 4.6.1 (2026-06-24)",
   "provider": {
     "@id": "https://cran.r-project.org",
     "@type": "Organization",
@@ -90,15 +90,28 @@
     },
     {
       "@type": "SoftwareApplication",
-      "identifier": "gdtools",
-      "name": "gdtools",
+      "identifier": "debugme",
+      "name": "debugme",
+      "version": ">= 1.1.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
         "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
       },
-      "sameAs": "https://CRAN.R-project.org/package=gdtools"
+      "sameAs": "https://CRAN.R-project.org/package=debugme"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "digest",
+      "name": "digest",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=digest"
     },
     {
       "@type": "SoftwareApplication",
@@ -114,15 +127,21 @@
     },
     {
       "@type": "SoftwareApplication",
-      "identifier": "rmarkdown",
-      "name": "rmarkdown",
+      "identifier": "parallel",
+      "name": "parallel"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "progress",
+      "name": "progress",
+      "version": ">= 1.2.2",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
         "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
       },
-      "sameAs": "https://CRAN.R-project.org/package=rmarkdown"
+      "sameAs": "https://CRAN.R-project.org/package=progress"
     },
     {
       "@type": "SoftwareApplication",
@@ -138,8 +157,33 @@
     },
     {
       "@type": "SoftwareApplication",
+      "identifier": "RJSONIO",
+      "name": "RJSONIO",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=RJSONIO"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "rmarkdown",
+      "name": "rmarkdown",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=rmarkdown"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "spelling",
       "name": "spelling",
+      "version": ">= 2.2.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -152,7 +196,7 @@
       "@type": "SoftwareApplication",
       "identifier": "testthat",
       "name": "testthat",
-      "version": ">= 2.1.0",
+      "version": ">= 3.0.2",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -183,20 +227,9 @@
     },
     "2": {
       "@type": "SoftwareApplication",
-      "identifier": "audio",
-      "name": "audio",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=audio"
-    },
-    "3": {
-      "@type": "SoftwareApplication",
       "identifier": "checkmate",
       "name": "checkmate",
+      "version": ">= 2.0.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -205,29 +238,27 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=checkmate"
     },
-    "4": {
+    "3": {
       "@type": "SoftwareApplication",
-      "identifier": "doSNOW",
-      "name": "doSNOW",
+      "identifier": "glue",
+      "name": "glue",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
         "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
       },
-      "sameAs": "https://CRAN.R-project.org/package=doSNOW"
+      "sameAs": "https://CRAN.R-project.org/package=glue"
+    },
+    "4": {
+      "@type": "SoftwareApplication",
+      "identifier": "graphics",
+      "name": "graphics"
     },
     "5": {
       "@type": "SoftwareApplication",
-      "identifier": "foreach",
-      "name": "foreach",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=foreach"
+      "identifier": "grDevices",
+      "name": "grDevices"
     },
     "6": {
       "@type": "SoftwareApplication",
@@ -243,65 +274,34 @@
     },
     "7": {
       "@type": "SoftwareApplication",
-      "identifier": "parallel",
-      "name": "parallel"
+      "identifier": "matrixprofiler",
+      "name": "matrixprofiler",
+      "version": ">= 0.1.12",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=matrixprofiler"
     },
     "8": {
       "@type": "SoftwareApplication",
-      "identifier": "progress",
-      "name": "progress",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=progress"
+      "identifier": "stats",
+      "name": "stats"
     },
     "9": {
       "@type": "SoftwareApplication",
-      "identifier": "Rcpp",
-      "name": "Rcpp",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=Rcpp"
+      "identifier": "utils",
+      "name": "utils"
     },
-    "10": {
-      "@type": "SoftwareApplication",
-      "identifier": "RcppParallel",
-      "name": "RcppParallel",
-      "version": ">= 5.0.0",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=RcppParallel"
-    },
-    "11": {
-      "@type": "SoftwareApplication",
-      "identifier": "RJSONIO",
-      "name": "RJSONIO",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=RJSONIO"
-    },
-    "SystemRequirements": "GNU make"
+    "SystemRequirements": null
   },
-  "fileSize": "6508.065KB",
+  "fileSize": "6333.366KB",
   "releaseNotes": "https://github.com/matrix-profile-foundation/tsmp/blob/main/NEWS.md",
   "readme": "https://github.com/matrix-profile-foundation/tsmp/blob/master/README.md",
-  "contIntegration": ["https://app.circleci.com/pipelines/github/matrix-profile-foundation/tsmp", "https://ci.appveyor.com/project/franzbischoff/tsmp/branch/master", "https://ci.appveyor.com/project/franzbischoff/tsmp/branch/develop", "https://app.codecov.io/gh/matrix-profile-foundation/tsmp", "https://app.codecov.io/gh/matrix-profile-foundation/tsmp"],
-  "developmentStatus": "https://lifecycle.r-lib.org/articles/stages.html#stable",
+  "contIntegration": "https://app.codecov.io/gh/matrix-profile-foundation/tsmp",
+  "developmentStatus": "https://lifecycle.r-lib.org/articles/stages.html",
   "keywords": ["r-package", "matrix-profile", "time-series", "r", "motif-search", "algorithm"],
   "relatedLink": "https://CRAN.R-project.org/package=tsmp"
 }

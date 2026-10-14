@@ -1,5 +1,4 @@
 if (!testthat:::on_cran()) {
-  context("Testing Subset functions")
   library(tsmp)
 
   data <- mp_fluss_data$tilt_abp$data[20000L:30000L]

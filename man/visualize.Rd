@@ -20,10 +20,10 @@ visualize(result)
 Website: \url{http://www.cs.ucr.edu/~eamonn/MatrixProfile.html}
 }
 \seealso{
-Other Main API: 
-\code{\link{analyze}()},
-\code{\link{compute}()},
-\code{\link{discords}()},
-\code{\link{motifs}()}
+Other Main API:
+\code{\link[=analyze]{analyze()}},
+\code{\link[=compute]{compute()}},
+\code{\link[=discords]{discords()}},
+\code{\link[=motifs]{motifs()}}
 }
 \concept{Main API}

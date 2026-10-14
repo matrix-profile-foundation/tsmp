@@ -1,5 +1,4 @@
 if (!testthat:::on_cran()) {
-  context("Testing MPdist")
   library(tsmp)
 
   ref_data <- mp_toy_data$data[, 1]

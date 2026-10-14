@@ -18,8 +18,8 @@
 #' @param window_sizes a `vector` of the window sizes that will be evaluated. They will be rounded to the lower integer
 #' and sorted. (Default is a sequence of 20 values from 10 to half data size).
 #' @param plot a `logical`. If `TRUE`, every new computation will be plotted. (Default is `FALSE`).
-#' @param pmp_obj a `PMP` object that may or not contain an upper bound value, and previous computed profiles. The function will
-#' add new profiles, not replace. (Default is `NULL`).
+#' @param pmp_obj a `PMP` object that may or not contain an upper bound value, and previous computed profiles.
+#' The function will add new profiles, not replace. (Default is `NULL`).
 #' @param n_workers an `int`. Number of workers for parallel. (Default is `1`).
 #' @param verbose an `int`. See details. (Default is `2`).
 #'
@@ -29,14 +29,15 @@
 #' If an object is provided by the argument `pmp_obj`, this function will add more information to the resulting object,
 #' never changing the values already computed.
 #' `verbose` changes how much information is printed by this function; `0` means nothing, `1` means text, `2`
-#' adds the progress bar, `3` adds the finish sound.
+#' adds the progress bar.
 #'
 #' Talk about upper bound and window sizes
 #' 1. upper_window will be set to Inf on new objects
 #' 1.1. upper_window will also be used for plot, and for discovery, it must not remove any existing data from the object
 #' 2. window_sizes is used for plot, it must not remove any mp inside the object
 #' 2.1. window_sizes tells the function what mp are stored, it may be updated with as.numeric(names(pmp))
-#' 3. the functions must be capable to handle the data without need to sort by window_size, but sort may be useful later(?)
+#' 3. the functions must be capable to handle the data without need to sort by window_size, but sort may be useful
+#' later(?)
 #'
 #' @return Returns a `PMP` object.
 #' @export
@@ -55,7 +56,6 @@ pmp <- function(data,
                 pmp_obj = NULL,
                 n_workers = 1,
                 verbose = getOption("tsmp.verbose", 2)) {
-
   # Parse arguments ---------------------------------
   window_sizes <- floor(window_sizes)
 
@@ -63,7 +63,7 @@ pmp <- function(data,
   checkmate::qassert(window_sizes, "X+")
   checkmate::qassert(plot, "B")
   checkmate::qassert(pmp_obj, c("0", "l"))
-  checkmate::qassert(n_workers, paste0("X1[1,", parallel::detectCores(), "]"))
+  checkmate::qassert(n_workers, "X1[1,)")
   checkmate::qassert(verbose, "X1")
 
   # checks if the given object is actualy a skimp object
@@ -122,7 +122,6 @@ pmp <- function(data,
       if (is.null(pmp_obj)) {
         return(NULL)
       } else {
-
         # final arrangements to existing object
 
         expected_profiles <- as.numeric(names(pmp_obj$pmp))
@@ -169,12 +168,11 @@ pmp <- function(data,
   }
 
   # Determine the order in which we will explore the window_sizes
-  split_idx <- binary_split(length(window_sizes))
+  split_idx <- matrixprofiler::binary_split(length(window_sizes))
 
   ## Begin the main Loop ----
 
   for (i in seq_along(split_idx)) {
-
     # i holds the sequence from 1 to ...length(split_idx)
     # idx holds the actual binary split index
     idx <- split_idx[i]
@@ -188,24 +186,24 @@ pmp <- function(data,
     }
 
     # Run Matrix Profile
-    result <- mpx(data = data, window_size = w, idx = TRUE, dist = "euclidean", n_workers = n_workers)
+    result <- matrixprofiler::mpx(data = data, window_size = w, idx = TRUE, dist = "euclidean", n_workers = n_workers)
 
     if (verbose > 0) {
       message(
-        "step: ", i, "/", length(split_idx), " binary idx: ", idx, " window: ", w
+        "step: ", i, "of", length(split_idx), " binary idx: ", idx, " window: ", w
       )
     }
 
     # if pmp_obj is a new empty object, accessing windows will return NULL, so it's fine
     pmp_obj$w <- c(pmp_obj$w, w)
     # using character to create a tuple list. Numbers would create NULL's
-    pmp_obj$pmp[[as.character(w)]] <- result$mp
-    pmp_obj$pmpi[[as.character(w)]] <- result$pi
+    pmp_obj$pmp[[as.character(w)]] <- result$matrix_profile
+    pmp_obj$pmpi[[as.character(w)]] <- result$profile_index
 
     if (plot == TRUE) {
       # add a layer to the plot. `pmp_obj$w` is currently used to know the heigth of
       # the new layer. May be room to improve.
-      skimp_plot_add_layer(result$mp, w, pmp_obj$w)
+      skimp_plot_add_layer(result$matrix_profile, w, pmp_obj$w)
       Sys.sleep(1) # needed for plot update
     }
   }
@@ -245,7 +243,7 @@ pmp <- function(data,
 #' the `threshold` value is hit.
 #'
 #' `verbose` changes how much information is printed by this function; `0` means nothing, `1` means text, `2`
-#' adds the progress bar, `3` adds the finish sound.
+#' adds the progress bar.
 #'
 #' @return Returns a `PMP` object with computed data, or just the upper bound value if `return_pmp` is set to `FALSE`.
 #' @export
@@ -296,13 +294,16 @@ pmp_upper_bound <- function(data,
   while (window_size <= max_window) {
     # message("window: ", window_size)
 
-    result <- mpx(data = data, window_size = window_size, idx = do_idxs, dist = "pearson", n_workers = n_workers)
+    result <- matrixprofiler::mpx(
+      data = data, window_size = window_size, idx = do_idxs, dist = "pearson",
+      n_workers = n_workers
+    )
     if (is.null(result) || result$partial) {
       warning("The computation was terminated prematurely. The results are partial.")
       return()
     }
 
-    correlation_max <- max(result$mp[!is.infinite(result$mp)], na.rm = TRUE)
+    correlation_max <- max(result$matrix_profile[!is.infinite(result$matrix_profile)], na.rm = TRUE)
 
     if (correlation_max < threshold) {
       # message("break at ", window_size)
@@ -310,8 +311,8 @@ pmp_upper_bound <- function(data,
     }
 
     if (return_pmp) {
-      pmp[[as.character(window_size)]] <- corr_ed(result$mp, window_size)
-      pmpi[[as.character(window_size)]] <- result$pi
+      pmp[[as.character(window_size)]] <- matrixprofiler::corr_ed(result$matrix_profile, window_size)
+      pmpi[[as.character(window_size)]] <- result$profile_index
     }
 
     windows <- c(windows, window_size)
@@ -326,7 +327,10 @@ pmp_upper_bound <- function(data,
     for (window_size in test_windows) {
       # message("refine window: ", window_size)
 
-      result <- mpx(data = data, window_size = window_size, idx = do_idxs, dist = "pearson", n_workers = n_workers)
+      result <- matrixprofiler::mpx(
+        data = data, window_size = window_size, idx = do_idxs, dist = "pearson",
+        n_workers = n_workers
+      )
       if (is.null(result) || result$partial) {
         warning("The computation was terminated prematurely. The results are partial.")
         return()
@@ -334,11 +338,11 @@ pmp_upper_bound <- function(data,
 
       windows <- c(windows, window_size)
 
-      correlation_max <- max(result$mp[!is.infinite(result$mp)], na.rm = TRUE)
+      correlation_max <- max(result$matrix_profile[!is.infinite(result$matrix_profile)], na.rm = TRUE)
 
       if (return_pmp) {
-        pmp[[as.character(window_size)]] <- corr_ed(result$mp, window_size)
-        pmpi[[as.character(window_size)]] <- result$pi
+        pmp[[as.character(window_size)]] <- matrixprofiler::corr_ed(result$matrix_profile, window_size)
+        pmpi[[as.character(window_size)]] <- result$profile_index
       }
 
       if (correlation_max < threshold) {

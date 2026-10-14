@@ -2,7 +2,7 @@
 #'
 #' @details
 #' `verbose` changes how much information is printed by this function; `0` means nothing, `1` means
-#' text, `2` adds the progress bar, `3` adds the finish sound.
+#' text, `2` adds the progress bar.
 #'
 #' @param \dots a `matrix` of `numeric`, where each column is a time series. Accepts `list` and
 #'   `data.frame` too. If a second time series is supplied it will be a join matrix profile.
@@ -137,9 +137,6 @@ simple_fast <- function(..., window_size, exclusion_zone = getOption("tsmp.exclu
       clear = FALSE, total = matrix_profile_size, width = 80
     )
   }
-  if (verbose > 2) {
-    on.exit(beep(sounds[[1]]), TRUE)
-  }
 
   # for the first dot-product for both data and query
   pre_data <- mass_simple_pre(data, data_size, window_size = window_size)
@@ -176,7 +173,6 @@ simple_fast <- function(..., window_size, exclusion_zone = getOption("tsmp.exclu
 
   # compute the remainder of the matrix profile
   for (i in 2:matrix_profile_size) {
-
     # compute the distance profile
     if (verbose > 1) {
       pb$tick()
@@ -243,7 +239,9 @@ simple_fast <- function(..., window_size, exclusion_zone = getOption("tsmp.exclu
 #' @keywords internal
 #' @noRd
 #'
-#' @references * Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance.
+#' @references * Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan,
+#' Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences
+#' under Euclidean Distance.
 #' @references Website: <https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html>
 
 
@@ -266,8 +264,9 @@ mass_simple_pre <- function(data, data_size, window_size) {
 
 #' Calculates the distance profile using MASS algorithm
 #'
-#' Mueen's Algorithm for Similarity Search is The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance and Correlation Coefficient.
-#' The difference of this function to [mass()] is that this does not normalize data. Specific for this domain.
+#' Mueen's Algorithm for Similarity Search is The Fastest Similarity Search Algorithm for Time Series
+#' Subsequences under Euclidean Distance and Correlation Coefficient. The difference of this function
+#' to [mass()] is that this does not normalize data. Specific for this domain.
 #'
 #' @param data_fft precomputed data product.
 #' @param query_window a `matrix` of `numeric`. Query window.
@@ -279,7 +278,8 @@ mass_simple_pre <- function(data, data_size, window_size) {
 #' @keywords internal
 #' @noRd
 #'
-#' @references * Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, Chetan Kumar Gupta and Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance
+#' @references * Abdullah Mueen, Yan Zhu, Michael Yeh, Kaveh Kamgar, Krishnamurthy Viswanathan, Chetan Kumar Gupta and
+#' Eamonn Keogh (2015), The Fastest Similarity Search Algorithm for Time Series Subsequences under Euclidean Distance
 #' @references Website: <https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html>
 #'
 

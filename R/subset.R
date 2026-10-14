@@ -1,3 +1,10 @@
+sub_vec_or_mat <- function(v, idx, drop = FALSE) {
+  if (is.null(v)) {
+    return(NULL)
+  }
+  if (is.null(dim(v))) v[idx] else v[idx, , drop = drop]
+}
+
 #---- Subset Chains ----
 
 #' @export
@@ -9,7 +16,7 @@
   x <- NextMethod(object = x)
   attr(x, "subsetting") <- "Chains"
 
-  mp_size <- nrow(x$mp)
+  mp_size <- NROW(x$mp)
   offset <- attr(x, "offset")
 
   if (is.null(offset)) {
@@ -62,7 +69,7 @@
   }
 
   x$salient$indexes <- x$salient$indexes - offset
-  idxs <- (x$salient$indexes > 0 & x$salient$indexes <= nrow(x$mp))
+  idxs <- (x$salient$indexes > 0 & x$salient$indexes <= NROW(x$mp))
   x$salient$indexes <- as.matrix(x$salient$indexes[idxs])
   x$salient$idx_bit_size <- as.matrix(x$salient$idx_bit_size[idxs])
 
@@ -89,7 +96,7 @@
   }
 
   st_idx <- 1 + offset
-  ed_idx <- st_idx + nrow(x$mp) - 1
+  ed_idx <- st_idx + NROW(x$mp) - 1
   x$av <- x$av[st_idx:ed_idx]
 
   attr(x, "subsetting") <- NULL
@@ -158,7 +165,7 @@
   x <- NextMethod(object = x)
   attr(x, "subsetting") <- "Discord"
 
-  mp_size <- nrow(x$mp)
+  mp_size <- NROW(x$mp)
   offset <- attr(x, "offset")
 
   if (!is.null(offset) && offset > 0) {
@@ -206,7 +213,7 @@
   x <- NextMethod(object = x)
   attr(x, "subsetting") <- "MultiMotif"
 
-  mp_size <- nrow(x$mp)
+  mp_size <- NROW(x$mp)
   offset <- attr(x, "offset")
 
   # adjust offset
@@ -254,7 +261,7 @@
   x <- NextMethod(object = x)
   attr(x, "subsetting") <- "Motif"
 
-  mp_size <- nrow(x$mp)
+  mp_size <- NROW(x$mp)
   offset <- attr(x, "offset")
 
   if (!is.null(offset) && offset > 0) {
@@ -326,9 +333,9 @@
     }
 
     if (!is.null(x$data)) {
-      max_valid_idx <- nrow(x$data[[1]])
+      max_valid_idx <- NROW(x$data[[1]])
     } else {
-      max_valid_idx <- nrow(x$mp) + min(x$w) - 1
+      max_valid_idx <- NROW(x$mp) + min(x$w) - 1
     }
 
     if (max(subset) > max_valid_idx) {
@@ -338,7 +345,7 @@
       new_data <- attr(x, "new_data")
 
       if (!is.null(new_data)) {
-        removed <- nrow(x$mp) - max(subset)
+        removed <- NROW(x$mp) - max(subset)
 
         if (new_data <= removed) {
           attr(x, "new_data") <- 0
@@ -351,7 +358,7 @@
     if (!is.null(x$data)) {
       # TODO: does query can be subset or just data?
       for (i in seq_along(x$data)) {
-        x$data[[i]] <- x$data[[i]][subset, , drop = drop]
+        x$data[[i]] <- sub_vec_or_mat(x$data[[i]], subset, drop)
       }
     }
 
@@ -359,22 +366,26 @@
     mp_set <- subset[seq_len(mp_size)]
     offset <- subset[1] - 1
 
-    x$mp <- x$mp[mp_set, , drop = drop]
-    x$pi <- x$pi[mp_set, , drop = drop] - offset
+    x$mp <- sub_vec_or_mat(x$mp, mp_set, drop)
+    x$pi <- sub_vec_or_mat(x$pi, mp_set, drop) - offset
 
     if (inherits(x, "Valmod")) {
-      x$w <- x$w[mp_set, , drop = drop]
-      x$mpnn <- x$mpnn[mp_set, , drop = drop]
-      x$pinn <- x$pinn[mp_set, , drop = drop] - offset
-      x$wnn <- x$wnn[mp_set, , drop = drop]
+      x$w <- sub_vec_or_mat(x$w, mp_set, drop)
+      x$mpnn <- sub_vec_or_mat(x$mpnn, mp_set, drop)
+      x$pinn <- sub_vec_or_mat(x$pinn, mp_set, drop) - offset
+      x$wnn <- sub_vec_or_mat(x$wnn, mp_set, drop)
     }
 
     if (!is.null(attr(x, "join")) && !attr(x, "join") && !inherits(x, "Valmod")) {
       # rmp and lmp are not used in join-similarity
-      x$rmp <- x$rmp[mp_set, , drop = drop]
-      x$rpi <- x$rpi[mp_set, , drop = drop] - offset
-      x$lmp <- x$lmp[mp_set, , drop = drop]
-      x$lpi <- x$lpi[mp_set, , drop = drop] - offset
+      x$rmp <- sub_vec_or_mat(x$rmp, mp_set, drop)
+      if (!is.null(x$rpi)) {
+        x$rpi <- sub_vec_or_mat(x$rpi, mp_set, drop) - offset
+      }
+      x$lmp <- sub_vec_or_mat(x$lmp, mp_set, drop)
+      if (!is.null(x$lpi)) {
+        x$lpi <- sub_vec_or_mat(x$lpi, mp_set, drop) - offset
+      }
     }
 
     if (is.null(attr(x, "offset"))) {
@@ -411,9 +422,9 @@
     }
 
     if (!is.null(x$data)) {
-      max_valid_idx <- nrow(x$data[[1]])
+      max_valid_idx <- NROW(x$data[[1]])
     } else {
-      max_valid_idx <- nrow(x$mp) + min(x$w) - 1
+      max_valid_idx <- NROW(x$mp) + min(x$w) - 1
     }
 
     if (max(subset) > max_valid_idx) {
@@ -425,7 +436,7 @@
     if (!is.null(x$data)) {
       # TODO: does query can be subset or just data?
       for (i in seq_along(x$data)) {
-        x$data[[i]] <- x$data[[i]][subset, , drop = drop]
+        x$data[[i]] <- sub_vec_or_mat(x$data[[i]], subset, drop)
       }
     }
 
@@ -433,15 +444,19 @@
     mp_set <- subset[seq_len(mp_size)]
     offset <- subset[1] - 1
 
-    x$mp <- x$mp[mp_set, , drop = drop]
-    x$pi <- x$pi[mp_set, , drop = drop] - offset
+    x$mp <- sub_vec_or_mat(x$mp, mp_set, drop)
+    x$pi <- sub_vec_or_mat(x$pi, mp_set, drop) - offset
 
     if (!is.null(attr(x, "join")) && !attr(x, "join")) {
       # rmp and lmp are not used in join-similarity
-      x$rmp <- x$rmp[mp_set, , drop = drop]
-      x$rpi <- x$rpi[mp_set, , drop = drop] - offset
-      x$lmp <- x$lmp[mp_set, , drop = drop]
-      x$lpi <- x$lpi[mp_set, , drop = drop] - offset
+      x$rmp <- sub_vec_or_mat(x$rmp, mp_set, drop)
+      if (!is.null(x$rpi)) {
+        x$rpi <- sub_vec_or_mat(x$rpi, mp_set, drop) - offset
+      }
+      x$lmp <- sub_vec_or_mat(x$lmp, mp_set, drop)
+      if (!is.null(x$lpi)) {
+        x$lpi <- sub_vec_or_mat(x$lpi, mp_set, drop) - offset
+      }
     }
 
     if (is.null(attr(x, "offset"))) {
@@ -479,9 +494,9 @@
     }
 
     if (!is.null(x$data)) {
-      max_valid_idx <- nrow(x$data[[1]])
+      max_valid_idx <- NROW(x$data[[1]])
     } else {
-      max_valid_idx <- nrow(x$mp) + min(x$w) - 1
+      max_valid_idx <- NROW(x$mp) + min(x$w) - 1
     }
 
     if (max(subset) > max_valid_idx) {
@@ -493,7 +508,7 @@
     if (!is.null(x$data)) {
       # TODO: does query can be subset or just data?
       for (i in seq_along(x$data)) {
-        x$data[[i]] <- x$data[[i]][subset, , drop = drop]
+        x$data[[i]] <- sub_vec_or_mat(x$data[[i]], subset, drop)
       }
     }
 
@@ -501,8 +516,8 @@
     mp_set <- subset[seq_len(mp_size)]
     offset <- subset[1] - 1
 
-    x$mp <- x$mp[mp_set, , drop = drop]
-    x$pi <- x$pi[mp_set, , drop = drop] - offset
+    x$mp <- sub_vec_or_mat(x$mp, mp_set, drop)
+    x$pi <- sub_vec_or_mat(x$pi, mp_set, drop) - offset
 
     if (is.null(attr(x, "offset"))) {
       attr(x, "offset") <- offset
@@ -543,9 +558,9 @@
     }
 
     if (!is.null(x$data)) {
-      max_valid_idx <- nrow(x$data[[1]])
+      max_valid_idx <- NROW(x$data[[1]])
     } else {
-      max_valid_idx <- nrow(x$mpdist) - attr$query_size + 1
+      max_valid_idx <- NROW(x$mpdist) - attr$query_size + 1
     }
 
     if (max(subset) > max_valid_idx) {
@@ -568,14 +583,14 @@
     }
 
     if (!is.null(x$data)) {
-      x$data[[1]] <- x$data[[1]][subset, , drop = drop]
+      x$data[[1]] <- sub_vec_or_mat(x$data[[1]], subset, drop)
     }
 
     mp_size <- sub_size - attr$query_size + 1
     mp_set <- subset[seq_len(mp_size)]
     offset <- subset[1] - 1
 
-    x$mpdist <- x$mpdist[mp_set, , drop = drop]
+    x$mpdist <- sub_vec_or_mat(x$mpdist, mp_set, drop)
 
     if (is.null(attr(x, "offset"))) {
       attr(x, "offset") <- offset
@@ -614,7 +629,7 @@
 #'
 
 tail.MatrixProfile <- function(x, n = 2 * max(x$w), ...) {
-  data_size <- nrow(x$mp) + min(x$w) - 1
+  data_size <- NROW(x$mp) + min(x$w) - 1
 
   if (n > 0) {
     st_idx <- data_size - n + 1
@@ -652,7 +667,7 @@ tail.SimpleMatrixProfile <- function(x, n = 2 * max(x$w), ...) {
 #'
 
 head.MatrixProfile <- function(x, n = 2 * max(x$w), ...) {
-  data_size <- nrow(x$mp) + min(x$w) - 1
+  data_size <- NROW(x$mp) + min(x$w) - 1
 
   if (n > 0) {
     ed_idx <- n

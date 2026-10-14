@@ -1,5 +1,4 @@
 if (!testthat:::on_cran()) {
-  context("Testing FLUSS functions")
   library(tsmp)
 
   data <- mp_fluss_data$tilt_abp$data[1:1000]

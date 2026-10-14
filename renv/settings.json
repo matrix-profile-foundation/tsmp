@@ -1,6 +1,8 @@
 {
   "bioconductor.version": [],
-  "external.libraries": [],
+  "external.libraries": [
+    "/home/franz/.cache/R/renv/library/matrixprofiler-b96a41f5/linux-ubuntu-noble/R-4.6/x86_64-pc-linux-gnu"
+  ],
   "ignored.packages": [
     "tsmp"
   ],

@@ -20,6 +20,7 @@
 #' @param n_snippets an `int`. Number of snippets to find. (Default is `2`).
 #' @param window_size an `int`. The size of the sliding window used to compare the data. Must be smaller
 #' than `s_size`. (Default is `s_size / 2`).
+#' @param n_workers an `int`. Number of threads to use when computing with MPdist. (Default is `1`).
 #'
 #' @return Returns the snippet : a list of n_snippets snippets
 #' fraction : fraction of each snippet
@@ -44,14 +45,12 @@
 #' plot(snippets)
 #' }
 #'
-find_snippet <- function(data, s_size, n_snippets = 2L, window_size = s_size / 2L) {
-
+find_snippet <- function(data, s_size, n_snippets = 2L, window_size = s_size / 2L, n_workers = 1L) {
   # currently is about 3x slower than MATLAB. Not bad for R.
   # transform data into matrix
   if (is.vector(data)) {
     data <- as.matrix(data)
-  }
-  else if (is.matrix(data)) {
+  } else if (is.matrix(data)) {
     if (ncol(data) > nrow(data)) {
       data <- t(data)
     }
@@ -69,6 +68,7 @@ find_snippet <- function(data, s_size, n_snippets = 2L, window_size = s_size / 2
   }
 
   window_size <- floor(window_size)
+  n_workers <- as.integer(checkmate::qassert(n_workers, "X+"))
 
   if (window_size >= s_size) {
     stop("Error: `window_size` must be smaller than `s_size`.", call. = FALSE)
@@ -76,7 +76,9 @@ find_snippet <- function(data, s_size, n_snippets = 2L, window_size = s_size / 2
 
   #### padding zeros to the end of the time series. ####
   pad <- s_size * ceiling(nrow(data) / s_size) - nrow(data)
-  data <- rbind(data, matrix(0, nrow = pad))
+  if (pad > 0) {
+    data <- rbind(data, matrix(0, nrow = pad, ncol = ncol(data)))
+  }
 
   #### compute all the profiles ####
   indexes <- seq.int(1, nrow(data) - s_size, s_size)
@@ -85,7 +87,7 @@ find_snippet <- function(data, s_size, n_snippets = 2L, window_size = s_size / 2
 
   for (j in seq_along(indexes)) {
     i <- indexes[j]
-    distance <- mpdist(data, data[i:(i + s_size - 1), , drop = FALSE], window_size, type = "vector")
+    distance <- mpdist(data, data[i:(i + s_size - 1), , drop = FALSE], window_size, type = "vector", n_workers = n_workers)
     distances[j, ] <- distance$mpdist
   }
 
@@ -135,7 +137,10 @@ find_snippet <- function(data, s_size, n_snippets = 2L, window_size = s_size / 2
     message("DEBUG: ", round(sum(fraction), 3))
   }
 
-  obj <- list(snippet_idx = snippetidx, snippet_frac = fraction, snippet_size = s_size, regime = horizontal, data = list(data))
+  obj <- list(
+    snippet_idx = snippetidx, snippet_frac = fraction, snippet_size = s_size,
+    regime = horizontal, data = list(data)
+  )
   class(obj) <- "Snippet"
 
   return(obj)

@@ -1,42 +1,54 @@
 # Platform
 
-|field    |value                        |
-|:--------|:----------------------------|
-|version  |R version 3.6.2 (2019-12-12) |
-|os       |Windows 10 x64               |
-|system   |x86_64, mingw32              |
-|ui       |RStudio                      |
-|language |(EN)                         |
-|collate  |English_United States.1252   |
-|ctype    |English_United States.1252   |
-|tz       |Europe/London                |
-|date     |2020-02-27                   |
+|field    |value                             |
+|:--------|:---------------------------------|
+|version  |R version 4.6.1 (2026-06-24)      |
+|os       |Ubuntu 24.04.4 LTS                |
+|system   |x86_64, linux-gnu                 |
+|ui       |X11                               |
+|language |(EN)                              |
+|collate  |en_US.UTF-8                       |
+|ctype    |en_US.UTF-8                       |
+|tz       |Europe/Lisbon                     |
+|date     |2026-10-14                        |
+|pandoc   |3.1.3 @ /usr/bin/ (via rmarkdown) |
+|quarto   |1.9.38 @ /opt/quarto/bin/quarto   |
 
 # Dependencies
 
-|package      |old    |new     |<U+0394>  |
-|:------------|:------|:-------|:--|
-|tsmp         |0.3.5  |0.4.1   |*  |
-|audio        |0.1-6  |0.1-6   |   |
-|crayon       |1.3.4  |1.3.4   |   |
-|digest       |0.6.25 |0.6.25  |   |
-|doSNOW       |1.0.18 |1.0.18  |   |
-|ellipsis     |0.3.0  |0.3.0   |   |
-|foreach      |1.4.8  |1.4.8   |   |
-|glue         |1.3.1  |1.3.1   |   |
-|hms          |0.5.3  |0.5.3   |   |
-|iterators    |1.0.12 |1.0.12  |   |
-|magrittr     |1.5    |1.5     |   |
-|pkgconfig    |2.0.3  |2.0.3   |   |
-|prettyunits  |1.1.1  |1.1.1   |   |
-|progress     |1.2.2  |1.2.2   |   |
-|R6           |2.4.1  |2.4.1   |   |
-|Rcpp         |NA     |1.0.3   |*  |
-|RcppParallel |NA     |4.4.4   |*  |
-|RJSONIO      |NA     |1.3-1.4 |*  |
-|rlang        |0.4.4  |0.4.4   |   |
-|snow         |0.4-3  |0.4-3   |   |
-|vctrs        |0.2.3  |0.2.3   |   |
+|package        |old    |new    |Δ  |
+|:--------------|:------|:------|:--|
+|tsmp           |0.4.16 |0.5.0  |*  |
+|audio          |0.1-12 |NA     |*  |
+|backports      |1.5.1  |1.5.1  |   |
+|checkmate      |2.3.4  |2.3.4  |   |
+|cli            |3.6.6  |NA     |*  |
+|crayon         |1.5.3  |NA     |*  |
+|doSNOW         |1.0.20 |NA     |*  |
+|foreach        |1.5.2  |NA     |*  |
+|glue           |1.8.1  |1.8.1  |   |
+|hms            |1.1.4  |NA     |*  |
+|iterators      |1.0.14 |NA     |*  |
+|lifecycle      |1.0.5  |NA     |*  |
+|magrittr       |2.0.5  |2.0.5  |   |
+|matrixprofiler |NA     |0.1.12 |*  |
+|pkgconfig      |2.0.3  |NA     |*  |
+|prettyunits    |1.2.0  |NA     |*  |
+|progress       |1.2.3  |NA     |*  |
+|R6             |2.6.1  |NA     |*  |
+|Rcpp           |1.1.2  |1.1.2  |   |
+|RcppParallel   |6.2.1  |NA     |*  |
+|RcppThread     |NA     |2.4.0  |*  |
+|RJSONIO        |2.0.5  |NA     |*  |
+|rlang          |1.3.0  |NA     |*  |
+|snow           |0.4-4  |NA     |*  |
+|vctrs          |0.7.3  |NA     |*  |
 
 # Revdeps
+
+## Failed to check (1)
+
+|package   |version |error |warning |note |
+|:---------|:-------|:-----|:-------|:----|
+|harbinger |?       |      |        |     |
 

@@ -18,16 +18,15 @@
 #'
 #' @param data a `matrix` or a `vector`.
 #' @param query a `matrix` or a `vector`. See details.
-#' @param \dots Precomputed values from the first iteration. If not supplied, these values will be computed.
+#' @param params Precomputed values from the first iteration. If not supplied, these values will be computed.
 #' @param window_size an `int` or `NULL`. Sliding window size. See details.
-#' @param method method that will be used to calculate the distance profile. See details.
 #' @param index an `int`. Index of query window. See details.
-#' @param k an `int` or `NULL`. Default is `NULL`. Defines the size of batch for MASS V3. Prefer to
-#' use a power of 2. If `NULL`, it will be set automatically.
-#' @param weight a `vector` of `numeric` or `NULL` with the same length of the `window_size`. This is
+#' @param method method that will be used to calculate the distance profile. See details.
+#' @param type comparison type used by MASS: `"normalized"`, `"non_normalized"`, `"absolute"`, or `"weighted"`.
+#' @param weights,weight a `vector` of `numeric` or `NULL` with the same length of the `window_size`. This is
 #' a MASS extension to weight the query.
-#' @param paa a `numeric`. Default is `1`. Factor of PAA reduction (2 == half of size). This is a
-#' MASS extension.
+#' @param n_workers an `int`. Number of threads to use when computing with MASS. (Default is `1`).
+#' @param \dots Placeholder for legacy arguments.
 #'
 #' @return Returns the `distance_profile` for the given query and the `last_product` for STOMP
 #'   algorithm and the parameters for recursive call. See details.
@@ -66,52 +65,105 @@
 #'   weight = weight
 #' )
 #' distance_profile <- sqrt(nn$distance_profile)
-dist_profile <- function(data, query, ..., window_size = NULL, method = "v3", index = 1, k = NULL,
-                         weight = NULL, paa = 1) {
+dist_profile <- function(data, query = data, params = NULL, window_size = NULL, index = 1,
+                         method = c("v3", "v2", "weighted"),
+                         type = c("normalized", "non_normalized", "absolute", "weighted"),
+                         weights = NULL, weight = weights, n_workers = 1L, ...) {
+  # Handle window_size passed as 2nd positional argument (e.g. dist_profile(data, 50))
+  if (is.numeric(query) && length(query) == 1L && is.null(window_size)) {
+    window_size <- as.integer(query)
+    query <- data
+  }
 
-  ## ---- Verify if method exists ----
-  # set as v3 if no method is entered
-  if (!is.na(pmatch(method, "v3"))) {
+  # Check time series classes -----------------------
+  data <- convert_data(data)
+  query <- convert_data(query)
+
+  if (is.null(window_size)) {
+    if (is.list(params)) {
+      if (!is.null(params$window_size)) {
+        window_size <- params$window_size
+      } else if (!is.null(params$par$window_size)) {
+        window_size <- params$par$window_size
+      } else if (!is.null(params$params$window_size)) {
+        window_size <- params$params$window_size
+      }
+    }
+    if (is.null(window_size)) {
+      window_size <- length(query)
+    }
+  }
+
+  # Parse arguments ---------------------------------
+  "!!!DEBUG Parsing data"
+  checkmate::qassert(data, "n+")
+  window_size <- checkmate::qassert(window_size, "x+[4,)")
+  checkmate::qassert(query, "n+")
+  checkmate::qassert(index, glue::glue("X1[1,{length(data) - window_size + 1}]"))
+  n_workers <- as.integer(checkmate::qassert(n_workers, "X+"))
+  if (!missing(weight) && is.null(weights)) {
+    weights <- weight
+  }
+  "!!!DEBUG Parsing type"
+  method_in <- match.arg(method)
+  if (method_in == "weighted") {
+    type <- "weighted"
     method <- "v3"
-  }
-  valid_methods <- c(
-    "v2", "v3", "weighted"
-  )
-  method <- pmatch(method, valid_methods)
-
-  method <- paste0("mass_", valid_methods[method])
-
-  if (is.na(method)) {
-    stop("invalid similarity search method")
-  }
-  if (method == -1) {
-    stop("ambiguous similarity search method")
-  }
-
-  # Grab parameters
-  if (!missing(...) && is.list(...)) {
-    params <- c(...)
   } else {
-    params <- NULL
+    method <- method_in
+    type <- match.arg(type)
+  }
+  if (type == "weighted") {
+    if (is.null(weights)) {
+      stop("The `weights` argument must be provided.", call. = FALSE)
+    }
+    if (length(weights) != window_size) {
+      stop("The `weights` must be the same size as the `window_size`.", call. = FALSE)
+    }
+    checkmate::qassert(weights, "N+")
   }
 
-  data <- as.vector(data)
-  query <- as.vector(query)
+  # Register anytime exit point ----------------------
 
-  if (anyNA(query)) {
+  result <- NULL
+
+  "!DEBUG Register anytime exit point"
+  on.exit(
+    if (is.null(params)) {
+      return(invisible(NULL))
+    } else {
+      return(c(result, list(par = params, params = params)))
+    },
+    TRUE
+  )
+
+  if (is.null(query)) {
+    "!!!DEBUG query is null"
+    query <- data
+  }
+
+  if (length(query) > window_size) {
+    query_sub <- query[index:(window_size + index - 1)]
+  } else {
+    query_sub <- query
+  }
+
+  # Computation ------------------------------------
+  "!DEBUG Computation"
+  if (anyNA(query_sub)) {
     ## ---- Query with Gap ----
     q1 <- NULL
     q2 <- NULL
 
-    min_idx <- min(which(is.na(query))) - 1
-    max_idx <- max(which(is.na(query))) + 1
+    min_idx <- min(which(is.na(query_sub))) - 1
+    max_idx <- max(which(is.na(query_sub))) + 1
 
     if (min_idx >= 4L) {
-      q1 <- query[1:min_idx]
+      q1 <- query_sub[1:min_idx]
     }
 
     if (max_idx <= (window_size - 4)) {
-      q2 <- query[max_idx:window_size]
+      q2 <- query_sub[max_idx:window_size]
     }
 
     if (anyNA(q1) || anyNA(q2)) {
@@ -125,11 +177,11 @@ dist_profile <- function(data, query, ..., window_size = NULL, method = "v3", in
       warning("Warning: Result may be inconsistent if the size of the queries are different.")
     }
 
-    pre1 <- mass_pre(data, window_size = q1_len)
-    pre2 <- mass_pre(data, window_size = q2_len)
+    pre1 <- matrixprofiler::mass_pre(data, window_size = q1_len, query = q1)
+    pre2 <- matrixprofiler::mass_pre(data, window_size = q2_len, query = q2)
 
-    result1 <- mass_v3(q1, data, pre1$window_size, pre1$data_size, pre1$data_mean, pre1$data_sd, mean(q1), std(q1))
-    result2 <- mass_v3(q2, data, pre2$window_size, pre2$data_size, pre2$data_mean, pre2$data_sd, mean(q2), std(q2))
+    result1 <- matrixprofiler::mass(pre1, data, q1, 1, version = "v3", n_workers = n_workers)
+    result2 <- matrixprofiler::mass(pre2, data, q2, 1, version = "v3", n_workers = n_workers)
     result1 <- sqrt(result1$distance_profile)
     result2 <- sqrt(result2$distance_profile)
 
@@ -138,43 +190,121 @@ dist_profile <- function(data, query, ..., window_size = NULL, method = "v3", in
     result1 <- c(result1, rep(Inf, length(result2) - length(result1)))
 
     result <- list(distance_profile = (result1 + result2)^2)
+    params <- list(pre1 = pre1, pre2 = pre2, window_size = window_size)
+    return(c(result, list(par = params, params = params)))
+  }
+
+  if (is.null(params)) {
+    "!!!DEBUG params is null"
+    ## First iteration with MASS ----
+    tryCatch(
+      {
+        pre <- matrixprofiler::mass_pre(data, window_size, query, type, weights)
+      },
+      error = print
+    )
+    "!!!DEBUG params is a list with par and window_size"
+    params <- pre
+    params$window_size <- window_size
   } else {
-    ## ---- Non-GAP ----
-    # set window_size
-    window_size <- ifelse(is.null(window_size), length(query), window_size)
-
-    if (paa > 1) {
-      data <- paa(data, paa)
-      query <- paa(query, paa)
-      window_size <- floor(window_size / paa)
-    }
-
-    ## ---- First iteration with MASS ----
-    if (is.null(params)) {
-      params <- switch(method,
-        mass_v2 = mass_pre(data, query, window_size),
-        mass_v3 = c(mass_pre(data, query, window_size), list(data = data, k = k)),
-        mass_weighted = mass_pre_w(data, query, window_size, weight)
-      )
-    } else {
-      if (!is.null(params$par)) {
-        params <- params$par
-      }
-      window_size <- params$window_size
-    }
-
-    pars <- params
-    pars$query_mean <- pars$query_mean[index]
-    pars$query_sd <- pars$query_sd[index]
-    q_w <- query[index:(window_size + index - 1)]
-
-    result <- do.call(method, c(list(q_w), pars))
-
-    if (paa > 1) {
-      result$distance_profile <- result$distance_profile * paa
-      result$last_product <- result$last_product * paa
+    "!!!DEBUG params is not null"
+    ## Following iterations with MASS ----
+    if (!is.null(params$par)) {
+      params <- params$par
     }
   }
 
-  return(c(result, list(par = params)))
+  ## Do the search --------
+  tryCatch(
+    {
+      result <- matrixprofiler::mass(params, data, query, index, version = method, n_workers = n_workers)
+    },
+    error = print
+  )
+
+  checkmate::qassert(params, "L+")
+  checkmate::qassert(result, "L+")
+}
+
+mass_v2 <- function(query, window_size, data_fft, data_size, data_mean, data_sd, query_mean, query_sd) {
+  pre_obj <- structure(
+    list(
+      data_size = as.integer(data_size),
+      window_size = as.integer(window_size),
+      data_fft = data_fft,
+      data_mean = as.numeric(data_mean),
+      data_sd = as.numeric(data_sd),
+      query_mean = as.numeric(query_mean)[1],
+      query_sd = as.numeric(query_sd)[1]
+    ),
+    type = "normalized"
+  )
+  dummy_data <- rep(0, data_size)
+  matrixprofiler::mass(pre_obj, data = dummy_data, query = query, index = 1, version = "v2")
+}
+
+mass_v3 <- function(query, data, window_size, data_size, data_mean, data_sd, query_mean, query_sd) {
+  pre_obj <- structure(
+    list(
+      data_size = as.integer(data_size),
+      window_size = as.integer(window_size),
+      data_mean = as.numeric(data_mean),
+      data_sd = as.numeric(data_sd),
+      query_mean = as.numeric(query_mean)[1],
+      query_sd = as.numeric(query_sd)[1]
+    ),
+    type = "normalized"
+  )
+  matrixprofiler::mass(pre_obj, data = data, query = query, index = 1, version = "v3")
+}
+
+mass_pre_w <- function(data, query = NULL, window_size, weight) {
+  data_size <- length(data)
+  data_avgsd <- list(
+    avg = matrixprofiler::mov_mean(data, window_size),
+    sd = matrixprofiler::mov_std(data, window_size)
+  )
+  data_mean <- data_avgsd$avg
+  data_sd <- data_avgsd$sd
+  data_fft <- stats::fft(data)
+
+  sumw <- sum(weight)
+  rweight <- rev(weight)
+  rweight[(window_size + 1):data_size] <- 0
+  w_fft <- stats::fft(rweight)
+  data_fft_w_fft <- data_fft * w_fft
+  data_w <- stats::fft(data_fft_w_fft, inverse = TRUE) / length(data_fft_w_fft)
+  data2_fft <- stats::fft(data^2)
+  data2_fft_w_fft <- data2_fft * w_fft
+  data2_w <- stats::fft(data2_fft_w_fft, inverse = TRUE) / length(data2_fft_w_fft)
+  sumxw2 <- data2_w[window_size:data_size]
+  sumxw <- data_w[window_size:data_size]
+
+  data_pre <- ((sumxw2 - 2 * sumxw * data_mean + sumw * data_mean^2) / data_sd^2)
+
+  return(list(
+    window_size = window_size, data_fft = data_fft, data_size = data_size,
+    data_mean = data_mean, data_sd = data_sd, data_pre = data_pre, weight = weight
+  ))
+}
+
+mass_weighted <- function(query_window, window_size, data_fft, data_size, data_mean, data_sd, data_pre, weight, ...) {
+  query_window <- (query_window - mean(query_window)) / matrixprofiler::std(query_window)
+  sumwy <- sum(weight * query_window)
+  sumwy2 <- sum(weight * (query_window^2))
+
+  query_window <- rev(query_window)
+  query_window[(window_size + 1):data_size] <- 0
+  weight <- rev(weight)
+  weight[(window_size + 1):data_size] <- 0
+
+  queryw_fft <- stats::fft(weight * query_window)
+  data_fft_queryw_fft <- data_fft * queryw_fft
+
+  data_queryw <- stats::fft(data_fft_queryw_fft, inverse = TRUE) / length(data_fft_queryw_fft)
+
+  last_product <- data_queryw[window_size:data_size]
+  distance_profile <- data_pre - 2 * (last_product - sumwy * data_mean) / data_sd + sumwy2
+
+  return(list(distance_profile = distance_profile, last_product = last_product))
 }

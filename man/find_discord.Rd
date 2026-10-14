@@ -45,11 +45,11 @@ discord distance * \code{radius}. (Default is \code{3}).}
 \item{exclusion_zone}{if a \code{number} will be used instead of embedded value. (Default is \code{NULL}).}
 }
 \value{
-For class \code{MatrixProfile}, returns the input \code{.mp} object with a new name \code{discord}. It contains: \code{discord_idx}, a \code{vector}
-of discords found
+For class \code{MatrixProfile}, returns the input \code{.mp} object with a new name \code{discord}.
+It contains: \code{discord_idx}, a \code{vector}of discords found
 
-For class \code{PMP}, returns the input \code{.mp} object with a new name \code{discord}. It contains: \code{discord_idx}, a \code{vector}
-of discords found
+For class \code{PMP}, returns the input \code{.mp} object with a new name \code{discord}. It contains:
+discord_idx\verb{, a }vector` of discords found
 }
 \description{
 Search for Discord

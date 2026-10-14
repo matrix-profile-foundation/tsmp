@@ -63,7 +63,8 @@ fluss <- function(.mp, num_segments = 1, exclusion_zone = NULL) {
 #' data_window <- 1000
 #' mp <- floss(mp, new_data, data_window)
 #' mp <- floss(mp, new_data2, data_window)
-floss <- function(.mp, new_data, data_window, threshold = 1, exclusion_zone = NULL, chunk_size = NULL, keep_cac = TRUE) {
+floss <- function(.mp, new_data, data_window, threshold = 1, exclusion_zone = NULL, chunk_size = NULL,
+                  keep_cac = TRUE) {
   if (missing(data_window)) {
     stop("argument 'data_window' is missing, looking for fluss() instead?")
   }
@@ -73,7 +74,7 @@ floss <- function(.mp, new_data, data_window, threshold = 1, exclusion_zone = NU
   }
 
   mp_offset <- ifelse(!is.null(attr(.mp, "offset")), attr(.mp, "offset"), 0)
-  data_size <- nrow(.mp$data[[1]])
+  data_size <- NROW(.mp$data[[1]])
   new_data_size <- length(new_data)
 
   if (data_size < data_window) {
@@ -88,7 +89,7 @@ floss <- function(.mp, new_data, data_window, threshold = 1, exclusion_zone = NU
   }
 
   if (is.null(chunk_size)) {
-    chunk_size <- min(floor(nrow(.mp$data[[1]]) / 2), 50)
+    chunk_size <- min(floor(NROW(.mp$data[[1]]) / 2), 50)
     chunk_size <- min(chunk_size, floor(data_window / 2))
   }
 
@@ -96,14 +97,14 @@ floss <- function(.mp, new_data, data_window, threshold = 1, exclusion_zone = NU
     if (mp_offset > 0) {
       attr(.mp, "new_data") <- 0
       .mp <- floss_cac(.mp, data_size, 0)
-    }
-    else {
+    } else {
       .mp <- fluss_cac(.mp, 0)
     }
 
     .mp$cac_final <- c(
       rep(NA, chunk_size + mp_offset - chunk_size),
-      utils::head(.mp$cac, -(round(data_window * (1 - vars()$kmode) - (1 - vars()$kmode) * .mp$w) - 0.5 * chunk_size + ifelse(mp_offset > 0, 1, 2)))
+      utils::head(.mp$cac, -(round(data_window * (1 - vars()$kmode) - (1 - vars()$kmode) * .mp$w) - 0.5 * chunk_size +
+        ifelse(mp_offset > 0, 1, 2)))
     )
 
     na_head <- round(vars()$kmode * data_window + (0.5 * chunk_size - vars()$kmode * .mp$w)) + mp_offset
@@ -175,7 +176,7 @@ floss_extract <- function(.mpac, threshold = 1, exclusion_zone = NULL) {
 
   offset <- ifelse(is.null(attr(.mpac, "offset")), 0, attr(.mpac, "offset"))
   cac_fin_len <- length(.mpac$cac_final)
-  mp_len <- nrow(.mpac$mp)
+  mp_len <- NROW(.mpac$mp)
   new_data <- ifelse(is.null(attr(.mpac, "new_data")), 0, attr(.mpac, "new_data"))
 
   if (offset == 0 || cac_fin_len == floor((mp_len * vars()$kmode + new_data * 1.5))) {
@@ -296,7 +297,9 @@ fluss_extract <- function(.mpac, num_segments = 1, exclusion_zone = NULL) {
 #'
 #' @export
 #' @family Semantic Segmentations
-#' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International Conference on Data Mining (ICDM). IEEE; 2017. p. 117-26.
+#' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain Agnostic
+#' Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International Conference on Data
+#' Mining (ICDM). IEEE; 2017. p. 117-26.
 #' @references Website: <https://sites.google.com/site/onlinesemanticsegmentation/>
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #' @examples
@@ -317,22 +320,13 @@ fluss_cac <- function(.mp, exclusion_zone = NULL) {
     exclusion_zone <- .mp$ez * 10 # normally ez is 0.5, so ez here is 5
   }
 
-  arc_counts <- vector(mode = "numeric")
   profile_index_size <- length(.mp$pi)
-
-  nnmark <- matrix(0, profile_index_size, 1)
-
-  for (i in 1:profile_index_size) {
-    j <- .mp$pi[i]
-
-    if (j < 0 || j > profile_index_size) {
-      next
-    }
-
-    nnmark[min(i, j)] <- nnmark[min(i, j)] + 1
-    nnmark[max(i, j)] <- nnmark[max(i, j)] - 1
-  }
-
+  i_seq <- seq_len(profile_index_size)
+  pi_vec <- .mp$pi
+  valid <- !is.na(pi_vec) & pi_vec >= 1L & pi_vec <= profile_index_size
+  min_ij <- pmin(i_seq[valid], pi_vec[valid])
+  max_ij <- pmax(i_seq[valid], pi_vec[valid])
+  nnmark <- as.numeric(tabulate(min_ij, nbins = profile_index_size) - tabulate(max_ij, nbins = profile_index_size))
   arc_counts <- cumsum(nnmark)
 
   x <- seq(0, 1, length.out = profile_index_size)
@@ -371,7 +365,9 @@ fluss_cac <- function(.mp, exclusion_zone = NULL) {
 #' the combination of `cac` after repeated calls of `floss()`.
 #' @export
 #' @family Semantic Segmentations
-#' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International Conference on Data Mining (ICDM). IEEE; 2017. p. 117-26.
+#' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain
+#' Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International
+#' Conference on Data Mining (ICDM). IEEE; 2017. p. 117-26.
 #' @references Website: <https://sites.google.com/site/onlinesemanticsegmentation/>
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #' @examples
@@ -395,7 +391,7 @@ floss_cac <- function(.mp, data_window, exclusion_zone = NULL) {
     stop("data_window must be larger than matrix profile's window_size: ", .mp$w)
   }
 
-  profile_size <- nrow(.mp$mp)
+  profile_size <- NROW(.mp$mp)
   cac_size <- data_window - .mp$w + 1
   start_idx <- profile_size - cac_size + 1
   new_data_size <- attr(.mp, "new_data")
@@ -411,7 +407,7 @@ floss_cac <- function(.mp, data_window, exclusion_zone = NULL) {
 
   for (i in seq_along(pi)) {
     j <- pi[i]
-    if (j < 0 || j > cac_size) {
+    if (is.na(j) || j < 0 || j > cac_size) {
       next
     }
 
@@ -440,7 +436,7 @@ floss_cac <- function(.mp, data_window, exclusion_zone = NULL) {
   if (is.null(.mp$cac_final)) {
     # TODO: get a more reliable value than attr(.mp, "origin")$data_size
     .mp$cac_final <- rep(NA, round(data_window * (mode - 1) - new_data_size / 2 +
-      max(nrow(.mp$data[[1]]), attr(.mp, "origin")$data_size) -
+      max(NROW(.mp$data[[1]]), attr(.mp, "origin")$data_size) -
       (.mp$w * mode)) + mp_offset)
   }
 
@@ -462,7 +458,9 @@ floss_cac <- function(.mp, data_window, exclusion_zone = NULL) {
 #' Zero is the best, One is the worst.
 #' @export
 #' @family Semantic Segmentations
-#' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International Conference on Data Mining (ICDM). IEEE; 2017. p. 117-26.
+#' @references * Gharghabi S, Ding Y, Yeh C-CM, Kamgar K, Ulanova L, Keogh E. Matrix Profile VIII: Domain
+#' Agnostic Online Semantic Segmentation at Superhuman Performance Levels. In: 2017 IEEE International
+#' Conference on Data Mining (ICDM). IEEE; 2017. p. 117-26.
 #' @references Website: <https://sites.google.com/site/onlinesemanticsegmentation/>
 #' @references Website: <http://www.cs.ucr.edu/~eamonn/MatrixProfile.html>
 #' @examples

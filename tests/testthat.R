@@ -1,6 +1,8 @@
 library(testthat)
-if (!testthat:::on_cran()) {
-  library(tsmp)
+library(tsmp)
+
+if (!identical(Sys.getenv("NOT_CRAN"), "true")) {
   Sys.setenv(RCPP_PARALLEL_BACKEND = "tinythread")
-  test_check("tsmp")
 }
+
+test_check("tsmp")

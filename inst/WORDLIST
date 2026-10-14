@@ -7,6 +7,7 @@ AppVeyor
 Bagnall
 CAC
 CCM
+CMD
 CUDA
 Cardinality
 Chetan
@@ -60,6 +61,7 @@ Mueen's
 Multimed
 Nikovski
 OPENCL
+ORCID
 Oefinger
 PAA
 PAMAP's
@@ -73,6 +75,7 @@ Proc
 QwG
 README
 RMP
+RPubs
 Rakthanmanon
 Rcpp
 RcppParallel
@@ -114,6 +117,7 @@ beepr
 benchmarked
 bitsize
 codecov
+conceptor
 cpu
 dataset's
 eamonn
@@ -123,6 +127,7 @@ et
 github
 http
 https
+idx
 javidlakha
 juanbeleno
 khiva
@@ -132,6 +137,9 @@ mSTAMP
 mSTOMP
 matlab
 matrixprofile
+matrixprofiler
+multithreaded
+multithreading
 owlpy
 parallelizable
 pmp
