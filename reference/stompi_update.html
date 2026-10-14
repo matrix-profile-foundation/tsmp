@@ -96,8 +96,7 @@ the <code>mp</code> and <code>pi</code>.</p></dd>
 <span class="r-in"><span><span class="va">mpi</span> <span class="op">&lt;-</span> <span class="fu">stompi_update</span><span class="op">(</span><span class="va">mp</span>, <span class="va">mp_toy_data</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="fl">201</span><span class="op">:</span><span class="fl">300</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">mp</span> <span class="op">&lt;-</span> <span class="fu"><a href="tsmp.html">tsmp</a></span><span class="op">(</span><span class="va">mp_toy_data</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">300</span>, <span class="fl">1</span><span class="op">]</span>, window_size <span class="op">=</span> <span class="fl">30</span>, verbose <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">mp</span>, <span class="va">mpi</span>, check.attributes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Component “rpi”: 'is.NA' value mismatch: 16 in current 0 in target"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Component “lpi”: 'is.NA' value mismatch: 16 in current 0 in target"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 </code></pre></div>
     </div>
   </div>

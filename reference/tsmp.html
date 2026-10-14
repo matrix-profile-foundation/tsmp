@@ -152,19 +152,19 @@ Time Series Chains. <code><a href="mstomp.html">mstomp()</a></code> returns a mu
 of its generality, versatility, simplicity and scalability. In particular it has implications
 for time series motif discovery, time series joins, shapelet discovery (classification),
 density estimation, semantic segmentation, visualization, rule discovery, clustering etc.</p>
-<p>The first algorithm invented was the <code><a href="https://rdrr.io/pkg/matrixprofiler/man/mp_algos.html" class="external-link">stamp()</a></code> that using <code><a href="https://rdrr.io/pkg/matrixprofiler/man/mass.html" class="external-link">mass()</a></code> as an ultra-fast Algorithm
+<p>The first algorithm invented was the <code><a href="https://matrix-profile-foundation.github.io/matrixprofiler/reference/mp_algos.html" class="external-link">stamp()</a></code> that using <code><a href="https://matrix-profile-foundation.github.io/matrixprofiler/reference/mass.html" class="external-link">mass()</a></code> as an ultra-fast Algorithm
 for Similarity Search allowed to compute the Matrix Profile in reasonable time. One of its main
 feature was its Anytime property which using a randomized approach could return a "best-so-far"
 matrix that could give us the correct answer (using for example 1/10 of all iterations) almost
 every time.</p>
-<p>The next algorithm was <code><a href="https://rdrr.io/pkg/matrixprofiler/man/mp_algos.html" class="external-link">stomp()</a></code> that currently is the most used. Researchers noticed that the
+<p>The next algorithm was <code><a href="https://matrix-profile-foundation.github.io/matrixprofiler/reference/mp_algos.html" class="external-link">stomp()</a></code> that currently is the most used. Researchers noticed that the
 dot products do not need to be recalculated from scratch for each subsequence. Instead, we can
 reuse the values calculated for the first subsequence to make a faster calculation in the next
 iterations. The idea is to make use of the intersections between the required products in
 consecutive iterations. This approach reduced the time to compute the Matrix Profile to about
-3% compared to <code><a href="https://rdrr.io/pkg/matrixprofiler/man/mp_algos.html" class="external-link">stamp()</a></code>, but on the other hand, we lost the Anytime property.</p>
-<p>Currently there is a new algorithm that I'll not explain further here. It is called <code><a href="https://rdrr.io/pkg/matrixprofiler/man/mp_algos.html" class="external-link">scrimp()</a></code>,
-and is as fast as <code><a href="https://rdrr.io/pkg/matrixprofiler/man/mp_algos.html" class="external-link">stomp()</a></code>, and have the Anytime property. This algorithm is implemented in
+3% compared to <code><a href="https://matrix-profile-foundation.github.io/matrixprofiler/reference/mp_algos.html" class="external-link">stamp()</a></code>, but on the other hand, we lost the Anytime property.</p>
+<p>Currently there is a new algorithm that I'll not explain further here. It is called <code><a href="https://matrix-profile-foundation.github.io/matrixprofiler/reference/mp_algos.html" class="external-link">scrimp()</a></code>,
+and is as fast as <code><a href="https://matrix-profile-foundation.github.io/matrixprofiler/reference/mp_algos.html" class="external-link">stomp()</a></code>, and have the Anytime property. This algorithm is implemented in
 this package, but still waiting for an article publication.</p>
 <p>Further, there is the <code><a href="mstomp.html">mstomp()</a></code> that computes a multidimensional Matrix Profile that allows to
 meaningful MOTIF discovery in Multivariate Time Series. And <code><a href="simple_fast.html">simple_fast()</a></code> that also handles
@@ -191,7 +191,7 @@ window sizes.</p>
 If the value is 2 or more, the '_par' version of the algorithm will be used.</p></dd>
 
 
-</dl><p><code>s_size</code> is used only in Anytime algorithms: <code><a href="https://rdrr.io/pkg/matrixprofiler/man/mp_algos.html" class="external-link">stamp()</a></code>, <code><a href="https://rdrr.io/pkg/matrixprofiler/man/mp_algos.html" class="external-link">scrimp()</a></code> and <code><a href="https://rdrr.io/pkg/matrixprofiler/man/mp_algos.html" class="external-link">mpx()</a></code>.
+</dl><p><code>s_size</code> is used only in Anytime algorithms: <code><a href="https://matrix-profile-foundation.github.io/matrixprofiler/reference/mp_algos.html" class="external-link">stamp()</a></code>, <code><a href="https://matrix-profile-foundation.github.io/matrixprofiler/reference/mp_algos.html" class="external-link">scrimp()</a></code> and <code><a href="https://matrix-profile-foundation.github.io/matrixprofiler/reference/mp_algos.html" class="external-link">mpx()</a></code>.
 <code>must_dim</code> and <code>exc_dim</code> are used only in <code><a href="mstomp.html">mstomp()</a></code>.
 <code>heap_size</code> is used only for <code><a href="valmod.html">valmod()</a></code>
 <code>mode</code> can be any of the following: <code>stomp</code>, <code>mpx</code>, <code>stamp</code>, <code>simple</code>, <code>mstomp</code>, <code>scrimp</code>, <code>valmod</code>, <code>pmp</code>.</p>
@@ -234,7 +234,6 @@ Joins. Icdm. 2016 Jan 22;54(1):739-48.</p></li>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># [mstomp()]</span></span></span>
 <span class="r-in"><span><span class="va">mp</span> <span class="op">&lt;-</span> <span class="fu">tsmp</span><span class="op">(</span><span class="va">mp_toy_data</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span>, <span class="op">]</span>, window_size <span class="op">=</span> <span class="fl">30</span>, mode <span class="op">=</span> <span class="st">"mstomp"</span>, verbose <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> 'mstomp' is not an exported object from 'namespace:matrixprofiler'</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># [simple_fast()]</span></span></span>
 <span class="r-in"><span><span class="va">mp</span> <span class="op">&lt;-</span> <span class="fu">tsmp</span><span class="op">(</span><span class="va">mp_toy_data</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span>, <span class="op">]</span>, window_size <span class="op">=</span> <span class="fl">30</span>, mode <span class="op">=</span> <span class="st">"simple"</span>, verbose <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>

@@ -82,7 +82,7 @@
 <div class="page-header"><h1 id="readme">README<a class="anchor" aria-label="anchor" href="#readme"></a>
 </h1></div>
 <p>Francisco Bischoff</p>
-<p>12 Oct 2026</p>
+<p>14 Oct 2026</p>
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <p><img src="reference/figures/logo.png" align="right" style="float:right;"></p>
 <div class="section level2">
@@ -90,6 +90,7 @@
 </h2>
 <!-- badges: start -->
 
+<!--[![Lint](https://github.com/matrix-profile-foundation/tsmp/workflows/Lint/badge.svg?branch=main)](https://github.com/r-lib/lintr) -->
 
 
 
@@ -104,10 +105,10 @@
 <p>Key highlights:</p>
 <ul>
 <li>🚀 <strong>Native multithreading</strong> via <code>n_workers</code> — no more <code>doSNOW</code>/<code>foreach</code> clusters.</li>
-<li>🗑️ <strong>Removed dependencies</strong>: <code>doSNOW</code>, <code>foreach</code>, <code>audio</code>.</li>
-<li>🔢 <strong>Standardised invalid indices</strong> — all profile index vectors now use <code>NA_integer_</code> (previously <code>-1L</code>).</li>
+<li>🧹 <strong>Removed dependencies</strong>: <code>doSNOW</code>, <code>foreach</code>, <code>audio</code>.</li>
+<li>🔢 <strong>Standardized invalid indices</strong> — all profile index vectors now use <code>NA_integer_</code> (previously <code>-1L</code>).</li>
 <li>⚡ <strong>MPX</strong> is now a first-class algorithm: <code>tsmp(..., mode = "mpx")</code>.</li>
-<li>🛠️ <strong><code><a href="reference/find_snippet.html">find_snippet()</a></code></strong> gained <code>n_workers</code> and a long-standing edge-case fix.</li>
+<li>🔧 <strong><code><a href="reference/find_snippet.html">find_snippet()</a></code></strong> gained <code>n_workers</code> and a long-standing edge-case fix.</li>
 </ul>
 <p>📄 Full API changes, breaking changes, and migration guide: <strong><a href="MIGRATION.html">MIGRATION.md</a></strong></p>
 <blockquote>
@@ -194,7 +195,7 @@
 <ul class="task-list">
 <li><label><input type="checkbox" checked>Migrate computation to C++ engine (<code>matrixprofiler</code>)</label></li>
 <li><label><input type="checkbox" checked>Remove <code>doSNOW</code>/<code>foreach</code> — native multithreading via <code>n_workers</code></label></li>
-<li><label><input type="checkbox" checked>Standardise invalid-index convention to <code>NA_integer_</code></label></li>
+<li><label><input type="checkbox" checked>Standardize invalid-index convention to <code>NA_integer_</code></label></li>
 <li><label><input type="checkbox" checked>MPX as first-class algorithm in <code><a href="reference/tsmp.html">tsmp()</a></code></label></li>
 <li><label><input type="checkbox" checked>Parallel MPdist and Time Series Snippets</label></li>
 <li><label><input type="checkbox" checked>CRAN-compliant pure-R package (<code>NeedsCompilation: no</code>)</label></li>
@@ -309,7 +310,7 @@
 <ul class="list-unstyled">
 <li><a href="https://choosealicense.com/licenses/gpl-3.0/" class="external-link"><img src="https://img.shields.io/badge/License-GPL--3.0-green.svg" alt="License"></a></li>
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-green.svg" alt="lifecycle"></a></li>
-<li><a href="https://github.com/r-lib/lintr" class="external-link"><img src="https://github.com/matrix-profile-foundation/tsmp/workflows/Lint/badge.svg?branch=main" alt="Lint"></a></li>
+<li><a href="https://r-pkgs.org/r-cmd-check.html" class="external-link"><img src="https://github.com/matrix-profile-foundation/tsmp/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://app.codecov.io/gh/matrix-profile-foundation/tsmp" class="external-link"><img src="https://codecov.io/gh/matrix-profile-foundation/tsmp/branch/main/graph/badge.svg?token=w7AmbwhNvn" alt="codecov"></a></li>
 <li><a href="https://cran.r-project.org/package=tsmp" class="external-link"><img src="https://www.r-pkg.org/badges/version/tsmp" alt="CRAN version"></a></li>
 <li><a href="https://cran.r-project.org/package=tsmp" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/tsmp" alt="CRAN Downloads"></a></li>

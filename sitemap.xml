@@ -54,7 +54,7 @@
 <url><loc>/reference/plot_arcs.html</loc></url>
 <url><loc>/reference/pmp.html</loc></url>
 <url><loc>/reference/pmp_upper_bound.html</loc></url>
-<url><loc>/reference/read.html</loc></url>
+<url><loc>/reference/read_json.html</loc></url>
 <url><loc>/reference/remove_class.html</loc></url>
 <url><loc>/reference/salient_mds.html</loc></url>
 <url><loc>/reference/salient_score.html</loc></url>
@@ -70,6 +70,6 @@
 <url><loc>/reference/tsmp.html</loc></url>
 <url><loc>/reference/valmod.html</loc></url>
 <url><loc>/reference/visualize.html</loc></url>
-<url><loc>/reference/write.html</loc></url>
+<url><loc>/reference/write_json.html</loc></url>
 </urlset>
 
