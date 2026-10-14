@@ -54,25 +54,18 @@ test_that("Plot", {
   vdiffr::expect_doppelganger("plot Snippet", plot_snippet_test)
 })
 
-upd <- FALSE
-if (is_testing()) {
-  path <- "../prints/"
-} else {
-  path <- "./tests/prints/"
-}
-
 test_that("Print", {
-  expect_known_output(segments, file = paste0(path, "fluss-print"), print = TRUE, update = upd)
-  expect_known_output(cac, file = paste0(path, "cac-print"), print = TRUE, update = upd)
-  expect_known_output(mp, file = paste0(path, "mp-print"), print = TRUE, update = upd)
-  expect_known_output(mmp, file = paste0(path, "mmp-print"), print = TRUE, update = upd)
-  expect_known_output(smp, file = paste0(path, "smp-print"), print = TRUE, update = upd)
-  expect_known_output(chain, file = paste0(path, "chain-print"), print = TRUE, update = upd)
-  expect_known_output(motif, file = paste0(path, "motif-print"), print = TRUE, update = upd)
-  expect_known_output(discord, file = paste0(path, "discord-print"), print = TRUE, update = upd)
-  expect_known_output(mmotif, file = paste0(path, "mmotif-print"), print = TRUE, update = upd)
-  expect_known_output(mps, file = paste0(path, "salient-print"), print = TRUE, update = upd)
-  expect_known_output(val, file = paste0(path, "valmod-print"), print = TRUE, update = upd)
-  expect_known_output(val_motif, file = paste0(path, "motif_valmod-print"), print = TRUE, update = upd)
-  expect_known_output(snippet, file = paste0(path, "snippet-print"), print = TRUE, update = upd)
+  expect_snapshot_output(print(segments))
+  expect_snapshot_output(print(cac))
+  expect_snapshot_output(print(mp))
+  expect_snapshot_output(print(mmp))
+  expect_snapshot_output(print(smp))
+  expect_snapshot_output(print(chain))
+  expect_snapshot_output(print(motif))
+  expect_snapshot_output(print(discord))
+  expect_snapshot_output(print(mmotif))
+  expect_snapshot_output(print(mps))
+  expect_snapshot_output(print(val))
+  expect_snapshot_output(print(val_motif))
+  expect_snapshot_output(print(snippet))
 })

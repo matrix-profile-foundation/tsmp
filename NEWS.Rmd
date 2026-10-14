@@ -24,6 +24,10 @@ knitr::opts_chunk$set(
 
 
 ## tsmp 0.5.0
+
+- Renamed JSON serialization functions to `write_json()` and `read_json()`
+  to avoid masking `base::write()`. JSON round trips now preserve profile
+  vectors and the `origin` and `partial` attributes.
 -   Multivariate STOMP (`mstomp()` and `mstomp_par()`): Delegated computation to the high-performance native C++ engine in `matrixprofiler::mstomp()`, providing massive speedups (~200x) and native multi-threading while removing legacy dependencies on `doSNOW` and `foreach`.
 -   Added `mode = "mpx"` to `tsmp()` as a first-class citizen algorithm delegating to `matrixprofiler::mpx()`.
 -   Unified API refactoring: `compute()` now delegates internally to `tsmp(mode = "mpx")` and `pmp()`, preserving 100% compatibility with Matrix Profile Foundation unified API (Python/Go) and standard `MatrixProfile` / `PMP` S3 classes.

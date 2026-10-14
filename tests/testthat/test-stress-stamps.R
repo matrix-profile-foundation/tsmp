@@ -8,7 +8,7 @@ if (identical(Sys.getenv("STRESS_TEST"), "true") &&
 
   set.seed(2018)
   windows <- c(4, sample(50:4000, (ssize - 1)))
-  message("Windows: ", windows)
+  message("Windows: ", paste(windows, collapse = ", "))
 
   for (w in windows) {
     min_data_size <- 2 * w + 1
@@ -16,7 +16,7 @@ if (identical(Sys.getenv("STRESS_TEST"), "true") &&
 
     data_sizes <- sample(seq(min_data_size, max_data_size), ssize)
     message("Window: ", w)
-    message("Sizes: ", data_sizes)
+    message("Sizes: ", paste(data_sizes, collapse = ", "))
 
     for (ds in data_sizes) {
       message("Window: ", w)
@@ -27,20 +27,20 @@ if (identical(Sys.getenv("STRESS_TEST"), "true") &&
       data3 <- mp_meat_data$sub$data[1:ds] # 107520 with RW
       data4 <- mp_test_data$train$data[1:ds] # 215010
 
-      stamp_test_1 <- stamp_par(data1, window_size = w, n_workers = 4)
-      stamp_test_2 <- stamp_par(data2, window_size = w, n_workers = 4)
-      stamp_test_3 <- stamp_par(data3, window_size = w, n_workers = 4)
-      stamp_test_4 <- stamp_par(data4, window_size = w, n_workers = 4)
+      stamp_test_1 <- tsmp(data1, window_size = w, mode = "stamp", n_workers = 4, verbose = 0)
+      stamp_test_2 <- tsmp(data2, window_size = w, mode = "stamp", n_workers = 4, verbose = 0)
+      stamp_test_3 <- tsmp(data3, window_size = w, mode = "stamp", n_workers = 4, verbose = 0)
+      stamp_test_4 <- tsmp(data4, window_size = w, mode = "stamp", n_workers = 4, verbose = 0)
 
-      stomp_test_1 <- stomp_par(data1, window_size = w, n_workers = 4)
-      stomp_test_2 <- stomp_par(data2, window_size = w, n_workers = 4)
-      stomp_test_3 <- stomp_par(data3, window_size = w, n_workers = 4)
-      stomp_test_4 <- stomp_par(data4, window_size = w, n_workers = 4)
+      stomp_test_1 <- tsmp(data1, window_size = w, mode = "stomp", n_workers = 4, verbose = 0)
+      stomp_test_2 <- tsmp(data2, window_size = w, mode = "stomp", n_workers = 4, verbose = 0)
+      stomp_test_3 <- tsmp(data3, window_size = w, mode = "stomp", n_workers = 4, verbose = 0)
+      stomp_test_4 <- tsmp(data4, window_size = w, mode = "stomp", n_workers = 4, verbose = 0)
 
-      scrimp_test_1 <- scrimp(data1, window_size = w)
-      scrimp_test_2 <- scrimp(data2, window_size = w)
-      scrimp_test_3 <- scrimp(data3, window_size = w)
-      scrimp_test_4 <- scrimp(data4, window_size = w)
+      scrimp_test_1 <- tsmp(data1, window_size = w, mode = "scrimp", verbose = 0)
+      scrimp_test_2 <- tsmp(data2, window_size = w, mode = "scrimp", verbose = 0)
+      scrimp_test_3 <- tsmp(data3, window_size = w, mode = "scrimp", verbose = 0)
+      scrimp_test_4 <- tsmp(data4, window_size = w, mode = "scrimp", verbose = 0)
 
       label <- paste("Window", w, "data size", ds)
       test_that(label, {
