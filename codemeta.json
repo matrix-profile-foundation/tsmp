@@ -276,7 +276,7 @@
       "@type": "SoftwareApplication",
       "identifier": "matrixprofiler",
       "name": "matrixprofiler",
-      "version": ">= 0.1.5",
+      "version": ">= 0.1.12",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -297,7 +297,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "12967.094KB",
+  "fileSize": "6333.366KB",
   "releaseNotes": "https://github.com/matrix-profile-foundation/tsmp/blob/main/NEWS.md",
   "readme": "https://github.com/matrix-profile-foundation/tsmp/blob/master/README.md",
   "contIntegration": "https://app.codecov.io/gh/matrix-profile-foundation/tsmp",

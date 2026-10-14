@@ -2,7 +2,7 @@ README
 ================
 Francisco Bischoff
 
-12 Oct 2026
+14 Oct 2026
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -15,8 +15,9 @@ Francisco Bischoff
 [![License](https://img.shields.io/badge/License-GPL--3.0-green.svg)](https://choosealicense.com/licenses/gpl-3.0/)
 [![lifecycle](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 
-[![Lint](https://github.com/matrix-profile-foundation/tsmp/workflows/Lint/badge.svg?branch=main)](https://github.com/r-lib/lintr)
-<!-- [![R-CMD-check](https://github.com/matrix-profile-foundation/tsmp/workflows/R-CMD-check/badge.svg?branch=main)](https://r-pkgs.org/check.html) -->
+<!--[![Lint](https://github.com/matrix-profile-foundation/tsmp/workflows/Lint/badge.svg?branch=main)](https://github.com/r-lib/lintr) -->
+
+[![R-CMD-check](https://github.com/matrix-profile-foundation/tsmp/actions/workflows/R-CMD-check.yaml/badge.svg)](https://r-pkgs.org/r-cmd-check.html)
 
 [![codecov](https://codecov.io/gh/matrix-profile-foundation/tsmp/branch/main/graph/badge.svg?token=w7AmbwhNvn)](https://app.codecov.io/gh/matrix-profile-foundation/tsmp)
 
@@ -39,11 +40,11 @@ Key highlights:
 
 - 🚀 **Native multithreading** via `n_workers` — no more
   `doSNOW`/`foreach` clusters.
-- 🗑️ **Removed dependencies**: `doSNOW`, `foreach`, `audio`.
-- 🔢 **Standardised invalid indices** — all profile index vectors now
+- 🧹 **Removed dependencies**: `doSNOW`, `foreach`, `audio`.
+- 🔢 **Standardized invalid indices** — all profile index vectors now
   use `NA_integer_` (previously `-1L`).
 - ⚡ **MPX** is now a first-class algorithm: `tsmp(..., mode = "mpx")`.
-- 🛠️ **`find_snippet()`** gained `n_workers` and a long-standing
+- 🔧 **`find_snippet()`** gained `n_workers` and a long-standing
   edge-case fix.
 
 📄 Full API changes, breaking changes, and migration guide:
@@ -136,7 +137,7 @@ devtools::install_github("matrix-profile-foundation/tsmp")
 
 - [x] Migrate computation to C++ engine (`matrixprofiler`)
 - [x] Remove `doSNOW`/`foreach` — native multithreading via `n_workers`
-- [x] Standardise invalid-index convention to `NA_integer_`
+- [x] Standardize invalid-index convention to `NA_integer_`
 - [x] MPX as first-class algorithm in `tsmp()`
 - [x] Parallel MPdist and Time Series Snippets
 - [x] CRAN-compliant pure-R package (`NeedsCompilation: no`)

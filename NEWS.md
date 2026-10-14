@@ -2,7 +2,7 @@ NEWS
 ================
 Francisco Bischoff
 
-12 Oct 2026
+14 Oct 2026
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 

@@ -157,10 +157,82 @@
       "Maintainer": "Michel Lang <michellang@gmail.com>",
       "Repository": "CRAN"
     },
+    "glue": {
+      "Package": "glue",
+      "Version": "1.8.1",
+      "Source": "Repository",
+      "Title": "Interpreted String Literals",
+      "Authors@R": "c( person(\"Jim\", \"Hester\", role = \"aut\", comment = c(ORCID = \"0000-0002-2739-7082\")), person(\"Jennifer\", \"Bryan\", , \"jenny@posit.co\", role = c(\"aut\", \"cre\"), comment = c(ORCID = \"0000-0002-6983-2759\")), person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"), comment = c(ROR = \"03wc8by49\")) )",
+      "Description": "An implementation of interpreted string literals, inspired by Python's Literal String Interpolation <https://www.python.org/dev/peps/pep-0498/> and Docstrings <https://www.python.org/dev/peps/pep-0257/> and Julia's Triple-Quoted String Literals <https://docs.julialang.org/en/v1.3/manual/strings/#Triple-Quoted-String-Literals-1>.",
+      "License": "MIT + file LICENSE",
+      "URL": "https://glue.tidyverse.org/, https://github.com/tidyverse/glue",
+      "BugReports": "https://github.com/tidyverse/glue/issues",
+      "Depends": [
+        "R (>= 4.1)"
+      ],
+      "Imports": [
+        "methods"
+      ],
+      "Suggests": [
+        "crayon",
+        "DBI (>= 1.2.0)",
+        "dplyr",
+        "knitr",
+        "rlang",
+        "rmarkdown",
+        "RSQLite",
+        "testthat (>= 3.2.0)",
+        "vctrs (>= 0.3.0)",
+        "waldo (>= 0.5.3)",
+        "withr"
+      ],
+      "VignetteBuilder": "knitr",
+      "ByteCompile": "true",
+      "Config/Needs/website": "bench, forcats, ggbeeswarm, ggplot2, R.utils, rprintf, tidyr, tidyverse/tidytemplate",
+      "Config/testthat/edition": "3",
+      "Config/usethis/last-upkeep": "2026-04-16",
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.3.3",
+      "NeedsCompilation": "yes",
+      "Author": "Jim Hester [aut] (ORCID: <https://orcid.org/0000-0002-2739-7082>), Jennifer Bryan [aut, cre] (ORCID: <https://orcid.org/0000-0002-6983-2759>), Posit Software, PBC [cph, fnd] (ROR: <https://ror.org/03wc8by49>)",
+      "Maintainer": "Jennifer Bryan <jenny@posit.co>",
+      "Repository": "CRAN"
+    },
+    "magrittr": {
+      "Package": "magrittr",
+      "Version": "2.0.5",
+      "Source": "Repository",
+      "Type": "Package",
+      "Title": "A Forward-Pipe Operator for R",
+      "Authors@R": "c( person(\"Stefan Milton\", \"Bache\", , \"stefan@stefanbache.dk\", role = c(\"aut\", \"cph\"), comment = \"Original author and creator of magrittr\"), person(\"Hadley\", \"Wickham\", , \"hadley@posit.co\", role = \"aut\"), person(\"Lionel\", \"Henry\", , \"lionel@posit.co\", role = \"cre\"), person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"), comment = c(ROR = \"03wc8by49\")) )",
+      "Description": "Provides a mechanism for chaining commands with a new forward-pipe operator, %>%. This operator will forward a value, or the result of an expression, into the next function call/expression. There is flexible support for the type of right-hand side expressions. For more information, see package vignette.  To quote Rene Magritte, \"Ceci n'est pas un pipe.\"",
+      "License": "MIT + file LICENSE",
+      "URL": "https://magrittr.tidyverse.org, https://github.com/tidyverse/magrittr",
+      "BugReports": "https://github.com/tidyverse/magrittr/issues",
+      "Depends": [
+        "R (>= 3.4.0)"
+      ],
+      "Suggests": [
+        "covr",
+        "knitr",
+        "rlang",
+        "rmarkdown",
+        "testthat"
+      ],
+      "VignetteBuilder": "knitr",
+      "ByteCompile": "Yes",
+      "Config/Needs/website": "tidyverse/tidytemplate",
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.3.3",
+      "NeedsCompilation": "yes",
+      "Author": "Stefan Milton Bache [aut, cph] (Original author and creator of magrittr), Hadley Wickham [aut], Lionel Henry [cre], Posit Software, PBC [cph, fnd] (ROR: <https://ror.org/03wc8by49>)",
+      "Maintainer": "Lionel Henry <lionel@posit.co>",
+      "Repository": "CRAN"
+    },
     "matrixprofiler": {
       "Package": "matrixprofiler",
-      "Version": "0.1.11.9013",
-      "Source": "unknown",
+      "Version": "0.1.12",
+      "Source": "Repository",
       "Type": "Package",
       "Title": "Matrix Profile for R",
       "Authors@R": "c( person(\"Francisco\", \"Bischoff\", , \"fbischoff@med.up.pt\", role = c(\"aut\", \"cre\"), comment = c(ORCID = \"https://orcid.org/0000-0002-5301-8672\")), person(\"Michael\", \"Yeh\", , \"myeh003@ucr.edu\", role = c(\"res\", \"ccp\", \"ctb\"), comment = c(ORCID = \"https://orcid.org/0000-0002-9807-2963\")), person(\"Diego\", \"Silva\", , \"diegofs@ufscar.br\", role = c(\"res\", \"ccp\", \"ctb\"), comment = c(ORCID = \"https://orcid.org/0000-0002-5184-9413\")), person(\"Yan\", \"Zhu\", , \"yzhu015@ucr.edu\", role = c(\"res\", \"ccp\", \"ctb\"), comment = c(ORCID = \"https://orcid.org/0000-0002-5952-2108\")), person(\"Hoang\", \"Dau\", , \"hdau001@ucr.edu\", role = c(\"res\", \"ccp\", \"ctb\"), comment = c(ORCID = \"https://orcid.org/0000-0003-2439-5185\")), person(\"Michele\", \"Linardi\", , \"michele.linardi@orange.fr\", role = c(\"res\", \"ccp\", \"ctb\"), comment = c(ORCID = \"https://orcid.org/0000-0002-3249-2068\")) )",
@@ -196,7 +268,8 @@
       "Roxygen": "list(markdown = TRUE)",
       "SystemRequirements": "GNU make",
       "Config/roxygen2/version": "8.1.0",
-      "Author": "Francisco Bischoff [aut, cre] (ORCID: <https://orcid.org/0000-0002-5301-8672>), Michael Yeh [res, ccp, ctb] (ORCID: <https://orcid.org/0000-0002-9807-2963>), Diego Silva [res, ccp, ctb] (ORCID: <https://orcid.org/0000-0002-5184-9413>), Yan Zhu [res, ccp, ctb] (ORCID: <https://orcid.org/0000-0002-5952-2108>), Hoang Dau [res, ccp, ctb] (ORCID: <https://orcid.org/0000-0003-2439-5185>), Michele Linardi [res, ccp, ctb] (ORCID: <https://orcid.org/0000-0002-3249-2068>)"
+      "Author": "Francisco Bischoff [aut, cre] (ORCID: <https://orcid.org/0000-0002-5301-8672>), Michael Yeh [res, ccp, ctb] (ORCID: <https://orcid.org/0000-0002-9807-2963>), Diego Silva [res, ccp, ctb] (ORCID: <https://orcid.org/0000-0002-5184-9413>), Yan Zhu [res, ccp, ctb] (ORCID: <https://orcid.org/0000-0002-5952-2108>), Hoang Dau [res, ccp, ctb] (ORCID: <https://orcid.org/0000-0003-2439-5185>), Michele Linardi [res, ccp, ctb] (ORCID: <https://orcid.org/0000-0002-3249-2068>)",
+      "Repository": "CRAN"
     },
     "renv": {
       "Package": "renv",

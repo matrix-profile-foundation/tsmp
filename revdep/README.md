@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                       |
 |ctype    |en_US.UTF-8                       |
 |tz       |Europe/Lisbon                     |
-|date     |2026-10-12                        |
+|date     |2026-10-14                        |
 |pandoc   |3.1.3 @ /usr/bin/ (via rmarkdown) |
 |quarto   |1.9.38 @ /opt/quarto/bin/quarto   |
 
@@ -31,14 +31,13 @@
 |iterators      |1.0.14 |NA     |*  |
 |lifecycle      |1.0.5  |NA     |*  |
 |magrittr       |2.0.5  |2.0.5  |   |
-|matrixprofiler |NA     |0.1.10 |*  |
+|matrixprofiler |NA     |0.1.12 |*  |
 |pkgconfig      |2.0.3  |NA     |*  |
 |prettyunits    |1.2.0  |NA     |*  |
 |progress       |1.2.3  |NA     |*  |
 |R6             |2.6.1  |NA     |*  |
 |Rcpp           |1.1.2  |1.1.2  |   |
-|RcppParallel   |6.2.1  |6.2.1  |   |
-|RcppProgress   |NA     |0.4.2  |*  |
+|RcppParallel   |6.2.1  |NA     |*  |
 |RcppThread     |NA     |2.4.0  |*  |
 |RJSONIO        |2.0.5  |NA     |*  |
 |rlang          |1.3.0  |NA     |*  |
