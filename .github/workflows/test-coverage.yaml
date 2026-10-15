@@ -36,5 +36,25 @@ jobs:
       - name: Test coverage
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        run: covr::codecov(quiet = FALSE)
+        run: |
+          covr::codecov(
+            quiet = FALSE,
+            clean = FALSE,
+            install_path = file.path(Sys.getenv("RUNNER_TEMP"), "covr-library")
+          )
         shell: Rscript {0}
+
+      - name: Show test failures
+        if: failure()
+        shell: bash
+        run: |
+          find "${RUNNER_TEMP}/covr-library" -type f -name '*.Rout.fail' -print -exec cat {} \;
+
+      - name: Upload test diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: covr-test-diagnostics
+          path: |
+            ${{ runner.temp }}/covr-library/**/tsmp-tests/**
+          if-no-files-found: ignore
