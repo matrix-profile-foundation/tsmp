@@ -14,7 +14,7 @@
 
 ## Test environments
 
-- rhub: linux-devel, windows-devel, macos-devel, clang-ubsan, valgrind
+- rhub: linux-devel, windows-devel, macos-devel, clang-ubsan (failed not because of tsmp, it is a r-hub problem), valgrind
 
 - win-builder: devel, release
 

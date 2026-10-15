@@ -2,16 +2,15 @@ NEWS
 ================
 Francisco Bischoff
 
-14 Oct 2026
+15 Oct 2026
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
 ## tsmp 0.5.0
 
-- Renamed JSON serialization functions to `write_json()` and `read_json()`
-  to avoid masking `base::write()`. JSON round trips now preserve profile
-  vectors and the `origin` and `partial` attributes.
-
+- Renamed JSON serialization functions to `write_json()` and
+  `read_json()` to avoid masking `base::write()`. JSON round trips now
+  preserve profile vectors and the `origin` and `partial` attributes.
 - Multivariate STOMP (`mstomp()` and `mstomp_par()`): Delegated
   computation to the high-performance native C++ engine in
   `matrixprofiler::mstomp()`, providing massive speedups (~200x) and
