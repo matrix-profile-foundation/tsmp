@@ -1,7 +1,7 @@
 Type: Package
 Package: tsmp
 Title: Time Series with Matrix Profile
-Version: 0.5.0
+Version: 0.6.0
 Authors@R:
     c(person(given = "Francisco",
              family = "Bischoff",

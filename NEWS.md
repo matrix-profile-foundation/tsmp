@@ -1,3 +1,5 @@
+# tsmp 0.6.0
+
 NEWS
 ================
 Francisco Bischoff
