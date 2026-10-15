@@ -17,7 +17,7 @@ Francisco Bischoff
 
 <!--[![Lint](https://github.com/matrix-profile-foundation/tsmp/workflows/Lint/badge.svg?branch=main)](https://github.com/r-lib/lintr) -->
 
-[![R-CMD-check](https://github.com/matrix-profile-foundation/tsmp/actions/workflows/R-CMD-check.yaml/badge.svg)](https://r-pkgs.org/r-cmd-check.html)
+[![R-CMD-check](https://github.com/matrix-profile-foundation/tsmp/actions/workflows/R-CMD-check.yaml/badge.svg)](https://r-pkgs.org/R-CMD-check.html)
 
 [![codecov](https://codecov.io/gh/matrix-profile-foundation/tsmp/branch/main/graph/badge.svg?token=w7AmbwhNvn)](https://app.codecov.io/gh/matrix-profile-foundation/tsmp)
 
