@@ -24,7 +24,27 @@ plot_fluss_test <- function() plot.Fluss(segments)
 plot_chain_test <- function() plot.Chain(chain)
 plot_motif_test <- function() plot.Motif(motif)
 plot_discord_test <- function() plot.Discord(discord)
-plot_salient_test <- function() plot.Salient(mps)
+# cmdscale() may reflect either axis across platforms. Orient each axis using
+# its largest absolute coordinate; the signs retain the existing SVG reference.
+# This affects only this visual test, not salient_mds() or plot.Salient().
+orient_salient_mds <- function(coords) {
+  target_sign <- c(1, -1)
+  for (axis in seq_len(ncol(coords))) {
+    anchor <- which.max(abs(coords[, axis]))
+    if (coords[anchor, axis] * target_sign[axis] < 0) {
+      coords[, axis] <- -coords[, axis]
+    }
+  }
+  coords
+}
+
+plot_salient_test <- function() {
+  plot <- plot.Salient
+  environment(plot) <- list2env(list(
+    salient_mds = function(...) orient_salient_mds(salient_mds(...))
+  ), parent = environment(plot))
+  plot(mps)
+}
 plot_valmod_test <- function() plot.Valmod(val)
 plot_snippet_test <- function() plot.Snippet(snippet)
 
@@ -68,4 +88,19 @@ test_that("Print", {
   expect_snapshot_output(print(val))
   expect_snapshot_output(print(val_motif))
   expect_snapshot_output(print(snippet))
+})
+
+
+test_that("Salient plot orientation ignores reflections but preserves geometry", {
+  coords <- salient_mds(mps)
+  oriented <- orient_salient_mds(coords)
+  for (x_sign in c(-1, 1)) {
+    for (y_sign in c(-1, 1)) {
+      reflected <- sweep(coords, 2L, c(x_sign, y_sign), "*")
+      expect_equal(orient_salient_mds(reflected), oriented)
+    }
+  }
+  expect_equal(as.matrix(dist(oriented)), as.matrix(dist(coords)))
+  # A change in scale must remain visible to the snapshot comparison.
+  expect_equal(orient_salient_mds(2 * coords), 2 * oriented)
 })
