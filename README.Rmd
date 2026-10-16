@@ -53,7 +53,7 @@ Key highlights:
 - ⚡ **MPX** is now a first-class algorithm: `tsmp(..., mode = "mpx")`.
 - 🔧 **`find_snippet()`** gained `n_workers` and a long-standing edge-case fix.
 
-📄 Full API changes, breaking changes, and migration guide: **[MIGRATION.md](MIGRATION.md)**
+📄 Full API changes, breaking changes, and migration guide: **[MIGRATION.md](https://github.com/matrix-profile-foundation/tsmp/blob/master/MIGRATION.md)**
 
 > _A broader introduction to the matrixprofiler backend is available
 > [here](https://franzbischoff.rbind.io/posts/presenting-matrixprofiler-a-fast-matrix-profile-implementation-in-r/)._

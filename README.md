@@ -2,7 +2,7 @@ README
 ================
 Francisco Bischoff
 
-15 Oct 2026
+16 Oct 2026
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -48,7 +48,7 @@ Key highlights:
   edge-case fix.
 
 📄 Full API changes, breaking changes, and migration guide:
-**[MIGRATION.md](MIGRATION.md)**
+**[MIGRATION.md](https://github.com/matrix-profile-foundation/tsmp/blob/master/MIGRATION.md)**
 
 > *A broader introduction to the matrixprofiler backend is available
 > [here](https://franzbischoff.rbind.io/posts/presenting-matrixprofiler-a-fast-matrix-profile-implementation-in-r/).*
