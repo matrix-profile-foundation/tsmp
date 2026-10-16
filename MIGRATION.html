@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">tsmp</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.1</span>
       </span>
     </div>
 
@@ -58,14 +58,14 @@
 
 <div id="api-compatibility-and-migration-guide-breaking-changes" class="section level1">
 
-<p><strong>Packages:</strong> <code>matrixprofiler</code> (0.1.10 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>→</mo><annotation encoding="application/x-tex">\to</annotation></semantics></math> 0.1.12) &amp; <code>tsmp</code> (0.4.16 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>→</mo><annotation encoding="application/x-tex">\to</annotation></semantics></math> 0.5.0) <strong>Ecosystem:</strong> Matrix Profile Foundation (MPF) <strong>Date:</strong> October 2026</p>
+<p><strong>Packages:</strong> <code>matrixprofiler</code> (0.1.10 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>→</mo><annotation encoding="application/x-tex">\to</annotation></semantics></math> 0.1.12) &amp; <code>tsmp</code> (0.4.16 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>→</mo><annotation encoding="application/x-tex">\to</annotation></semantics></math> 0.5.1) <strong>Ecosystem:</strong> Matrix Profile Foundation (MPF) <strong>Date:</strong> October 2026</p>
 <hr><div class="section level2">
 <h2 id="id_1-overview-of-the-new-architecture">1. Overview of the New Architecture<a class="anchor" aria-label="anchor" href="#id_1-overview-of-the-new-architecture"></a></h2>
 <p>In this release cycle, the Matrix Profile R ecosystem underwent a major architectural modernization:</p>
 <ol style="list-style-type: decimal"><li>
 <strong><code>matrixprofiler</code> (0.1.12)</strong>: Serves as the <strong>low-level computational engine</strong> in C++17. It uses <code>RcppThread</code> for safe native parallelism (free from fork conflicts on POSIX and with no dependency on Intel TBB) and zero-allocation data structures, such as linear <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mi>N</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(N)</annotation></semantics></math> monotonic deques and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mi>K</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(K)</annotation></semantics></math> algorithms.</li>
 <li>
-<strong><code>tsmp</code> (0.5.0)</strong>: Becomes a <strong>pure R package (<code>NeedsCompilation: no</code>)</strong>. It removes C++ compilers, Makefiles, and legacy cluster libraries (<code>doSNOW</code>, <code>foreach</code>), delegating all computationally intensive operations to <code>matrixprofiler</code>.</li>
+<strong><code>tsmp</code> (0.5.1)</strong>: Becomes a <strong>pure R package (<code>NeedsCompilation: no</code>)</strong>. It removes C++ compilers, Makefiles, and legacy cluster libraries (<code>doSNOW</code>, <code>foreach</code>), delegating all computationally intensive operations to <code>matrixprofiler</code>.</li>
 </ol><p>This clear separation delivers speedups of up to hundreds of times, straightforward installation on any operating system, and eliminates memory leaks or hangs in multicore environments.</p>
 <hr></div>
 <div class="section level2">
@@ -116,7 +116,7 @@
 </tr></tbody></table><hr></div>
 </div>
 <div class="section level2">
-<h2 id="id_3-tsmp-what-changed-0416-to-050">3. <code>tsmp</code>: What Changed (0.4.16 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>→</mo><annotation encoding="application/x-tex">\to</annotation></semantics></math> 0.5.0)<a class="anchor" aria-label="anchor" href="#id_3-tsmp-what-changed-0416-to-050"></a></h2>
+<h2 id="id_3-tsmp-what-changed-0416-to-051">3. <code>tsmp</code>: What Changed (0.4.16 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>→</mo><annotation encoding="application/x-tex">\to</annotation></semantics></math> 0.5.1)<a class="anchor" aria-label="anchor" href="#id_3-tsmp-what-changed-0416-to-051"></a></h2>
 <div class="section level3">
 <h3 id="id_31-major-breaking-changes--critical-removals">3.1 Major Breaking Changes &amp; Critical Removals<a class="anchor" aria-label="anchor" href="#id_31-major-breaking-changes--critical-removals"></a></h3>
 <blockquote>
@@ -208,7 +208,7 @@
 <span><span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">stopCluster</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="white_check_mark-how-to-do-it-in-tsmp-050">✅ How to do it in <code>tsmp</code> 0.5.0:<a class="anchor" aria-label="anchor" href="#white_check_mark-how-to-do-it-in-tsmp-050"></a></h4>
+<h4 id="white_check_mark-how-to-do-it-in-tsmp-051">✅ How to do it in <code>tsmp</code> 0.5.1:<a class="anchor" aria-label="anchor" href="#white_check_mark-how-to-do-it-in-tsmp-051"></a></h4>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/matrix-profile-foundation/tsmp" class="external-link">tsmp</a></span><span class="op">)</span></span>
 <span></span>
@@ -264,7 +264,7 @@
 <span><span class="va">snips</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/find_snippet.html">find_snippet</a></span><span class="op">(</span><span class="va">series</span>, s_size <span class="op">=</span> <span class="fl">100</span>, n_snippets <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="white_check_mark-in-tsmp-050">✅ In <code>tsmp</code> 0.5.0:<a class="anchor" aria-label="anchor" href="#white_check_mark-in-tsmp-050"></a></h4>
+<h4 id="white_check_mark-in-tsmp-051">✅ In <code>tsmp</code> 0.5.1:<a class="anchor" aria-label="anchor" href="#white_check_mark-in-tsmp-051"></a></h4>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Multithreading is passed directly to the MPdist C++ engine</span></span>
 <span><span class="va">snips</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/find_snippet.html">find_snippet</a></span><span class="op">(</span><span class="va">series</span>, s_size <span class="op">=</span> <span class="fl">100</span>, n_snippets <span class="op">=</span> <span class="fl">3</span>, n_workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
@@ -275,7 +275,7 @@
 <h2 id="id_5-executive-summary-for-release-notes--user-announcement">5. Executive Summary for Release Notes / User Announcement<a class="anchor" aria-label="anchor" href="#id_5-executive-summary-for-release-notes--user-announcement"></a></h2>
 <table class="table"><colgroup><col width="25%"><col width="25%"><col width="25%"><col width="25%"></colgroup><thead><tr><th align="left">Feature</th>
 <th align="left">Status in 0.4.x / 0.1.10</th>
-<th align="left">Status in 0.5.0 / 0.1.12</th>
+<th align="left">Status in 0.5.1 / 0.1.12</th>
 <th align="left">User Action Required</th>
 </tr></thead><tbody><tr><td align="left"><strong><code>doSNOW</code>/<code>foreach</code> clusters</strong></td>
 <td align="left">Required for parallel computation</td>
