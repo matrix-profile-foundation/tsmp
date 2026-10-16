@@ -28,7 +28,7 @@ Downloads](https://cranlogs.r-pkg.org/badges/tsmp)](https://cran.r-project.org/p
 
 <!-- badges: end -->
 
-## What’s New — v0.5.0 (October 2026)
+## What’s New — v0.5.1 (October 2026)
 
 > **`tsmp` is now a pure-R analytical layer** (`NeedsCompilation: no`),
 > delegating all high-performance computation to the

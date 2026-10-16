@@ -1,6 +1,6 @@
 # API, Compatibility, and Migration Guide (Breaking Changes)
 
-**Packages:** `matrixprofiler` (0.1.10 $\to$ 0.1.12) & `tsmp` (0.4.16 $\to$ 0.5.0)
+**Packages:** `matrixprofiler` (0.1.10 $\to$ 0.1.12) & `tsmp` (0.4.16 $\to$ 0.5.1)
 **Ecosystem:** Matrix Profile Foundation (MPF)
 **Date:** October 2026
 
@@ -11,7 +11,7 @@
 In this release cycle, the Matrix Profile R ecosystem underwent a major architectural modernization:
 
 1. **`matrixprofiler` (0.1.12)**: Serves as the **low-level computational engine** in C++17. It uses `RcppThread` for safe native parallelism (free from fork conflicts on POSIX and with no dependency on Intel TBB) and zero-allocation data structures, such as linear $O(N)$ monotonic deques and $O(K)$ algorithms.
-2. **`tsmp` (0.5.0)**: Becomes a **pure R package (`NeedsCompilation: no`)**. It removes C++ compilers, Makefiles, and legacy cluster libraries (`doSNOW`, `foreach`), delegating all computationally intensive operations to `matrixprofiler`.
+2. **`tsmp` (0.5.1)**: Becomes a **pure R package (`NeedsCompilation: no`)**. It removes C++ compilers, Makefiles, and legacy cluster libraries (`doSNOW`, `foreach`), delegating all computationally intensive operations to `matrixprofiler`.
 
 This clear separation delivers speedups of up to hundreds of times, straightforward installation on any operating system, and eliminates memory leaks or hangs in multicore environments.
 
@@ -27,7 +27,7 @@ This clear separation delivers speedups of up to hundreds of times, straightforw
 * **Sliding window functions (`windowfunc`)**:
   `mov_mean()`, `mov_sum()`, `mov_var()`, `mov_std()`, `mov_min()`, `mov_max()`, `movmean_std()`, and `muinvn()`.
   * **New parameters**: `na_strategy = c("window_na", "remove", "error")` and `na.rm = FALSE`.
-* **`mass()`**:  
+* **`mass()`**:
   * The `version` argument has been expanded to formally support: `c("v3", "v2", "weighted", "non_normalized", "absolute")`.
   * Native thread support through `n_workers` is available in all MASS variants.
 
@@ -43,7 +43,7 @@ This clear separation delivers speedups of up to hundreds of times, straightforw
 
 ---
 
-## 3. `tsmp`: What Changed (0.4.16 $\to$ 0.5.0)
+## 3. `tsmp`: What Changed (0.4.16 $\to$ 0.5.1)
 
 ### 3.1 Major Breaking Changes & Critical Removals
 
@@ -108,7 +108,7 @@ mp <- mstomp_par(multivariate_data, window_size = 50)
 stopCluster(cl)
 ```
 
-#### ✅ How to do it in `tsmp` 0.5.0:
+#### ✅ How to do it in `tsmp` 0.5.1:
 ```r
 library(tsmp)
 
@@ -167,7 +167,7 @@ moving_average_without_na <- mov_mean(series_with_nas, window_size = 20, na.rm =
 snips <- find_snippet(series, s_size = 100, n_snippets = 3)
 ```
 
-#### ✅ In `tsmp` 0.5.0:
+#### ✅ In `tsmp` 0.5.1:
 ```r
 # Multithreading is passed directly to the MPdist C++ engine
 snips <- find_snippet(series, s_size = 100, n_snippets = 3, n_workers = 4)
@@ -177,7 +177,7 @@ snips <- find_snippet(series, s_size = 100, n_snippets = 3, n_workers = 4)
 
 ## 5. Executive Summary for Release Notes / User Announcement
 
-| Feature | Status in 0.4.x / 0.1.10 | Status in 0.5.0 / 0.1.12 | User Action Required |
+| Feature | Status in 0.4.x / 0.1.10 | Status in 0.5.1 / 0.1.12 | User Action Required |
 | :--- | :--- | :--- | :--- |
 | **`doSNOW`/`foreach` clusters** | Required for parallel computation | **Removed** | Remove `makeCluster()` and use `n_workers = N`. |
 | **Audio alerts (`audio`)** | Present | **Removed** | No technical action; sound alerts have been discontinued. |

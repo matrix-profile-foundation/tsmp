@@ -1,6 +1,6 @@
 # CRAN Comments
 
-## Comments for this version (0.5.0)
+## Comments for this version (0.5.1)
 
 - Architectural modernization: `tsmp` is now a pure R package (`NeedsCompilation: no`).
   All core computational algorithms (MPX, STOMP, STAMP, SCRIMP, MASS, mSTOMP) are delegated to
@@ -25,7 +25,7 @@
      sub-directories of 1Mb or more:
        data   4.6Mb
 
-── R CMD check results ────────────tsmp 0.5.0 ────
+── R CMD check results ────────────tsmp 0.5.1 ────
 Duration: 38.9s
 
 0 errors ✔ | 0 warnings ✔ | 0 notes ✔

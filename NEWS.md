@@ -1,4 +1,4 @@
-# tsmp 0.5.0
+# tsmp 0.5.1
 
 NEWS
 ================
@@ -8,7 +8,7 @@ Francisco Bischoff
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
-## tsmp 0.5.0
+## tsmp 0.5.1
 
 - Renamed JSON serialization functions to `write_json()` and
   `read_json()` to avoid masking `base::write()`. JSON round trips now
