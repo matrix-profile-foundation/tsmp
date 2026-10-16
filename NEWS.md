@@ -1,10 +1,8 @@
-# tsmp 0.5.1
-
 NEWS
 ================
 Francisco Bischoff
 
-15 Oct 2026
+16 Oct 2026
 
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 

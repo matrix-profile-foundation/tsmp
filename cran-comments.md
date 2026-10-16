@@ -2,6 +2,7 @@
 
 ## Comments for this version (0.5.1)
 
+- Fixed broken GitHub link in README.md.
 - Architectural modernization: `tsmp` is now a pure R package (`NeedsCompilation: no`).
   All core computational algorithms (MPX, STOMP, STAMP, SCRIMP, MASS, mSTOMP) are delegated to
   the dedicated high-performance engine package `matrixprofiler`.
